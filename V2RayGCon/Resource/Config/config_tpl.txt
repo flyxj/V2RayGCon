@@ -1,0 +1,61 @@
+﻿{
+	"vmessClient" : {
+		"vnext" : [{
+				"address" : "127.0.0.1",
+				"port" : 37192,
+				"users" : [{
+						"id" : "27848739-7e62-4138-9fd3-098a63964b6b",
+						"alterId" : 10,
+						"security" : "auto",
+						"level" : 0
+					}
+				]
+			}
+		]
+	},
+	"ssrClient" : {
+		"servers" : [{
+				"email" : "love@v2ray.com",
+				"address" : "127.0.0.1",
+				"port" : 1234,
+				"method" : "aes-256-gcm",
+				"password" : "pass",
+				"ota" : false,
+				"level" : 0
+			}
+		]
+	},
+	"kcp" : {
+		"network" : "kcp",
+		"security" : "",
+		"kcpSettings" : {
+			"mtu" : 1350,
+			"tti" : 50,
+			"uplinkCapacity" : 12,
+			"downlinkCapacity" : 100,
+			"congestion" : false,
+			"readBufferSize" : 2,
+			"writeBufferSize" : 2,
+			"header" : {
+				"type" : "replace-this",
+				"request" : null,
+				"response" : null
+			}
+		}
+	},
+	"tcp" : {
+		"network" : "tcp",
+		"security" : "",
+		"tcpSettings" : {}
+	},
+	"ws" : {
+		"network" : "ws",
+		"security" : "tls",
+		"wsSettings" : {
+			"connectionReuse" : true,
+			"path" : "/ray",
+			"headers" : null
+		}
+	}
+
+}
