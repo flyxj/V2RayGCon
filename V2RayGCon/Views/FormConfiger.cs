@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
+using ScintillaNET;
 
 namespace V2RayGCon.Views
 {
@@ -21,18 +22,78 @@ namespace V2RayGCon.Views
         Func<string, string> I18N, resData;
         Dictionary<int, string> configCompoentTable, ssrMethodTable;
         Service.Setting settings;
+        ScintillaNET.Scintilla tboxConfig;
 
         public FormConfiger()
         {
+            InitializeComponent();
+
             I18N = Lib.Utils.I18N;
             resData = Lib.Utils.resData;
 
-            InitializeComponent();
-
             settings = Service.Setting.Instance;
 
+            InitScintilla();
             InitForm();
+
             this.Show();
+            
+        }
+
+        void InitScintilla()
+        {
+
+            tboxConfig = new Scintilla();
+            panelScintilla.Controls.Add(tboxConfig);
+
+            tboxConfig.Dock = DockStyle.Fill;
+            tboxConfig.WrapMode = WrapMode.None;
+            tboxConfig.IndentationGuides = IndentView.LookBoth;
+
+            var scintilla = tboxConfig;
+            // Configure the JSON lexer styles
+            scintilla.Styles[Style.Default].Font = "Consolas";
+            scintilla.Styles[Style.Default].Size = 11;
+            scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
+            scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla.Styles[Style.Json.Number].ForeColor = Color.Olive;
+            scintilla.Styles[Style.Json.PropertyName].ForeColor = Color.Blue;
+            scintilla.Styles[Style.Json.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
+            scintilla.Styles[Style.Json.StringEol].BackColor = Color.Pink;
+            scintilla.Styles[Style.Json.Operator].ForeColor = Color.Purple;
+            scintilla.Lexer = Lexer.Json;
+
+            // folding
+            // Instruct the lexer to calculate folding
+            scintilla.SetProperty("fold", "1");
+            scintilla.SetProperty("fold.compact", "1");
+
+            // Configure a margin to display folding symbols
+            scintilla.Margins[2].Type = MarginType.Symbol;
+            scintilla.Margins[2].Mask = Marker.MaskFolders;
+            scintilla.Margins[2].Sensitive = true;
+            scintilla.Margins[2].Width = 20;
+
+            // Set colors for all folding markers
+            for (int i = 25; i <= 31; i++)
+            {
+                scintilla.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                scintilla.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+
+            // Configure folding markers with respective symbols
+            scintilla.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            scintilla.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            scintilla.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            scintilla.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            scintilla.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            scintilla.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            scintilla.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+            // Enable automatic folding
+            scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
+
         }
 
         private void btnExit_Click(object sender, EventArgs e)

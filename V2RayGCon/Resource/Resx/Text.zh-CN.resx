@@ -187,7 +187,7 @@
     <value>退出</value>
   </data>
   <data name="ImportLink" xml:space="preserve">
-    <value>导入链接</value>
+    <value>从剪切板导入链接</value>
   </data>
   <data name="ImportLinkFail" xml:space="preserve">
     <value>链接导入失败！</value>

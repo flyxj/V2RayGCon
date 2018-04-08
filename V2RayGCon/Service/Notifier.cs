@@ -71,7 +71,8 @@ namespace V2RayGCon.Service
             Lib.Utils.FindMenuItemByText(ctxm, I18N("ShowLogWin")).PerformClick();
             // Lib.Utils.FindMenuItemByText(ctxm, "Add dummy server1").PerformClick();
 #else
-            Lib.Utils.FindMenuItemByText(ctxm, I18N("ShowConfigWin")).PerformClick();
+            setting.curEditingIndex = 0;
+            ShowFormConfigEditor();
 #endif
         }
 
@@ -134,6 +135,18 @@ namespace V2RayGCon.Service
 #endif
         #endregion
 
+        void ShowFormConfigEditor()
+        {
+            if (formConfiger == null)
+            {
+                formConfiger = new Views.FormConfiger();
+                formConfiger.FormClosed += (fcs, fca) =>
+                {
+                    formConfiger = null;
+                };
+            }
+        }
+
         void ShowFormMain()
         {
             if (formMain == null)
@@ -146,14 +159,7 @@ namespace V2RayGCon.Service
 
                 formMain.OpenEditor += (fms, fma) =>
                 {
-                    if (formConfiger == null)
-                    {
-                        formConfiger = new Views.FormConfiger();
-                        formConfiger.FormClosed += (fcs, fca) =>
-                        {
-                            formConfiger = null;
-                        };
-                    }
+                    ShowFormConfigEditor();
                 };
 
                 formMain.ShowQRCodeForm += (fms, fma) =>
@@ -297,6 +303,8 @@ namespace V2RayGCon.Service
 
                 }),
 
+                new MenuItem("-"),
+
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
                     Lib.Utils.ShowMsgboxSuccFail(
@@ -316,6 +324,10 @@ namespace V2RayGCon.Service
                 }),
 
                 new MenuItem("-"),
+
+                new MenuItem(I18N("About"),(s,a)=>MessageBox.Show(
+                    Properties.Resources.ProjectLink
+                    )),
 
                 new MenuItem(I18N("Exit"),(sender,args)=>{
                     if(Lib.Utils.Confirm(I18N("Confirm"),I18N("ConfirmExitApp"))){

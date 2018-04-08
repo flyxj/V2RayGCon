@@ -130,4 +130,7 @@
   <data name="Text" xml:space="preserve">
     <value>V2RayGCon.Resource.Resx.Text</value>
   </data>
+  <data name="ProjectLink" xml:space="preserve">
+    <value>https://github.com/null7c80b5a93/V2RayGCon</value>
+  </data>
 </root>
