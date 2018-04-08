@@ -205,6 +205,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Duplicate link 的本地化字符串。
+        /// </summary>
+        internal static string DuplicateLink {
+            get {
+                return ResourceManager.GetString("DuplicateLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cannot load server config. Using default config! 的本地化字符串。
         /// </summary>
         internal static string EditorCannotLoadServerConfig {
@@ -313,15 +322,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Duplicate link or unable to decode 的本地化字符串。
-        /// </summary>
-        internal static string NotSupportLinkType {
-            get {
-                return ResourceManager.GetString("NotSupportLinkType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Scan QR code 的本地化字符串。
         /// </summary>
         internal static string ScanQRCode {
@@ -354,6 +354,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ShowMainWin {
             get {
                 return ResourceManager.GetString("ShowMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Unable to decode this link 的本地化字符串。
+        /// </summary>
+        internal static string UnableDecodeLink {
+            get {
+                return ResourceManager.GetString("UnableDecodeLink", resourceCulture);
             }
         }
         

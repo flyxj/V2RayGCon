@@ -91,6 +91,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.picQRCode);
+            this.MaximizeBox = false;
             this.Name = "FormQRCode";
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).EndInit();
             this.ResumeLayout(false);

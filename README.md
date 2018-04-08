@@ -1,6 +1,6 @@
 # V2RayGCon  
 V2Ray GUI for windows.  
-v2ray的windows图形界面。  
+V2Ray的windows图形界面。  
   
 # 主要功能
 导入/导出vmess链接,v2ray链接（完整的config.json）  
@@ -17,3 +17,5 @@ v2ray的windows图形界面。
 配置编辑器  
 ![configeditor.png](https://raw.githubusercontent.com/null7c80b5a93/V2RayGCon/master/screenshot/configeditor.png)  
   
+二维码生成器  
+![qrcode.png](https://raw.githubusercontent.com/null7c80b5a93/V2RayGCon/master/screenshot/qrcode.png)  

@@ -66,13 +66,13 @@ namespace V2RayGCon.Views
                     link = Lib.Utils.Vmess2VmessLink(vmess);
                     if (!string.IsNullOrEmpty(link))
                     {
-                        picQRCode.Image = Lib.QRCode.Generator.GenQRCode(link);
+                        picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link,180);
                     }
                 }
                 else
                 {
                     link = resData("V2RayLinkPerfix") + server;
-                    picQRCode.Image = Lib.QRCode.Generator.GenQRCode(link);
+                    picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link,320);
                 }
             }
         }
@@ -82,7 +82,8 @@ namespace V2RayGCon.Views
             linkType = Lib.Utils.Clamp(cboxLinkType.SelectedIndex, 0, 1);
             ShowQRCode();
             int delta;
-            delta = linkType == 0 ? 0 : 512 - 320;
+            // delta = linkType == 0 ? 0 : 320 - 320;
+            delta = 0;
             this.Width = formSize.X + delta;
             this.Height = formSize.Y + delta;
         }

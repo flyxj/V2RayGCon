@@ -87,8 +87,18 @@ namespace V2RayGCon.Service
             return new MenuItem("Debug", new MenuItem[]{
                 new MenuItem("QRCode",new MenuItem[]{
                     new MenuItem("test ScanRect", (s,a)=>{
-                        string url=Lib.QRCode.Scaner.ScanScreenQRCode();
-                        Debug.WriteLine(url);
+                        void success(string link)
+                        {
+                            Debug.WriteLine("Got Link: {0}",link);
+                        }
+
+                        void fail()
+                        {
+                            Debug.WriteLine("no link found!");
+                        }
+
+                        Lib.QRCode.QRCode.ScanQRCode(success,fail);
+
                     }),
                 }),
                 new MenuItem("Add dummy server1",(s,a)=>{
@@ -222,13 +232,15 @@ namespace V2RayGCon.Service
                         }
                         Lib.Utils.ExtractZipFile(fileName);
                         System.IO.File.Delete(fileName);
-                        ni.BalloonTipText = I18N("DLComplete");
+                        // ni.BalloonTipText = I18N("DLComplete");
+                        MessageBox.Show(I18N("DLComplete"));
                     }
                     catch
                     {
-                        ni.BalloonTipText = I18N("DLFail");
+                        // ni.BalloonTipText = I18N("DLFail");
+                        MessageBox.Show(I18N("DLFail"));
                     }
-                    ni.ShowBalloonTip(3000);
+                    
 
                     if (isCoreRunning)
                     {
@@ -243,8 +255,7 @@ namespace V2RayGCon.Service
             }
             else
             {
-                ni.BalloonTipText = I18N("Downloading");
-                ni.ShowBalloonTip(3000);
+                MessageBox.Show(I18N("Downloading"));
             }
         }
 
@@ -267,23 +278,22 @@ namespace V2RayGCon.Service
                 }),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
-                    string link=Lib.QRCode.Scaner.ScanScreenQRCode();
-                    Debug.WriteLine("Read: "+link.Substring(0,
-                        Math.Min(48,link.Length)));
+                    void success(string link)
+                    {
+                        if(!setting.ImportLinks(link))
+                        {
+                            MessageBox.Show(I18N("NotSupportLinkType"));
+                        }
 
-                    if (string.IsNullOrEmpty(link))
-                    {
-                        // MessageBox.Show(I18N("NoQRCode"));
-                        ni.BalloonTipText = I18N("NoQRCode");
-                        Debug.WriteLine(I18N("NoQRCode"));
+                     
                     }
-                    else if(!setting.ImportLinks(link))
+
+                    void fail()
                     {
-                        // MessageBox.Show(I18N("NotSupportLinkType"));
-                        ni.BalloonTipText = I18N("NotSupportLinkType");
-                        Debug.WriteLine(I18N("NotSupportLinkType"));
+                        MessageBox.Show(I18N("NoQRCode"));
                     }
-                    ni.ShowBalloonTip(3000);
+
+                    Lib.QRCode.QRCode.ScanQRCode(success,fail);
 
                 }),
 
