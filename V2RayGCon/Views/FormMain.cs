@@ -9,12 +9,14 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
     public partial class FormMain : Form
     {
-        Func<string, string> I18N;
+        // Func<string, string> I18N;
+
         Service.Setting setting;
         Service.Core core;
 
@@ -32,7 +34,7 @@ namespace V2RayGCon.Views
 
             UpdateElement();
 
-            I18N = Lib.Utils.I18N;
+            //I18N = Lib.Utils.I18N;
 
             this.FormClosed += (s, a) =>
             {

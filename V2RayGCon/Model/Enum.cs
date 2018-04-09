@@ -12,5 +12,10 @@ namespace V2RayGCon.Model
             vmess,
             v2ray
         }
+        public enum ProxyModes {
+            ProxyNone,
+            ProxyAll,
+            ProxyPAC,
+        }
     }
 }

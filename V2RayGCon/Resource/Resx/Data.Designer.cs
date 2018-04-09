@@ -262,6 +262,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 https://pac.txthinking.com/white/{0}%20{1} 的本地化字符串。
+        /// </summary>
+        internal static string PacUrlTpl {
+            get {
+                return ResourceManager.GetString("PacUrlTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 (?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4}) 的本地化字符串。
         /// </summary>
         internal static string PatternBase64 {

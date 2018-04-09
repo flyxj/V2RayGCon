@@ -1908,7 +1908,7 @@
     <value>67, 21</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 6</value>
+    <value>207, 6</value>
   </data>
   <data name="qRCodeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>153, 22</value>
@@ -2022,7 +2022,7 @@
     <value>Port</value>
   </data>
   <data name="ImportVmessLinkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>210, 22</value>
   </data>
   <data name="&gt;&gt;protocolSocksToolStripMenuItem.Name" xml:space="preserve">
     <value>protocolSocksToolStripMenuItem</value>
@@ -2160,7 +2160,7 @@
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="copyAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>210, 22</value>
   </data>
   <data name="&gt;&gt;columnHeader9.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2265,7 +2265,7 @@
     <value>menuStrip1</value>
   </data>
   <data name="deleteAllServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>210, 22</value>
   </data>
   <data name="&gt;&gt;stripMenuActivate.Name" xml:space="preserve">
     <value>stripMenuActivate</value>
@@ -2295,7 +2295,7 @@
     <value>Up</value>
   </data>
   <data name="ImportVmessLinkToolStripMenuItem.Text" xml:space="preserve">
-    <value>Import link</value>
+    <value>Import from Clipboard</value>
   </data>
   <data name="&gt;&gt;columnHeader6.Name" xml:space="preserve">
     <value>columnHeader6</value>
@@ -2304,7 +2304,7 @@
     <value>Stop</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>210, 22</value>
   </data>
   <data name="buttomToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>118, 22</value>
@@ -2340,7 +2340,7 @@
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 6</value>
+    <value>207, 6</value>
   </data>
   <data name="columnHeader1.Width" type="System.Int32, mscorlib">
     <value>40</value>

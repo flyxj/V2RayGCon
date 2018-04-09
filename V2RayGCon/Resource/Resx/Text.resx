@@ -222,4 +222,25 @@
   <data name="Win64" xml:space="preserve">
     <value>Windows 64bit</value>
   </data>
+  <data name="CopyPacUrl" xml:space="preserve">
+    <value>Copy PAC url</value>
+  </data>
+  <data name="CopySuccess" xml:space="preserve">
+    <value>Copied to clipboard.</value>
+  </data>
+  <data name="ProxyModeAll" xml:space="preserve">
+    <value>Proxy all website</value>
+  </data>
+  <data name="ProxyModeNone" xml:space="preserve">
+    <value>No proxy</value>
+  </data>
+  <data name="ProxyModePAC" xml:space="preserve">
+    <value>Proxy accroding to PAC setting</value>
+  </data>
+  <data name="SetProxyMode" xml:space="preserve">
+    <value>Set proxy mode</value>
+  </data>
+  <data name="WarnIENotSupportPac" xml:space="preserve">
+    <value>Notice! IE not support PAC.</value>
+  </data>
 </root>

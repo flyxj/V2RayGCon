@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
@@ -9,12 +10,12 @@ namespace V2RayGCon.Service
     class Download
     {
         public event EventHandler OnDownloadCompleted;
-        Func<string, string> resData;
+        // Func<string, string> resData;
         string pkgName;
 
         public Download()
         {
-            resData = Lib.Utils.resData;
+            // resData = Lib.Utils.resData;
             pkgName = resData("PkgWin32");
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
@@ -10,7 +11,7 @@ namespace V2RayGCon.Views
     {
 
         Service.Setting setting;
-        Func<string, string> resData;
+        //Func<string, string> resData;
         List<string> servers;
         int index, linkType;
         Point formSize;
@@ -19,7 +20,7 @@ namespace V2RayGCon.Views
         {
             InitializeComponent();
             setting = Service.Setting.Instance;
-            resData = Lib.Utils.resData;
+            //resData = Lib.Utils.resData;
             formSize = new Point(this.Width, this.Height);
 
             UpdateServList();

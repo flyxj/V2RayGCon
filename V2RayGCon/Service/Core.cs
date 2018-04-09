@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
@@ -26,7 +27,6 @@ namespace V2RayGCon.Service
         // Class begin
         Process v2rayCore = null;
 
-        Func<string, string> resData, I18N;
         Setting setting;
 
         public event EventHandler<Model.DataEvent> OnLog;
@@ -34,10 +34,7 @@ namespace V2RayGCon.Service
 
         Core()
         {
-            resData = Lib.Utils.resData;
-            I18N = Lib.Utils.I18N;
             setting = Setting.Instance;
-
             setting.OnRequireCoreRestart += ChangeConfigFile;
         }
 

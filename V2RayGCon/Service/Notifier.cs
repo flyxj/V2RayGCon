@@ -10,14 +10,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
     class Notifier
     {
         NotifyIcon ni;
-        Func<string, string> I18N, resData;
+        // Func<string, string> I18N, resData;
+        // Func<string, string> resData;
 
         Views.FormLog formLog = null;
         Views.FormMain formMain = null;
@@ -30,12 +31,14 @@ namespace V2RayGCon.Service
 
         public Notifier()
         {
-            I18N = Lib.Utils.I18N;
-            resData = Lib.Utils.resData;
+            // I18N = Lib.Utils.I18N;
+            // resData = Lib.Utils.resData;
 
             setting = Setting.Instance;
             core = Core.Instance;
             CreateNotifyIcon();
+
+            core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if !DEBUG
             if (setting.GetServeNum() > 0)
@@ -188,6 +191,21 @@ namespace V2RayGCon.Service
             }
         }
 
+        void UpdateNotifyText()
+        {
+            if (core.IsRunning())
+            {
+                ni.Text = string.Format(
+                    "{0}://{1}",
+                    setting.proxyType,
+                    setting.proxyAddr);
+            }
+            else
+            {
+                ni.Text = I18N("Description");
+            }
+        }
+
         void CreateNotifyIcon()
         {
             ni = new NotifyIcon();
@@ -246,7 +264,7 @@ namespace V2RayGCon.Service
                         // ni.BalloonTipText = I18N("DLFail");
                         MessageBox.Show(I18N("DLFail"));
                     }
-                    
+
 
                     if (isCoreRunning)
                     {
@@ -264,6 +282,7 @@ namespace V2RayGCon.Service
                 MessageBox.Show(I18N("Downloading"));
             }
         }
+
 
 
         ContextMenu CreateMenu()
@@ -284,26 +303,18 @@ namespace V2RayGCon.Service
                 }),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
-                    void success(string link)
-                    {
-                        if(!setting.ImportLinks(link))
-                        {
-                            MessageBox.Show(I18N("NotSupportLinkType"));
-                        }
+                    Lib.QRCode.QRCode.ScanQRCode(
+                        // success
+                        (link)=>{
+                            if (!setting.ImportLinks(link))
+                            {
+                                MessageBox.Show(I18N("NotSupportLinkType"));
+                            }
+                        },
 
-                     
-                    }
-
-                    void fail()
-                    {
-                        MessageBox.Show(I18N("NoQRCode"));
-                    }
-
-                    Lib.QRCode.QRCode.ScanQRCode(success,fail);
-
+                        // fail
+                        ()=>MessageBox.Show(I18N("NoQRCode")));
                 }),
-
-                new MenuItem("-"),
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
@@ -312,6 +323,19 @@ namespace V2RayGCon.Service
                         I18N("ImportLinkSuccess"),
                         I18N("ImportLinkFail"));
 
+                }),
+
+                new MenuItem("-"),
+
+                new MenuItem(I18N("CopyPacUrl"),(s,a)=>{
+                    if (Lib.Utils.CopyToClipboard(setting.GetPacUrl()))
+                    {
+                        MessageBox.Show(
+                            I18N("WarnIENotSupportPac"),
+                            I18N("CopySuccess"));
+                    } else{
+                        MessageBox.Show(I18N("CopyFail"));
+                    }
                 }),
 
                 new MenuItem(I18N("DLv2rayCore"),new MenuItem[]{

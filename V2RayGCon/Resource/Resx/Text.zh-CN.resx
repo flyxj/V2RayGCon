@@ -148,7 +148,7 @@
     <value>v2ray-core 已关闭!</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>v2ray-core 图形界面配置工具</value>
+    <value>V2Ray图形界面配置工具</value>
   </data>
   <data name="DLComplete" xml:space="preserve">
     <value>下载 v2ray-core 完成！</value>
@@ -187,7 +187,7 @@
     <value>退出</value>
   </data>
   <data name="ImportLink" xml:space="preserve">
-    <value>从剪切板导入链接</value>
+    <value>剪切板导入</value>
   </data>
   <data name="ImportLinkFail" xml:space="preserve">
     <value>链接导入失败！</value>
@@ -221,5 +221,26 @@
   </data>
   <data name="Win64" xml:space="preserve">
     <value>Windows 64位</value>
+  </data>
+  <data name="CopyPacUrl" xml:space="preserve">
+    <value>复制PAC链接</value>
+  </data>
+  <data name="CopySuccess" xml:space="preserve">
+    <value>已复制到剪切板</value>
+  </data>
+  <data name="ProxyModeAll" xml:space="preserve">
+    <value>全部走代理</value>
+  </data>
+  <data name="ProxyModeNone" xml:space="preserve">
+    <value>不使用代理</value>
+  </data>
+  <data name="ProxyModePAC" xml:space="preserve">
+    <value>根据PAC设置自动选择</value>
+  </data>
+  <data name="SetProxyMode" xml:space="preserve">
+    <value>设置代理模式</value>
+  </data>
+  <data name="WarnIENotSupportPac" xml:space="preserve">
+    <value>注意：IE不支持PAC文件！</value>
   </data>
 </root>

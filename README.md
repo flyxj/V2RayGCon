@@ -2,6 +2,8 @@
 V2Ray GUI for windows.  
 V2Ray的windows图形界面。  
   
+（需要.net 4.0运行库）  
+  
 ### 主要功能  
 编辑 config.json  
 生成/扫描vmess/v2ray二维码  
@@ -9,6 +11,9 @@ V2Ray的windows图形界面。
 （注：v2ray链接是本软件直接将整个config.json编码生成的，导入后要注意检查）  
   
 ### 用法  
+  
+详细用法请看 [wiki](https://github.com/null7c80b5a93/V2RayGCon/wiki)  
+  
 下载解压Release中的文件，双击V2RayGCon.exe，注意系统托盘图标。  
 首次运行要下载v2ray-core，可用托盘图标的下载菜单自动下载。  
 网络不好的可以手动下载，然后将v2ray-core所有文件复制过来。  

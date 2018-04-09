@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
 using ScintillaNET;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
@@ -19,7 +20,7 @@ namespace V2RayGCon.Views
         JObject configTemplate, configEditing, configDefault;
         int perConfigComponetIndex, perServIndex;
 
-        Func<string, string> I18N, resData;
+        //Func<string, string> I18N, resData;
         Dictionary<int, string> configCompoentTable, ssrMethodTable;
         Service.Setting settings;
         ScintillaNET.Scintilla tboxConfig;
@@ -28,8 +29,8 @@ namespace V2RayGCon.Views
         {
             InitializeComponent();
 
-            I18N = Lib.Utils.I18N;
-            resData = Lib.Utils.resData;
+           // I18N = Lib.Utils.I18N;
+           // resData = Lib.Utils.resData;
 
             settings = Service.Setting.Instance;
 

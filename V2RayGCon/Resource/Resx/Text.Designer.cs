@@ -133,6 +133,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Copy PAC url 的本地化字符串。
+        /// </summary>
+        internal static string CopyPacUrl {
+            get {
+                return ResourceManager.GetString("CopyPacUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copied to clipboard. 的本地化字符串。
+        /// </summary>
+        internal static string CopySuccess {
+            get {
+                return ResourceManager.GetString("CopySuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Can not set local proxy address! 的本地化字符串。
         /// </summary>
         internal static string CoreCantSetLocalAddr {
@@ -322,11 +340,47 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Proxy all website 的本地化字符串。
+        /// </summary>
+        internal static string ProxyModeAll {
+            get {
+                return ResourceManager.GetString("ProxyModeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No proxy 的本地化字符串。
+        /// </summary>
+        internal static string ProxyModeNone {
+            get {
+                return ResourceManager.GetString("ProxyModeNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Proxy accroding to PAC setting 的本地化字符串。
+        /// </summary>
+        internal static string ProxyModePAC {
+            get {
+                return ResourceManager.GetString("ProxyModePAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan QR code 的本地化字符串。
         /// </summary>
         internal static string ScanQRCode {
             get {
                 return ResourceManager.GetString("ScanQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set proxy mode 的本地化字符串。
+        /// </summary>
+        internal static string SetProxyMode {
+            get {
+                return ResourceManager.GetString("SetProxyMode", resourceCulture);
             }
         }
         
@@ -354,6 +408,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ShowMainWin {
             get {
                 return ResourceManager.GetString("ShowMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Notice! IE not support PAC. 的本地化字符串。
+        /// </summary>
+        internal static string WarnIENotSupportPac {
+            get {
+                return ResourceManager.GetString("WarnIENotSupportPac", resourceCulture);
             }
         }
         

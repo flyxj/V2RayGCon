@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
@@ -27,13 +28,13 @@ namespace V2RayGCon.Service
         private List<string> servers;
         public event EventHandler OnSettingChange;
         public event EventHandler OnRequireCoreRestart;
-        Func<string, string> resData;
+        //Func<string, string> resData;
 
         private int _curEditingIndex;
 
         Setting()
         {
-            resData = Lib.Utils.resData;
+            //resData = Lib.Utils.resData;
             _curEditingIndex = -1;
             InitServers();
             SaveServers();
@@ -114,6 +115,15 @@ namespace V2RayGCon.Service
                 Properties.Settings.Default.ProxyAddr = value;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        public string GetPacUrl()
+        {
+            // https://pac.txthinking.com/white/SOCKS5%20127.0.0.1:1080
+            // https://pac.txthinking.com/white/{0}%20{1}
+            // ProxyAddr ProxyType
+            string mode = proxyType.Equals("http") ? "PROXY" : "SOCKS5";
+            return string.Format(resData("PacUrlTpl"), mode, proxyAddr);
         }
 
         public string proxyType
@@ -295,7 +305,7 @@ namespace V2RayGCon.Service
                             count++;
                         }
                     }
-                    Debug.WriteLine("Add server: " + link.Substring(0,32) + " ...");
+                    Debug.WriteLine("Add server: " + link.Substring(0, 32) + " ...");
                 }
                 catch { }
                 match = match.NextMatch();
@@ -319,10 +329,11 @@ namespace V2RayGCon.Service
                 config = Lib.Utils.VmessLink2ConfigString(link);
                 if (!string.IsNullOrEmpty(config))
                 {
-                    if (AddServer(Lib.Utils.Base64Encode(config))) {
+                    if (AddServer(Lib.Utils.Base64Encode(config)))
+                    {
                         count++;
                     }
-                    Debug.WriteLine("Add server: " + link.Substring(0,32) + " ...");
+                    Debug.WriteLine("Add server: " + link.Substring(0, 32) + " ...");
                 }
                 match = match.NextMatch();
             }

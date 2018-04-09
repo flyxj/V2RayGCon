@@ -10,14 +10,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Management;
 using System.Linq;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Lib
 {
     class Utils
     {
 
-        public static Func<string, string> resData = StringLoader(Properties.Resources.Data);
-        public static Func<string, string> I18N = StringLoader(Properties.Resources.Text);
+        // public static Func<string, string> resData = StringLoader(Properties.Resources.Data);
+        // public static Func<string, string> I18N = StringLoader(Properties.Resources.Text);
 
         public static void SupportCtrlA(object sender, KeyEventArgs e)
         {
@@ -278,7 +279,7 @@ namespace V2RayGCon.Lib
                 Process proc = Process.GetProcessById(pid);
                 if (!proc.HasExited) proc.Kill();
             }
-            catch (ArgumentException)
+            catch
             {
                 // Process already exited.
             }

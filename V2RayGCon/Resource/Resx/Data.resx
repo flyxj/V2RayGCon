@@ -187,4 +187,7 @@
   <data name="ExtPng" xml:space="preserve">
     <value>png files (*.png)|*.png|All files (*.*)|*.*</value>
   </data>
+  <data name="PacUrlTpl" xml:space="preserve">
+    <value>https://pac.txthinking.com/white/{0}%20{1}</value>
+  </data>
 </root>
