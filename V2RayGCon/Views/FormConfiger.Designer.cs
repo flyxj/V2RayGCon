@@ -112,8 +112,8 @@
             // 
             // cboxConfigPart
             // 
-            resources.ApplyResources(this.cboxConfigPart, "cboxConfigPart");
             this.cboxConfigPart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cboxConfigPart, "cboxConfigPart");
             this.cboxConfigPart.FormattingEnabled = true;
             this.cboxConfigPart.Items.AddRange(new object[] {
             resources.GetString("cboxConfigPart.Items"),
@@ -127,7 +127,8 @@
             resources.GetString("cboxConfigPart.Items8"),
             resources.GetString("cboxConfigPart.Items9"),
             resources.GetString("cboxConfigPart.Items10"),
-            resources.GetString("cboxConfigPart.Items11")});
+            resources.GetString("cboxConfigPart.Items11"),
+            resources.GetString("cboxConfigPart.Items12")});
             this.cboxConfigPart.Name = "cboxConfigPart";
             this.cboxConfigPart.SelectedIndexChanged += new System.EventHandler(this.cboxConfigPart_SelectedIndexChanged);
             // 
@@ -142,14 +143,13 @@
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.groupBox1);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.btnVMessInsertClient);
             this.groupBox1.Controls.Add(this.btnVMessGenUUID);
             this.groupBox1.Controls.Add(this.tboxVMessIPaddr);
@@ -160,6 +160,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.tboxVMessID);
             this.groupBox1.Controls.Add(this.label1);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -219,14 +220,13 @@
             // 
             // tabPage2
             // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.groupBox3);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
-            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Controls.Add(this.btnSSRInsertClient);
             this.groupBox3.Controls.Add(this.cboxSSROTA);
             this.groupBox3.Controls.Add(this.label10);
@@ -240,6 +240,7 @@
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.tboxSSREmail);
             this.groupBox3.Controls.Add(this.label5);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
@@ -252,11 +253,11 @@
             // 
             // cboxSSROTA
             // 
-            resources.ApplyResources(this.cboxSSROTA, "cboxSSROTA");
             this.cboxSSROTA.FormattingEnabled = true;
             this.cboxSSROTA.Items.AddRange(new object[] {
             resources.GetString("cboxSSROTA.Items"),
             resources.GetString("cboxSSROTA.Items1")});
+            resources.ApplyResources(this.cboxSSROTA, "cboxSSROTA");
             this.cboxSSROTA.Name = "cboxSSROTA";
             // 
             // label10
@@ -266,7 +267,6 @@
             // 
             // cboxSSRMethod
             // 
-            resources.ApplyResources(this.cboxSSRMethod, "cboxSSRMethod");
             this.cboxSSRMethod.FormattingEnabled = true;
             this.cboxSSRMethod.Items.AddRange(new object[] {
             resources.GetString("cboxSSRMethod.Items"),
@@ -277,6 +277,7 @@
             resources.GetString("cboxSSRMethod.Items5"),
             resources.GetString("cboxSSRMethod.Items6"),
             resources.GetString("cboxSSRMethod.Items7")});
+            resources.ApplyResources(this.cboxSSRMethod, "cboxSSRMethod");
             this.cboxSSRMethod.Name = "cboxSSRMethod";
             // 
             // label9
@@ -328,14 +329,13 @@
             // 
             // tabPage3
             // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.groupBox2);
+            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.cboxStreamSecurity);
             this.groupBox2.Controls.Add(this.btnStreamInsertTCP);
             this.groupBox2.Controls.Add(this.textBox3);
@@ -347,16 +347,17 @@
             this.groupBox2.Controls.Add(this.btnStreamInsertKCP);
             this.groupBox2.Controls.Add(this.tboxKCPType);
             this.groupBox2.Controls.Add(this.label11);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
             // cboxStreamSecurity
             // 
-            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
             this.cboxStreamSecurity.FormattingEnabled = true;
             this.cboxStreamSecurity.Items.AddRange(new object[] {
             resources.GetString("cboxStreamSecurity.Items"),
             resources.GetString("cboxStreamSecurity.Items1")});
+            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
             this.cboxStreamSecurity.Name = "cboxStreamSecurity";
             // 
             // btnStreamInsertTCP

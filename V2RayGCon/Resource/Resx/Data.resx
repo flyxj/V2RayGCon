@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfigFileName" xml:space="preserve">
-    <value>config.json</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="config_min" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Config\config_min.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
@@ -135,27 +132,6 @@
   </data>
   <data name="Executable" xml:space="preserve">
     <value>v2ray.exe</value>
-  </data>
-  <data name="TplKCP" xml:space="preserve">
-    <value>{'network':'kcp','security':'','tcpSettings':null,'kcpSettings':{'mtu':1350,'tti':50,'uplinkCapacity':12,'downlinkCapacity':100,'congestion':false,'readBufferSize':2,'writeBufferSize':2,'header':{'type':'','request':null,'response':null}},'wsSettings':null}</value>
-  </data>
-  <data name="TplTCP" xml:space="preserve">
-    <value>{'network':'tcp','security':'','tcpSettings':null,'kcpSettings':null,'wsSettings':null}</value>
-  </data>
-  <data name="TplWS" xml:space="preserve">
-    <value>{'network':'ws','security':'tls','tcpSettings':null,'kcpSettings':null,'wsSettings':{'connectionReuse':true,'path':'/ray','headers':null}}</value>
-  </data>
-  <data name="Exited" xml:space="preserve">
-    <value>V2ray-core has exited!</value>
-  </data>
-  <data name="TplDNS" xml:space="preserve">
-    <value>{'servers':['8.8.8.8','8.8.4.4','localhost']}</value>
-  </data>
-  <data name="TplOutDetour" xml:space="preserve">
-    <value>[{'protocol':'freedom','settings':{'response':null},'tag':'direct'},{'protocol':'blackhole','settings':{'response':{'type':'http'}},'tag':'blockout'}]</value>
-  </data>
-  <data name="TplRouting" xml:space="preserve">
-    <value>{'strategy':'rules','settings':{'domainStrategy':'IPIfNonMatch','rules':[{'type':'field','port':null,'outboundTag':'direct','ip':['0.0.0.0/8','10.0.0.0/8','100.64.0.0/10','127.0.0.0/8','169.254.0.0/16','172.16.0.0/12','192.0.0.0/24','192.0.2.0/24','192.168.0.0/16','198.18.0.0/15','198.51.100.0/24','203.0.113.0/24','::1/128','fc00::/7','fe80::/10'],'domain':null},{'type':'field','port':null,'outboundTag':'direct','ip':null,'domain':['geosite:cn']},{'type':'field','port':null,'outboundTag':'direct','ip':['geoip:cn'],'domain':null}]}}</value>
   </data>
   <data name="config_vmess_tpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Config\config_vmess_tpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
@@ -189,5 +165,14 @@
   </data>
   <data name="PacUrlTpl" xml:space="preserve">
     <value>https://pac.txthinking.com/white/{0}%20{1}</value>
+  </data>
+  <data name="TplKCP" xml:space="preserve">
+    <value>{'network':'kcp','security':'','tcpSettings':null,'kcpSettings':{'mtu':1350,'tti':50,'uplinkCapacity':12,'downlinkCapacity':100,'congestion':false,'readBufferSize':2,'writeBufferSize':2,'header':{'type':'','request':null,'response':null}},'wsSettings':null}</value>
+  </data>
+  <data name="TplTCP" xml:space="preserve">
+    <value>{'network':'tcp','security':'','tcpSettings':null,'kcpSettings':null,'wsSettings':null}</value>
+  </data>
+  <data name="TplWS" xml:space="preserve">
+    <value>{'network':'ws','security':'tls','tcpSettings':null,'kcpSettings':null,'wsSettings':{'connectionReuse':true,'path':'/ray','headers':null}}</value>
   </data>
 </root>

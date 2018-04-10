@@ -31,6 +31,10 @@
 			"concurrency" : 8
 		}
 	},
+	"v2raygcon":{
+	    "alias":"",
+		"description":""
+	},
 	"routing" : {
 		"strategy" : "rules",
 		"settings" : {

@@ -111,7 +111,7 @@ namespace V2RayGCon.Views
                 }
                 catch { continue; }
 
-                string ip, port, type, tls, path, streamType;
+                string ip, port, type, tls, path, streamType,alias;
                 proxy = Lib.Utils.GetStrFromJToken(o, "outbound.protocol");
                 if (proxy.Equals("shadowsocks"))
                 {
@@ -128,9 +128,11 @@ namespace V2RayGCon.Views
                 type = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.kcpSettings.header.type");
                 path = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.wsSettings.path");
                 tls = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.security");
+                alias = Lib.Utils.GetStrFromJToken(o, "v2raygcon.alias");
 
                 lvServers.Items.Add(new ListViewItem(new string[] {
                     (count+1).ToString(), //no.
+                    alias, //alias
                     proxy, // proxy
                     ip,  // ip
                     port,  // port
@@ -214,8 +216,20 @@ namespace V2RayGCon.Views
 
         private void proxyAddrToolStripTextBox_TextChange(object sender, EventArgs e)
         {
-            setting.proxyAddr = proxyAddrToolStripTextBox.Text;
-            setting.ActivateServer(setting.GetSelectedServerIndex());
+            if (!setting.proxyAddr.Equals(proxyAddrToolStripTextBox.Text))
+            {
+                setting.proxyAddr = proxyAddrToolStripTextBox.Text;
+            }
+        }
+
+        private void proxyAddrToolStripTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Debug.WriteLine("key: " + e.KeyCode);
+            if (e.KeyCode == Keys.Enter )
+            {
+                setting.proxyAddr = proxyAddrToolStripTextBox.Text;
+                setting.ActivateServer(setting.GetSelectedServerIndex());
+            }
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
@@ -246,7 +260,7 @@ namespace V2RayGCon.Views
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            core.RestartCore();
+            setting.ActivateServer(setting.GetSelectedServerIndex());
         }
 
         private void vmessToolStripMenuItem1_Click(object sender, EventArgs e)

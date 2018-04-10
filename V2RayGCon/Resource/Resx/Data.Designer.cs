@@ -86,8 +86,7 @@ namespace V2RayGCon.Resource.Resx {
         ///		&quot;settings&quot; : {},
         ///		&quot;tag&quot; : &quot;direct&quot;,
         ///		&quot;streamSettings&quot; : {},
-        ///		&quot;proxySettings&quot; : {
-        ///			&quot;tag&quot; : &quot;another-out [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///		&quot;proxySettings&quot; :  [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_def {
             get {
@@ -188,6 +187,10 @@ namespace V2RayGCon.Resource.Resx {
         ///		&quot;tag&quot; : &quot;direct&quot;,
         ///		&quot;mux&quot; : null,
         ///		&quot;streamSettings&quot; : null
+        ///	},
+        ///	&quot;v2raygcon&quot;:{
+        ///	    &quot;alias&quot;:&quot;&quot;,
+        ///		&quot;description&quot;:&quot;&quot;
         ///	}
         ///}
         /// 的本地化字符串。
@@ -195,15 +198,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string config_vmess_tpl {
             get {
                 return ResourceManager.GetString("config_vmess_tpl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 config.json 的本地化字符串。
-        /// </summary>
-        internal static string ConfigFileName {
-            get {
-                return ResourceManager.GetString("ConfigFileName", resourceCulture);
             }
         }
         
@@ -240,15 +234,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Executable {
             get {
                 return ResourceManager.GetString("Executable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 V2ray-core has exited! 的本地化字符串。
-        /// </summary>
-        internal static string Exited {
-            get {
-                return ResourceManager.GetString("Exited", resourceCulture);
             }
         }
         
@@ -298,38 +283,11 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 {&apos;servers&apos;:[&apos;8.8.8.8&apos;,&apos;8.8.4.4&apos;,&apos;localhost&apos;]} 的本地化字符串。
-        /// </summary>
-        internal static string TplDNS {
-            get {
-                return ResourceManager.GetString("TplDNS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {&apos;network&apos;:&apos;kcp&apos;,&apos;security&apos;:&apos;&apos;,&apos;tcpSettings&apos;:null,&apos;kcpSettings&apos;:{&apos;mtu&apos;:1350,&apos;tti&apos;:50,&apos;uplinkCapacity&apos;:12,&apos;downlinkCapacity&apos;:100,&apos;congestion&apos;:false,&apos;readBufferSize&apos;:2,&apos;writeBufferSize&apos;:2,&apos;header&apos;:{&apos;type&apos;:&apos;&apos;,&apos;request&apos;:null,&apos;response&apos;:null}},&apos;wsSettings&apos;:null} 的本地化字符串。
         /// </summary>
         internal static string TplKCP {
             get {
                 return ResourceManager.GetString("TplKCP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 [{&apos;protocol&apos;:&apos;freedom&apos;,&apos;settings&apos;:{&apos;response&apos;:null},&apos;tag&apos;:&apos;direct&apos;},{&apos;protocol&apos;:&apos;blackhole&apos;,&apos;settings&apos;:{&apos;response&apos;:{&apos;type&apos;:&apos;http&apos;}},&apos;tag&apos;:&apos;blockout&apos;}] 的本地化字符串。
-        /// </summary>
-        internal static string TplOutDetour {
-            get {
-                return ResourceManager.GetString("TplOutDetour", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {&apos;strategy&apos;:&apos;rules&apos;,&apos;settings&apos;:{&apos;domainStrategy&apos;:&apos;IPIfNonMatch&apos;,&apos;rules&apos;:[{&apos;type&apos;:&apos;field&apos;,&apos;port&apos;:null,&apos;outboundTag&apos;:&apos;direct&apos;,&apos;ip&apos;:[&apos;0.0.0.0/8&apos;,&apos;10.0.0.0/8&apos;,&apos;100.64.0.0/10&apos;,&apos;127.0.0.0/8&apos;,&apos;169.254.0.0/16&apos;,&apos;172.16.0.0/12&apos;,&apos;192.0.0.0/24&apos;,&apos;192.0.2.0/24&apos;,&apos;192.168.0.0/16&apos;,&apos;198.18.0.0/15&apos;,&apos;198.51.100.0/24&apos;,&apos;203.0.113.0/24&apos;,&apos;::1/128&apos;,&apos;fc00::/7&apos;,&apos;fe80::/10&apos;],&apos;domain&apos;:null},{&apos;type&apos;:&apos;field&apos;,&apos;port&apos;:null,&apos;outboundTag&apos;:&apos;direct&apos;,&apos;ip&apos;:null,&apos;domain&apos;:[&apos;geosite:cn&apos;]},{&apos;type&apos;:&apos;field&apos;,&apos;port&apos;:null,&apos;outboundTag&apos;:&apos;direct&apos;,&apos;ip&apos;:[&apos;geo [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string TplRouting {
-            get {
-                return ResourceManager.GetString("TplRouting", resourceCulture);
             }
         }
         

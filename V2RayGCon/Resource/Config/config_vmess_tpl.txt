@@ -18,5 +18,9 @@
 		"tag" : "direct",
 		"mux" : null,
 		"streamSettings" : null
+	},
+	"v2raygcon":{
+	    "alias":"",
+		"description":""
 	}
 }

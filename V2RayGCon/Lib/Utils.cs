@@ -139,6 +139,7 @@ namespace V2RayGCon.Lib
                 return null;
             }
 
+            v.ps = GetStrFromJToken(o, "v2raygcon.alias");
             v.add = GetStrFromJToken(o, "outbound.settings.vnext.0.address");
             v.port = GetStrFromJToken(o, "outbound.settings.vnext.0.port");
             v.id = GetStrFromJToken(o, "outbound.settings.vnext.0.users.0.id");
@@ -165,6 +166,7 @@ namespace V2RayGCon.Lib
             config["outbound"]["protocol"] = "vmess";
             config["outbound"]["tag"] = "agentout";
             config["outbound"]["mux"] = new JObject { { "enabled", true } };
+            config["v2raygcon"]["alias"] = vl.ps;
 
             // insert vmess info
             config["outbound"]["settings"] = new JObject{

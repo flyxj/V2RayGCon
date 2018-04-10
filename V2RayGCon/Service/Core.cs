@@ -62,11 +62,11 @@ namespace V2RayGCon.Service
                 Debug.WriteLine("Core: Can not insert local proxy address");
                 MessageBox.Show(I18N("CoreCantSetLocalAddr"));
             }
-            var fileName = resData("ConfigFileName");
-            File.WriteAllText(fileName, config.ToString());
 
-            LogMsg(string.Format("\r\n\r\nLocal proxy {0}://{1}:{2}", setting.proxyType, ip, port));
-            RestartCore();
+            //var fileName = resData("ConfigFileName");
+            //File.WriteAllText(fileName, config.ToString());
+            // LogMsg(string.Format("\r\n\r\nLocal proxy {0}://{1}:{2}", setting.proxyType, ip, port));
+            RestartCore(config.ToString());
         }
 
         public bool IsRunning()
@@ -84,12 +84,12 @@ namespace V2RayGCon.Service
             return true;
         }
 
-        public void RestartCore()
+        public void RestartCore(string config)
         {
             StopCore();
             if (IsExeExist())
             {
-                StartCore();
+                StartCore(config);
             }
             else
             {
@@ -97,7 +97,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        void StartCore()
+        void StartCore(string config)
         {
             if (v2rayCore != null)
             {
@@ -111,30 +111,36 @@ namespace V2RayGCon.Service
 
             v2rayCore = new Process();
             v2rayCore.StartInfo.FileName = fileName;
+            v2rayCore.StartInfo.Arguments = "-config=stdin: -format=json";
+
             v2rayCore.EnableRaisingEvents = true;
-
-            // set up output redirection
-            v2rayCore.StartInfo.CreateNoWindow = true;
-            v2rayCore.StartInfo.RedirectStandardOutput = true;
-            v2rayCore.StartInfo.RedirectStandardError = true;
-            v2rayCore.StartInfo.UseShellExecute = false;
-
-            // see below for output handler
-            v2rayCore.ErrorDataReceived += LogDeliver;
-            v2rayCore.OutputDataReceived += LogDeliver;
-
             v2rayCore.Exited += (s, e) =>
             {
                 LogMsg(I18N("CoreExit"));
             };
 
+            // set up output redirection
+            v2rayCore.StartInfo.CreateNoWindow = true;
+            v2rayCore.StartInfo.UseShellExecute = false;
+            v2rayCore.StartInfo.RedirectStandardOutput = true;
+            v2rayCore.StartInfo.RedirectStandardError = true;
+            v2rayCore.StartInfo.RedirectStandardInput = true;
+
+            // see below for output handler
+            v2rayCore.ErrorDataReceived += LogDeliver;
+            v2rayCore.OutputDataReceived += LogDeliver;
+
             try
             {
                 v2rayCore.Start();
                 Lib.ChildProcessTracker.AddProcess(v2rayCore);
+
+                v2rayCore.StandardInput.WriteLine(config);
+                v2rayCore.StandardInput.Close();
             }
-            catch
+            catch(Exception e)
             {
+                Debug.WriteLine("Excep: {0}" , e);
                 MessageBox.Show(I18N("CantLauchCore"));
                 StopCore();
                 return;
@@ -143,7 +149,6 @@ namespace V2RayGCon.Service
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
             OnCoreStatChange?.Invoke(this, null);
-
         }
 
         void LogMsg(string msg)

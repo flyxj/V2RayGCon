@@ -21,7 +21,8 @@ namespace V2RayGCon.Views
         int perConfigComponetIndex, perServIndex;
 
         //Func<string, string> I18N, resData;
-        Dictionary<int, string> configCompoentTable, ssrMethodTable;
+        Dictionary<int, string> configComponetTable, ssrMethodTable;
+        int componentsSeparator;
         Service.Setting settings;
         ScintillaNET.Scintilla tboxConfig;
 
@@ -29,8 +30,8 @@ namespace V2RayGCon.Views
         {
             InitializeComponent();
 
-           // I18N = Lib.Utils.I18N;
-           // resData = Lib.Utils.resData;
+            // I18N = Lib.Utils.I18N;
+            // resData = Lib.Utils.resData;
 
             settings = Service.Setting.Instance;
 
@@ -38,7 +39,7 @@ namespace V2RayGCon.Views
             InitForm();
 
             this.Show();
-            
+
         }
 
         void InitScintilla()
@@ -105,7 +106,7 @@ namespace V2RayGCon.Views
         bool CheckValid()
         {
             var content = tboxConfig.Text;
-            if (perConfigComponetIndex >= 10)
+            if (perConfigComponetIndex >= componentsSeparator)
             {
                 JArray jarry;
                 try
@@ -148,10 +149,10 @@ namespace V2RayGCon.Views
                 return;
             }
 
-            var part = configEditing[configCompoentTable[selIdx]];
+            var part = configEditing[configComponetTable[selIdx]];
             if (part == null)
             {
-                if (selIdx >= 10)
+                if (selIdx >= componentsSeparator)
                 {
                     part = new JArray();
                 }
@@ -159,7 +160,7 @@ namespace V2RayGCon.Views
                 {
                     part = new JObject();
                 }
-                configEditing[configCompoentTable[selIdx]] = part;
+                configEditing[configComponetTable[selIdx]] = part;
             }
             tboxConfig.Text = part.ToString();
             UpdateElement();
@@ -168,10 +169,10 @@ namespace V2RayGCon.Views
         void SaveContentChange()
         {
             var content = tboxConfig.Text;
-            if (perConfigComponetIndex >= 10)
+            if (perConfigComponetIndex >= componentsSeparator)
             {
                 var jarr = JArray.Parse(content);
-                configEditing[configCompoentTable[perConfigComponetIndex]] = jarr;
+                configEditing[configComponetTable[perConfigComponetIndex]] = jarr;
                 return;
             }
             if (perConfigComponetIndex == 0)
@@ -179,17 +180,17 @@ namespace V2RayGCon.Views
                 configEditing = JObject.Parse(content);
                 return;
             }
-            configEditing[configCompoentTable[perConfigComponetIndex]] = JObject.Parse(content);
+            configEditing[configComponetTable[perConfigComponetIndex]] = JObject.Parse(content);
         }
 
         bool CheckContentChange()
         {
             var content = tboxConfig.Text;
 
-            if (perConfigComponetIndex >= 10)
+            if (perConfigComponetIndex >= componentsSeparator)
             {
                 var jarr = JArray.Parse(content);
-                return !(JToken.DeepEquals(configEditing[configCompoentTable[perConfigComponetIndex]], jarr));
+                return !(JToken.DeepEquals(configEditing[configComponetTable[perConfigComponetIndex]], jarr));
             }
 
             var jobj = JObject.Parse(content);
@@ -197,7 +198,7 @@ namespace V2RayGCon.Views
             {
                 return !(JToken.DeepEquals(configEditing, jobj));
             }
-            return !(JToken.DeepEquals(configEditing[configCompoentTable[perConfigComponetIndex]], jobj));
+            return !(JToken.DeepEquals(configEditing[configComponetTable[perConfigComponetIndex]], jobj));
         }
 
         private void cboxConfigPart_SelectedIndexChanged(object sender, EventArgs e)
@@ -241,13 +242,13 @@ namespace V2RayGCon.Views
         void btnSaveModify_Click(object sender, EventArgs e)
         {
             string content = tboxConfig.Text;
-            if (perConfigComponetIndex >= 10)
+            if (perConfigComponetIndex >= componentsSeparator)
             {
                 JArray jarry;
                 try
                 {
                     jarry = JArray.Parse(content);
-                    configEditing[configCompoentTable[perConfigComponetIndex]] = jarry;
+                    configEditing[configComponetTable[perConfigComponetIndex]] = jarry;
                 }
                 catch
                 {
@@ -267,7 +268,7 @@ namespace V2RayGCon.Views
                 }
                 else
                 {
-                    configEditing[configCompoentTable[perConfigComponetIndex]] = jobj;
+                    configEditing[configComponetTable[perConfigComponetIndex]] = jobj;
                 }
             }
             catch
@@ -291,7 +292,7 @@ namespace V2RayGCon.Views
 
         void UpdateElement()
         {
-            
+
             string perfix;
 
             // vmess
@@ -328,7 +329,7 @@ namespace V2RayGCon.Views
             FillTextBox(tboxKCPType, perfix, "kcpSettings.header.type");
             FillTextBox(tboxWSPath, perfix, "wsSettings.path");
 
-            var security = Lib.Utils.GetStrFromJToken(configEditing, perfix+ "security");
+            var security = Lib.Utils.GetStrFromJToken(configEditing, perfix + "security");
             cboxStreamSecurity.SelectedIndex = security.Equals("tls") ? 1 : 0;
         }
 
@@ -351,7 +352,7 @@ namespace V2RayGCon.Views
             }
             else
             {
-                tboxConfig.Text = configEditing[configCompoentTable[perConfigComponetIndex]].ToString();
+                tboxConfig.Text = configEditing[configComponetTable[perConfigComponetIndex]].ToString();
             }
         }
 
@@ -380,10 +381,10 @@ namespace V2RayGCon.Views
             }
             else
             {
-                var part = configDefault[configCompoentTable[perConfigComponetIndex]];
+                var part = configDefault[configComponetTable[perConfigComponetIndex]];
                 if (part != null)
                 {
-                    tboxConfig.Text = configDefault[configCompoentTable[perConfigComponetIndex]].ToString();
+                    tboxConfig.Text = configDefault[configComponetTable[perConfigComponetIndex]].ToString();
                 }
                 else
                 {
@@ -537,7 +538,7 @@ namespace V2RayGCon.Views
 
         void InitForm()
         {
-            configCompoentTable = new Dictionary<int, string>
+            configComponetTable = new Dictionary<int, string>
             {
                 { 0, "config.json"},
                 { 1, "log"},
@@ -549,10 +550,14 @@ namespace V2RayGCon.Views
                 { 7, "inbound"},
                 { 8, "outbound"},
                 { 9, "transport"},
-                { 10,"inboundDetour"},
-                { 11,"outboundDetour"},
+                { 10,"v2raygcon" },
+                { 11,"inboundDetour"},
+                { 12,"outboundDetour"},
 
             };
+
+            // separate between dictionary or array
+            componentsSeparator = 11;
 
             ssrMethodTable = new Dictionary<int, string>
             {

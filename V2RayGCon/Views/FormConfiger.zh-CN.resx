@@ -126,16 +126,13 @@
   <data name="btnOverwriteConfig.Text" xml:space="preserve">
     <value>改写</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>客户端</value>
-  </data>
   <data name="btnVMessInsertClient.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
   <data name="btnVMessGenUUID.Text" xml:space="preserve">
     <value>生成 ID</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
+  <data name="groupBox1.Text" xml:space="preserve">
     <value>客户端</value>
   </data>
   <data name="btnSSRInsertClient.Text" xml:space="preserve">
@@ -158,8 +155,8 @@
   <data name="label7.Text" xml:space="preserve">
     <value>可选</value>
   </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>388, 135</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>客户端</value>
   </data>
   <data name="btnStreamInsertTCP.Text" xml:space="preserve">
     <value>插入→</value>
@@ -169,6 +166,9 @@
   </data>
   <data name="btnStreamInsertKCP.Text" xml:space="preserve">
     <value>插入→</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>388, 135</value>
   </data>
   <data name="btnSaveModify.Text" xml:space="preserve">
     <value>保存</value>
