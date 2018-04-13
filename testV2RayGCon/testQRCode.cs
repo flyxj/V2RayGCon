@@ -8,9 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using grpc = global::Grpc.Core;
 
 
-namespace testV2RayGCon
+
+namespace TestV2RayGCon
 {
     public partial class testQRCode : Form
     {
@@ -108,6 +110,39 @@ namespace testV2RayGCon
             }
 #endif
 
+
+        }
+
+        void LogDeliver(string log)
+        {
+            var f = new Action(() => tboxOutput.AppendText(log+"\r\n"));
+            try
+            {
+                this.Invoke(f);
+            }
+            catch { }
+        }
+
+       
+        private void btnProto_Click(object sender, EventArgs e)
+        {
+            var v2ctl = new Process();
+            v2ctl.StartInfo.FileName = "v2ctl.exe";
+            v2ctl.StartInfo.Arguments = "api --server=\"127.0.0.1:8084\" StatsService.GetStats  name: \"aaa\"";
+
+            // set up output redirection
+            v2ctl.StartInfo.CreateNoWindow = true;
+            v2ctl.StartInfo.UseShellExecute = false;
+            v2ctl.StartInfo.RedirectStandardOutput = true;
+            v2ctl.StartInfo.RedirectStandardError = true;
+
+
+            // see below for output handler
+            v2ctl.ErrorDataReceived += (s,le)=>LogDeliver(le.Data);
+            v2ctl.OutputDataReceived += (s,le)=>LogDeliver(le.Data);
+            v2ctl.Start();
+            v2ctl.BeginErrorReadLine();
+            v2ctl.BeginOutputReadLine();
 
         }
 

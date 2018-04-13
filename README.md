@@ -12,7 +12,7 @@ V2Ray的windows图形界面。
   
 ### 用法  
   
-详细用法请看 [wiki](https://github.com/null7c80b5a93/V2RayGCon/wiki)  
+详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)  
   
 下载解压Release中的文件，双击V2RayGCon.exe，注意系统托盘图标。  
 首次运行要下载v2ray-core，可用托盘图标的下载菜单自动下载。  
@@ -26,13 +26,13 @@ V2Ray的windows图形界面。
   
 ### 截图 screenshot  
 系统托盘图标  
-![systray.png](https://raw.githubusercontent.com/null7c80b5a93/V2RayGCon/master/screenshot/systray.png)  
+![systray.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/systray.png)  
   
 主界面  
-![mainform.png](https://raw.githubusercontent.com/null7c80b5a93/V2RayGCon/master/screenshot/mainform.png)  
+![mainform.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/mainform.png)  
   
 配置编辑器  
-![configeditor.png](https://raw.githubusercontent.com/null7c80b5a93/V2RayGCon/master/screenshot/configeditor.png)  
+![configeditor.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/configeditor.png)  
   
 二维码生成器  
-![qrcode.png](https://raw.githubusercontent.com/null7c80b5a93/V2RayGCon/master/screenshot/qrcode.png)  
+![qrcode.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/qrcode.png)  

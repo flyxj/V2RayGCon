@@ -37,7 +37,6 @@
             resources.ApplyResources(this.textBoxLogger, "textBoxLogger");
             this.textBoxLogger.Name = "textBoxLogger";
             this.textBoxLogger.ReadOnly = true;
-            this.textBoxLogger.KeyDown += Lib.Utils.SupportCtrlA;
             // 
             // FormLog
             // 

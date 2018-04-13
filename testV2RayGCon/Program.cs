@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace testV2RayGCon
+namespace TestV2RayGCon
 {
     static class Program
     {
