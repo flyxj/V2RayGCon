@@ -146,6 +146,11 @@ namespace TestV2RayGCon
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(string.Join("\r\n","hello","world","!"));
+        }
+
         void DrawRect(Rectangle rect) { 
             var bmp = picDrawArea.Image;
             Debug.WriteLine("Rect: " + rect);

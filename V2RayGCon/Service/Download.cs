@@ -10,36 +10,36 @@ namespace V2RayGCon.Service
     class Download
     {
         public event EventHandler OnDownloadCompleted;
-        // Func<string, string> resData;
-        string pkgName;
+        
+        string packageName;
 
         public Download()
         {
-            // resData = Lib.Utils.resData;
-            pkgName = resData("PkgWin32");
+            packageName = resData("PkgWin32");
         }
 
         public void SetPackageName(string name)
         {
             string[] packages = { resData("PkgWin32"), resData("PkgWin64") };
-            pkgName = packages.Contains(name) ? name : packages[0];
+            packageName = packages.Contains(name) ? name : packages[0];
         }
        
-        public void GetV2RayWindowsPackage()
+        public void GetV2RayCore()
         {
-            var worker = new System.Threading.Thread(DownloadPackage);
-            worker.IsBackground = true;
-            worker.Start();
+            var downloader = new System.Threading.Thread(Downloader);
+            downloader.IsBackground = true;
+            downloader.Start();
         }
 
-        void DownloadPackage()
+        void Downloader()
         {
             string ver = resData("Version");
-            string fileName = pkgName;
+            string fileName = packageName;
             string tpl = resData("DownloadLinkTpl");
             string url = string.Format(tpl, ver, fileName);
 
             Lib.Utils.SupportProtocolTLS12();
+
             WebClient client = new WebClient();
 
             client.DownloadFileCompleted += (s, a) =>

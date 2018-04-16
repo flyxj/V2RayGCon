@@ -59,11 +59,11 @@
   <ItemGroup>
     <Compile Include="Stat.cs" />
     <Compile Include="StatGrpc.cs" />
-    <Compile Include="testQRCode.cs">
+    <Compile Include="TestThings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="testQRCode.Designer.cs">
-      <DependentUpon>testQRCode.cs</DependentUpon>
+    <Compile Include="TestThings.Designer.cs">
+      <DependentUpon>TestThings.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,8 +77,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="testQRCode.resx">
-      <DependentUpon>testQRCode.cs</DependentUpon>
+    <EmbeddedResource Include="TestThings.resx">
+      <DependentUpon>TestThings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />

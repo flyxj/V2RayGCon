@@ -12,30 +12,21 @@ namespace V2RayGCon.Views
 {
     public partial class FormLog : Form
     {
-        
-        Service.Core core ;
-        Service.Setting setting ;
+        Service.Setting setting;
 
-        int maxNumberLines; 
+        int maxNumberLines;
         delegate void PushLogDelegate(string content);
 
         public FormLog()
         {
-            core = Service.Core.Instance;
             setting = Service.Setting.Instance;
-
             maxNumberLines = setting.maxLogLines;
 
             InitializeComponent();
 
-            core.OnLog += LogReceiver;
-
-            this.FormClosed += (s, e) =>
-            {
-                core.OnLog -= LogReceiver;
-            };
-
+            this.FormClosed += (s, e) => setting.OnLog -= LogReceiver;
             this.Show();
+            setting.OnLog += LogReceiver;
         }
 
         void LogReceiver(object sender, Model.DataEvent e)

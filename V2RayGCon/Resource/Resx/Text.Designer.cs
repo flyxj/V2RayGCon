@@ -187,7 +187,9 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download fail! 的本地化字符串。
+        ///   查找类似 Download fail!
+        ///You can download manually from the link below.
+        ///https://github.com/v2ray/v2ray-core 的本地化字符串。
         /// </summary>
         internal static string DLFail {
             get {
@@ -336,6 +338,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string NotSupportLinkType {
             get {
                 return ResourceManager.GetString("NotSupportLinkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Can not parse json! Please check current config. 的本地化字符串。
+        /// </summary>
+        internal static string PleaseCheckConfig {
+            get {
+                return ResourceManager.GetString("PleaseCheckConfig", resourceCulture);
             }
         }
         

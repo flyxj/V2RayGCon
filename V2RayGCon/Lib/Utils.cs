@@ -11,67 +11,50 @@ using Newtonsoft.Json.Linq;
 using System.Management;
 using System.Linq;
 using static V2RayGCon.Lib.StringResource;
+using System.Text.RegularExpressions;
 
 namespace V2RayGCon.Lib
 {
     class Utils
     {
+        public static MatchCollection MatchAll(string content, string pattern)
+        {
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            return Regex.Matches(content, pattern, RegexOptions.IgnoreCase);
+        }
 
-        // public static Func<string, string> resData = StringLoader(Properties.Resources.Data);
-        // public static Func<string, string> I18N = StringLoader(Properties.Resources.Text);
+        public static string CutString(string s, int len)
+        {
+            return s.Substring(0, Math.Min(s.Length, len));
+        }
 
         public static void SupportCtrlA(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.A)
+            if (e.Control && e.KeyCode == Keys.A && sender != null)
             {
-                if (sender != null)
-                    ((TextBox)sender).SelectAll();
+                ((TextBox)sender).SelectAll();
             }
-
         }
 
         public static int Str2Int(string s)
         {
-            int number;
-            bool r = Int32.TryParse(s, out number);
-            return r ? number : 0;
-        }
-
-        static JToken Bak_WalkToJToken(JToken start, string path)
-        {
-            var t = start;
-            int n;
-            foreach (var next in path.Split('.'))
-            {
-                // if (t == null || !t.HasValues)
-                if (t == null)
-                {
-                    break;
-                }
-                if (int.TryParse(next, out n))
-                {
-                    t = t[n];
-                }
-                else
-                {
-                    t = t[next];
-                }
-            }
-            return t;
+            return Int32.TryParse(s, out int number) ? number : 0;
         }
 
         static JToken WalkToJToken(JToken start, string path)
         {
+            int i;
             var t = start;
-            int n, i;
             var step = path.Split('.');
+
             for (i = 0; i < step.Length; i++)
             {
                 if (t == null || !t.HasValues)
                 {
                     break;
                 }
-                if (int.TryParse(step[i], out n))
+
+                if (int.TryParse(step[i], out int n))
                 {
                     t = t[n];
                 }
@@ -80,10 +63,12 @@ namespace V2RayGCon.Lib
                     t = t[step[i]];
                 }
             }
+
             if (i < step.Length)
             {
                 return null;
             }
+
             return t;
         }
 
@@ -101,13 +86,8 @@ namespace V2RayGCon.Lib
 
         public static string GetStrFromJToken(JToken start, string path)
         {
-            string r = string.Empty;
             JToken end = WalkToJToken(start, path);
-            if (end != null)
-            {
-                r = end.ToString();
-            }
-            return r;
+            return end == null ? string.Empty : end.ToString();
         }
 
         public static bool TryParseIPAddr(string address, out string ip, out int port)
@@ -154,9 +134,9 @@ namespace V2RayGCon.Lib
 
         public static string VmessLink2ConfigString(string vmessLink)
         {
-            Model.Vmess vl = VmessLink2Vmess(vmessLink);
+            Model.Vmess v = VmessLink2Vmess(vmessLink);
 
-            if (vl == null)
+            if (v == null)
             {
                 return string.Empty;
             }
@@ -166,20 +146,20 @@ namespace V2RayGCon.Lib
             config["outbound"]["protocol"] = "vmess";
             config["outbound"]["tag"] = "agentout";
             config["outbound"]["mux"] = new JObject { { "enabled", true } };
-            config["v2raygcon"]["alias"] = vl.ps;
+            config["v2raygcon"]["alias"] = v.ps;
 
             // insert vmess info
             config["outbound"]["settings"] = new JObject{
                 {"servers",null },
                 {"vnext", new JArray{
                     new JObject{
-                        {"address",vl.add },
-                        { "port",Convert.ToUInt32(vl.port) },
+                        {"address",v.add },
+                        { "port",Lib.Utils.Str2Int(v.port) },
                         { "users",new JArray{
                             new JObject
                             {
-                                {"id",vl.id },
-                                {"alterId", Convert.ToUInt32(vl.aid) },
+                                {"id",v.id },
+                                {"alterId", Lib.Utils.Str2Int(v.aid) },
                                 {"security","auto" }
                             }
                         } }
@@ -189,7 +169,7 @@ namespace V2RayGCon.Lib
 
             // insert stream type
             string[] streamTypes = { "WS", "TCP", "KCP" };
-            string streamType = vl.net.ToUpper();
+            string streamType = v.net.ToUpper();
 
             if (!streamTypes.Contains(streamType))
             {
@@ -199,42 +179,19 @@ namespace V2RayGCon.Lib
             var templateName = resData("Tpl" + streamType);
             config["outbound"]["streamSettings"] = JObject.Parse(templateName);
 
-            config["outbound"]["streamSettings"]["security"] = vl.tls;
+            config["outbound"]["streamSettings"]["security"] = v.tls;
             try
             {
-                config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vl.type;
+                config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = v.type;
             }
             catch { }
             try
             {
-                config["outbound"]["streamSettings"]["wsSettings"]["path"] = vl.host;
+                config["outbound"]["streamSettings"]["wsSettings"]["path"] = v.host;
             }
             catch { }
 
             return config.ToString();
-        }
-
-        [System.Obsolete("Don use LoadConfigFiles")]
-        public static JObject LoadConfigFiles(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                string content = File.ReadAllText(filePath);
-                try
-                {
-                    var json = JObject.Parse(content);
-                    return json;
-                }
-                catch
-                {
-                    Debug.WriteLine("LoadConfigTpl fial: cannot parse json!");
-                }
-            }
-            else
-            {
-                Debug.WriteLine("LoadConfigTpl fial: file do not exist!");
-            }
-            return new JObject();
         }
 
         public static bool CopyToClipboard(string content)
@@ -279,7 +236,11 @@ namespace V2RayGCon.Lib
             try
             {
                 Process proc = Process.GetProcessById(pid);
-                if (!proc.HasExited) proc.Kill();
+                if (!proc.HasExited)
+                {
+                    proc.Kill();
+                    proc.WaitForExit(2000);
+                }
             }
             catch
             {
@@ -299,14 +260,15 @@ namespace V2RayGCon.Lib
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-        public static bool Confirm(string title, string content)
+        public static bool Confirm(string content)
         {
             var confirm = MessageBox.Show(
                 content,
-                title,
+                I18N("Confirm"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);
+
             return confirm == DialogResult.Yes;
         }
 
@@ -319,6 +281,7 @@ namespace V2RayGCon.Lib
                 case Model.Enum.LinkTypes.vmess:
                     perfix = resData("VmessLinkPerfix");
                     break;
+
                 case Model.Enum.LinkTypes.v2ray:
                     perfix = resData("V2RayLinkPerfix");
                     break;
@@ -329,6 +292,11 @@ namespace V2RayGCon.Lib
 
         public static string Vmess2VmessLink(Model.Vmess vmess)
         {
+            if (vmess == null)
+            {
+                return string.Empty;
+            }
+
             string content = JsonConvert.SerializeObject(vmess);
             return LinkAddPerfix(
                 Base64Encode(content),
@@ -341,7 +309,14 @@ namespace V2RayGCon.Lib
             try
             {
                 string plain_text = Base64Decode(base64_text);
-                return JsonConvert.DeserializeObject<Model.Vmess>(plain_text);
+                var vmess=JsonConvert.DeserializeObject<Model.Vmess>(plain_text);
+                if (!string.IsNullOrEmpty(vmess.add)
+                    && !string.IsNullOrEmpty(vmess.port)
+                    && !string.IsNullOrEmpty(vmess.aid)) 
+                {
+
+                    return vmess;
+                }
             }
             catch { }
             return null;
@@ -355,6 +330,7 @@ namespace V2RayGCon.Lib
                 case Model.Enum.LinkTypes.vmess:
                     len = resData("VmessLinkPerfix").Length;
                     break;
+
                 case Model.Enum.LinkTypes.v2ray:
                     len = resData("V2RayLinkPerfix").Length;
                     break;
@@ -372,20 +348,7 @@ namespace V2RayGCon.Lib
             return string.Empty;
         }
 
-        [System.Obsolete("Dont use LoadFile()")]
-        public static string LoadFile(string fileName)
-        {
-            string content = string.Empty;
-            if (File.Exists(fileName))
-            {
-                using (StreamReader r = new StreamReader(fileName))
-                {
-                    content = r.ReadToEnd();
-                }
-            }
-            return content;
-        }
-
+#if DEBUG
         public static MenuItem FindSubMenuItemByText(MenuItem parent, string text)
         {
             for (int a = 0; a < parent.MenuItems.Count; a++)
@@ -446,34 +409,16 @@ namespace V2RayGCon.Lib
             // nothing found
             return null;
         }
+#endif
 
         public static int Clamp(int value, int min, int max)
         {
             return Math.Max(Math.Min(value, max), min);
         }
 
-        public static Func<string, string> StringLoader(string resFileName)
-        {
-            // Debug.WriteLine("Filename: " + resFileName);
-            ResourceManager resources = ResMgr(resFileName);
-            return (key) =>
-            {
-                // Debug.WriteLine("key: " + key);
-                return resources.GetString(key);
-            };
-        }
-
-        public static ResourceManager ResMgr(string resFileName)
-        {
-            return new ResourceManager(resFileName, Assembly.GetExecutingAssembly());
-        }
-
         public static string GetAppDir()
         {
-            string exePath = System.Windows.Forms.Application.ExecutablePath;
-            string appPath = System.IO.Path.GetDirectoryName(exePath);
-            // Debug.WriteLine("apppath: " + appPath);
-            return appPath;
+            return Path.GetDirectoryName(Application.ExecutablePath);
         }
 
         public static void SupportProtocolTLS12()
@@ -481,21 +426,16 @@ namespace V2RayGCon.Lib
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
         }
 
-        public static bool ExtractZipFile(string fileName)
+        public static void ZipFileDecompress(string fileName)
         {
-            try
+            // let downloader handle exception
+            using (ZipFile zip = ZipFile.Read(fileName))
             {
-                using (ZipFile zip = ZipFile.Read(fileName))
-                {
-                    var flattenFoldersOnExtract = zip.FlattenFoldersOnExtract;
-                    zip.FlattenFoldersOnExtract = true;
-                    zip.ExtractAll(GetAppDir(), ExtractExistingFileAction.OverwriteSilently);
-                    zip.FlattenFoldersOnExtract = flattenFoldersOnExtract;
-                }
-                return true;
+                var flattenFoldersOnExtract = zip.FlattenFoldersOnExtract;
+                zip.FlattenFoldersOnExtract = true;
+                zip.ExtractAll(GetAppDir(), ExtractExistingFileAction.OverwriteSilently);
+                zip.FlattenFoldersOnExtract = flattenFoldersOnExtract;
             }
-            catch { }
-            return false;
         }
     }
 }

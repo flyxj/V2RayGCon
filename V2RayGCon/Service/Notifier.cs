@@ -17,8 +17,6 @@ namespace V2RayGCon.Service
     class Notifier
     {
         NotifyIcon ni;
-        // Func<string, string> I18N, resData;
-        // Func<string, string> resData;
 
         Views.FormLog formLog = null;
         Views.FormMain formMain = null;
@@ -31,9 +29,6 @@ namespace V2RayGCon.Service
 
         public Notifier()
         {
-            // I18N = Lib.Utils.I18N;
-            // resData = Lib.Utils.resData;
-
             setting = Setting.Instance;
             core = Core.Instance;
             CreateNotifyIcon();
@@ -41,7 +36,7 @@ namespace V2RayGCon.Service
             core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if !DEBUG
-            if (setting.GetServeNum() > 0)
+            if (setting.GetServerCount() > 0)
             {
                 setting.ActivateServer(setting.GetSelectedServerIndex());
             }
@@ -105,10 +100,16 @@ namespace V2RayGCon.Service
 
                     }),
                 }),
+
+                new MenuItem("Show download fail!",(s,a)=>{
+                    MessageBox.Show( I18N("DLFail"));
+                }),
+
                 new MenuItem("Add dummy server1",(s,a)=>{
                     setting.ImportLinks(resData("DummyServ1"));
                     Debug.WriteLine("Done!");
                 }),
+
                 new MenuItem("Add dummy server2",(s,a)=>{
                     setting.ImportLinks(resData("DummyServ2"));
                     Debug.WriteLine("Done!");
@@ -140,70 +141,58 @@ namespace V2RayGCon.Service
 
         void ShowFormConfigEditor()
         {
-            if (formConfiger == null)
+            if (formConfiger != null)
             {
-                formConfiger = new Views.FormConfiger();
-                formConfiger.FormClosed += (fcs, fca) =>
-                {
-                    formConfiger = null;
-                };
+                return;
             }
+
+            formConfiger = new Views.FormConfiger();
+            formConfiger.FormClosed += (s, a) => formConfiger = null;
         }
 
         void ShowFormMain()
         {
-            if (formMain == null)
+            if (formMain != null)
             {
-                formMain = new Views.FormMain();
-                formMain.FormClosed += (fms, fma) =>
-                {
-                    formMain = null;
-                };
-
-                formMain.OpenEditor += (fms, fma) =>
-                {
-                    ShowFormConfigEditor();
-                };
-
-                formMain.ShowQRCodeForm += (fms, fma) =>
-                {
-                    if (formQRCode == null)
-                    {
-                        formQRCode = new Views.FormQRCode();
-                        formQRCode.FormClosed += (fqrcs, fqrca) =>
-                        {
-                            formQRCode = null;
-                        };
-                    }
-                };
-
-                formMain.ShowLogForm += (fms, fma) =>
-                {
-                    if (formLog == null)
-                    {
-                        formLog = new Views.FormLog();
-                        formLog.FormClosed += (fls, fla) =>
-                        {
-                            formLog = null;
-                        };
-                    }
-                };
+                return;
             }
+
+            formMain = new Views.FormMain();
+            formMain.FormClosed += (s, a) => formMain = null;
+            formMain.ShowFormConfiger += (s, a) => ShowFormConfigEditor();
+            formMain.ShowFormQRCode += (s, a) =>
+            {
+                if (formQRCode != null)
+                {
+                    return;
+                }
+
+                formQRCode = new Views.FormQRCode();
+                formQRCode.FormClosed += (fqrcs, fqrca) => formQRCode = null;
+
+            };
+
+            formMain.ShowFormLog += (s, a) =>
+            {
+                if (formLog != null)
+                {
+                    return;
+                }
+
+                formLog = new Views.FormLog();
+                formLog.FormClosed += (fls, fla) => formLog = null;
+            };
+
         }
 
         void UpdateNotifyText()
         {
-            if (core.IsRunning())
-            {
-                ni.Text = string.Format(
-                    "{0}://{1}",
-                    setting.proxyType,
-                    setting.proxyAddr);
-            }
-            else
-            {
-                ni.Text = I18N("Description");
-            }
+
+            var proxy = string.Format("{0}://{1}",
+                setting.proxyType,
+                setting.proxyAddr);
+
+            ni.Text = core.IsRunning() ? proxy : I18N("Description");
         }
 
         void CreateNotifyIcon()
@@ -227,63 +216,40 @@ namespace V2RayGCon.Service
 
         }
 
-        void DownloadCore(bool win64)
+        void DownloadCore(bool win64 = false)
         {
-            if (downloader == null)
-            {
-                downloader = new Download();
-
-                if (win64)
-                {
-                    downloader.SetPackageName(resData("PkgWin64"));
-                }
-
-                downloader.OnDownloadCompleted += (dls, dla) =>
-                {
-                    var isCoreRunning = core.IsRunning();
-
-                    if (isCoreRunning)
-                    {
-                        core.StopCore();
-                    }
-
-                    try
-                    {
-                        string fileName = resData("PkgWin32");
-                        if (win64)
-                        {
-                            fileName = resData("PkgWin64");
-                        }
-                        Lib.Utils.ExtractZipFile(fileName);
-                        System.IO.File.Delete(fileName);
-                        // ni.BalloonTipText = I18N("DLComplete");
-                        MessageBox.Show(I18N("DLComplete"));
-                    }
-                    catch
-                    {
-                        // ni.BalloonTipText = I18N("DLFail");
-                        MessageBox.Show(I18N("DLFail"));
-                    }
-
-
-                    if (isCoreRunning)
-                    {
-                        // because config file has been replaced
-                        setting.ActivateServer(setting.GetSelectedServerIndex());
-                    }
-
-                    downloader = null;
-                };
-
-                downloader.GetV2RayWindowsPackage();
-            }
-            else
+            if (downloader != null)
             {
                 MessageBox.Show(I18N("Downloading"));
+                return;
             }
+
+            string coreName = win64 ? resData("PkgWin64") : resData("PkgWin32");
+
+            downloader = new Download();
+            downloader.SetPackageName(coreName);
+
+            downloader.OnDownloadCompleted += (dls, dla) =>
+            {
+                // do not have to stop core any more
+                string msg = I18N("DLComplete");
+
+                try
+                {
+                    Lib.Utils.ZipFileDecompress(coreName);
+                    System.IO.File.Delete(coreName);
+                }
+                catch
+                {
+                    msg = I18N("DLFail");
+                }
+
+                downloader = null;
+                MessageBox.Show(msg);
+            };
+
+            downloader.GetV2RayCore();
         }
-
-
 
         ContextMenu CreateMenu()
         {
@@ -292,18 +258,18 @@ namespace V2RayGCon.Service
                 new MenuItem(I18N("ShowMainWin"),(s,a)=>ShowFormMain()),
 
                 new MenuItem(I18N("ShowLogWin"),(s,a)=>{
-                    if(formLog == null)
-                    {
-                        formLog = new Views.FormLog();
-                        formLog.FormClosed += (fms, fma) =>
-                        {
-                            formLog = null;
-                        };
+
+                    if(formLog != null){
+                        return;
                     }
+
+                    formLog = new Views.FormLog();
+                    formLog.FormClosed += (fms, fma) => formLog = null;
                 }),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
                     Lib.QRCode.QRCode.ScanQRCode(
+
                         // success
                         (link)=>{
                             if (!setting.ImportLinks(link))
@@ -313,7 +279,8 @@ namespace V2RayGCon.Service
                         },
 
                         // fail
-                        ()=>MessageBox.Show(I18N("NoQRCode")));
+                        ()=>MessageBox.Show(I18N("NoQRCode"))
+                        );
                 }),
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
@@ -353,8 +320,8 @@ namespace V2RayGCon.Service
                     Properties.Resources.ProjectLink
                     )),
 
-                new MenuItem(I18N("Exit"),(sender,args)=>{
-                    if(Lib.Utils.Confirm(I18N("Confirm"),I18N("ConfirmExitApp"))){
+                new MenuItem(I18N("Exit"),(s,a)=>{
+                    if(Lib.Utils.Confirm(I18N("ConfirmExitApp"))){
                         ni.Visible = false;
                         core.StopCore();
                         Application.Exit();

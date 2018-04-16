@@ -154,7 +154,8 @@
     <value>下载 v2ray-core 完成！</value>
   </data>
   <data name="DLFail" xml:space="preserve">
-    <value>下载失败！</value>
+    <value>下载失败！你可以从以下网址下载：
+https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="DLv2rayCore" xml:space="preserve">
     <value>下载v2ray-core</value>
@@ -242,5 +243,8 @@
   </data>
   <data name="WarnIENotSupportPac" xml:space="preserve">
     <value>注意：IE不支持PAC文件！</value>
+  </data>
+  <data name="PleaseCheckConfig" xml:space="preserve">
+    <value>无法解析Json，请检查当前配置内容。</value>
   </data>
 </root>

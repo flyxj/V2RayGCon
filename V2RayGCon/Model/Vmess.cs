@@ -11,15 +11,15 @@ namespace V2RayGCon.Model
 
         public Vmess()
         {
-            ps = String.Empty;
-            add = String.Empty;
-            port = String.Empty;
-            id = String.Empty;
-            aid = String.Empty;
-            net = String.Empty;
-            type = String.Empty;
-            host = String.Empty;
-            tls = String.Empty;
+            ps = String.Empty;      // alias
+            add = String.Empty;     // ip,hostname
+            port = String.Empty;    // port
+            id = String.Empty;      // user id
+            aid = String.Empty;  
+            net = String.Empty;     // ws,tcp,kcp
+            type = String.Empty;    // kcp->header
+            host = String.Empty;    // ws->path
+            tls = String.Empty;     // streamSettings->security
         }
     }
 }

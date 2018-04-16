@@ -18,23 +18,18 @@ namespace V2RayGCon.Views
     public partial class FormConfiger : Form
     {
         JObject configTemplate, configEditing, configDefault;
-        int perConfigComponetIndex, perServIndex;
+        int perSectionIndex, perServIndex;
 
-        //Func<string, string> I18N, resData;
-        Dictionary<int, string> configComponetTable, ssrMethodTable;
-        int componentsSeparator;
+        Dictionary<int, string> sectionTable, ssrMethodTable;
+        int sectionSeparator;
         Service.Setting settings;
-        ScintillaNET.Scintilla tboxConfig;
+        Scintilla tboxConfig;
 
         public FormConfiger()
         {
-            InitializeComponent();
-
-            // I18N = Lib.Utils.I18N;
-            // resData = Lib.Utils.resData;
-
             settings = Service.Setting.Instance;
 
+            InitializeComponent();
             InitScintilla();
             InitForm();
 
@@ -44,7 +39,6 @@ namespace V2RayGCon.Views
 
         void InitScintilla()
         {
-
             tboxConfig = new Scintilla();
             panelScintilla.Controls.Add(tboxConfig);
 
@@ -105,54 +99,44 @@ namespace V2RayGCon.Views
 
         bool CheckValid()
         {
-            var content = tboxConfig.Text;
-            if (perConfigComponetIndex >= componentsSeparator)
-            {
-                JArray jarry;
-                try
-                {
-                    jarry = JArray.Parse(content);
-                }
-                catch
-                {
-                    return false;
-                }
-                return true;
-            }
-
-            JObject jobj;
             try
             {
-                jobj = JObject.Parse(content);
+                if (perSectionIndex >= sectionSeparator)
+                {
+                    JArray.Parse(tboxConfig.Text);
+                }
+                else
+                {
+                    JObject.Parse(tboxConfig.Text);
+                }
             }
             catch
             {
                 return false;
             }
+
             return true;
         }
 
         bool Confirm(string content)
         {
-            var confirm = I18N("Confirm");
-            var text = content;
-            return Lib.Utils.Confirm(confirm, text);
+            return Lib.Utils.Confirm(content);
         }
 
-        void ShowConfigByIndex(int selIdx)
+        void ShowConfigSection(int sectionIndex)
         {
             // Debug.WriteLine("showConfigById: " + selIdx);
 
-            if (selIdx == 0)
+            if (sectionIndex == 0)
             {
                 tboxConfig.Text = configEditing.ToString();
                 return;
             }
 
-            var part = configEditing[configComponetTable[selIdx]];
+            var part = configEditing[sectionTable[sectionIndex]];
             if (part == null)
             {
-                if (selIdx >= componentsSeparator)
+                if (sectionIndex >= sectionSeparator)
                 {
                     part = new JArray();
                 }
@@ -160,77 +144,79 @@ namespace V2RayGCon.Views
                 {
                     part = new JObject();
                 }
-                configEditing[configComponetTable[selIdx]] = part;
+                configEditing[sectionTable[sectionIndex]] = part;
             }
             tboxConfig.Text = part.ToString();
             UpdateElement();
         }
 
-        void SaveContentChange()
+        void SaveSectionChanges()
         {
             var content = tboxConfig.Text;
-            if (perConfigComponetIndex >= componentsSeparator)
+            if (perSectionIndex >= sectionSeparator)
             {
-                var jarr = JArray.Parse(content);
-                configEditing[configComponetTable[perConfigComponetIndex]] = jarr;
+                configEditing[sectionTable[perSectionIndex]] =
+                    JArray.Parse(content);
                 return;
             }
-            if (perConfigComponetIndex == 0)
+            if (perSectionIndex == 0)
             {
                 configEditing = JObject.Parse(content);
                 return;
             }
-            configEditing[configComponetTable[perConfigComponetIndex]] = JObject.Parse(content);
+            configEditing[sectionTable[perSectionIndex]] =
+                JObject.Parse(content);
         }
 
-        bool CheckContentChange()
+        bool CheckSectionChange()
         {
             var content = tboxConfig.Text;
 
-            if (perConfigComponetIndex >= componentsSeparator)
+            if (perSectionIndex >= sectionSeparator)
             {
-                var jarr = JArray.Parse(content);
-                return !(JToken.DeepEquals(configEditing[configComponetTable[perConfigComponetIndex]], jarr));
+                return !(JToken.DeepEquals(JArray.Parse(content),
+                    configEditing[sectionTable[perSectionIndex]]));
             }
 
-            var jobj = JObject.Parse(content);
-            if (perConfigComponetIndex == 0)
+            var obj = JObject.Parse(content);
+
+            // config.json
+            if (perSectionIndex == 0)
             {
-                return !(JToken.DeepEquals(configEditing, jobj));
+                return !(JToken.DeepEquals(obj, configEditing));
             }
-            return !(JToken.DeepEquals(configEditing[configComponetTable[perConfigComponetIndex]], jobj));
+
+            return !(JToken.DeepEquals(obj,
+                configEditing[sectionTable[perSectionIndex]]));
         }
 
-        private void cboxConfigPart_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = cboxConfigPart.SelectedIndex;
+            int curSectionIndex = cboxConfigSection.SelectedIndex;
             // Debug.WriteLine("Select id:" + selIdx);
 
-            if (selectedIndex != perConfigComponetIndex)
+            if (curSectionIndex != perSectionIndex)
             {
                 if (CheckValid())
                 {
-                    if (CheckContentChange())
+                    if (CheckSectionChange() && Confirm(I18N("EditorSaveChange")))
                     {
-                        if (Confirm(I18N("EditorSaveChange")))
-                        {
-                            SaveContentChange();
-                        }
-
+                        SaveSectionChanges();
                     }
-                    perConfigComponetIndex = selectedIndex;
-                    ShowConfigByIndex(selectedIndex);
+
+                    perSectionIndex = curSectionIndex;
+                    ShowConfigSection(curSectionIndex);
                 }
                 else
                 {
                     if (Confirm(I18N("CannotParseJson")))
                     {
-                        perConfigComponetIndex = selectedIndex;
-                        ShowConfigByIndex(selectedIndex);
+                        perSectionIndex = curSectionIndex;
+                        ShowConfigSection(curSectionIndex);
                     }
                     else
                     {
-                        cboxConfigPart.SelectedIndex = perConfigComponetIndex;
+                        cboxConfigSection.SelectedIndex = perSectionIndex;
                         return;
                     }
                 }
@@ -239,42 +225,35 @@ namespace V2RayGCon.Views
             UpdateElement();
         }
 
-        void btnSaveModify_Click(object sender, EventArgs e)
+        void btnSaveChanges_Click(object sender, EventArgs e)
         {
             string content = tboxConfig.Text;
-            if (perConfigComponetIndex >= componentsSeparator)
-            {
-                JArray jarry;
-                try
-                {
-                    jarry = JArray.Parse(content);
-                    configEditing[configComponetTable[perConfigComponetIndex]] = jarry;
-                }
-                catch
-                {
-                    MessageBox.Show(I18N("Can not parse json! Please check you config."));
-                }
-                UpdateElement();
-                return;
-            }
 
-            JObject jobj;
             try
             {
-                jobj = JObject.Parse(content);
-                if (perConfigComponetIndex == 0)
+                if (perSectionIndex >= sectionSeparator)
                 {
-                    configEditing = jobj;
+                    configEditing[sectionTable[perSectionIndex]] =
+                        JArray.Parse(content);
                 }
                 else
                 {
-                    configEditing[configComponetTable[perConfigComponetIndex]] = jobj;
+                    var obj = JObject.Parse(content);
+                    if (perSectionIndex == 0)
+                    {
+                        configEditing = obj;
+                    }
+                    else
+                    {
+                        configEditing[sectionTable[perSectionIndex]] = obj;
+                    }
                 }
             }
             catch
             {
-                MessageBox.Show(I18N("Can not parse json! Please check you config."));
+                MessageBox.Show(I18N("PleaseCheckConfig"));
             }
+
             UpdateElement();
         }
 
@@ -333,7 +312,7 @@ namespace V2RayGCon.Views
             cboxStreamSecurity.SelectedIndex = security.Equals("tls") ? 1 : 0;
         }
 
-        void InsertStreamSecurity()
+        void SetStreamSecurity()
         {
             string sec = cboxStreamSecurity.SelectedIndex == 1 ? "tls" : "";
             try
@@ -341,29 +320,22 @@ namespace V2RayGCon.Views
                 configEditing["outbound"]["streamSettings"]["security"] = sec;
             }
             catch { }
-            Debug.WriteLine("FormConfiger: can not inset stream security!");
+            Debug.WriteLine("FormConfiger: can not set stream security!");
         }
 
-        private void btnClearModify_Click(object sender, EventArgs e)
+        private void btnDropChanges_Click(object sender, EventArgs e)
         {
-            if (perConfigComponetIndex == 0)
-            {
-                tboxConfig.Text = configEditing.ToString();
-            }
-            else
-            {
-                tboxConfig.Text = configEditing[configComponetTable[perConfigComponetIndex]].ToString();
-            }
+            tboxConfig.Text =
+                perSectionIndex == 0 ?
+                configEditing.ToString() :
+                configEditing[sectionTable[perSectionIndex]].ToString();
         }
 
         private void btnOverwriteServConfig_Click(object sender, EventArgs e)
         {
-            if (CheckContentChange())
+            if (CheckSectionChange() && !Confirm(I18N("EditorDiscardChange")))
             {
-                if (!Confirm(I18N("EditorDiscardChange")))
-                {
-                    return;
-                }
+                return;
             }
 
             string cfgString = configEditing.ToString();
@@ -371,26 +343,20 @@ namespace V2RayGCon.Views
             MessageBox.Show(I18N("Done"));
         }
 
-
-        private void btnLoadDefault_Click(object sender, EventArgs e)
+        private void btnLoadDefaultConfig_Click(object sender, EventArgs e)
         {
+            string defConfig =
+                perSectionIndex == 0 ?
+                configDefault.ToString() :
+                configDefault[sectionTable[perSectionIndex]]?.ToString();
 
-            if (perConfigComponetIndex == 0)
+            if (string.IsNullOrEmpty(defConfig))
             {
-                tboxConfig.Text = configDefault.ToString();
+                MessageBox.Show(I18N("EditorNoExample"));
             }
             else
             {
-                var part = configDefault[configComponetTable[perConfigComponetIndex]];
-                if (part != null)
-                {
-                    tboxConfig.Text = configDefault[configComponetTable[perConfigComponetIndex]].ToString();
-                }
-                else
-                {
-                    MessageBox.Show(I18N("EditorNoExample"));
-                }
-                return;
+                tboxConfig.Text = defConfig;
             }
         }
 
@@ -432,7 +398,7 @@ namespace V2RayGCon.Views
                 Debug.WriteLine("FormConfiger: can not insert outbound.protocol");
             }
 
-            ShowConfigByIndex(perConfigComponetIndex);
+            ShowConfigSection(perSectionIndex);
         }
 
         private void btnSSRInsertClient_Click(object sender, EventArgs e)
@@ -459,8 +425,8 @@ namespace V2RayGCon.Views
                 configEditing["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = tboxKCPType.Text;
             }
             catch { }
-            InsertStreamSecurity();
-            ShowConfigByIndex(perConfigComponetIndex);
+            SetStreamSecurity();
+            ShowConfigSection(perSectionIndex);
         }
 
         private void btnStreamInsertWS_Click(object sender, EventArgs e)
@@ -471,8 +437,8 @@ namespace V2RayGCon.Views
                 configEditing["outbound"]["streamSettings"]["wsSettings"]["path"] = tboxWSPath.Text;
             }
             catch { }
-            InsertStreamSecurity();
-            ShowConfigByIndex(perConfigComponetIndex);
+            SetStreamSecurity();
+            ShowConfigSection(perSectionIndex);
         }
 
         private void btnStreamInsertTCP_Click(object sender, EventArgs e)
@@ -482,8 +448,8 @@ namespace V2RayGCon.Views
                 configEditing["outbound"]["streamSettings"] = configTemplate["tcp"];
             }
             catch { };
-            InsertStreamSecurity();
-            ShowConfigByIndex(perConfigComponetIndex);
+            SetStreamSecurity();
+            ShowConfigSection(perSectionIndex);
         }
 
         private void btnVMessGenUUID_Click(object sender, EventArgs e)
@@ -493,13 +459,11 @@ namespace V2RayGCon.Views
 
         private void btnInsertNewServ_Click(object sender, EventArgs e)
         {
-            if (CheckContentChange())
+            if (CheckSectionChange() && !Confirm(I18N("EditorDiscardChange")))
             {
-                if (!Confirm(I18N("EditorDiscardChange")))
-                {
-                    return;
-                }
+                return;
             }
+
             string cfgString = configEditing.ToString();
             settings.AddServer(Lib.Utils.Base64Encode(cfgString));
             MessageBox.Show(I18N("Done"));
@@ -538,7 +502,7 @@ namespace V2RayGCon.Views
 
         void InitForm()
         {
-            configComponetTable = new Dictionary<int, string>
+            sectionTable = new Dictionary<int, string>
             {
                 { 0, "config.json"},
                 { 1, "log"},
@@ -557,7 +521,7 @@ namespace V2RayGCon.Views
             };
 
             // separate between dictionary or array
-            componentsSeparator = 11;
+            sectionSeparator = 11;
 
             ssrMethodTable = new Dictionary<int, string>
             {
@@ -577,7 +541,7 @@ namespace V2RayGCon.Views
             configEditing = LoadServerConfig();
 
             cboxServList.Items.Clear();
-            for (int i = 0; i < settings.GetServeNum(); i++)
+            for (int i = 0; i < settings.GetServerCount(); i++)
             {
                 cboxServList.Items.Add(i + 1);
             }
@@ -585,9 +549,9 @@ namespace V2RayGCon.Views
             perServIndex = settings.curEditingIndex;
             cboxServList.SelectedIndex = perServIndex;
 
-            perConfigComponetIndex = 0;
-            cboxConfigPart.SelectedIndex = perConfigComponetIndex;
-            ShowConfigByIndex(perConfigComponetIndex);
+            perSectionIndex = 0;
+            cboxConfigSection.SelectedIndex = perSectionIndex;
+            ShowConfigSection(perSectionIndex);
         }
     }
 }

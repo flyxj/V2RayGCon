@@ -32,7 +32,7 @@
             this.btnInsertNewServ = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnOverwriteConfig = new System.Windows.Forms.Button();
-            this.cboxConfigPart = new System.Windows.Forms.ComboBox();
+            this.cboxConfigSection = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -112,10 +112,10 @@
             // 
             // cboxConfigPart
             // 
-            resources.ApplyResources(this.cboxConfigPart, "cboxConfigPart");
-            this.cboxConfigPart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxConfigPart.FormattingEnabled = true;
-            this.cboxConfigPart.Items.AddRange(new object[] {
+            resources.ApplyResources(this.cboxConfigSection, "cboxConfigPart");
+            this.cboxConfigSection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxConfigSection.FormattingEnabled = true;
+            this.cboxConfigSection.Items.AddRange(new object[] {
             resources.GetString("cboxConfigPart.Items"),
             resources.GetString("cboxConfigPart.Items1"),
             resources.GetString("cboxConfigPart.Items2"),
@@ -129,8 +129,8 @@
             resources.GetString("cboxConfigPart.Items10"),
             resources.GetString("cboxConfigPart.Items11"),
             resources.GetString("cboxConfigPart.Items12")});
-            this.cboxConfigPart.Name = "cboxConfigPart";
-            this.cboxConfigPart.SelectedIndexChanged += new System.EventHandler(this.cboxConfigPart_SelectedIndexChanged);
+            this.cboxConfigSection.Name = "cboxConfigPart";
+            this.cboxConfigSection.SelectedIndexChanged += new System.EventHandler(this.cboxConfigSection_SelectedIndexChanged);
             // 
             // tabControl1
             // 
@@ -422,21 +422,21 @@
             resources.ApplyResources(this.btnSaveModify, "btnSaveModify");
             this.btnSaveModify.Name = "btnSaveModify";
             this.btnSaveModify.UseVisualStyleBackColor = true;
-            this.btnSaveModify.Click += new System.EventHandler(this.btnSaveModify_Click);
+            this.btnSaveModify.Click += new System.EventHandler(this.btnSaveChanges_Click);
             // 
             // btnClearModify
             // 
             resources.ApplyResources(this.btnClearModify, "btnClearModify");
             this.btnClearModify.Name = "btnClearModify";
             this.btnClearModify.UseVisualStyleBackColor = true;
-            this.btnClearModify.Click += new System.EventHandler(this.btnClearModify_Click);
+            this.btnClearModify.Click += new System.EventHandler(this.btnDropChanges_Click);
             // 
             // btnLoadDefault
             // 
             resources.ApplyResources(this.btnLoadDefault, "btnLoadDefault");
             this.btnLoadDefault.Name = "btnLoadDefault";
             this.btnLoadDefault.UseVisualStyleBackColor = true;
-            this.btnLoadDefault.Click += new System.EventHandler(this.btnLoadDefault_Click);
+            this.btnLoadDefault.Click += new System.EventHandler(this.btnLoadDefaultConfig_Click);
             // 
             // label15
             // 
@@ -466,7 +466,7 @@
             this.Controls.Add(this.btnClearModify);
             this.Controls.Add(this.btnSaveModify);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.cboxConfigPart);
+            this.Controls.Add(this.cboxConfigSection);
             this.Controls.Add(this.btnOverwriteConfig);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnInsertNewServ);
@@ -491,7 +491,7 @@
         private System.Windows.Forms.Button btnInsertNewServ;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnOverwriteConfig;
-        private System.Windows.Forms.ComboBox cboxConfigPart;
+        private System.Windows.Forms.ComboBox cboxConfigSection;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;

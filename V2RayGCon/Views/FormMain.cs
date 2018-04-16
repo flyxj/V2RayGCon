@@ -15,12 +15,10 @@ namespace V2RayGCon.Views
 {
     public partial class FormMain : Form
     {
-        // Func<string, string> I18N;
-
         Service.Setting setting;
         Service.Core core;
 
-        public event EventHandler OpenEditor, ShowQRCodeForm, ShowLogForm;
+        public event EventHandler ShowFormConfiger, ShowFormQRCode, ShowFormLog;
         delegate void UpdateElementDelegate();
 
         public FormMain()
@@ -30,11 +28,9 @@ namespace V2RayGCon.Views
             core = Service.Core.Instance;
 
             InitializeComponent();
-            InitServerListView();
+            InitListViewServers();
 
             UpdateElement();
-
-            //I18N = Lib.Utils.I18N;
 
             this.FormClosed += (s, a) =>
             {
@@ -42,45 +38,43 @@ namespace V2RayGCon.Views
                 core.OnCoreStatChange -= UpdateUI;
             };
 
+            this.Show();
             setting.OnSettingChange += UpdateUI;
             core.OnCoreStatChange += UpdateUI;
-
-            this.Show();
         }
 
         void UpdateUI(object s, EventArgs e)
         {
-            UpdateElementDelegate updateElement = new UpdateElementDelegate(UpdateElement);
+            UpdateElementDelegate updateElement =
+                new UpdateElementDelegate(UpdateElement);
+
             lvServers.Invoke(updateElement);
         }
 
-
-        void InitServerListView()
+        void InitListViewServers()
         {
             lvServers.Items.Clear();
 
             lvServers.MouseClick += (s, e) =>
             {
-                if (e.Button == MouseButtons.Right)
+                if (e.Button == MouseButtons.Right
+                && lvServers.FocusedItem.Bounds.Contains(e.Location))
                 {
-                    if (lvServers.FocusedItem.Bounds.Contains(e.Location) == true)
-                    {
-                        ctxMenuStrip.Show(Cursor.Position);
-                    }
+                    ctxMenuStrip.Show(Cursor.Position);
                 }
             };
 
-            lvServers.MouseDoubleClick += ActivateServer;
+            lvServers.MouseDoubleClick += (s, a) => ActivateServer();
         }
 
-        int GetSelectedItemIndex()
+        int GetSelectedServerIndex()
         {
             return Lib.Utils.Str2Int(lvServers.SelectedItems[0].Text) - 1;
         }
 
-        void ActivateServer(object sender, MouseEventArgs e)
+        void ActivateServer()
         {
-            var index = GetSelectedItemIndex();
+            var index = GetSelectedServerIndex();
             Debug.WriteLine("FormMain: activate server " + index);
             setting.ActivateServer(index);
         }
@@ -98,20 +92,20 @@ namespace V2RayGCon.Views
             }
 
             int count = 0;
-            int actServ = setting.GetSelectedServerIndex();
+            int selectedServer = setting.GetSelectedServerIndex();
             string s, proxy;
             JObject o;
-            foreach (var b64cfgStr in servers)
+            foreach (var server in servers)
             {
                 try
                 {
-                    s = Lib.Utils.Base64Decode(b64cfgStr);
+                    s = Lib.Utils.Base64Decode(server);
                     o = JObject.Parse(s);
 
                 }
                 catch { continue; }
 
-                string ip, port, type, tls, path, streamType,alias;
+                string ip, port, type, tls, path, streamType, alias;
                 proxy = Lib.Utils.GetStrFromJToken(o, "outbound.protocol");
                 if (proxy.Equals("shadowsocks"))
                 {
@@ -132,11 +126,11 @@ namespace V2RayGCon.Views
 
                 lvServers.Items.Add(new ListViewItem(new string[] {
                     (count+1).ToString(), //no.
-                    alias, //alias
-                    proxy, // proxy
-                    ip,  // ip
-                    port,  // port
-                    count == actServ?"√":"",  //active
+                    alias,
+                    proxy,
+                    ip,
+                    port,
+                    count == selectedServer?"√":"",  //active
                     path, // Url
                     streamType, //protocol
                     tls, //encryption
@@ -148,14 +142,14 @@ namespace V2RayGCon.Views
 
         private void activateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActivateServer(null, null);
+            ActivateServer();
         }
 
         private void deleteStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Lib.Utils.Confirm(I18N("Confirm"), I18N("ConfirmDeleteServer")))
+            if (Lib.Utils.Confirm(I18N("ConfirmDeleteServer")))
             {
-                setting.DeleteServer(GetSelectedItemIndex());
+                setting.DeleteServer(GetSelectedServerIndex());
             }
         }
 
@@ -174,30 +168,18 @@ namespace V2RayGCon.Views
             RefreshServerListView();
 
             proxyAddrToolStripTextBox.Text = setting.proxyAddr;
-            if (setting.proxyType.Equals("http"))
-            {
-                protocolSocksToolStripMenuItem.Checked = false;
-                protocolHttpStripMenuItem.Checked = true;
-            }
-            if (setting.proxyType.Equals("socks"))
-            {
-                protocolSocksToolStripMenuItem.Checked = true;
-                protocolHttpStripMenuItem.Checked = false;
-            }
 
-            if (core.IsRunning())
-            {
-                activateToolStripMenuItem.Enabled = false;
-                stopToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                activateToolStripMenuItem.Enabled = true;
-                stopToolStripMenuItem.Enabled = false;
-            }
+            var isSocksProxy = setting.proxyType.Equals("socks");
+            protocolSocksToolStripMenuItem.Checked = isSocksProxy;
+            protocolHttpStripMenuItem.Checked = !isSocksProxy;
+
+            var isCoreRunning = core.IsRunning();
+            activateToolStripMenuItem.Enabled = !isCoreRunning;
+            stopToolStripMenuItem.Enabled = isCoreRunning;
+
         }
 
-        void ChangeProtocal(string protocal)
+        void SwitchToProtocal(string protocal)
         {
             setting.proxyType = protocal;
             setting.ActivateServer(setting.GetSelectedServerIndex());
@@ -206,12 +188,12 @@ namespace V2RayGCon.Views
 
         private void protocolHttpStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChangeProtocal("http");
+            SwitchToProtocal("http");
         }
 
         private void protocolSocksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChangeProtocal("socks");
+            SwitchToProtocal("socks");
         }
 
         private void proxyAddrToolStripTextBox_TextChange(object sender, EventArgs e)
@@ -225,7 +207,7 @@ namespace V2RayGCon.Views
         private void proxyAddrToolStripTextBox_KeyUp(object sender, KeyEventArgs e)
         {
             // Debug.WriteLine("key: " + e.KeyCode);
-            if (e.KeyCode == Keys.Enter )
+            if (e.KeyCode == Keys.Enter)
             {
                 setting.proxyAddr = proxyAddrToolStripTextBox.Text;
                 setting.ActivateServer(setting.GetSelectedServerIndex());
@@ -234,8 +216,8 @@ namespace V2RayGCon.Views
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.curEditingIndex = GetSelectedItemIndex();
-            OpenEditor?.Invoke(this, new EventArgs());
+            setting.curEditingIndex = GetSelectedServerIndex();
+            ShowFormConfiger?.Invoke(this, new EventArgs());
         }
 
         private void activateToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -263,21 +245,21 @@ namespace V2RayGCon.Views
             setting.ActivateServer(setting.GetSelectedServerIndex());
         }
 
-        private void vmessToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void CopyAllVmessLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var b64cfgStrs = setting.GetAllServers();
+            var servers = setting.GetAllServers();
             string s = string.Empty;
 
-            foreach (var b64cfg in b64cfgStrs)
+            foreach (var server in servers)
             {
-                var cfg = Lib.Utils.Base64Decode(b64cfg);
-                var vmess = Lib.Utils.ConfigString2Vmess(cfg);
-                if (vmess == null)
+                var config = Lib.Utils.Base64Decode(server);
+                var vmess = Lib.Utils.ConfigString2Vmess(config);
+                var vmessLink = Lib.Utils.Vmess2VmessLink(vmess);
+
+                if (!string.IsNullOrEmpty(vmessLink))
                 {
-                    continue;
+                    s += vmessLink + "\r\n";
                 }
-                var vlink = Lib.Utils.Vmess2VmessLink(vmess);
-                s += vlink + "\r\n";
             }
 
             Lib.Utils.ShowMsgboxSuccFail(
@@ -286,14 +268,14 @@ namespace V2RayGCon.Views
                 I18N("CopyFail"));
         }
 
-        private void v2rayToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void CopyAllV2RayLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var b64cfgStrs = setting.GetAllServers();
+            var servers = setting.GetAllServers();
             string s = string.Empty;
 
-            foreach (var b64cfg in b64cfgStrs)
+            foreach (var server in servers)
             {
-                s += "v2ray://" + b64cfg + "\r\n";
+                s += "v2ray://" + server + "\r\n";
             }
 
             Lib.Utils.ShowMsgboxSuccFail(
@@ -302,20 +284,15 @@ namespace V2RayGCon.Views
                 I18N("CopyFail"));
         }
 
-        private void vmessToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyVmessLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var b64cfgStr = setting.GetServer(GetSelectedItemIndex());
-            Model.Vmess vmess = null;
+            var server = setting.GetServer(GetSelectedServerIndex());
             string vmessLink = string.Empty;
 
-            if (!string.IsNullOrEmpty(b64cfgStr))
+            if (!string.IsNullOrEmpty(server))
             {
-                var cfg = Lib.Utils.Base64Decode(b64cfgStr);
-                vmess = Lib.Utils.ConfigString2Vmess(cfg);
-            }
-
-            if (vmess != null)
-            {
+                var config = Lib.Utils.Base64Decode(server);
+                var vmess = Lib.Utils.ConfigString2Vmess(config);
                 vmessLink = Lib.Utils.Vmess2VmessLink(vmess);
             }
 
@@ -325,14 +302,14 @@ namespace V2RayGCon.Views
                 I18N("CopyFail"));
         }
 
-        private void v2rayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyV2RayLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var b64cfgStr = setting.GetServer(GetSelectedItemIndex());
+            var server = setting.GetServer(GetSelectedServerIndex());
             string v2rayLink = string.Empty;
 
-            if (!string.IsNullOrEmpty(b64cfgStr))
+            if (!string.IsNullOrEmpty(server))
             {
-                v2rayLink = Lib.Utils.LinkAddPerfix(b64cfgStr, Model.Enum.LinkTypes.v2ray);
+                v2rayLink = Lib.Utils.LinkAddPerfix(server, Model.Enum.LinkTypes.v2ray);
             }
 
             Lib.Utils.ShowMsgboxSuccFail(
@@ -344,39 +321,37 @@ namespace V2RayGCon.Views
 
         private void MoveDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.MoveItemDown(GetSelectedItemIndex());
+            setting.MoveItemDown(GetSelectedServerIndex());
         }
 
         private void MoveToButtomToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int idx = GetSelectedItemIndex();
-            setting.MoveItemToButtom(idx);
+            setting.MoveItemToButtom(GetSelectedServerIndex());
         }
 
         private void MoveToTopStripMenuItem_Click(object sender, EventArgs e)
         {
-            int idx = GetSelectedItemIndex();
-            setting.MoveItemToTop(idx);
+            setting.MoveItemToTop(GetSelectedServerIndex());
         }
 
         private void MoveUpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.MoveItemUp(GetSelectedItemIndex());
+            setting.MoveItemUp(GetSelectedServerIndex());
         }
 
-        private void logToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowFormLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowLogForm?.Invoke(this, null);
+            ShowFormLog?.Invoke(this, null);
         }
 
-        private void ShowQRCodeFormToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowFormQRCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowQRCodeForm?.Invoke(this, null);
+            ShowFormQRCode?.Invoke(this, null);
         }
 
-        private void ShowConfigEditorFormToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowFormConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenEditor?.Invoke(this, null);
+            ShowFormConfiger?.Invoke(this, null);
         }
     }
 }

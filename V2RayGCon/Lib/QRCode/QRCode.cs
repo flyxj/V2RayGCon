@@ -86,7 +86,7 @@ namespace V2RayGCon.Lib.QRCode
 
             winList.Sort((a, b) => NearCenterComparer(a, b));
 
-            // gen <srcRect, distRect>,<src,dist>, ...
+            // gen <winRect, screeRect>, ...
 
             var scanList = new List<List<Rectangle>>();
             foreach (var rect in winList)
@@ -115,6 +115,50 @@ namespace V2RayGCon.Lib.QRCode
             return scanList;
         }
 
+        static bool ScanScreen(Screen screen, List<List<Rectangle>> scanRectList, Action<string> success)
+        {
+            using (Bitmap screenshot = new Bitmap(screen.Bounds.Size.Width, screen.Bounds.Height))
+            {
+                // take a screenshot
+                using (Graphics g = Graphics.FromImage(screenshot))
+                {
+                    g.CopyFromScreen(
+                        screen.Bounds.X,
+                        screen.Bounds.Y,
+                        0,
+                        0,
+                        screenshot.Size,
+                        CopyPixelOperation.SourceCopy);
+                }
+
+                for (int i = 0; i < scanRectList.Count; i++)
+                {
+                    var result = ScanWindow(screenshot, scanRectList[i][0], scanRectList[i][1]);
+
+                    if (result == null)
+                    {
+                        continue;
+                    }
+
+                    var link = result.Text;
+
+                    Debug.WriteLine("Source window {0}: {1}", i, scanRectList[i][1]);
+                    Debug.WriteLine("Target window {0}: {1}", i, scanRectList[i][0]);
+                    Debug.WriteLine("Read: " + Lib.Utils.CutString(link, 32));
+
+                    var qrcodeRect = GetQRCodeRect(
+                        result,
+                        scanRectList[i][0],
+                        scanRectList[i][1]);
+
+                    ShowSplashForm(screen, qrcodeRect, () => success(link));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void ScanQRCode(Action<string> success, Action fail)
         {
             Thread.Sleep(100);
@@ -129,71 +173,46 @@ namespace V2RayGCon.Lib.QRCode
                     screen.Bounds.Width,
                     screen.Bounds.Height)));
 
-                using (Bitmap screenshot = new Bitmap(screen.Bounds.Size.Width, screen.Bounds.Height))
+                if (ScanScreen(screen, scanRectList, success))
                 {
-                    // take a screenshot
-                    using (Graphics g = Graphics.FromImage(screenshot))
-                    {
-                        g.CopyFromScreen(
-                            screen.Bounds.X,
-                            screen.Bounds.Y,
-                            0,
-                            0,
-                            screenshot.Size,
-                            CopyPixelOperation.SourceCopy);
-                    }
-
-                    Result result;
-                    for (int i = 0; i < scanRectList.Count; i++)
-                    {
-                        result = ScanWindow(screenshot, scanRectList[i][0], scanRectList[i][1]);
-
-                        if (result != null)
-                        {
-                            var link = result.Text;
-                            Debug.WriteLine("Source window {0}: {1}", i, scanRectList[i][1]);
-                            Debug.WriteLine("Target window {0}: {1}", i, scanRectList[i][0]);
-                            Debug.WriteLine("Read: " + link.Substring(0, Math.Min(48, link.Length)));
-                            // get qrcode rect
-                            Point start = new Point(scanRectList[i][0].Width, scanRectList[i][0].Height);
-                            Point end = new Point(0, 0);
-
-                            foreach (var point in result.ResultPoints)
-                            {
-                                start.X = Math.Min(start.X, (int)point.X);
-                                start.Y = Math.Min(start.Y, (int)point.Y);
-                                end.X = Math.Max(end.X, (int)point.X);
-                                end.Y = Math.Max(end.Y, (int)point.Y);
-                            }
-
-                            double factor = 1.0 * scanRectList[i][1].Width / scanRectList[i][0].Width;
-
-                            Rectangle qrRect = new Rectangle(
-                                (int)(start.X * factor + scanRectList[i][1].X),
-                                (int)(start.Y * factor + scanRectList[i][1].Y),
-                                (int)(factor*(end.X*1.0 - start.X)),
-                                (int)(factor*(end.Y*1.0 - start.Y)));
-
-                            Debug.WriteLine("factor: {0}", factor);
-                            Debug.WriteLine("qrCode: {0}", qrRect);
-
-                            ShowSplashForm(screen, qrRect, success, link);
-                            return;
-                        }
-                        // Debug.WriteLine("no link found");
-                    }
+                    return;
                 }
             }
             fail();
         }
 
-        static void ShowSplashForm(Screen screen, Rectangle rect, Action<string> callback, string link)
+        static Rectangle GetQRCodeRect(Result result, Rectangle winRect, Rectangle screenRect)
+        {
+            // get qrcode rect
+            Point start = new Point(winRect.Width, winRect.Height);
+            Point end = new Point(0, 0);
+
+            foreach (var point in result.ResultPoints)
+            {
+                start.X = Math.Min(start.X, (int)point.X);
+                start.Y = Math.Min(start.Y, (int)point.Y);
+                end.X = Math.Max(end.X, (int)point.X);
+                end.Y = Math.Max(end.Y, (int)point.Y);
+            }
+
+            double factor = 1.0 * screenRect.Width / winRect.Width;
+
+            Rectangle qrRect = new Rectangle(
+                (int)(start.X * factor + screenRect.X),
+                (int)(start.Y * factor + screenRect.Y),
+                (int)(factor * (end.X * 1.0 - start.X)),
+                (int)(factor * (end.Y * 1.0 - start.Y)));
+
+            Debug.WriteLine("factor: {0}", factor);
+            Debug.WriteLine("qrCode: {0}", qrRect);
+
+            return qrRect;
+        }
+
+        static void ShowSplashForm(Screen screen, Rectangle rect, Action closed)
         {
             var qrSplash = new QRCodeSplashForm();
-            qrSplash.FormClosed += (s, e) =>
-            {
-                callback(link);
-            };
+            qrSplash.FormClosed += (s, e) => closed();
 
             qrSplash.Location = new Point(screen.Bounds.X, screen.Bounds.Y);
             // qrSplash.Size = new Size(screen_size.X, screen_size.Y);

@@ -128,13 +128,13 @@
             // 
             resources.ApplyResources(this.vmessToolStripMenuItem1, "vmessToolStripMenuItem1");
             this.vmessToolStripMenuItem1.Name = "vmessToolStripMenuItem1";
-            this.vmessToolStripMenuItem1.Click += new System.EventHandler(this.vmessToolStripMenuItem1_Click);
+            this.vmessToolStripMenuItem1.Click += new System.EventHandler(this.CopyAllVmessLinkToolStripMenuItem_Click);
             // 
             // v2rayToolStripMenuItem1
             // 
             resources.ApplyResources(this.v2rayToolStripMenuItem1, "v2rayToolStripMenuItem1");
             this.v2rayToolStripMenuItem1.Name = "v2rayToolStripMenuItem1";
-            this.v2rayToolStripMenuItem1.Click += new System.EventHandler(this.v2rayToolStripMenuItem1_Click);
+            this.v2rayToolStripMenuItem1.Click += new System.EventHandler(this.CopyAllV2RayLinkToolStripMenuItem_Click);
             // 
             // deleteAllServerToolStripMenuItem
             // 
@@ -227,19 +227,19 @@
             // 
             resources.ApplyResources(this.configEditorToolStripMenuItem, "configEditorToolStripMenuItem");
             this.configEditorToolStripMenuItem.Name = "configEditorToolStripMenuItem";
-            this.configEditorToolStripMenuItem.Click += new System.EventHandler(this.ShowConfigEditorFormToolStripMenuItem_Click);
+            this.configEditorToolStripMenuItem.Click += new System.EventHandler(this.ShowFormConfigToolStripMenuItem_Click);
             // 
             // qRCodeToolStripMenuItem
             // 
             resources.ApplyResources(this.qRCodeToolStripMenuItem, "qRCodeToolStripMenuItem");
             this.qRCodeToolStripMenuItem.Name = "qRCodeToolStripMenuItem";
-            this.qRCodeToolStripMenuItem.Click += new System.EventHandler(this.ShowQRCodeFormToolStripMenuItem_Click);
+            this.qRCodeToolStripMenuItem.Click += new System.EventHandler(this.ShowFormQRCodeToolStripMenuItem_Click);
             // 
             // logToolStripMenuItem
             // 
             resources.ApplyResources(this.logToolStripMenuItem, "logToolStripMenuItem");
             this.logToolStripMenuItem.Name = "logToolStripMenuItem";
-            this.logToolStripMenuItem.Click += new System.EventHandler(this.logToolStripMenuItem_Click);
+            this.logToolStripMenuItem.Click += new System.EventHandler(this.ShowFormLogToolStripMenuItem_Click);
             // 
             // lvServers
             // 
@@ -337,13 +337,13 @@
             // 
             resources.ApplyResources(this.vmessToolStripMenuItem, "vmessToolStripMenuItem");
             this.vmessToolStripMenuItem.Name = "vmessToolStripMenuItem";
-            this.vmessToolStripMenuItem.Click += new System.EventHandler(this.vmessToolStripMenuItem_Click);
+            this.vmessToolStripMenuItem.Click += new System.EventHandler(this.CopyVmessLinkToolStripMenuItem_Click);
             // 
             // v2rayToolStripMenuItem
             // 
             resources.ApplyResources(this.v2rayToolStripMenuItem, "v2rayToolStripMenuItem");
             this.v2rayToolStripMenuItem.Name = "v2rayToolStripMenuItem";
-            this.v2rayToolStripMenuItem.Click += new System.EventHandler(this.v2rayToolStripMenuItem_Click);
+            this.v2rayToolStripMenuItem.Click += new System.EventHandler(this.CopyV2RayLinkToolStripMenuItem_Click);
             // 
             // stripMenuDelete
             // 

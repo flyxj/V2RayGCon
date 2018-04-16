@@ -154,7 +154,9 @@
     <value>Download v2ray-core completed!</value>
   </data>
   <data name="DLFail" xml:space="preserve">
-    <value>Download fail!</value>
+    <value>Download fail!
+You can download manually from the link below.
+https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="DLv2rayCore" xml:space="preserve">
     <value>Download v2ray-core</value>
@@ -242,5 +244,8 @@
   </data>
   <data name="WarnIENotSupportPac" xml:space="preserve">
     <value>Notice! IE not support PAC.</value>
+  </data>
+  <data name="PleaseCheckConfig" xml:space="preserve">
+    <value>Can not parse json! Please check current config.</value>
   </data>
 </root>

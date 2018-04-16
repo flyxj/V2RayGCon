@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
+using System.Collections.ObjectModel;
 
 namespace V2RayGCon.Service
 {
@@ -27,6 +28,7 @@ namespace V2RayGCon.Service
         // Begin
         private List<string> servers;
         public event EventHandler OnSettingChange;
+        public event EventHandler<Model.DataEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
         //Func<string, string> resData;
 
@@ -34,10 +36,15 @@ namespace V2RayGCon.Service
 
         Setting()
         {
-            //resData = Lib.Utils.resData;
             _curEditingIndex = -1;
-            InitServers();
+            LoadServers();
             SaveServers();
+        }
+
+        public void SendLog(string log)
+        {
+            var arg = new Model.DataEvent(log);
+            OnLog?.Invoke(this, arg);
         }
 
         public int curEditingIndex
@@ -48,7 +55,7 @@ namespace V2RayGCon.Service
             }
             set
             {
-                if (value >= 0 && value < GetServeNum())
+                if (value >= 0 && value < GetServerCount())
                 {
                     _curEditingIndex = value;
                 }
@@ -59,7 +66,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        int _SelectedServerIndex
+        int _selectedServerIndex
         {
             get
             {
@@ -68,7 +75,7 @@ namespace V2RayGCon.Service
             }
             set
             {
-                int n = Lib.Utils.Clamp(value, 0, GetServeNum());
+                int n = Lib.Utils.Clamp(value, 0, GetServerCount());
                 Properties.Settings.Default.CurServ = n;
                 Properties.Settings.Default.Save();
             }
@@ -76,12 +83,7 @@ namespace V2RayGCon.Service
 
         public int GetSelectedServerIndex()
         {
-            return _SelectedServerIndex;
-        }
-
-        public int GetServerNum()
-        {
-            return servers.Count;
+            return _selectedServerIndex;
         }
 
         public int maxLogLines
@@ -105,9 +107,7 @@ namespace V2RayGCon.Service
             get
             {
                 string addr = Properties.Settings.Default.ProxyAddr;
-                string ip;
-                int port;
-                Lib.Utils.TryParseIPAddr(addr, out ip, out port);
+                Lib.Utils.TryParseIPAddr(addr, out string ip, out int port);
                 return string.Join(":", ip, port);
             }
             set
@@ -121,7 +121,6 @@ namespace V2RayGCon.Service
         {
             // https://pac.txthinking.com/white/SOCKS5%20127.0.0.1:1080
             // https://pac.txthinking.com/white/{0}%20{1}
-            // ProxyAddr ProxyType
             string mode = proxyType.Equals("http") ? "PROXY" : "SOCKS5";
             return string.Format(resData("PacUrlTpl"), mode, proxyAddr);
         }
@@ -130,8 +129,8 @@ namespace V2RayGCon.Service
         {
             get
             {
-                string type = Properties.Settings.Default.ProxyType.ToLower();
                 string[] types = { "socks", "http" };
+                string type = Properties.Settings.Default.ProxyType.ToLower();
                 return types.Contains(type) ? type : types[0];
             }
             set
@@ -141,22 +140,22 @@ namespace V2RayGCon.Service
             }
         }
 
-        public int GetServeNum()
+        public int GetServerCount()
         {
             return servers.Count;
         }
 
         public void MoveItemToTop(int index)
         {
-            var n = Lib.Utils.Clamp(index, 0, GetServeNum() - 1);
+            var n = Lib.Utils.Clamp(index, 0, GetServerCount() - 1);
 
-            if (_SelectedServerIndex == n)
+            if (_selectedServerIndex == n)
             {
-                _SelectedServerIndex = 0;
+                _selectedServerIndex = 0;
             }
-            else if (_SelectedServerIndex < n)
+            else if (_selectedServerIndex < n)
             {
-                _SelectedServerIndex++;
+                _selectedServerIndex++;
             }
 
             var item = servers[n];
@@ -168,17 +167,17 @@ namespace V2RayGCon.Service
 
         public void MoveItemUp(int index)
         {
-            if (index < 1 || index > GetServeNum() - 1)
+            if (index < 1 || index > GetServerCount() - 1)
             {
                 return;
             }
-            if (_SelectedServerIndex == index)
+            if (_selectedServerIndex == index)
             {
-                _SelectedServerIndex--;
+                _selectedServerIndex--;
             }
-            else if (_SelectedServerIndex == index - 1)
+            else if (_selectedServerIndex == index - 1)
             {
-                _SelectedServerIndex++;
+                _selectedServerIndex++;
             }
             var item = servers[index];
             servers.RemoveAt(index);
@@ -190,17 +189,17 @@ namespace V2RayGCon.Service
 
         public void MoveItemDown(int index)
         {
-            if (index < 0 || index > GetServeNum() - 2)
+            if (index < 0 || index > GetServerCount() - 2)
             {
                 return;
             }
-            if (_SelectedServerIndex == index)
+            if (_selectedServerIndex == index)
             {
-                _SelectedServerIndex++;
+                _selectedServerIndex++;
             }
-            else if (_SelectedServerIndex == index + 1)
+            else if (_selectedServerIndex == index + 1)
             {
-                _SelectedServerIndex--;
+                _selectedServerIndex--;
             }
             var item = servers[index];
             servers.RemoveAt(index);
@@ -211,15 +210,15 @@ namespace V2RayGCon.Service
 
         public void MoveItemToButtom(int index)
         {
-            var n = Lib.Utils.Clamp(index, 0, GetServeNum() - 1);
+            var n = Lib.Utils.Clamp(index, 0, GetServerCount() - 1);
 
-            if (_SelectedServerIndex == n)
+            if (_selectedServerIndex == n)
             {
-                _SelectedServerIndex = GetServeNum() - 1;
+                _selectedServerIndex = GetServerCount() - 1;
             }
-            else if (_SelectedServerIndex > n)
+            else if (_selectedServerIndex > n)
             {
-                _SelectedServerIndex--;
+                _selectedServerIndex--;
             }
             var item = servers[n];
             servers.RemoveAt(n);
@@ -240,7 +239,7 @@ namespace V2RayGCon.Service
         {
             Debug.WriteLine("delete server: " + index);
 
-            if (index < 0 || index >= GetServeNum())
+            if (index < 0 || index >= GetServerCount())
             {
                 Debug.WriteLine("delete server index out of range");
                 return;
@@ -250,21 +249,21 @@ namespace V2RayGCon.Service
             SaveServers();
 
 
-            if (_SelectedServerIndex >= GetServeNum())
+            if (_selectedServerIndex >= GetServerCount())
             {
                 // normal restart
-                _SelectedServerIndex = GetServeNum() - 1;
+                _selectedServerIndex = GetServerCount() - 1;
                 OnRequireCoreRestart?.Invoke(this, null);
             }
-            else if (_SelectedServerIndex == index)
+            else if (_selectedServerIndex == index)
             {
                 // force restart
                 OnRequireCoreRestart?.Invoke(this, null);
             }
-            else if (_SelectedServerIndex > index)
+            else if (_selectedServerIndex > index)
             {
                 // dont need restart
-                _SelectedServerIndex--;
+                _selectedServerIndex--;
             }
 
             // dont need restart
@@ -278,123 +277,103 @@ namespace V2RayGCon.Service
             return vmess || v2ray;
         }
 
-        bool ImportV2RayLinks(string v2rayLink)
+        bool ImportV2RayLinks(string links)
         {
-            // string pat = @"v2ray://(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})";
-            string pat = resData("V2RayLinkPerfix") + resData("PatternBase64");
-            Regex regex = new Regex(pat, RegexOptions.IgnoreCase);
-            Match match = regex.Match(v2rayLink);
-            int count = 0;
-            string link = String.Empty;
-            string config = String.Empty;
-            JObject obj = null;
-            string content;
+            bool isAddNewServer = false;
 
-            while (match.Success)
-            {
-                link = v2rayLink.Substring(match.Index, match.Length);
+            // @"v2ray://(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})";
+            string pattern = resData("V2RayLinkPerfix") + resData("PatternBase64");
+            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase)) {
                 try
                 {
-                    content = link.Substring(8);
-                    config = Lib.Utils.Base64Decode(content);
-                    obj = JObject.Parse(config);
-                    if (obj != null)
+                    string b64Config = Lib.Utils.LinkBody(m.Value, Model.Enum.LinkTypes.v2ray);
+                    string config = Lib.Utils.Base64Decode(b64Config);
+                    if(JObject.Parse(config)!=null && AddServer(b64Config))
                     {
-                        if (AddServer(content))
-                        {
-                            count++;
-                        }
+                        isAddNewServer = true;
+                        Debug.WriteLine("New server: " + Lib.Utils.CutString(m.Value, 32) + " ...");
                     }
-                    Debug.WriteLine("Add server: " + link.Substring(0, 32) + " ...");
                 }
-                catch { }
-                match = match.NextMatch();
-            }
-
-            return count > 0;
-        }
-
-        bool ImportVmessLinks(string vmessLink)
-        {
-            string pat = resData("VmessLinkPerfix") + resData("PatternBase64");
-            Regex regex = new Regex(pat, RegexOptions.IgnoreCase);
-            Match match = regex.Match(vmessLink);
-            int count = 0;
-            string link = String.Empty;
-            string config = String.Empty;
-
-            while (match.Success)
-            {
-                link = vmessLink.Substring(match.Index, match.Length);
-                config = Lib.Utils.VmessLink2ConfigString(link);
-                if (!string.IsNullOrEmpty(config))
+                catch
                 {
-                    if (AddServer(Lib.Utils.Base64Encode(config)))
-                    {
-                        count++;
-                    }
-                    Debug.WriteLine("Add server: " + link.Substring(0, 32) + " ...");
+                    // skip if error occured
                 }
-                match = match.NextMatch();
             }
 
-            return count > 0;
+            return isAddNewServer;
         }
 
-        void InitServers()
+        bool ImportVmessLinks(string links)
         {
-            string raw_data = Properties.Settings.Default.Servers;
+            var isAddNewServer = false;
+
+            string pattern = resData("VmessLinkPerfix") + resData("PatternBase64");
+            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
+            {
+                string config = Lib.Utils.VmessLink2ConfigString(m.Value);
+                if (!string.IsNullOrEmpty(config) && AddServer(Lib.Utils.Base64Encode(config)))
+                {
+                    isAddNewServer = true;
+                    Debug.WriteLine("New server: " + Lib.Utils.CutString(m.Value, 32) + " ...");
+                }
+            }
+
+            return isAddNewServer;
+        }
+
+        void LoadServers()
+        {
+            string rawData = Properties.Settings.Default.Servers;
 
             servers = new List<string>();
-            List<string> serv = new List<string>();
+
+            List<string> serverList;
 
             try
             {
-                serv = JsonConvert.DeserializeObject<List<string>>(raw_data);
-                if (serv == null)
+                serverList = JsonConvert.DeserializeObject<List<string>>(rawData);
+                if (serverList == null)
                 {
                     return;
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("AddServer fail: " + e);
+                Debug.WriteLine("Read server list in settings fail: " + e);
                 return;
             }
 
-            List<string> validServers = new List<string>();
-            foreach (var s in serv)
+            // make sure every server config can be parsed
+            for(var i = serverList.Count - 1; i >= 0; i--)
             {
-                if (IsValidServer(s))
+                try
                 {
-                    validServers.Add(s);
+                    var config = Lib.Utils.Base64Decode(serverList[i]);
+                    var obj = JObject.Parse(config);
+                    if (obj == null)
+                    {
+                        serverList.RemoveAt(i);
+                    }
+                }
+                catch
+                {
+                    serverList.RemoveAt(i);
                 }
             }
-            servers = validServers;
+
+            servers = serverList;
         }
 
-        bool IsValidServer(string b64ConfigString)
+        public ReadOnlyCollection<string> GetAllServers()
         {
-            try
-            {
-                var config = Lib.Utils.Base64Decode(b64ConfigString);
-                var obj = JObject.Parse(config);
-                return true;
-            }
-            catch { }
-            return false;
-        }
-
-        public List<string> GetAllServers()
-        {
-            return servers;
+            return servers.AsReadOnly();
         }
 
         public string GetServer(int index)
         {
-            if (GetServeNum() == 0
+            if (GetServerCount() == 0
                 || index < 0
-                || index >= GetServeNum())
+                || index >= GetServerCount())
             {
                 return string.Empty;
             }
@@ -417,14 +396,14 @@ namespace V2RayGCon.Service
 
         public void ActivateServer(int index)
         {
-            _SelectedServerIndex = index;
+            _selectedServerIndex = index;
             OnRequireCoreRestart?.Invoke(this, null);
             OnSettingChange?.Invoke(this, null);
         }
 
         public bool ReplaceServer(string b64ConfigString, int replaceIndex)
         {
-            if (replaceIndex < 0 || replaceIndex >= GetServeNum())
+            if (replaceIndex < 0 || replaceIndex >= GetServerCount())
             {
                 return AddServer(b64ConfigString);
             }
@@ -432,7 +411,7 @@ namespace V2RayGCon.Service
             servers[replaceIndex] = b64ConfigString;
             SaveServers();
 
-            if (replaceIndex == _SelectedServerIndex)
+            if (replaceIndex == _selectedServerIndex)
             {
                 OnRequireCoreRestart?.Invoke(this, null);
             }
