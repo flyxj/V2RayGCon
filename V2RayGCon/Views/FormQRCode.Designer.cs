@@ -57,20 +57,24 @@
             // 
             // cboxServList
             // 
-            resources.ApplyResources(this.cboxServList, "cboxServList");
             this.cboxServList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxServList.FormattingEnabled = true;
+            this.cboxServList.Items.AddRange(new object[] {
+            resources.GetString("cboxServList.Items"),
+            resources.GetString("cboxServList.Items1"),
+            resources.GetString("cboxServList.Items2")});
+            resources.ApplyResources(this.cboxServList, "cboxServList");
             this.cboxServList.Name = "cboxServList";
             this.cboxServList.SelectedIndexChanged += new System.EventHandler(this.cboxServList_SelectedIndexChanged);
             // 
             // cboxLinkType
             // 
-            resources.ApplyResources(this.cboxLinkType, "cboxLinkType");
             this.cboxLinkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxLinkType.FormattingEnabled = true;
             this.cboxLinkType.Items.AddRange(new object[] {
             resources.GetString("cboxLinkType.Items"),
             resources.GetString("cboxLinkType.Items1")});
+            resources.ApplyResources(this.cboxLinkType, "cboxLinkType");
             this.cboxLinkType.Name = "cboxLinkType";
             this.cboxLinkType.SelectedIndexChanged += new System.EventHandler(this.cboxLinkType_SelectedIndexChanged);
             // 

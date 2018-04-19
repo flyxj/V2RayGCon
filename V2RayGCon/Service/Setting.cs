@@ -321,6 +321,32 @@ namespace V2RayGCon.Service
             return isAddNewServer;
         }
 
+        public List<string> GetAllAliases()
+        {
+            var alias = new List<string>();
+
+            for (int i = 0; i < servers.Count; i++)
+            {
+                try
+                {
+                    var configString = Lib.Utils.Base64Decode(servers[i]);
+                    var config = JObject.Parse(configString);
+                    var name = Lib.Utils.GetStrFromJToken(config, "v2raygcon.alias");
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        alias.Add(string.Join(".", i + 1, 
+                            Lib.Utils.CutString(name,10)));
+                        continue;
+                    }
+
+                }
+                catch { }
+                alias.Add(string.Join(".", i + 1,I18N("Empty")));
+            }
+
+            return alias;
+        }
+
         void LoadServers()
         {
             string rawData = Properties.Settings.Default.Servers;

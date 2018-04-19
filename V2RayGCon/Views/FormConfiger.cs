@@ -1,52 +1,165 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using ScintillaNET;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using System.IO;
-using ScintillaNET;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
     public partial class FormConfiger : Form
     {
-        JObject configTemplate, configEditing, configDefault;
-        int perSectionIndex, perServIndex;
-
-        Dictionary<int, string> sectionTable, ssrMethodTable;
-        int sectionSeparator;
-        Service.Setting settings;
-        Scintilla tboxConfig;
-
-        public FormConfiger()
+        #region Sigleton
+        static FormConfiger _instant;
+        public static FormConfiger GetForm()
         {
-            settings = Service.Setting.Instance;
+            if (_instant == null || _instant.IsDisposed)
+            {
+                _instant = new FormConfiger();
+            }
+            return _instant;
+        }
+        #endregion
+
+        // DataBinding
+        Controller.Configer.Configer configer;
+
+        Service.Setting setting;
+        Scintilla scintilla;
+
+        delegate void UpdateServerListDelegate(int index);
+
+        FormConfiger()
+        {
+            setting = Service.Setting.Instance;
 
             InitializeComponent();
+            InitCboxConfigSections();
             InitScintilla();
-            InitForm();
+            InitDataBinding();
+            UpdateServerList(setting.curEditingIndex);
+
+            this.FormClosed += (s, a) =>
+            {
+                setting.OnSettingChange -= SettingChange;
+            };
 
             this.Show();
 
+            setting.OnSettingChange += SettingChange;
         }
+
+        void InitCboxConfigSections() {
+            cboxConfigSection.Items.Clear();
+
+            var sections = Model.Table.configSections;
+            foreach(var section in sections)
+            {
+                cboxConfigSection.Items.Add(section.Value);
+            }
+            cboxConfigSection.SelectedIndex = 0;
+
+        }
+
+        void SettingChange(object sender, EventArgs args)
+        {
+            UpdateServerListDelegate updater =
+                new UpdateServerListDelegate(UpdateServerList);
+            cboxServList.Invoke(updater, -1);
+        }
+
+        #region DataBinding
+        void InitDataBinding()
+        {
+            configer = new Controller.Configer.Configer();
+            BindDataVmessClient();
+            BindDataSSRClient();
+            BindDataStreamClient();
+            BindDataEditor();
+        }
+
+        void BindDataEditor()
+        {
+            // bind scintilla
+            var editor = configer.editor;
+
+            var bs = new BindingSource();
+            bs.DataSource = editor;
+
+            scintilla.DataBindings.Add("Text", bs, nameof(editor.content));
+
+            cboxConfigSection.DataBindings.Add(
+                nameof(cboxConfigSection.SelectedIndex),
+                bs,
+                nameof(editor.curSection),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        void BindDataStreamClient()
+        {
+            var streamClient = configer.streamClient;
+            var bs = new BindingSource();
+            bs.DataSource = streamClient;
+            tboxKCPType.DataBindings.Add("Text", bs, nameof(streamClient.kcpType));
+            tboxWSPath.DataBindings.Add("Text", bs, nameof(streamClient.wsPath));
+            cboxStreamSecurity.DataBindings.Add(
+                nameof(cboxStreamSecurity.SelectedIndex),
+                bs,
+                nameof(streamClient.tls),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        void BindDataSSRClient()
+        {
+            var ssrClient = configer.ssrClient;
+
+            var bs = new BindingSource();
+            bs.DataSource = ssrClient;
+
+            tboxSSREmail.DataBindings.Add("Text", bs, nameof(ssrClient.email));
+            tboxSSRAddr.DataBindings.Add("Text", bs, nameof(ssrClient.addr));
+            tboxSSRPass.DataBindings.Add("Text", bs, nameof(ssrClient.pass));
+
+            cboxSSRMethod.DataBindings.Add(
+                nameof(cboxSSRMethod.SelectedIndex),
+                bs,
+                nameof(ssrClient.method),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            cboxSSRClientOTA.DataBindings.Add(
+                nameof(cboxSSRClientOTA.Checked),
+                bs,
+                nameof(ssrClient.OTA),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+        }
+
+        void BindDataVmessClient()
+        {
+            var vmessClient = configer.vmessClient;
+            var bsVmessClient = new BindingSource();
+            bsVmessClient.DataSource = vmessClient;
+
+            tboxVMessID.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.ID));
+            tboxVMessLevel.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.level));
+            tboxVMessAid.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.altID));
+            tboxVMessIPaddr.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.addr));
+        }
+
+        #endregion
 
         void InitScintilla()
         {
-            tboxConfig = new Scintilla();
-            panelScintilla.Controls.Add(tboxConfig);
+            scintilla = new Scintilla();
+            panelScintilla.Controls.Add(scintilla);
 
-            tboxConfig.Dock = DockStyle.Fill;
-            tboxConfig.WrapMode = WrapMode.None;
-            tboxConfig.IndentationGuides = IndentView.LookBoth;
+            scintilla.Dock = DockStyle.Fill;
+            scintilla.WrapMode = WrapMode.None;
+            scintilla.IndentationGuides = IndentView.LookBoth;
 
-            var scintilla = tboxConfig;
             // Configure the JSON lexer styles
             scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 11;
@@ -97,376 +210,60 @@ namespace V2RayGCon.Views
             this.Close();
         }
 
-        bool CheckValid()
-        {
-            try
-            {
-                if (perSectionIndex >= sectionSeparator)
-                {
-                    JArray.Parse(tboxConfig.Text);
-                }
-                else
-                {
-                    JObject.Parse(tboxConfig.Text);
-                }
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        bool Confirm(string content)
-        {
-            return Lib.Utils.Confirm(content);
-        }
-
-        void ShowConfigSection(int sectionIndex)
-        {
-            // Debug.WriteLine("showConfigById: " + selIdx);
-
-            if (sectionIndex == 0)
-            {
-                tboxConfig.Text = configEditing.ToString();
-                return;
-            }
-
-            var part = configEditing[sectionTable[sectionIndex]];
-            if (part == null)
-            {
-                if (sectionIndex >= sectionSeparator)
-                {
-                    part = new JArray();
-                }
-                else
-                {
-                    part = new JObject();
-                }
-                configEditing[sectionTable[sectionIndex]] = part;
-            }
-            tboxConfig.Text = part.ToString();
-            UpdateElement();
-        }
-
-        void SaveSectionChanges()
-        {
-            var content = tboxConfig.Text;
-            if (perSectionIndex >= sectionSeparator)
-            {
-                configEditing[sectionTable[perSectionIndex]] =
-                    JArray.Parse(content);
-                return;
-            }
-            if (perSectionIndex == 0)
-            {
-                configEditing = JObject.Parse(content);
-                return;
-            }
-            configEditing[sectionTable[perSectionIndex]] =
-                JObject.Parse(content);
-        }
-
-        bool CheckSectionChange()
-        {
-            var content = tboxConfig.Text;
-
-            if (perSectionIndex >= sectionSeparator)
-            {
-                return !(JToken.DeepEquals(JArray.Parse(content),
-                    configEditing[sectionTable[perSectionIndex]]));
-            }
-
-            var obj = JObject.Parse(content);
-
-            // config.json
-            if (perSectionIndex == 0)
-            {
-                return !(JToken.DeepEquals(obj, configEditing));
-            }
-
-            return !(JToken.DeepEquals(obj,
-                configEditing[sectionTable[perSectionIndex]]));
-        }
-
-        private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int curSectionIndex = cboxConfigSection.SelectedIndex;
-            // Debug.WriteLine("Select id:" + selIdx);
-
-            if (curSectionIndex != perSectionIndex)
-            {
-                if (CheckValid())
-                {
-                    if (CheckSectionChange() && Confirm(I18N("EditorSaveChange")))
-                    {
-                        SaveSectionChanges();
-                    }
-
-                    perSectionIndex = curSectionIndex;
-                    ShowConfigSection(curSectionIndex);
-                }
-                else
-                {
-                    if (Confirm(I18N("CannotParseJson")))
-                    {
-                        perSectionIndex = curSectionIndex;
-                        ShowConfigSection(curSectionIndex);
-                    }
-                    else
-                    {
-                        cboxConfigSection.SelectedIndex = perSectionIndex;
-                        return;
-                    }
-                }
-            }
-
-            UpdateElement();
-        }
-
         void btnSaveChanges_Click(object sender, EventArgs e)
         {
-            string content = tboxConfig.Text;
-
-            try
-            {
-                if (perSectionIndex >= sectionSeparator)
-                {
-                    configEditing[sectionTable[perSectionIndex]] =
-                        JArray.Parse(content);
-                }
-                else
-                {
-                    var obj = JObject.Parse(content);
-                    if (perSectionIndex == 0)
-                    {
-                        configEditing = obj;
-                    }
-                    else
-                    {
-                        configEditing[sectionTable[perSectionIndex]] = obj;
-                    }
-                }
-            }
-            catch
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-            }
-
-            UpdateElement();
+            configer.SaveChanges();
         }
 
-        void FillTextBox(TextBox tbox, string perfix, string key)
+
+        private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
-            tbox.Text = Lib.Utils.GetStrFromJToken(configEditing, perfix + key);
-        }
-
-        void FillTextBox(TextBox tbox, string perfix, string keyIP, string keyPort)
-        {
-            string ip = Lib.Utils.GetStrFromJToken(configEditing, perfix + keyIP);
-            string port = Lib.Utils.GetStrFromJToken(configEditing, perfix + keyPort);
-            tbox.Text = string.Join(":", ip, port);
-        }
-
-        void UpdateElement()
-        {
-
-            string perfix;
-
-            // vmess
-            perfix = "outbound.settings.vnext.0.users.0.";
-            FillTextBox(tboxVMessID, perfix, "id");
-            FillTextBox(tboxVMessLevel, perfix, "level");
-            FillTextBox(tboxVMessAid, perfix, "alterId");
-
-            perfix = "outbound.settings.vnext.0.";
-            FillTextBox(tboxVMessIPaddr, perfix, "address", "port");
-
-            // SS outbound.settings.servers.0.
-            perfix = "outbound.settings.servers.0.";
-            FillTextBox(tboxSSREmail, perfix, "email");
-            FillTextBox(tboxSSRPass, perfix, "password");
-            FillTextBox(tboxSSRAddr, perfix, "address", "port");
-
-            bool ssrOTA = Lib.Utils.GetBoolFromJToken(configEditing, perfix + "ota");
-            cboxSSROTA.SelectedIndex = ssrOTA ? 1 : 0;
-
-            string ssrMethod = Lib.Utils.GetStrFromJToken(configEditing, perfix + "method");
-            cboxSSRMethod.SelectedIndex = 0;
-            foreach (var item in ssrMethodTable)
-            {
-                if (item.Value.Equals(ssrMethod))
-                {
-                    cboxSSRMethod.SelectedIndex = item.Key;
-                    break;
-                }
-            }
-
-            // kcp ws tls
-            perfix = "outbound.streamSettings.";
-            FillTextBox(tboxKCPType, perfix, "kcpSettings.header.type");
-            FillTextBox(tboxWSPath, perfix, "wsSettings.path");
-
-            var security = Lib.Utils.GetStrFromJToken(configEditing, perfix + "security");
-            cboxStreamSecurity.SelectedIndex = security.Equals("tls") ? 1 : 0;
-        }
-
-        void SetStreamSecurity()
-        {
-            string sec = cboxStreamSecurity.SelectedIndex == 1 ? "tls" : "";
-            try
-            {
-                configEditing["outbound"]["streamSettings"]["security"] = sec;
-            }
-            catch { }
-            Debug.WriteLine("FormConfiger: can not set stream security!");
-        }
-
-        private void btnDropChanges_Click(object sender, EventArgs e)
-        {
-            tboxConfig.Text =
-                perSectionIndex == 0 ?
-                configEditing.ToString() :
-                configEditing[sectionTable[perSectionIndex]].ToString();
+            configer.DiscardChanges();
         }
 
         private void btnOverwriteServConfig_Click(object sender, EventArgs e)
         {
-            if (CheckSectionChange() && !Confirm(I18N("EditorDiscardChange")))
-            {
-                return;
-            }
-
-            string cfgString = configEditing.ToString();
-            settings.ReplaceServer(Lib.Utils.Base64Encode(cfgString), perServIndex);
-            MessageBox.Show(I18N("Done"));
+            configer.OverwriteServerConfig(cboxServList.SelectedIndex);
         }
 
-        private void btnLoadDefaultConfig_Click(object sender, EventArgs e)
+        private void btnLoadExample_Click(object sender, EventArgs e)
         {
-            string defConfig =
-                perSectionIndex == 0 ?
-                configDefault.ToString() :
-                configDefault[sectionTable[perSectionIndex]]?.ToString();
-
-            if (string.IsNullOrEmpty(defConfig))
-            {
-                MessageBox.Show(I18N("EditorNoExample"));
-            }
-            else
-            {
-                tboxConfig.Text = defConfig;
-            }
+            configer.LoadExample();
         }
 
         private void btnVMessInsertClient_Click(object sender, EventArgs e)
         {
-            string id = tboxVMessID.Text;
-            int level = Lib.Utils.Str2Int(tboxVMessLevel.Text);
-            int aid = Lib.Utils.Str2Int(tboxVMessAid.Text);
-
-            Lib.Utils.TryParseIPAddr(tboxVMessIPaddr.Text, out string ip, out int port);
-
-            JToken o = configTemplate["vmessClient"];
-            o["vnext"][0]["address"] = ip;
-            o["vnext"][0]["port"] = port;
-            o["vnext"][0]["users"][0]["id"] = id;
-            o["vnext"][0]["users"][0]["alterId"] = aid;
-            o["vnext"][0]["users"][0]["level"] = level;
-
-            ModifyOutBoundSetting(o, "vmess");
-
-        }
-
-        void ModifyOutBoundSetting(JToken set, string protocol)
-        {
-            try
-            {
-                configEditing["outbound"]["settings"] = set;
-            }
-            catch
-            {
-                Debug.WriteLine("FormConfiger: can not insert outbound.setting");
-            }
-            try
-            {
-                configEditing["outbound"]["protocol"] = protocol;
-            }
-            catch
-            {
-                Debug.WriteLine("FormConfiger: can not insert outbound.protocol");
-            }
-
-            ShowConfigSection(perSectionIndex);
+            configer.InsertVmessClient();
         }
 
         private void btnSSRInsertClient_Click(object sender, EventArgs e)
         {
-
-            Lib.Utils.TryParseIPAddr(tboxSSRAddr.Text, out string ip, out int port);
-
-            JToken o = configTemplate["ssrClient"];
-            o["servers"][0]["email"] = tboxSSREmail.Text;
-            o["servers"][0]["address"] = ip;
-            o["servers"][0]["port"] = port;
-            o["servers"][0]["method"] = ssrMethodTable[cboxSSRMethod.SelectedIndex];
-            o["servers"][0]["password"] = tboxSSRPass.Text;
-            o["servers"][0]["ota"] = cboxSSROTA.SelectedIndex == 1;
-
-            ModifyOutBoundSetting(o, "shadowsocks");
+            configer.InsertSSRClient();
         }
 
         private void btnStreamInsertKCP_Click(object sender, EventArgs e)
         {
-            try
-            {
-                configEditing["outbound"]["streamSettings"] = configTemplate["kcp"];
-                configEditing["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = tboxKCPType.Text;
-            }
-            catch { }
-            SetStreamSecurity();
-            ShowConfigSection(perSectionIndex);
+            configer.InsertKCP();
         }
 
         private void btnStreamInsertWS_Click(object sender, EventArgs e)
         {
-            try
-            {
-                configEditing["outbound"]["streamSettings"] = configTemplate["ws"];
-                configEditing["outbound"]["streamSettings"]["wsSettings"]["path"] = tboxWSPath.Text;
-            }
-            catch { }
-            SetStreamSecurity();
-            ShowConfigSection(perSectionIndex);
+            configer.InsertWS();
         }
 
         private void btnStreamInsertTCP_Click(object sender, EventArgs e)
         {
-            try
-            {
-                configEditing["outbound"]["streamSettings"] = configTemplate["tcp"];
-            }
-            catch { };
-            SetStreamSecurity();
-            ShowConfigSection(perSectionIndex);
+            configer.InsertTCP();
         }
 
         private void btnVMessGenUUID_Click(object sender, EventArgs e)
         {
-            tboxVMessID.Text = Guid.NewGuid().ToString();
+            configer.vmessClient.ID = Guid.NewGuid().ToString();
         }
 
         private void btnInsertNewServ_Click(object sender, EventArgs e)
         {
-            if (CheckSectionChange() && !Confirm(I18N("EditorDiscardChange")))
-            {
-                return;
-            }
-
-            string cfgString = configEditing.ToString();
-            settings.AddServer(Lib.Utils.Base64Encode(cfgString));
-            MessageBox.Show(I18N("Done"));
+            configer.InsertNewServer();
         }
 
         private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
@@ -474,7 +271,6 @@ namespace V2RayGCon.Views
             if (cboxShowPassWord.Checked == true)
             {
                 tboxSSRPass.PasswordChar = '\0';
-
             }
             else
             {
@@ -482,76 +278,24 @@ namespace V2RayGCon.Views
             }
         }
 
-        JObject LoadServerConfig()
+        void UpdateServerList(int index = -1)
         {
-            JObject o = null;
-            string b64str = settings.GetServer(settings.curEditingIndex);
-            if (!string.IsNullOrEmpty(b64str))
-            {
-                o = JObject.Parse(Lib.Utils.Base64Decode(b64str));
-            }
-
-            if (o == null)
-            {
-                o = JObject.Parse(resData("config_min"));
-                MessageBox.Show(I18N("EditorCannotLoadServerConfig"));
-            }
-
-            return o;
-        }
-
-        void InitForm()
-        {
-            sectionTable = new Dictionary<int, string>
-            {
-                { 0, "config.json"},
-                { 1, "log"},
-                { 2, "api"},
-                { 3, "dns"},
-                { 4, "stats"},
-                { 5, "routing"},
-                { 6, "policy"},
-                { 7, "inbound"},
-                { 8, "outbound"},
-                { 9, "transport"},
-                { 10,"v2raygcon" },
-                { 11,"inboundDetour"},
-                { 12,"outboundDetour"},
-
-            };
-
-            // separate between dictionary or array
-            sectionSeparator = 11;
-
-            ssrMethodTable = new Dictionary<int, string>
-            {
-                { 0,"aes-128-cfb"},
-                { 1,"aes-128-gcm"},
-                { 2,"aes-256-cfb"},
-                { 3,"aes-256-gcm"},
-                { 4,"chacha20"},
-                { 5,"chacha20-ietf"},
-                { 6,"chacha20-poly1305"},
-                { 7,"chacha20-ietf-poly1305"},
-            };
-
-
-            configTemplate = JObject.Parse(resData("config_tpl"));
-            configDefault = JObject.Parse(resData("config_def"));
-            configEditing = LoadServerConfig();
-
+            var oldIndex = index >= 0 ? index : cboxServList.SelectedIndex;
             cboxServList.Items.Clear();
-            for (int i = 0; i < settings.GetServerCount(); i++)
+
+            var aliases = setting.GetAllAliases();
+
+            if (aliases.Count <= 0)
             {
-                cboxServList.Items.Add(i + 1);
+                return;
             }
 
-            perServIndex = settings.curEditingIndex;
-            cboxServList.SelectedIndex = perServIndex;
+            foreach (var alias in aliases)
+            {
+                cboxServList.Items.Add(alias);
+            }
 
-            perSectionIndex = 0;
-            cboxConfigSection.SelectedIndex = perSectionIndex;
-            ShowConfigSection(perSectionIndex);
+            cboxServList.SelectedIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count - 1);
         }
     }
 }

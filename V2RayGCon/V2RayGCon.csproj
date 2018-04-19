@@ -96,12 +96,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Configer\Configer.cs" />
+    <Compile Include="Controller\Configer\Editor.cs" />
+    <Compile Include="Controller\Configer\SSRClient.cs" />
+    <Compile Include="Controller\Configer\StreamClient.cs" />
+    <Compile Include="Controller\Configer\VmessClient.cs" />
+    <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\StringResource.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
+    <Compile Include="Lib\UI.cs" />
     <Compile Include="Model\DataEvent.cs" />
     <Compile Include="Model\Enum.cs" />
+    <Compile Include="Model\Table.cs" />
     <Compile Include="Resource\Resx\Data.Designer.cs">
       <DependentUpon>Data.resx</DependentUpon>
       <AutoGen>True</AutoGen>

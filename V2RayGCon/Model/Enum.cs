@@ -17,5 +17,13 @@ namespace V2RayGCon.Model
             ProxyAll,
             ProxyPAC,
         }
+
+        public enum FormLocations
+        {
+            TopLeft,
+            BottomLeft,
+            TopRight,
+            BottomRight,
+        }
     }
 }

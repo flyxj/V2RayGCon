@@ -270,6 +270,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 (Empty) 的本地化字符串。
+        /// </summary>
+        internal static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please download v2ray-core first!（checkout systray icon&apos;s popup menu.） 的本地化字符串。
         /// </summary>
         internal static string ExeNotFound {
@@ -428,6 +437,16 @@ namespace V2RayGCon.Resource.Resx {
         internal static string WarnIENotSupportPac {
             get {
                 return ResourceManager.GetString("WarnIENotSupportPac", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Another instance is already running.
+        ///Are you sure to launch another one? 的本地化字符串。
+        /// </summary>
+        internal static string WarnMultipleInstance {
+            get {
+                return ResourceManager.GetString("WarnMultipleInstance", resourceCulture);
             }
         }
         

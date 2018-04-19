@@ -248,4 +248,11 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="PleaseCheckConfig" xml:space="preserve">
     <value>Can not parse json! Please check current config.</value>
   </data>
+  <data name="WarnMultipleInstance" xml:space="preserve">
+    <value>Another instance is already running.
+Are you sure to launch another one?</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>(Empty)</value>
+  </data>
 </root>

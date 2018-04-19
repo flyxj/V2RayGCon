@@ -12,12 +12,24 @@ namespace V2RayGCon.Views
 {
     public partial class FormLog : Form
     {
+        #region Sigleton
+        static FormLog _instant;
+        public static FormLog GetForm()
+        {
+            if (_instant == null || _instant.IsDisposed)
+            {
+                _instant = new FormLog();
+            }
+            return _instant;
+        }
+        #endregion
+
         Service.Setting setting;
 
         int maxNumberLines;
         delegate void PushLogDelegate(string content);
 
-        public FormLog()
+        FormLog()
         {
             setting = Service.Setting.Instance;
             maxNumberLines = setting.maxLogLines;
@@ -25,6 +37,9 @@ namespace V2RayGCon.Views
             InitializeComponent();
 
             this.FormClosed += (s, e) => setting.OnLog -= LogReceiver;
+
+            Lib.UI.SetFormLocation<FormLog>(this, Model.Enum.FormLocations.BottomLeft);
+
             this.Show();
             setting.OnLog += LogReceiver;
         }

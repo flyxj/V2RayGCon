@@ -1,14 +1,4 @@
-﻿
-// #define DBG_FORM_CONFIG
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -17,12 +7,6 @@ namespace V2RayGCon.Service
     class Notifier
     {
         NotifyIcon ni;
-
-        Views.FormLog formLog = null;
-        Views.FormMain formMain = null;
-        Views.FormConfiger formConfiger = null;
-        Views.FormQRCode formQRCode = null;
-
         Core core;
         Setting setting;
         Download downloader = null;
@@ -42,13 +26,12 @@ namespace V2RayGCon.Service
             }
             else
             {
-                ShowFormMain();
+                Views.FormMain.GetForm();
             }
 #endif
 
 #if DEBUG
-            InsertDebugMenu();
-            This_function_do_some_tedious_stuff();
+            EnableDebug();
 #endif
         }
 
@@ -64,73 +47,40 @@ namespace V2RayGCon.Service
             };
 
             ContextMenu ctxm = ni.ContextMenu;
-#if !DBG_FORM_CONFIG
-            Lib.Utils.FindMenuItemByText(ctxm, I18N("ShowMainWin")).PerformClick();
-            Lib.Utils.FindMenuItemByText(ctxm, I18N("ShowLogWin")).PerformClick();
-            // Lib.Utils.FindMenuItemByText(ctxm, "Add dummy server1").PerformClick();
-#else
-            setting.curEditingIndex = 0;
-            ShowFormConfigEditor();
-#endif
+
+            bool debug_form_config = false;
+
+            if (debug_form_config)
+            {
+                setting.curEditingIndex = 0;
+                Views.FormConfiger.GetForm();
+            }
+            else
+            {
+                Views.FormMain.GetForm();
+                Views.FormLog.GetForm();
+            }
         }
 
-        void InsertDebugMenu()
+        void EnableDebug()
         {
             var mis = ni.ContextMenu.MenuItems;
             mis.Add(0, new MenuItem("-"));
             mis.Add(0, CreateDebugMenu());
+
+            This_function_do_some_tedious_stuff();
         }
 
         MenuItem CreateDebugMenu()
         {
             return new MenuItem("Debug", new MenuItem[]{
-                new MenuItem("QRCode",new MenuItem[]{
-                    new MenuItem("test ScanRect", (s,a)=>{
-                        void success(string link)
-                        {
-                            Debug.WriteLine("Got Link: {0}",link);
-                        }
-
-                        void fail()
-                        {
-                            Debug.WriteLine("no link found!");
-                        }
-
-                        Lib.QRCode.QRCode.ScanQRCode(success,fail);
-
-                    }),
-                }),
-
-                new MenuItem("Show download fail!",(s,a)=>{
-                    MessageBox.Show( I18N("DLFail"));
-                }),
 
                 new MenuItem("Add dummy server1",(s,a)=>{
                     setting.ImportLinks(resData("DummyServ1"));
                     Debug.WriteLine("Done!");
                 }),
-
                 new MenuItem("Add dummy server2",(s,a)=>{
                     setting.ImportLinks(resData("DummyServ2"));
-                    Debug.WriteLine("Done!");
-                }),
-                new MenuItem("Show all servers",(s,a)=>{
-                    Debug.WriteLine("servers: ",Properties.Settings.Default.Servers);
-                    Debug.WriteLine("Done!");
-                }),
-                new MenuItem("Test [en/de]code vmess",(s,a)=>{
-                    string encode_vmess = resData("DummyServ1");
-
-                    string plain_vmess = Lib.Utils.Base64Decode(
-                        Lib.Utils.LinkBody(
-                            encode_vmess,
-                            Model.Enum.LinkTypes.vmess));
-
-                    Model.Vmess vmess = JsonConvert.DeserializeObject<Model.Vmess>(plain_vmess);
-                    string duplicated_vmess = Lib.Utils.Vmess2VmessLink(vmess);
-;
-                    Debug.WriteLine("org: " + encode_vmess);
-                    Debug.WriteLine("new: " + duplicated_vmess);
                     Debug.WriteLine("Done!");
                 }),
             });
@@ -139,55 +89,8 @@ namespace V2RayGCon.Service
 #endif
         #endregion
 
-        void ShowFormConfigEditor()
-        {
-            if (formConfiger != null)
-            {
-                return;
-            }
-
-            formConfiger = new Views.FormConfiger();
-            formConfiger.FormClosed += (s, a) => formConfiger = null;
-        }
-
-        void ShowFormMain()
-        {
-            if (formMain != null)
-            {
-                return;
-            }
-
-            formMain = new Views.FormMain();
-            formMain.FormClosed += (s, a) => formMain = null;
-            formMain.ShowFormConfiger += (s, a) => ShowFormConfigEditor();
-            formMain.ShowFormQRCode += (s, a) =>
-            {
-                if (formQRCode != null)
-                {
-                    return;
-                }
-
-                formQRCode = new Views.FormQRCode();
-                formQRCode.FormClosed += (fqrcs, fqrca) => formQRCode = null;
-
-            };
-
-            formMain.ShowFormLog += (s, a) =>
-            {
-                if (formLog != null)
-                {
-                    return;
-                }
-
-                formLog = new Views.FormLog();
-                formLog.FormClosed += (fls, fla) => formLog = null;
-            };
-
-        }
-
         void UpdateNotifyText()
         {
-
             var proxy = string.Format("{0}://{1}",
                 setting.proxyType,
                 setting.proxyAddr);
@@ -209,7 +112,7 @@ namespace V2RayGCon.Service
             {
                 if (a.Button == MouseButtons.Left)
                 {
-                    ShowFormMain();
+                    Views.FormMain.GetForm();
                 }
             };
 #endif
@@ -255,17 +158,9 @@ namespace V2RayGCon.Service
         {
             return new ContextMenu(new MenuItem[] {
 
-                new MenuItem(I18N("ShowMainWin"),(s,a)=>ShowFormMain()),
+                new MenuItem(I18N("ShowMainWin"),(s,a)=>Views.FormMain.GetForm()),
 
-                new MenuItem(I18N("ShowLogWin"),(s,a)=>{
-
-                    if(formLog != null){
-                        return;
-                    }
-
-                    formLog = new Views.FormLog();
-                    formLog.FormClosed += (fms, fma) => formLog = null;
-                }),
+                new MenuItem(I18N("ShowLogWin"),(s,a)=>Views.FormLog.GetForm()),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
                     Lib.QRCode.QRCode.ScanQRCode(
@@ -285,7 +180,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
-                    Lib.Utils.ShowMsgboxSuccFail(
+                    Lib.UI.ShowMsgboxSuccFail(
                         setting.ImportLinks(links),
                         I18N("ImportLinkSuccess"),
                         I18N("ImportLinkFail"));
@@ -321,7 +216,7 @@ namespace V2RayGCon.Service
                     )),
 
                 new MenuItem(I18N("Exit"),(s,a)=>{
-                    if(Lib.Utils.Confirm(I18N("ConfirmExitApp"))){
+                    if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){
                         ni.Visible = false;
                         core.StopCore();
                         Application.Exit();

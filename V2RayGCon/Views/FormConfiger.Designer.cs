@@ -48,9 +48,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cboxSSRClientOTA = new System.Windows.Forms.CheckBox();
             this.btnSSRInsertClient = new System.Windows.Forms.Button();
-            this.cboxSSROTA = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.cboxSSRMethod = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cboxShowPassWord = new System.Windows.Forms.CheckBox();
@@ -110,27 +109,15 @@
             this.btnOverwriteConfig.UseVisualStyleBackColor = true;
             this.btnOverwriteConfig.Click += new System.EventHandler(this.btnOverwriteServConfig_Click);
             // 
-            // cboxConfigPart
+            // cboxConfigSection
             // 
-            resources.ApplyResources(this.cboxConfigSection, "cboxConfigPart");
             this.cboxConfigSection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cboxConfigSection, "cboxConfigSection");
             this.cboxConfigSection.FormattingEnabled = true;
             this.cboxConfigSection.Items.AddRange(new object[] {
-            resources.GetString("cboxConfigPart.Items"),
-            resources.GetString("cboxConfigPart.Items1"),
-            resources.GetString("cboxConfigPart.Items2"),
-            resources.GetString("cboxConfigPart.Items3"),
-            resources.GetString("cboxConfigPart.Items4"),
-            resources.GetString("cboxConfigPart.Items5"),
-            resources.GetString("cboxConfigPart.Items6"),
-            resources.GetString("cboxConfigPart.Items7"),
-            resources.GetString("cboxConfigPart.Items8"),
-            resources.GetString("cboxConfigPart.Items9"),
-            resources.GetString("cboxConfigPart.Items10"),
-            resources.GetString("cboxConfigPart.Items11"),
-            resources.GetString("cboxConfigPart.Items12")});
-            this.cboxConfigSection.Name = "cboxConfigPart";
-            this.cboxConfigSection.SelectedIndexChanged += new System.EventHandler(this.cboxConfigSection_SelectedIndexChanged);
+            resources.GetString("cboxConfigSection.Items"),
+            resources.GetString("cboxConfigSection.Items1")});
+            this.cboxConfigSection.Name = "cboxConfigSection";
             // 
             // tabControl1
             // 
@@ -143,14 +130,13 @@
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.groupBox1);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.btnVMessInsertClient);
             this.groupBox1.Controls.Add(this.btnVMessGenUUID);
             this.groupBox1.Controls.Add(this.tboxVMessIPaddr);
@@ -161,6 +147,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.tboxVMessID);
             this.groupBox1.Controls.Add(this.label1);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -220,17 +207,15 @@
             // 
             // tabPage2
             // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.groupBox3);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
-            resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.cboxSSRClientOTA);
             this.groupBox3.Controls.Add(this.btnSSRInsertClient);
-            this.groupBox3.Controls.Add(this.cboxSSROTA);
-            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.cboxSSRMethod);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.cboxShowPassWord);
@@ -241,8 +226,15 @@
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.tboxSSREmail);
             this.groupBox3.Controls.Add(this.label5);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // cboxSSRClientOTA
+            // 
+            resources.ApplyResources(this.cboxSSRClientOTA, "cboxSSRClientOTA");
+            this.cboxSSRClientOTA.Name = "cboxSSRClientOTA";
+            this.cboxSSRClientOTA.UseVisualStyleBackColor = true;
             // 
             // btnSSRInsertClient
             // 
@@ -251,23 +243,8 @@
             this.btnSSRInsertClient.UseVisualStyleBackColor = true;
             this.btnSSRInsertClient.Click += new System.EventHandler(this.btnSSRInsertClient_Click);
             // 
-            // cboxSSROTA
-            // 
-            resources.ApplyResources(this.cboxSSROTA, "cboxSSROTA");
-            this.cboxSSROTA.FormattingEnabled = true;
-            this.cboxSSROTA.Items.AddRange(new object[] {
-            resources.GetString("cboxSSROTA.Items"),
-            resources.GetString("cboxSSROTA.Items1")});
-            this.cboxSSROTA.Name = "cboxSSROTA";
-            // 
-            // label10
-            // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
-            // 
             // cboxSSRMethod
             // 
-            resources.ApplyResources(this.cboxSSRMethod, "cboxSSRMethod");
             this.cboxSSRMethod.FormattingEnabled = true;
             this.cboxSSRMethod.Items.AddRange(new object[] {
             resources.GetString("cboxSSRMethod.Items"),
@@ -278,6 +255,7 @@
             resources.GetString("cboxSSRMethod.Items5"),
             resources.GetString("cboxSSRMethod.Items6"),
             resources.GetString("cboxSSRMethod.Items7")});
+            resources.ApplyResources(this.cboxSSRMethod, "cboxSSRMethod");
             this.cboxSSRMethod.Name = "cboxSSRMethod";
             // 
             // label9
@@ -329,14 +307,13 @@
             // 
             // tabPage3
             // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.groupBox2);
+            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.cboxStreamSecurity);
             this.groupBox2.Controls.Add(this.btnStreamInsertTCP);
             this.groupBox2.Controls.Add(this.textBox3);
@@ -348,16 +325,17 @@
             this.groupBox2.Controls.Add(this.btnStreamInsertKCP);
             this.groupBox2.Controls.Add(this.tboxKCPType);
             this.groupBox2.Controls.Add(this.label11);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
             // cboxStreamSecurity
             // 
-            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
             this.cboxStreamSecurity.FormattingEnabled = true;
             this.cboxStreamSecurity.Items.AddRange(new object[] {
             resources.GetString("cboxStreamSecurity.Items"),
             resources.GetString("cboxStreamSecurity.Items1")});
+            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
             this.cboxStreamSecurity.Name = "cboxStreamSecurity";
             // 
             // btnStreamInsertTCP
@@ -429,14 +407,14 @@
             resources.ApplyResources(this.btnClearModify, "btnClearModify");
             this.btnClearModify.Name = "btnClearModify";
             this.btnClearModify.UseVisualStyleBackColor = true;
-            this.btnClearModify.Click += new System.EventHandler(this.btnDropChanges_Click);
+            this.btnClearModify.Click += new System.EventHandler(this.btnDiscardChanges_Click);
             // 
             // btnLoadDefault
             // 
             resources.ApplyResources(this.btnLoadDefault, "btnLoadDefault");
             this.btnLoadDefault.Name = "btnLoadDefault";
             this.btnLoadDefault.UseVisualStyleBackColor = true;
-            this.btnLoadDefault.Click += new System.EventHandler(this.btnLoadDefaultConfig_Click);
+            this.btnLoadDefault.Click += new System.EventHandler(this.btnLoadExample_Click);
             // 
             // label15
             // 
@@ -511,8 +489,6 @@
         private System.Windows.Forms.Button btnVMessGenUUID;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnSSRInsertClient;
-        private System.Windows.Forms.ComboBox cboxSSROTA;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox cboxSSRMethod;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox cboxShowPassWord;
@@ -525,11 +501,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ComboBox cboxStreamSecurity;
         private System.Windows.Forms.Button btnStreamInsertTCP;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button btnStreamInsertWS;
         private System.Windows.Forms.TextBox tboxWSPath;
         private System.Windows.Forms.Label label12;
@@ -539,5 +512,9 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox cboxServList;
         private System.Windows.Forms.Panel panelScintilla;
+        private System.Windows.Forms.CheckBox cboxSSRClientOTA;
+        private System.Windows.Forms.ComboBox cboxStreamSecurity;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label13;
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -10,82 +7,109 @@ namespace V2RayGCon.Views
 {
     public partial class FormQRCode : Form
     {
+        #region Sigleton
+        static FormQRCode _instant;
+        public static FormQRCode GetForm()
+        {
+            if (_instant == null || _instant.IsDisposed)
+            {
+                _instant = new FormQRCode();
+            }
+            return _instant;
+        }
+        #endregion
 
         Service.Setting setting;
-        ReadOnlyCollection<string> servers;
-        int index, linkType;
-        Point formSize;
+        int servIndex, linkType;
 
-        public FormQRCode()
+        delegate void UpdateServerListDelegate(int index);
+
+
+        FormQRCode()
         {
             InitializeComponent();
             setting = Service.Setting.Instance;
-            formSize = new Point(this.Width, this.Height);
 
-            UpdateServList();
+            servIndex = 0;
+            linkType = 0;
+
+            UpdateServerList();
+
+            cboxLinkType.SelectedIndex = linkType;
+
+            this.FormClosed += (s, a) =>
+            {
+                setting.OnSettingChange -= SettingChange;
+            };
+
             this.Show();
+
+            setting.OnSettingChange += SettingChange;
         }
 
-        void UpdateServList()
+        void SettingChange(object sender, EventArgs args)
         {
-            index = 0;
-            linkType = 0;
-            servers = setting.GetAllServers();
-            cboxServList.Items.Clear();
-            int count = 1;
-            foreach (var s in servers)
-            {
-                cboxServList.Items.Add(count++);
-            }
-            if (cboxServList.Items.Count > 0)
-            {
-                cboxServList.SelectedIndex = 0;
-            }
-            cboxLinkType.SelectedIndex = 0;
+            UpdateServerListDelegate updater =
+                new UpdateServerListDelegate(UpdateServerList);
+            cboxServList.Invoke(updater, -1);
+        }
 
+        void UpdateServerList(int index = -1)
+        {
+            var oldIndex = index < 0 ? cboxServList.SelectedIndex : index;
+
+            cboxServList.Items.Clear();
+
+            var aliases = setting.GetAllAliases();
+
+            if (aliases.Count <= 0)
+            {
+                return;
+            }
+
+            foreach (var alias in aliases)
+            {
+                cboxServList.Items.Add(alias);
+            }
+
+            servIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count - 1);
+            cboxServList.SelectedIndex = servIndex;
+            ShowQRCode();
         }
 
         void ShowQRCode()
         {
             picQRCode.InitialImage = null;
 
-            if (servers.Count <= 0)
+            var server = setting.GetServer(servIndex);
+            if (string.IsNullOrEmpty(server))
             {
                 return;
             }
 
-            var server = servers[index];
-
-            if (!string.IsNullOrEmpty(server))
+            string link = string.Empty;
+            if (linkType == 0)
             {
-                string link = string.Empty;
-                if (linkType == 0)
+                string configString = Lib.Utils.Base64Decode(server);
+                var vmess = Lib.Utils.ConfigString2Vmess(configString);
+                link = Lib.Utils.Vmess2VmessLink(vmess);
+                if (!string.IsNullOrEmpty(link))
                 {
-                    string configString = Lib.Utils.Base64Decode(server);
-                    var vmess = Lib.Utils.ConfigString2Vmess(configString);
-                    link = Lib.Utils.Vmess2VmessLink(vmess);
-                    if (!string.IsNullOrEmpty(link))
-                    {
-                        picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link,180);
-                    }
-                }
-                else
-                {
-                    link = resData("V2RayLinkPerfix") + server;
-                    picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link,320);
+                    picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link, 180);
                 }
             }
+            else
+            {
+                link = resData("V2RayLinkPerfix") + server;
+                picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link, 320);
+            }
+
         }
 
         private void cboxLinkType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            linkType = Lib.Utils.Clamp(cboxLinkType.SelectedIndex, 0, 1);
+            linkType = cboxLinkType.SelectedIndex;
             ShowQRCode();
-            int delta;
-            // delta = linkType == 0 ? 0 : 320 - 320;
-            delta = 0;
-            this.Width = formSize.X + delta;
-            this.Height = formSize.Y + delta;
         }
 
         private void btnSavePic_Click(object sender, EventArgs e)
@@ -101,7 +125,6 @@ namespace V2RayGCon.Views
             {
                 if ((myStream = saveFileDialog1.OpenFile()) != null)
                 {
-                    // Code to write the stream goes here.
                     picQRCode.Image.Save(myStream, System.Drawing.Imaging.ImageFormat.Png);
                     myStream.Close();
                 }
@@ -111,7 +134,7 @@ namespace V2RayGCon.Views
 
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            index = Lib.Utils.Clamp(cboxServList.SelectedIndex, 0, servers.Count);
+            servIndex = cboxServList.SelectedIndex;
             ShowQRCode();
         }
     }

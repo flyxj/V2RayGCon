@@ -1,17 +1,15 @@
 ﻿using Ionic.Zip;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Resources;
-using System.Windows.Forms;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Management;
 using System.Linq;
-using static V2RayGCon.Lib.StringResource;
+using System.Management;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Lib
 {
@@ -205,18 +203,6 @@ namespace V2RayGCon.Lib
             return false;
         }
 
-        public static void ShowMsgboxSuccFail(bool success, string msgSuccess, string msgFail)
-        {
-            if (success)
-            {
-                MessageBox.Show(msgSuccess);
-            }
-            else
-            {
-                MessageBox.Show(msgFail);
-            };
-        }
-
         public static void KillProcessAndChildrens(int pid)
         {
             ManagementObjectSearcher processSearcher = new ManagementObjectSearcher
@@ -260,17 +246,7 @@ namespace V2RayGCon.Lib
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-        public static bool Confirm(string content)
-        {
-            var confirm = MessageBox.Show(
-                content,
-                I18N("Confirm"),
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
 
-            return confirm == DialogResult.Yes;
-        }
 
         public static string LinkAddPerfix(string b64Content, Model.Enum.LinkTypes type)
         {
@@ -309,10 +285,10 @@ namespace V2RayGCon.Lib
             try
             {
                 string plain_text = Base64Decode(base64_text);
-                var vmess=JsonConvert.DeserializeObject<Model.Vmess>(plain_text);
+                var vmess = JsonConvert.DeserializeObject<Model.Vmess>(plain_text);
                 if (!string.IsNullOrEmpty(vmess.add)
                     && !string.IsNullOrEmpty(vmess.port)
-                    && !string.IsNullOrEmpty(vmess.aid)) 
+                    && !string.IsNullOrEmpty(vmess.aid))
                 {
 
                     return vmess;
@@ -347,69 +323,6 @@ namespace V2RayGCon.Lib
             }
             return string.Empty;
         }
-
-#if DEBUG
-        public static MenuItem FindSubMenuItemByText(MenuItem parent, string text)
-        {
-            for (int a = 0; a < parent.MenuItems.Count; a++)
-            {
-
-                MenuItem item = parent.MenuItems[a];
-                if (item != null)
-                {
-                    // Debug.WriteLine("FSM: " + a + " name:" +item.Text);
-                    if (item.Text == text)
-                    {
-                        return item;
-                    }
-                    else
-                    {
-                        // running reursively
-                        if (item.MenuItems.Count > 0)
-                        {
-                            item = FindSubMenuItemByText(item, text);
-                            if (item != null)
-                            {
-                                return item;
-                            }
-                        }
-                    }
-                }
-            }
-            // nothing found
-            return null;
-        }
-
-        public static MenuItem FindMenuItemByText(ContextMenu parent, string text)
-        {
-            for (int a = 0; a < parent.MenuItems.Count; a++)
-            {
-                MenuItem item = parent.MenuItems[a];
-                // Debug.WriteLine("FM: " + a + " name:" + item.Text);
-                if (item != null)
-                {
-                    if (item.Text == text)
-                    {
-                        return item;
-                    }
-                    else
-                    {
-                        // running reursively
-                        if (item.MenuItems.Count > 0)
-                        {
-                            item = FindSubMenuItemByText(item, text);
-                            if (item != null)
-                            {
-                                return item;
-                            }
-                        }
-                    }
-                }
-            }
-            // nothing found
-            return null;
-        }
-#endif
 
         public static int Clamp(int value, int min, int max)
         {

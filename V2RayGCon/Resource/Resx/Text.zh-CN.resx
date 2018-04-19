@@ -247,4 +247,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="PleaseCheckConfig" xml:space="preserve">
     <value>无法解析Json，请检查当前配置内容。</value>
   </data>
+  <data name="WarnMultipleInstance" xml:space="preserve">
+    <value>已存在另一个实例，确定要再开一个？</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>(空白)</value>
+  </data>
 </root>

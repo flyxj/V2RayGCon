@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using ZXing;
@@ -117,7 +114,7 @@ namespace V2RayGCon.Lib.QRCode
 
         static bool ScanScreen(Screen screen, List<List<Rectangle>> scanRectList, Action<string> success)
         {
-            using (Bitmap screenshot = new Bitmap(screen.Bounds.Size.Width, screen.Bounds.Height))
+            using (Bitmap screenshot = new Bitmap(screen.Bounds.Width, screen.Bounds.Height))
             {
                 // take a screenshot
                 using (Graphics g = Graphics.FromImage(screenshot))
@@ -221,60 +218,6 @@ namespace V2RayGCon.Lib.QRCode
             Debug.WriteLine("target: " + qrSplash.TargetRect);
             qrSplash.Show();
         }
-
-        #region DEBUG QRCodeScanner
-#if DEBUG
-        public static IEnumerator<Bitmap> DbgCopyScreen()
-        {
-            foreach (var screen in Screen.AllScreens)
-            {
-                using (Bitmap screenshot = new Bitmap(screen.Bounds.Size.Width, screen.Bounds.Height))
-                {
-
-                    // take a screenshot
-                    using (Graphics g = Graphics.FromImage(screenshot))
-                    {
-                        g.CopyFromScreen(
-                            screen.Bounds.X,
-                            screen.Bounds.Y,
-                            0,
-                            0,
-                            screenshot.Size,
-                            CopyPixelOperation.SourceCopy);
-                    }
-
-                    yield return screenshot;
-
-                    var scanRectList = GenSquareScanWinList(new Point(
-                    screen.Bounds.Width,
-                    screen.Bounds.Height),
-                    7,
-                    4);
-
-                    scanRectList.AddRange(GenZoomScanWinList(new Point(
-                        screen.Bounds.Width,
-                        screen.Bounds.Height)));
-
-                    for (var i = 0; i < scanRectList.Count; i++)
-                    {
-                        var winRect = scanRectList[i][0];
-                        var screenRect = scanRectList[i][1];
-                        Debug.WriteLine("winRect: {0} screenRect: {1}", winRect, screenRect);
-
-                        var window = new Bitmap(winRect.Width, winRect.Height);
-
-                        using (Graphics g = Graphics.FromImage(window))
-                        {
-                            g.DrawImage(screenshot, winRect, screenRect, GraphicsUnit.Pixel);
-                        }
-
-                        yield return window;
-                    }
-                }
-            }
-        }
-#endif
-        #endregion
 
         static Result ScanWindow(Bitmap screenshot, Rectangle winRect, Rectangle screenRect)
         {
