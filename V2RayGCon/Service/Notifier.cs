@@ -48,7 +48,8 @@ namespace V2RayGCon.Service
 
             ContextMenu ctxm = ni.ContextMenu;
 
-            bool debug_form_config = false;
+            // bool debug_form_config = false;
+            bool debug_form_config = true;
 
             if (debug_form_config)
             {

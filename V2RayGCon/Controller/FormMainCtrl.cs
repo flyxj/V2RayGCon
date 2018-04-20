@@ -126,21 +126,23 @@ namespace V2RayGCon.Controller
 
                 string ip, port, type, tls, path, streamType, alias;
                 proxy = Lib.Utils.GetStrFromJToken(o, "outbound.protocol");
+
                 if (proxy.Equals("shadowsocks"))
                 {
                     ip = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.address");
                     port = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.port");
+                    tls= Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.method");
                 }
                 else
                 {
                     ip = Lib.Utils.GetStrFromJToken(o, "outbound.settings.vnext.0.address");
                     port = Lib.Utils.GetStrFromJToken(o, "outbound.settings.vnext.0.port");
+                    tls = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.security");
                 }
 
                 streamType = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.network");
                 type = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.kcpSettings.header.type");
                 path = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.wsSettings.path");
-                tls = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.security");
                 alias = Lib.Utils.GetStrFromJToken(o, "v2raygcon.alias");
 
 

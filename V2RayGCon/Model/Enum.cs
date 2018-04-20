@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace V2RayGCon.Model
+﻿namespace V2RayGCon.Model
 {
     class Enum
     {
         public enum LinkTypes
         {
             vmess,
-            v2ray
+            v2ray,
+            ss,
         }
-        public enum ProxyModes {
+        public enum ProxyModes
+        {
             ProxyNone,
             ProxyAll,
             ProxyPAC,

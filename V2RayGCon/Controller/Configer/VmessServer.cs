@@ -8,7 +8,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.Configer
 {
-    class VmessClient : INotifyPropertyChanged
+    class VmessServer : INotifyPropertyChanged
     {
         // boiler-plate
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,45 +48,40 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _altID, value); }
         }
 
-        private string _blackhole;
-        private string _ip;
-        private int _port;
+        private string _port;
 
-        public string addr
+        public string port
         {
-            get { return string.Join(":", _ip, _port); }
+            get { return _port; }
             set
             {
-                Lib.Utils.TryParseIPAddr(value, out _ip, out _port);
-                SetField(ref _blackhole, value);
+
+                SetField(ref _port, value);
             }
         }
 
         public JToken GetSettings()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken client = configTemplate["vmessClient"];
+            JToken server = configTemplate["vmessServer"];
 
-            client["vnext"][0]["address"] = _ip;
-            client["vnext"][0]["port"] = _port;
-            client["vnext"][0]["users"][0]["id"] = ID;
-            client["vnext"][0]["users"][0]["alterId"] = Lib.Utils.Str2Int(altID);
-            client["vnext"][0]["users"][0]["level"] = Lib.Utils.Str2Int(level);
+            server["port"] = Lib.Utils.Str2Int(port);
+            server["settings"]["clients"][0]["id"] = ID;
+            server["settings"]["clients"][0]["level"] = Lib.Utils.Str2Int(level);
+            server["settings"]["clients"][0]["alterId"] = Lib.Utils.Str2Int(altID);
 
-            return client;
+            return server;
         }
 
         public void UpdateData(JObject config)
         {
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
-            var GetAddrStr = Lib.Utils.ClosureGetAddrFromJToken(config);
 
-            var perfix = "outbound.settings.vnext.0.users.0.";
+            var perfix = "inbound.settings.clients.0.";
             ID = GetStr(perfix, "id");
             level = GetStr(perfix, "level");
             altID = GetStr(perfix, "alterId");
-            perfix = "outbound.settings.vnext.0.";
-            addr = GetAddrStr(perfix, "address", "port");
+            port = GetStr("inbound.", "port");
         }
     }
 }

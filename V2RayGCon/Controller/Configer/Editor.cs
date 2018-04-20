@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace V2RayGCon.Controller.Configer
@@ -36,20 +35,19 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        // update has latency, so use callback
+
         private int _curSection;
 
         public int curSection
         {
             get
             {
-                // Debug.WriteLine("Get curIndex:" + _curSection);
                 return _curSection;
             }
             set
             {
+                // SelectedIndexChanged fire before value change, so use callback
                 SetField(ref _curSection, value);
-                // Debug.WriteLine("Set curIndex:" + _curSection);
                 SectionChanged();
             }
         }

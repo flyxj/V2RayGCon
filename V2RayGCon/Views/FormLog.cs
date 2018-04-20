@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Views
@@ -47,7 +40,7 @@ namespace V2RayGCon.Views
         void LogReceiver(object sender, Model.DataEvent e)
         {
             PushLogDelegate pushLog = new PushLogDelegate(PushLog);
-            textBoxLogger.Invoke(pushLog, e.Data);
+            textBoxLogger?.Invoke(pushLog, e.Data);
         }
 
         public void PushLog(string content)

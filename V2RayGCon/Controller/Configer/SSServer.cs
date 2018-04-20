@@ -8,7 +8,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.Configer
 {
-    class SSRClient : INotifyPropertyChanged
+    class SSServer : INotifyPropertyChanged
     {
         // boiler-plate
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,17 +32,14 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _email, value); }
         }
 
-        private string _addr;
-        private string _ip;
-        private int _port;
+        private string _port;
 
-        public string addr
+        public string port
         {
-            get { return string.Join(":", _ip, _port); }
+            get { return _port; }
             set
             {
-                Lib.Utils.TryParseIPAddr(value, out _ip, out _port);
-                SetField(ref _addr, value);
+                SetField(ref _port, value);
             }
         }
 
@@ -62,6 +59,14 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _method, value); }
         }
 
+        private int _network;
+
+        public int network
+        {
+            get { return _network; }
+            set { SetField(ref _network, value); }
+        }
+
         private bool _OTA;
 
         public bool OTA
@@ -72,34 +77,46 @@ namespace V2RayGCon.Controller.Configer
 
         public void SetMethod(string selectedMethod)
         {
-            var methods = Model.Table.ssrMethods;
-            int index = 0;
+            method = Lib.Utils.LookupDict(
+                Model.Table.ssMethods,
+                selectedMethod);
+        }
 
-            foreach (var m in methods)
-            {
-                if (m.Value.Equals(selectedMethod))
-                {
-                    index = m.Key;
-                    break;
-                }
-            }
-            method = index;
+        public void SetNetwork(string selectedNetwork)
+        {
+            network = Lib.Utils.LookupDict(
+                Model.Table.ssNetworks,
+                selectedNetwork);
         }
 
         public JToken GetSettings()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken client = configTemplate["ssrClient"];
-            var ssrMethods = Model.Table.ssrMethods;
+            JToken server = configTemplate["ssServer"];
 
-            client["servers"][0]["email"] = email;
-            client["servers"][0]["address"] = _ip;
-            client["servers"][0]["port"] = _port;
-            client["servers"][0]["method"] = ssrMethods[method];
-            client["servers"][0]["password"] = pass;
-            client["servers"][0]["ota"] = OTA;
+            var methods = Model.Table.ssMethods;
+            var networks = Model.Table.ssNetworks;
 
-            return client;
+            server["port"] = Lib.Utils.Str2Int(port);
+            server["settings"]["method"] = method < 0 ? methods[0] : methods[method];
+            server["settings"]["password"] = pass;
+            server["settings"]["email"] = email;
+            server["settings"]["ota"] = OTA;
+            server["settings"]["network"] = network < 0 ? networks[0] : networks[network];
+
+            return server;
+        }
+
+        public void UpdateData(JObject config)
+        {
+            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
+            var perfix = "inbound.settings.";
+            port = GetStr("inbound.", "port");
+            SetMethod(GetStr(perfix, "method"));
+            SetNetwork(GetStr(perfix, "network"));
+            pass = GetStr(perfix, "password");
+            email = GetStr(perfix, "email");
+            OTA = Lib.Utils.GetBoolFromJToken(config, perfix + "ota");
         }
 
     }

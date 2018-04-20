@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -8,7 +9,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.Configer
 {
-    class StreamClient : INotifyPropertyChanged
+    class StreamSettings : INotifyPropertyChanged
     {
         // boiler-plate
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,27 +49,34 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _tls, value); }
         }
 
+        Action IsInboundChanged;
+
+        public StreamSettings(Action OnIsInboundChanged)
+        {
+            IsInboundChanged = OnIsInboundChanged;
+        }
+
+        private bool _isInbound;
+
+        public bool isInbound
+        {
+            get { return _isInbound; }
+            set
+            {
+                SetField(ref _isInbound, value);
+                IsInboundChanged();
+            }
+        }
+
         public void SetSecurity(string security)
         {
-            var streamSecurity = Model.Table.streamSecurity;
-            int index = 0;
-
-            foreach (var s in streamSecurity)
-            {
-                if (s.Value.Equals(security, System.StringComparison.CurrentCultureIgnoreCase))
-                {
-                    index = s.Key;
-                    break;
-                }
-            }
-
-            tls = index;
+            tls = Lib.Utils.LookupDict(Model.Table.streamSecurity, security);
         }
 
         string GetSecuritySetting()
         {
             var streamSecurity = Model.Table.streamSecurity;
-            return tls == 0 ? string.Empty : streamSecurity[tls];
+            return tls <= 0 ? string.Empty : streamSecurity[tls];
         }
 
         public JToken GetKCPSetting()
@@ -95,6 +103,22 @@ namespace V2RayGCon.Controller.Configer
             JToken stream = configTemplate["tcp"];
             stream["security"] = GetSecuritySetting();
             return stream;
+        }
+
+        public void UpdateData(JObject config)
+        {
+            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
+
+            var perfix = "outbound.streamSettings.";
+
+            if (isInbound)
+            {
+                perfix = "inbound.streamSettings.";
+            }
+
+            kcpType = GetStr(perfix, "kcpSettings.header.type");
+            wsPath = GetStr(perfix, "wsSettings.path");
+            SetSecurity(GetStr(perfix, "security"));
         }
 
     }

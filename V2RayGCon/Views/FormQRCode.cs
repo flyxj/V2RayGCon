@@ -51,7 +51,7 @@ namespace V2RayGCon.Views
         {
             UpdateServerListDelegate updater =
                 new UpdateServerListDelegate(UpdateServerList);
-            cboxServList.Invoke(updater, -1);
+            cboxServList?.Invoke(updater, -1);
         }
 
         void UpdateServerList(int index = -1)

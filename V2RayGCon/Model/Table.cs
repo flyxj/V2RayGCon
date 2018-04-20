@@ -26,7 +26,7 @@ namespace V2RayGCon.Model
         public static int sectionSeparator => _sectionSeparator;
         static int _sectionSeparator = 11;
 
-        public static Dictionary<int, string> ssrMethods => _ssrMethods;
+        public static Dictionary<int, string> ssMethods => _ssrMethods;
         static Dictionary<int, string> _ssrMethods = new Dictionary<int, string>
         {
             { 0,"aes-128-cfb"},
@@ -44,6 +44,14 @@ namespace V2RayGCon.Model
         {
             { 0, "none" },
             { 1, "tls" },
+        };
+
+        public static Dictionary<int, string> ssNetworks => _ssNetworks;
+        static Dictionary<int, string> _ssNetworks = new Dictionary<int, string>
+        {
+            { 0, "tcp" },
+            { 1, "udp" },
+            { 2, "tcp,udp" },
         };
     }
 }

@@ -98,17 +98,21 @@
   <ItemGroup>
     <Compile Include="Controller\Configer\Configer.cs" />
     <Compile Include="Controller\Configer\Editor.cs" />
-    <Compile Include="Controller\Configer\SSRClient.cs" />
-    <Compile Include="Controller\Configer\StreamClient.cs" />
+    <Compile Include="Controller\Configer\SSClient.cs" />
+    <Compile Include="Controller\Configer\SSServer.cs" />
+    <Compile Include="Controller\Configer\StreamSettings.cs" />
     <Compile Include="Controller\Configer\VmessClient.cs" />
+    <Compile Include="Controller\Configer\VmessServer.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\StringResource.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
     <Compile Include="Lib\UI.cs" />
+    <Compile Include="Model\EventList.cs" />
     <Compile Include="Model\DataEvent.cs" />
     <Compile Include="Model\Enum.cs" />
+    <Compile Include="Model\Shadowsocks.cs" />
     <Compile Include="Model\Table.cs" />
     <Compile Include="Resource\Resx\Data.Designer.cs">
       <DependentUpon>Data.resx</DependentUpon>
@@ -221,7 +225,6 @@
     <None Include="V2RayGCon_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource\Config\config_min.json" />
     <None Include="Resource\Icon\icon_dark.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +234,7 @@
   <ItemGroup>
     <Content Include="icon_dark.ico" />
     <None Include="Resource\Config\config_def.txt" />
+    <Content Include="Resource\Config\config_ss_tpl.txt" />
     <Content Include="Resource\Config\config_tpl.txt" />
     <None Include="Resource\Config\config_vmess_tpl.txt" />
     <None Include="Resource\Config\config_min.txt" />

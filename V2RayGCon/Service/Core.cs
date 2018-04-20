@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -111,6 +108,10 @@ namespace V2RayGCon.Service
             v2rayCore.Exited += (s, e) =>
             {
                 setting.SendLog(I18N("CoreExit"));
+
+                // bug: port did not released after kill core.
+                // fix; do not do anything!
+                // StopCore();
             };
             v2rayCore.ErrorDataReceived += (s, e) => setting.SendLog(e.Data);
             v2rayCore.OutputDataReceived += (s, e) => setting.SendLog(e.Data);

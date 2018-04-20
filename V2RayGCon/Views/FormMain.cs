@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -58,7 +57,7 @@ namespace V2RayGCon.Views
             UpdateElementDelegate updateElement =
                 new UpdateElementDelegate(UpdateElements);
 
-            lvServers.Invoke(updateElement);
+            lvServers?.Invoke(updateElement);
         }
 
         void BindListViewEvents()
@@ -68,6 +67,7 @@ namespace V2RayGCon.Views
             lvServers.MouseClick += (s, e) =>
             {
                 if (e.Button == MouseButtons.Right
+                && lvServers.FocusedItem!=null 
                 && lvServers.FocusedItem.Bounds.Contains(e.Location))
                 {
                     ctxMenuStrip.Show(Cursor.Position);
@@ -99,7 +99,7 @@ namespace V2RayGCon.Views
                 return;
             }
 
-            foreach(var server in servers)
+            foreach (var server in servers)
             {
                 lvServers.Items.Add(new ListViewItem(server));
 

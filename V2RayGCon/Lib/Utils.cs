@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,81 @@ namespace V2RayGCon.Lib
 {
     class Utils
     {
+        public static Func<string, string, string> ClosureGetStringFromJToken(JObject config)
+        {
+            var c = config;
+            return (perfix, key) =>
+            {
+                return Lib.Utils.GetStrFromJToken(c, perfix + key);
+            };
+        }
+
+        public static Func<string, string, string, string> ClosureGetAddrFromJToken(JObject config)
+        {
+            var c = config;
+            return (perfix, keyIP, keyPort) =>
+            {
+                var ip = Lib.Utils.GetStrFromJToken(c, perfix + keyIP);
+                var port = Lib.Utils.GetStrFromJToken(c, perfix + keyPort);
+                return string.Join(":", ip, port);
+            };
+        }
+
+
+        public static int LookupDict(Dictionary<int, string> dict, string value)
+        {
+            foreach (var data in dict)
+            {
+                if (data.Value.Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return data.Key;
+                }
+            }
+            return -1;
+        }
+
+        public static Model.Shadowsocks SSLink2SS(string ssLink)
+        {
+            string b64Link = LinkBody(ssLink, Model.Enum.LinkTypes.ss);
+
+            try
+            {
+                var ss = new Model.Shadowsocks();
+                var plainText = Base64Decode(b64Link);
+                var parts = plainText.Split('@');
+                var mp = parts[0].Split(':');
+                if (parts[1].Length > 0 && mp[0].Length > 0 && mp[1].Length > 0)
+                {
+                    ss.method = mp[0];
+                    ss.pass = mp[1];
+                    ss.addr = parts[1];
+                }
+                return ss;
+            }
+            catch { }
+            return null;
+        }
+
+        public static string SSLink2ConfigString(string ssLink)
+        {
+            Model.Shadowsocks ss = SSLink2SS(ssLink);
+            if (ss == null)
+            {
+                return string.Empty;
+            }
+
+            TryParseIPAddr(ss.addr, out string ip, out int port);
+            JObject config = JObject.Parse(resData("config_ss_tpl"));
+
+            var setting = config["outbound"]["settings"]["servers"][0];
+            setting["address"] = ip;
+            setting["port"] = port;
+            setting["method"] = ss.method;
+            setting["password"] = ss.pass;
+
+            return config.ToString();
+        }
+
         public static MatchCollection MatchAll(string content, string pattern)
         {
             Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -309,6 +385,10 @@ namespace V2RayGCon.Lib
 
                 case Model.Enum.LinkTypes.v2ray:
                     len = resData("V2RayLinkPerfix").Length;
+                    break;
+
+                case Model.Enum.LinkTypes.ss:
+                    len = resData("SSLinkPerfix").Length;
                     break;
             }
             return link.Substring(len);

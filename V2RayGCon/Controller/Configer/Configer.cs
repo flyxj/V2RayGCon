@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -10,10 +9,12 @@ namespace V2RayGCon.Controller.Configer
     class Configer
     {
         Service.Setting setting;
-        public SSRClient ssrClient;
-        public StreamClient streamClient;
+        public SSClient ssClient;
+        public StreamSettings streamClient;
         public VmessClient vmessClient;
+        public VmessServer vmessServer;
         public Editor editor;
+        public SSServer ssServer;
 
         JObject config;
         int perSection, separator;
@@ -22,9 +23,11 @@ namespace V2RayGCon.Controller.Configer
         public Configer()
         {
             setting = Service.Setting.Instance;
-            ssrClient = new SSRClient();
-            streamClient = new StreamClient();
+            ssServer = new SSServer();
+            ssClient = new SSClient();
+            streamClient = new StreamSettings(StreamIsInboundChanged);
             vmessClient = new VmessClient();
+            vmessServer = new VmessServer();
             editor = new Editor(SectionChanged);
 
             separator = Model.Table.sectionSeparator;
@@ -35,6 +38,11 @@ namespace V2RayGCon.Controller.Configer
             editor.content = config.ToString();
             UpdateData();
 
+        }
+
+        public void StreamIsInboundChanged()
+        {
+            streamClient.UpdateData(config);
         }
 
         public void ShowSection(int section = -1)
@@ -167,42 +175,11 @@ namespace V2RayGCon.Controller.Configer
 
         void UpdateData()
         {
-            Func<string, string, string> GetStr = (_perfix, _key) =>
-            {
-                return Lib.Utils.GetStrFromJToken(config, _perfix + _key);
-            };
-
-            Func<string, string, string, string> GetAddrStr = (_perfix, _keyIP, _keyPort) =>
-            {
-                var ip = Lib.Utils.GetStrFromJToken(config, _perfix + _keyIP);
-                var port = Lib.Utils.GetStrFromJToken(config, _perfix + _keyPort);
-                return string.Join(":", ip, port);
-            };
-
-            string perfix;
-
-            // vmess
-            perfix = "outbound.settings.vnext.0.users.0.";
-            vmessClient.ID = GetStr(perfix, "id");
-            vmessClient.level = GetStr(perfix, "level");
-            vmessClient.altID = GetStr(perfix, "alterId");
-            perfix = "outbound.settings.vnext.0.";
-            vmessClient.addr = GetAddrStr(perfix, "address", "port");
-
-
-            // SS outbound.settings.servers.0.
-            perfix = "outbound.settings.servers.0.";
-            ssrClient.email = GetStr(perfix, "email");
-            ssrClient.pass = GetStr(perfix, "password");
-            ssrClient.addr = GetAddrStr(perfix, "address", "port");
-            ssrClient.OTA = Lib.Utils.GetBoolFromJToken(config, perfix + "ota");
-            ssrClient.SetMethod(GetStr(perfix, "method"));
-
-            // kcp ws tls
-            perfix = "outbound.streamSettings.";
-            streamClient.kcpType = GetStr(perfix, "kcpSettings.header.type");
-            streamClient.wsPath = GetStr(perfix, "wsSettings.path");
-            streamClient.SetSecurity(GetStr(perfix, "security"));
+            vmessClient.UpdateData(config);
+            ssClient.UpdateData(config);
+            ssServer.UpdateData(config);
+            streamClient.UpdateData(config);
+            vmessServer.UpdateData(config);
         }
 
         public void DiscardChanges()
@@ -233,7 +210,7 @@ namespace V2RayGCon.Controller.Configer
 
             string example =
                 perSection == 0 ?
-                defConfig.ToString() :
+                resData("config_min") :
                 defConfig[sections[perSection]]?.ToString();
 
             if (string.IsNullOrEmpty(example))
@@ -250,7 +227,14 @@ namespace V2RayGCon.Controller.Configer
         {
             try
             {
-                config["outbound"]["streamSettings"] = streamClient.GetKCPSetting();
+                if (streamClient.isInbound)
+                {
+                    config["inbound"]["streamSettings"] = streamClient.GetKCPSetting();
+                }
+                else
+                {
+                    config["outbound"]["streamSettings"] = streamClient.GetKCPSetting();
+                }
             }
             catch { }
             UpdateData();
@@ -261,7 +245,14 @@ namespace V2RayGCon.Controller.Configer
         {
             try
             {
-                config["outbound"]["streamSettings"] = streamClient.GetWSSetting();
+                if (streamClient.isInbound)
+                {
+                    config["inbound"]["streamSettings"] = streamClient.GetWSSetting();
+                }
+                else
+                {
+                    config["outbound"]["streamSettings"] = streamClient.GetWSSetting();
+                }
             }
             catch { }
             UpdateData();
@@ -282,16 +273,23 @@ namespace V2RayGCon.Controller.Configer
         {
             try
             {
-                config["outbound"]["streamSettings"] = streamClient.GetTCPSetting();
+                if (streamClient.isInbound)
+                {
+                    config["inbound"]["streamSettings"] = streamClient.GetTCPSetting();
+                }
+                else
+                {
+                    config["outbound"]["streamSettings"] = streamClient.GetTCPSetting();
+                }
             }
             catch { }
             UpdateData();
             ShowSection();
         }
 
-        public void InsertSSRClient()
+        public void InsertSSClient()
         {
-            InsertOutBoundSetting(ssrClient.GetSettings(), "shadowsocks");
+            InsertOutBoundSetting(ssClient.GetSettings(), "shadowsocks");
             UpdateData();
             ShowSection();
         }
@@ -299,6 +297,28 @@ namespace V2RayGCon.Controller.Configer
         public void InsertVmessClient()
         {
             InsertOutBoundSetting(vmessClient.GetSettings(), "vmess");
+            UpdateData();
+            ShowSection();
+        }
+
+        public void InsertVmessServer()
+        {
+            try
+            {
+                config["inbound"] = vmessServer.GetSettings();
+            }
+            catch { }
+            UpdateData();
+            ShowSection();
+        }
+
+        public void InsertSSServer()
+        {
+            try
+            {
+                config["inbound"] = ssServer.GetSettings();
+            }
+            catch { }
             UpdateData();
             ShowSection();
         }
@@ -320,6 +340,14 @@ namespace V2RayGCon.Controller.Configer
             catch
             {
                 Debug.WriteLine("FormConfiger: can not insert outbound.protocol");
+            }
+            try
+            {
+                config["outbound"]["tag"] = "agentout";
+            }
+            catch
+            {
+                Debug.WriteLine("FormConfiger: can not insert outbound.tag");
             }
 
         }

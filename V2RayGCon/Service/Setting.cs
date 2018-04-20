@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
@@ -25,19 +23,22 @@ namespace V2RayGCon.Service
         }
         #endregion
 
-        // Begin
-        private List<string> servers;
+        private Model.EventList<string> servers;
+        private List<string> aliases;
         public event EventHandler OnSettingChange;
         public event EventHandler<Model.DataEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
-        //Func<string, string> resData;
 
         private int _curEditingIndex;
 
         Setting()
         {
             _curEditingIndex = -1;
+            servers = new Model.EventList<string>();
             LoadServers();
+            aliases = new List<string>();
+            UpdateAliases();
+            servers.ListChanged += UpdateAliases;
             SaveServers();
         }
 
@@ -229,7 +230,7 @@ namespace V2RayGCon.Service
 
         public void DeleteAllServers()
         {
-            servers = new List<string>();
+            servers.Clear();
             SaveServers();
             OnSettingChange?.Invoke(this, null);
             OnRequireCoreRestart?.Invoke(this, null);
@@ -272,26 +273,63 @@ namespace V2RayGCon.Service
 
         public bool ImportLinks(string links)
         {
-            var vmess = ImportVmessLinks(links);
-            var v2ray = ImportV2RayLinks(links);
-            return vmess || v2ray;
+            // dirty hack for matching the first link
+            var patchLinks = "\r\n" + links;
+
+            var vmess = ImportVmessLinks(patchLinks);
+            var v2ray = ImportV2RayLinks(patchLinks);
+            var ss = ImportSSLinks(patchLinks);
+            return vmess || v2ray || ss;
+        }
+
+        bool ImportSSLinks(string links)
+        {
+            var isAddNewServer = false;
+
+            string pattern = string.Format(
+                "{0}{1}{2}",
+                // distinguish between ss:// and vme(ss://)
+                resData("PatternNonAlphabet"),
+                resData("SSLinkPerfix"),
+                resData("PatternBase64"));
+
+            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
+            {
+                string link = m.Value.Substring(1);
+                string config = Lib.Utils.SSLink2ConfigString(link);
+                if (!string.IsNullOrEmpty(config) && AddServer(Lib.Utils.Base64Encode(config)))
+                {
+                    isAddNewServer = true;
+                    Debug.WriteLine("New server: " + Lib.Utils.CutString(link, 32) + " ...");
+                }
+            }
+
+            return isAddNewServer;
         }
 
         bool ImportV2RayLinks(string links)
         {
             bool isAddNewServer = false;
 
-            // @"v2ray://(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})";
-            string pattern = resData("V2RayLinkPerfix") + resData("PatternBase64");
-            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase)) {
+            // @"[^0-9a-zA-Z]v2ray://(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})";
+            string pattern = string.Format(
+                "{0}{1}{2}",
+                resData("PatternNonAlphabet"),
+                resData("V2RayLinkPerfix"),
+                resData("PatternBase64"));
+
+            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
+            {
                 try
                 {
-                    string b64Config = Lib.Utils.LinkBody(m.Value, Model.Enum.LinkTypes.v2ray);
+                    string link = m.Value.Substring(1);
+
+                    string b64Config = Lib.Utils.LinkBody(link, Model.Enum.LinkTypes.v2ray);
                     string config = Lib.Utils.Base64Decode(b64Config);
-                    if(JObject.Parse(config)!=null && AddServer(b64Config))
+                    if (JObject.Parse(config) != null && AddServer(b64Config))
                     {
                         isAddNewServer = true;
-                        Debug.WriteLine("New server: " + Lib.Utils.CutString(m.Value, 32) + " ...");
+                        Debug.WriteLine("New server: " + Lib.Utils.CutString(link, 32) + " ...");
                     }
                 }
                 catch
@@ -307,51 +345,36 @@ namespace V2RayGCon.Service
         {
             var isAddNewServer = false;
 
-            string pattern = resData("VmessLinkPerfix") + resData("PatternBase64");
+            //string pattern = resData("VmessLinkPerfix") + resData("PatternBase64");
+
+            string pattern = string.Format(
+                "{0}{1}{2}",
+                resData("PatternNonAlphabet"),
+                resData("VmessLinkPerfix"),
+                resData("PatternBase64"));
+
             foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
             {
-                string config = Lib.Utils.VmessLink2ConfigString(m.Value);
+                string link = m.Value.Substring(1);
+                string config = Lib.Utils.VmessLink2ConfigString(link);
                 if (!string.IsNullOrEmpty(config) && AddServer(Lib.Utils.Base64Encode(config)))
                 {
                     isAddNewServer = true;
-                    Debug.WriteLine("New server: " + Lib.Utils.CutString(m.Value, 32) + " ...");
+                    Debug.WriteLine("New server: " + Lib.Utils.CutString(link, 32) + " ...");
                 }
             }
 
             return isAddNewServer;
         }
 
-        public List<string> GetAllAliases()
+        public ReadOnlyCollection<string> GetAllAliases()
         {
-            var alias = new List<string>();
-
-            for (int i = 0; i < servers.Count; i++)
-            {
-                try
-                {
-                    var configString = Lib.Utils.Base64Decode(servers[i]);
-                    var config = JObject.Parse(configString);
-                    var name = Lib.Utils.GetStrFromJToken(config, "v2raygcon.alias");
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        alias.Add(string.Join(".", i + 1, 
-                            Lib.Utils.CutString(name,10)));
-                        continue;
-                    }
-
-                }
-                catch { }
-                alias.Add(string.Join(".", i + 1,I18N("Empty")));
-            }
-
-            return alias;
+            return aliases.AsReadOnly();
         }
 
         void LoadServers()
         {
             string rawData = Properties.Settings.Default.Servers;
-
-            servers = new List<string>();
 
             List<string> serverList;
 
@@ -370,7 +393,7 @@ namespace V2RayGCon.Service
             }
 
             // make sure every server config can be parsed
-            for(var i = serverList.Count - 1; i >= 0; i--)
+            for (var i = serverList.Count - 1; i >= 0; i--)
             {
                 try
                 {
@@ -387,7 +410,31 @@ namespace V2RayGCon.Service
                 }
             }
 
-            servers = serverList;
+            servers = new Model.EventList<string>(serverList);
+        }
+
+        void UpdateAliases()
+        {
+            aliases.Clear();
+
+            for (int i = 0; i < servers.Count; i++)
+            {
+                try
+                {
+                    var configString = Lib.Utils.Base64Decode(servers[i]);
+                    var config = JObject.Parse(configString);
+                    var name = Lib.Utils.GetStrFromJToken(config, "v2raygcon.alias");
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        aliases.Add(string.Join(".", i + 1,
+                            Lib.Utils.CutString(name, 20)));
+                        continue;
+                    }
+
+                }
+                catch { }
+                aliases.Add(string.Join(".", i + 1, I18N("Empty")));
+            }
         }
 
         public ReadOnlyCollection<string> GetAllServers()

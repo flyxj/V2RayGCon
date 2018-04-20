@@ -1,8 +1,8 @@
 ﻿using ScintillaNET;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
@@ -33,7 +33,7 @@ namespace V2RayGCon.Views
             setting = Service.Setting.Instance;
 
             InitializeComponent();
-            InitCboxConfigSections();
+            InitComboBox();
             InitScintilla();
             InitDataBinding();
             UpdateServerList(setting.curEditingIndex);
@@ -48,23 +48,30 @@ namespace V2RayGCon.Views
             setting.OnSettingChange += SettingChange;
         }
 
-        void InitCboxConfigSections() {
-            cboxConfigSection.Items.Clear();
+        void InitComboBox()
+        {
 
-            var sections = Model.Table.configSections;
-            foreach(var section in sections)
+            void FillComboBox(ComboBox cbox, Dictionary<int, string> table)
             {
-                cboxConfigSection.Items.Add(section.Value);
+                cbox.Items.Clear();
+                foreach (var item in table)
+                {
+                    cbox.Items.Add(item.Value);
+                }
+                cbox.SelectedIndex = 0;
             }
-            cboxConfigSection.SelectedIndex = 0;
 
+            FillComboBox(cboxConfigSection, Model.Table.configSections);
+            FillComboBox(cboxSSCMethod, Model.Table.ssMethods);
+            FillComboBox(cboxSSSMethod, Model.Table.ssMethods);
+            FillComboBox(cboxSSSNetwork, Model.Table.ssNetworks);
         }
 
         void SettingChange(object sender, EventArgs args)
         {
             UpdateServerListDelegate updater =
                 new UpdateServerListDelegate(UpdateServerList);
-            cboxServList.Invoke(updater, -1);
+            cboxServList?.Invoke(updater, -1);
         }
 
         #region DataBinding
@@ -73,8 +80,10 @@ namespace V2RayGCon.Views
             configer = new Controller.Configer.Configer();
             BindDataVmessClient();
             BindDataSSRClient();
-            BindDataStreamClient();
+            BindDataStreamSettings();
             BindDataEditor();
+            BindDataSSServer();
+            BindDataVmessServer();
         }
 
         void BindDataEditor()
@@ -95,7 +104,7 @@ namespace V2RayGCon.Views
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        void BindDataStreamClient()
+        void BindDataStreamSettings()
         {
             var streamClient = configer.streamClient;
             var bs = new BindingSource();
@@ -108,33 +117,84 @@ namespace V2RayGCon.Views
                 nameof(streamClient.tls),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
+
+            chkStreamIsInbound.DataBindings.Add(
+                nameof(chkStreamIsInbound.Checked),
+                bs,
+                nameof(streamClient.isInbound),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        void BindDataSSServer()
+        {
+            var server = configer.ssServer;
+            var bs = new BindingSource();
+            bs.DataSource = server;
+
+            tboxSSSEmail.DataBindings.Add("Text", bs, nameof(server.email));
+            tboxSSSPass.DataBindings.Add("Text", bs, nameof(server.pass));
+            tboxSSSPort.DataBindings.Add("Text", bs, nameof(server.port));
+
+            cboxSSSNetwork.DataBindings.Add(
+                nameof(cboxSSSNetwork.SelectedIndex),
+                bs,
+                nameof(server.network),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            cboxSSSMethod.DataBindings.Add(
+                nameof(cboxSSSMethod.SelectedIndex),
+                bs,
+                nameof(server.method),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            chkSSSOTA.DataBindings.Add(
+                nameof(chkSSSOTA.Checked),
+                bs,
+                nameof(server.OTA),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
         }
 
         void BindDataSSRClient()
         {
-            var ssrClient = configer.ssrClient;
+            var ssrClient = configer.ssClient;
 
             var bs = new BindingSource();
             bs.DataSource = ssrClient;
 
-            tboxSSREmail.DataBindings.Add("Text", bs, nameof(ssrClient.email));
-            tboxSSRAddr.DataBindings.Add("Text", bs, nameof(ssrClient.addr));
-            tboxSSRPass.DataBindings.Add("Text", bs, nameof(ssrClient.pass));
+            tboxSSCEmail.DataBindings.Add("Text", bs, nameof(ssrClient.email));
+            tboxSSCAddr.DataBindings.Add("Text", bs, nameof(ssrClient.addr));
+            tboxSSCPass.DataBindings.Add("Text", bs, nameof(ssrClient.pass));
 
-            cboxSSRMethod.DataBindings.Add(
-                nameof(cboxSSRMethod.SelectedIndex),
+            cboxSSCMethod.DataBindings.Add(
+                nameof(cboxSSCMethod.SelectedIndex),
                 bs,
                 nameof(ssrClient.method),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
-            cboxSSRClientOTA.DataBindings.Add(
-                nameof(cboxSSRClientOTA.Checked),
+            chkSSCOTA.DataBindings.Add(
+                nameof(chkSSCOTA.Checked),
                 bs,
                 nameof(ssrClient.OTA),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
+        }
+
+        void BindDataVmessServer()
+        {
+            var server = configer.vmessServer;
+            var bs = new BindingSource();
+            bs.DataSource = server;
+
+            tboxVServID.DataBindings.Add("Text", bs, nameof(server.ID));
+            tboxVServLevel.DataBindings.Add("Text", bs, nameof(server.level));
+            tboxVServAID.DataBindings.Add("Text", bs, nameof(server.altID));
+            tboxVServPort.DataBindings.Add("Text", bs, nameof(server.port));
         }
 
         void BindDataVmessClient()
@@ -238,7 +298,7 @@ namespace V2RayGCon.Views
 
         private void btnSSRInsertClient_Click(object sender, EventArgs e)
         {
-            configer.InsertSSRClient();
+            configer.InsertSSClient();
         }
 
         private void btnStreamInsertKCP_Click(object sender, EventArgs e)
@@ -268,13 +328,13 @@ namespace V2RayGCon.Views
 
         private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
         {
-            if (cboxShowPassWord.Checked == true)
+            if (chkSSCShowPass.Checked == true)
             {
-                tboxSSRPass.PasswordChar = '\0';
+                tboxSSCPass.PasswordChar = '\0';
             }
             else
             {
-                tboxSSRPass.PasswordChar = '*';
+                tboxSSCPass.PasswordChar = '*';
             }
         }
 
@@ -296,6 +356,34 @@ namespace V2RayGCon.Views
             }
 
             cboxServList.SelectedIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count - 1);
+        }
+
+        private void chkSSSShowPass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSSSShowPass.Checked == true)
+            {
+                tboxSSSPass.PasswordChar = '\0';
+            }
+            else
+            {
+                tboxSSSPass.PasswordChar = '*';
+            }
+        }
+
+        private void btnSSInsertServer_Click(object sender, EventArgs e)
+        {
+            configer.InsertSSServer();
+
+        }
+
+        private void btnGenVServID_Click(object sender, EventArgs e)
+        {
+            configer.vmessServer.ID = Guid.NewGuid().ToString();
+        }
+
+        private void btnInsertVServ_Click(object sender, EventArgs e)
+        {
+            configer.InsertVmessServer();
         }
     }
 }

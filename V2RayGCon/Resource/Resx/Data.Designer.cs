@@ -130,6 +130,40 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
+        ///  &quot;log&quot;: {
+        ///    &quot;loglevel&quot;: &quot;warning&quot;
+        ///  },
+        ///  &quot;inbound&quot;: {
+        ///    &quot;port&quot;: 1080,
+        ///    &quot;listen&quot;: &quot;127.0.0.1&quot;,
+        ///    &quot;protocol&quot;: &quot;socks&quot;,
+        ///    &quot;settings&quot;: {
+        ///      &quot;auth&quot;: &quot;noauth&quot;,
+        ///      &quot;udp&quot;: false,
+        ///      &quot;ip&quot;: &quot;127.0.0.1&quot;
+        ///    }
+        ///  },
+        ///  &quot;outbound&quot;: {
+        ///    &quot;protocol&quot;: &quot;shadowsocks&quot;,
+        ///    &quot;settings&quot;: {
+        ///      &quot;servers&quot;: [
+        ///        {
+        ///          &quot;email&quot;: &quot;&quot;,
+        ///          &quot;address&quot;: &quot;127.0.0.1&quot;,
+        ///          &quot;port&quot;: 1080,
+        ///          &quot;method&quot;: &quot;aes-128-cfb&quot;,
+        ///          &quot;password&quot;: &quot;&quot;,
+        ///          &quot;ota&quot;: false,
+        ///  [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string config_ss_tpl {
+            get {
+                return ResourceManager.GetString("config_ss_tpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {
         ///	&quot;vmessClient&quot; : {
         ///		&quot;vnext&quot; : [{
         ///				&quot;address&quot; : &quot;127.0.0.1&quot;,
@@ -265,6 +299,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 [^0-9a-zA-Z] 的本地化字符串。
+        /// </summary>
+        internal static string PatternNonAlphabet {
+            get {
+                return ResourceManager.GetString("PatternNonAlphabet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 v2ray-windows-32.zip 的本地化字符串。
         /// </summary>
         internal static string PkgWin32 {
@@ -279,6 +322,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PkgWin64 {
             get {
                 return ResourceManager.GetString("PkgWin64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ss:// 的本地化字符串。
+        /// </summary>
+        internal static string SSLinkPerfix {
+            get {
+                return ResourceManager.GetString("SSLinkPerfix", resourceCulture);
             }
         }
         
@@ -319,7 +371,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.16 的本地化字符串。
+        ///   查找类似 v3.19 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {

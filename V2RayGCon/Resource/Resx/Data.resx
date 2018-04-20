@@ -128,7 +128,7 @@
     <value>v2ray-windows-32.zip</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>v3.16</value>
+    <value>v3.19</value>
   </data>
   <data name="Executable" xml:space="preserve">
     <value>v2ray.exe</value>
@@ -174,5 +174,14 @@
   </data>
   <data name="TplWS" xml:space="preserve">
     <value>{'network':'ws','security':'tls','tcpSettings':null,'kcpSettings':null,'wsSettings':{'connectionReuse':true,'path':'/ray','headers':null}}</value>
+  </data>
+  <data name="config_ss_tpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Config\config_ss_tpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="PatternNonAlphabet" xml:space="preserve">
+    <value>[^0-9a-zA-Z]</value>
+  </data>
+  <data name="SSLinkPerfix" xml:space="preserve">
+    <value>ss://</value>
   </data>
 </root>
