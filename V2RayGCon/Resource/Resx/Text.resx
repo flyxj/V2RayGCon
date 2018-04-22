@@ -174,7 +174,8 @@ https://github.com/v2ray/v2ray-core</value>
     <value>Can not parse json! Please check you config.</value>
   </data>
   <data name="EditorDiscardChange" xml:space="preserve">
-    <value>Config has change but not save yet. Discard change?</value>
+    <value>Config is invalid.
+Discard latest changes and continue?</value>
   </data>
   <data name="EditorNoExample" xml:space="preserve">
     <value>No example for this part.</value>
@@ -254,5 +255,24 @@ Are you sure to launch another one?</value>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>(Empty)</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="WriteFileFail" xml:space="preserve">
+    <value>Write file fail!</value>
+  </data>
+  <data name="AddNewServer" xml:space="preserve">
+    <value>Save current config as new server?</value>
+  </data>
+  <data name="ReplaceServer" xml:space="preserve">
+    <value>Use current config to replace selected server?</value>
+  </data>
+  <data name="ConfirmLoadNewServer" xml:space="preserve">
+    <value>Current config will be cleared!
+Load new config?</value>
+  </data>
+  <data name="LoadJsonFail" xml:space="preserve">
+    <value>Load json file fail!</value>
   </data>
 </root>

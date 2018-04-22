@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace V2RayGCon.Model
+namespace V2RayGCon.Model.Data
 {
     class DataEvent : EventArgs
     {

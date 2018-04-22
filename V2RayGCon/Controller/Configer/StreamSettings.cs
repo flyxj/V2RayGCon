@@ -1,30 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using static V2RayGCon.Lib.StringResource;
 
 
 
 namespace V2RayGCon.Controller.Configer
 {
-    class StreamSettings : INotifyPropertyChanged
+    class StreamSettings : Model.BaseClass.NotifyComponent
     {
-        // boiler-plate
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
         private string _kcpType;
 
         public string kcpType
@@ -49,33 +31,28 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _tls, value); }
         }
 
-        Action IsInboundChanged;
-
-        public StreamSettings(Action OnIsInboundChanged)
+        public StreamSettings()
         {
-            IsInboundChanged = OnIsInboundChanged;
+            _isServer = false;
         }
 
-        private bool _isInbound;
+        private bool _isServer;
 
-        public bool isInbound
+        public bool isServer
         {
-            get { return _isInbound; }
-            set
-            {
-                SetField(ref _isInbound, value);
-                IsInboundChanged();
-            }
+            get { return _isServer; }
+            set { _isServer = value; }
         }
+
 
         public void SetSecurity(string security)
         {
-            tls = Lib.Utils.LookupDict(Model.Table.streamSecurity, security);
+            tls = Lib.Utils.LookupDict(Model.Data.Table.streamSecurity, security);
         }
 
         string GetSecuritySetting()
         {
-            var streamSecurity = Model.Table.streamSecurity;
+            var streamSecurity = Model.Data.Table.streamSecurity;
             return tls <= 0 ? string.Empty : streamSecurity[tls];
         }
 
@@ -109,11 +86,15 @@ namespace V2RayGCon.Controller.Configer
         {
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
 
-            var perfix = "outbound.streamSettings.";
+            string perfix;
 
-            if (isInbound)
+            if (_isServer)
             {
                 perfix = "inbound.streamSettings.";
+            }
+            else
+            {
+                perfix = "outbound.streamSettings.";
             }
 
             kcpType = GetStr(perfix, "kcpSettings.header.type");

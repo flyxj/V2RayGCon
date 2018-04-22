@@ -37,27 +37,27 @@ namespace V2RayGCon.Views
 
             BindListViewEvents();
 
-            UpdateElements();
+            UpdateUI();
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnSettingChange -= UpdateUI;
-                core.OnCoreStatChange -= UpdateUI;
+                setting.OnSettingChange -= UpdateUIHandler;
+                core.OnCoreStatChange -= UpdateUIHandler;
             };
 
-            Lib.UI.SetFormLocation<FormMain>(this, Model.Enum.FormLocations.TopLeft);
+            Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
 
             this.Show();
-            setting.OnSettingChange += UpdateUI;
-            core.OnCoreStatChange += UpdateUI;
+            setting.OnSettingChange += UpdateUIHandler;
+            core.OnCoreStatChange += UpdateUIHandler;
         }
 
-        void UpdateUI(object s, EventArgs e)
+        void UpdateUIHandler(object s, EventArgs e)
         {
-            UpdateElementDelegate updateElement =
-                new UpdateElementDelegate(UpdateElements);
+            UpdateElementDelegate updater =
+                new UpdateElementDelegate(UpdateUI);
 
-            lvServers?.Invoke(updateElement);
+            lvServers?.Invoke(updater);
         }
 
         void BindListViewEvents()
@@ -67,7 +67,7 @@ namespace V2RayGCon.Views
             lvServers.MouseClick += (s, e) =>
             {
                 if (e.Button == MouseButtons.Right
-                && lvServers.FocusedItem!=null 
+                && lvServers.FocusedItem != null
                 && lvServers.FocusedItem.Bounds.Contains(e.Location))
                 {
                     ctxMenuStrip.Show(Cursor.Position);
@@ -79,13 +79,31 @@ namespace V2RayGCon.Views
 
         int GetSelectedServerIndex()
         {
-            return Lib.Utils.Str2Int(lvServers.SelectedItems[0].Text) - 1;
+            try
+            {
+                return Lib.Utils.Str2Int(lvServers.SelectedItems[0].Text) - 1;
+            }
+            catch { }
+            return -1;
         }
 
         void ActivateServer()
         {
             var index = GetSelectedServerIndex();
             Debug.WriteLine("FormMain: activate server " + index);
+
+            if (setting.proxyType == "http")
+            {
+                if (Lib.ProxySetter.getProxyState())
+                {
+                    Lib.ProxySetter.setProxy(setting.proxyAddr, true);
+                }
+            }
+            else
+            {
+                Lib.ProxySetter.setProxy("", false);
+            }
+
             setting.ActivateServer(index);
         }
 
@@ -129,15 +147,19 @@ namespace V2RayGCon.Views
             setting.DeleteAllServers();
         }
 
-        void UpdateElements()
+        void UpdateUI()
         {
             UpdateListView();
 
             proxyAddrToolStripTextBox.Text = setting.proxyAddr;
 
-            var isSocksProxy = setting.proxyType.Equals("socks");
-            protocolSocksToolStripMenuItem.Checked = isSocksProxy;
-            protocolHttpStripMenuItem.Checked = !isSocksProxy;
+            protocolSocksToolStripMenuItem.Checked = setting.proxyType.Equals("socks");
+            protocolHttpStripMenuItem.Checked = setting.proxyType.Equals("http");
+            protocolConfigToolStripMenuItem.Checked = setting.proxyType.Equals("config");
+
+            var isSystemProxySet = Lib.ProxySetter.getProxyState();
+            sysProxyDirectToolStripMenuItem.Checked = !isSystemProxySet;
+            sysProxyHttpToolStripMenuItem.Checked = isSystemProxySet;
 
             var isCoreRunning = core.IsRunning();
             activateToolStripMenuItem.Enabled = !isCoreRunning;
@@ -148,8 +170,8 @@ namespace V2RayGCon.Views
         void SwitchToProtocal(string protocal)
         {
             setting.proxyType = protocal;
-            setting.ActivateServer(setting.GetSelectedServerIndex());
-            UpdateElements();
+            ActivateServer();
+            UpdateUI();
         }
 
         private void protocolHttpStripMenuItem_Click(object sender, EventArgs e)
@@ -176,19 +198,20 @@ namespace V2RayGCon.Views
             if (e.KeyCode == Keys.Enter)
             {
                 setting.proxyAddr = proxyAddrToolStripTextBox.Text;
-                setting.ActivateServer(setting.GetSelectedServerIndex());
+                ActivateServer();
             }
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             setting.curEditingIndex = GetSelectedServerIndex();
-            Views.FormConfiger.GetForm();
+            // Views.FormConfiger.GetForm();
+            new FormConfiger();
         }
 
         private void activateToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            setting.ActivateServer(setting.GetSelectedServerIndex());
+            ActivateServer();
         }
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
@@ -203,7 +226,7 @@ namespace V2RayGCon.Views
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.ActivateServer(setting.GetSelectedServerIndex());
+            ActivateServer();
         }
 
         private void CopyAllVmessLinkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -258,7 +281,33 @@ namespace V2RayGCon.Views
 
         private void ShowFormConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Views.FormConfiger.GetForm();
+            // Views.FormConfiger.GetForm();
+            new FormConfiger();
+        }
+
+        private void sysProxyHttpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Lib.ProxySetter.setProxy(setting.proxyAddr, true);
+            if (core.IsRunning() && setting.proxyType == "http")
+            {
+                UpdateUI();
+            }
+            else
+            {
+                setting.proxyType = "http";
+                ActivateServer();
+            }
+        }
+
+        private void sysProxyDirectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Lib.ProxySetter.setProxy("", false);
+            UpdateUI();
+        }
+
+        private void protocolConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SwitchToProtocal("config");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace V2RayGCon.Model
+﻿namespace V2RayGCon.Model.Data
 {
     class Enum
     {

@@ -70,6 +70,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Save current config as new server? 的本地化字符串。
+        /// </summary>
+        internal static string AddNewServer {
+            get {
+                return ResourceManager.GetString("AddNewServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 V2RayGCon 的本地化字符串。
         /// </summary>
         internal static string AppName {
@@ -120,6 +129,16 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmExitApp {
             get {
                 return ResourceManager.GetString("ConfirmExitApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current config will be cleared!
+        ///Load new config? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmLoadNewServer {
+            get {
+                return ResourceManager.GetString("ConfirmLoadNewServer", resourceCulture);
             }
         }
         
@@ -243,7 +262,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Config has change but not save yet. Discard change? 的本地化字符串。
+        ///   查找类似 Config is invalid.
+        ///Discard latest changes and continue? 的本地化字符串。
         /// </summary>
         internal static string EditorDiscardChange {
             get {
@@ -333,6 +353,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Load json file fail! 的本地化字符串。
+        /// </summary>
+        internal static string LoadJsonFail {
+            get {
+                return ResourceManager.GetString("LoadJsonFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Can not find any QR code. 的本地化字符串。
         /// </summary>
         internal static string NoQRCode {
@@ -383,6 +412,24 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ProxyModePAC {
             get {
                 return ResourceManager.GetString("ProxyModePAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Use current config to replace selected server? 的本地化字符串。
+        /// </summary>
+        internal static string ReplaceServer {
+            get {
+                return ResourceManager.GetString("ReplaceServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save as 的本地化字符串。
+        /// </summary>
+        internal static string SaveAs {
+            get {
+                return ResourceManager.GetString("SaveAs", resourceCulture);
             }
         }
         
@@ -465,6 +512,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Win64 {
             get {
                 return ResourceManager.GetString("Win64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Write file fail! 的本地化字符串。
+        /// </summary>
+        internal static string WriteFileFail {
+            get {
+                return ResourceManager.GetString("WriteFileFail", resourceCulture);
             }
         }
     }

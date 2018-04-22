@@ -2,27 +2,18 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
 
-    class Core
+    class Core : Model.BaseClass.SingletonService<Core>
     {
-        #region Singleton
-        static readonly Core instV2RCore = new Core();
-        public static Core Instance
-        {
-            get
-            {
-                return instV2RCore;
-            }
-        }
-        #endregion
-
         Process v2rayCore;
         Setting setting;
+        bool _isRunning;
 
         public event EventHandler OnCoreStatChange;
 
@@ -30,17 +21,32 @@ namespace V2RayGCon.Service
         {
             v2rayCore = null;
             setting = Setting.Instance;
+            _isRunning = false;
             setting.OnRequireCoreRestart += (s, a) => RestartCore();
         }
 
         void OverwriteProxySettings(JObject config)
         {
+            string[] supportProtocols = { "socks", "http" };
+
+            if (!supportProtocols.Contains(setting.proxyType))
+            {
+                return;
+            }
+
             Lib.Utils.TryParseIPAddr(setting.proxyAddr, out string ip, out int port);
+            var tpl = JObject.Parse(resData("config_tpl"));
+            var part = setting.proxyType + "In";
             try
             {
                 config["inbound"]["protocol"] = setting.proxyType;
                 config["inbound"]["listen"] = ip;
                 config["inbound"]["port"] = port;
+                config["inbound"]["settings"] = tpl[part];
+                if (setting.proxyType.Equals("socks"))
+                {
+                    config["inbound"]["settings"]["ip"] = ip;
+                }
             }
             catch
             {
@@ -68,7 +74,7 @@ namespace V2RayGCon.Service
 
         public bool IsRunning()
         {
-            return v2rayCore != null;
+            return _isRunning;
         }
 
         public void RestartCore(string config)
@@ -89,7 +95,7 @@ namespace V2RayGCon.Service
         {
             if (v2rayCore != null)
             {
-                Debug.WriteLine("v2ray core is running, skip.");
+                Debug.WriteLine("Error: v2ray core is running!");
                 return;
             }
 
@@ -108,7 +114,6 @@ namespace V2RayGCon.Service
             v2rayCore.Exited += (s, e) =>
             {
                 setting.SendLog(I18N("CoreExit"));
-
                 // bug: port did not released after kill core.
                 // fix; do not do anything!
                 // StopCore();
@@ -135,6 +140,8 @@ namespace V2RayGCon.Service
 
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
+
+            _isRunning = true;
             OnCoreStatChange?.Invoke(this, null);
         }
 
@@ -143,16 +150,19 @@ namespace V2RayGCon.Service
             if (v2rayCore == null)
             {
                 Debug.WriteLine("v2ray-core is not runnig!");
-                return;
+            }
+            else
+            {
+                Debug.WriteLine("kill v2ray core");
+                try
+                {
+                    Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
+                }
+                catch { }
+                v2rayCore = null;
             }
 
-            Debug.WriteLine("kill v2ray core");
-            try
-            {
-                Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
-            }
-            catch { }
-            v2rayCore = null;
+            _isRunning = false;
             OnCoreStatChange?.Invoke(this, null);
         }
     }

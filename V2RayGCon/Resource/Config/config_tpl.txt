@@ -15,6 +15,20 @@
       }
     ]
   },
+  "httpIn": {
+    "timeout": 0,
+    "accounts": [],
+    "allowTransparent": false,
+    "userLevel": 0
+  },
+  "socksIn": {
+    "auth": "noauth",
+    "accounts": [],
+    "udp": false,
+    "ip": "127.0.0.1",
+    "timeout": 0,
+    "userLevel": 0
+  },
   "vmessServer": {
     "port": 1234,
     "protocol": "vmess",
@@ -42,7 +56,7 @@
       "network": "tcp"
     }
   },
-  "ssrClient": {
+  "ssClient": {
     "servers": [
       {
         "email": "love@v2ray.com",
@@ -83,7 +97,7 @@
     "security": "tls",
     "wsSettings": {
       "connectionReuse": true,
-      "path": "/ray",
+      "path": "",
       "headers": null
     }
   }

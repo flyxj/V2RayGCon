@@ -164,35 +164,30 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
-        ///	&quot;vmessClient&quot; : {
-        ///		&quot;vnext&quot; : [{
-        ///				&quot;address&quot; : &quot;127.0.0.1&quot;,
-        ///				&quot;port&quot; : 37192,
-        ///				&quot;users&quot; : [{
-        ///						&quot;id&quot; : &quot;27848739-7e62-4138-9fd3-098a63964b6b&quot;,
-        ///						&quot;alterId&quot; : 10,
-        ///						&quot;security&quot; : &quot;auto&quot;,
-        ///						&quot;level&quot; : 0
-        ///					}
-        ///				]
-        ///			}
-        ///		]
-        ///	},
-        ///	&quot;ssrClient&quot; : {
-        ///		&quot;servers&quot; : [{
-        ///				&quot;email&quot; : &quot;love@v2ray.com&quot;,
-        ///				&quot;address&quot; : &quot;127.0.0.1&quot;,
-        ///				&quot;port&quot; : 1234,
-        ///				&quot;method&quot; : &quot;aes-256-gcm&quot;,
-        ///				&quot;password&quot; : &quot;pass&quot;,
-        ///				&quot;ota&quot; : false,
-        ///				&quot;level&quot; : 0
-        ///			}
-        ///		]
-        ///	},
-        ///	&quot;kcp&quot; : {
-        ///		&quot;network&quot; : &quot;kcp&quot;,
-        ///		&quot;security&quot; : [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  &quot;vmessClient&quot;: {
+        ///    &quot;vnext&quot;: [
+        ///      {
+        ///        &quot;address&quot;: &quot;127.0.0.1&quot;,
+        ///        &quot;port&quot;: 37192,
+        ///        &quot;users&quot;: [
+        ///          {
+        ///            &quot;id&quot;: &quot;27848739-7e62-4138-9fd3-098a63964b6b&quot;,
+        ///            &quot;alterId&quot;: 10,
+        ///            &quot;security&quot;: &quot;auto&quot;,
+        ///            &quot;level&quot;: 0
+        ///          }
+        ///        ]
+        ///      }
+        ///    ]
+        ///  },
+        ///  &quot;vmessServer&quot;: {
+        ///    &quot;port&quot;: 1234,
+        ///    &quot;protocol&quot;: &quot;vmess&quot;,
+        ///    &quot;settings&quot;: {
+        ///      &quot;clients&quot;: [
+        ///        {
+        ///          &quot;id&quot;: &quot;27848739-7e62-4138-9fd3-098a63964b6b&quot;,
+        ///          &quot;l [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
@@ -272,6 +267,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Json File|*.json|All File|*.* 的本地化字符串。
+        /// </summary>
+        internal static string ExtJson {
+            get {
+                return ResourceManager.GetString("ExtJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 png files (*.png)|*.png|All files (*.*)|*.* 的本地化字符串。
         /// </summary>
         internal static string ExtPng {
@@ -331,33 +335,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SSLinkPerfix {
             get {
                 return ResourceManager.GetString("SSLinkPerfix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {&apos;network&apos;:&apos;kcp&apos;,&apos;security&apos;:&apos;&apos;,&apos;tcpSettings&apos;:null,&apos;kcpSettings&apos;:{&apos;mtu&apos;:1350,&apos;tti&apos;:50,&apos;uplinkCapacity&apos;:12,&apos;downlinkCapacity&apos;:100,&apos;congestion&apos;:false,&apos;readBufferSize&apos;:2,&apos;writeBufferSize&apos;:2,&apos;header&apos;:{&apos;type&apos;:&apos;&apos;,&apos;request&apos;:null,&apos;response&apos;:null}},&apos;wsSettings&apos;:null} 的本地化字符串。
-        /// </summary>
-        internal static string TplKCP {
-            get {
-                return ResourceManager.GetString("TplKCP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {&apos;network&apos;:&apos;tcp&apos;,&apos;security&apos;:&apos;&apos;,&apos;tcpSettings&apos;:null,&apos;kcpSettings&apos;:null,&apos;wsSettings&apos;:null} 的本地化字符串。
-        /// </summary>
-        internal static string TplTCP {
-            get {
-                return ResourceManager.GetString("TplTCP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {&apos;network&apos;:&apos;ws&apos;,&apos;security&apos;:&apos;tls&apos;,&apos;tcpSettings&apos;:null,&apos;kcpSettings&apos;:null,&apos;wsSettings&apos;:{&apos;connectionReuse&apos;:true,&apos;path&apos;:&apos;/ray&apos;,&apos;headers&apos;:null}} 的本地化字符串。
-        /// </summary>
-        internal static string TplWS {
-            get {
-                return ResourceManager.GetString("TplWS", resourceCulture);
             }
         }
         

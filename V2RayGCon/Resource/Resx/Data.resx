@@ -166,15 +166,6 @@
   <data name="PacUrlTpl" xml:space="preserve">
     <value>https://pac.txthinking.com/white/{0}%20{1}</value>
   </data>
-  <data name="TplKCP" xml:space="preserve">
-    <value>{'network':'kcp','security':'','tcpSettings':null,'kcpSettings':{'mtu':1350,'tti':50,'uplinkCapacity':12,'downlinkCapacity':100,'congestion':false,'readBufferSize':2,'writeBufferSize':2,'header':{'type':'','request':null,'response':null}},'wsSettings':null}</value>
-  </data>
-  <data name="TplTCP" xml:space="preserve">
-    <value>{'network':'tcp','security':'','tcpSettings':null,'kcpSettings':null,'wsSettings':null}</value>
-  </data>
-  <data name="TplWS" xml:space="preserve">
-    <value>{'network':'ws','security':'tls','tcpSettings':null,'kcpSettings':null,'wsSettings':{'connectionReuse':true,'path':'/ray','headers':null}}</value>
-  </data>
   <data name="config_ss_tpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Config\config_ss_tpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -183,5 +174,8 @@
   </data>
   <data name="SSLinkPerfix" xml:space="preserve">
     <value>ss://</value>
+  </data>
+  <data name="ExtJson" xml:space="preserve">
+    <value>Json File|*.json|All File|*.*</value>
   </data>
 </root>

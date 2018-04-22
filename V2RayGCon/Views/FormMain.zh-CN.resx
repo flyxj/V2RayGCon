@@ -118,53 +118,62 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ImportVmessLinkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="ImportVmessLinkToolStripMenuItem.Text" xml:space="preserve">
+    <value>剪切板导入</value>
+  </data>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>177, 6</value>
+  </data>
+  <data name="copyAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="copyAllToolStripMenuItem.Text" xml:space="preserve">
+    <value>复制全部服务器</value>
+  </data>
+  <data name="deleteAllServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="deleteAllServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>删除所有服务器</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>177, 6</value>
+  </data>
+  <data name="reloadServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="reloadServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>重载服务器配置</value>
+  </data>
+  <data name="reloadServersToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>多开时用的</value>
+  </data>
+  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>177, 6</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>关闭窗口</value>
+  </data>
   <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 21</value>
   </data>
   <data name="operationToolStripMenuItem.Text" xml:space="preserve">
     <value>操作</value>
   </data>
-  <data name="proxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+  <data name="protocolConfigToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>不修改inbound</value>
   </data>
-  <data name="proxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>代理</value>
+  <data name="protocolHttpStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>将inbound临时改成http代理</value>
   </data>
-  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
-  </data>
-  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
-    <value>窗口</value>
-  </data>
-  <data name="ImportVmessLinkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="ImportVmessLinkToolStripMenuItem.Text" xml:space="preserve">
-    <value>剪切板导入</value>
-  </data>
-  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 6</value>
-  </data>
-  <data name="copyAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="copyAllToolStripMenuItem.Text" xml:space="preserve">
-    <value>复制全部服务器</value>
-  </data>
-  <data name="deleteAllServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="deleteAllServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>删除所有服务器</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 6</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>关闭窗口</value>
+  <data name="protocolSocksToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>将inbound临时改成socks代理</value>
   </data>
   <data name="activateToolStripMenuItem.Text" xml:space="preserve">
     <value>激活</value>
@@ -174,6 +183,30 @@
   </data>
   <data name="restartToolStripMenuItem.Text" xml:space="preserve">
     <value>重启</value>
+  </data>
+  <data name="sysProxyDirectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="sysProxyDirectToolStripMenuItem.Text" xml:space="preserve">
+    <value>不使用代理</value>
+  </data>
+  <data name="sysProxyHttpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="sysProxyHttpToolStripMenuItem.Text" xml:space="preserve">
+    <value>HTTP代理</value>
+  </data>
+  <data name="sysProxyHttpToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>IE只支持HTTP代理</value>
+  </data>
+  <data name="systemProxyModeToolStripMenuItem.Text" xml:space="preserve">
+    <value>系统代理</value>
+  </data>
+  <data name="proxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 21</value>
+  </data>
+  <data name="proxyToolStripMenuItem.Text" xml:space="preserve">
+    <value>代理</value>
   </data>
   <data name="configEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 22</value>
@@ -192,6 +225,12 @@
   </data>
   <data name="logToolStripMenuItem.Text" xml:space="preserve">
     <value>日志</value>
+  </data>
+  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 21</value>
+  </data>
+  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
+    <value>窗口</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
     <value>编号</value>
@@ -216,9 +255,6 @@
   </data>
   <data name="columnHeader9.Text" xml:space="preserve">
     <value>伪装</value>
-  </data>
-  <data name="ctxMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 126</value>
   </data>
   <data name="stripMenuActivate.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
@@ -250,12 +286,6 @@
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 6</value>
   </data>
-  <data name="moveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
-  </data>
-  <data name="moveToolStripMenuItem.Text" xml:space="preserve">
-    <value>移动</value>
-  </data>
   <data name="topToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
   </data>
@@ -285,6 +315,15 @@
   </data>
   <data name="buttomToolStripMenuItem.Text" xml:space="preserve">
     <value>置底</value>
+  </data>
+  <data name="moveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 22</value>
+  </data>
+  <data name="moveToolStripMenuItem.Text" xml:space="preserve">
+    <value>移动</value>
+  </data>
+  <data name="ctxMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 126</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

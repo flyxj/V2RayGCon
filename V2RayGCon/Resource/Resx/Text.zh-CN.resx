@@ -167,13 +167,14 @@ https://github.com/v2ray/v2ray-core</value>
     <value>正在下载，请稍后。</value>
   </data>
   <data name="EditorCannotLoadServerConfig" xml:space="preserve">
-    <value>无法加载服务器配置文件，调用默认配置文件。</value>
+    <value>加载服务器配置失败，调取默认配置文件。</value>
   </data>
   <data name="EditorCheckConfig" xml:space="preserve">
     <value>无法解析JSON文件，请仔细检查。</value>
   </data>
   <data name="EditorDiscardChange" xml:space="preserve">
-    <value>配置已经修改但未保存，是否丢弃修改？</value>
+    <value>配置文件存在无效项！
+取消最近一次的修改并继续？</value>
   </data>
   <data name="EditorNoExample" xml:space="preserve">
     <value>这个部分没有参考样例。</value>
@@ -252,5 +253,24 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="Empty" xml:space="preserve">
     <value>(空白)</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>另存为</value>
+  </data>
+  <data name="WriteFileFail" xml:space="preserve">
+    <value>写入文件失败！</value>
+  </data>
+  <data name="AddNewServer" xml:space="preserve">
+    <value>用当前配置新增一个服务器?</value>
+  </data>
+  <data name="ReplaceServer" xml:space="preserve">
+    <value>用当前配置覆盖选定服务器?</value>
+  </data>
+  <data name="ConfirmLoadNewServer" xml:space="preserve">
+    <value>当前配置将被清除！
+确定要加载新配置？</value>
+  </data>
+  <data name="LoadJsonFail" xml:space="preserve">
+    <value>加载Json文件失败！</value>
   </data>
 </root>

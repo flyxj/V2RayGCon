@@ -31,13 +31,13 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, e) => setting.OnLog -= LogReceiver;
 
-            Lib.UI.SetFormLocation<FormLog>(this, Model.Enum.FormLocations.BottomLeft);
+            Lib.UI.SetFormLocation<FormLog>(this, Model.Data.Enum.FormLocations.BottomLeft);
 
             this.Show();
             setting.OnLog += LogReceiver;
         }
 
-        void LogReceiver(object sender, Model.DataEvent e)
+        void LogReceiver(object sender, Model.Data.DataEvent e)
         {
             PushLogDelegate pushLog = new PushLogDelegate(PushLog);
             textBoxLogger?.Invoke(pushLog, e.Data);

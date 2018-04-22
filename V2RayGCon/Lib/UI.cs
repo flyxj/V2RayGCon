@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -7,6 +8,53 @@ namespace V2RayGCon.Lib
 {
     class UI
     {
+        public static bool DlgWriteFile(string extension, string content, out string fileName)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = extension;
+            saveFileDialog.Title = I18N("SaveAs");
+            saveFileDialog.ShowDialog();
+
+            fileName = saveFileDialog.FileName;
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return false;
+            }
+
+            try
+            {
+                File.WriteAllText(fileName, content);
+                return true;
+            }
+            catch { }
+            return false;
+        }
+
+        public static string DlgReadFile(string extension, out string fileName)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.InitialDirectory = "c:\\";
+            dlg.Filter = extension;
+            dlg.RestoreDirectory = true;
+            dlg.CheckFileExists = true;
+            dlg.CheckPathExists = true;
+            fileName = string.Empty;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                fileName = dlg.FileName;
+                try
+                {
+
+                    return File.ReadAllText(fileName);
+                }
+                catch { }
+            }
+
+            return string.Empty;
+        }
+
         public static void ShowMsgboxSuccFail(bool success, string msgSuccess, string msgFail)
         {
             if (success)
@@ -32,7 +80,7 @@ namespace V2RayGCon.Lib
         }
 
         [Conditional("DEBUG")]
-        public static void SetFormLocation<T>(T form, Model.Enum.FormLocations location) where T : Form
+        public static void SetFormLocation<T>(T form, Model.Data.Enum.FormLocations location) where T : Form
         {
             var width = Screen.PrimaryScreen.WorkingArea.Width;
             var height = Screen.PrimaryScreen.WorkingArea.Height;
@@ -44,13 +92,13 @@ namespace V2RayGCon.Lib
 
             switch (location)
             {
-                case Model.Enum.FormLocations.TopRight:
+                case Model.Data.Enum.FormLocations.TopRight:
                     form.Left = width / 2;
                     break;
-                case Model.Enum.FormLocations.BottomLeft:
+                case Model.Data.Enum.FormLocations.BottomLeft:
                     form.Top = height / 2;
                     break;
-                case Model.Enum.FormLocations.BottomRight:
+                case Model.Data.Enum.FormLocations.BottomRight:
                     form.Top = height / 2;
                     form.Left = width / 2;
                     break;

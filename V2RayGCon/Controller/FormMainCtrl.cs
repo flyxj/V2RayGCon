@@ -21,7 +21,7 @@ namespace V2RayGCon.Controller
 
             if (!string.IsNullOrEmpty(server))
             {
-                v2rayLink = Lib.Utils.LinkAddPerfix(server, Model.Enum.LinkTypes.v2ray);
+                v2rayLink = Lib.Utils.LinkAddPerfix(server, Model.Data.Enum.LinkTypes.v2ray);
             }
 
             Lib.UI.ShowMsgboxSuccFail(
@@ -131,7 +131,7 @@ namespace V2RayGCon.Controller
                 {
                     ip = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.address");
                     port = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.port");
-                    tls= Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.method");
+                    tls = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.method");
                 }
                 else
                 {

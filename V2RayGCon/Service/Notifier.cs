@@ -54,7 +54,8 @@ namespace V2RayGCon.Service
             if (debug_form_config)
             {
                 setting.curEditingIndex = 0;
-                Views.FormConfiger.GetForm();
+                // Views.FormConfiger.GetForm();
+                new Views.FormConfiger();
             }
             else
             {
@@ -95,6 +96,20 @@ namespace V2RayGCon.Service
             var proxy = string.Format("{0}://{1}",
                 setting.proxyType,
                 setting.proxyAddr);
+            if (setting.proxyType.Equals("config"))
+            {
+
+                var aliases = setting.GetAllAliases();
+                proxy = "Running";
+                try
+                {
+                    var curServer = Lib.Utils.Clamp(
+                        setting.GetSelectedServerIndex(),
+                        0, setting.GetServerCount());
+                    proxy = aliases[curServer];
+                }
+                catch { }
+            }
 
             ni.Text = core.IsRunning() ? proxy : I18N("Description");
         }
@@ -219,6 +234,7 @@ namespace V2RayGCon.Service
                 new MenuItem(I18N("Exit"),(s,a)=>{
                     if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){
                         ni.Visible = false;
+                        Lib.ProxySetter.setProxy("",false);
                         core.StopCore();
                         Application.Exit();
                     }

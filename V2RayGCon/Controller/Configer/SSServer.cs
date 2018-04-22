@@ -1,37 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 using static V2RayGCon.Lib.StringResource;
 
 
 namespace V2RayGCon.Controller.Configer
 {
-    class SSServer : INotifyPropertyChanged
+    class SSServer :
+        Model.BaseClass.NotifyComponent,
+        Model.BaseClass.IConfigerComponent
     {
-        // boiler-plate
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        private string _email;
-
-        public string email
-        {
-            get { return _email; }
-            set { SetField(ref _email, value); }
-        }
-
         private string _port;
 
         public string port
@@ -78,14 +55,14 @@ namespace V2RayGCon.Controller.Configer
         public void SetMethod(string selectedMethod)
         {
             method = Lib.Utils.LookupDict(
-                Model.Table.ssMethods,
+                Model.Data.Table.ssMethods,
                 selectedMethod);
         }
 
         public void SetNetwork(string selectedNetwork)
         {
             network = Lib.Utils.LookupDict(
-                Model.Table.ssNetworks,
+                Model.Data.Table.ssNetworks,
                 selectedNetwork);
         }
 
@@ -94,13 +71,12 @@ namespace V2RayGCon.Controller.Configer
             var configTemplate = JObject.Parse(resData("config_tpl"));
             JToken server = configTemplate["ssServer"];
 
-            var methods = Model.Table.ssMethods;
-            var networks = Model.Table.ssNetworks;
+            var methods = Model.Data.Table.ssMethods;
+            var networks = Model.Data.Table.ssNetworks;
 
             server["port"] = Lib.Utils.Str2Int(port);
             server["settings"]["method"] = method < 0 ? methods[0] : methods[method];
             server["settings"]["password"] = pass;
-            server["settings"]["email"] = email;
             server["settings"]["ota"] = OTA;
             server["settings"]["network"] = network < 0 ? networks[0] : networks[network];
 
@@ -115,7 +91,6 @@ namespace V2RayGCon.Controller.Configer
             SetMethod(GetStr(perfix, "method"));
             SetNetwork(GetStr(perfix, "network"));
             pass = GetStr(perfix, "password");
-            email = GetStr(perfix, "email");
             OTA = Lib.Utils.GetBoolFromJToken(config, perfix + "ota");
         }
 

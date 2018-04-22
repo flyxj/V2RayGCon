@@ -3,40 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
     public partial class FormConfiger : Form
     {
-        #region Sigleton
-        static FormConfiger _instant;
-        public static FormConfiger GetForm()
-        {
-            if (_instant == null || _instant.IsDisposed)
-            {
-                _instant = new FormConfiger();
-            }
-            return _instant;
-        }
-        #endregion
-
-        // DataBinding
         Controller.Configer.Configer configer;
-
         Service.Setting setting;
         Scintilla scintilla;
+        string formTitle;
 
-        delegate void UpdateServerListDelegate(int index);
+        delegate void UpdateServerMenuDelegate();
 
-        FormConfiger()
+
+        public FormConfiger()
         {
             setting = Service.Setting.Instance;
+            configer = new Controller.Configer.Configer();
 
             InitializeComponent();
+
+            formTitle = this.Text;
             InitComboBox();
             InitScintilla();
             InitDataBinding();
-            UpdateServerList(setting.curEditingIndex);
+            UpdateServerMenu();
+            ShowToolsPanel(setting.isShowConfigerLeftPanel);
+
+            cboxConfigSection.SelectedIndex = 0;
 
             this.FormClosed += (s, a) =>
             {
@@ -44,8 +39,36 @@ namespace V2RayGCon.Views
             };
 
             this.Show();
-
             setting.OnSettingChange += SettingChange;
+
+            SetTitle(configer.GetAlias());
+        }
+
+        void ShowToolsPanel(bool visible)
+        {
+            var margin = 4;
+            var formSize = this.ClientSize;
+            var editorSize = pnlEditor.Size;
+
+            if (visible)
+            {
+                showLeftPanelToolStripMenuItem.Checked = true;
+                hideLeftPanelToolStripMenuItem.Checked = false;
+                pnlTools.Visible = true;
+                pnlEditor.Left = pnlTools.Left + pnlTools.Width + margin;
+                editorSize.Width = formSize.Width - pnlTools.Width - margin * 3;
+            }
+            else
+            {
+                showLeftPanelToolStripMenuItem.Checked = false;
+                hideLeftPanelToolStripMenuItem.Checked = true;
+                pnlTools.Visible = false;
+                pnlEditor.Left = margin;
+                editorSize.Width = formSize.Width - margin * 2;
+            }
+
+            pnlEditor.Size = editorSize;
+            setting.isShowConfigerLeftPanel = visible;
         }
 
         void InitComboBox()
@@ -61,25 +84,24 @@ namespace V2RayGCon.Views
                 cbox.SelectedIndex = 0;
             }
 
-            FillComboBox(cboxConfigSection, Model.Table.configSections);
-            FillComboBox(cboxSSCMethod, Model.Table.ssMethods);
-            FillComboBox(cboxSSSMethod, Model.Table.ssMethods);
-            FillComboBox(cboxSSSNetwork, Model.Table.ssNetworks);
+            FillComboBox(cboxConfigSection, Model.Data.Table.configSections);
+            FillComboBox(cboxSSCMethod, Model.Data.Table.ssMethods);
+            FillComboBox(cboxSSSMethod, Model.Data.Table.ssMethods);
+            FillComboBox(cboxSSSNetwork, Model.Data.Table.ssNetworks);
         }
 
         void SettingChange(object sender, EventArgs args)
         {
-            UpdateServerListDelegate updater =
-                new UpdateServerListDelegate(UpdateServerList);
-            cboxServList?.Invoke(updater, -1);
+            UpdateServerMenuDelegate updater =
+                new UpdateServerMenuDelegate(UpdateServerMenu);
+            mainMenu?.Invoke(updater);
         }
 
         #region DataBinding
         void InitDataBinding()
         {
-            configer = new Controller.Configer.Configer();
             BindDataVmessClient();
-            BindDataSSRClient();
+            BindDataSSClient();
             BindDataStreamSettings();
             BindDataEditor();
             BindDataSSServer();
@@ -90,23 +112,14 @@ namespace V2RayGCon.Views
         {
             // bind scintilla
             var editor = configer.editor;
-
             var bs = new BindingSource();
             bs.DataSource = editor;
-
             scintilla.DataBindings.Add("Text", bs, nameof(editor.content));
-
-            cboxConfigSection.DataBindings.Add(
-                nameof(cboxConfigSection.SelectedIndex),
-                bs,
-                nameof(editor.curSection),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
         }
 
         void BindDataStreamSettings()
         {
-            var streamClient = configer.streamClient;
+            var streamClient = configer.streamSettings;
             var bs = new BindingSource();
             bs.DataSource = streamClient;
             tboxKCPType.DataBindings.Add("Text", bs, nameof(streamClient.kcpType));
@@ -117,13 +130,6 @@ namespace V2RayGCon.Views
                 nameof(streamClient.tls),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
-
-            chkStreamIsInbound.DataBindings.Add(
-                nameof(chkStreamIsInbound.Checked),
-                bs,
-                nameof(streamClient.isInbound),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
         }
 
         void BindDataSSServer()
@@ -132,7 +138,6 @@ namespace V2RayGCon.Views
             var bs = new BindingSource();
             bs.DataSource = server;
 
-            tboxSSSEmail.DataBindings.Add("Text", bs, nameof(server.email));
             tboxSSSPass.DataBindings.Add("Text", bs, nameof(server.pass));
             tboxSSSPort.DataBindings.Add("Text", bs, nameof(server.port));
 
@@ -158,28 +163,27 @@ namespace V2RayGCon.Views
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        void BindDataSSRClient()
+        void BindDataSSClient()
         {
-            var ssrClient = configer.ssClient;
+            var ssClient = configer.ssClient;
 
             var bs = new BindingSource();
-            bs.DataSource = ssrClient;
+            bs.DataSource = ssClient;
 
-            tboxSSCEmail.DataBindings.Add("Text", bs, nameof(ssrClient.email));
-            tboxSSCAddr.DataBindings.Add("Text", bs, nameof(ssrClient.addr));
-            tboxSSCPass.DataBindings.Add("Text", bs, nameof(ssrClient.pass));
+            tboxSSCAddr.DataBindings.Add("Text", bs, nameof(ssClient.addr));
+            tboxSSCPass.DataBindings.Add("Text", bs, nameof(ssClient.pass));
 
             cboxSSCMethod.DataBindings.Add(
                 nameof(cboxSSCMethod.SelectedIndex),
                 bs,
-                nameof(ssrClient.method),
+                nameof(ssClient.method),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
             chkSSCOTA.DataBindings.Add(
                 nameof(chkSSCOTA.Checked),
                 bs,
-                nameof(ssrClient.OTA),
+                nameof(ssClient.OTA),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
@@ -216,6 +220,7 @@ namespace V2RayGCon.Views
             scintilla = new Scintilla();
             panelScintilla.Controls.Add(scintilla);
 
+            // scintilla.Dock = DockStyle.Fill;
             scintilla.Dock = DockStyle.Fill;
             scintilla.WrapMode = WrapMode.None;
             scintilla.IndentationGuides = IndentView.LookBoth;
@@ -265,25 +270,61 @@ namespace V2RayGCon.Views
 
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        void UpdateServerMenu()
         {
-            this.Close();
+            var menuRepalceServer = replaceExistServerToolStripMenuItem.DropDownItems;
+            var menuLoadServer = loadServerToolStripMenuItem.DropDownItems;
+
+            menuRepalceServer.Clear();
+            menuLoadServer.Clear();
+
+            var aliases = setting.GetAllAliases();
+
+            var enable = aliases.Count > 0;
+            replaceExistServerToolStripMenuItem.Enabled = enable;
+            loadServerToolStripMenuItem.Enabled = enable;
+
+            for (int i = 0; i < aliases.Count; i++)
+            {
+                var _i = i;
+                menuRepalceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                {
+                    ScintillaLostFocus();
+                    if (Lib.UI.Confirm(I18N("ReplaceServer")))
+                    {
+                        configer.ReplaceServer(_i);
+                        SetTitle(configer.GetAlias());
+                    }
+                }));
+
+                menuLoadServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                {
+                    if (!Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+                    {
+                        return;
+                    }
+                    configer.LoadServer(_i);
+                    cboxConfigSection.SelectedIndex = 0;
+                    SetTitle(configer.GetAlias());
+                }));
+            }
         }
 
         void btnSaveChanges_Click(object sender, EventArgs e)
         {
-            configer.SaveChanges();
+            if (configer.IsValid())
+            {
+                configer.SaveChanges();
+            }
+            else
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+            }
         }
-
 
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
             configer.DiscardChanges();
-        }
-
-        private void btnOverwriteServConfig_Click(object sender, EventArgs e)
-        {
-            configer.OverwriteServerConfig(cboxServList.SelectedIndex);
         }
 
         private void btnLoadExample_Click(object sender, EventArgs e)
@@ -321,11 +362,6 @@ namespace V2RayGCon.Views
             configer.vmessClient.ID = Guid.NewGuid().ToString();
         }
 
-        private void btnInsertNewServ_Click(object sender, EventArgs e)
-        {
-            configer.InsertNewServer();
-        }
-
         private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
         {
             if (chkSSCShowPass.Checked == true)
@@ -336,26 +372,6 @@ namespace V2RayGCon.Views
             {
                 tboxSSCPass.PasswordChar = '*';
             }
-        }
-
-        void UpdateServerList(int index = -1)
-        {
-            var oldIndex = index >= 0 ? index : cboxServList.SelectedIndex;
-            cboxServList.Items.Clear();
-
-            var aliases = setting.GetAllAliases();
-
-            if (aliases.Count <= 0)
-            {
-                return;
-            }
-
-            foreach (var alias in aliases)
-            {
-                cboxServList.Items.Add(alias);
-            }
-
-            cboxServList.SelectedIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count - 1);
         }
 
         private void chkSSSShowPass_CheckedChanged(object sender, EventArgs e)
@@ -384,6 +400,109 @@ namespace V2RayGCon.Views
         private void btnInsertVServ_Click(object sender, EventArgs e)
         {
             configer.InsertVmessServer();
+        }
+
+        private void chkStreamSettingsIsServer_CheckedChanged(object sender, EventArgs e)
+        {
+            configer.StreamSettingsIsServerChange(chkStreamIsServer.Checked);
+        }
+
+        private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (configer.SectionChanged(cboxConfigSection.SelectedIndex))
+            {
+                cboxConfigSection.SelectedIndex = configer.perSection;
+            }
+        }
+
+        private void showLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowToolsPanel(true);
+        }
+
+        private void hideLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowToolsPanel(false);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        void SetTitle(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                this.Text = formTitle;
+            }
+            else
+            {
+                this.Text = string.Format("{0} - {1}", formTitle, name);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScintillaLostFocus();
+
+            if (!configer.IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+            configer.SaveChanges();
+
+            if (Lib.UI.DlgWriteFile(resData("ExtJson"),
+                configer.GetConfigFormated(),
+                out string filename))
+            {
+                SetTitle(filename);
+                MessageBox.Show(I18N("Done"));
+            }
+            else
+            {
+                MessageBox.Show(I18N("WriteFileFail"));
+            }
+        }
+
+        void ScintillaLostFocus()
+        {
+            tboxVMessID.Focus();
+        }
+
+        private void addNewServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ScintillaLostFocus();
+            if (Lib.UI.Confirm(I18N("AddNewServer")))
+            {
+                configer.AddNewServer();
+                SetTitle(configer.GetAlias());
+            }
+        }
+
+        private void loadJsonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+            {
+                return;
+            }
+            string json = Lib.UI.DlgReadFile(resData("ExtJson"), out string filename);
+            if (configer.SetConfig(json))
+            {
+                cboxConfigSection.SelectedIndex = 0;
+                SetTitle(filename);
+                I18N("Done");
+            }
+            else
+            {
+                I18N("LoadJsonFail");
+            }
+        }
+
+        private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            new FormConfiger();
         }
     }
 }

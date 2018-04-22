@@ -49,13 +49,13 @@ namespace V2RayGCon.Lib
             return -1;
         }
 
-        public static Model.Shadowsocks SSLink2SS(string ssLink)
+        public static Model.Data.Shadowsocks SSLink2SS(string ssLink)
         {
-            string b64Link = LinkBody(ssLink, Model.Enum.LinkTypes.ss);
+            string b64Link = LinkBody(ssLink, Model.Data.Enum.LinkTypes.ss);
 
             try
             {
-                var ss = new Model.Shadowsocks();
+                var ss = new Model.Data.Shadowsocks();
                 var plainText = Base64Decode(b64Link);
                 var parts = plainText.Split('@');
                 var mp = parts[0].Split(':');
@@ -73,7 +73,7 @@ namespace V2RayGCon.Lib
 
         public static string SSLink2ConfigString(string ssLink)
         {
-            Model.Shadowsocks ss = SSLink2SS(ssLink);
+            Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
             if (ss == null)
             {
                 return string.Empty;
@@ -180,9 +180,9 @@ namespace V2RayGCon.Lib
             return true;
         }
 
-        public static Model.Vmess ConfigString2Vmess(string config)
+        public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
-            Model.Vmess v = new Model.Vmess();
+            Model.Data.Vmess v = new Model.Data.Vmess();
             JObject o;
             try
             {
@@ -208,7 +208,7 @@ namespace V2RayGCon.Lib
 
         public static string VmessLink2ConfigString(string vmessLink)
         {
-            Model.Vmess v = VmessLink2Vmess(vmessLink);
+            Model.Data.Vmess v = VmessLink2Vmess(vmessLink);
 
             if (v == null)
             {
@@ -242,16 +242,17 @@ namespace V2RayGCon.Lib
             };
 
             // insert stream type
-            string[] streamTypes = { "WS", "TCP", "KCP" };
-            string streamType = v.net.ToUpper();
+            string[] streamTypes = { "ws", "tcp", "kcp" };
+            string streamType = v.net.ToLower();
 
             if (!streamTypes.Contains(streamType))
             {
                 return config.ToString();
             }
 
-            var templateName = resData("Tpl" + streamType);
-            config["outbound"]["streamSettings"] = JObject.Parse(templateName);
+            var template = JObject.Parse(resData("config_tpl"));
+
+            config["outbound"]["streamSettings"] = template[streamType];
 
             config["outbound"]["streamSettings"]["security"] = v.tls;
             try
@@ -324,17 +325,17 @@ namespace V2RayGCon.Lib
 
 
 
-        public static string LinkAddPerfix(string b64Content, Model.Enum.LinkTypes type)
+        public static string LinkAddPerfix(string b64Content, Model.Data.Enum.LinkTypes type)
         {
             string perfix = string.Empty;
 
             switch (type)
             {
-                case Model.Enum.LinkTypes.vmess:
+                case Model.Data.Enum.LinkTypes.vmess:
                     perfix = resData("VmessLinkPerfix");
                     break;
 
-                case Model.Enum.LinkTypes.v2ray:
+                case Model.Data.Enum.LinkTypes.v2ray:
                     perfix = resData("V2RayLinkPerfix");
                     break;
             }
@@ -342,7 +343,7 @@ namespace V2RayGCon.Lib
             return perfix + b64Content;
         }
 
-        public static string Vmess2VmessLink(Model.Vmess vmess)
+        public static string Vmess2VmessLink(Model.Data.Vmess vmess)
         {
             if (vmess == null)
             {
@@ -352,16 +353,16 @@ namespace V2RayGCon.Lib
             string content = JsonConvert.SerializeObject(vmess);
             return LinkAddPerfix(
                 Base64Encode(content),
-                Model.Enum.LinkTypes.vmess);
+                Model.Data.Enum.LinkTypes.vmess);
         }
 
-        public static Model.Vmess VmessLink2Vmess(string link)
+        public static Model.Data.Vmess VmessLink2Vmess(string link)
         {
-            string base64_text = LinkBody(link, Model.Enum.LinkTypes.vmess);
+            string base64_text = LinkBody(link, Model.Data.Enum.LinkTypes.vmess);
             try
             {
                 string plain_text = Base64Decode(base64_text);
-                var vmess = JsonConvert.DeserializeObject<Model.Vmess>(plain_text);
+                var vmess = JsonConvert.DeserializeObject<Model.Data.Vmess>(plain_text);
                 if (!string.IsNullOrEmpty(vmess.add)
                     && !string.IsNullOrEmpty(vmess.port)
                     && !string.IsNullOrEmpty(vmess.aid))
@@ -374,20 +375,20 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static string LinkBody(string link, Model.Enum.LinkTypes type)
+        public static string LinkBody(string link, Model.Data.Enum.LinkTypes type)
         {
             int len = 0;
             switch (type)
             {
-                case Model.Enum.LinkTypes.vmess:
+                case Model.Data.Enum.LinkTypes.vmess:
                     len = resData("VmessLinkPerfix").Length;
                     break;
 
-                case Model.Enum.LinkTypes.v2ray:
+                case Model.Data.Enum.LinkTypes.v2ray:
                     len = resData("V2RayLinkPerfix").Length;
                     break;
 
-                case Model.Enum.LinkTypes.ss:
+                case Model.Data.Enum.LinkTypes.ss:
                     len = resData("SSLinkPerfix").Length;
                     break;
             }

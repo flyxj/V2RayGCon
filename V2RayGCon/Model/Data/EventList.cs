@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace V2RayGCon.Model
+namespace V2RayGCon.Model.Data
 {
     public class EventList<T> : IList<T>
     {
@@ -13,7 +13,15 @@ namespace V2RayGCon.Model
 
         public EventList(List<T> fromList)
         {
-            list = fromList;
+            if (fromList != null)
+            {
+                list = fromList;
+            }
+            else
+            {
+                list = new List<T>();
+            }
+
 
             // eventhandler not attach yet, so notify() is in vain.
             // notify();
@@ -26,7 +34,7 @@ namespace V2RayGCon.Model
 
         public EventList()
         {
-
+            list = new List<T>();
         }
 
         private void notify()

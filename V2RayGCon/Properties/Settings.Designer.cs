@@ -94,5 +94,17 @@ namespace V2RayGCon.Properties {
                 this["ProxyType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CfgShowToolPanel {
+            get {
+                return ((bool)(this["CfgShowToolPanel"]));
+            }
+            set {
+                this["CfgShowToolPanel"] = value;
+            }
+        }
     }
 }

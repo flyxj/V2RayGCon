@@ -10,23 +10,13 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
-    class Setting
+    class Setting : Model.BaseClass.SingletonService<Setting>
     {
-        #region Singleton
-        static readonly Setting instSetting = new Setting();
-        public static Setting Instance
-        {
-            get
-            {
-                return instSetting;
-            }
-        }
-        #endregion
 
-        private Model.EventList<string> servers;
+        private Model.Data.EventList<string> servers;
         private List<string> aliases;
         public event EventHandler OnSettingChange;
-        public event EventHandler<Model.DataEvent> OnLog;
+        public event EventHandler<Model.Data.DataEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
 
         private int _curEditingIndex;
@@ -34,7 +24,7 @@ namespace V2RayGCon.Service
         Setting()
         {
             _curEditingIndex = -1;
-            servers = new Model.EventList<string>();
+
             LoadServers();
             aliases = new List<string>();
             UpdateAliases();
@@ -44,7 +34,7 @@ namespace V2RayGCon.Service
 
         public void SendLog(string log)
         {
-            var arg = new Model.DataEvent(log);
+            var arg = new Model.Data.DataEvent(log);
             OnLog?.Invoke(this, arg);
         }
 
@@ -78,6 +68,19 @@ namespace V2RayGCon.Service
             {
                 int n = Lib.Utils.Clamp(value, 0, GetServerCount());
                 Properties.Settings.Default.CurServ = n;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public bool isShowConfigerLeftPanel
+        {
+            get
+            {
+                return Properties.Settings.Default.CfgShowToolPanel == true;
+            }
+            set
+            {
+                Properties.Settings.Default.CfgShowToolPanel = value;
                 Properties.Settings.Default.Save();
             }
         }
@@ -130,7 +133,7 @@ namespace V2RayGCon.Service
         {
             get
             {
-                string[] types = { "socks", "http" };
+                string[] types = { "config", "socks", "http" };
                 string type = Properties.Settings.Default.ProxyType.ToLower();
                 return types.Contains(type) ? type : types[0];
             }
@@ -324,7 +327,7 @@ namespace V2RayGCon.Service
                 {
                     string link = m.Value.Substring(1);
 
-                    string b64Config = Lib.Utils.LinkBody(link, Model.Enum.LinkTypes.v2ray);
+                    string b64Config = Lib.Utils.LinkBody(link, Model.Data.Enum.LinkTypes.v2ray);
                     string config = Lib.Utils.Base64Decode(b64Config);
                     if (JObject.Parse(config) != null && AddServer(b64Config))
                     {
@@ -372,12 +375,14 @@ namespace V2RayGCon.Service
             return aliases.AsReadOnly();
         }
 
-        void LoadServers()
+        public void LoadServers()
         {
+
+            servers = new Model.Data.EventList<string>();
+
             string rawData = Properties.Settings.Default.Servers;
 
-            List<string> serverList;
-
+            List<string> serverList = null;
             try
             {
                 serverList = JsonConvert.DeserializeObject<List<string>>(rawData);
@@ -410,7 +415,7 @@ namespace V2RayGCon.Service
                 }
             }
 
-            servers = new Model.EventList<string>(serverList);
+            servers = new Model.Data.EventList<string>(serverList);
         }
 
         void UpdateAliases()
@@ -467,9 +472,12 @@ namespace V2RayGCon.Service
             return true;
         }
 
-        public void ActivateServer(int index)
+        public void ActivateServer(int index = -1)
         {
-            _selectedServerIndex = index;
+            if (index >= 0)
+            {
+                _selectedServerIndex = index;
+            }
             OnRequireCoreRestart?.Invoke(this, null);
             OnSettingChange?.Invoke(this, null);
         }
