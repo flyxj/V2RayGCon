@@ -117,166 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>关于</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tboxKeyword.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
   </data>
-  <data name="AppName" xml:space="preserve">
-    <value>V2RayGCon</value>
+  <data name="tboxKeyword.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 21</value>
   </data>
-  <data name="CannotParseJson" xml:space="preserve">
-    <value>无法解析JSON文件，丢弃更改?</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tboxKeyword.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="CantLauchCore" xml:space="preserve">
-    <value>错误：无法运行v2ray-core!</value>
+  <data name="&gt;&gt;tboxKeyword.Name" xml:space="preserve">
+    <value>tboxKeyword</value>
   </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>确认</value>
+  <data name="&gt;&gt;tboxKeyword.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ConfirmDeleteServer" xml:space="preserve">
-    <value>删除选中的服务器？</value>
+  <data name="&gt;&gt;tboxKeyword.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="ConfirmExitApp" xml:space="preserve">
-    <value>退出程序？</value>
+  <data name="&gt;&gt;tboxKeyword.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="CopyFail" xml:space="preserve">
-    <value>复制失败</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnNext.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="CoreCantSetLocalAddr" xml:space="preserve">
-    <value>无法设置本地代理地址</value>
+  <data name="btnNext.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 39</value>
   </data>
-  <data name="CoreExit" xml:space="preserve">
-    <value>v2ray-core 已关闭!</value>
+  <data name="btnNext.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 21</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>V2Ray图形界面配置工具</value>
+  <data name="btnNext.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="DLComplete" xml:space="preserve">
-    <value>下载 v2ray-core 完成！</value>
+  <data name="btnNext.Text" xml:space="preserve">
+    <value>Next (F3)</value>
   </data>
-  <data name="DLFail" xml:space="preserve">
-    <value>下载失败！你可以从以下网址下载：
-https://github.com/v2ray/v2ray-core</value>
+  <data name="&gt;&gt;btnNext.Name" xml:space="preserve">
+    <value>btnNext</value>
   </data>
-  <data name="DLv2rayCore" xml:space="preserve">
-    <value>下载v2ray-core</value>
+  <data name="&gt;&gt;btnNext.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Done" xml:space="preserve">
-    <value>完成</value>
+  <data name="&gt;&gt;btnNext.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="Downloading" xml:space="preserve">
-    <value>正在下载，请稍后。</value>
+  <data name="&gt;&gt;btnNext.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="EditorCannotLoadServerConfig" xml:space="preserve">
-    <value>加载服务器配置失败，调取默认配置文件。</value>
+  <data name="btnPrevious.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 39</value>
   </data>
-  <data name="EditorCheckConfig" xml:space="preserve">
-    <value>无法解析JSON文件，请仔细检查。</value>
+  <data name="btnPrevious.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 21</value>
   </data>
-  <data name="EditorDiscardChange" xml:space="preserve">
-    <value>配置文件存在无效项！
-取消最近一次的修改并继续？</value>
+  <data name="btnPrevious.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="EditorNoExample" xml:space="preserve">
-    <value>这个部分没有参考样例。</value>
+  <data name="btnPrevious.Text" xml:space="preserve">
+    <value>Previous (F2)</value>
   </data>
-  <data name="EditorSaveChange" xml:space="preserve">
-    <value>配置已修改，是否保存修改？</value>
+  <data name="&gt;&gt;btnPrevious.Name" xml:space="preserve">
+    <value>btnPrevious</value>
   </data>
-  <data name="ExeNotFound" xml:space="preserve">
-    <value>请先下载v2ray-core（可点托盘图标相应菜单）</value>
+  <data name="&gt;&gt;btnPrevious.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Exit" xml:space="preserve">
-    <value>退出</value>
+  <data name="&gt;&gt;btnPrevious.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="ImportLink" xml:space="preserve">
-    <value>剪切板导入</value>
+  <data name="&gt;&gt;btnPrevious.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="ImportLinkFail" xml:space="preserve">
-    <value>链接导入失败！</value>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
-  <data name="ImportLinkSuccess" xml:space="preserve">
-    <value>链接导入成功！</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>225, 68</value>
   </data>
-  <data name="ShowConfigWin" xml:space="preserve">
-    <value>设置编辑器</value>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
   </data>
-  <data name="ShowLogWin" xml:space="preserve">
-    <value>显示日志</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="ShowMainWin" xml:space="preserve">
-    <value>主窗口</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FormSearch</value>
   </data>
-  <data name="LinksCopied" xml:space="preserve">
-    <value>链接已复制到剪切板</value>
-  </data>
-  <data name="NoQRCode" xml:space="preserve">
-    <value>没有扫到二维码</value>
-  </data>
-  <data name="NotSupportLinkType" xml:space="preserve">
-    <value>链接已存在或无法解码</value>
-  </data>
-  <data name="ScanQRCode" xml:space="preserve">
-    <value>扫描二维码</value>
-  </data>
-  <data name="Win32" xml:space="preserve">
-    <value>Windows 32位</value>
-  </data>
-  <data name="Win64" xml:space="preserve">
-    <value>Windows 64位</value>
-  </data>
-  <data name="CopyPacUrl" xml:space="preserve">
-    <value>复制PAC链接</value>
-  </data>
-  <data name="CopySuccess" xml:space="preserve">
-    <value>已复制到剪切板</value>
-  </data>
-  <data name="ProxyModeAll" xml:space="preserve">
-    <value>全部走代理</value>
-  </data>
-  <data name="ProxyModeNone" xml:space="preserve">
-    <value>不使用代理</value>
-  </data>
-  <data name="ProxyModePAC" xml:space="preserve">
-    <value>根据PAC设置自动选择</value>
-  </data>
-  <data name="SetProxyMode" xml:space="preserve">
-    <value>设置代理模式</value>
-  </data>
-  <data name="WarnIENotSupportPac" xml:space="preserve">
-    <value>注意：IE不支持PAC文件！</value>
-  </data>
-  <data name="PleaseCheckConfig" xml:space="preserve">
-    <value>无法解析Json，请检查当前配置内容。</value>
-  </data>
-  <data name="WarnMultipleInstance" xml:space="preserve">
-    <value>已存在另一个实例，确定要再开一个？</value>
-  </data>
-  <data name="Empty" xml:space="preserve">
-    <value>(空白)</value>
-  </data>
-  <data name="SaveAs" xml:space="preserve">
-    <value>另存为</value>
-  </data>
-  <data name="WriteFileFail" xml:space="preserve">
-    <value>写入文件失败！</value>
-  </data>
-  <data name="AddNewServer" xml:space="preserve">
-    <value>用当前配置新增一个服务器?</value>
-  </data>
-  <data name="ReplaceServer" xml:space="preserve">
-    <value>用当前配置覆盖选定服务器?</value>
-  </data>
-  <data name="ConfirmLoadNewServer" xml:space="preserve">
-    <value>当前配置将被清除！
-确定要加载新配置？</value>
-  </data>
-  <data name="LoadJsonFail" xml:space="preserve">
-    <value>加载Json文件失败！</value>
-  </data>
-  <data name="AvailableExamples" xml:space="preserve">
-    <value>可用示例 ...</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>默认</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -17,7 +17,7 @@ namespace V2RayGCon.Controller.Configer
 
         JObject config;
         int separator;
-        public int perSection;
+        public int preSection;
         Dictionary<int, string> sections;
 
         public Configer()
@@ -32,7 +32,7 @@ namespace V2RayGCon.Controller.Configer
 
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
-            perSection = 0;
+            preSection = 0;
 
             LoadConfig();
             editor.content = config.ToString();
@@ -48,7 +48,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void ShowSection(int section = -1)
         {
-            var index = section < 0 ? perSection : section;
+            var index = section < 0 ? preSection : section;
 
             index = Lib.Utils.Clamp(index, 0, sections.Count - 1);
 
@@ -79,56 +79,74 @@ namespace V2RayGCon.Controller.Configer
             return Lib.Utils.GetStrFromJToken(config, "v2raygcon.alias");
         }
 
+        public List<string> GetExampleDescriptions()
+        {
+            var list = new List<string>();
+
+            var examples = Model.Data.Table.examples;
+
+            if (!examples.ContainsKey(preSection))
+            {
+                return list;
+            }
+
+            foreach (var example in examples[preSection])
+            {
+                // 0.description 1.keyString
+                list.Add(example[0]);
+            }
+
+            return list;
+        }
+
         public bool SectionChanged(int curSection)
         {
-            // int curSection = editor.curSection;
-
-            if (curSection == perSection)
+            if (curSection == preSection)
             {
-                return false;
+                // prevent inf loop
+                return true;
             }
 
             if (IsValid())
             {
                 SaveChanges();
-                perSection = curSection;
-                ShowSection(curSection);
+                preSection = curSection;
+                ShowSection();
+                UpdateData();
             }
             else
             {
                 if (Lib.UI.Confirm(I18N("CannotParseJson")))
                 {
-                    perSection = curSection;
-                    ShowSection(curSection);
+                    preSection = curSection;
+                    ShowSection();
                 }
                 else
                 {
-                    //editor.curSection = perSection;
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
 
         public bool SaveChanges()
         {
             var content = editor.content;
-            if (perSection >= separator)
+            if (preSection >= separator)
             {
-                config[sections[perSection]] =
+                config[sections[preSection]] =
                     JArray.Parse(content);
             }
-            else if (perSection == 0)
+            else if (preSection == 0)
             {
                 config = JObject.Parse(content);
 
             }
             else
             {
-                config[sections[perSection]] =
+                config[sections[preSection]] =
                     JObject.Parse(content);
             }
-            UpdateData();
             return true;
         }
 
@@ -136,7 +154,7 @@ namespace V2RayGCon.Controller.Configer
         {
             try
             {
-                if (perSection >= separator)
+                if (preSection >= separator)
                 {
                     JArray.Parse(editor.content);
                 }
@@ -150,7 +168,7 @@ namespace V2RayGCon.Controller.Configer
             return false;
         }
 
-        void UpdateData()
+        public void UpdateData()
         {
             vmessClient.UpdateData(config);
             ssClient.UpdateData(config);
@@ -162,9 +180,9 @@ namespace V2RayGCon.Controller.Configer
         public void DiscardChanges()
         {
             editor.content =
-                perSection == 0 ?
+                preSection == 0 ?
                 config.ToString() :
-                config[sections[perSection]].ToString();
+                config[sections[preSection]].ToString();
         }
 
         public void ReplaceServer(int serverIndex)
@@ -179,6 +197,7 @@ namespace V2RayGCon.Controller.Configer
             else
             {
                 SaveChanges();
+                UpdateData();
             }
 
             setting.ReplaceServer(
@@ -187,27 +206,56 @@ namespace V2RayGCon.Controller.Configer
             //MessageBox.Show(I18N("Done"));
         }
 
-        public void LoadExample()
+        public void LoadExample(int index)
         {
+            if (index < 0)
+            {
+                return;
+            }
+
             var defConfig = JObject.Parse(resData("config_def"));
+            var examples = Model.Data.Table.examples;
+            try
+            {
+                string key = examples[preSection][index][1];
+                string content;
 
-            string example =
-                perSection == 0 ?
-                resData("config_min") :
-                defConfig[sections[perSection]]?.ToString();
+                if (preSection == Model.Data.Table.inboundIndex)
+                {
+                    var inTpl = defConfig["inTpl"];
+                    inTpl["protocol"] = examples[preSection][index][2];
+                    inTpl["settings"] = defConfig[key];
+                    content = inTpl.ToString();
+                }
+                else if (preSection == Model.Data.Table.outboundIndex)
+                {
+                    var outTpl = defConfig["outTpl"];
+                    outTpl["protocol"] = examples[preSection][index][2];
+                    outTpl["settings"] = defConfig[key];
+                    content = outTpl.ToString();
+                }
+                else
+                {
+                    content = defConfig[key].ToString();
+                }
 
-            if (string.IsNullOrEmpty(example))
+                editor.content = content;
+            }
+            catch
             {
                 MessageBox.Show(I18N("EditorNoExample"));
-            }
-            else
-            {
-                editor.content = example;
             }
         }
 
         public void InsertKCP()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
             try
             {
                 if (streamSettings.isServer)
@@ -220,12 +268,18 @@ namespace V2RayGCon.Controller.Configer
                 }
             }
             catch { }
-            streamSettings.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 
         public void InsertWS()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+            SaveChanges();
             try
             {
                 if (streamSettings.isServer)
@@ -238,7 +292,7 @@ namespace V2RayGCon.Controller.Configer
                 }
             }
             catch { }
-            streamSettings.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 
@@ -254,6 +308,7 @@ namespace V2RayGCon.Controller.Configer
             else
             {
                 SaveChanges();
+                UpdateData();
             }
             setting.AddServer(Lib.Utils.Base64Encode(config.ToString()));
             MessageBox.Show(I18N("Done"));
@@ -261,6 +316,13 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertTCP()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+            SaveChanges();
+
             try
             {
                 if (streamSettings.isServer)
@@ -273,43 +335,71 @@ namespace V2RayGCon.Controller.Configer
                 }
             }
             catch { }
-            streamSettings.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 
         public void InsertSSClient()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
             InsertOutBoundSetting(ssClient.GetSettings(), "shadowsocks");
-            ssClient.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 
         public void InsertVmessClient()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
             InsertOutBoundSetting(vmessClient.GetSettings(), "vmess");
-            vmessClient.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 
         public void InsertVmessServer()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
             try
             {
                 config["inbound"] = vmessServer.GetSettings();
             }
             catch { }
-            vmessServer.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 
         public void InsertSSServer()
         {
+            if (!IsValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
             try
             {
                 config["inbound"] = ssServer.GetSettings();
             }
             catch { }
-            ssServer.UpdateData(config);
+            UpdateData();
             ShowSection();
         }
 

@@ -275,4 +275,10 @@ Load new config?</value>
   <data name="LoadJsonFail" xml:space="preserve">
     <value>Load json file fail!</value>
   </data>
+  <data name="AvailableExamples" xml:space="preserve">
+    <value>Available examples ...</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
 </root>

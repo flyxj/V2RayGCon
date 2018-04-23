@@ -72,11 +72,11 @@ namespace V2RayGCon.Controller.Configer
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
             var GetAddrStr = Lib.Utils.ClosureGetAddrFromJToken(config);
 
-            var perfix = "outbound.settings.servers.0.";
-            pass = GetStr(perfix, "password");
-            addr = GetAddrStr(perfix, "address", "port");
-            OTA = Lib.Utils.GetBoolFromJToken(config, perfix + "ota");
-            SetMethod(GetStr(perfix, "method"));
+            var prefix = "outbound.settings.servers.0.";
+            pass = GetStr(prefix, "password");
+            addr = GetAddrStr(prefix, "address", "port");
+            OTA = Lib.Utils.GetBoolFromJToken(config, prefix + "ota");
+            SetMethod(GetStr(prefix, "method"));
         }
     }
 }

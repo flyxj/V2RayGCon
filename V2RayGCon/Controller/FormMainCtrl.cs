@@ -21,7 +21,7 @@ namespace V2RayGCon.Controller
 
             if (!string.IsNullOrEmpty(server))
             {
-                v2rayLink = Lib.Utils.LinkAddPerfix(server, Model.Data.Enum.LinkTypes.v2ray);
+                v2rayLink = Lib.Utils.LinkAddPrefix(server, Model.Data.Enum.LinkTypes.v2ray);
             }
 
             Lib.UI.ShowMsgboxSuccFail(

@@ -14,7 +14,8 @@ V2Ray的windows图形界面。
   
 详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)  
   
-下载解压Release中的文件，双击V2RayGCon.exe，注意系统托盘图标。  
+下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGcon.zip    
+双击V2RayGCon.exe，注意系统托盘图标。  
 首次运行要下载v2ray-core，可用托盘图标的下载菜单自动下载。  
 网络不好的可以手动下载，然后将v2ray-core所有文件复制过来。  
 左键点击托盘图标弹出主界面，通过菜单导入剪切板中的vmess/v2ray链接。  

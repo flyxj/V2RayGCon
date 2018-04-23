@@ -17,8 +17,8 @@
     <Setting Name="ProxyAddr" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1:1080</Value>
     </Setting>
-    <Setting Name="ProxyType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">socks</Value>
+    <Setting Name="ProxyType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="CfgShowToolPanel" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

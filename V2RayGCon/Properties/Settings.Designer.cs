@@ -85,10 +85,10 @@ namespace V2RayGCon.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("socks")]
-        public string ProxyType {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ProxyType {
             get {
-                return ((string)(this["ProxyType"]));
+                return ((int)(this["ProxyType"]));
             }
             set {
                 this["ProxyType"] = value;

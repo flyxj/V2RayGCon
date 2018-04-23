@@ -93,19 +93,19 @@ namespace V2RayGCon.Service
 
         void UpdateNotifyText()
         {
-            var proxy = string.Format("{0}://{1}",
-                setting.proxyType,
-                setting.proxyAddr);
-            if (setting.proxyType.Equals("config"))
-            {
+            var type = setting.proxyType;
+            var protocol = Model.Data.Table.proxyTypesString[type];
 
+            var proxy = string.Format("{0}://{1}", protocol, setting.proxyAddr);
+            if (type == (int)Model.Data.Enum.ProxyTypes.config)
+            {
                 var aliases = setting.GetAllAliases();
+                var selServIndex = setting.GetSelectedServerIndex();
+                var curServer = Lib.Utils.Clamp(selServIndex, 0, setting.GetServerCount());
+
                 proxy = "Running";
                 try
                 {
-                    var curServer = Lib.Utils.Clamp(
-                        setting.GetSelectedServerIndex(),
-                        0, setting.GetServerCount());
                     proxy = aliases[curServer];
                 }
                 catch { }
@@ -150,13 +150,12 @@ namespace V2RayGCon.Service
 
             downloader.OnDownloadCompleted += (dls, dla) =>
             {
-                // do not have to stop core any more
                 string msg = I18N("DLComplete");
 
                 try
                 {
                     Lib.Utils.ZipFileDecompress(coreName);
-                    System.IO.File.Delete(coreName);
+                    // System.IO.File.Delete(coreName);
                 }
                 catch
                 {

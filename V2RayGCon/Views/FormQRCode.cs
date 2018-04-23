@@ -100,7 +100,7 @@ namespace V2RayGCon.Views
             }
             else
             {
-                link = resData("V2RayLinkPerfix") + server;
+                link = resData("V2RayLinkPrefix") + server;
                 picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link, 320);
             }
 

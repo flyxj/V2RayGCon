@@ -92,7 +92,7 @@ namespace V2RayGCon.Views
             var index = GetSelectedServerIndex();
             Debug.WriteLine("FormMain: activate server " + index);
 
-            if (setting.proxyType == "http")
+            if (setting.proxyType == (int)Model.Data.Enum.ProxyTypes.http)
             {
                 if (Lib.ProxySetter.getProxyState())
                 {
@@ -153,9 +153,14 @@ namespace V2RayGCon.Views
 
             proxyAddrToolStripTextBox.Text = setting.proxyAddr;
 
-            protocolSocksToolStripMenuItem.Checked = setting.proxyType.Equals("socks");
-            protocolHttpStripMenuItem.Checked = setting.proxyType.Equals("http");
-            protocolConfigToolStripMenuItem.Checked = setting.proxyType.Equals("config");
+            protocolSocksToolStripMenuItem.Checked =
+                setting.proxyType == (int)Model.Data.Enum.ProxyTypes.socks;
+
+            protocolHttpStripMenuItem.Checked =
+                setting.proxyType == (int)Model.Data.Enum.ProxyTypes.http;
+
+            protocolConfigToolStripMenuItem.Checked =
+                setting.proxyType == (int)Model.Data.Enum.ProxyTypes.config;
 
             var isSystemProxySet = Lib.ProxySetter.getProxyState();
             sysProxyDirectToolStripMenuItem.Checked = !isSystemProxySet;
@@ -167,21 +172,21 @@ namespace V2RayGCon.Views
 
         }
 
-        void SwitchToProtocal(string protocal)
+        void SwitchToProtocal(Model.Data.Enum.ProxyTypes type)
         {
-            setting.proxyType = protocal;
+            setting.proxyType = (int)type;
             ActivateServer();
             UpdateUI();
         }
 
         private void protocolHttpStripMenuItem_Click(object sender, EventArgs e)
         {
-            SwitchToProtocal("http");
+            SwitchToProtocal(Model.Data.Enum.ProxyTypes.http);
         }
 
         private void protocolSocksToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SwitchToProtocal("socks");
+            SwitchToProtocal(Model.Data.Enum.ProxyTypes.socks);
         }
 
         private void proxyAddrToolStripTextBox_TextChange(object sender, EventArgs e)
@@ -287,14 +292,16 @@ namespace V2RayGCon.Views
 
         private void sysProxyHttpToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var http = Model.Data.Enum.ProxyTypes.http;
+
             Lib.ProxySetter.setProxy(setting.proxyAddr, true);
-            if (core.IsRunning() && setting.proxyType == "http")
+            if (core.IsRunning() && setting.proxyType == (int)http)
             {
                 UpdateUI();
             }
             else
             {
-                setting.proxyType = "http";
+                setting.proxyType = (int)http;
                 ActivateServer();
             }
         }
@@ -307,7 +314,7 @@ namespace V2RayGCon.Views
 
         private void protocolConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SwitchToProtocal("config");
+            SwitchToProtocal(Model.Data.Enum.ProxyTypes.config);
         }
     }
 }

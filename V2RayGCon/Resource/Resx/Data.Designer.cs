@@ -62,31 +62,33 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
-        ///	&quot;log&quot; : {
-        ///		&quot;access&quot; : &quot;文件地址&quot;,
-        ///		&quot;error&quot; : &quot;文件地址&quot;,
-        ///		&quot;loglevel&quot; : &quot;warning&quot;
-        ///	},
-        ///	&quot;inbound&quot; : {
-        ///		&quot;port&quot; : 1080,
-        ///		&quot;listen&quot; : &quot;127.0.0.1&quot;,
-        ///		&quot;protocol&quot; : &quot;socks&quot;,
-        ///		&quot;settings&quot; : {
-        ///			&quot;auth&quot; : &quot;noauth&quot;,
-        ///			&quot;udp&quot; : false,
-        ///			&quot;ip&quot; : &quot;127.0.0.1&quot;
-        ///		},
-        ///		&quot;streamSettings&quot; : {},
-        ///		&quot;tag&quot; : &quot;标识1&quot;,
-        ///		&quot;domainOverride&quot; : [&quot;http&quot;, &quot;tls&quot;]
-        ///	},
-        ///	&quot;outbound&quot; : {
-        ///		&quot;sendThrough&quot; : &quot;0.0.0.0&quot;,
-        ///		&quot;protocol&quot; : &quot;freedom&quot;,
-        ///		&quot;settings&quot; : {},
-        ///		&quot;tag&quot; : &quot;direct&quot;,
-        ///		&quot;streamSettings&quot; : {},
-        ///		&quot;proxySettings&quot; :  [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  &quot;inTpl&quot;: {
+        ///    &quot;port&quot;: 1080,
+        ///    &quot;listen&quot;: &quot;127.0.0.1&quot;,
+        ///    &quot;protocol&quot;: &quot;协议名称&quot;,
+        ///    &quot;settings&quot;: {},
+        ///    &quot;streamSettings&quot;: {},
+        ///    &quot;tag&quot;: &quot;标识&quot;,
+        ///    &quot;domainOverride&quot;: [
+        ///      &quot;http&quot;,
+        ///      &quot;tls&quot;
+        ///    ]
+        ///  },
+        ///  &quot;inSS&quot;: {
+        ///    &quot;email&quot;: &quot;love@v2ray.com&quot;,
+        ///    &quot;method&quot;: &quot;aes-128-cfb&quot;,
+        ///    &quot;password&quot;: &quot;密码&quot;,
+        ///    &quot;udp&quot;: false,
+        ///    &quot;level&quot;: 0,
+        ///    &quot;ota&quot;: true,
+        ///    &quot;network&quot;: &quot;tcp&quot;
+        ///  },
+        ///  &quot;inHTTP&quot;: {
+        ///    &quot;timeout&quot;: 0,
+        ///    &quot;accounts&quot;: [
+        ///      {
+        ///        &quot;user&quot;: &quot;my-username&quot;,
+        ///        &quot;pass&quot;: &quot; [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_def {
             get {
@@ -130,40 +132,6 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
-        ///  &quot;log&quot;: {
-        ///    &quot;loglevel&quot;: &quot;warning&quot;
-        ///  },
-        ///  &quot;inbound&quot;: {
-        ///    &quot;port&quot;: 1080,
-        ///    &quot;listen&quot;: &quot;127.0.0.1&quot;,
-        ///    &quot;protocol&quot;: &quot;socks&quot;,
-        ///    &quot;settings&quot;: {
-        ///      &quot;auth&quot;: &quot;noauth&quot;,
-        ///      &quot;udp&quot;: false,
-        ///      &quot;ip&quot;: &quot;127.0.0.1&quot;
-        ///    }
-        ///  },
-        ///  &quot;outbound&quot;: {
-        ///    &quot;protocol&quot;: &quot;shadowsocks&quot;,
-        ///    &quot;settings&quot;: {
-        ///      &quot;servers&quot;: [
-        ///        {
-        ///          &quot;email&quot;: &quot;&quot;,
-        ///          &quot;address&quot;: &quot;127.0.0.1&quot;,
-        ///          &quot;port&quot;: 1080,
-        ///          &quot;method&quot;: &quot;aes-128-cfb&quot;,
-        ///          &quot;password&quot;: &quot;&quot;,
-        ///          &quot;ota&quot;: false,
-        ///  [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string config_ss_tpl {
-            get {
-                return ResourceManager.GetString("config_ss_tpl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {
         ///  &quot;vmessClient&quot;: {
         ///    &quot;vnext&quot;: [
         ///      {
@@ -180,53 +148,20 @@ namespace V2RayGCon.Resource.Resx {
         ///      }
         ///    ]
         ///  },
-        ///  &quot;vmessServer&quot;: {
-        ///    &quot;port&quot;: 1234,
-        ///    &quot;protocol&quot;: &quot;vmess&quot;,
-        ///    &quot;settings&quot;: {
-        ///      &quot;clients&quot;: [
-        ///        {
-        ///          &quot;id&quot;: &quot;27848739-7e62-4138-9fd3-098a63964b6b&quot;,
-        ///          &quot;l [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  &quot;httpIn&quot;: {
+        ///    &quot;timeout&quot;: 0,
+        ///    &quot;accounts&quot;: [],
+        ///    &quot;allowTransparent&quot;: false,
+        ///    &quot;userLevel&quot;: 0
+        ///  },
+        ///  &quot;socksIn&quot;: {
+        ///    &quot;auth&quot;: &quot;noauth&quot;,
+        ///    &quot;accounts&quot;: [],
+        ///    &quot;udp&quot;:  [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
                 return ResourceManager.GetString("config_tpl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 {
-        ///	&quot;log&quot; : {
-        ///		&quot;loglevel&quot; : &quot;warning&quot;
-        ///	},
-        ///	&quot;inbound&quot; : {
-        ///		&quot;port&quot; : 1080,
-        ///		&quot;listen&quot; : &quot;127.0.0.1&quot;,
-        ///		&quot;protocol&quot; : &quot;socks&quot;,
-        ///		&quot;settings&quot; : {
-        ///			&quot;auth&quot; : &quot;noauth&quot;,
-        ///			&quot;udp&quot; : false,
-        ///			&quot;ip&quot; : &quot;127.0.0.1&quot;
-        ///		}
-        ///	},
-        ///	&quot;outbound&quot; : {
-        ///		&quot;protocol&quot; : &quot;freedom&quot;,
-        ///		&quot;settings&quot; : null,
-        ///		&quot;tag&quot; : &quot;direct&quot;,
-        ///		&quot;mux&quot; : null,
-        ///		&quot;streamSettings&quot; : null
-        ///	},
-        ///	&quot;v2raygcon&quot;:{
-        ///	    &quot;alias&quot;:&quot;&quot;,
-        ///		&quot;description&quot;:&quot;&quot;
-        ///	}
-        ///}
-        /// 的本地化字符串。
-        /// </summary>
-        internal static string config_vmess_tpl {
-            get {
-                return ResourceManager.GetString("config_vmess_tpl", resourceCulture);
             }
         }
         
@@ -332,18 +267,18 @@ namespace V2RayGCon.Resource.Resx {
         /// <summary>
         ///   查找类似 ss:// 的本地化字符串。
         /// </summary>
-        internal static string SSLinkPerfix {
+        internal static string SSLinkPrefix {
             get {
-                return ResourceManager.GetString("SSLinkPerfix", resourceCulture);
+                return ResourceManager.GetString("SSLinkPrefix", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 v2ray:// 的本地化字符串。
         /// </summary>
-        internal static string V2RayLinkPerfix {
+        internal static string V2RayLinkPrefix {
             get {
-                return ResourceManager.GetString("V2RayLinkPerfix", resourceCulture);
+                return ResourceManager.GetString("V2RayLinkPrefix", resourceCulture);
             }
         }
         
@@ -359,9 +294,9 @@ namespace V2RayGCon.Resource.Resx {
         /// <summary>
         ///   查找类似 vmess:// 的本地化字符串。
         /// </summary>
-        internal static string VmessLinkPerfix {
+        internal static string VmessLinkPrefix {
             get {
-                return ResourceManager.GetString("VmessLinkPerfix", resourceCulture);
+                return ResourceManager.GetString("VmessLinkPrefix", resourceCulture);
             }
         }
     }

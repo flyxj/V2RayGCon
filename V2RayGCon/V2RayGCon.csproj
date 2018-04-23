@@ -88,11 +88,11 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="zxing, Version=0.16.2.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZXing.Net.0.16.2\lib\net40\zxing.dll</HintPath>
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net40\zxing.dll</HintPath>
     </Reference>
-    <Reference Include="zxing.presentation, Version=0.16.2.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZXing.Net.0.16.2\lib\net40\zxing.presentation.dll</HintPath>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net40\zxing.presentation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +168,12 @@
     <Compile Include="Views\FormQRCode.Designer.cs">
       <DependentUpon>FormQRCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\FormSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormSearch.Designer.cs">
+      <DependentUpon>FormSearch.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -214,6 +220,12 @@
     <EmbeddedResource Include="Views\FormQRCode.zh-CN.resx">
       <DependentUpon>FormQRCode.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSearch.resx">
+      <DependentUpon>FormSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSearch.zh-CN.resx">
+      <DependentUpon>FormSearch.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -234,13 +246,13 @@
   <ItemGroup>
     <None Include="Resource\Icon\icon_light.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
     <None Include="Resource\Config\config_def.txt" />
-    <Content Include="Resource\Config\config_ss_tpl.txt" />
     <Content Include="Resource\Config\config_tpl.txt" />
-    <None Include="Resource\Config\config_vmess_tpl.txt" />
     <None Include="Resource\Config\config_min.txt" />
   </ItemGroup>
   <ItemGroup>

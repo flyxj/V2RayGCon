@@ -86,12 +86,12 @@ namespace V2RayGCon.Controller.Configer
         public void UpdateData(JObject config)
         {
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
-            var perfix = "inbound.settings.";
+            var prefix = "inbound.settings.";
             port = GetStr("inbound.", "port");
-            SetMethod(GetStr(perfix, "method"));
-            SetNetwork(GetStr(perfix, "network"));
-            pass = GetStr(perfix, "password");
-            OTA = Lib.Utils.GetBoolFromJToken(config, perfix + "ota");
+            SetMethod(GetStr(prefix, "method"));
+            SetNetwork(GetStr(prefix, "network"));
+            pass = GetStr(prefix, "password");
+            OTA = Lib.Utils.GetBoolFromJToken(config, prefix + "ota");
         }
 
     }

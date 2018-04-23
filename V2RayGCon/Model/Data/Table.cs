@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.Data
 {
@@ -23,8 +24,11 @@ namespace V2RayGCon.Model.Data
         };
 
         // separate between dictionary or array
-        public static int sectionSeparator => _sectionSeparator;
-        static int _sectionSeparator = 11;
+        public const int sectionSeparator = 11;
+        public const int inboundIndex = 7;
+        public const int outboundIndex = 8;
+        public static string[] proxyTypesString = new string[] { "config", "http", "socks" };
+
 
         public static Dictionary<int, string> ssMethods => _ssrMethods;
         static Dictionary<int, string> _ssrMethods = new Dictionary<int, string>
@@ -53,5 +57,110 @@ namespace V2RayGCon.Model.Data
             { 1, "udp" },
             { 2, "tcp,udp" },
         };
+
+        public static Dictionary<int, List<string[]>> examples => _examples;
+        static Dictionary<int, List<string[]>> _examples = ExampleHelper();
+
+        static Dictionary<int, List<string[]>> ExampleHelper()
+        {
+            string[] SS(string description, string key)
+            {
+                return new string[] { description, key };
+            }
+
+            string[] SSS(string description, string key, string protocol)
+            {
+                return new string[] { description, key, protocol };
+            }
+
+            List<string[]> NewList()
+            {
+                return new List<string[]>();
+            }
+
+            var d = new Dictionary<int, List<string[]>>();
+
+            List<string[]> list;
+
+            // { 0, "config.json"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "cfgMin"));
+            d.Add(0, list);
+
+            //{ 1, "log"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "logFile"));
+            list.Add(SS("None", "logNone"));
+            list.Add(SS("Error", "logError"));
+            list.Add(SS("Warning", "logWarning"));
+            list.Add(SS("Info", "logInfo"));
+            list.Add(SS("Debug", "logDebug"));
+            d.Add(1, list);
+
+            //{ 2, "api"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "apiDefault"));
+            d.Add(2, list);
+
+            //{ 3, "dns"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "dnsDefault"));
+            d.Add(3, list);
+
+            //{ 4, "stats"},
+
+            //{ 5, "routing"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "routeCIP"));
+            list.Add(SS("Inbound to Outbound", "routeI2O"));
+            list.Add(SS("All options", "routeAll"));
+            d.Add(5, list);
+
+            //{ 6, "policy"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "policyDefault"));
+            d.Add(6, list);
+
+            //{ 7, "inbound"},
+            list = NewList();
+            list.Add(SSS("HTTP", "inHTTP", "http"));
+            list.Add(SSS("SOCKS", "inSocks", "socks"));
+            list.Add(SSS("Shadowsocks", "inSS", "shadowsocks"));
+            list.Add(SSS("VMess", "inVmess", "vmess"));
+            d.Add(7, list);
+
+            //{ 8, "outbound"},
+            list = NewList();
+            list.Add(SSS("VMess", "outVmess", "vmess"));
+            list.Add(SSS("Shadowsocks", "outSS", "shadowsocks"));
+            list.Add(SSS("SOCKS", "outSocks", "socks"));
+            list.Add(SSS("Freedom", "outFree", "freedom"));
+            list.Add(SSS("Dokodemo-door", "outDoko", "dokodemo-door"));
+            list.Add(SSS("Black hole", "outBlackHole", "blackhole"));
+            d.Add(8, list);
+
+            //{ 9, "transport"},
+            list = NewList();
+            list.Add(SS(I18N("Default"), "transDefault"));
+            d.Add(9, list);
+
+            //{ 10,"v2raygcon" },
+            list = NewList();
+            list.Add(SS(I18N("Default"), "v2raygcon"));
+            d.Add(10, list);
+
+            //{ 11,"inboundDetour"}, 
+            list = NewList();
+            list.Add(SS(I18N("Default"), "inDtrDefault"));
+            d.Add(11, list);
+
+            //{ 12,"outboundDetour"}, outDtrDefault
+            list = NewList();
+            list.Add(SS(I18N("Default"), "outDtrDefault"));
+            list.Add(SS("All options", "outDtrAll"));
+            d.Add(12, list);
+
+            return d;
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -27,23 +26,26 @@ namespace V2RayGCon.Service
 
         void OverwriteProxySettings(JObject config)
         {
-            string[] supportProtocols = { "socks", "http" };
+            var type = setting.proxyType;
 
-            if (!supportProtocols.Contains(setting.proxyType))
+            if (!(type == (int)Model.Data.Enum.ProxyTypes.http
+                || type == (int)Model.Data.Enum.ProxyTypes.socks))
             {
                 return;
             }
 
+            var protocol = Model.Data.Table.proxyTypesString[type];
+
             Lib.Utils.TryParseIPAddr(setting.proxyAddr, out string ip, out int port);
             var tpl = JObject.Parse(resData("config_tpl"));
-            var part = setting.proxyType + "In";
+            var part = protocol + "In";
             try
             {
-                config["inbound"]["protocol"] = setting.proxyType;
+                config["inbound"]["protocol"] = protocol;
                 config["inbound"]["listen"] = ip;
                 config["inbound"]["port"] = port;
                 config["inbound"]["settings"] = tpl[part];
-                if (setting.proxyType.Equals("socks"))
+                if (type == (int)Model.Data.Enum.ProxyTypes.socks)
                 {
                     config["inbound"]["settings"]["ip"] = ip;
                 }

@@ -62,10 +62,10 @@ namespace V2RayGCon.Controller.Configer
         {
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
 
-            var perfix = "inbound.settings.clients.0.";
-            ID = GetStr(perfix, "id");
-            level = GetStr(perfix, "level");
-            altID = GetStr(perfix, "alterId");
+            var prefix = "inbound.settings.clients.0.";
+            ID = GetStr(prefix, "id");
+            level = GetStr(prefix, "level");
+            altID = GetStr(prefix, "alterId");
             port = GetStr("inbound.", "port");
         }
     }

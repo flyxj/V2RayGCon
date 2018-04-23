@@ -86,20 +86,20 @@ namespace V2RayGCon.Controller.Configer
         {
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
 
-            string perfix;
+            string prefix;
 
             if (_isServer)
             {
-                perfix = "inbound.streamSettings.";
+                prefix = "inbound.streamSettings.";
             }
             else
             {
-                perfix = "outbound.streamSettings.";
+                prefix = "outbound.streamSettings.";
             }
 
-            kcpType = GetStr(perfix, "kcpSettings.header.type");
-            wsPath = GetStr(perfix, "wsSettings.path");
-            SetSecurity(GetStr(perfix, "security"));
+            kcpType = GetStr(prefix, "kcpSettings.header.type");
+            wsPath = GetStr(prefix, "wsSettings.path");
+            SetSecurity(GetStr(prefix, "security"));
         }
 
     }

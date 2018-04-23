@@ -8,12 +8,15 @@
             v2ray,
             ss,
         }
-        public enum ProxyModes
+
+
+        public enum ProxyTypes
         {
-            ProxyNone,
-            ProxyAll,
-            ProxyPAC,
+            config = 0,
+            http = 1,
+            socks = 2,
         }
+
 
         public enum FormLocations
         {

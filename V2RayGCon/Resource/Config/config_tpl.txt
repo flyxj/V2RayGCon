@@ -30,6 +30,7 @@
     "userLevel": 0
   },
   "vmessServer": {
+    "listen": "127.0.0.1",
     "port": 1234,
     "protocol": "vmess",
     "settings": {
@@ -45,12 +46,13 @@
     }
   },
   "ssServer": {
+    "listen": "127.0.0.1",
     "protocol": "shadowsocks",
     "port": 1234,
     "settings": {
       "email": "love@v2ray.com",
       "method": "aes-256-cfb",
-      "password": "5678",
+      "password": "密码",
       "level": 0,
       "ota": false,
       "network": "tcp"
@@ -68,6 +70,68 @@
         "level": 0
       }
     ]
+  },
+  "tplImortVmess": {
+    "log": {
+      "loglevel": "warning"
+    },
+    "inbound": {
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false,
+        "ip": "127.0.0.1"
+      }
+    },
+    "outbound": {
+      "protocol": "freedom",
+      "settings": null,
+      "tag": "direct",
+      "mux": null,
+      "streamSettings": null
+    },
+    "v2raygcon": {
+      "alias": "",
+      "description": ""
+    }
+  },
+  "tplImportSS": {
+    "log": {
+      "loglevel": "warning"
+    },
+    "inbound": {
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false,
+        "ip": "127.0.0.1"
+      }
+    },
+    "outbound": {
+      "protocol": "shadowsocks",
+      "settings": {
+        "servers": [
+          {
+            "email": "",
+            "address": "127.0.0.1",
+            "port": 1080,
+            "method": "aes-128-cfb",
+            "password": "",
+            "ota": false,
+            "level": 0
+          }
+        ]
+      },
+      "tag": "agentout"
+    },
+    "v2raygcon": {
+      "alias": "",
+      "description": ""
+    }
   },
   "kcp": {
     "network": "kcp",

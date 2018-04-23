@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
+
 namespace V2RayGCon.Views
 {
     public partial class FormConfiger : Form
@@ -13,6 +14,7 @@ namespace V2RayGCon.Views
         Service.Setting setting;
         Scintilla scintilla;
         string formTitle;
+        FormSearch formSearch;
 
         delegate void UpdateServerMenuDelegate();
 
@@ -21,6 +23,7 @@ namespace V2RayGCon.Views
         {
             setting = Service.Setting.Instance;
             configer = new Controller.Configer.Configer();
+            formSearch = null;
 
             InitializeComponent();
 
@@ -29,7 +32,7 @@ namespace V2RayGCon.Views
             InitScintilla();
             InitDataBinding();
             UpdateServerMenu();
-            ShowToolsPanel(setting.isShowConfigerLeftPanel);
+            ToggleToolsPanel(setting.isShowConfigerLeftPanel);
 
             cboxConfigSection.SelectedIndex = 0;
 
@@ -44,11 +47,13 @@ namespace V2RayGCon.Views
             SetTitle(configer.GetAlias());
         }
 
-        void ShowToolsPanel(bool visible)
+        void ToggleToolsPanel(bool visible)
         {
             var margin = 4;
             var formSize = this.ClientSize;
             var editorSize = pnlEditor.Size;
+
+            pnlEditor.Visible = false;
 
             if (visible)
             {
@@ -68,6 +73,7 @@ namespace V2RayGCon.Views
             }
 
             pnlEditor.Size = editorSize;
+            pnlEditor.Visible = true;
             setting.isShowConfigerLeftPanel = visible;
         }
 
@@ -113,8 +119,14 @@ namespace V2RayGCon.Views
             // bind scintilla
             var editor = configer.editor;
             var bs = new BindingSource();
+
             bs.DataSource = editor;
-            scintilla.DataBindings.Add("Text", bs, nameof(editor.content));
+            scintilla.DataBindings.Add(
+                "Text",
+                bs,
+                nameof(editor.content),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
         }
 
         void BindDataStreamSettings()
@@ -268,6 +280,11 @@ namespace V2RayGCon.Views
             // Enable automatic folding
             scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
 
+            // key binding
+            // scintilla.ClearAllCmdKeys();
+            scintilla.ClearCmdKey(Keys.Control | Keys.P);
+            scintilla.ClearCmdKey(Keys.Control | Keys.S);
+            scintilla.ClearCmdKey(Keys.Control | Keys.F);
         }
 
         void UpdateServerMenu()
@@ -289,7 +306,6 @@ namespace V2RayGCon.Views
                 var _i = i;
                 menuRepalceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
                 {
-                    ScintillaLostFocus();
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
                         configer.ReplaceServer(_i);
@@ -310,26 +326,10 @@ namespace V2RayGCon.Views
             }
         }
 
-        void btnSaveChanges_Click(object sender, EventArgs e)
-        {
-            if (configer.IsValid())
-            {
-                configer.SaveChanges();
-            }
-            else
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-            }
-        }
 
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
             configer.DiscardChanges();
-        }
-
-        private void btnLoadExample_Click(object sender, EventArgs e)
-        {
-            configer.LoadExample();
         }
 
         private void btnVMessInsertClient_Click(object sender, EventArgs e)
@@ -409,20 +409,47 @@ namespace V2RayGCon.Views
 
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (configer.SectionChanged(cboxConfigSection.SelectedIndex))
+            if (!configer.SectionChanged(cboxConfigSection.SelectedIndex))
             {
-                cboxConfigSection.SelectedIndex = configer.perSection;
+                cboxConfigSection.SelectedIndex = configer.preSection;
             }
+            else
+            {
+                // update examples
+                UpdateExampleDescriptions();
+            }
+        }
+
+        void UpdateExampleDescriptions()
+        {
+            cboxExamples.Items.Clear();
+
+            cboxExamples.Items.Add(I18N("AvailableExamples"));
+            var descriptions = configer.GetExampleDescriptions();
+            if (descriptions.Count < 1)
+            {
+                cboxExamples.Enabled = false;
+            }
+            else
+            {
+                cboxExamples.Enabled = true;
+                foreach (var description in descriptions)
+                {
+                    cboxExamples.Items.Add(description);
+                }
+            }
+            cboxExamples.SelectedIndex = 0;
+
         }
 
         private void showLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowToolsPanel(true);
+            ToggleToolsPanel(true);
         }
 
         private void hideLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowToolsPanel(false);
+            ToggleToolsPanel(false);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -444,14 +471,13 @@ namespace V2RayGCon.Views
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScintillaLostFocus();
-
             if (!configer.IsValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
             }
             configer.SaveChanges();
+            configer.UpdateData();
 
             if (Lib.UI.DlgWriteFile(resData("ExtJson"),
                 configer.GetConfigFormated(),
@@ -466,14 +492,8 @@ namespace V2RayGCon.Views
             }
         }
 
-        void ScintillaLostFocus()
-        {
-            tboxVMessID.Focus();
-        }
-
         private void addNewServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ScintillaLostFocus();
             if (Lib.UI.Confirm(I18N("AddNewServer")))
             {
                 configer.AddNewServer();
@@ -503,6 +523,53 @@ namespace V2RayGCon.Views
         private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             new FormConfiger();
+        }
+
+        private void cboxExamples_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            configer.LoadExample(cboxExamples.SelectedIndex - 1);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyCode)
+        {
+            switch (keyCode)
+            {
+                case (Keys.Control | Keys.P):
+                    var visible = !setting.isShowConfigerLeftPanel;
+                    setting.isShowConfigerLeftPanel = visible;
+                    ToggleToolsPanel(visible);
+                    break;
+                case (Keys.Control | Keys.F):
+                    ShowSearchBox();
+                    break;
+                case (Keys.Control | Keys.S):
+                    if (configer.IsValid())
+                    {
+                        configer.SaveChanges();
+                        configer.UpdateData();
+                    }
+                    else
+                    {
+                        MessageBox.Show(I18N("PleaseCheckConfig"));
+                    }
+                    break;
+            }
+            return base.ProcessCmdKey(ref msg, keyCode);
+        }
+
+        private void searchBoxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSearchBox();
+        }
+
+        private void ShowSearchBox()
+        {
+            if (formSearch != null)
+            {
+                return;
+            }
+            formSearch = new FormSearch(scintilla);
+            formSearch.FormClosed += (s, a) => formSearch = null;
         }
     }
 }

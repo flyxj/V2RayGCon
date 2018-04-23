@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Text.RegularExpressions;
 using static V2RayGCon.Lib.StringResource;
 
@@ -125,17 +124,18 @@ namespace V2RayGCon.Service
         {
             // https://pac.txthinking.com/white/SOCKS5%20127.0.0.1:1080
             // https://pac.txthinking.com/white/{0}%20{1}
-            string mode = proxyType.Equals("http") ? "PROXY" : "SOCKS5";
+
+            string mode =
+                proxyType == (int)Model.Data.Enum.ProxyTypes.http ?
+                "PROXY" : "SOCKS5";
             return string.Format(resData("PacUrlTpl"), mode, proxyAddr);
         }
 
-        public string proxyType
+        public int proxyType
         {
             get
             {
-                string[] types = { "config", "socks", "http" };
-                string type = Properties.Settings.Default.ProxyType.ToLower();
-                return types.Contains(type) ? type : types[0];
+                return Lib.Utils.Clamp(Properties.Settings.Default.ProxyType, 0, 2);
             }
             set
             {
@@ -293,7 +293,7 @@ namespace V2RayGCon.Service
                 "{0}{1}{2}",
                 // distinguish between ss:// and vme(ss://)
                 resData("PatternNonAlphabet"),
-                resData("SSLinkPerfix"),
+                resData("SSLinkPrefix"),
                 resData("PatternBase64"));
 
             foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
@@ -318,7 +318,7 @@ namespace V2RayGCon.Service
             string pattern = string.Format(
                 "{0}{1}{2}",
                 resData("PatternNonAlphabet"),
-                resData("V2RayLinkPerfix"),
+                resData("V2RayLinkPrefix"),
                 resData("PatternBase64"));
 
             foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
@@ -348,12 +348,12 @@ namespace V2RayGCon.Service
         {
             var isAddNewServer = false;
 
-            //string pattern = resData("VmessLinkPerfix") + resData("PatternBase64");
+            //string pattern = resData("VmessLinkPrefix") + resData("PatternBase64");
 
             string pattern = string.Format(
                 "{0}{1}{2}",
                 resData("PatternNonAlphabet"),
-                resData("VmessLinkPerfix"),
+                resData("VmessLinkPrefix"),
                 resData("PatternBase64"));
 
             foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))

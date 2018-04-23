@@ -1,122 +1,353 @@
 {
-	"log" : {
-		"access" : "文件地址",
-		"error" : "文件地址",
-		"loglevel" : "warning"
-	},
-	"inbound" : {
-		"port" : 1080,
-		"listen" : "127.0.0.1",
-		"protocol" : "socks",
-		"settings" : {
-			"auth" : "noauth",
-			"udp" : false,
-			"ip" : "127.0.0.1"
-		},
-		"streamSettings" : {},
-		"tag" : "标识1",
-		"domainOverride" : ["http", "tls"]
-	},
-	"outbound" : {
-		"sendThrough" : "0.0.0.0",
-		"protocol" : "freedom",
-		"settings" : {},
-		"tag" : "direct",
-		"streamSettings" : {},
-		"proxySettings" : {
-			"tag" : "another-outbound-tag"
-		},
-		"mux" : {
-			"enabled" : false,
-			"concurrency" : 8
-		}
-	},
-	"v2raygcon":{
-	    "alias":"",
-		"description":""
-	},
-	"routing" : {
-		"strategy" : "rules",
-		"settings" : {
-			"domainStrategy" : "IPIfNonMatch",
-			"rules" : [{
-					"type" : "field",
-					"port" : null,
-					"outboundTag" : "direct",
-					"ip" : [
-						"0.0.0.0/8",
-						"10.0.0.0/8",
-						"100.64.0.0/10",
-						"127.0.0.0/8",
-						"169.254.0.0/16",
-						"172.16.0.0/12",
-						"192.0.0.0/24",
-						"192.0.2.0/24",
-						"192.168.0.0/16",
-						"198.18.0.0/15",
-						"198.51.100.0/24",
-						"203.0.113.0/24",
-						"::1/128",
-						"fc00::/7",
-						"fe80::/10"
-					],
-					"domain" : null
-				}, {
-					"type" : "field",
-					"port" : null,
-					"outboundTag" : "direct",
-					"ip" : null,
-					"domain" : [
-						"geosite:cn"
-					]
-				}, {
-					"type" : "field",
-					"port" : null,
-					"outboundTag" : "direct",
-					"ip" : [
-						"geoip:cn"
-					],
-					"domain" : null
-				}
-			]
-		}
-	},
-	"inboundDetour" : [{
-			"protocol" : "协议名称",
-			"port" : "端口",
-			"tag" : "标识2",
-			"listen" : "127.0.0.1",
-			"allocate" : {
-				"strategy" : "always",
-				"refresh" : 5,
-				"concurrency" : 3
-			},
-			"settings" : {},
-			"streamSettings" : {},
-			"domainOverride" : ["http", "tls"]
-		}
-	],
-	"outboundDetour" : [{
-			"protocol": "freedom",
-			"tag": "direct",
-			"settings": {}
-	}],
-	"dns" : {
-		"hosts" : {
-			"baidu.com" : "127.0.0.1"
-		},
-		"servers" : ["8.8.8.8", "8.8.4.4", "localhost"]
-	},
-	"policy" : {
-		"levels" : {
-			"0" : {
-				"handshake" : 4,
-				"connIdle" : 300,
-				"uplinkOnly" : 5,
-				"downlinkOnly" : 30,
-				"statsUserUplink" : false,
-				"statsUserDownlink" : false
-			}
-		}
-	}
+  "inTpl": {
+    "port": 1080,
+    "listen": "127.0.0.1",
+    "protocol": "协议名称",
+    "settings": {},
+    "streamSettings": {},
+    "tag": "标识",
+    "domainOverride": [
+      "http",
+      "tls"
+    ]
+  },
+  "inSS": {
+    "email": "love@v2ray.com",
+    "method": "aes-128-cfb",
+    "password": "密码",
+    "udp": false,
+    "level": 0,
+    "ota": true,
+    "network": "tcp"
+  },
+  "inHTTP": {
+    "timeout": 0,
+    "accounts": [
+      {
+        "user": "my-username",
+        "pass": "my-password"
+      }
+    ],
+    "allowTransparent": false,
+    "userLevel": 0
+  },
+  "inVmess": {
+    "clients": [
+      {
+        "id": "27848739-7e62-4138-9fd3-098a63964b6b",
+        "level": 0,
+        "alterId": 100,
+        "email": "love@v2ray.com"
+      }
+    ],
+    "default": {
+      "level": 0,
+      "alterId": 32
+    },
+    "detour": {
+      "to": "tag_to_detour"
+    },
+    "disableInsecureEncryption": false
+  },
+  "inSocks": {
+    "auth": "noauth",
+    "accounts": [
+      {
+        "user": "my-username",
+        "pass": "my-password"
+      }
+    ],
+    "udp": false,
+    "ip": "127.0.0.1",
+    "timeout": 0,
+    "userLevel": 0
+  },
+  "outTpl": {
+    "sendThrough": "0.0.0.0",
+    "protocol": "协议名称",
+    "settings": {},
+    "tag": "标识",
+    "streamSettings": {},
+    "proxySettings": {
+      "tag": "another-outbound-tag"
+    },
+    "mux": {}
+  },
+  "outVmess": {
+    "vnext": [
+      {
+        "address": "127.0.0.1",
+        "port": 37192,
+        "users": [
+          {
+            "id": "27848739-7e62-4138-9fd3-098a63964b6b",
+            "alterId": 10,
+            "security": "aes-128-cfb",
+            "level": 0
+          }
+        ]
+      }
+    ]
+  },
+  "outSocks": {
+    "servers": [
+      {
+        "address": "127.0.0.1",
+        "port": 1234,
+        "users": [
+          {
+            "user": "test user",
+            "pass": "test pass",
+            "level": 0
+          }
+        ]
+      }
+    ]
+  },
+  "outSS": {
+    "servers": [
+      {
+        "email": "love@v2ray.com",
+        "address": "127.0.0.1",
+        "port": 1234,
+        "method": "加密方式",
+        "password": "密码",
+        "ota": false,
+        "level": 0
+      }
+    ]
+  },
+  "outFree": {
+    "domainStrategy": "AsIs",
+    "timeout": 0,
+    "redirect": "127.0.0.1:3366",
+    "userLevel": 0
+  },
+  "outDoko": {
+    "address": "8.8.8.8",
+    "port": 53,
+    "network": "tcp",
+    "timeout": 0,
+    "followRedirect": false,
+    "userLevel": 0
+  },
+  "outBlackHole": {
+    "response": {
+      "type": "none"
+    }
+  },
+  "transDefault": {
+    "tcpSettings": {},
+    "kcpSettings": {},
+    "wsSettings": {},
+    "httpSettings": {}
+  },
+  "inDtrDefault": [
+    {
+      "protocol": "协议名称",
+      "port": "端口",
+      "tag": "标识2",
+      "listen": "127.0.0.1",
+      "allocate": {
+        "strategy": "always",
+        "refresh": 5,
+        "concurrency": 3
+      },
+      "settings": {},
+      "streamSettings": {},
+      "domainOverride": [
+        "http",
+        "tls"
+      ]
+    }
+  ],
+  "outDtrDefault": [
+    {
+      "protocol": "freedom",
+      "tag": "direct",
+      "settings": {}
+    }
+  ],
+  "outDtrAll": [
+    {
+      "protocol": "协议名称",
+      "sendThrough": "0.0.0.0",
+      "tag": "标识",
+      "settings": {},
+      "streamSettings": {},
+      "proxySettings": {
+        "tag": "another-outbound-tag"
+      },
+      "mux": {}
+    }
+  ],
+  "v2raygcon": {
+    "alias": "My Server1",
+    "description": ""
+  },
+  "policyDefault": {
+    "levels": {
+      "0": {
+        "handshake": 4,
+        "connIdle": 300,
+        "uplinkOnly": 2,
+        "downlinkOnly": 5,
+        "statsUserUplink": false,
+        "statsUserDownlink": false
+      }
+    },
+    "system": {
+      "statsInboundUplink": false,
+      "statsInboundDownlink": false
+    }
+  },
+  "cfgMin": {
+    "log": {
+      "loglevel": "warning"
+    },
+    "inbound": {
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false,
+        "ip": "127.0.0.1"
+      }
+    },
+    "outbound": {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    },
+    "policy": {
+      "levels": {
+        "0": {
+          "uplinkOnly": 0
+        }
+      }
+    }
+  },
+  "logWarning": {
+    "loglevel": "warning"
+  },
+  "logDebug": {
+    "loglevel": "debug"
+  },
+  "logInfo": {
+    "loglevel": "info"
+  },
+  "logError": {
+    "loglevel": "error"
+  },
+  "logNone": {
+    "loglevel": "none"
+  },
+  "logFile": {
+    "access": "access.log",
+    "error": "error.log",
+    "loglevel": "warning"
+  },
+  "apiDefault": {
+    "tag": "api",
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
+    ]
+  },
+  "dnsDefault": {
+    "hosts": {
+      "baidu.com": "127.0.0.1"
+    },
+    "servers": [
+      "8.8.8.8",
+      "8.8.4.4",
+      "localhost"
+    ]
+  },
+  "routeCIP": {
+    "strategy": "rules",
+    "settings": {
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "ip": [
+            "0.0.0.0/8",
+            "10.0.0.0/8",
+            "100.64.0.0/10",
+            "127.0.0.0/8",
+            "169.254.0.0/16",
+            "172.16.0.0/12",
+            "192.0.0.0/24",
+            "192.0.2.0/24",
+            "192.168.0.0/16",
+            "198.18.0.0/15",
+            "198.51.100.0/24",
+            "203.0.113.0/24",
+            "::1/128",
+            "fc00::/7",
+            "fe80::/10"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "domain": [
+            "geosite:cn"
+          ]
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "ip": [
+            "geoip:cn"
+          ]
+        }
+      ]
+    }
+  },
+  "routeI2O": {
+    "strategy": "rules",
+    "settings": {
+      "rules": [
+        {
+          "type": "field",
+          "inboundTag": [
+            "tag inbound ..."
+          ],
+          "outboundTag": "tag outbound ..."
+        }
+      ]
+    }
+  },
+  "routeAll": {
+    "type": "field",
+    "domain": [
+      "baidu.com",
+      "qq.com",
+      "geosite:cn"
+    ],
+    "ip": [
+      "0.0.0.0/8",
+      "10.0.0.0/8",
+      "fc00::/7",
+      "fe80::/10",
+      "geoip:cn"
+    ],
+    "port": "0-100",
+    "network": "tcp",
+    "source": [
+      "10.0.0.1"
+    ],
+    "user": [
+      "love@v2ray.com"
+    ],
+    "inboundTag": [
+      "tag-vmess"
+    ],
+    "outboundTag": "direct"
+  }
 }

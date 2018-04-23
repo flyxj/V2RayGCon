@@ -66,12 +66,12 @@ namespace V2RayGCon.Controller.Configer
             var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
             var GetAddrStr = Lib.Utils.ClosureGetAddrFromJToken(config);
 
-            var perfix = "outbound.settings.vnext.0.users.0.";
-            ID = GetStr(perfix, "id");
-            level = GetStr(perfix, "level");
-            altID = GetStr(perfix, "alterId");
-            perfix = "outbound.settings.vnext.0.";
-            addr = GetAddrStr(perfix, "address", "port");
+            var prefix = "outbound.settings.vnext.0.users.0.";
+            ID = GetStr(prefix, "id");
+            level = GetStr(prefix, "level");
+            altID = GetStr(prefix, "alterId");
+            prefix = "outbound.settings.vnext.0.";
+            addr = GetAddrStr(prefix, "address", "port");
         }
     }
 }

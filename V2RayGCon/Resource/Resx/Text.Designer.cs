@@ -88,6 +88,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Available examples ... 的本地化字符串。
+        /// </summary>
+        internal static string AvailableExamples {
+            get {
+                return ResourceManager.GetString("AvailableExamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Can not parse json! Discard changes? 的本地化字符串。
         /// </summary>
         internal static string CannotParseJson {
@@ -184,6 +193,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string CoreExit {
             get {
                 return ResourceManager.GetString("CoreExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Default 的本地化字符串。
+        /// </summary>
+        internal static string Default {
+            get {
+                return ResourceManager.GetString("Default", resourceCulture);
             }
         }
         

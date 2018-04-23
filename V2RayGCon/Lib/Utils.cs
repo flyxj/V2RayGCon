@@ -19,19 +19,19 @@ namespace V2RayGCon.Lib
         public static Func<string, string, string> ClosureGetStringFromJToken(JObject config)
         {
             var c = config;
-            return (perfix, key) =>
+            return (prefix, key) =>
             {
-                return Lib.Utils.GetStrFromJToken(c, perfix + key);
+                return Lib.Utils.GetStrFromJToken(c, prefix + key);
             };
         }
 
         public static Func<string, string, string, string> ClosureGetAddrFromJToken(JObject config)
         {
             var c = config;
-            return (perfix, keyIP, keyPort) =>
+            return (prefix, keyIP, keyPort) =>
             {
-                var ip = Lib.Utils.GetStrFromJToken(c, perfix + keyIP);
-                var port = Lib.Utils.GetStrFromJToken(c, perfix + keyPort);
+                var ip = Lib.Utils.GetStrFromJToken(c, prefix + keyIP);
+                var port = Lib.Utils.GetStrFromJToken(c, prefix + keyPort);
                 return string.Join(":", ip, port);
             };
         }
@@ -80,7 +80,8 @@ namespace V2RayGCon.Lib
             }
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
-            JObject config = JObject.Parse(resData("config_ss_tpl"));
+            var tpl = JObject.Parse(resData("config_tpl"));
+            var config = tpl["tplImportSS"];
 
             var setting = config["outbound"]["settings"]["servers"][0];
             setting["address"] = ip;
@@ -216,7 +217,8 @@ namespace V2RayGCon.Lib
             }
 
             // prepare template
-            JObject config = JObject.Parse(resData("config_vmess_tpl"));
+            var tpl = JObject.Parse(resData("config_tpl"));
+            var config = tpl["tplImortVmess"];
             config["outbound"]["protocol"] = "vmess";
             config["outbound"]["tag"] = "agentout";
             config["outbound"]["mux"] = new JObject { { "enabled", true } };
@@ -325,22 +327,22 @@ namespace V2RayGCon.Lib
 
 
 
-        public static string LinkAddPerfix(string b64Content, Model.Data.Enum.LinkTypes type)
+        public static string LinkAddPrefix(string b64Content, Model.Data.Enum.LinkTypes type)
         {
-            string perfix = string.Empty;
+            string prefix = string.Empty;
 
             switch (type)
             {
                 case Model.Data.Enum.LinkTypes.vmess:
-                    perfix = resData("VmessLinkPerfix");
+                    prefix = resData("VmessLinkPrefix");
                     break;
 
                 case Model.Data.Enum.LinkTypes.v2ray:
-                    perfix = resData("V2RayLinkPerfix");
+                    prefix = resData("V2RayLinkPrefix");
                     break;
             }
 
-            return perfix + b64Content;
+            return prefix + b64Content;
         }
 
         public static string Vmess2VmessLink(Model.Data.Vmess vmess)
@@ -351,7 +353,7 @@ namespace V2RayGCon.Lib
             }
 
             string content = JsonConvert.SerializeObject(vmess);
-            return LinkAddPerfix(
+            return LinkAddPrefix(
                 Base64Encode(content),
                 Model.Data.Enum.LinkTypes.vmess);
         }
@@ -381,15 +383,15 @@ namespace V2RayGCon.Lib
             switch (type)
             {
                 case Model.Data.Enum.LinkTypes.vmess:
-                    len = resData("VmessLinkPerfix").Length;
+                    len = resData("VmessLinkPrefix").Length;
                     break;
 
                 case Model.Data.Enum.LinkTypes.v2ray:
-                    len = resData("V2RayLinkPerfix").Length;
+                    len = resData("V2RayLinkPrefix").Length;
                     break;
 
                 case Model.Data.Enum.LinkTypes.ss:
-                    len = resData("SSLinkPerfix").Length;
+                    len = resData("SSLinkPrefix").Length;
                     break;
             }
             return link.Substring(len);
