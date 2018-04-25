@@ -49,7 +49,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void SetMethod(string selectedMethod)
         {
-            method = Lib.Utils.LookupDict(Model.Data.Table.ssMethods, selectedMethod);
+            method = Lib.Utils.GetIndex(Model.Data.Table.ssMethods, selectedMethod);
         }
 
         public JToken GetSettings()
@@ -69,13 +69,13 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
-            var GetAddrStr = Lib.Utils.ClosureGetAddrFromJToken(config);
+            var GetStr = Lib.Utils.FuncGetString(config);
+            var GetAddr = Lib.Utils.FuncGetAddr(config);
 
             var prefix = "outbound.settings.servers.0.";
             pass = GetStr(prefix, "password");
-            addr = GetAddrStr(prefix, "address", "port");
-            OTA = Lib.Utils.GetBoolFromJToken(config, prefix + "ota");
+            addr = GetAddr(prefix, "address", "port");
+            OTA = Lib.Utils.GetBool(config, prefix + "ota");
             SetMethod(GetStr(prefix, "method"));
         }
     }

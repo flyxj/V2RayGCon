@@ -14,6 +14,7 @@ namespace V2RayGCon.Service
 
         private Model.Data.EventList<string> servers;
         private List<string> aliases;
+        private List<string[]> servSummarys;
         public event EventHandler OnSettingChange;
         public event EventHandler<Model.Data.DataEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
@@ -25,10 +26,12 @@ namespace V2RayGCon.Service
             _curEditingIndex = -1;
 
             LoadServers();
-            aliases = new List<string>();
-            UpdateAliases();
-            servers.ListChanged += UpdateAliases;
             SaveServers();
+
+            aliases = new List<string>();
+            servSummarys = new List<string[]>();
+            OnServerListChanged();
+            servers.ListChanged += OnServerListChanged;
         }
 
         public void SendLog(string log)
@@ -56,11 +59,16 @@ namespace V2RayGCon.Service
             }
         }
 
-        int _selectedServerIndex
+        public int GetCurServIndex()
+        {
+            return _curServIndex;
+        }
+
+        int _curServIndex
         {
             get
             {
-                // bug: return Lib.Utils.Clamp(n, 0, ServNum - 1);
+                // bug: return Lib.Utils.Clamp(n, 0, ServNum);
                 return Math.Max(0, Properties.Settings.Default.CurServ);
             }
             set
@@ -71,7 +79,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        public bool isShowConfigerLeftPanel
+        public bool isConfigerShowToolsPanel
         {
             get
             {
@@ -84,9 +92,38 @@ namespace V2RayGCon.Service
             }
         }
 
-        public int GetSelectedServerIndex()
+        public string GetCurAlias()
         {
-            return _selectedServerIndex;
+            var aliases = GetAllAliases();
+            var index = GetCurServIndex();
+            index = Lib.Utils.Clamp(index, 0, aliases.Count);
+            return aliases[index];
+        }
+
+        public string GetInbountInfo()
+        {
+            var b64 = GetServer(GetCurServIndex());
+
+            if (string.IsNullOrEmpty(b64))
+            {
+                return string.Empty;
+            }
+
+            var config = JObject.Parse(Lib.Utils.Base64Decode(b64));
+
+            try
+            {
+                var proxy = string.Format(
+                    "{0}://{1}:{2}",
+                    config["inbound"]["protocol"],
+                    config["inbound"]["listen"],
+                    config["inbound"]["port"]);
+
+                return proxy;
+            }
+            catch { }
+
+            return string.Empty;
         }
 
         public int maxLogLines
@@ -122,12 +159,10 @@ namespace V2RayGCon.Service
 
         public string GetPacUrl()
         {
-            // https://pac.txthinking.com/white/SOCKS5%20127.0.0.1:1080
-            // https://pac.txthinking.com/white/{0}%20{1}
+            // https://pac.txthinking.com/white/{SOCKS5}%20{127.0.0.1:1080}
 
-            string mode =
-                proxyType == (int)Model.Data.Enum.ProxyTypes.http ?
-                "PROXY" : "SOCKS5";
+            var http = (int)Model.Data.Enum.ProxyTypes.http;
+            string mode = proxyType == http ? "PROXY" : "SOCKS5";
             return string.Format(resData("PacUrlTpl"), mode, proxyAddr);
         }
 
@@ -135,7 +170,8 @@ namespace V2RayGCon.Service
         {
             get
             {
-                return Lib.Utils.Clamp(Properties.Settings.Default.ProxyType, 0, 2);
+                var type = Properties.Settings.Default.ProxyType;
+                return Lib.Utils.Clamp(type, 0, 3);
             }
             set
             {
@@ -151,19 +187,19 @@ namespace V2RayGCon.Service
 
         public void MoveItemToTop(int index)
         {
-            var n = Lib.Utils.Clamp(index, 0, GetServerCount() - 1);
+            var n = Lib.Utils.Clamp(index, 0, GetServerCount());
 
-            if (_selectedServerIndex == n)
+            if (_curServIndex == n)
             {
-                _selectedServerIndex = 0;
+                _curServIndex = 0;
             }
-            else if (_selectedServerIndex < n)
+            else if (_curServIndex < n)
             {
-                _selectedServerIndex++;
+                _curServIndex++;
             }
 
             var item = servers[n];
-            servers.RemoveAt(n);
+            servers.RemoveAtQuiet(n);
             servers.Insert(0, item);
             SaveServers();
             OnSettingChange?.Invoke(this, null);
@@ -175,16 +211,16 @@ namespace V2RayGCon.Service
             {
                 return;
             }
-            if (_selectedServerIndex == index)
+            if (_curServIndex == index)
             {
-                _selectedServerIndex--;
+                _curServIndex--;
             }
-            else if (_selectedServerIndex == index - 1)
+            else if (_curServIndex == index - 1)
             {
-                _selectedServerIndex++;
+                _curServIndex++;
             }
             var item = servers[index];
-            servers.RemoveAt(index);
+            servers.RemoveAtQuiet(index);
             servers.Insert(index - 1, item);
             SaveServers();
 
@@ -197,16 +233,16 @@ namespace V2RayGCon.Service
             {
                 return;
             }
-            if (_selectedServerIndex == index)
+            if (_curServIndex == index)
             {
-                _selectedServerIndex++;
+                _curServIndex++;
             }
-            else if (_selectedServerIndex == index + 1)
+            else if (_curServIndex == index + 1)
             {
-                _selectedServerIndex--;
+                _curServIndex--;
             }
             var item = servers[index];
-            servers.RemoveAt(index);
+            servers.RemoveAtQuiet(index);
             servers.Insert(index + 1, item);
             SaveServers();
             OnSettingChange?.Invoke(this, null);
@@ -214,18 +250,18 @@ namespace V2RayGCon.Service
 
         public void MoveItemToButtom(int index)
         {
-            var n = Lib.Utils.Clamp(index, 0, GetServerCount() - 1);
+            var n = Lib.Utils.Clamp(index, 0, GetServerCount());
 
-            if (_selectedServerIndex == n)
+            if (_curServIndex == n)
             {
-                _selectedServerIndex = GetServerCount() - 1;
+                _curServIndex = GetServerCount() - 1;
             }
-            else if (_selectedServerIndex > n)
+            else if (_curServIndex > n)
             {
-                _selectedServerIndex--;
+                _curServIndex--;
             }
             var item = servers[n];
-            servers.RemoveAt(n);
+            servers.RemoveAtQuiet(n);
             servers.Add(item);
             SaveServers();
             OnSettingChange?.Invoke(this, null);
@@ -245,29 +281,28 @@ namespace V2RayGCon.Service
 
             if (index < 0 || index >= GetServerCount())
             {
-                Debug.WriteLine("delete server index out of range");
+                Debug.WriteLine("index out of range");
                 return;
             }
 
             servers.RemoveAt(index);
             SaveServers();
 
-
-            if (_selectedServerIndex >= GetServerCount())
+            if (_curServIndex >= GetServerCount())
             {
                 // normal restart
-                _selectedServerIndex = GetServerCount() - 1;
+                _curServIndex = GetServerCount() - 1;
                 OnRequireCoreRestart?.Invoke(this, null);
             }
-            else if (_selectedServerIndex == index)
+            else if (_curServIndex == index)
             {
                 // force restart
                 OnRequireCoreRestart?.Invoke(this, null);
             }
-            else if (_selectedServerIndex > index)
+            else if (_curServIndex > index)
             {
                 // dont need restart
-                _selectedServerIndex--;
+                _curServIndex--;
             }
 
             // dont need restart
@@ -276,63 +311,72 @@ namespace V2RayGCon.Service
 
         public bool ImportLinks(string links)
         {
-            // dirty hack for matching the first link
-            var patchLinks = "\r\n" + links;
+            var vmess = ImportVmessLinks(links, true);
+            var v2ray = ImportV2RayLinks(links, true);
+            var ss = ImportSSLinks(links, true);
 
-            var vmess = ImportVmessLinks(patchLinks);
-            var v2ray = ImportV2RayLinks(patchLinks);
-            var ss = ImportSSLinks(patchLinks);
-            return vmess || v2ray || ss;
+            if (vmess || v2ray || ss)
+            {
+                servers.Notify();
+                OnSettingChange?.Invoke(this, null);
+                return true;
+            }
+
+            return false;
         }
 
-        bool ImportSSLinks(string links)
+        bool ImportSSLinks(string links, bool quiet = false)
         {
             var isAddNewServer = false;
 
-            string pattern = string.Format(
-                "{0}{1}{2}",
-                // distinguish between ss:// and vme(ss://)
-                resData("PatternNonAlphabet"),
-                resData("SSLinkPrefix"),
-                resData("PatternBase64"));
-
-            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
+            string pattern = Lib.Utils.GenPattern(Model.Data.Enum.LinkTypes.ss);
+            var matches = Regex.Matches("\n" + links, pattern, RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
             {
-                string link = m.Value.Substring(1);
+                string link = match.Value.Substring(1);
                 string config = Lib.Utils.SSLink2ConfigString(link);
-                if (!string.IsNullOrEmpty(config) && AddServer(Lib.Utils.Base64Encode(config)))
+                if (string.IsNullOrEmpty(config))
+                {
+                    continue;
+                }
+                var msg = Lib.Utils.CutStr(link, 48) + " ...";
+                SendLog(I18N("AddServer") + ": " + msg);
+                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
                 {
                     isAddNewServer = true;
-                    Debug.WriteLine("New server: " + Lib.Utils.CutString(link, 32) + " ...");
                 }
+            }
+
+            if (!quiet && isAddNewServer)
+            {
+                servers.Notify();
             }
 
             return isAddNewServer;
         }
 
-        bool ImportV2RayLinks(string links)
+        bool ImportV2RayLinks(string links, bool quiet = false)
         {
             bool isAddNewServer = false;
 
-            // @"[^0-9a-zA-Z]v2ray://(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})";
-            string pattern = string.Format(
-                "{0}{1}{2}",
-                resData("PatternNonAlphabet"),
-                resData("V2RayLinkPrefix"),
-                resData("PatternBase64"));
-
-            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
+            string pattern = Lib.Utils.GenPattern(Model.Data.Enum.LinkTypes.v2ray);
+            var matches = Regex.Matches("\n" + links, pattern, RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
             {
                 try
                 {
-                    string link = m.Value.Substring(1);
+                    string link = match.Value.Substring(1);
 
-                    string b64Config = Lib.Utils.LinkBody(link, Model.Data.Enum.LinkTypes.v2ray);
+                    string b64Config = Lib.Utils.GetLinkBody(link);
                     string config = Lib.Utils.Base64Decode(b64Config);
-                    if (JObject.Parse(config) != null && AddServer(b64Config))
+                    if (JObject.Parse(config) != null)
                     {
-                        isAddNewServer = true;
-                        Debug.WriteLine("New server: " + Lib.Utils.CutString(link, 32) + " ...");
+                        var msg = Lib.Utils.CutStr(link, 48) + " ...";
+                        SendLog(I18N("AddServer") + ": " + msg);
+                        if (AddServer(b64Config, quiet))
+                        {
+                            isAddNewServer = true;
+                        }
                     }
                 }
                 catch
@@ -341,30 +385,40 @@ namespace V2RayGCon.Service
                 }
             }
 
+            if (!quiet && isAddNewServer)
+            {
+                servers.Notify();
+            }
+
             return isAddNewServer;
         }
 
-        bool ImportVmessLinks(string links)
+        bool ImportVmessLinks(string links, bool quiet = false)
         {
             var isAddNewServer = false;
 
-            //string pattern = resData("VmessLinkPrefix") + resData("PatternBase64");
-
-            string pattern = string.Format(
-                "{0}{1}{2}",
-                resData("PatternNonAlphabet"),
-                resData("VmessLinkPrefix"),
-                resData("PatternBase64"));
-
-            foreach (Match m in Regex.Matches(links, pattern, RegexOptions.IgnoreCase))
+            string pattern = Lib.Utils.GenPattern(Model.Data.Enum.LinkTypes.vmess);
+            var matches = Regex.Matches("\n" + links, pattern, RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
             {
-                string link = m.Value.Substring(1);
+                string link = match.Value.Substring(1);
                 string config = Lib.Utils.VmessLink2ConfigString(link);
-                if (!string.IsNullOrEmpty(config) && AddServer(Lib.Utils.Base64Encode(config)))
+                if (string.IsNullOrEmpty(config))
+                {
+                    continue;
+                }
+                var msg = Lib.Utils.CutStr(link, 48) + " ...";
+                SendLog(I18N("AddServer") + ": " + msg);
+
+                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
                 {
                     isAddNewServer = true;
-                    Debug.WriteLine("New server: " + Lib.Utils.CutString(link, 32) + " ...");
                 }
+            }
+
+            if (!quiet && isAddNewServer)
+            {
+                servers.Notify();
             }
 
             return isAddNewServer;
@@ -377,7 +431,6 @@ namespace V2RayGCon.Service
 
         public void LoadServers()
         {
-
             servers = new Model.Data.EventList<string>();
 
             string rawData = Properties.Settings.Default.Servers;
@@ -418,9 +471,24 @@ namespace V2RayGCon.Service
             servers = new Model.Data.EventList<string>(serverList);
         }
 
-        void UpdateAliases()
+        public ReadOnlyCollection<string[]> GetAllServSummarys()
         {
+            return servSummarys.AsReadOnly();
+        }
+
+        void OnServerListChanged()
+        {
+            Func<string, string> FuncGetStr(JObject config)
+            {
+                var c = config;
+                return (k) =>
+                {
+                    return Lib.Utils.GetString(c, k);
+                };
+            }
+
             aliases.Clear();
+            servSummarys.Clear();
 
             for (int i = 0; i < servers.Count; i++)
             {
@@ -428,17 +496,45 @@ namespace V2RayGCon.Service
                 {
                     var configString = Lib.Utils.Base64Decode(servers[i]);
                     var config = JObject.Parse(configString);
-                    var name = Lib.Utils.GetStrFromJToken(config, "v2raygcon.alias");
-                    if (!string.IsNullOrEmpty(name))
+
+                    var GetStr = FuncGetStr(config);
+
+                    var name = GetStr("v2raygcon.alias");
+
+                    var alias = string.IsNullOrEmpty(name) ?
+                        I18N("Empty") :
+                        Lib.Utils.CutStr(name, 20);
+
+                    aliases.Add(string.Join(".", i + 1, alias));
+
+                    var protocol = GetStr("outbound.protocol");
+                    var keys = Model.Data.Table.servInfoKeys["shadowsocks"];
+                    if (protocol.Equals("vmess"))
                     {
-                        aliases.Add(string.Join(".", i + 1,
-                            Lib.Utils.CutString(name, 20)));
-                        continue;
+                        keys = Model.Data.Table.servInfoKeys["vmess"];
                     }
 
+                    var summary = new string[6];
+
+                    for (int j = 0; j < 6; j++)
+                    {
+                        summary[j] = GetStr(keys[j]);
+                    }
+                    servSummarys.Add(new string[] {
+                        (i+1).ToString(),
+                        alias,
+                        protocol,
+                        summary[0],  // ip
+                        summary[1],  // port
+                        string.Empty, // selected
+                        summary[3],  // path
+                        summary[4],  // streamType
+                        summary[2],  // tls/enc
+                        summary[5],  // type /disguise
+                    });
                 }
                 catch { }
-                aliases.Add(string.Join(".", i + 1, I18N("Empty")));
+
             }
         }
 
@@ -459,16 +555,26 @@ namespace V2RayGCon.Service
             return servers[index];
         }
 
-        public bool AddServer(string b64ConfigString)
+        public bool AddServer(string b64ConfigString, bool quiet = false)
         {
             if (servers.IndexOf(b64ConfigString) >= 0)
             {
-                Debug.WriteLine("Duplicate server, skip!");
+                // Debug.WriteLine("Duplicate server, skip!");
+                SendLog(I18N("DuplicateServer") + "\r\n");
                 return false;
             }
-            servers.Add(b64ConfigString);
-            SaveServers();
-            OnSettingChange?.Invoke(this, null);
+            if (quiet)
+            {
+                servers.AddQuiet(b64ConfigString);
+                SaveServers();
+            }
+            else
+            {
+                servers.Add(b64ConfigString);
+                SaveServers();
+                OnSettingChange?.Invoke(this, null);
+            }
+            SendLog(I18N("AddServSuccess") + "\r\n");
             return true;
         }
 
@@ -476,7 +582,7 @@ namespace V2RayGCon.Service
         {
             if (index >= 0)
             {
-                _selectedServerIndex = index;
+                _curServIndex = index;
             }
             OnRequireCoreRestart?.Invoke(this, null);
             OnSettingChange?.Invoke(this, null);
@@ -492,7 +598,7 @@ namespace V2RayGCon.Service
             servers[replaceIndex] = b64ConfigString;
             SaveServers();
 
-            if (replaceIndex == _selectedServerIndex)
+            if (replaceIndex == _curServIndex)
             {
                 OnRequireCoreRestart?.Invoke(this, null);
             }

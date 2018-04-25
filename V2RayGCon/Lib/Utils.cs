@@ -14,30 +14,29 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Lib
 {
-    class Utils
+    public class Utils
     {
-        public static Func<string, string, string> ClosureGetStringFromJToken(JObject config)
+        public static Func<string, string, string> FuncGetString(JObject json)
         {
-            var c = config;
+            var c = json;
             return (prefix, key) =>
             {
-                return Lib.Utils.GetStrFromJToken(c, prefix + key);
+                return Lib.Utils.GetString(c, prefix + key);
             };
         }
 
-        public static Func<string, string, string, string> ClosureGetAddrFromJToken(JObject config)
+        public static Func<string, string, string, string> FuncGetAddr(JObject json)
         {
-            var c = config;
+            var c = json;
             return (prefix, keyIP, keyPort) =>
             {
-                var ip = Lib.Utils.GetStrFromJToken(c, prefix + keyIP);
-                var port = Lib.Utils.GetStrFromJToken(c, prefix + keyPort);
+                var ip = Lib.Utils.GetString(c, prefix + keyIP);
+                var port = Lib.Utils.GetString(c, prefix + keyPort);
                 return string.Join(":", ip, port);
             };
         }
 
-
-        public static int LookupDict(Dictionary<int, string> dict, string value)
+        public static int GetIndex(Dictionary<int, string> dict, string value)
         {
             foreach (var data in dict)
             {
@@ -51,12 +50,12 @@ namespace V2RayGCon.Lib
 
         public static Model.Data.Shadowsocks SSLink2SS(string ssLink)
         {
-            string b64Link = LinkBody(ssLink, Model.Data.Enum.LinkTypes.ss);
+            string b64 = GetLinkBody(ssLink);
 
             try
             {
                 var ss = new Model.Data.Shadowsocks();
-                var plainText = Base64Decode(b64Link);
+                var plainText = Base64Decode(b64);
                 var parts = plainText.Split('@');
                 var mp = parts[0].Split(':');
                 if (parts[1].Length > 0 && mp[0].Length > 0 && mp[1].Length > 0)
@@ -92,13 +91,7 @@ namespace V2RayGCon.Lib
             return config.ToString();
         }
 
-        public static MatchCollection MatchAll(string content, string pattern)
-        {
-            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
-            return Regex.Matches(content, pattern, RegexOptions.IgnoreCase);
-        }
-
-        public static string CutString(string s, int len)
+        public static string CutStr(string s, int len)
         {
             return s.Substring(0, Math.Min(s.Length, len));
         }
@@ -116,53 +109,48 @@ namespace V2RayGCon.Lib
             return Int32.TryParse(s, out int number) ? number : 0;
         }
 
-        static JToken WalkToJToken(JToken start, string path)
+        static JToken GetValue(JToken json, string path)
         {
-            int i;
-            var t = start;
-            var step = path.Split('.');
 
-            for (i = 0; i < step.Length; i++)
+            var curPos = json;
+            var keys = path.Split('.');
+
+            int depth;
+            for (depth = 0; depth < keys.Length; depth++)
             {
-                if (t == null || !t.HasValues)
+                if (curPos == null || !curPos.HasValues)
                 {
                     break;
                 }
 
-                if (int.TryParse(step[i], out int n))
+                if (int.TryParse(keys[depth], out int n))
                 {
-                    t = t[n];
+                    curPos = curPos[n];
                 }
                 else
                 {
-                    t = t[step[i]];
+                    curPos = curPos[keys[depth]];
                 }
             }
 
-            if (i < step.Length)
+            if (depth < keys.Length)
             {
                 return null;
             }
 
-            return t;
+            return curPos;
         }
 
-        public static int GetIntFromJToken(JToken start, string path)
+        public static bool GetBool(JToken json, string path)
         {
-            string v = GetStrFromJToken(start, path);
-            return Lib.Utils.Str2Int(v);
+            string value = GetString(json, path);
+            return value.Equals("True", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public static bool GetBoolFromJToken(JToken start, string path)
+        public static string GetString(JToken json, string path)
         {
-            string v = GetStrFromJToken(start, path);
-            return v.Equals("True", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        public static string GetStrFromJToken(JToken start, string path)
-        {
-            JToken end = WalkToJToken(start, path);
-            return end == null ? string.Empty : end.ToString();
+            JToken value = GetValue(json, path);
+            return value == null ? string.Empty : value.ToString();
         }
 
         public static bool TryParseIPAddr(string address, out string ip, out int port)
@@ -177,41 +165,44 @@ namespace V2RayGCon.Lib
             }
 
             ip = parts[0];
-            port = Clamp(Str2Int(parts[1]), 0, 65535);
+            port = Clamp(Str2Int(parts[1]), 0, 65536);
             return true;
         }
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
-            Model.Data.Vmess v = new Model.Data.Vmess();
-            JObject o;
+            Model.Data.Vmess vmess = new Model.Data.Vmess();
+            JObject json;
             try
             {
-                o = JObject.Parse(config);
+                json = JObject.Parse(config);
             }
             catch
             {
                 return null;
             }
 
-            v.ps = GetStrFromJToken(o, "v2raygcon.alias");
-            v.add = GetStrFromJToken(o, "outbound.settings.vnext.0.address");
-            v.port = GetStrFromJToken(o, "outbound.settings.vnext.0.port");
-            v.id = GetStrFromJToken(o, "outbound.settings.vnext.0.users.0.id");
-            v.aid = GetStrFromJToken(o, "outbound.settings.vnext.0.users.0.alterId");
-            v.net = GetStrFromJToken(o, "outbound.streamSettings.network");
-            v.type = GetStrFromJToken(o, "outbound.streamSettings.kcpSettings.header.type");
-            v.host = GetStrFromJToken(o, "outbound.streamSettings.wsSettings.path");
-            v.tls = GetStrFromJToken(o, "outbound.streamSettings.security");
+            vmess.ps = GetString(json, "v2raygcon.alias");
 
-            return v;
+            var prefix = "outbound.settings.vnext.0.";
+            vmess.add = GetString(json, prefix + "address");
+            vmess.port = GetString(json, prefix + "port");
+            vmess.id = GetString(json, prefix + "users.0.id");
+            vmess.aid = GetString(json, prefix + "users.0.alterId");
+
+            prefix = "outbound.streamSettings.";
+            vmess.net = GetString(json, prefix + "network");
+            vmess.type = GetString(json, prefix + "kcpSettings.header.type");
+            vmess.host = GetString(json, prefix + "wsSettings.path");
+            vmess.tls = GetString(json, prefix + "security");
+            return vmess;
         }
 
-        public static string VmessLink2ConfigString(string vmessLink)
+        public static string VmessLink2ConfigString(string vmessString)
         {
-            Model.Data.Vmess v = VmessLink2Vmess(vmessLink);
+            var vmess = VmessLink2Vmess(vmessString);
 
-            if (v == null)
+            if (vmess == null)
             {
                 return string.Empty;
             }
@@ -219,52 +210,38 @@ namespace V2RayGCon.Lib
             // prepare template
             var tpl = JObject.Parse(resData("config_tpl"));
             var config = tpl["tplImortVmess"];
-            config["outbound"]["protocol"] = "vmess";
-            config["outbound"]["tag"] = "agentout";
-            config["outbound"]["mux"] = new JObject { { "enabled", true } };
-            config["v2raygcon"]["alias"] = v.ps;
+            config["v2raygcon"]["alias"] = vmess.ps;
 
-            // insert vmess info
-            config["outbound"]["settings"] = new JObject{
-                {"servers",null },
-                {"vnext", new JArray{
-                    new JObject{
-                        {"address",v.add },
-                        { "port",Lib.Utils.Str2Int(v.port) },
-                        { "users",new JArray{
-                            new JObject
-                            {
-                                {"id",v.id },
-                                {"alterId", Lib.Utils.Str2Int(v.aid) },
-                                {"security","auto" }
-                            }
-                        } }
-                    }
-                } }
-            };
+            var cPos = config["outbound"]["settings"]["vnext"][0];
+            cPos["address"] = vmess.add;
+            cPos["port"] = Lib.Utils.Str2Int(vmess.port);
+            cPos["users"][0]["id"] = vmess.id;
+            cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
 
             // insert stream type
             string[] streamTypes = { "ws", "tcp", "kcp" };
-            string streamType = v.net.ToLower();
+            string streamType = vmess.net.ToLower();
 
             if (!streamTypes.Contains(streamType))
             {
                 return config.ToString();
             }
 
-            var template = JObject.Parse(resData("config_tpl"));
+            config["outbound"]["streamSettings"] = tpl[streamType];
 
-            config["outbound"]["streamSettings"] = template[streamType];
-
-            config["outbound"]["streamSettings"]["security"] = v.tls;
+            config["outbound"]["streamSettings"]["security"] = vmess.tls;
             try
             {
-                config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = v.type;
-            }
-            catch { }
-            try
-            {
-                config["outbound"]["streamSettings"]["wsSettings"]["path"] = v.host;
+                if (streamType.Equals("kcp"))
+                {
+                    config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
+                }
+
+                if (streamType.Equals("ws"))
+                {
+                    config["outbound"]["streamSettings"]["wsSettings"]["path"] = vmess.host;
+                }
+
             }
             catch { }
 
@@ -304,7 +281,7 @@ namespace V2RayGCon.Lib
                 if (!proc.HasExited)
                 {
                     proc.Kill();
-                    proc.WaitForExit(2000);
+                    proc.WaitForExit(1000);
                 }
             }
             catch
@@ -319,30 +296,41 @@ namespace V2RayGCon.Lib
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
+        static string Base64PadRight(string base64)
+        {
+            return base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=');
+        }
+
         public static string Base64Decode(string base64EncodedData)
         {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            if (string.IsNullOrEmpty(base64EncodedData))
+            {
+                return string.Empty;
+            }
+            var padded = Base64PadRight(base64EncodedData);
+            var base64EncodedBytes = System.Convert.FromBase64String(padded);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-
-
-        public static string LinkAddPrefix(string b64Content, Model.Data.Enum.LinkTypes type)
+        static string GetLinkPrefix(Model.Data.Enum.LinkTypes linkType)
         {
-            string prefix = string.Empty;
+            return Model.Data.Table.linkPrefix[(int)linkType];
+        }
 
-            switch (type)
-            {
-                case Model.Data.Enum.LinkTypes.vmess:
-                    prefix = resData("VmessLinkPrefix");
-                    break;
+        public static string GenPattern(Model.Data.Enum.LinkTypes linkType)
+        {
+            return string.Format(
+               "{0}{1}{2}",
+               resData("PatternNonAlphabet"), // vme[ss]
+               GetLinkPrefix(linkType),
+               resData("PatternBase64"));
+        }
 
-                case Model.Data.Enum.LinkTypes.v2ray:
-                    prefix = resData("V2RayLinkPrefix");
-                    break;
-            }
 
-            return prefix + b64Content;
+        public static string LinkAddPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
+        {
+
+            return GetLinkPrefix(linkType) + b64Content;
         }
 
         public static string Vmess2VmessLink(Model.Data.Vmess vmess)
@@ -360,11 +348,10 @@ namespace V2RayGCon.Lib
 
         public static Model.Data.Vmess VmessLink2Vmess(string link)
         {
-            string base64_text = LinkBody(link, Model.Data.Enum.LinkTypes.vmess);
             try
             {
-                string plain_text = Base64Decode(base64_text);
-                var vmess = JsonConvert.DeserializeObject<Model.Data.Vmess>(plain_text);
+                string plainText = Base64Decode(GetLinkBody(link));
+                var vmess = JsonConvert.DeserializeObject<Model.Data.Vmess>(plainText);
                 if (!string.IsNullOrEmpty(vmess.add)
                     && !string.IsNullOrEmpty(vmess.port)
                     && !string.IsNullOrEmpty(vmess.aid))
@@ -377,24 +364,10 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static string LinkBody(string link, Model.Data.Enum.LinkTypes type)
+        public static string GetLinkBody(string link)
         {
-            int len = 0;
-            switch (type)
-            {
-                case Model.Data.Enum.LinkTypes.vmess:
-                    len = resData("VmessLinkPrefix").Length;
-                    break;
-
-                case Model.Data.Enum.LinkTypes.v2ray:
-                    len = resData("V2RayLinkPrefix").Length;
-                    break;
-
-                case Model.Data.Enum.LinkTypes.ss:
-                    len = resData("SSLinkPrefix").Length;
-                    break;
-            }
-            return link.Substring(len);
+            Regex re = new Regex("[a-zA-Z0-9]+://");
+            return re.Replace(link, string.Empty);
         }
 
         public static string GetClipboardText()
@@ -409,7 +382,7 @@ namespace V2RayGCon.Lib
 
         public static int Clamp(int value, int min, int max)
         {
-            return Math.Max(Math.Min(value, max), min);
+            return Math.Max(Math.Min(value, max - 1), min);
         }
 
         public static string GetAppDir()

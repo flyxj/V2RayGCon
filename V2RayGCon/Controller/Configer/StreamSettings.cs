@@ -47,7 +47,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void SetSecurity(string security)
         {
-            tls = Lib.Utils.LookupDict(Model.Data.Table.streamSecurity, security);
+            tls = Lib.Utils.GetIndex(Model.Data.Table.streamSecurity, security);
         }
 
         string GetSecuritySetting()
@@ -84,7 +84,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
+            var GetStr = Lib.Utils.FuncGetString(config);
 
             string prefix;
 

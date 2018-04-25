@@ -22,7 +22,6 @@ namespace V2RayGCon.Model.Data
                 list = new List<T>();
             }
 
-
             // eventhandler not attach yet, so notify() is in vain.
             // notify();
         }
@@ -39,10 +38,9 @@ namespace V2RayGCon.Model.Data
 
         private void notify()
         {
+            // Debug.WriteLine("notify");
             ListChanged?.Invoke();
-            // Debug.WriteLine("EventList changed!");
         }
-
 
         public T this[int index]
         {
@@ -52,6 +50,11 @@ namespace V2RayGCon.Model.Data
                 ((IList<T>)list)[index] = value;
                 notify();
             }
+        }
+
+        public void Notify()
+        {
+            notify();
         }
 
         public int Count => ((IList<T>)list).Count;
@@ -64,10 +67,20 @@ namespace V2RayGCon.Model.Data
             notify();
         }
 
+        public void AddQuiet(T item)
+        {
+            ((IList<T>)list).Add(item);
+        }
+
         public void Clear()
         {
             ((IList<T>)list).Clear();
             notify();
+        }
+
+        public void ClearQuiet()
+        {
+            ((IList<T>)list).Clear();
         }
 
         public bool Contains(T item)
@@ -96,6 +109,11 @@ namespace V2RayGCon.Model.Data
             notify();
         }
 
+        public void InsertQuiet(int index, T item)
+        {
+            ((IList<T>)list).Insert(index, item);
+        }
+
         public bool Remove(T item)
         {
             var l = ((IList<T>)list).Remove(item);
@@ -103,10 +121,21 @@ namespace V2RayGCon.Model.Data
             return l;
         }
 
+        public bool RemoveQuiet(T item)
+        {
+            var l = ((IList<T>)list).Remove(item);
+            return l;
+        }
+
         public void RemoveAt(int index)
         {
             ((IList<T>)list).RemoveAt(index);
             notify();
+        }
+
+        public void RemoveAtQuiet(int index)
+        {
+            ((IList<T>)list).RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

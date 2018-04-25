@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace V2RayGCon.Model.Data
 {
-    class Vmess
+    public class Vmess
     {
         public string ps, add, port, id, aid, net, type, host, tls;
 

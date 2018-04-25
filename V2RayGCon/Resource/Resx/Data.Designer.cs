@@ -166,6 +166,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 [A-Za-z0-9+/]+ 的本地化字符串。
+        /// </summary>
+        internal static string DontUsePatternBase64 {
+            get {
+                return ResourceManager.GetString("DontUsePatternBase64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 https://github.com/v2ray/v2ray-core/releases/download/{0}/{1} 的本地化字符串。
         /// </summary>
         internal static string DownloadLinkTpl {
@@ -211,7 +220,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 png files (*.png)|*.png|All files (*.*)|*.* 的本地化字符串。
+        ///   查找类似 PNG Files|*.png|All File|*.* 的本地化字符串。
         /// </summary>
         internal static string ExtPng {
             get {
@@ -265,38 +274,11 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 ss:// 的本地化字符串。
-        /// </summary>
-        internal static string SSLinkPrefix {
-            get {
-                return ResourceManager.GetString("SSLinkPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 v2ray:// 的本地化字符串。
-        /// </summary>
-        internal static string V2RayLinkPrefix {
-            get {
-                return ResourceManager.GetString("V2RayLinkPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 v3.19 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 vmess:// 的本地化字符串。
-        /// </summary>
-        internal static string VmessLinkPrefix {
-            get {
-                return ResourceManager.GetString("VmessLinkPrefix", resourceCulture);
             }
         }
     }

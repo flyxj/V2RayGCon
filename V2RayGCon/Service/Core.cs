@@ -24,7 +24,7 @@ namespace V2RayGCon.Service
             setting.OnRequireCoreRestart += (s, a) => RestartCore();
         }
 
-        void OverwriteProxySettings(JObject config)
+        void OverwriteInboundSettings(JObject config)
         {
             var type = setting.proxyType;
 
@@ -60,7 +60,7 @@ namespace V2RayGCon.Service
 
         void RestartCore()
         {
-            var index = setting.GetSelectedServerIndex();
+            var index = setting.GetCurServIndex();
             var b64Config = setting.GetServer(index);
 
             if (string.IsNullOrEmpty(b64Config))
@@ -70,7 +70,7 @@ namespace V2RayGCon.Service
 
             string plainText = Lib.Utils.Base64Decode(b64Config);
             JObject config = JObject.Parse(plainText);
-            OverwriteProxySettings(config);
+            OverwriteInboundSettings(config);
             RestartCore(config.ToString());
         }
 
@@ -116,9 +116,6 @@ namespace V2RayGCon.Service
             v2rayCore.Exited += (s, e) =>
             {
                 setting.SendLog(I18N("CoreExit"));
-                // bug: port did not released after kill core.
-                // fix; do not do anything!
-                // StopCore();
             };
             v2rayCore.ErrorDataReceived += (s, e) => setting.SendLog(e.Data);
             v2rayCore.OutputDataReceived += (s, e) => setting.SendLog(e.Data);

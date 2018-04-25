@@ -22,7 +22,7 @@ namespace V2RayGCon.Service
 #if !DEBUG
             if (setting.GetServerCount() > 0)
             {
-                setting.ActivateServer(setting.GetSelectedServerIndex());
+                setting.ActivateServer();
             }
             else
             {
@@ -96,22 +96,19 @@ namespace V2RayGCon.Service
             var type = setting.proxyType;
             var protocol = Model.Data.Table.proxyTypesString[type];
 
-            var proxy = string.Format("{0}://{1}", protocol, setting.proxyAddr);
+            var proxy = string.Empty;
             if (type == (int)Model.Data.Enum.ProxyTypes.config)
             {
-                var aliases = setting.GetAllAliases();
-                var selServIndex = setting.GetSelectedServerIndex();
-                var curServer = Lib.Utils.Clamp(selServIndex, 0, setting.GetServerCount());
-
-                proxy = "Running";
-                try
-                {
-                    proxy = aliases[curServer];
-                }
-                catch { }
+                proxy = setting.GetInbountInfo();
+            }
+            else
+            {
+                proxy = string.Format("{0}://{1}", protocol, setting.proxyAddr);
             }
 
-            ni.Text = core.IsRunning() ? proxy : I18N("Description");
+            var title = string.Format("{0} {1}", setting.GetCurAlias(), proxy);
+
+            ni.Text = core.IsRunning() ? title : I18N("Description");
         }
 
         void CreateNotifyIcon()
@@ -182,6 +179,9 @@ namespace V2RayGCon.Service
 
                         // success
                         (link)=>{
+                            var msg=Lib.Utils.CutStr(link,48);
+                            setting.SendLog(I18N("AddServer")+": "+msg);
+
                             if (!setting.ImportLinks(link))
                             {
                                 MessageBox.Show(I18N("NotSupportLinkType"));

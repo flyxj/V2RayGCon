@@ -2,7 +2,7 @@
 
 namespace V2RayGCon.Model.Data
 {
-    class Shadowsocks
+    public class Shadowsocks
     {
         public string method, pass, addr;
 

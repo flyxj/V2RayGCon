@@ -279,4 +279,13 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Default" xml:space="preserve">
     <value>默认</value>
   </data>
+  <data name="AddServer" xml:space="preserve">
+    <value>添加服务器</value>
+  </data>
+  <data name="AddServSuccess" xml:space="preserve">
+    <value>成功添加服务器！</value>
+  </data>
+  <data name="DuplicateServer" xml:space="preserve">
+    <value>已存在相同服务器，跳过！</value>
+  </data>
 </root>

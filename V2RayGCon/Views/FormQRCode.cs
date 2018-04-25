@@ -72,7 +72,7 @@ namespace V2RayGCon.Views
                 cboxServList.Items.Add(alias);
             }
 
-            servIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count - 1);
+            servIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count);
             cboxServList.SelectedIndex = servIndex;
             ShowQRCode();
         }

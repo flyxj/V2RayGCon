@@ -141,7 +141,7 @@ namespace V2RayGCon.Lib.QRCode
 
                     Debug.WriteLine("Source window {0}: {1}", i, scanRectList[i][1]);
                     Debug.WriteLine("Target window {0}: {1}", i, scanRectList[i][0]);
-                    Debug.WriteLine("Read: " + Lib.Utils.CutString(link, 32));
+                    Debug.WriteLine("Read: " + Lib.Utils.CutStr(link, 32));
 
                     var qrcodeRect = GetQRCodeRect(
                         result,

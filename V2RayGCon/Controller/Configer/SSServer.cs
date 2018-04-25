@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-
+using System;
 using static V2RayGCon.Lib.StringResource;
 
 
@@ -54,14 +54,14 @@ namespace V2RayGCon.Controller.Configer
 
         public void SetMethod(string selectedMethod)
         {
-            method = Lib.Utils.LookupDict(
+            method = Lib.Utils.GetIndex(
                 Model.Data.Table.ssMethods,
                 selectedMethod);
         }
 
         public void SetNetwork(string selectedNetwork)
         {
-            network = Lib.Utils.LookupDict(
+            network = Lib.Utils.GetIndex(
                 Model.Data.Table.ssNetworks,
                 selectedNetwork);
         }
@@ -85,13 +85,13 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
+            var GetStr = Lib.Utils.FuncGetString(config);
             var prefix = "inbound.settings.";
             port = GetStr("inbound.", "port");
             SetMethod(GetStr(prefix, "method"));
             SetNetwork(GetStr(prefix, "network"));
             pass = GetStr(prefix, "password");
-            OTA = Lib.Utils.GetBoolFromJToken(config, prefix + "ota");
+            OTA = Lib.Utils.GetBool(config, prefix + "ota");
         }
 
     }

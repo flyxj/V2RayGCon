@@ -35,24 +35,24 @@ namespace V2RayGCon.Views
 
             formMainCtrl = new Controller.FormMainCtrl();
 
-            BindListViewEvents();
+            ListViewSupportRightClickMenu();
 
             UpdateUI();
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnSettingChange -= UpdateUIHandler;
-                core.OnCoreStatChange -= UpdateUIHandler;
+                setting.OnSettingChange -= SettingChangeHandler;
+                core.OnCoreStatChange -= SettingChangeHandler;
             };
 
             Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
 
             this.Show();
-            setting.OnSettingChange += UpdateUIHandler;
-            core.OnCoreStatChange += UpdateUIHandler;
+            setting.OnSettingChange += SettingChangeHandler;
+            core.OnCoreStatChange += SettingChangeHandler;
         }
 
-        void UpdateUIHandler(object s, EventArgs e)
+        void SettingChangeHandler(object s, EventArgs e)
         {
             UpdateElementDelegate updater =
                 new UpdateElementDelegate(UpdateUI);
@@ -60,7 +60,7 @@ namespace V2RayGCon.Views
             lvServers?.Invoke(updater);
         }
 
-        void BindListViewEvents()
+        void ListViewSupportRightClickMenu()
         {
             lvServers.Items.Clear();
 
@@ -107,23 +107,6 @@ namespace V2RayGCon.Views
             setting.ActivateServer(index);
         }
 
-        public void UpdateListView()
-        {
-            lvServers.Items.Clear();
-
-            var servers = formMainCtrl.GetServerInfo();
-            if (servers.Count <= 0)
-            {
-                return;
-            }
-
-            foreach (var server in servers)
-            {
-                lvServers.Items.Add(new ListViewItem(server));
-
-            }
-        }
-
         private void activateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ActivateServer();
@@ -149,8 +132,19 @@ namespace V2RayGCon.Views
 
         void UpdateUI()
         {
-            UpdateListView();
+            // update list view
+            lvServers.Items.Clear();
+            var servers = setting.GetAllServSummarys();
+            var curServIndex = setting.GetCurServIndex();
+            var curServNum = (curServIndex + 1).ToString();
 
+            foreach (var server in servers)
+            {
+                server[5] = server[0].Equals(curServNum) ? "√" : string.Empty;
+                lvServers.Items.Add(new ListViewItem(server));
+            }
+
+            // main menu check state
             proxyAddrToolStripTextBox.Text = setting.proxyAddr;
 
             protocolSocksToolStripMenuItem.Checked =
@@ -286,22 +280,21 @@ namespace V2RayGCon.Views
 
         private void ShowFormConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Views.FormConfiger.GetForm();
             new FormConfiger();
         }
 
         private void sysProxyHttpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var http = Model.Data.Enum.ProxyTypes.http;
+            var http = (int)Model.Data.Enum.ProxyTypes.http;
 
             Lib.ProxySetter.setProxy(setting.proxyAddr, true);
-            if (core.IsRunning() && setting.proxyType == (int)http)
+            if (core.IsRunning() && setting.proxyType == http)
             {
                 UpdateUI();
             }
             else
             {
-                setting.proxyType = (int)http;
+                setting.proxyType = http;
                 ActivateServer();
             }
         }

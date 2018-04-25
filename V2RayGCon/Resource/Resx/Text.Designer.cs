@@ -79,6 +79,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add server 的本地化字符串。
+        /// </summary>
+        internal static string AddServer {
+            get {
+                return ResourceManager.GetString("AddServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add server success! 的本地化字符串。
+        /// </summary>
+        internal static string AddServSuccess {
+            get {
+                return ResourceManager.GetString("AddServSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 V2RayGCon 的本地化字符串。
         /// </summary>
         internal static string AppName {
@@ -258,6 +276,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Downloading {
             get {
                 return ResourceManager.GetString("Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Duplicate server, skip! 的本地化字符串。
+        /// </summary>
+        internal static string DuplicateServer {
+            get {
+                return ResourceManager.GetString("DuplicateServer", resourceCulture);
             }
         }
         

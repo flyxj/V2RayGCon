@@ -86,11 +86,27 @@
       }
     },
     "outbound": {
-      "protocol": "freedom",
-      "settings": null,
-      "tag": "direct",
-      "mux": null,
-      "streamSettings": null
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "",
+            "port": 1234,
+            "users": [
+              {
+                "id": "",
+                "alterId": 32,
+                "security": "auto"
+              }
+            ]
+          }
+        ]
+      },
+      "tag": "agentout",
+      "mux": {
+        "enabled": true
+      },
+      "streamSettings": {}
     },
     "v2raygcon": {
       "alias": "",
@@ -145,9 +161,7 @@
       "readBufferSize": 2,
       "writeBufferSize": 2,
       "header": {
-        "type": "replace-this",
-        "request": null,
-        "response": null
+        "type": "replace-this"
       }
     }
   },
@@ -161,8 +175,7 @@
     "security": "tls",
     "wsSettings": {
       "connectionReuse": true,
-      "path": "",
-      "headers": null
+      "path": ""
     }
   }
 }

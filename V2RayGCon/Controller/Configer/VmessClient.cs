@@ -63,8 +63,8 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
-            var GetAddrStr = Lib.Utils.ClosureGetAddrFromJToken(config);
+            var GetStr = Lib.Utils.FuncGetString(config);
+            var GetAddrStr = Lib.Utils.FuncGetAddr(config);
 
             var prefix = "outbound.settings.vnext.0.users.0.";
             ID = GetStr(prefix, "id");

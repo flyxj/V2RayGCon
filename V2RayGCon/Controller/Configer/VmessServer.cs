@@ -60,7 +60,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.ClosureGetStringFromJToken(config);
+            var GetStr = Lib.Utils.FuncGetString(config);
 
             var prefix = "inbound.settings.clients.0.";
             ID = GetStr(prefix, "id");

@@ -281,4 +281,13 @@ Load new config?</value>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
+  <data name="AddServer" xml:space="preserve">
+    <value>Add server</value>
+  </data>
+  <data name="AddServSuccess" xml:space="preserve">
+    <value>Add server success!</value>
+  </data>
+  <data name="DuplicateServer" xml:space="preserve">
+    <value>Duplicate server, skip!</value>
+  </data>
 </root>

@@ -50,7 +50,7 @@ namespace V2RayGCon.Controller.Configer
         {
             var index = section < 0 ? preSection : section;
 
-            index = Lib.Utils.Clamp(index, 0, sections.Count - 1);
+            index = Lib.Utils.Clamp(index, 0, sections.Count);
 
             if (index == 0)
             {
@@ -76,7 +76,7 @@ namespace V2RayGCon.Controller.Configer
 
         public string GetAlias()
         {
-            return Lib.Utils.GetStrFromJToken(config, "v2raygcon.alias");
+            return Lib.Utils.GetString(config, "v2raygcon.alias");
         }
 
         public List<string> GetExampleDescriptions()

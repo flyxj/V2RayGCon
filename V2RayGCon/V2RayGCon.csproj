@@ -238,16 +238,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="V2RayGCon_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Icon\icon_dark.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Icon\icon_light.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />

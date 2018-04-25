@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using static V2RayGCon.Lib.StringResource;
+﻿using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller
 {
@@ -28,7 +25,6 @@ namespace V2RayGCon.Controller
                 Lib.Utils.CopyToClipboard(v2rayLink),
                 I18N("LinksCopied"),
                 I18N("CopyFail"));
-
         }
 
         public void CopyVmessLink(int index)
@@ -97,72 +93,5 @@ namespace V2RayGCon.Controller
                 I18N("LinksCopied"),
                 I18N("CopyFail"));
         }
-
-        public List<string[]> GetServerInfo()
-        {
-            var info = new List<string[]> { };
-
-            var servers = setting.GetAllServers();
-
-            if (servers.Count <= 0)
-            {
-                Debug.WriteLine("FormMain: servers is empty!");
-                return info;
-            }
-
-            int count = 0;
-            int selectedServer = setting.GetSelectedServerIndex();
-            string s, proxy;
-            JObject o;
-            foreach (var server in servers)
-            {
-                try
-                {
-                    s = Lib.Utils.Base64Decode(server);
-                    o = JObject.Parse(s);
-
-                }
-                catch { continue; }
-
-                string ip, port, type, tls, path, streamType, alias;
-                proxy = Lib.Utils.GetStrFromJToken(o, "outbound.protocol");
-
-                if (proxy.Equals("shadowsocks"))
-                {
-                    ip = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.address");
-                    port = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.port");
-                    tls = Lib.Utils.GetStrFromJToken(o, "outbound.settings.servers.0.method");
-                }
-                else
-                {
-                    ip = Lib.Utils.GetStrFromJToken(o, "outbound.settings.vnext.0.address");
-                    port = Lib.Utils.GetStrFromJToken(o, "outbound.settings.vnext.0.port");
-                    tls = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.security");
-                }
-
-                streamType = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.network");
-                type = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.kcpSettings.header.type");
-                path = Lib.Utils.GetStrFromJToken(o, "outbound.streamSettings.wsSettings.path");
-                alias = Lib.Utils.GetStrFromJToken(o, "v2raygcon.alias");
-
-
-                info.Add(new string[] {
-                    (count+1).ToString(), //no.
-                    string.IsNullOrEmpty(alias)?I18N("Empty"):Lib.Utils.CutString(alias,15),
-                    proxy,
-                    ip,
-                    port,
-                    count == selectedServer?"√":"",  //active
-                    path, // Url
-                    streamType, //protocol
-                    tls, //encryption
-                    type // disguise
-                });
-                count++;
-            }
-
-            return info;
-        }
-
     }
 }

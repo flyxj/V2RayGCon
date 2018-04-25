@@ -23,8 +23,6 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, a) => ClearIndicator();
 
             this.Show();
-
-
         }
 
         string GetKeyword()
@@ -56,7 +54,7 @@ namespace V2RayGCon.Views
         }
 
 
-        private void Search()
+        private void SearchAll()
         {
             var key = GetKeyword();
             if (string.IsNullOrEmpty(key))
@@ -130,7 +128,7 @@ namespace V2RayGCon.Views
             var key = GetKeyword();
             if (key.Length > 1)
             {
-                Search();
+                SearchAll();
             }
         }
 

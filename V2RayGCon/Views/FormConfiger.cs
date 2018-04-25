@@ -32,7 +32,7 @@ namespace V2RayGCon.Views
             InitScintilla();
             InitDataBinding();
             UpdateServerMenu();
-            ToggleToolsPanel(setting.isShowConfigerLeftPanel);
+            ToggleToolsPanel(setting.isConfigerShowToolsPanel);
 
             cboxConfigSection.SelectedIndex = 0;
 
@@ -74,13 +74,13 @@ namespace V2RayGCon.Views
 
             pnlEditor.Size = editorSize;
             pnlEditor.Visible = true;
-            setting.isShowConfigerLeftPanel = visible;
+            setting.isConfigerShowToolsPanel = visible;
         }
 
         void InitComboBox()
         {
 
-            void FillComboBox(ComboBox cbox, Dictionary<int, string> table)
+            void Fill(ComboBox cbox, Dictionary<int, string> table)
             {
                 cbox.Items.Clear();
                 foreach (var item in table)
@@ -90,10 +90,10 @@ namespace V2RayGCon.Views
                 cbox.SelectedIndex = 0;
             }
 
-            FillComboBox(cboxConfigSection, Model.Data.Table.configSections);
-            FillComboBox(cboxSSCMethod, Model.Data.Table.ssMethods);
-            FillComboBox(cboxSSSMethod, Model.Data.Table.ssMethods);
-            FillComboBox(cboxSSSNetwork, Model.Data.Table.ssNetworks);
+            Fill(cboxConfigSection, Model.Data.Table.configSections);
+            Fill(cboxSSCMethod, Model.Data.Table.ssMethods);
+            Fill(cboxSSSMethod, Model.Data.Table.ssMethods);
+            Fill(cboxSSSNetwork, Model.Data.Table.ssNetworks);
         }
 
         void SettingChange(object sender, EventArgs args)
@@ -281,7 +281,8 @@ namespace V2RayGCon.Views
             scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
 
             // key binding
-            // scintilla.ClearAllCmdKeys();
+
+            // clear default keyboard shortcut
             scintilla.ClearCmdKey(Keys.Control | Keys.P);
             scintilla.ClearCmdKey(Keys.Control | Keys.S);
             scintilla.ClearCmdKey(Keys.Control | Keys.F);
@@ -303,12 +304,12 @@ namespace V2RayGCon.Views
 
             for (int i = 0; i < aliases.Count; i++)
             {
-                var _i = i;
+                var index = i;
                 menuRepalceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
-                        configer.ReplaceServer(_i);
+                        configer.ReplaceServer(index);
                         SetTitle(configer.GetAlias());
                     }
                 }));
@@ -319,7 +320,7 @@ namespace V2RayGCon.Views
                     {
                         return;
                     }
-                    configer.LoadServer(_i);
+                    configer.LoadServer(index);
                     cboxConfigSection.SelectedIndex = 0;
                     SetTitle(configer.GetAlias());
                 }));
@@ -535,8 +536,8 @@ namespace V2RayGCon.Views
             switch (keyCode)
             {
                 case (Keys.Control | Keys.P):
-                    var visible = !setting.isShowConfigerLeftPanel;
-                    setting.isShowConfigerLeftPanel = visible;
+                    var visible = !setting.isConfigerShowToolsPanel;
+                    setting.isConfigerShowToolsPanel = visible;
                     ToggleToolsPanel(visible);
                     break;
                 case (Keys.Control | Keys.F):

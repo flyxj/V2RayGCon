@@ -30,8 +30,16 @@ namespace V2RayGCon.Model.Data
         public static string[] proxyTypesString = new string[] { "config", "http", "socks" };
 
 
-        public static Dictionary<int, string> ssMethods => _ssrMethods;
-        static Dictionary<int, string> _ssrMethods = new Dictionary<int, string>
+        public static Dictionary<int, string> linkPrefix => _linkPrefix;
+        static Dictionary<int, string> _linkPrefix = new Dictionary<int, string>
+        {
+            {0,"vmess://" },
+            {1,"v2ray://" },
+            {2,"ss://" },
+        };
+
+        public static Dictionary<int, string> ssMethods => _ssMethods;
+        static Dictionary<int, string> _ssMethods = new Dictionary<int, string>
         {
             { 0,"aes-128-cfb"},
             { 1,"aes-128-gcm"},
@@ -161,6 +169,33 @@ namespace V2RayGCon.Model.Data
             d.Add(12, list);
 
             return d;
+        }
+
+        public static Dictionary<string, string[]> servInfoKeys => _servInfoKeys;
+        static Dictionary<string, string[]> _servInfoKeys = ServInfoKeysHelper();
+        static Dictionary<string, string[]> ServInfoKeysHelper()
+        {
+            var streamType = "outbound.streamSettings.network";
+            var type = "outbound.streamSettings.kcpSettings.header.type";
+            var path = "outbound.streamSettings.wsSettings.path";
+            var tls = "outbound.streamSettings.security";
+
+            var ssIP = "outbound.settings.servers.0.address";
+            var ssPort = "outbound.settings.servers.0.port";
+
+            var vmessIP = "outbound.settings.vnext.0.address";
+            var vmessPort = "outbound.settings.vnext.0.port";
+
+            var keys = new Dictionary<string, string[]>();
+
+            // ip,port,tls, path,streamType,type
+            keys.Add("shadowsocks", new string[] {
+                ssIP,ssPort,tls,path,streamType,type});
+
+            keys.Add("vmess", new string[] {
+                vmessIP,vmessPort,tls,path,streamType,type});
+
+            return keys;
         }
     }
 }

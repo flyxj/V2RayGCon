@@ -1,12 +1,12 @@
 ﻿namespace V2RayGCon.Model.Data
 {
-    class Enum
+    public class Enum
     {
         public enum LinkTypes
         {
-            vmess,
-            v2ray,
-            ss,
+            vmess = 0,
+            v2ray = 1,
+            ss = 2,
         }
 
 
