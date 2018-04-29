@@ -100,7 +100,12 @@ namespace V2RayGCon.Views
         {
             UpdateServerMenuDelegate updater =
                 new UpdateServerMenuDelegate(UpdateServerMenu);
-            mainMenu?.Invoke(updater);
+
+            try
+            {
+                mainMenu?.Invoke(updater);
+            }
+            catch { }
         }
 
         #region DataBinding
@@ -330,6 +335,7 @@ namespace V2RayGCon.Views
 
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
+            cboxExamples.SelectedIndex = 0;
             configer.DiscardChanges();
         }
 
@@ -430,6 +436,7 @@ namespace V2RayGCon.Views
             if (descriptions.Count < 1)
             {
                 cboxExamples.Enabled = false;
+                // cboxExamples.Visible = false;
             }
             else
             {

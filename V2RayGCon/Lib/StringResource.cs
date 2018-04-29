@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Text;
 
 namespace V2RayGCon.Lib
 {
-    class StringResource
+    public class StringResource
     {
         static ResourceManager ResMgr(string resFileName)
         {
@@ -16,12 +14,15 @@ namespace V2RayGCon.Lib
 
         static Func<string, string> StringLoader(string resFileName)
         {
-            // Debug.WriteLine("Filename: " + resFileName);
             ResourceManager resources = ResMgr(resFileName);
-            return (key) =>
+            return key =>
             {
-                // Debug.WriteLine("key: " + key);
-                return resources.GetString(key);
+                var value = resources.GetString(key);
+                if (value == null)
+                {
+                    throw new KeyNotFoundException($"key: {key}");
+                }
+                return value;
             };
         }
 

@@ -11,7 +11,6 @@ namespace V2RayGCon.Service
 {
     class Setting : Model.BaseClass.SingletonService<Setting>
     {
-
         private Model.Data.EventList<string> servers;
         private List<string> aliases;
         private List<string[]> servSummarys;
@@ -95,6 +94,10 @@ namespace V2RayGCon.Service
         public string GetCurAlias()
         {
             var aliases = GetAllAliases();
+            if (aliases.Count < 1)
+            {
+                return string.Empty;
+            }
             var index = GetCurServIndex();
             index = Lib.Utils.Clamp(index, 0, aliases.Count);
             return aliases[index];
@@ -202,7 +205,7 @@ namespace V2RayGCon.Service
             servers.RemoveAtQuiet(n);
             servers.Insert(0, item);
             SaveServers();
-            OnSettingChange?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void MoveItemUp(int index)
@@ -224,7 +227,7 @@ namespace V2RayGCon.Service
             servers.Insert(index - 1, item);
             SaveServers();
 
-            OnSettingChange?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void MoveItemDown(int index)
@@ -245,7 +248,7 @@ namespace V2RayGCon.Service
             servers.RemoveAtQuiet(index);
             servers.Insert(index + 1, item);
             SaveServers();
-            OnSettingChange?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void MoveItemToButtom(int index)
@@ -264,15 +267,15 @@ namespace V2RayGCon.Service
             servers.RemoveAtQuiet(n);
             servers.Add(item);
             SaveServers();
-            OnSettingChange?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void DeleteAllServers()
         {
             servers.Clear();
             SaveServers();
-            OnSettingChange?.Invoke(this, null);
-            OnRequireCoreRestart?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
+            OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
         }
 
         public void DeleteServer(int index)
@@ -292,12 +295,12 @@ namespace V2RayGCon.Service
             {
                 // normal restart
                 _curServIndex = GetServerCount() - 1;
-                OnRequireCoreRestart?.Invoke(this, null);
+                OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
             }
             else if (_curServIndex == index)
             {
                 // force restart
-                OnRequireCoreRestart?.Invoke(this, null);
+                OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
             }
             else if (_curServIndex > index)
             {
@@ -306,7 +309,7 @@ namespace V2RayGCon.Service
             }
 
             // dont need restart
-            OnSettingChange?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public bool ImportLinks(string links)
@@ -318,7 +321,7 @@ namespace V2RayGCon.Service
             if (vmess || v2ray || ss)
             {
                 servers.Notify();
-                OnSettingChange?.Invoke(this, null);
+                OnSettingChange?.Invoke(this, EventArgs.Empty);
                 return true;
             }
 
@@ -478,14 +481,7 @@ namespace V2RayGCon.Service
 
         void OnServerListChanged()
         {
-            Func<string, string> FuncGetStr(JObject config)
-            {
-                var c = config;
-                return (k) =>
-                {
-                    return Lib.Utils.GetString(c, k);
-                };
-            }
+
 
             aliases.Clear();
             servSummarys.Clear();
@@ -497,7 +493,7 @@ namespace V2RayGCon.Service
                     var configString = Lib.Utils.Base64Decode(servers[i]);
                     var config = JObject.Parse(configString);
 
-                    var GetStr = FuncGetStr(config);
+                    var GetStr = Lib.Utils.GetStringByKeyHelper(config);
 
                     var name = GetStr("v2raygcon.alias");
 
@@ -572,7 +568,7 @@ namespace V2RayGCon.Service
             {
                 servers.Add(b64ConfigString);
                 SaveServers();
-                OnSettingChange?.Invoke(this, null);
+                OnSettingChange?.Invoke(this, EventArgs.Empty);
             }
             SendLog(I18N("AddServSuccess") + "\r\n");
             return true;
@@ -584,8 +580,8 @@ namespace V2RayGCon.Service
             {
                 _curServIndex = index;
             }
-            OnRequireCoreRestart?.Invoke(this, null);
-            OnSettingChange?.Invoke(this, null);
+            OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public bool ReplaceServer(string b64ConfigString, int replaceIndex)
@@ -600,9 +596,9 @@ namespace V2RayGCon.Service
 
             if (replaceIndex == _curServIndex)
             {
-                OnRequireCoreRestart?.Invoke(this, null);
+                OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
             }
-            OnSettingChange?.Invoke(this, null);
+            OnSettingChange?.Invoke(this, EventArgs.Empty);
             return true;
         }
 

@@ -290,4 +290,10 @@ Load new config?</value>
   <data name="DuplicateServer" xml:space="preserve">
     <value>Duplicate server, skip!</value>
   </data>
+  <data name="DLProgress" xml:space="preserve">
+    <value>Download progress</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
 </root>

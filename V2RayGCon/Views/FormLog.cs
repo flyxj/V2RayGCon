@@ -40,16 +40,28 @@ namespace V2RayGCon.Views
         void LogReceiver(object sender, Model.Data.DataEvent e)
         {
             PushLogDelegate pushLog = new PushLogDelegate(PushLog);
-            textBoxLogger?.Invoke(pushLog, e.Data);
+            try
+            {
+                rtBoxLogger?.Invoke(pushLog, e.Data);
+            }
+            catch { }
         }
 
         public void PushLog(string content)
         {
-            if (textBoxLogger.Lines.Length >= maxNumberLines - 1)
+            if (rtBoxLogger.Lines.Length >= maxNumberLines - 1)
             {
-                textBoxLogger.Lines = textBoxLogger.Lines.Skip(textBoxLogger.Lines.Length - maxNumberLines).ToArray();
+                rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
             }
-            textBoxLogger.AppendText(content + "\r\n");
+            rtBoxLogger.AppendText(content + "\r\n");
+        }
+
+        private void rtBoxLogger_TextChanged(object sender, System.EventArgs e)
+        {
+            // set the current caret position to the end
+            rtBoxLogger.SelectionStart = rtBoxLogger.Text.Length;
+            // scroll it automatically
+            rtBoxLogger.ScrollToCaret();
         }
     }
 }

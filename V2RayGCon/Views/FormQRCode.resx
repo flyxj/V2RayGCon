@@ -258,9 +258,6 @@
   <data name="&gt;&gt;cboxLinkType.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btnSavePic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="btnSavePic.Location" type="System.Drawing.Point, System.Drawing">
     <value>276, 6</value>
   </data>

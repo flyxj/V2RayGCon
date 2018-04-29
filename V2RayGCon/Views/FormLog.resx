@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="textBoxLogger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="rtBoxLogger.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="textBoxLogger.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="rtBoxLogger.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="textBoxLogger.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxLogger.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+  <data name="rtBoxLogger.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
-  <data name="textBoxLogger.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 321</value>
+  <data name="rtBoxLogger.Size" type="System.Drawing.Size, System.Drawing">
+    <value>667, 320</value>
   </data>
-  <data name="textBoxLogger.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="rtBoxLogger.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;textBoxLogger.Name" xml:space="preserve">
-    <value>textBoxLogger</value>
+  <data name="rtBoxLogger.Text" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;textBoxLogger.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;rtBoxLogger.Name" xml:space="preserve">
+    <value>rtBoxLogger</value>
   </data>
-  <data name="&gt;&gt;textBoxLogger.Parent" xml:space="preserve">
+  <data name="&gt;&gt;rtBoxLogger.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rtBoxLogger.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBoxLogger.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;rtBoxLogger.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

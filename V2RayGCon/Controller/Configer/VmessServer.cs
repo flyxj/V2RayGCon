@@ -60,13 +60,13 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.FuncGetString(config);
+            port = Lib.Utils.GetValue<int>(config, "inbound", "port").ToString();
 
-            var prefix = "inbound.settings.clients.0.";
-            ID = GetStr(prefix, "id");
-            level = GetStr(prefix, "level");
-            altID = GetStr(prefix, "alterId");
-            port = GetStr("inbound.", "port");
+            var prefix = "inbound.settings.clients.0";
+            ID = Lib.Utils.GetValue<string>(config, prefix, "id");
+            level = Lib.Utils.GetValue<int>(config, prefix, "level").ToString();
+            altID = Lib.Utils.GetValue<int>(config, prefix, "alterId").ToString();
+
         }
     }
 }

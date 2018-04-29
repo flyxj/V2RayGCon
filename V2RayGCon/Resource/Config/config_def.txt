@@ -123,7 +123,8 @@
     "redirect": "127.0.0.1:3366",
     "userLevel": 0
   },
-  "outDoko": {
+  "inDoko": 
+  {
     "address": "8.8.8.8",
     "port": 53,
     "network": "tcp",

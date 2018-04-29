@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
+using System.Windows.Forms;
 
 
 namespace V2RayGCon.Lib.QRCode
@@ -28,8 +24,8 @@ namespace V2RayGCon.Lib.QRCode
             this.MinimizeBox = false;
             this.Name = "QRCodeSplashForm";
             this.ShowIcon = false;
-            // this.ShowInTaskbar = false;
-            this.ShowInTaskbar = true;
+            this.ShowInTaskbar = false;
+            //this.ShowInTaskbar = true;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;

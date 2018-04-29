@@ -76,7 +76,7 @@ namespace V2RayGCon.Controller.Configer
 
         public string GetAlias()
         {
-            return Lib.Utils.GetString(config, "v2raygcon.alias");
+            return Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
         }
 
         public List<string> GetExampleDescriptions()

@@ -253,6 +253,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Download progress 的本地化字符串。
+        /// </summary>
+        internal static string DLProgress {
+            get {
+                return ResourceManager.GetString("DLProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Download v2ray-core 的本地化字符串。
         /// </summary>
         internal static string DLv2rayCore {
@@ -267,6 +276,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Done {
             get {
                 return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download 的本地化字符串。
+        /// </summary>
+        internal static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
             }
         }
         

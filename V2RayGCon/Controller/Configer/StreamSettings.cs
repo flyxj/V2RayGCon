@@ -47,7 +47,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void SetSecurity(string security)
         {
-            tls = Lib.Utils.GetIndex(Model.Data.Table.streamSecurity, security);
+            tls = Lib.Utils.GetIndexIgnoreCase(Model.Data.Table.streamSecurity, security);
         }
 
         string GetSecuritySetting()
@@ -84,17 +84,17 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.FuncGetString(config);
+            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
 
             string prefix;
 
             if (_isServer)
             {
-                prefix = "inbound.streamSettings.";
+                prefix = "inbound.streamSettings";
             }
             else
             {
-                prefix = "outbound.streamSettings.";
+                prefix = "outbound.streamSettings";
             }
 
             kcpType = GetStr(prefix, "kcpSettings.header.type");

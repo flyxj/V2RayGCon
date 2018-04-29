@@ -57,7 +57,11 @@ namespace V2RayGCon.Views
             UpdateElementDelegate updater =
                 new UpdateElementDelegate(UpdateUI);
 
-            lvServers?.Invoke(updater);
+            try
+            {
+                lvServers?.Invoke(updater);
+            }
+            catch { }
         }
 
         void ListViewSupportRightClickMenu()

@@ -51,7 +51,11 @@ namespace V2RayGCon.Views
         {
             UpdateServerListDelegate updater =
                 new UpdateServerListDelegate(UpdateServerList);
-            cboxServList?.Invoke(updater, -1);
+            try
+            {
+                cboxServList?.Invoke(updater, -1);
+            }
+            catch { }
         }
 
         void UpdateServerList(int index = -1)
@@ -100,7 +104,9 @@ namespace V2RayGCon.Views
             }
             else
             {
-                link = resData("V2RayLinkPrefix") + server;
+                var prefix = Model.Data.Table.linkPrefix[
+                    (int)Model.Data.Enum.LinkTypes.v2ray];
+                link = prefix + server;
                 picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link, 320);
             }
 

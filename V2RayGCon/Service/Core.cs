@@ -141,7 +141,7 @@ namespace V2RayGCon.Service
             v2rayCore.BeginOutputReadLine();
 
             _isRunning = true;
-            OnCoreStatChange?.Invoke(this, null);
+            OnCoreStatChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void StopCore()
@@ -162,7 +162,7 @@ namespace V2RayGCon.Service
             }
 
             _isRunning = false;
-            OnCoreStatChange?.Invoke(this, null);
+            OnCoreStatChange?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -274,7 +274,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.19 的本地化字符串。
+        ///   查找类似 v3.21 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {

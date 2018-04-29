@@ -29,28 +29,28 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLog));
-            this.textBoxLogger = new System.Windows.Forms.TextBox();
+            this.rtBoxLogger = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // textBoxLogger
+            // rtBoxLogger
             // 
-            resources.ApplyResources(this.textBoxLogger, "textBoxLogger");
-            this.textBoxLogger.Name = "textBoxLogger";
-            this.textBoxLogger.ReadOnly = true;
+            resources.ApplyResources(this.rtBoxLogger, "rtBoxLogger");
+            this.rtBoxLogger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtBoxLogger.Name = "rtBoxLogger";
+            this.rtBoxLogger.ReadOnly = true;
+            this.rtBoxLogger.TextChanged += new System.EventHandler(this.rtBoxLogger_TextChanged);
             // 
             // FormLog
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textBoxLogger);
+            this.Controls.Add(this.rtBoxLogger);
             this.Name = "FormLog";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBoxLogger;
+        private System.Windows.Forms.RichTextBox rtBoxLogger;
     }
 }

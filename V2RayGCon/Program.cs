@@ -32,25 +32,10 @@ namespace V2RayGCon
         [STAThread]
         static void Main()
         {
-            // 这个逻辑有点问题，暂时不开启
-            //var mutex = new System.Threading.Mutex(true, "UniqueAppId", out bool result);
-            //if (!result)
-            //{
-            //    if (!Lib.Utils.Confirm(I18N("WarnMultipleInstance")))
-            //    {
-            //        return;
-            //    }
-            //}
-            //else
-            //{
-            //    GC.KeepAlive(mutex);
-            //}
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-
-            Service.Notifier noty = new Service.Notifier();
+            Service.Notifier noty = Service.Notifier.Instance;
 
             Application.Run();
         }

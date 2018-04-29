@@ -63,15 +63,13 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.FuncGetString(config);
-            var GetAddrStr = Lib.Utils.FuncGetAddr(config);
+            var prefix = "outbound.settings.vnext.0.users.0";
+            ID = Lib.Utils.GetValue<string>(config, prefix, "id");
+            level = Lib.Utils.GetValue<int>(config, prefix, "level").ToString();
+            altID = Lib.Utils.GetValue<int>(config, prefix, "alterId").ToString();
 
-            var prefix = "outbound.settings.vnext.0.users.0.";
-            ID = GetStr(prefix, "id");
-            level = GetStr(prefix, "level");
-            altID = GetStr(prefix, "alterId");
-            prefix = "outbound.settings.vnext.0.";
-            addr = GetAddrStr(prefix, "address", "port");
+            prefix = "outbound.settings.vnext.0";
+            addr = Lib.Utils.GetAddr(config, prefix, "address", "port");
         }
     }
 }

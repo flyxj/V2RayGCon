@@ -288,4 +288,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="DuplicateServer" xml:space="preserve">
     <value>已存在相同服务器，跳过！</value>
   </data>
+  <data name="DLProgress" xml:space="preserve">
+    <value>下载进度</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>下载</value>
+  </data>
 </root>

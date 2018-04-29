@@ -4,22 +4,33 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
-    class Notifier
+    class Notifier : Model.BaseClass.SingletonService<Notifier>
     {
         NotifyIcon ni;
         Core core;
         Setting setting;
         Download downloader = null;
 
-        public Notifier()
+        Notifier()
         {
             setting = Setting.Instance;
             core = Core.Instance;
             CreateNotifyIcon();
 
+            Application.ApplicationExit += (s, a) => Cleanup();
             core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
-#if !DEBUG
+#if DEBUG
+            EnableDebug();
+#else
+            ni.MouseClick += (s, a) =>
+            {
+                if (a.Button == MouseButtons.Left)
+                {
+                    Views.FormMain.GetForm();
+                }
+            };
+
             if (setting.GetServerCount() > 0)
             {
                 setting.ActivateServer();
@@ -28,10 +39,6 @@ namespace V2RayGCon.Service
             {
                 Views.FormMain.GetForm();
             }
-#endif
-
-#if DEBUG
-            EnableDebug();
 #endif
         }
 
@@ -48,13 +55,12 @@ namespace V2RayGCon.Service
 
             ContextMenu ctxm = ni.ContextMenu;
 
-            // bool debug_form_config = false;
-            bool debug_form_config = true;
+            bool debug_form_config = false;
+            // bool debug_form_config = true;
 
             if (debug_form_config)
             {
                 setting.curEditingIndex = 0;
-                // Views.FormConfiger.GetForm();
                 new Views.FormConfiger();
             }
             else
@@ -81,8 +87,14 @@ namespace V2RayGCon.Service
                     setting.ImportLinks(resData("DummyServ1"));
                     Debug.WriteLine("Done!");
                 }),
+
                 new MenuItem("Add dummy server2",(s,a)=>{
                     setting.ImportLinks(resData("DummyServ2"));
+                    Debug.WriteLine("Done!");
+                }),
+
+                new MenuItem("Show Form in background",(s,a)=>{
+
                     Debug.WriteLine("Done!");
                 }),
             });
@@ -119,17 +131,6 @@ namespace V2RayGCon.Service
             ni.BalloonTipTitle = I18N("AppName");
             ni.ContextMenu = CreateMenu();
             ni.Visible = true;
-
-#if !DEBUG
-            ni.MouseClick += (s, a) =>
-            {
-                if (a.Button == MouseButtons.Left)
-                {
-                    Views.FormMain.GetForm();
-                }
-            };
-#endif
-
         }
 
         void DownloadCore(bool win64 = false)
@@ -148,11 +149,9 @@ namespace V2RayGCon.Service
             downloader.OnDownloadCompleted += (dls, dla) =>
             {
                 string msg = I18N("DLComplete");
-
                 try
                 {
                     Lib.Utils.ZipFileDecompress(coreName);
-                    // System.IO.File.Delete(coreName);
                 }
                 catch
                 {
@@ -175,22 +174,27 @@ namespace V2RayGCon.Service
                 new MenuItem(I18N("ShowLogWin"),(s,a)=>Views.FormLog.GetForm()),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
-                    Lib.QRCode.QRCode.ScanQRCode(
+                    void Success(string link)
+                    {
+                        var msg=Lib.Utils.CutStr(link,48);
+                        setting.SendLog("QRCode: " + msg);
 
-                        // success
-                        (link)=>{
-                            var msg=Lib.Utils.CutStr(link,48);
-                            setting.SendLog(I18N("AddServer")+": "+msg);
+                        if (setting.ImportLinks(link))
+                        {
+                            MessageBox.Show(I18N("ImportLinkSuccess"));
+                        }
+                        else
+                        {
+                            MessageBox.Show(I18N("NotSupportLinkType"));
+                        }
+                    }
 
-                            if (!setting.ImportLinks(link))
-                            {
-                                MessageBox.Show(I18N("NotSupportLinkType"));
-                            }
-                        },
+                    void Fail()
+                    {
+                        MessageBox.Show(I18N("NoQRCode"));
+                    }
 
-                        // fail
-                        ()=>MessageBox.Show(I18N("NoQRCode"))
-                        );
+                    Lib.QRCode.QRCode.ScanQRCode(Success,Fail);
                 }),
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
@@ -232,13 +236,18 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("Exit"),(s,a)=>{
                     if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){
-                        ni.Visible = false;
-                        Lib.ProxySetter.setProxy("",false);
-                        core.StopCore();
                         Application.Exit();
                     }
                 })
             });
+        }
+
+        private void Cleanup()
+        {
+            Debug.WriteLine("Call cleanup");
+            ni.Visible = false;
+            core.StopCore();
+            Lib.ProxySetter.setProxy("", false);
         }
     }
 }
