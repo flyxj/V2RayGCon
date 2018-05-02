@@ -8,6 +8,8 @@ namespace V2RayGCon.Controller.Configer
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
+        #region properties
+
         private string _port;
 
         public string port
@@ -50,7 +52,9 @@ namespace V2RayGCon.Controller.Configer
             get { return _OTA; }
             set { SetField(ref _OTA, value); }
         }
+        #endregion
 
+        #region public method
         public void SetMethod(string selectedMethod)
         {
             method = Lib.Utils.GetIndexIgnoreCase(
@@ -86,7 +90,7 @@ namespace V2RayGCon.Controller.Configer
         {
             port = Lib.Utils.GetValue<int>(config, "inbound", "port").ToString();
 
-            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
+            var GetStr = Lib.Utils.HelperGetStringByPrefixAndKey(config);
             var prefix = "inbound.settings";
 
             SetMethod(GetStr(prefix, "method"));
@@ -94,6 +98,6 @@ namespace V2RayGCon.Controller.Configer
             pass = GetStr(prefix, "password");
             OTA = Lib.Utils.GetValue<bool>(config, prefix, "ota");
         }
-
+        #endregion
     }
 }

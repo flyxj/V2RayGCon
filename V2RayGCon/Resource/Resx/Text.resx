@@ -296,4 +296,17 @@ Load new config?</value>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="Latest" xml:space="preserve">
+    <value>latest</value>
+  </data>
+  <data name="DLCurVerTpl" xml:space="preserve">
+    <value>No new version!
+Download v2ray-core {0}?</value>
+  </data>
+  <data name="DLNewVerTpl" xml:space="preserve">
+    <value>Download v2ray-core {0}?</value>
+  </data>
+  <data name="GetLatestVerFail" xml:space="preserve">
+    <value>Get latest version fail!</value>
+  </data>
 </root>

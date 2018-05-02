@@ -24,6 +24,14 @@ namespace V2RayGCon.Service
             setting.OnRequireCoreRestart += (s, a) => RestartCore();
         }
 
+        #region properties
+        public bool isRunning
+        {
+            get => _isRunning;
+        }
+        #endregion
+
+        #region private method
         void OverwriteInboundSettings(JObject config)
         {
             var type = setting.proxyType;
@@ -72,25 +80,6 @@ namespace V2RayGCon.Service
             JObject config = JObject.Parse(plainText);
             OverwriteInboundSettings(config);
             RestartCore(config.ToString());
-        }
-
-        public bool IsRunning()
-        {
-            return _isRunning;
-        }
-
-        public void RestartCore(string config)
-        {
-            StopCore();
-
-            if (File.Exists(resData("Executable")))
-            {
-                StartCore(config);
-            }
-            else
-            {
-                MessageBox.Show(I18N("ExeNotFound"));
-            }
         }
 
         void StartCore(string config)
@@ -143,6 +132,22 @@ namespace V2RayGCon.Service
             _isRunning = true;
             OnCoreStatChange?.Invoke(this, EventArgs.Empty);
         }
+        #endregion
+
+        #region public method
+        public void RestartCore(string config)
+        {
+            StopCore();
+
+            if (File.Exists(resData("Executable")))
+            {
+                StartCore(config);
+            }
+            else
+            {
+                MessageBox.Show(I18N("ExeNotFound"));
+            }
+        }
 
         public void StopCore()
         {
@@ -164,5 +169,6 @@ namespace V2RayGCon.Service
             _isRunning = false;
             OnCoreStatChange?.Invoke(this, EventArgs.Empty);
         }
+        #endregion
     }
 }

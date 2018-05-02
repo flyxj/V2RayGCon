@@ -18,11 +18,10 @@ namespace V2RayGCon.Views
 
         delegate void UpdateServerMenuDelegate();
 
-
-        public FormConfiger()
+        public FormConfiger(int serverIndex = -1)
         {
             setting = Service.Setting.Instance;
-            configer = new Controller.Configer.Configer();
+            configer = new Controller.Configer.Configer(serverIndex);
             formSearch = null;
 
             InitializeComponent();
@@ -32,7 +31,8 @@ namespace V2RayGCon.Views
             InitScintilla();
             InitDataBinding();
             UpdateServerMenu();
-            ToggleToolsPanel(setting.isConfigerShowToolsPanel);
+            SetTitle(configer.GetAlias());
+            ToggleToolsPanel(setting.isShowConfigureToolsPanel);
 
             cboxConfigSection.SelectedIndex = 0;
 
@@ -42,83 +42,11 @@ namespace V2RayGCon.Views
             };
 
             this.Show();
+
             setting.OnSettingChange += SettingChange;
-
-            SetTitle(configer.GetAlias());
         }
 
-        void ToggleToolsPanel(bool visible)
-        {
-            var margin = 4;
-            var formSize = this.ClientSize;
-            var editorSize = pnlEditor.Size;
-
-            pnlEditor.Visible = false;
-
-            if (visible)
-            {
-                showLeftPanelToolStripMenuItem.Checked = true;
-                hideLeftPanelToolStripMenuItem.Checked = false;
-                pnlTools.Visible = true;
-                pnlEditor.Left = pnlTools.Left + pnlTools.Width + margin;
-                editorSize.Width = formSize.Width - pnlTools.Width - margin * 3;
-            }
-            else
-            {
-                showLeftPanelToolStripMenuItem.Checked = false;
-                hideLeftPanelToolStripMenuItem.Checked = true;
-                pnlTools.Visible = false;
-                pnlEditor.Left = margin;
-                editorSize.Width = formSize.Width - margin * 2;
-            }
-
-            pnlEditor.Size = editorSize;
-            pnlEditor.Visible = true;
-            setting.isConfigerShowToolsPanel = visible;
-        }
-
-        void InitComboBox()
-        {
-
-            void Fill(ComboBox cbox, Dictionary<int, string> table)
-            {
-                cbox.Items.Clear();
-                foreach (var item in table)
-                {
-                    cbox.Items.Add(item.Value);
-                }
-                cbox.SelectedIndex = 0;
-            }
-
-            Fill(cboxConfigSection, Model.Data.Table.configSections);
-            Fill(cboxSSCMethod, Model.Data.Table.ssMethods);
-            Fill(cboxSSSMethod, Model.Data.Table.ssMethods);
-            Fill(cboxSSSNetwork, Model.Data.Table.ssNetworks);
-        }
-
-        void SettingChange(object sender, EventArgs args)
-        {
-            UpdateServerMenuDelegate updater =
-                new UpdateServerMenuDelegate(UpdateServerMenu);
-
-            try
-            {
-                mainMenu?.Invoke(updater);
-            }
-            catch { }
-        }
-
-        #region DataBinding
-        void InitDataBinding()
-        {
-            BindDataVmessClient();
-            BindDataSSClient();
-            BindDataStreamSettings();
-            BindDataEditor();
-            BindDataSSServer();
-            BindDataVmessServer();
-        }
-
+        #region data binding
         void BindDataEditor()
         {
             // bind scintilla
@@ -232,106 +160,7 @@ namespace V2RayGCon.Views
 
         #endregion
 
-        void InitScintilla()
-        {
-            scintilla = new Scintilla();
-            panelScintilla.Controls.Add(scintilla);
-
-            // scintilla.Dock = DockStyle.Fill;
-            scintilla.Dock = DockStyle.Fill;
-            scintilla.WrapMode = WrapMode.None;
-            scintilla.IndentationGuides = IndentView.LookBoth;
-
-            // Configure the JSON lexer styles
-            scintilla.Styles[Style.Default].Font = "Consolas";
-            scintilla.Styles[Style.Default].Size = 11;
-            scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
-            scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
-            scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
-            scintilla.Styles[Style.Json.Number].ForeColor = Color.Olive;
-            scintilla.Styles[Style.Json.PropertyName].ForeColor = Color.Blue;
-            scintilla.Styles[Style.Json.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
-            scintilla.Styles[Style.Json.StringEol].BackColor = Color.Pink;
-            scintilla.Styles[Style.Json.Operator].ForeColor = Color.Purple;
-            scintilla.Lexer = Lexer.Json;
-
-            // folding
-            // Instruct the lexer to calculate folding
-            scintilla.SetProperty("fold", "1");
-            scintilla.SetProperty("fold.compact", "1");
-
-            // Configure a margin to display folding symbols
-            scintilla.Margins[2].Type = MarginType.Symbol;
-            scintilla.Margins[2].Mask = Marker.MaskFolders;
-            scintilla.Margins[2].Sensitive = true;
-            scintilla.Margins[2].Width = 20;
-
-            // Set colors for all folding markers
-            for (int i = 25; i <= 31; i++)
-            {
-                scintilla.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                scintilla.Markers[i].SetBackColor(SystemColors.ControlDark);
-            }
-
-            // Configure folding markers with respective symbols
-            scintilla.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
-            scintilla.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
-            scintilla.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
-            scintilla.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
-            scintilla.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
-            scintilla.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
-            scintilla.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
-
-            // Enable automatic folding
-            scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
-
-            // key binding
-
-            // clear default keyboard shortcut
-            scintilla.ClearCmdKey(Keys.Control | Keys.P);
-            scintilla.ClearCmdKey(Keys.Control | Keys.S);
-            scintilla.ClearCmdKey(Keys.Control | Keys.F);
-        }
-
-        void UpdateServerMenu()
-        {
-            var menuRepalceServer = replaceExistServerToolStripMenuItem.DropDownItems;
-            var menuLoadServer = loadServerToolStripMenuItem.DropDownItems;
-
-            menuRepalceServer.Clear();
-            menuLoadServer.Clear();
-
-            var aliases = setting.GetAllAliases();
-
-            var enable = aliases.Count > 0;
-            replaceExistServerToolStripMenuItem.Enabled = enable;
-            loadServerToolStripMenuItem.Enabled = enable;
-
-            for (int i = 0; i < aliases.Count; i++)
-            {
-                var index = i;
-                menuRepalceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
-                {
-                    if (Lib.UI.Confirm(I18N("ReplaceServer")))
-                    {
-                        configer.ReplaceServer(index);
-                        SetTitle(configer.GetAlias());
-                    }
-                }));
-
-                menuLoadServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
-                {
-                    if (!Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
-                    {
-                        return;
-                    }
-                    configer.LoadServer(index);
-                    cboxConfigSection.SelectedIndex = 0;
-                    SetTitle(configer.GetAlias());
-                }));
-            }
-        }
-
+        #region UI event handler
 
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
@@ -416,7 +245,7 @@ namespace V2RayGCon.Views
 
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!configer.SectionChanged(cboxConfigSection.SelectedIndex))
+            if (!configer.OnSectionChanged(cboxConfigSection.SelectedIndex))
             {
                 cboxConfigSection.SelectedIndex = configer.preSection;
             }
@@ -425,29 +254,6 @@ namespace V2RayGCon.Views
                 // update examples
                 UpdateExampleDescriptions();
             }
-        }
-
-        void UpdateExampleDescriptions()
-        {
-            cboxExamples.Items.Clear();
-
-            cboxExamples.Items.Add(I18N("AvailableExamples"));
-            var descriptions = configer.GetExampleDescriptions();
-            if (descriptions.Count < 1)
-            {
-                cboxExamples.Enabled = false;
-                // cboxExamples.Visible = false;
-            }
-            else
-            {
-                cboxExamples.Enabled = true;
-                foreach (var description in descriptions)
-                {
-                    cboxExamples.Items.Add(description);
-                }
-            }
-            cboxExamples.SelectedIndex = 0;
-
         }
 
         private void showLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
@@ -465,21 +271,9 @@ namespace V2RayGCon.Views
             this.Close();
         }
 
-        void SetTitle(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                this.Text = formTitle;
-            }
-            else
-            {
-                this.Text = string.Format("{0} - {1}", formTitle, name);
-            }
-        }
-
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!configer.IsValid())
+            if (!configer.CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -487,7 +281,7 @@ namespace V2RayGCon.Views
             configer.SaveChanges();
             configer.UpdateData();
 
-            if (Lib.UI.DlgWriteFile(resData("ExtJson"),
+            if (Lib.UI.ShowSaveFileDialog(resData("ExtJson"),
                 configer.GetConfigFormated(),
                 out string filename))
             {
@@ -515,7 +309,7 @@ namespace V2RayGCon.Views
             {
                 return;
             }
-            string json = Lib.UI.DlgReadFile(resData("ExtJson"), out string filename);
+            string json = Lib.UI.ShowReadFileDialog(resData("ExtJson"), out string filename);
             if (configer.SetConfig(json))
             {
                 cboxConfigSection.SelectedIndex = 0;
@@ -538,20 +332,28 @@ namespace V2RayGCon.Views
             configer.LoadExample(cboxExamples.SelectedIndex - 1);
         }
 
+        private void searchBoxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSearchBox();
+        }
+
+        #endregion
+
+        #region bind hotkey
         protected override bool ProcessCmdKey(ref Message msg, Keys keyCode)
         {
             switch (keyCode)
             {
                 case (Keys.Control | Keys.P):
-                    var visible = !setting.isConfigerShowToolsPanel;
-                    setting.isConfigerShowToolsPanel = visible;
+                    var visible = !setting.isShowConfigureToolsPanel;
+                    setting.isShowConfigureToolsPanel = visible;
                     ToggleToolsPanel(visible);
                     break;
                 case (Keys.Control | Keys.F):
                     ShowSearchBox();
                     break;
                 case (Keys.Control | Keys.S):
-                    if (configer.IsValid())
+                    if (configer.CheckValid())
                     {
                         configer.SaveChanges();
                         configer.UpdateData();
@@ -564,13 +366,212 @@ namespace V2RayGCon.Views
             }
             return base.ProcessCmdKey(ref msg, keyCode);
         }
+        #endregion
 
-        private void searchBoxToolStripMenuItem_Click(object sender, EventArgs e)
+        #region init
+        void InitComboBox()
         {
-            ShowSearchBox();
+            void Fill(ComboBox cbox, Dictionary<int, string> table)
+            {
+                cbox.Items.Clear();
+                foreach (var item in table)
+                {
+                    cbox.Items.Add(item.Value);
+                }
+                cbox.SelectedIndex = 0;
+            }
+
+            Fill(cboxConfigSection, Model.Data.Table.configSections);
+            Fill(cboxSSCMethod, Model.Data.Table.ssMethods);
+            Fill(cboxSSSMethod, Model.Data.Table.ssMethods);
+            Fill(cboxSSSNetwork, Model.Data.Table.ssNetworks);
         }
 
-        private void ShowSearchBox()
+        void InitScintilla()
+        {
+            scintilla = new Scintilla();
+            panelScintilla.Controls.Add(scintilla);
+
+            // scintilla.Dock = DockStyle.Fill;
+            scintilla.Dock = DockStyle.Fill;
+            scintilla.WrapMode = WrapMode.None;
+            scintilla.IndentationGuides = IndentView.LookBoth;
+
+            // Configure the JSON lexer styles
+            scintilla.Styles[Style.Default].Font = "Consolas";
+            scintilla.Styles[Style.Default].Size = 11;
+            scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
+            scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla.Styles[Style.Json.Number].ForeColor = Color.Olive;
+            scintilla.Styles[Style.Json.PropertyName].ForeColor = Color.Blue;
+            scintilla.Styles[Style.Json.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
+            scintilla.Styles[Style.Json.StringEol].BackColor = Color.Pink;
+            scintilla.Styles[Style.Json.Operator].ForeColor = Color.Purple;
+            scintilla.Lexer = Lexer.Json;
+
+            // folding
+            // Instruct the lexer to calculate folding
+            scintilla.SetProperty("fold", "1");
+            scintilla.SetProperty("fold.compact", "1");
+
+            // Configure a margin to display folding symbols
+            scintilla.Margins[2].Type = MarginType.Symbol;
+            scintilla.Margins[2].Mask = Marker.MaskFolders;
+            scintilla.Margins[2].Sensitive = true;
+            scintilla.Margins[2].Width = 20;
+
+            // Set colors for all folding markers
+            for (int i = 25; i <= 31; i++)
+            {
+                scintilla.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                scintilla.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+
+            // Configure folding markers with respective symbols
+            scintilla.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            scintilla.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            scintilla.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            scintilla.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            scintilla.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            scintilla.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            scintilla.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+            // Enable automatic folding
+            scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
+
+            // key binding
+
+            // clear default keyboard shortcut
+            scintilla.ClearCmdKey(Keys.Control | Keys.P);
+            scintilla.ClearCmdKey(Keys.Control | Keys.S);
+            scintilla.ClearCmdKey(Keys.Control | Keys.F);
+        }
+
+        void InitDataBinding()
+        {
+            BindDataVmessClient();
+            BindDataSSClient();
+            BindDataStreamSettings();
+            BindDataEditor();
+            BindDataSSServer();
+            BindDataVmessServer();
+        }
+        #endregion
+
+        #region private method
+        void UpdateExampleDescriptions()
+        {
+            cboxExamples.Items.Clear();
+
+            cboxExamples.Items.Add(I18N("AvailableExamples"));
+            var descriptions = configer.GetExampleDescriptions();
+            if (descriptions.Count < 1)
+            {
+                cboxExamples.Enabled = false;
+                // cboxExamples.Visible = false;
+            }
+            else
+            {
+                cboxExamples.Enabled = true;
+                foreach (var description in descriptions)
+                {
+                    cboxExamples.Items.Add(description);
+                }
+            }
+            cboxExamples.SelectedIndex = 0;
+
+        }
+
+        void SetTitle(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                this.Text = formTitle;
+            }
+            else
+            {
+                this.Text = string.Format("{0} - {1}", formTitle, name);
+            }
+        }
+
+        void UpdateServerMenu()
+        {
+            var menuRepalceServer = replaceExistServerToolStripMenuItem.DropDownItems;
+            var menuLoadServer = loadServerToolStripMenuItem.DropDownItems;
+
+            menuRepalceServer.Clear();
+            menuLoadServer.Clear();
+
+            var aliases = setting.GetAllAliases();
+
+            var enable = aliases.Count > 0;
+            replaceExistServerToolStripMenuItem.Enabled = enable;
+            loadServerToolStripMenuItem.Enabled = enable;
+
+            for (int i = 0; i < aliases.Count; i++)
+            {
+                var index = i;
+                menuRepalceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                {
+                    if (Lib.UI.Confirm(I18N("ReplaceServer")))
+                    {
+                        configer.ReplaceServer(index);
+                        SetTitle(configer.GetAlias());
+                    }
+                }));
+
+                menuLoadServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                {
+                    if (Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+                    {
+                        configer.LoadServer(index);
+                        SetTitle(configer.GetAlias());
+                        cboxConfigSection.SelectedIndex = 0;
+                    }
+                }));
+            }
+        }
+
+        void ToggleToolsPanel(bool visible)
+        {
+            var margin = 4;
+            var formSize = this.ClientSize;
+            var editorSize = pnlEditor.Size;
+
+            pnlTools.Visible = visible;
+            pnlEditor.Visible = false;
+            if (visible)
+            {
+                pnlEditor.Left = pnlTools.Left + pnlTools.Width + margin;
+                editorSize.Width = formSize.Width - pnlTools.Width - margin * 3;
+            }
+            else
+            {
+                pnlEditor.Left = margin;
+                editorSize.Width = formSize.Width - margin * 2;
+            }
+            pnlEditor.Size = editorSize;
+            pnlEditor.Visible = true;
+
+            showLeftPanelToolStripMenuItem.Checked = visible;
+            hideLeftPanelToolStripMenuItem.Checked = !visible;
+            setting.isShowConfigureToolsPanel = visible;
+        }
+
+        void SettingChange(object sender, EventArgs args)
+        {
+            UpdateServerMenuDelegate updater =
+                new UpdateServerMenuDelegate(UpdateServerMenu);
+
+            try
+            {
+                mainMenu?.Invoke(updater);
+            }
+            catch { }
+        }
+
+        void ShowSearchBox()
         {
             if (formSearch != null)
             {
@@ -579,5 +580,6 @@ namespace V2RayGCon.Views
             formSearch = new FormSearch(scintilla);
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
+        #endregion
     }
 }

@@ -67,7 +67,7 @@ namespace V2RayGCon.Lib
             return key.Value<T>();
         }
 
-        public static Func<string, string, string> GetStringByPrefixAndKeyHelper(JObject json)
+        public static Func<string, string, string> HelperGetStringByPrefixAndKey(JObject json)
         {
             var o = json;
             return (prefix, key) =>
@@ -96,6 +96,18 @@ namespace V2RayGCon.Lib
 
         #region convert
 
+        public static List<string> ExtractLinks(string text, Model.Data.Enum.LinkTypes linkType)
+        {
+            string pattern = GenPattern(linkType);
+            var matches = Regex.Matches("\n" + text, pattern, RegexOptions.IgnoreCase);
+            var links = new List<string>();
+            foreach (Match match in matches)
+            {
+                links.Add(match.Value.Substring(1));
+            }
+            return links;
+        }
+
         public static string Vmess2VmessLink(Model.Data.Vmess vmess)
         {
             if (vmess == null)
@@ -104,7 +116,7 @@ namespace V2RayGCon.Lib
             }
 
             string content = JsonConvert.SerializeObject(vmess);
-            return LinkAddPrefix(
+            return AddLinkPrefix(
                 Base64Encode(content),
                 Model.Data.Enum.LinkTypes.vmess);
         }
@@ -183,7 +195,7 @@ namespace V2RayGCon.Lib
                 return null;
             }
 
-            var GetStr = GetStringByPrefixAndKeyHelper(json);
+            var GetStr = HelperGetStringByPrefixAndKey(json);
 
             vmess.ps = GetStr("v2raygcon", "alias");
 
@@ -275,6 +287,29 @@ namespace V2RayGCon.Lib
 
         #endregion
 
+        #region net
+
+        public static string GetLatestVersion()
+        {
+            var url = resData("LatestCoreLink");
+            var version = string.Empty;
+
+            SupportProtocolTLS12();
+            WebRequest request = WebRequest.Create(url);
+            try
+            {
+                using (var response = request.GetResponse())
+                {
+                    version = response.ResponseUri.Segments[5];
+                }
+            }
+            catch { }
+
+            return version;
+        }
+        #endregion
+
+
         #region Miscellaneous
 
         public static int Clamp(int value, int min, int max)
@@ -296,7 +331,12 @@ namespace V2RayGCon.Lib
 
         public static string CutStr(string s, int len)
         {
-            return s.Substring(0, Math.Min(s.Length, len));
+            if (len >= s.Length || len < 1)
+            {
+                return s;
+            }
+
+            return s.Substring(0, len) + " ...";
         }
 
         public static int Str2Int(string s)
@@ -334,9 +374,8 @@ namespace V2RayGCon.Lib
                resData("PatternBase64"));
         }
 
-        public static string LinkAddPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
+        public static string AddLinkPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
         {
-
             return GetLinkPrefix(linkType) + b64Content;
         }
 
@@ -360,14 +399,6 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region UI related
-        public static void SupportCtrlA(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.A && sender != null)
-            {
-                ((TextBox)sender).SelectAll();
-            }
-        }
-
         public static bool CopyToClipboard(string content)
         {
             try
@@ -400,7 +431,7 @@ namespace V2RayGCon.Lib
         }
         #endregion
 
-        #region prcess
+        #region process
         public static void KillProcessAndChildrens(int pid)
         {
             ManagementObjectSearcher processSearcher = new ManagementObjectSearcher

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
@@ -18,12 +17,8 @@ namespace V2RayGCon.Service
         public event EventHandler<Model.Data.DataEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
 
-        private int _curEditingIndex;
-
         Setting()
         {
-            _curEditingIndex = -1;
-
             LoadServers();
             SaveServers();
 
@@ -33,30 +28,7 @@ namespace V2RayGCon.Service
             servers.ListChanged += OnServerListChanged;
         }
 
-        public void SendLog(string log)
-        {
-            var arg = new Model.Data.DataEvent(log);
-            OnLog?.Invoke(this, arg);
-        }
-
-        public int curEditingIndex
-        {
-            get
-            {
-                return _curEditingIndex;
-            }
-            set
-            {
-                if (value >= 0 && value < GetServerCount())
-                {
-                    _curEditingIndex = value;
-                }
-                else
-                {
-                    _curEditingIndex = -1;
-                }
-            }
-        }
+        #region Properties
 
         public int GetCurServIndex()
         {
@@ -78,7 +50,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        public bool isConfigerShowToolsPanel
+        public bool isShowConfigureToolsPanel
         {
             get
             {
@@ -89,6 +61,59 @@ namespace V2RayGCon.Service
                 Properties.Settings.Default.CfgShowToolPanel = value;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        public int maxLogLines
+        {
+            get
+            {
+                int n = Properties.Settings.Default.MaxLogLine;
+                return Lib.Utils.Clamp(n, 10, 1000);
+            }
+            set
+            {
+                int n = Lib.Utils.Clamp(value, 10, 1000);
+                Properties.Settings.Default.MaxLogLine = n;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public string proxyAddr
+        {
+            get
+            {
+                string addr = Properties.Settings.Default.ProxyAddr;
+                Lib.Utils.TryParseIPAddr(addr, out string ip, out int port);
+                return string.Join(":", ip, port);
+            }
+            set
+            {
+                Properties.Settings.Default.ProxyAddr = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public int proxyType
+        {
+            get
+            {
+                var type = Properties.Settings.Default.ProxyType;
+                return Lib.Utils.Clamp(type, 0, 3);
+            }
+            set
+            {
+                Properties.Settings.Default.ProxyType = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        #endregion
+
+        #region public methods
+        public void SendLog(string log)
+        {
+            var arg = new Model.Data.DataEvent(log);
+            OnLog?.Invoke(this, arg);
         }
 
         public string GetCurAlias()
@@ -129,58 +154,13 @@ namespace V2RayGCon.Service
             return string.Empty;
         }
 
-        public int maxLogLines
-        {
-            get
-            {
-                int n = Properties.Settings.Default.MaxLogLine;
-                return Lib.Utils.Clamp(n, 10, 1000);
-            }
-            set
-            {
-                int n = Lib.Utils.Clamp(value, 10, 1000);
-                Properties.Settings.Default.MaxLogLine = n;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-
-        public string proxyAddr
-        {
-            get
-            {
-                string addr = Properties.Settings.Default.ProxyAddr;
-                Lib.Utils.TryParseIPAddr(addr, out string ip, out int port);
-                return string.Join(":", ip, port);
-            }
-            set
-            {
-                Properties.Settings.Default.ProxyAddr = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-
         public string GetPacUrl()
         {
-            // https://pac.txthinking.com/white/{SOCKS5}%20{127.0.0.1:1080}
+            // https://pac.txthinking.com/white/{SOCKS5}%20{127.0.0.1:1080} 
 
             var http = (int)Model.Data.Enum.ProxyTypes.http;
             string mode = proxyType == http ? "PROXY" : "SOCKS5";
             return string.Format(resData("PacUrlTpl"), mode, proxyAddr);
-        }
-
-        public int proxyType
-        {
-            get
-            {
-                var type = Properties.Settings.Default.ProxyType;
-                return Lib.Utils.Clamp(type, 0, 3);
-            }
-            set
-            {
-                Properties.Settings.Default.ProxyType = value;
-                Properties.Settings.Default.Save();
-            }
         }
 
         public int GetServerCount()
@@ -328,105 +308,6 @@ namespace V2RayGCon.Service
             return false;
         }
 
-        bool ImportSSLinks(string links, bool quiet = false)
-        {
-            var isAddNewServer = false;
-
-            string pattern = Lib.Utils.GenPattern(Model.Data.Enum.LinkTypes.ss);
-            var matches = Regex.Matches("\n" + links, pattern, RegexOptions.IgnoreCase);
-            foreach (Match match in matches)
-            {
-                string link = match.Value.Substring(1);
-                string config = Lib.Utils.SSLink2ConfigString(link);
-                if (string.IsNullOrEmpty(config))
-                {
-                    continue;
-                }
-                var msg = Lib.Utils.CutStr(link, 48) + " ...";
-                SendLog(I18N("AddServer") + ": " + msg);
-                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
-                {
-                    isAddNewServer = true;
-                }
-            }
-
-            if (!quiet && isAddNewServer)
-            {
-                servers.Notify();
-            }
-
-            return isAddNewServer;
-        }
-
-        bool ImportV2RayLinks(string links, bool quiet = false)
-        {
-            bool isAddNewServer = false;
-
-            string pattern = Lib.Utils.GenPattern(Model.Data.Enum.LinkTypes.v2ray);
-            var matches = Regex.Matches("\n" + links, pattern, RegexOptions.IgnoreCase);
-            foreach (Match match in matches)
-            {
-                try
-                {
-                    string link = match.Value.Substring(1);
-
-                    string b64Config = Lib.Utils.GetLinkBody(link);
-                    string config = Lib.Utils.Base64Decode(b64Config);
-                    if (JObject.Parse(config) != null)
-                    {
-                        var msg = Lib.Utils.CutStr(link, 48) + " ...";
-                        SendLog(I18N("AddServer") + ": " + msg);
-                        if (AddServer(b64Config, quiet))
-                        {
-                            isAddNewServer = true;
-                        }
-                    }
-                }
-                catch
-                {
-                    // skip if error occured
-                }
-            }
-
-            if (!quiet && isAddNewServer)
-            {
-                servers.Notify();
-            }
-
-            return isAddNewServer;
-        }
-
-        bool ImportVmessLinks(string links, bool quiet = false)
-        {
-            var isAddNewServer = false;
-
-            string pattern = Lib.Utils.GenPattern(Model.Data.Enum.LinkTypes.vmess);
-            var matches = Regex.Matches("\n" + links, pattern, RegexOptions.IgnoreCase);
-            foreach (Match match in matches)
-            {
-                string link = match.Value.Substring(1);
-                string config = Lib.Utils.VmessLink2ConfigString(link);
-                if (string.IsNullOrEmpty(config))
-                {
-                    continue;
-                }
-                var msg = Lib.Utils.CutStr(link, 48) + " ...";
-                SendLog(I18N("AddServer") + ": " + msg);
-
-                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
-                {
-                    isAddNewServer = true;
-                }
-            }
-
-            if (!quiet && isAddNewServer)
-            {
-                servers.Notify();
-            }
-
-            return isAddNewServer;
-        }
-
         public ReadOnlyCollection<string> GetAllAliases()
         {
             return aliases.AsReadOnly();
@@ -436,20 +317,18 @@ namespace V2RayGCon.Service
         {
             servers = new Model.Data.EventList<string>();
 
-            string rawData = Properties.Settings.Default.Servers;
-
             List<string> serverList = null;
             try
             {
-                serverList = JsonConvert.DeserializeObject<List<string>>(rawData);
+                serverList = JsonConvert.DeserializeObject<List<string>>(
+                    Properties.Settings.Default.Servers);
                 if (serverList == null)
                 {
                     return;
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.WriteLine("Read server list in settings fail: " + e);
                 return;
             }
 
@@ -458,9 +337,7 @@ namespace V2RayGCon.Service
             {
                 try
                 {
-                    var config = Lib.Utils.Base64Decode(serverList[i]);
-                    var obj = JObject.Parse(config);
-                    if (obj == null)
+                    if (JObject.Parse(Lib.Utils.Base64Decode(serverList[i])) == null)
                     {
                         serverList.RemoveAt(i);
                     }
@@ -474,64 +351,9 @@ namespace V2RayGCon.Service
             servers = new Model.Data.EventList<string>(serverList);
         }
 
-        public ReadOnlyCollection<string[]> GetAllServSummarys()
+        public ReadOnlyCollection<string[]> GetAllServerSummarys()
         {
             return servSummarys.AsReadOnly();
-        }
-
-        void OnServerListChanged()
-        {
-
-
-            aliases.Clear();
-            servSummarys.Clear();
-
-            for (int i = 0; i < servers.Count; i++)
-            {
-                try
-                {
-                    var configString = Lib.Utils.Base64Decode(servers[i]);
-                    var config = JObject.Parse(configString);
-
-                    var GetStr = Lib.Utils.GetStringByKeyHelper(config);
-
-                    var name = GetStr("v2raygcon.alias");
-
-                    var alias = string.IsNullOrEmpty(name) ?
-                        I18N("Empty") :
-                        Lib.Utils.CutStr(name, 20);
-
-                    aliases.Add(string.Join(".", i + 1, alias));
-
-                    var protocol = GetStr("outbound.protocol");
-                    var keys = Model.Data.Table.servInfoKeys["shadowsocks"];
-                    if (protocol.Equals("vmess"))
-                    {
-                        keys = Model.Data.Table.servInfoKeys["vmess"];
-                    }
-
-                    var summary = new string[6];
-
-                    for (int j = 0; j < 6; j++)
-                    {
-                        summary[j] = GetStr(keys[j]);
-                    }
-                    servSummarys.Add(new string[] {
-                        (i+1).ToString(),
-                        alias,
-                        protocol,
-                        summary[0],  // ip
-                        summary[1],  // port
-                        string.Empty, // selected
-                        summary[3],  // path
-                        summary[4],  // streamType
-                        summary[2],  // tls/enc
-                        summary[5],  // type /disguise
-                    });
-                }
-                catch { }
-
-            }
         }
 
         public ReadOnlyCollection<string> GetAllServers()
@@ -555,7 +377,6 @@ namespace V2RayGCon.Service
         {
             if (servers.IndexOf(b64ConfigString) >= 0)
             {
-                // Debug.WriteLine("Duplicate server, skip!");
                 SendLog(I18N("DuplicateServer") + "\r\n");
                 return false;
             }
@@ -584,22 +405,178 @@ namespace V2RayGCon.Service
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
-        public bool ReplaceServer(string b64ConfigString, int replaceIndex)
+        public bool ReplaceServer(string b64ConfigString, int index)
         {
-            if (replaceIndex < 0 || replaceIndex >= GetServerCount())
+            if (index < 0 || index >= GetServerCount())
             {
                 return AddServer(b64ConfigString);
             }
 
-            servers[replaceIndex] = b64ConfigString;
+            servers[index] = b64ConfigString;
             SaveServers();
 
-            if (replaceIndex == _curServIndex)
+            if (index == _curServIndex)
             {
                 OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
             }
             OnSettingChange?.Invoke(this, EventArgs.Empty);
             return true;
+        }
+
+        #endregion
+
+        #region private method
+
+        bool ImportSSLinks(string text, bool quiet = false)
+        {
+            var isAddNewServer = false;
+            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.ss);
+
+            foreach (var link in links)
+            {
+                string config = Lib.Utils.SSLink2ConfigString(link);
+                if (string.IsNullOrEmpty(config))
+                {
+                    continue;
+                }
+                var msg = Lib.Utils.CutStr(link, 90);
+                SendLog(I18N("AddServer") + ": " + msg);
+                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
+                {
+                    isAddNewServer = true;
+                }
+            }
+
+            if (!quiet && isAddNewServer)
+            {
+                servers.Notify();
+            }
+
+            return isAddNewServer;
+        }
+
+        bool ImportV2RayLinks(string text, bool quiet = false)
+        {
+            bool isAddNewServer = false;
+            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.v2ray);
+
+            foreach (var link in links)
+            {
+                try
+                {
+                    string b64Config = Lib.Utils.GetLinkBody(link);
+                    string config = Lib.Utils.Base64Decode(b64Config);
+                    if (JObject.Parse(config) != null)
+                    {
+                        var msg = Lib.Utils.CutStr(link, 90);
+                        SendLog(I18N("AddServer") + ": " + msg);
+                        if (AddServer(b64Config, quiet))
+                        {
+                            isAddNewServer = true;
+                        }
+                    }
+                }
+                catch
+                {
+                    // skip if error occured
+                }
+            }
+
+            if (!quiet && isAddNewServer)
+            {
+                servers.Notify();
+            }
+
+            return isAddNewServer;
+        }
+
+        bool ImportVmessLinks(string text, bool quiet = false)
+        {
+            var isAddNewServer = false;
+            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.vmess);
+
+            foreach (var link in links)
+            {
+                string config = Lib.Utils.VmessLink2ConfigString(link);
+                if (string.IsNullOrEmpty(config))
+                {
+                    continue;
+                }
+                var msg = Lib.Utils.CutStr(link, 90);
+                SendLog(I18N("AddServer") + ": " + msg);
+
+                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
+                {
+                    isAddNewServer = true;
+                }
+            }
+
+            if (!quiet && isAddNewServer)
+            {
+                servers.Notify();
+            }
+
+            return isAddNewServer;
+        }
+
+        string GetAliasFromConfig(JObject config)
+        {
+            var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
+
+            return
+                string.IsNullOrEmpty(name) ?
+                I18N("Empty") :
+                Lib.Utils.CutStr(name, 20);
+        }
+
+        string[] GetSummaryFromConfig(JObject config)
+        {
+            var GetStr = Lib.Utils.GetStringByKeyHelper(config);
+
+            var protocol = GetStr("outbound.protocol");
+
+            var keys = Model.Data.Table.servInfoKeys["shadowsocks"];
+            if (protocol.Equals("vmess"))
+            {
+                keys = Model.Data.Table.servInfoKeys["vmess"];
+            }
+
+            return new string[] {
+                string.Empty,     // reserve no.
+                string.Empty,     // reserve alias
+                protocol,
+                GetStr(keys[0]),  // ip
+                GetStr(keys[1]),  // port
+                string.Empty,     // reserve selected
+                GetStr(keys[3]),  // path
+                GetStr(keys[4]),  // streamType
+                GetStr(keys[2]),  // tls/enc
+                GetStr(keys[5]),  // type /disguise
+            };
+        }
+
+        void OnServerListChanged()
+        {
+            aliases.Clear();
+            servSummarys.Clear();
+
+            for (int i = 0; i < servers.Count; i++)
+            {
+                try
+                {
+                    var configString = Lib.Utils.Base64Decode(servers[i]);
+                    var config = JObject.Parse(configString);
+
+                    var alias = GetAliasFromConfig(config);
+                    aliases.Add(string.Join(".", i + 1, alias));
+
+                    var summary = GetSummaryFromConfig(config);
+                    summary[0] = (i + 1).ToString();
+                    summary[1] = alias;
+                    servSummarys.Add(summary);
+                }
+                catch { }
+            }
         }
 
         void SaveServers()
@@ -608,5 +585,7 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Servers = json;
             Properties.Settings.Default.Save();
         }
+
+        #endregion
     }
 }

@@ -27,7 +27,6 @@ namespace V2RayGCon.Views
 
         FormMain()
         {
-
             setting = Service.Setting.Instance;
             core = Service.Core.Instance;
 
@@ -52,6 +51,7 @@ namespace V2RayGCon.Views
             core.OnCoreStatChange += SettingChangeHandler;
         }
 
+        #region private method
         void SettingChangeHandler(object s, EventArgs e)
         {
             UpdateElementDelegate updater =
@@ -111,34 +111,11 @@ namespace V2RayGCon.Views
             setting.ActivateServer(index);
         }
 
-        private void activateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ActivateServer();
-        }
-
-        private void deleteStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Lib.UI.Confirm(I18N("ConfirmDeleteServer")))
-            {
-                setting.DeleteServer(GetSelectedServerIndex());
-            }
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void deleteAllServerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            setting.DeleteAllServers();
-        }
-
         void UpdateUI()
         {
             // update list view
             lvServers.Items.Clear();
-            var servers = setting.GetAllServSummarys();
+            var servers = setting.GetAllServerSummarys();
             var curServIndex = setting.GetCurServIndex();
             var curServNum = (curServIndex + 1).ToString();
 
@@ -164,7 +141,7 @@ namespace V2RayGCon.Views
             sysProxyDirectToolStripMenuItem.Checked = !isSystemProxySet;
             sysProxyHttpToolStripMenuItem.Checked = isSystemProxySet;
 
-            var isCoreRunning = core.IsRunning();
+            var isCoreRunning = core.isRunning;
             activateToolStripMenuItem.Enabled = !isCoreRunning;
             stopToolStripMenuItem.Enabled = isCoreRunning;
 
@@ -175,6 +152,31 @@ namespace V2RayGCon.Views
             setting.proxyType = (int)type;
             ActivateServer();
             UpdateUI();
+        }
+        #endregion
+
+        #region UI event handler
+        private void activateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ActivateServer();
+        }
+
+        private void deleteStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Lib.UI.Confirm(I18N("ConfirmDeleteServer")))
+            {
+                setting.DeleteServer(GetSelectedServerIndex());
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void deleteAllServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setting.DeleteAllServers();
         }
 
         private void protocolHttpStripMenuItem_Click(object sender, EventArgs e)
@@ -207,9 +209,7 @@ namespace V2RayGCon.Views
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.curEditingIndex = GetSelectedServerIndex();
-            // Views.FormConfiger.GetForm();
-            new FormConfiger();
+            new FormConfiger(GetSelectedServerIndex());
         }
 
         private void activateToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -292,7 +292,7 @@ namespace V2RayGCon.Views
             var http = (int)Model.Data.Enum.ProxyTypes.http;
 
             Lib.ProxySetter.setProxy(setting.proxyAddr, true);
-            if (core.IsRunning() && setting.proxyType == http)
+            if (core.isRunning && setting.proxyType == http)
             {
                 UpdateUI();
             }
@@ -313,5 +313,6 @@ namespace V2RayGCon.Views
         {
             SwitchToProtocal(Model.Data.Enum.ProxyTypes.config);
         }
+        #endregion
     }
 }

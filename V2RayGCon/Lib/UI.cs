@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -9,11 +8,14 @@ namespace V2RayGCon.Lib
 {
     class UI
     {
-        public static bool DlgWriteFile(string extension, string content, out string fileName)
+        public static bool ShowSaveFileDialog(string extension, string content, out string fileName)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = extension;
-            saveFileDialog.Title = I18N("SaveAs");
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = extension,
+                Title = I18N("SaveAs"),
+            };
+
             saveFileDialog.ShowDialog();
 
             fileName = saveFileDialog.FileName;
@@ -31,41 +33,30 @@ namespace V2RayGCon.Lib
             return false;
         }
 
-        public static string DlgReadFile(string extension, out string fileName)
+        public static string ShowReadFileDialog(string extension, out string fileName)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            OpenFileDialog readFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Filter = extension,
+                RestoreDirectory = true,
+                CheckFileExists = true,
+                CheckPathExists = true,
+            };
 
-            dlg.InitialDirectory = "c:\\";
-            dlg.Filter = extension;
-            dlg.RestoreDirectory = true;
-            dlg.CheckFileExists = true;
-            dlg.CheckPathExists = true;
             fileName = string.Empty;
 
-            if (dlg.ShowDialog() == DialogResult.OK)
+            if (readFileDialog.ShowDialog() == DialogResult.OK)
             {
-                fileName = dlg.FileName;
+                fileName = readFileDialog.FileName;
                 try
                 {
-
                     return File.ReadAllText(fileName);
                 }
                 catch { }
             }
 
             return string.Empty;
-        }
-
-        public static void ShowMsgboxSuccFail(bool success, string msgSuccess, string msgFail)
-        {
-            if (success)
-            {
-                MessageBox.Show(msgSuccess);
-            }
-            else
-            {
-                MessageBox.Show(msgFail);
-            };
         }
 
         public static bool Confirm(string content)
@@ -105,68 +96,5 @@ namespace V2RayGCon.Lib
                     break;
             }
         }
-
-#if DEBUG
-        public static MenuItem FindSubMenuItemByText(MenuItem parent, string text)
-        {
-            for (int a = 0; a < parent.MenuItems.Count; a++)
-            {
-
-                MenuItem item = parent.MenuItems[a];
-                if (item != null)
-                {
-                    // Debug.WriteLine("FSM: " + a + " name:" +item.Text);
-                    if (item.Text == text)
-                    {
-                        return item;
-                    }
-                    else
-                    {
-                        // running reursively
-                        if (item.MenuItems.Count > 0)
-                        {
-                            item = FindSubMenuItemByText(item, text);
-                            if (item != null)
-                            {
-                                return item;
-                            }
-                        }
-                    }
-                }
-            }
-            // nothing found
-            return null;
-        }
-
-        public static MenuItem FindMenuItemByText(ContextMenu parent, string text)
-        {
-            for (int a = 0; a < parent.MenuItems.Count; a++)
-            {
-                MenuItem item = parent.MenuItems[a];
-                // Debug.WriteLine("FM: " + a + " name:" + item.Text);
-                if (item != null)
-                {
-                    if (item.Text == text)
-                    {
-                        return item;
-                    }
-                    else
-                    {
-                        // running reursively
-                        if (item.MenuItems.Count > 0)
-                        {
-                            item = FindSubMenuItemByText(item, text);
-                            if (item != null)
-                            {
-                                return item;
-                            }
-                        }
-                    }
-                }
-            }
-            // nothing found
-            return null;
-        }
-#endif
     }
 }

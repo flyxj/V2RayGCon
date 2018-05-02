@@ -9,6 +9,7 @@ namespace V2RayGCon.Controller.Configer
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
+        #region properties
         private string _addr;
         private string _ip;
         private int _port;
@@ -46,7 +47,9 @@ namespace V2RayGCon.Controller.Configer
             get { return _OTA; }
             set { SetField(ref _OTA, value); }
         }
+        #endregion
 
+        #region public method
         public void SetMethod(string selectedMethod)
         {
             method = Lib.Utils.GetIndexIgnoreCase(Model.Data.Table.ssMethods, selectedMethod);
@@ -77,5 +80,6 @@ namespace V2RayGCon.Controller.Configer
             OTA = Lib.Utils.GetValue<bool>(config, prefix, "ota");
             SetMethod(Lib.Utils.GetValue<string>(config, prefix, "method"));
         }
+        #endregion
     }
 }

@@ -9,6 +9,7 @@ namespace V2RayGCon.Controller.Configer
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
+        #region properties
         private string _ID;
 
         public string ID
@@ -44,7 +45,9 @@ namespace V2RayGCon.Controller.Configer
                 SetField(ref _port, value);
             }
         }
+        #endregion
 
+        #region public method
         public JToken GetSettings()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
@@ -68,5 +71,6 @@ namespace V2RayGCon.Controller.Configer
             altID = Lib.Utils.GetValue<int>(config, prefix, "alterId").ToString();
 
         }
+        #endregion
     }
 }

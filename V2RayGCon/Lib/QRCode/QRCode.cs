@@ -55,27 +55,28 @@ namespace V2RayGCon.Lib.QRCode
         }
 
         // 默认以屏幕高宽 约（划重点）1/5为移动单位，生成一系列边长为3/5的正方形扫描窗口
-        public static List<Rectangle[]> GenSquareScanWinList(Point srcSize, int parts = 5, int scanSize = 3)
+        public static List<Rectangle[]> GenSquareScanWinList(Point screenSize, int parts = 5, int scanSize = 3)
         {
             // center x/y adjustment x/y
             int unit, cx, cy, ax, ay, size;
 
             // 注意屏幕可能是竖着的
-            unit = Math.Min(srcSize.X, srcSize.Y) / parts;
-            ax = (srcSize.X % unit) / (srcSize.X / unit - scanSize); //这就是为什么上面说约1/5
-            ay = (srcSize.Y % unit) / (srcSize.Y / unit - scanSize);
-            cx = srcSize.X / 2;
-            cy = srcSize.Y / 2;
+            unit = Math.Min(screenSize.X, screenSize.Y) / parts;
+            ax = (screenSize.X % unit) / (screenSize.X / unit - scanSize); //这就是为什么上面说约1/5
+            ay = (screenSize.Y % unit) / (screenSize.Y / unit - scanSize);
+            cx = screenSize.X / 2;
+            cy = screenSize.Y / 2;
             size = scanSize * unit;
 
             // 注意最后一个窗口并非和屏幕对齐,但影响不大
-            int sx, sy; // start pose x/y
+            // start position x/y
+            int sx, sy;
 
             var screenWinList = new List<Rectangle>();
-            for (var row = 0; row <= srcSize.Y / unit - scanSize; row++)
+            for (var row = 0; row <= screenSize.Y / unit - scanSize; row++)
             {
                 sy = row * (unit + ay);
-                for (var file = 0; file <= srcSize.X / unit - scanSize; file++)
+                for (var file = 0; file <= screenSize.X / unit - scanSize; file++)
                 {
                     sx = file * (unit + ax);
                     screenWinList.Add(new Rectangle(sx, sy, size, size));
@@ -96,7 +97,7 @@ namespace V2RayGCon.Lib.QRCode
             return scanList;
         }
 
-        public static List<Rectangle[]> GenZoomScanWinList(Point srcSize, int factor = 5)
+        public static List<Rectangle[]> GenZoomScanWinList(Point screenSize, int factor = 5)
         {
             List<Rectangle[]> scanList = new List<Rectangle[]>();
 
@@ -104,10 +105,26 @@ namespace V2RayGCon.Lib.QRCode
             {
                 var shrink = 2.8 - Math.Pow(1.0 + 1.0 / i, i);
                 scanList.Add(new Rectangle[] {
-                    new Rectangle(0,0,(int)(srcSize.X*shrink),(int)(srcSize.Y*shrink)),
-                    new Rectangle(0,0,srcSize.X,srcSize.Y)                    });
+                    new Rectangle(0,0,(int)(screenSize.X*shrink),(int)(screenSize.Y*shrink)),
+                    new Rectangle(0,0,screenSize.X,screenSize.Y)                    });
             }
             return scanList;
+        }
+
+        static void ShowResult(Result result, Point screenLocation, Rectangle winRect, Rectangle screenRect, Action<string> success)
+        {
+            var link = result.Text;
+            Debug.WriteLine("Read: " + Lib.Utils.CutStr(link, 32));
+
+            var qrcodeRect = GetQRCodeRect(result, winRect, screenRect);
+
+            var formRect = new Rectangle(
+                screenLocation.X + screenRect.Location.X,
+                screenLocation.Y + screenRect.Location.Y,
+                screenRect.Width,
+                screenRect.Height);
+
+            ShowSplashForm(formRect, qrcodeRect, () => success(link));
         }
 
         static bool ScanScreen(Screen screen, List<Rectangle[]> scanRectList, Action<string> success)
@@ -128,38 +145,16 @@ namespace V2RayGCon.Lib.QRCode
 
                 for (int i = 0; i < scanRectList.Count; i++)
                 {
-                    // winrect scanRectList[i][0], screenrect scanRectList[i][1]
                     var winRect = scanRectList[i][0];
                     var screenRect = scanRectList[i][1];
 
-                    var result = ScanWindow(screenshot, winRect, screenRect);
-
-                    if (result == null)
+                    if (ScanWindow(screenshot, screen.Bounds.Location, winRect, screenRect, success))
                     {
-                        continue;
+                        Debug.WriteLine("Screen {0}: {1}", i, screenRect);
+                        Debug.WriteLine("Window {0}: {1}", i, winRect);
+
+                        return true;
                     }
-
-                    var link = result.Text;
-
-                    Debug.WriteLine("Screen {0}: {1}", i, screenRect);
-                    Debug.WriteLine("Window {0}: {1}", i, winRect);
-                    Debug.WriteLine("Read: " + Lib.Utils.CutStr(link, 32));
-
-                    var qrcodeRect = GetQRCodeRect(result, winRect, screenRect);
-
-                    void Done()
-                    {
-                        success(link);
-                    }
-
-                    var formRect = new Rectangle(
-                        screen.Bounds.Location.X + screenRect.Location.X,
-                        screen.Bounds.Location.Y + screenRect.Location.Y,
-                        screenRect.Width,
-                        screenRect.Height);
-
-                    ShowSplashForm(formRect, qrcodeRect, Done);
-                    return true;
                 }
             }
 
@@ -243,8 +238,9 @@ namespace V2RayGCon.Lib.QRCode
             task.Start();
         }
 
-        static Result ScanWindow(Bitmap screenshot, Rectangle winRect, Rectangle screenRect)
+        static bool ScanWindow(Bitmap screenshot, Point screenLocation, Rectangle winRect, Rectangle screenRect, Action<string> success)
         {
+            Result result;
             using (Bitmap window = new Bitmap(winRect.Width, winRect.Height))
             {
                 using (Graphics g = Graphics.FromImage(window))
@@ -258,8 +254,16 @@ namespace V2RayGCon.Lib.QRCode
 
                 QRCodeReader reader = new QRCodeReader();
 
-                return reader.decode(binBMP);
+                result = reader.decode(binBMP);
             }
+
+            if (result == null)
+            {
+                return false;
+            }
+
+            ShowResult(result, screenLocation, winRect, screenRect, success);
+            return true;
         }
     }
 }

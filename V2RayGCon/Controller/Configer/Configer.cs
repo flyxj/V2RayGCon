@@ -20,7 +20,7 @@ namespace V2RayGCon.Controller.Configer
         public int preSection;
         Dictionary<int, string> sections;
 
-        public Configer()
+        public Configer(int serverIndex = -1)
         {
             setting = Service.Setting.Instance;
             ssServer = new SSServer();
@@ -34,11 +34,13 @@ namespace V2RayGCon.Controller.Configer
             sections = Model.Data.Table.configSections;
             preSection = 0;
 
-            LoadConfig();
+            LoadConfig(serverIndex);
             editor.content = config.ToString();
             UpdateData();
 
         }
+
+        #region public method
 
         public void StreamSettingsIsServerChange(bool isServer)
         {
@@ -99,7 +101,7 @@ namespace V2RayGCon.Controller.Configer
             return list;
         }
 
-        public bool SectionChanged(int curSection)
+        public bool OnSectionChanged(int curSection)
         {
             if (curSection == preSection)
             {
@@ -107,7 +109,7 @@ namespace V2RayGCon.Controller.Configer
                 return true;
             }
 
-            if (IsValid())
+            if (CheckValid())
             {
                 SaveChanges();
                 preSection = curSection;
@@ -150,7 +152,7 @@ namespace V2RayGCon.Controller.Configer
             return true;
         }
 
-        public bool IsValid()
+        public bool CheckValid()
         {
             try
             {
@@ -187,7 +189,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void ReplaceServer(int serverIndex)
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 if (!Lib.UI.Confirm(I18N("EditorDiscardChange")))
                 {
@@ -249,7 +251,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertKCP()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -274,7 +276,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertWS()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -298,7 +300,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void AddNewServer()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 if (!Lib.UI.Confirm(I18N("EditorDiscardChange")))
                 {
@@ -316,7 +318,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertTCP()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -341,7 +343,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertSSClient()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -355,7 +357,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertVmessClient()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -369,7 +371,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertVmessServer()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -387,7 +389,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertSSServer()
         {
-            if (!IsValid())
+            if (!CheckValid())
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
                 return;
@@ -406,26 +408,6 @@ namespace V2RayGCon.Controller.Configer
         public string GetConfigFormated()
         {
             return config.ToString(Newtonsoft.Json.Formatting.Indented);
-        }
-
-        void InsertOutBoundSetting(JToken settings, string protocol)
-        {
-            try
-            {
-                config["outbound"]["settings"] = settings;
-            }
-            catch { }
-            try
-            {
-                config["outbound"]["protocol"] = protocol;
-            }
-            catch { }
-            try
-            {
-                config["outbound"]["tag"] = "agentout";
-            }
-            catch { }
-
         }
 
         public bool SetConfig(string json)
@@ -457,10 +439,32 @@ namespace V2RayGCon.Controller.Configer
             UpdateData();
             ShowSection();
         }
+        #endregion
+
+        #region private method
+        void InsertOutBoundSetting(JToken settings, string protocol)
+        {
+            try
+            {
+                config["outbound"]["settings"] = settings;
+            }
+            catch { }
+            try
+            {
+                config["outbound"]["protocol"] = protocol;
+            }
+            catch { }
+            try
+            {
+                config["outbound"]["tag"] = "agentout";
+            }
+            catch { }
+
+        }
 
         void LoadConfig(int index = -1)
         {
-            var serverIndex = index < 0 ? setting.curEditingIndex : index;
+            var serverIndex = index < 0 ? 0 : index;
 
             JObject o = null;
             string b64Config = setting.GetServer(serverIndex);
@@ -478,5 +482,6 @@ namespace V2RayGCon.Controller.Configer
 
             config = o;
         }
+        #endregion
     }
 }

@@ -242,6 +242,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 No new version!
+        ///Download v2ray-core {0}? 的本地化字符串。
+        /// </summary>
+        internal static string DLCurVerTpl {
+            get {
+                return ResourceManager.GetString("DLCurVerTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Download fail!
         ///You can download manually from the link below.
         ///https://github.com/v2ray/v2ray-core 的本地化字符串。
@@ -249,6 +259,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string DLFail {
             get {
                 return ResourceManager.GetString("DLFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download v2ray-core {0}? 的本地化字符串。
+        /// </summary>
+        internal static string DLNewVerTpl {
+            get {
+                return ResourceManager.GetString("DLNewVerTpl", resourceCulture);
             }
         }
         
@@ -380,6 +399,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Get latest version fail! 的本地化字符串。
+        /// </summary>
+        internal static string GetLatestVerFail {
+            get {
+                return ResourceManager.GetString("GetLatestVerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Import links from clipboard 的本地化字符串。
         /// </summary>
         internal static string ImportLink {
@@ -403,6 +431,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ImportLinkSuccess {
             get {
                 return ResourceManager.GetString("ImportLinkSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 latest 的本地化字符串。
+        /// </summary>
+        internal static string Latest {
+            get {
+                return ResourceManager.GetString("Latest", resourceCulture);
             }
         }
         

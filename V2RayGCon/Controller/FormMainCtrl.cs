@@ -1,4 +1,5 @@
-﻿using static V2RayGCon.Lib.StringResource;
+﻿using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller
 {
@@ -18,12 +19,12 @@ namespace V2RayGCon.Controller
 
             if (!string.IsNullOrEmpty(server))
             {
-                v2rayLink = Lib.Utils.LinkAddPrefix(server, Model.Data.Enum.LinkTypes.v2ray);
+                v2rayLink = Lib.Utils.AddLinkPrefix(server, Model.Data.Enum.LinkTypes.v2ray);
             }
 
-            Lib.UI.ShowMsgboxSuccFail(
-                Lib.Utils.CopyToClipboard(v2rayLink),
-                I18N("LinksCopied"),
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(v2rayLink) ?
+                I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
 
@@ -39,9 +40,9 @@ namespace V2RayGCon.Controller
                 vmessLink = Lib.Utils.Vmess2VmessLink(vmess);
             }
 
-            Lib.UI.ShowMsgboxSuccFail(
-                Lib.Utils.CopyToClipboard(vmessLink),
-                I18N("LinksCopied"),
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(vmessLink) ?
+                I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
 
@@ -49,9 +50,9 @@ namespace V2RayGCon.Controller
         {
             string links = Lib.Utils.GetClipboardText();
 
-            Lib.UI.ShowMsgboxSuccFail(
-                setting.ImportLinks(links),
-                I18N("ImportLinkSuccess"),
+            MessageBox.Show(
+                setting.ImportLinks(links) ?
+                I18N("ImportLinkSuccess") :
                 I18N("ImportLinkFail"));
         }
 
@@ -65,9 +66,9 @@ namespace V2RayGCon.Controller
                 s += "v2ray://" + server + "\r\n";
             }
 
-            Lib.UI.ShowMsgboxSuccFail(
-                Lib.Utils.CopyToClipboard(s),
-                I18N("LinksCopied"),
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(s) ?
+                I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
 
@@ -88,9 +89,9 @@ namespace V2RayGCon.Controller
                 }
             }
 
-            Lib.UI.ShowMsgboxSuccFail(
-                Lib.Utils.CopyToClipboard(s),
-                I18N("LinksCopied"),
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(s) ?
+                I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
     }

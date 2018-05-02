@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -9,7 +10,7 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Core core;
         Setting setting;
-        Download downloader = null;
+        Downloader downloader = null;
 
         Notifier()
         {
@@ -60,8 +61,7 @@ namespace V2RayGCon.Service
 
             if (debug_form_config)
             {
-                setting.curEditingIndex = 0;
-                new Views.FormConfiger();
+                new Views.FormConfiger(0);
             }
             else
             {
@@ -103,6 +103,7 @@ namespace V2RayGCon.Service
 #endif
         #endregion
 
+        #region private method
         void UpdateNotifyText()
         {
             var type = setting.proxyType;
@@ -120,7 +121,7 @@ namespace V2RayGCon.Service
 
             var title = string.Format("{0} {1}", setting.GetCurAlias(), proxy);
 
-            ni.Text = core.IsRunning() ? title : I18N("Description");
+            ni.Text = core.isRunning ? title : I18N("Description");
         }
 
         void CreateNotifyIcon()
@@ -133,7 +134,33 @@ namespace V2RayGCon.Service
             ni.Visible = true;
         }
 
-        void DownloadCore(bool win64 = false)
+        bool CheckVersion(string version)
+        {
+            if (string.IsNullOrEmpty(version))
+            {
+                MessageBox.Show(I18N("GetLatestVerFail"));
+                return false;
+            }
+
+            if (version.Equals(resData("Version")))
+            {
+                if (!Lib.UI.Confirm(string.Format(I18N("DLCurVerTpl"), version)))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!Lib.UI.Confirm(string.Format(I18N("DLNewVerTpl"), version)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        void DownloadCore(bool latest, bool win64)
         {
             if (downloader != null)
             {
@@ -141,26 +168,26 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            string coreName = win64 ? resData("PkgWin64") : resData("PkgWin32");
+            var version = resData("Version");
 
-            downloader = new Download();
-            downloader.SetPackageName(coreName);
 
-            downloader.OnDownloadCompleted += (dls, dla) =>
+            if (latest)
             {
-                string msg = I18N("DLComplete");
-                try
+                var latestVersion = Lib.Utils.GetLatestVersion();
+                if (!CheckVersion(latestVersion))
                 {
-                    Lib.Utils.ZipFileDecompress(coreName);
+                    return;
                 }
-                catch
-                {
-                    msg = I18N("DLFail");
-                }
+                version = latestVersion;
+            }
 
-                downloader = null;
-                MessageBox.Show(msg);
-            };
+            downloader = new Downloader();
+            downloader.SelectArchitecture(win64);
+            downloader.SetVersion(version);
+
+            string packageName = downloader.GetPackageName();
+
+            downloader.OnDownloadCompleted += (s, a) => UpdateCore(packageName);
 
             downloader.GetV2RayCore();
         }
@@ -176,17 +203,12 @@ namespace V2RayGCon.Service
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
                     void Success(string link)
                     {
-                        var msg=Lib.Utils.CutStr(link,48);
-                        setting.SendLog("QRCode: " + msg);
-
-                        if (setting.ImportLinks(link))
-                        {
-                            MessageBox.Show(I18N("ImportLinkSuccess"));
-                        }
-                        else
-                        {
-                            MessageBox.Show(I18N("NotSupportLinkType"));
-                        }
+                        var msg=Lib.Utils.CutStr(link,90);
+                        setting.SendLog($"QRCode: {msg}");
+                        MessageBox.Show(
+                            setting.ImportLinks(link)?
+                            I18N("ImportLinkSuccess"):
+                            I18N("NotSupportLinkType"));
                     }
 
                     void Fail()
@@ -199,9 +221,9 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
-                    Lib.UI.ShowMsgboxSuccFail(
-                        setting.ImportLinks(links),
-                        I18N("ImportLinkSuccess"),
+                    MessageBox.Show(
+                        setting.ImportLinks(links)?
+                        I18N("ImportLinkSuccess"):
                         I18N("ImportLinkFail"));
 
                 }),
@@ -220,19 +242,34 @@ namespace V2RayGCon.Service
                 }),
 
                 new MenuItem(I18N("DLv2rayCore"),new MenuItem[]{
+
+                    GenComment(I18N("Latest")),
+
                     new MenuItem(I18N("Win32"),(s,a)=>{
-                        DownloadCore(false);
+                        Task.Factory.StartNew(()=> DownloadCore(true,false));
                     }),
+
                     new MenuItem(I18N("Win64"),(s,a)=>{
-                        DownloadCore(true);
+                        Task.Factory.StartNew(()=> DownloadCore(true,true));
+                    }),
+
+                    new MenuItem("-"),
+
+                    GenComment(resData("Version")),
+
+                    new MenuItem(I18N("Win32"),(s,a)=>{
+                        Task.Factory.StartNew(()=> DownloadCore(false,false));
+                    }),
+
+                    new MenuItem(I18N("Win64"),(s,a)=>{
+                        Task.Factory.StartNew(()=> DownloadCore(false,true));
                     }),
                 }),
 
                 new MenuItem("-"),
 
                 new MenuItem(I18N("About"),(s,a)=>MessageBox.Show(
-                    Properties.Resources.ProjectLink
-                    )),
+                    Properties.Resources.ProjectLink)),
 
                 new MenuItem(I18N("Exit"),(s,a)=>{
                     if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){
@@ -242,12 +279,45 @@ namespace V2RayGCon.Service
             });
         }
 
-        private void Cleanup()
+        MenuItem GenComment(string comment)
+        {
+            var item = new MenuItem(comment);
+            item.Enabled = false;
+            return item;
+        }
+
+        void UpdateCore(string packageName)
+        {
+            string msg = I18N("DLComplete");
+            try
+            {
+                var isRunning = core.isRunning;
+                if (isRunning)
+                {
+                    core.StopCore();
+                }
+                Lib.Utils.ZipFileDecompress(packageName);
+                if (isRunning)
+                {
+                    setting.ActivateServer();
+                }
+            }
+            catch
+            {
+                msg = I18N("DLFail");
+            }
+
+            downloader = null;
+            MessageBox.Show(msg);
+        }
+
+        void Cleanup()
         {
             Debug.WriteLine("Call cleanup");
             ni.Visible = false;
             core.StopCore();
             Lib.ProxySetter.setProxy("", false);
         }
+        #endregion
     }
 }

@@ -24,7 +24,6 @@ namespace V2RayGCon.Views
 
         delegate void UpdateServerListDelegate(int index);
 
-
         FormQRCode()
         {
             InitializeComponent();
@@ -47,6 +46,7 @@ namespace V2RayGCon.Views
             setting.OnSettingChange += SettingChange;
         }
 
+        #region public methods
         void SettingChange(object sender, EventArgs args)
         {
             UpdateServerListDelegate updater =
@@ -111,7 +111,9 @@ namespace V2RayGCon.Views
             }
 
         }
+        #endregion
 
+        #region private methods
         private void cboxLinkType_SelectedIndexChanged(object sender, EventArgs e)
         {
             linkType = cboxLinkType.SelectedIndex;
@@ -143,5 +145,6 @@ namespace V2RayGCon.Views
             servIndex = cboxServList.SelectedIndex;
             ShowQRCode();
         }
+        #endregion
     }
 }

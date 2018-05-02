@@ -7,6 +7,12 @@ namespace V2RayGCon.Controller.Configer
 {
     class StreamSettings : Model.BaseClass.NotifyComponent
     {
+        public StreamSettings()
+        {
+            _isServer = false;
+        }
+
+        #region properties
         private string _kcpType;
 
         public string kcpType
@@ -31,11 +37,6 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _tls, value); }
         }
 
-        public StreamSettings()
-        {
-            _isServer = false;
-        }
-
         private bool _isServer;
 
         public bool isServer
@@ -43,17 +44,12 @@ namespace V2RayGCon.Controller.Configer
             get { return _isServer; }
             set { _isServer = value; }
         }
+        #endregion
 
-
+        #region public method
         public void SetSecurity(string security)
         {
             tls = Lib.Utils.GetIndexIgnoreCase(Model.Data.Table.streamSecurity, security);
-        }
-
-        string GetSecuritySetting()
-        {
-            var streamSecurity = Model.Data.Table.streamSecurity;
-            return tls <= 0 ? string.Empty : streamSecurity[tls];
         }
 
         public JToken GetKCPSetting()
@@ -84,7 +80,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
+            var GetStr = Lib.Utils.HelperGetStringByPrefixAndKey(config);
 
             string prefix;
 
@@ -101,6 +97,15 @@ namespace V2RayGCon.Controller.Configer
             wsPath = GetStr(prefix, "wsSettings.path");
             SetSecurity(GetStr(prefix, "security"));
         }
+        #endregion
+
+        #region private method
+        string GetSecuritySetting()
+        {
+            var streamSecurity = Model.Data.Table.streamSecurity;
+            return tls <= 0 ? string.Empty : streamSecurity[tls];
+        }
+        #endregion
 
     }
 

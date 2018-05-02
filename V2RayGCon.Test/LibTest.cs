@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using static V2RayGCon.Lib.StringResource;
 using static V2RayGCon.Lib.Utils;
+using static V2RayGCon.Test.Resource.StringResource;
 
 
 namespace V2RayGCon.Test
@@ -51,5 +52,40 @@ namespace V2RayGCon.Test
             var json = Parse<JToken>(string.Empty);
             Assert.IsNull(json);
         }
+
+        [TestMethod]
+        public void ExtractLinks_FromString()
+        {
+            // var content = testData("links");
+            var content = "ss://ZHVtbXkwMA==";
+            var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.ss);
+            var expact = "ss://ZHVtbXkwMA==";
+            Assert.AreEqual(links.Count, 1);
+            Assert.AreEqual(expact, links[0]);
+        }
+
+        [TestMethod]
+        public void ExtractLinks_FromLinksTxt()
+        {
+            var content = testData("links");
+            var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
+            Assert.AreEqual(links.Count, 2);
+        }
+
+        [TestMethod]
+        public void ExtractLink_FromEmptyString_Return_EmptyList()
+        {
+            var content = "";
+            var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
+            Assert.AreEqual(links.Count, 0);
+        }
+
+        [TestMethod]
+        public void GetLatestVersion()
+        {
+            string version = Lib.Utils.GetLatestVersion();
+            Assert.AreNotEqual(string.Empty, version);
+        }
+
     }
 }

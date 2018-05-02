@@ -9,6 +9,7 @@ namespace V2RayGCon.Controller.Configer
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
+        #region properties
         private string _ID;
 
         public string ID
@@ -46,7 +47,9 @@ namespace V2RayGCon.Controller.Configer
                 SetField(ref _blackhole, value);
             }
         }
+        #endregion
 
+        #region public method
         public JToken GetSettings()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
@@ -71,5 +74,6 @@ namespace V2RayGCon.Controller.Configer
             prefix = "outbound.settings.vnext.0";
             addr = Lib.Utils.GetAddr(config, prefix, "address", "port");
         }
+        #endregion
     }
 }
