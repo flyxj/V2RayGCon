@@ -13,11 +13,10 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [TestMethod]
-        public void GetValue_GetBoolFromString_ThrowException()
+        public void GetValue_GetBoolFromString_ReturnDefault()
         {
             var json = JObject.Parse(resData("config_min"));
-            Assert.ThrowsException<FormatException>(
-                () => Lib.Utils.GetValue<bool>(json, "log.loglevel"));
+            Assert.AreEqual(GetValue<bool>(json, "log.loglevel"), default(bool));
         }
 
         [TestMethod]

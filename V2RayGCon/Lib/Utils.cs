@@ -64,7 +64,12 @@ namespace V2RayGCon.Lib
             {
                 return default(T);
             }
-            return key.Value<T>();
+            try
+            {
+                return key.Value<T>();
+            }
+            catch { }
+            return default(T);
         }
 
         public static Func<string, string, string> HelperGetStringByPrefixAndKey(JObject json)
