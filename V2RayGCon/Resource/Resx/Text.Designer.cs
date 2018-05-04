@@ -179,15 +179,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Copy PAC url 的本地化字符串。
-        /// </summary>
-        internal static string CopyPacUrl {
-            get {
-                return ResourceManager.GetString("CopyPacUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Copied to clipboard. 的本地化字符串。
         /// </summary>
         internal static string CopySuccess {

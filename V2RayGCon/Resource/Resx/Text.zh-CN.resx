@@ -224,9 +224,6 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Win64" xml:space="preserve">
     <value>Windows 64位</value>
   </data>
-  <data name="CopyPacUrl" xml:space="preserve">
-    <value>复制PAC链接</value>
-  </data>
   <data name="CopySuccess" xml:space="preserve">
     <value>已复制到剪切板</value>
   </data>

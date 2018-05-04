@@ -22,7 +22,7 @@ namespace V2RayGCon.Service
             core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if DEBUG
-            EnableDebug();
+            This_function_do_some_tedious_stuff();
 #else
             ni.MouseClick += (s, a) =>
             {
@@ -45,16 +45,12 @@ namespace V2RayGCon.Service
 
         #region DEBUG code TL;DR
 #if DEBUG
-
         void This_function_do_some_tedious_stuff()
         {
             ni.DoubleClick += (s, a) =>
             {
-                Debug.WriteLine("Test JObject:");
-                Debug.WriteLine("Done!");
+                Debug.WriteLine("Some test code:");
             };
-
-            ContextMenu ctxm = ni.ContextMenu;
 
             bool debug_form_config = false;
             // bool debug_form_config = true;
@@ -69,37 +65,6 @@ namespace V2RayGCon.Service
                 Views.FormLog.GetForm();
             }
         }
-
-        void EnableDebug()
-        {
-            var mis = ni.ContextMenu.MenuItems;
-            mis.Add(0, new MenuItem("-"));
-            mis.Add(0, CreateDebugMenu());
-
-            This_function_do_some_tedious_stuff();
-        }
-
-        MenuItem CreateDebugMenu()
-        {
-            return new MenuItem("Debug", new MenuItem[]{
-
-                new MenuItem("Add dummy server1",(s,a)=>{
-                    setting.ImportLinks(resData("DummyServ1"));
-                    Debug.WriteLine("Done!");
-                }),
-
-                new MenuItem("Add dummy server2",(s,a)=>{
-                    setting.ImportLinks(resData("DummyServ2"));
-                    Debug.WriteLine("Done!");
-                }),
-
-                new MenuItem("Show Form in background",(s,a)=>{
-
-                    Debug.WriteLine("Done!");
-                }),
-            });
-        }
-
 #endif
         #endregion
 
@@ -226,19 +191,6 @@ namespace V2RayGCon.Service
                         I18N("ImportLinkSuccess"):
                         I18N("ImportLinkFail"));
 
-                }),
-
-                new MenuItem("-"),
-
-                new MenuItem(I18N("CopyPacUrl"),(s,a)=>{
-                    if (Lib.Utils.CopyToClipboard(setting.GetPacUrl()))
-                    {
-                        MessageBox.Show(
-                            I18N("WarnIENotSupportPac"),
-                            I18N("CopySuccess"));
-                    } else{
-                        MessageBox.Show(I18N("CopyFail"));
-                    }
                 }),
 
                 new MenuItem(I18N("DLv2rayCore"),new MenuItem[]{

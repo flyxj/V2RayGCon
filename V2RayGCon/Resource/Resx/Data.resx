@@ -154,9 +154,6 @@
   <data name="ExtPng" xml:space="preserve">
     <value>PNG Files|*.png|All File|*.*</value>
   </data>
-  <data name="PacUrlTpl" xml:space="preserve">
-    <value>https://pac.txthinking.com/white/{0}%20{1}</value>
-  </data>
   <data name="PatternNonAlphabet" xml:space="preserve">
     <value>[^0-9a-zA-Z]</value>
   </data>

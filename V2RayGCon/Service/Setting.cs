@@ -154,15 +154,6 @@ namespace V2RayGCon.Service
             return string.Empty;
         }
 
-        public string GetPacUrl()
-        {
-            // https://pac.txthinking.com/white/{SOCKS5}%20{127.0.0.1:1080} 
-
-            var http = (int)Model.Data.Enum.ProxyTypes.http;
-            string mode = proxyType == http ? "PROXY" : "SOCKS5";
-            return string.Format(resData("PacUrlTpl"), mode, proxyAddr);
-        }
-
         public int GetServerCount()
         {
             return servers.Count;

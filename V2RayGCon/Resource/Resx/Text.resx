@@ -225,9 +225,6 @@ Discard latest changes and continue?</value>
   <data name="Win64" xml:space="preserve">
     <value>Windows 64bit</value>
   </data>
-  <data name="CopyPacUrl" xml:space="preserve">
-    <value>Copy PAC url</value>
-  </data>
   <data name="CopySuccess" xml:space="preserve">
     <value>Copied to clipboard.</value>
   </data>
