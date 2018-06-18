@@ -132,6 +132,10 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
+        ///  &quot;vgc&quot;: {
+        ///    &quot;alias&quot;: &quot;mix&quot;,
+        ///    &quot;description&quot;: &quot;v3.18&quot;
+        ///  },
         ///  &quot;vmessClient&quot;: {
         ///    &quot;vnext&quot;: [
         ///      {
@@ -154,14 +158,20 @@ namespace V2RayGCon.Resource.Resx {
         ///    &quot;allowTransparent&quot;: false,
         ///    &quot;userLevel&quot;: 0
         ///  },
-        ///  &quot;socksIn&quot;: {
-        ///    &quot;auth&quot;: &quot;noauth&quot;,
-        ///    &quot;accounts&quot;: [],
-        ///    &quot;udp&quot;:  [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  &quot;s [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
                 return ResourceManager.GetString("config_tpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 v3.21 的本地化字符串。
+        /// </summary>
+        internal static string DefCoreVersion {
+            get {
+                return ResourceManager.GetString("DefCoreVersion", resourceCulture);
             }
         }
         
@@ -247,6 +257,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 /v2ray/v2ray-core/releases/download/(v[\.0-9]+)/v2ray-windows-64.zip 的本地化字符串。
+        /// </summary>
+        internal static string PatternDownloadLink {
+            get {
+                return ResourceManager.GetString("PatternDownloadLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /nobody3u/V2RayGCon/releases/tag/([\.0-9]+) 的本地化字符串。
+        /// </summary>
+        internal static string PatternLatestVGC {
+            get {
+                return ResourceManager.GetString("PatternLatestVGC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 [^0-9a-zA-Z] 的本地化字符串。
         /// </summary>
         internal static string PatternNonAlphabet {
@@ -274,11 +302,38 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.21 的本地化字符串。
+        ///   查找类似 https://github.com/v2ray/v2ray-core/releases 的本地化字符串。
         /// </summary>
-        internal static string Version {
+        internal static string ReleasePageUrl {
             get {
-                return ResourceManager.GetString("Version", resourceCulture);
+                return ResourceManager.GetString("ReleasePageUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/releases/tag/{0} 的本地化字符串。
+        /// </summary>
+        internal static string TplUrlVGCRelease {
+            get {
+                return ResourceManager.GetString("TplUrlVGCRelease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/releases/latest 的本地化字符串。
+        /// </summary>
+        internal static string UrlLatestVGC {
+            get {
+                return ResourceManager.GetString("UrlLatestVGC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 v3.18,v3.21,v3.26 的本地化字符串。
+        /// </summary>
+        internal static string VerList {
+            get {
+                return ResourceManager.GetString("VerList", resourceCulture);
             }
         }
     }

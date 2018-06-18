@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -46,12 +47,22 @@ namespace V2RayGCon.Views
 
             Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
 
+            this.Text = string.Format(
+                "{0} v{1}",
+                Properties.Resources.AppName,
+                Properties.Resources.Version);
+
             this.Show();
             setting.OnSettingChange += SettingChangeHandler;
             core.OnCoreStatChange += SettingChangeHandler;
         }
 
         #region private method
+        void updateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormDownloadCore.GetForm();
+        }
+
         void SettingChangeHandler(object s, EventArgs e)
         {
             UpdateElementDelegate updater =
@@ -143,7 +154,9 @@ namespace V2RayGCon.Views
 
             var isCoreRunning = core.isRunning;
             activateToolStripMenuItem.Enabled = !isCoreRunning;
+            activateToolStripMenuItem.Checked = isCoreRunning;
             stopToolStripMenuItem.Enabled = isCoreRunning;
+            stopToolStripMenuItem.Checked = !isCoreRunning;
 
         }
 
@@ -313,6 +326,43 @@ namespace V2RayGCon.Views
         {
             SwitchToProtocal(Model.Data.Enum.ProxyTypes.config);
         }
+
+        private void updateV2rayGConToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            void CheckUpdate()
+            {
+                var version = Lib.Utils.GetLatestVGCVersion();
+                if (string.IsNullOrEmpty(version))
+                {
+                    MessageBox.Show(I18N("GetVGCVerFail"));
+                    return;
+                }
+
+                var verNew = new Version(version);
+                var verCur = new Version(Properties.Resources.Version);
+
+                var result = verCur.CompareTo(verNew);
+                if (result >= 0)
+                {
+                    MessageBox.Show(I18N("NoNewVGC"));
+                    return;
+                }
+
+                var confirmTpl = I18N("ConfirmDownloadNewVGC");
+                var msg = string.Format(confirmTpl, version);
+                if (Lib.UI.Confirm(msg))
+                {
+                    var tpl = resData("TplUrlVGCRelease");
+                    var url = string.Format(tpl, version);
+                    System.Diagnostics.Process.Start(url);
+                }
+
+
+            };
+            // todo check update
+            Task.Factory.StartNew(CheckUpdate);
+        }
+
         #endregion
     }
 }

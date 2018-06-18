@@ -37,7 +37,7 @@ namespace V2RayGCon.Views
             setting.OnLog += LogReceiver;
         }
 
-        void LogReceiver(object sender, Model.Data.DataEvent e)
+        void LogReceiver(object sender, Model.Data.StrEvent e)
         {
             PushLogDelegate pushLog = new PushLogDelegate(PushLog);
             try

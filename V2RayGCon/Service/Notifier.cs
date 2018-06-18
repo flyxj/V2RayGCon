@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -10,7 +9,6 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Core core;
         Setting setting;
-        Downloader downloader = null;
 
         Notifier()
         {
@@ -52,18 +50,13 @@ namespace V2RayGCon.Service
                 Debug.WriteLine("Some test code:");
             };
 
-            bool debug_form_config = false;
-            // bool debug_form_config = true;
 
-            if (debug_form_config)
-            {
-                new Views.FormConfiger(0);
-            }
-            else
-            {
-                Views.FormMain.GetForm();
-                Views.FormLog.GetForm();
-            }
+            // new Views.FormConfiger(0);
+
+            Views.FormMain.GetForm();
+            // Views.FormLog.GetForm();
+            // Views.FormDownloadCore.GetForm();
+
         }
 #endif
         #endregion
@@ -94,67 +87,9 @@ namespace V2RayGCon.Service
             ni = new NotifyIcon();
             ni.Text = I18N("Description");
             ni.Icon = Properties.Resources.icon_dark;
-            ni.BalloonTipTitle = I18N("AppName");
+            ni.BalloonTipTitle = Properties.Resources.AppName;
             ni.ContextMenu = CreateMenu();
             ni.Visible = true;
-        }
-
-        bool CheckVersion(string version)
-        {
-            if (string.IsNullOrEmpty(version))
-            {
-                MessageBox.Show(I18N("GetLatestVerFail"));
-                return false;
-            }
-
-            if (version.Equals(resData("Version")))
-            {
-                if (!Lib.UI.Confirm(string.Format(I18N("DLCurVerTpl"), version)))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (!Lib.UI.Confirm(string.Format(I18N("DLNewVerTpl"), version)))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        void DownloadCore(bool latest, bool win64)
-        {
-            if (downloader != null)
-            {
-                MessageBox.Show(I18N("Downloading"));
-                return;
-            }
-
-            var version = resData("Version");
-
-
-            if (latest)
-            {
-                var latestVersion = Lib.Utils.GetLatestVersion();
-                if (!CheckVersion(latestVersion))
-                {
-                    return;
-                }
-                version = latestVersion;
-            }
-
-            downloader = new Downloader();
-            downloader.SelectArchitecture(win64);
-            downloader.SetVersion(version);
-
-            string packageName = downloader.GetPackageName();
-
-            downloader.OnDownloadCompleted += (s, a) => UpdateCore(packageName);
-
-            downloader.GetV2RayCore();
         }
 
         ContextMenu CreateMenu()
@@ -193,30 +128,7 @@ namespace V2RayGCon.Service
 
                 }),
 
-                new MenuItem(I18N("DLv2rayCore"),new MenuItem[]{
-
-                    GenComment(I18N("Latest")),
-
-                    new MenuItem(I18N("Win32"),(s,a)=>{
-                        Task.Factory.StartNew(()=> DownloadCore(true,false));
-                    }),
-
-                    new MenuItem(I18N("Win64"),(s,a)=>{
-                        Task.Factory.StartNew(()=> DownloadCore(true,true));
-                    }),
-
-                    new MenuItem("-"),
-
-                    GenComment(resData("Version")),
-
-                    new MenuItem(I18N("Win32"),(s,a)=>{
-                        Task.Factory.StartNew(()=> DownloadCore(false,false));
-                    }),
-
-                    new MenuItem(I18N("Win64"),(s,a)=>{
-                        Task.Factory.StartNew(()=> DownloadCore(false,true));
-                    }),
-                }),
+                new MenuItem(I18N("DownloadV2rayCore"),(s,a)=>Views.FormDownloadCore.GetForm()),
 
                 new MenuItem("-"),
 
@@ -229,38 +141,6 @@ namespace V2RayGCon.Service
                     }
                 })
             });
-        }
-
-        MenuItem GenComment(string comment)
-        {
-            var item = new MenuItem(comment);
-            item.Enabled = false;
-            return item;
-        }
-
-        void UpdateCore(string packageName)
-        {
-            string msg = I18N("DLComplete");
-            try
-            {
-                var isRunning = core.isRunning;
-                if (isRunning)
-                {
-                    core.StopCore();
-                }
-                Lib.Utils.ZipFileDecompress(packageName);
-                if (isRunning)
-                {
-                    setting.ActivateServer();
-                }
-            }
-            catch
-            {
-                msg = I18N("DLFail");
-            }
-
-            downloader = null;
-            MessageBox.Show(msg);
         }
 
         void Cleanup()

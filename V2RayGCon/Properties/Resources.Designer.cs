@@ -61,6 +61,15 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找类似 V2RayGCon 的本地化字符串。
+        /// </summary>
+        internal static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 V2RayGCon.Resource.Resx.Data 的本地化字符串。
         /// </summary>
         internal static string Data {
@@ -104,6 +113,15 @@ namespace V2RayGCon.Properties {
         internal static string Text {
             get {
                 return ResourceManager.GetString("Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 1.0.1 的本地化字符串。
+        /// </summary>
+        internal static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
     }

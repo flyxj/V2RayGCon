@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -14,6 +15,7 @@ namespace V2RayGCon.Controller.Configer
         public VmessServer vmessServer;
         public Editor editor;
         public SSServer ssServer;
+        public VGC vgc;
 
         JObject config;
         int separator;
@@ -29,6 +31,7 @@ namespace V2RayGCon.Controller.Configer
             vmessClient = new VmessClient();
             vmessServer = new VmessServer();
             editor = new Editor();
+            vgc = new VGC();
 
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
@@ -177,6 +180,7 @@ namespace V2RayGCon.Controller.Configer
             ssServer.UpdateData(config);
             streamSettings.UpdateData(config);
             vmessServer.UpdateData(config);
+            vgc.UpdateData(config);
         }
 
         public void DiscardChanges()
@@ -251,14 +255,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertKCP()
         {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-
-            SaveChanges();
-            try
+            InsertConfigHelper(() =>
             {
                 if (streamSettings.isServer)
                 {
@@ -268,21 +265,12 @@ namespace V2RayGCon.Controller.Configer
                 {
                     config["outbound"]["streamSettings"] = streamSettings.GetKCPSetting();
                 }
-            }
-            catch { }
-            UpdateData();
-            ShowSection();
+            });
         }
 
         public void InsertWS()
         {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-            SaveChanges();
-            try
+            InsertConfigHelper(() =>
             {
                 if (streamSettings.isServer)
                 {
@@ -292,10 +280,7 @@ namespace V2RayGCon.Controller.Configer
                 {
                     config["outbound"]["streamSettings"] = streamSettings.GetWSSetting();
                 }
-            }
-            catch { }
-            UpdateData();
-            ShowSection();
+            });
         }
 
         public void AddNewServer()
@@ -318,14 +303,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertTCP()
         {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-            SaveChanges();
-
-            try
+            InsertConfigHelper(() =>
             {
                 if (streamSettings.isServer)
                 {
@@ -335,74 +313,47 @@ namespace V2RayGCon.Controller.Configer
                 {
                     config["outbound"]["streamSettings"] = streamSettings.GetTCPSetting();
                 }
-            }
-            catch { }
-            UpdateData();
-            ShowSection();
+            });
         }
 
         public void InsertSSClient()
         {
-            if (!CheckValid())
+            InsertConfigHelper(() =>
             {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-
-            SaveChanges();
-            InsertOutBoundSetting(ssClient.GetSettings(), "shadowsocks");
-            UpdateData();
-            ShowSection();
+                InsertOutBoundSetting(ssClient.GetSettings(), "shadowsocks");
+            });
         }
 
         public void InsertVmessClient()
         {
-            if (!CheckValid())
+            InsertConfigHelper(() =>
             {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
+                InsertOutBoundSetting(vmessClient.GetSettings(), "vmess");
+            });
+        }
 
-            SaveChanges();
-            InsertOutBoundSetting(vmessClient.GetSettings(), "vmess");
-            UpdateData();
-            ShowSection();
+        public void InsertVGC()
+        {
+            InsertConfigHelper(() =>
+            {
+                config["v2raygcon"] = vgc.GetSettings();
+            });
         }
 
         public void InsertVmessServer()
         {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-
-            SaveChanges();
-            try
+            InsertConfigHelper(() =>
             {
                 config["inbound"] = vmessServer.GetSettings();
-            }
-            catch { }
-            UpdateData();
-            ShowSection();
+            });
         }
 
         public void InsertSSServer()
         {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-
-            SaveChanges();
-            try
+            InsertConfigHelper(() =>
             {
                 config["inbound"] = ssServer.GetSettings();
-            }
-            catch { }
-            UpdateData();
-            ShowSection();
+            });
         }
 
         public string GetConfigFormated()
@@ -442,6 +393,26 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region private method
+        void InsertConfigHelper(Action f)
+        {
+            if (!CheckValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
+
+            try
+            {
+                f();
+            }
+            catch { }
+
+            UpdateData();
+            ShowSection();
+        }
+
         void InsertOutBoundSetting(JToken settings, string protocol)
         {
             try

@@ -117,447 +117,164 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnRefreshVer.ToolTip" xml:space="preserve">
+    <value>Refresh version list</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cboxConfigSection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 0</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>358, 98</value>
   </data>
-  <data name="cboxConfigSection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 22</value>
+  <data name="&gt;&gt;cboxArch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="cboxConfigSection.ToolTip" xml:space="preserve">
+  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnDownload.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="btnInsertVServ.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="&gt;&gt;cboxVer.Name" xml:space="preserve">
+    <value>cboxVer</value>
   </data>
-  <data name="btnInsertVServ.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cboxVer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 20</value>
   </data>
-  <data name="btnGenVServID.Text" xml:space="preserve">
-    <value>生成 ID</value>
+  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
+    <value>btnCancel</value>
   </data>
-  <data name="btnGenVServID.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;btnRefreshVer.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="tboxVServPort.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;pgBarDownload.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="label21.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;cboxArch.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="label22.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FormDownloadCore</value>
   </data>
-  <data name="tboxVServLevel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
   </data>
-  <data name="label23.ToolTip" xml:space="preserve">
-    <value />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="tboxVServID.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;cboxVer.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
-  <data name="label24.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnRefreshVer.Text" xml:space="preserve">
+    <value>Refresh</value>
   </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>服务器</value>
-  </data>
-  <data name="groupBox5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnVMessInsertClient.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnVMessInsertClient.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnVMessGenUUID.Text" xml:space="preserve">
-    <value>生成 ID</value>
-  </data>
-  <data name="btnVMessGenUUID.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxVMessIPaddr.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label4.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxVMessLevel.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxVMessID.ToolTip" xml:space="preserve">
-    <value />
+  <data name="pgBarDownload.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 38</value>
   </data>
   <data name="label1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>客户端</value>
+  <data name="btnRefreshVer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
   </data>
-  <data name="groupBox1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
-  <data name="tabPage1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="pgBarDownload.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="btnSSInsertServer.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="&gt;&gt;cboxArch.Name" xml:space="preserve">
+    <value>cboxArch</value>
   </data>
-  <data name="btnSSInsertServer.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnRefreshVer.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="chkSSSShowPass.Text" xml:space="preserve">
-    <value>显示</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
-  <data name="chkSSSShowPass.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="tboxSSSPass.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="label19.Text" xml:space="preserve">
-    <value>密码</value>
+  <data name="&gt;&gt;cboxVer.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="label19.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;pgBarDownload.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+  <data name="btnCancel.ToolTip" xml:space="preserve">
+    <value>Stop download</value>
   </data>
-  <data name="label18.Text" xml:space="preserve">
-    <value>网络类型</value>
-  </data>
-  <data name="label18.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cboxSSSMethod.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxSSSPort.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label17.Text" xml:space="preserve">
-    <value>端口</value>
-  </data>
-  <data name="label17.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="chkSSSOTA.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>加密</value>
-  </data>
-  <data name="label10.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cboxSSSNetwork.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>服务器</value>
-  </data>
-  <data name="groupBox4.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="chkSSCOTA.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnSSRInsertClient.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnSSRInsertClient.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cboxSSCMethod.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>加密</value>
-  </data>
-  <data name="label9.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="chkSSCShowPass.Text" xml:space="preserve">
-    <value>显示</value>
-  </data>
-  <data name="chkSSCShowPass.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxSSCPass.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>密码</value>
-  </data>
-  <data name="label8.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxSSCAddr.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 12</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>IP+端口</value>
+  <data name="cboxArch.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="label6.ToolTip" xml:space="preserve">
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="btnRefreshVer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshVer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnDownload.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="cboxArch.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>客户端</value>
+  <data name="btnDownload.Text" xml:space="preserve">
+    <value>Download</value>
   </data>
-  <data name="groupBox3.ToolTip" xml:space="preserve">
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="btnDownload.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
+  </data>
+  <data name="btnDownload.ToolTip" xml:space="preserve">
+    <value>Download and update v2ray-core.</value>
+  </data>
+  <data name="&gt;&gt;cboxArch.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cboxVer.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>SS</value>
+  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>182, 69</value>
   </data>
-  <data name="tabPage2.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;btnDownload.Name" xml:space="preserve">
+    <value>btnDownload</value>
   </data>
-  <data name="tboxVGCDesc.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
   </data>
-  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+  <data name="&gt;&gt;cboxVer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label16.Text" xml:space="preserve">
-    <value>描述</value>
+  <data name="&gt;&gt;pgBarDownload.Name" xml:space="preserve">
+    <value>pgBarDownload</value>
   </data>
-  <data name="label16.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cboxVer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="btnVGC.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="btnVGC.ToolTip" xml:space="preserve">
-    <value />
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="tboxVGCAlias.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label15.Text" xml:space="preserve">
-    <value>别名</value>
-  </data>
-  <data name="label15.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="chkStreamIsServer.ToolTip" xml:space="preserve">
-    <value>在服务器和客户端的stream-settings之间切换</value>
-  </data>
-  <data name="cboxStreamSecurity.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnStreamInsertTCP.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnStreamInsertTCP.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="textBox3.Text" xml:space="preserve">
-    <value>不用填</value>
-  </data>
-  <data name="textBox3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label14.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label13.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnStreamInsertWS.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnStreamInsertWS.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxWSPath.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label12.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnStreamInsertKCP.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnStreamInsertKCP.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxKCPType.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label11.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>388, 151</value>
-  </data>
-  <data name="groupBox2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tabPage3.Text" xml:space="preserve">
-    <value>其他</value>
-  </data>
-  <data name="tabPage3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tabControl1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnClearModify.Text" xml:space="preserve">
-    <value>取消更改</value>
-  </data>
-  <data name="btnClearModify.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="newWinToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="newWinToolStripMenuItem1.Text" xml:space="preserve">
-    <value>新窗口</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 6</value>
-  </data>
-  <data name="loadJsonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="loadJsonToolStripMenuItem.Text" xml:space="preserve">
-    <value>加载Json文件</value>
-  </data>
-  <data name="saveAsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="saveAsToolStripMenuItem.Text" xml:space="preserve">
-    <value>另存Json文件</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 6</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>关闭</value>
-  </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
-  </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>文件</value>
-  </data>
-  <data name="addNewServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="addNewServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>添加新服务器</value>
-  </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 6</value>
-  </data>
-  <data name="loadServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="loadServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>加载服务器</value>
-  </data>
-  <data name="replaceExistServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="replaceExistServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>覆盖原服务器</value>
-  </data>
-  <data name="configToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
-  </data>
-  <data name="configToolStripMenuItem.Text" xml:space="preserve">
-    <value>服务器</value>
-  </data>
-  <data name="searchBoxToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
-  </data>
-  <data name="searchBoxToolStripMenuItem.Text" xml:space="preserve">
-    <value>搜索</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 6</value>
-  </data>
-  <data name="showLeftPanelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
-  </data>
-  <data name="showLeftPanelToolStripMenuItem.Text" xml:space="preserve">
-    <value>显示左面板</value>
-  </data>
-  <data name="hideLeftPanelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
-  </data>
-  <data name="hideLeftPanelToolStripMenuItem.Text" xml:space="preserve">
-    <value>隐藏左面板</value>
-  </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
-  </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>视图</value>
-  </data>
-  <data name="mainMenu.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="pnlTools.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>分节</value>
-  </data>
-  <data name="label7.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="panelScintilla.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="panel1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cboxExamples.Location" type="System.Drawing.Point, System.Drawing">
-    <value>224, 1</value>
-  </data>
-  <data name="cboxExamples.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 20</value>
-  </data>
-  <data name="cboxExamples.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="pnlEditor.ToolTip" xml:space="preserve">
-    <value />
+  <data name="pgBarDownload.Size" type="System.Drawing.Size, System.Drawing">
+    <value>332, 25</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6731,10 +6448,70 @@
         //////////////////////////////////////////////////////////////////8=
 </value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>配置编辑器</value>
+  <data name="&gt;&gt;btnRefreshVer.Name" xml:space="preserve">
+    <value>btnRefreshVer</value>
   </data>
-  <data name="$this.ToolTip" xml:space="preserve">
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>215, 16</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Download v2ray-core</value>
+  </data>
+  <data name="&gt;&gt;btnDownload.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cboxArch.Items" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshVer.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;btnDownload.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="pgBarDownload.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="cboxArch.Items1" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
+  <data name="cboxArch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>268, 12</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pgBarDownload.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cboxArch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 20</value>
+  </data>
+  <data name="cboxVer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 12</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="btnDownload.Location" type="System.Drawing.Point, System.Drawing">
+    <value>104, 69</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

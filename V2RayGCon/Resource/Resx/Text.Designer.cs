@@ -97,20 +97,20 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2RayGCon 的本地化字符串。
-        /// </summary>
-        internal static string AppName {
-            get {
-                return ResourceManager.GetString("AppName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Available examples ... 的本地化字符串。
         /// </summary>
         internal static string AvailableExamples {
             get {
                 return ResourceManager.GetString("AvailableExamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel current download? 的本地化字符串。
+        /// </summary>
+        internal static string CancelDownload {
+            get {
+                return ResourceManager.GetString("CancelDownload", resourceCulture);
             }
         }
         
@@ -147,6 +147,16 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmDeleteServer {
             get {
                 return ResourceManager.GetString("ConfirmDeleteServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New V2RayGCon v{0} is available.
+        ///Checkout download page? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmDownloadNewVGC {
+            get {
+                return ResourceManager.GetString("ConfirmDownloadNewVGC", resourceCulture);
             }
         }
         
@@ -224,63 +234,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download v2ray-core completed! 的本地化字符串。
-        /// </summary>
-        internal static string DLComplete {
-            get {
-                return ResourceManager.GetString("DLComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 No new version!
-        ///Download v2ray-core {0}? 的本地化字符串。
-        /// </summary>
-        internal static string DLCurVerTpl {
-            get {
-                return ResourceManager.GetString("DLCurVerTpl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Download fail!
-        ///You can download manually from the link below.
-        ///https://github.com/v2ray/v2ray-core 的本地化字符串。
-        /// </summary>
-        internal static string DLFail {
-            get {
-                return ResourceManager.GetString("DLFail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Download v2ray-core {0}? 的本地化字符串。
-        /// </summary>
-        internal static string DLNewVerTpl {
-            get {
-                return ResourceManager.GetString("DLNewVerTpl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Download progress 的本地化字符串。
-        /// </summary>
-        internal static string DLProgress {
-            get {
-                return ResourceManager.GetString("DLProgress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Download v2ray-core 的本地化字符串。
-        /// </summary>
-        internal static string DLv2rayCore {
-            get {
-                return ResourceManager.GetString("DLv2rayCore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Done 的本地化字符串。
         /// </summary>
         internal static string Done {
@@ -299,11 +252,58 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Download cancelled! 的本地化字符串。
+        /// </summary>
+        internal static string DownloadCancelled {
+            get {
+                return ResourceManager.GetString("DownloadCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download v2ray-core completed! 的本地化字符串。
+        /// </summary>
+        internal static string DownloadCompleted {
+            get {
+                return ResourceManager.GetString("DownloadCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download fail!
+        ///You can download manually from the link below.
+        ///https://github.com/v2ray/v2ray-core 的本地化字符串。
+        /// </summary>
+        internal static string DownloadFail {
+            get {
+                return ResourceManager.GetString("DownloadFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Downloading, please wait ... 的本地化字符串。
         /// </summary>
         internal static string Downloading {
             get {
                 return ResourceManager.GetString("Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download progress 的本地化字符串。
+        /// </summary>
+        internal static string DownloadProgress {
+            get {
+                return ResourceManager.GetString("DownloadProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download v2ray-core 的本地化字符串。
+        /// </summary>
+        internal static string DownloadV2rayCore {
+            get {
+                return ResourceManager.GetString("DownloadV2rayCore", resourceCulture);
             }
         }
         
@@ -399,6 +399,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Fetch v2ray-core versions fail! 的本地化字符串。
+        /// </summary>
+        internal static string GetVersionListFail {
+            get {
+                return ResourceManager.GetString("GetVersionListFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Get V2RayGCon latest version number fail! 的本地化字符串。
+        /// </summary>
+        internal static string GetVGCVerFail {
+            get {
+                return ResourceManager.GetString("GetVGCVerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Import links from clipboard 的本地化字符串。
         /// </summary>
         internal static string ImportLink {
@@ -449,6 +467,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string LoadJsonFail {
             get {
                 return ResourceManager.GetString("LoadJsonFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The current V2RayGCon is the latest version. 的本地化字符串。
+        /// </summary>
+        internal static string NoNewVGC {
+            get {
+                return ResourceManager.GetString("NoNewVGC", resourceCulture);
             }
         }
         

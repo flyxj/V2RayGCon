@@ -14,7 +14,7 @@ namespace V2RayGCon.Service
         private List<string> aliases;
         private List<string[]> servSummarys;
         public event EventHandler OnSettingChange;
-        public event EventHandler<Model.Data.DataEvent> OnLog;
+        public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
 
         Setting()
@@ -112,7 +112,7 @@ namespace V2RayGCon.Service
         #region public methods
         public void SendLog(string log)
         {
-            var arg = new Model.Data.DataEvent(log);
+            var arg = new Model.Data.StrEvent(log);
             OnLog?.Invoke(this, arg);
         }
 

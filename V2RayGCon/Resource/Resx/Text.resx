@@ -120,9 +120,6 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AppName" xml:space="preserve">
-    <value>V2RayGCon</value>
-  </data>
   <data name="CannotParseJson" xml:space="preserve">
     <value>Can not parse json! Discard changes?</value>
   </data>
@@ -150,15 +147,15 @@
   <data name="Description" xml:space="preserve">
     <value>V2Ray GUI Configer</value>
   </data>
-  <data name="DLComplete" xml:space="preserve">
+  <data name="DownloadCompleted" xml:space="preserve">
     <value>Download v2ray-core completed!</value>
   </data>
-  <data name="DLFail" xml:space="preserve">
+  <data name="DownloadFail" xml:space="preserve">
     <value>Download fail!
 You can download manually from the link below.
 https://github.com/v2ray/v2ray-core</value>
   </data>
-  <data name="DLv2rayCore" xml:space="preserve">
+  <data name="DownloadV2rayCore" xml:space="preserve">
     <value>Download v2ray-core</value>
   </data>
   <data name="Done" xml:space="preserve">
@@ -287,7 +284,7 @@ Load new config?</value>
   <data name="DuplicateServer" xml:space="preserve">
     <value>Duplicate server, skip!</value>
   </data>
-  <data name="DLProgress" xml:space="preserve">
+  <data name="DownloadProgress" xml:space="preserve">
     <value>Download progress</value>
   </data>
   <data name="Download" xml:space="preserve">
@@ -296,14 +293,26 @@ Load new config?</value>
   <data name="Latest" xml:space="preserve">
     <value>latest</value>
   </data>
-  <data name="DLCurVerTpl" xml:space="preserve">
-    <value>No new version!
-Download v2ray-core {0}?</value>
-  </data>
-  <data name="DLNewVerTpl" xml:space="preserve">
-    <value>Download v2ray-core {0}?</value>
-  </data>
   <data name="GetLatestVerFail" xml:space="preserve">
     <value>Get latest version fail!</value>
+  </data>
+  <data name="GetVersionListFail" xml:space="preserve">
+    <value>Fetch v2ray-core versions fail!</value>
+  </data>
+  <data name="CancelDownload" xml:space="preserve">
+    <value>Cancel current download?</value>
+  </data>
+  <data name="DownloadCancelled" xml:space="preserve">
+    <value>Download cancelled!</value>
+  </data>
+  <data name="ConfirmDownloadNewVGC" xml:space="preserve">
+    <value>New V2RayGCon v{0} is available.
+Checkout download page?</value>
+  </data>
+  <data name="GetVGCVerFail" xml:space="preserve">
+    <value>Get V2RayGCon latest version number fail!</value>
+  </data>
+  <data name="NoNewVGC" xml:space="preserve">
+    <value>The current V2RayGCon is the latest version.</value>
   </data>
 </root>

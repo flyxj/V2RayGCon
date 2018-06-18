@@ -101,6 +101,21 @@ namespace V2RayGCon.Lib
 
         #region convert
 
+        public static List<string> Str2ListStr(string serial)
+        {
+            var list = new List<string> { };
+            var items = serial.Split(',');
+            foreach (var item in items)
+            {
+                if (!string.IsNullOrEmpty(item))
+                {
+                    list.Add(item);
+                }
+
+            }
+            return list;
+        }
+
         public static List<string> ExtractLinks(string text, Model.Data.Enum.LinkTypes linkType)
         {
             string pattern = GenPattern(linkType);
@@ -294,26 +309,57 @@ namespace V2RayGCon.Lib
 
         #region net
 
-        public static string GetLatestVersion()
+        static string Fetch(string url)
         {
-            var url = resData("LatestCoreLink");
-            var version = string.Empty;
-
-            SupportProtocolTLS12();
-            WebRequest request = WebRequest.Create(url);
+            var html = string.Empty;
             try
             {
-                using (var response = request.GetResponse())
-                {
-                    version = response.ResponseUri.Segments[5];
-                }
+                Lib.Utils.SupportProtocolTLS12();
+                html = new WebClient().DownloadString(url);
             }
             catch { }
+            return html;
+        }
 
-            return version;
+        public static string GetLatestVGCVersion()
+        {
+            string html = Fetch(resData("UrlLatestVGC"));
+            if (string.IsNullOrEmpty(html))
+            {
+                return string.Empty;
+            }
+
+            string p = resData("PatternLatestVGC");
+            var match = Regex.Match(html, p, RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+
+            return string.Empty;
+        }
+
+        public static List<string> GetCoreVersions()
+        {
+            List<string> versions = new List<string> { };
+
+            string html = Fetch(resData("ReleasePageUrl"));
+            if (string.IsNullOrEmpty(html))
+            {
+                return versions;
+            }
+
+            string pattern = resData("PatternDownloadLink");
+            var matches = Regex.Matches(html, pattern, RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var v = match.Groups[1].Value;
+                versions.Add(v);
+            }
+
+            return versions;
         }
         #endregion
-
 
         #region Miscellaneous
 

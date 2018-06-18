@@ -5,10 +5,20 @@ using System.Text;
 
 namespace V2RayGCon.Model.Data
 {
-    class DataEvent : EventArgs
+    class StrEvent : EventArgs
     {
         public string Data;
-        public DataEvent(string data)
+        public StrEvent(string data)
+        {
+            Data = data;
+        }
+
+    }
+
+    class IntEvent : EventArgs
+    {
+        public int Data;
+        public IntEvent(int data)
         {
             Data = data;
         }

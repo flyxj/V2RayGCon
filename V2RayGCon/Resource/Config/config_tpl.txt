@@ -1,4 +1,8 @@
 ﻿{
+  "vgc": {
+    "alias": "mix",
+    "description": "v3.18"
+  },
   "vmessClient": {
     "vnext": [
       {

@@ -127,7 +127,7 @@
   <data name="PkgWin32" xml:space="preserve">
     <value>v2ray-windows-32.zip</value>
   </data>
-  <data name="Version" xml:space="preserve">
+  <data name="DefCoreVersion" xml:space="preserve">
     <value>v3.21</value>
   </data>
   <data name="Executable" xml:space="preserve">
@@ -166,5 +166,23 @@
   </data>
   <data name="LatestCoreLink" xml:space="preserve">
     <value>https://github.com/v2ray/v2ray-core/releases/latest</value>
+  </data>
+  <data name="PatternDownloadLink" xml:space="preserve">
+    <value>/v2ray/v2ray-core/releases/download/(v[\.0-9]+)/v2ray-windows-64.zip</value>
+  </data>
+  <data name="ReleasePageUrl" xml:space="preserve">
+    <value>https://github.com/v2ray/v2ray-core/releases</value>
+  </data>
+  <data name="VerList" xml:space="preserve">
+    <value>v3.18,v3.21,v3.26</value>
+  </data>
+  <data name="PatternLatestVGC" xml:space="preserve">
+    <value>/nobody3u/V2RayGCon/releases/tag/([\.0-9]+)</value>
+  </data>
+  <data name="TplUrlVGCRelease" xml:space="preserve">
+    <value>https://github.com/nobody3u/V2RayGCon/releases/tag/{0}</value>
+  </data>
+  <data name="UrlLatestVGC" xml:space="preserve">
+    <value>https://github.com/nobody3u/V2RayGCon/releases/latest</value>
   </data>
 </root>

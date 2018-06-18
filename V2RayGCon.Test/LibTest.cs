@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using static V2RayGCon.Lib.StringResource;
 using static V2RayGCon.Lib.Utils;
@@ -36,6 +35,24 @@ namespace V2RayGCon.Test
             var configMin = resData(filename);
             var json = Parse<JObject>(configMin);
             Assert.IsNotNull(json);
+        }
+
+        [TestMethod]
+        public void Str2ListStr()
+        {
+            var testData = new Dictionary<string, int> {
+                // string serial, int expectLength
+                {"",0 },
+                {",,,,",0 },
+                {"1.1,2.2,,3.3,,,4.4.4,", 4},
+            };
+
+            foreach (var item in testData)
+            {
+                var len = Lib.Utils.Str2ListStr(item.Key).Count;
+                Assert.AreEqual(item.Value, len);
+            }
+
         }
 
         [DataTestMethod]
@@ -80,10 +97,19 @@ namespace V2RayGCon.Test
         }
 
         [TestMethod]
-        public void GetLatestVersion()
+        public void GetCoreVersions()
         {
-            string version = Lib.Utils.GetLatestVersion();
+            List<string> versions = Lib.Utils.GetCoreVersions();
+            // Assert.AreNotEqual(versions, null);
+            Assert.AreEqual(versions.Count > 0, true);
+        }
+
+        [TestMethod]
+        public void GetVGCVersions()
+        {
+            var version = Lib.Utils.GetLatestVGCVersion();
             Assert.AreNotEqual(string.Empty, version);
+
         }
 
     }

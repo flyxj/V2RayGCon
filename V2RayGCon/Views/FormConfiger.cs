@@ -77,6 +77,15 @@ namespace V2RayGCon.Views
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
+        void BindDataVGC()
+        {
+            var vgc = configer.vgc;
+            var bs = new BindingSource();
+            bs.DataSource = vgc;
+            tboxVGCAlias.DataBindings.Add("Text", bs, nameof(vgc.alias));
+            tboxVGCDesc.DataBindings.Add("Text", bs, nameof(vgc.description));
+        }
+
         void BindDataSSServer()
         {
             var server = configer.ssServer;
@@ -456,6 +465,7 @@ namespace V2RayGCon.Views
             BindDataEditor();
             BindDataSSServer();
             BindDataVmessServer();
+            BindDataVGC();
         }
         #endregion
 
@@ -581,5 +591,10 @@ namespace V2RayGCon.Views
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
         #endregion
+
+        private void btnVGC_Click(object sender, EventArgs e)
+        {
+            configer.InsertVGC();
+        }
     }
 }
