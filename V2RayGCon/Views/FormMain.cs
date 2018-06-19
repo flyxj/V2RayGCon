@@ -189,7 +189,10 @@ namespace V2RayGCon.Views
 
         private void deleteAllServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.DeleteAllServers();
+            if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
+            {
+                setting.DeleteAllServers();
+            }
         }
 
         private void protocolHttpStripMenuItem_Click(object sender, EventArgs e)
@@ -364,5 +367,10 @@ namespace V2RayGCon.Views
         }
 
         #endregion
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Lib.UI.ShowAboutBox();
+        }
     }
 }

@@ -313,4 +313,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="NoNewVGC" xml:space="preserve">
     <value>当前V2RayGCon已经是最新版本。</value>
   </data>
+  <data name="VistPorjectPage" xml:space="preserve">
+    <value>访问项目主页？</value>
+  </data>
+  <data name="ConfirmDeleteAllServers" xml:space="preserve">
+    <value>删除所有服务器？</value>
+  </data>
 </root>

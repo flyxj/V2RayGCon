@@ -142,6 +142,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 DELETE ALL SERVERS? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmDeleteAllServers {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteAllServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Delete selected server? 的本地化字符串。
         /// </summary>
         internal static string ConfirmDeleteServer {
@@ -593,6 +602,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ShowMainWin {
             get {
                 return ResourceManager.GetString("ShowMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Vist porject page? 的本地化字符串。
+        /// </summary>
+        internal static string VistPorjectPage {
+            get {
+                return ResourceManager.GetString("VistPorjectPage", resourceCulture);
             }
         }
         

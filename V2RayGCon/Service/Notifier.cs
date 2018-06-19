@@ -132,8 +132,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem("-"),
 
-                new MenuItem(I18N("About"),(s,a)=>MessageBox.Show(
-                    Properties.Resources.ProjectLink)),
+                new MenuItem(I18N("About"),(s,a)=>Lib.UI.ShowAboutBox()),
 
                 new MenuItem(I18N("Exit"),(s,a)=>{
                     if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){

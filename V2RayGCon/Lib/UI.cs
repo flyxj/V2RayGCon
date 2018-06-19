@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -69,6 +70,19 @@ namespace V2RayGCon.Lib
                 MessageBoxDefaultButton.Button2);
 
             return confirm == DialogResult.Yes;
+        }
+
+        public static void ShowAboutBox()
+        {
+            var url = Properties.Resources.ProjectLink;
+            var msg = string.Format("{0}\n{1}",
+                I18N("VistPorjectPage"),
+                url);
+            if (Confirm(msg))
+            {
+                // Is it over kill a little bit?
+                Task.Factory.StartNew(() => System.Diagnostics.Process.Start(url));
+            }
         }
 
         [Conditional("DEBUG")]

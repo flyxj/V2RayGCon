@@ -315,4 +315,10 @@ Checkout download page?</value>
   <data name="NoNewVGC" xml:space="preserve">
     <value>The current V2RayGCon is the latest version.</value>
   </data>
+  <data name="VistPorjectPage" xml:space="preserve">
+    <value>Vist porject page?</value>
+  </data>
+  <data name="ConfirmDeleteAllServers" xml:space="preserve">
+    <value>DELETE ALL SERVERS?</value>
+  </data>
 </root>
