@@ -352,6 +352,11 @@ namespace V2RayGCon.Service
             return servers.AsReadOnly();
         }
 
+        public int GetServerIndex(string b64Server)
+        {
+            return servers.IndexOf(b64Server);
+        }
+
         public string GetServer(int index)
         {
             if (GetServerCount() == 0
@@ -366,7 +371,7 @@ namespace V2RayGCon.Service
 
         public bool AddServer(string b64ConfigString, bool quiet = false)
         {
-            if (servers.IndexOf(b64ConfigString) >= 0)
+            if (GetServerIndex(b64ConfigString) >= 0)
             {
                 SendLog(I18N("DuplicateServer") + "\r\n");
                 return false;
@@ -401,6 +406,12 @@ namespace V2RayGCon.Service
             if (index < 0 || index >= GetServerCount())
             {
                 return AddServer(b64ConfigString);
+            }
+
+            if (GetServerIndex(b64ConfigString) >= 0)
+            {
+                SendLog(I18N("DuplicateServer") + "\r\n");
+                return false;
             }
 
             servers[index] = b64ConfigString;

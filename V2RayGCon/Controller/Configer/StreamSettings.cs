@@ -13,16 +13,21 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region properties
-        private string _kcpType;
-
-        public string kcpType
+        private int _kcpType;
+        public int kcpType
         {
             get { return _kcpType; }
             set { SetField(ref _kcpType, value); }
         }
 
-        private string _wsPath;
+        private int _tcpType;
+        public int tcpType
+        {
+            get { return _tcpType; }
+            set { SetField(ref _tcpType, value); }
+        }
 
+        private string _wsPath;
         public string wsPath
         {
             get { return _wsPath; }
@@ -30,7 +35,6 @@ namespace V2RayGCon.Controller.Configer
         }
 
         private int _tls;
-
         public int tls
         {
             get { return _tls; }
@@ -47,34 +51,50 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region public method
-        public void SetSecurity(string security)
-        {
-            tls = Lib.Utils.GetIndexIgnoreCase(Model.Data.Table.streamSecurity, security);
-        }
-
         public JToken GetKCPSetting()
         {
+            // 0 -> none -> kcp
+            // 1 -> srtp -> kcp_srtp
+            // ...
+
+            var key = "kcp";
+            if (kcpType > 0)
+            {
+                key = "kcp_" + Model.Data.Table.kcpTypes[kcpType];
+            }
+
             var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken stream = configTemplate["kcp"];
-            stream["kcpSettings"]["header"]["type"] = kcpType;
-            stream["security"] = GetSecuritySetting();
+            JToken stream = configTemplate[key];
+            PlugTlsSettings(stream);
             return stream;
         }
 
         public JToken GetWSSetting()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
+
             JToken stream = configTemplate["ws"];
             stream["wsSettings"]["path"] = wsPath;
-            stream["security"] = GetSecuritySetting();
+
+            PlugTlsSettings(stream);
             return stream;
         }
 
         public JToken GetTCPSetting()
         {
+
+
+            // 0 -> none -> tcp
+            // 1 -> http -> tcp_http
+            var key = "tcp";
+            if (tcpType > 0)
+            {
+                key = "tcp_" + Model.Data.Table.tcpTypes[tcpType];
+            }
+
             var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken stream = configTemplate["tcp"];
-            stream["security"] = GetSecuritySetting();
+            var stream = configTemplate[key];
+            PlugTlsSettings(stream);
             return stream;
         }
 
@@ -93,17 +113,37 @@ namespace V2RayGCon.Controller.Configer
                 prefix = "outbound.streamSettings";
             }
 
-            kcpType = GetStr(prefix, "kcpSettings.header.type");
             wsPath = GetStr(prefix, "wsSettings.path");
-            SetSecurity(GetStr(prefix, "security"));
+
+            tls = Lib.Utils.GetIndexIgnoreCase(
+                Model.Data.Table.streamSecurity,
+                GetStr(prefix, "security"));
+
+            kcpType = Lib.Utils.GetIndexIgnoreCase(
+                Model.Data.Table.kcpTypes,
+                GetStr(prefix, "kcpSettings.header.type"));
+
+            tcpType = Lib.Utils.GetIndexIgnoreCase(
+                Model.Data.Table.tcpTypes,
+                GetStr(prefix, "tcpSettings.header.type"));
         }
         #endregion
 
         #region private method
-        string GetSecuritySetting()
+        void PlugTlsSettings(JToken streamSettings)
         {
-            var streamSecurity = Model.Data.Table.streamSecurity;
-            return tls <= 0 ? string.Empty : streamSecurity[tls];
+            var configTemplate = JObject.Parse(resData("config_tpl"));
+            var tlsTpl = configTemplate["tls"];
+            if (tls <= 0)
+            {
+                streamSettings["security"] = string.Empty;
+            }
+            else
+            {
+                var streamSecurity = Model.Data.Table.streamSecurity;
+                streamSettings["security"] = streamSecurity[tls];
+                streamSettings["tlsSettings"] = tlsTpl;
+            }
         }
         #endregion
 

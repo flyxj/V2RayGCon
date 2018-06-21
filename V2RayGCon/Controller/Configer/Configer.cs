@@ -21,6 +21,7 @@ namespace V2RayGCon.Controller.Configer
         int separator;
         public int preSection;
         Dictionary<int, string> sections;
+        string originalConfig;
 
         public Configer(int serverIndex = -1)
         {
@@ -36,6 +37,7 @@ namespace V2RayGCon.Controller.Configer
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
             preSection = 0;
+            originalConfig = string.Empty;
 
             LoadConfig(serverIndex);
             editor.content = config.ToString();
@@ -191,25 +193,47 @@ namespace V2RayGCon.Controller.Configer
                 config[sections[preSection]].ToString();
         }
 
-        public void ReplaceServer(int serverIndex)
+        public void ReplaceOriginalServer()
         {
-            if (!CheckValid())
+            if (!Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
             {
-                if (!Lib.UI.Confirm(I18N("EditorDiscardChange")))
-                {
-                    return;
-                }
+                return;
+            }
+
+            if (string.IsNullOrEmpty(originalConfig))
+            {
+                // no origin, add a new server.
+                AddNewServer();
+                return;
+            }
+
+            // find out index
+            var index = setting.GetServerIndex(originalConfig);
+            if (index >= 0)
+            {
+                ReplaceServer(index);
             }
             else
             {
-                SaveChanges();
-                UpdateData();
+                MessageBox.Show(I18N("OrgServNotFound"));
             }
 
-            setting.ReplaceServer(
-                Lib.Utils.Base64Encode(config.ToString()),
-                serverIndex);
-            //MessageBox.Show(I18N("Done"));
+        }
+
+
+
+        public void ReplaceServer(int serverIndex)
+        {
+            if (!FlushEditor())
+            {
+                return;
+            }
+
+            originalConfig = Lib.Utils.Base64Encode(config.ToString());
+            if (!setting.ReplaceServer(originalConfig, serverIndex))
+            {
+                MessageBox.Show(I18N("DuplicateServer"));
+            }
         }
 
         public void LoadExample(int index)
@@ -285,20 +309,16 @@ namespace V2RayGCon.Controller.Configer
 
         public void AddNewServer()
         {
-            if (!CheckValid())
+            if (!FlushEditor())
             {
-                if (!Lib.UI.Confirm(I18N("EditorDiscardChange")))
-                {
-                    return;
-                }
+                return;
             }
-            else
+
+            originalConfig = Lib.Utils.Base64Encode(config.ToString());
+            if (!setting.AddServer(originalConfig))
             {
-                SaveChanges();
-                UpdateData();
+                MessageBox.Show(I18N("DuplicateServer"));
             }
-            setting.AddServer(Lib.Utils.Base64Encode(config.ToString()));
-            MessageBox.Show(I18N("Done"));
         }
 
         public void InsertTCP()
@@ -393,7 +413,27 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region private method
-        void InsertConfigHelper(Action f)
+
+        bool FlushEditor()
+        {
+            if (!CheckValid())
+            {
+                if (Lib.UI.Confirm(I18N("EditorDiscardChange")))
+                {
+                    DiscardChanges();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            SaveChanges();
+            UpdateData();
+            return true;
+        }
+
+        void InsertConfigHelper(Action lamda)
         {
             if (!CheckValid())
             {
@@ -405,7 +445,7 @@ namespace V2RayGCon.Controller.Configer
 
             try
             {
-                f();
+                lamda();
             }
             catch { }
 
@@ -442,6 +482,7 @@ namespace V2RayGCon.Controller.Configer
 
             if (!string.IsNullOrEmpty(b64Config))
             {
+                originalConfig = b64Config;
                 o = JObject.Parse(Lib.Utils.Base64Decode(b64Config));
             }
 

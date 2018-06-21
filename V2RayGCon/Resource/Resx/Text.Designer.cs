@@ -88,6 +88,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Add server fail, please check your settings. 的本地化字符串。
+        /// </summary>
+        internal static string AddServFail {
+            get {
+                return ResourceManager.GetString("AddServFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add server success! 的本地化字符串。
         /// </summary>
         internal static string AddServSuccess {
@@ -185,6 +194,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmLoadNewServer {
             get {
                 return ResourceManager.GetString("ConfirmLoadNewServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save current config? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmSaveCurConfig {
+            get {
+                return ResourceManager.GetString("ConfirmSaveCurConfig", resourceCulture);
             }
         }
         
@@ -503,6 +521,16 @@ namespace V2RayGCon.Resource.Resx {
         internal static string NotSupportLinkType {
             get {
                 return ResourceManager.GetString("NotSupportLinkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Can not find origin config!
+        ///Please use [Replace server] menu. 的本地化字符串。
+        /// </summary>
+        internal static string OrgServNotFound {
+            get {
+                return ResourceManager.GetString("OrgServNotFound", resourceCulture);
             }
         }
         

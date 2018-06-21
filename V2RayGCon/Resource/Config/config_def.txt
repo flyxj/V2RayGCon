@@ -123,8 +123,7 @@
     "redirect": "127.0.0.1:3366",
     "userLevel": 0
   },
-  "inDoko": 
-  {
+  "inDoko": {
     "address": "8.8.8.8",
     "port": 53,
     "network": "tcp",
@@ -194,7 +193,8 @@
         "uplinkOnly": 2,
         "downlinkOnly": 5,
         "statsUserUplink": false,
-        "statsUserDownlink": false
+        "statsUserDownlink": false,
+        "bufferSize": 10240
       }
     },
     "system": {

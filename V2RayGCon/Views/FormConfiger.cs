@@ -67,8 +67,23 @@ namespace V2RayGCon.Views
             var streamClient = configer.streamSettings;
             var bs = new BindingSource();
             bs.DataSource = streamClient;
-            tboxKCPType.DataBindings.Add("Text", bs, nameof(streamClient.kcpType));
+
             tboxWSPath.DataBindings.Add("Text", bs, nameof(streamClient.wsPath));
+
+            cboxKCPType.DataBindings.Add(
+                nameof(cboxKCPType.SelectedIndex),
+                bs,
+                nameof(streamClient.kcpType),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            cboxTCPType.DataBindings.Add(
+                nameof(cboxTCPType.SelectedIndex),
+                bs,
+                nameof(streamClient.tcpType),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
             cboxStreamSecurity.DataBindings.Add(
                 nameof(cboxStreamSecurity.SelectedIndex),
                 bs,
@@ -394,6 +409,8 @@ namespace V2RayGCon.Views
             Fill(cboxSSCMethod, Model.Data.Table.ssMethods);
             Fill(cboxSSSMethod, Model.Data.Table.ssMethods);
             Fill(cboxSSSNetwork, Model.Data.Table.ssNetworks);
+            Fill(cboxTCPType, Model.Data.Table.tcpTypes);
+            Fill(cboxKCPType, Model.Data.Table.kcpTypes);
         }
 
         void InitScintilla()
@@ -595,6 +612,12 @@ namespace V2RayGCon.Views
         private void btnVGC_Click(object sender, EventArgs e)
         {
             configer.InsertVGC();
+        }
+
+        private void saveCurCfgToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            configer.ReplaceOriginalServer();
+            SetTitle(configer.GetAlias());
         }
     }
 }

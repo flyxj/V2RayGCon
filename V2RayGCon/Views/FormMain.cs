@@ -372,5 +372,10 @@ namespace V2RayGCon.Views
         {
             Lib.UI.ShowAboutBox();
         }
+
+        private void addVmessServToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Views.FormSimAddVmessClient.GetForm();
+        }
     }
 }

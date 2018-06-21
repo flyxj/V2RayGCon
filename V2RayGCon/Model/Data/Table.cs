@@ -66,6 +66,23 @@ namespace V2RayGCon.Model.Data
             { 2, "tcp,udp" },
         };
 
+        public static Dictionary<int, string> tcpTypes => _tcpTypes;
+        static Dictionary<int, string> _tcpTypes = new Dictionary<int, string>
+        {
+            { 0, "none" },
+            { 1, "http" },
+        };
+
+        public static Dictionary<int, string> kcpTypes => _kcpTypes;
+        static Dictionary<int, string> _kcpTypes = new Dictionary<int, string>
+        {
+            { 0, "none" },
+            { 1, "srtp" },
+            { 2, "utp" },
+            { 3, "wechat-video" },
+            { 4, "dtls" },
+        };
+
         public static Dictionary<int, List<string[]>> examples => _examples;
         static Dictionary<int, List<string[]>> _examples = ExampleHelper();
 

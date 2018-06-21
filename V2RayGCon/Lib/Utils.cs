@@ -244,7 +244,7 @@ namespace V2RayGCon.Lib
 
             // prepare template
             var tpl = JObject.Parse(resData("config_tpl"));
-            var config = tpl["tplImortVmess"];
+            var config = tpl["tplImportVmess"];
             config["v2raygcon"]["alias"] = vmess.ps;
 
             var cPos = config["outbound"]["settings"]["vnext"][0];

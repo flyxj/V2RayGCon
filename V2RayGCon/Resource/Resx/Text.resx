@@ -321,4 +321,14 @@ Checkout download page?</value>
   <data name="ConfirmDeleteAllServers" xml:space="preserve">
     <value>DELETE ALL SERVERS?</value>
   </data>
+  <data name="ConfirmSaveCurConfig" xml:space="preserve">
+    <value>Save current config?</value>
+  </data>
+  <data name="OrgServNotFound" xml:space="preserve">
+    <value>Can not find origin config!
+Please use [Replace server] menu.</value>
+  </data>
+  <data name="AddServFail" xml:space="preserve">
+    <value>Add server fail, please check your settings.</value>
+  </data>
 </root>

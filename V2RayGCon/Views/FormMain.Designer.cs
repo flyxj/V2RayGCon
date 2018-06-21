@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.operationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addVmessServToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportVmessLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.copyAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,6 +107,7 @@
             // operationToolStripMenuItem
             // 
             this.operationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addVmessServToolStripMenuItem,
             this.ImportVmessLinkToolStripMenuItem,
             this.toolStripSeparator5,
             this.copyAllToolStripMenuItem,
@@ -114,6 +116,12 @@
             this.exitToolStripMenuItem});
             this.operationToolStripMenuItem.Name = "operationToolStripMenuItem";
             resources.ApplyResources(this.operationToolStripMenuItem, "operationToolStripMenuItem");
+            // 
+            // addVmessServToolStripMenuItem
+            // 
+            this.addVmessServToolStripMenuItem.Name = "addVmessServToolStripMenuItem";
+            resources.ApplyResources(this.addVmessServToolStripMenuItem, "addVmessServToolStripMenuItem");
+            this.addVmessServToolStripMenuItem.Click += new System.EventHandler(this.addVmessServToolStripMenuItem1_Click);
             // 
             // ImportVmessLinkToolStripMenuItem
             // 
@@ -560,6 +568,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem updateV2rayGConToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addVmessServToolStripMenuItem;
     }
 }
 

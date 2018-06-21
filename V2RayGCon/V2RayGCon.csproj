@@ -181,6 +181,12 @@
     <Compile Include="Views\FormSearch.Designer.cs">
       <DependentUpon>FormSearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\FormSimAddVmessClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormSimAddVmessClient.Designer.cs">
+      <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -238,6 +244,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormDownloadCore.zh-CN.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSimAddVmessClient.resx">
+      <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSimAddVmessClient.zh-CN.resx">
+      <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
