@@ -11,8 +11,7 @@ namespace V2RayGCon.Controller.Configer
         Service.Setting setting;
         public SSClient ssClient;
         public StreamSettings streamSettings;
-        public VmessClient vmessClient;
-        public VmessServer vmessServer;
+        public VmessCtrl vmessCtrl;
         public Editor editor;
         public SSServer ssServer;
         public VGC vgc;
@@ -29,8 +28,7 @@ namespace V2RayGCon.Controller.Configer
             ssServer = new SSServer();
             ssClient = new SSClient();
             streamSettings = new StreamSettings();
-            vmessClient = new VmessClient();
-            vmessServer = new VmessServer();
+            vmessCtrl = new VmessCtrl();
             editor = new Editor();
             vgc = new VGC();
 
@@ -46,8 +44,13 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void SetVmessServerMode(bool isServer)
+        {
+            vmessCtrl.serverMode = isServer;
+            vmessCtrl.UpdateData(config);
+        }
 
-        public void StreamSettingsIsServerChange(bool isServer)
+        public void SetStreamSettingsServerMode(bool isServer)
         {
             streamSettings.isServer = isServer;
             streamSettings.UpdateData(config);
@@ -177,11 +180,10 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData()
         {
-            vmessClient.UpdateData(config);
+            vmessCtrl.UpdateData(config);
             ssClient.UpdateData(config);
             ssServer.UpdateData(config);
             streamSettings.UpdateData(config);
-            vmessServer.UpdateData(config);
             vgc.UpdateData(config);
         }
 
@@ -219,8 +221,6 @@ namespace V2RayGCon.Controller.Configer
             }
 
         }
-
-
 
         public void ReplaceServer(int serverIndex)
         {
@@ -344,11 +344,29 @@ namespace V2RayGCon.Controller.Configer
             });
         }
 
-        public void InsertVmessClient()
+        public void InsertVmess()
         {
             InsertConfigHelper(() =>
             {
-                InsertOutBoundSetting(vmessClient.GetSettings(), "vmess");
+                var vmess = vmessCtrl.GetSettings();
+                if (vmessCtrl.serverMode)
+                {
+                    var keys = new List<string> {
+                        "port",
+                        "listen",
+                        "settings",
+                        "protocol" };
+
+                    foreach (var key in keys)
+                    {
+                        config["inbound"][key] = vmess[key];
+                    }
+                    // config["inbound"] = vmess;
+                }
+                else
+                {
+                    InsertOutBoundSetting(vmess, "vmess");
+                }
             });
         }
 
@@ -357,14 +375,6 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 config["v2raygcon"] = vgc.GetSettings();
-            });
-        }
-
-        public void InsertVmessServer()
-        {
-            InsertConfigHelper(() =>
-            {
-                config["inbound"] = vmessServer.GetSettings();
             });
         }
 

@@ -40,8 +40,11 @@ namespace V2RayGCon.Views
             };
 
             this.Show();
+            RefreshCurrentCoreVersion();
 
         }
+
+        #region private method
 
         void FillComboBox(ComboBox element, List<string> itemList)
         {
@@ -60,6 +63,22 @@ namespace V2RayGCon.Views
             element.SelectedIndex = 0;
         }
 
+        void RefreshCurrentCoreVersion()
+        {
+            var version = core.GetCoreVersion();
+            if (string.IsNullOrEmpty(version))
+            {
+                labelCoreVersion.Text = I18N("GetCoreVerFail");
+            }
+            else
+            {
+                labelCoreVersion.Text = string.Format(I18N("CurrentCoreVerIs"), version);
+            }
+        }
+
+        #endregion
+
+        #region UI
         void InitUI()
         {
             cboxArch.SelectedIndex = 0;
@@ -68,46 +87,9 @@ namespace V2RayGCon.Views
             pgBarDownload.Value = 0;
         }
 
-        delegate void UpdateVersionListDelegate(List<string> versions);
-
-        void VersionListReciever(List<string> versions)
+        private void btnExit_Click(object sender, System.EventArgs e)
         {
-            UpdateVersionListDelegate updater = new UpdateVersionListDelegate(UpdateVersionList);
-            try
-            {
-                cboxVer?.Invoke(updater, versions);
-            }
-            catch { }
-        }
-
-        void UpdateVersionList(List<string> versions)
-        {
-            btnRefreshVer.Enabled = true;
-            if (versions.Count > 0)
-            {
-                FillComboBox(cboxVer, versions);
-            }
-            else
-            {
-                MessageBox.Show(I18N("GetVersionListFail"));
-            }
-        }
-
-        delegate void UpdateProgressDelegate(int percentage);
-
-        void UpdateProgressBarReciever(int percentage)
-        {
-            UpdateProgressDelegate updater = new UpdateProgressDelegate(UpdateProgressBar);
-            try
-            {
-                pgBarDownload?.Invoke(updater, percentage);
-            }
-            catch { }
-        }
-
-        void UpdateProgressBar(int percentage)
-        {
-            pgBarDownload.Value = Lib.Utils.Clamp(percentage, 0, 101);
+            this.Close();
         }
 
         private void btnRefreshVer_Click(object sender, System.EventArgs e)
@@ -127,6 +109,7 @@ namespace V2RayGCon.Views
                 MessageBox.Show(I18N("Downloading"));
                 return;
             }
+
             downloader = new Service.Downloader();
             downloader.SelectArchitecture(cboxArch.SelectedIndex == 1);
             downloader.SetVersion(cboxVer.Text);
@@ -180,5 +163,58 @@ namespace V2RayGCon.Views
                 downloader.Cancel();
             }
         }
+
+        private void btnCheckVersion_Click(object sender, System.EventArgs e)
+        {
+            RefreshCurrentCoreVersion();
+        }
+        #endregion
+
+        #region event handler
+        delegate void UpdateVersionListDelegate(List<string> versions);
+
+        void VersionListReciever(List<string> versions)
+        {
+            UpdateVersionListDelegate updater = new UpdateVersionListDelegate(UpdateVersionList);
+            try
+            {
+                cboxVer?.Invoke(updater, versions);
+            }
+            catch { }
+        }
+
+        void UpdateVersionList(List<string> versions)
+        {
+            btnRefreshVer.Enabled = true;
+            if (versions.Count > 0)
+            {
+                FillComboBox(cboxVer, versions);
+            }
+            else
+            {
+                MessageBox.Show(I18N("GetVersionListFail"));
+            }
+        }
+
+        delegate void UpdateProgressDelegate(int percentage);
+
+        void UpdateProgressBarReciever(int percentage)
+        {
+            UpdateProgressDelegate updater = new UpdateProgressDelegate(UpdateProgressBar);
+            try
+            {
+                pgBarDownload?.Invoke(updater, percentage);
+            }
+            catch { }
+        }
+
+        void UpdateProgressBar(int percentage)
+        {
+            pgBarDownload.Value = Lib.Utils.Clamp(percentage, 0, 101);
+        }
+
+        #endregion
+
+
     }
 }

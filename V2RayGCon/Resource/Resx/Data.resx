@@ -174,7 +174,7 @@
     <value>https://github.com/v2ray/v2ray-core/releases</value>
   </data>
   <data name="VerList" xml:space="preserve">
-    <value>v3.18,v3.21,v3.26</value>
+    <value>v3.26,v3.21,v3.18</value>
   </data>
   <data name="PatternLatestVGC" xml:space="preserve">
     <value>/nobody3u/V2RayGCon/releases/tag/([\.0-9]+)</value>

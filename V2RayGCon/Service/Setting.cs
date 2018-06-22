@@ -537,23 +537,21 @@ namespace V2RayGCon.Service
 
             var protocol = GetStr("outbound.protocol");
 
-            var keys = Model.Data.Table.servInfoKeys["shadowsocks"];
-            if (protocol.Equals("vmess"))
-            {
-                keys = Model.Data.Table.servInfoKeys["vmess"];
-            }
+            var keys = protocol.Equals("vmess") ?
+                Model.Data.Table.servInfoKeys["vmess"] :
+                Model.Data.Table.servInfoKeys["shadowsocks"];
 
             return new string[] {
-                string.Empty,     // reserve no.
-                string.Empty,     // reserve alias
+                string.Empty,     // reserve for no.
+                string.Empty,     // reserve for alias
                 protocol,
                 GetStr(keys[0]),  // ip
                 GetStr(keys[1]),  // port
-                string.Empty,     // reserve selected
-                GetStr(keys[3]),  // path
-                GetStr(keys[4]),  // streamType
-                GetStr(keys[2]),  // tls/enc
-                GetStr(keys[5]),  // type /disguise
+                string.Empty,     // reserve for activate
+                GetStr(keys[4]),  // stream type
+                GetStr(keys[3]),  // wspath
+                GetStr(keys[2]),  // tls
+                GetStr(keys[5]),  // mKCP disguise
             };
         }
 

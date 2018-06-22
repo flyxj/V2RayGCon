@@ -133,8 +133,8 @@ namespace V2RayGCon.Resource.Resx {
         /// <summary>
         ///   查找类似 {
         ///  &quot;vgc&quot;: {
-        ///    &quot;alias&quot;: &quot;mix&quot;,
-        ///    &quot;description&quot;: &quot;v3.18&quot;
+        ///    &quot;alias&quot;: &quot;&quot;,
+        ///    &quot;description&quot;: &quot;&quot;
         ///  },
         ///  &quot;vmessClient&quot;: {
         ///    &quot;vnext&quot;: [
@@ -158,7 +158,7 @@ namespace V2RayGCon.Resource.Resx {
         ///    &quot;allowTransparent&quot;: false,
         ///    &quot;userLevel&quot;: 0
         ///  },
-        ///  &quot;s [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  &quot;socksIn&quot;: [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
@@ -329,7 +329,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.18,v3.21,v3.26 的本地化字符串。
+        ///   查找类似 v3.26,v3.21,v3.18 的本地化字符串。
         /// </summary>
         internal static string VerList {
             get {

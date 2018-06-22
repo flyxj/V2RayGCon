@@ -59,21 +59,21 @@
             this.configEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateCoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.updateV2rayGConToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.downloadV2rayCoreToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lvServers = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.alias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.outbound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.host = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.port = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.activate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.stream = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.wspath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.enc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.disguise = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ctxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.stripMenuActivate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -100,7 +100,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.operationToolStripMenuItem,
             this.proxyToolStripMenuItem,
-            this.windowToolStripMenuItem});
+            this.windowToolStripMenuItem,
+            this.aboutToolStripMenuItem1});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
             // 
@@ -273,11 +274,7 @@
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configEditorToolStripMenuItem,
             this.qRCodeToolStripMenuItem,
-            this.logToolStripMenuItem,
-            this.updateCoreToolStripMenuItem,
-            this.toolStripSeparator9,
-            this.updateV2rayGConToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.logToolStripMenuItem});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             resources.ApplyResources(this.windowToolStripMenuItem, "windowToolStripMenuItem");
             // 
@@ -299,22 +296,26 @@
             resources.ApplyResources(this.logToolStripMenuItem, "logToolStripMenuItem");
             this.logToolStripMenuItem.Click += new System.EventHandler(this.ShowFormLogToolStripMenuItem_Click);
             // 
-            // updateCoreToolStripMenuItem
+            // aboutToolStripMenuItem1
             // 
-            this.updateCoreToolStripMenuItem.Name = "updateCoreToolStripMenuItem";
-            resources.ApplyResources(this.updateCoreToolStripMenuItem, "updateCoreToolStripMenuItem");
-            this.updateCoreToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.downloadV2rayCoreToolStripMenuItem1,
+            this.checkUpdateToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
+            resources.ApplyResources(this.aboutToolStripMenuItem1, "aboutToolStripMenuItem1");
             // 
-            // toolStripSeparator9
+            // downloadV2rayCoreToolStripMenuItem1
             // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
+            this.downloadV2rayCoreToolStripMenuItem1.Name = "downloadV2rayCoreToolStripMenuItem1";
+            resources.ApplyResources(this.downloadV2rayCoreToolStripMenuItem1, "downloadV2rayCoreToolStripMenuItem1");
+            this.downloadV2rayCoreToolStripMenuItem1.Click += new System.EventHandler(this.downloadV2rayCoreToolStripMenuItem1_Click);
             // 
-            // updateV2rayGConToolStripMenuItem
+            // checkUpdateToolStripMenuItem
             // 
-            this.updateV2rayGConToolStripMenuItem.Name = "updateV2rayGConToolStripMenuItem";
-            resources.ApplyResources(this.updateV2rayGConToolStripMenuItem, "updateV2rayGConToolStripMenuItem");
-            this.updateV2rayGConToolStripMenuItem.Click += new System.EventHandler(this.updateV2rayGConToolStripMenuItem_Click);
+            this.checkUpdateToolStripMenuItem.Name = "checkUpdateToolStripMenuItem";
+            resources.ApplyResources(this.checkUpdateToolStripMenuItem, "checkUpdateToolStripMenuItem");
+            this.checkUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkUpdateToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -326,16 +327,16 @@
             // 
             resources.ApplyResources(this.lvServers, "lvServers");
             this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader10,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9});
+            this.index,
+            this.alias,
+            this.outbound,
+            this.host,
+            this.port,
+            this.activate,
+            this.stream,
+            this.wspath,
+            this.enc,
+            this.disguise});
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
             this.lvServers.MultiSelect = false;
@@ -343,45 +344,45 @@
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // index
             // 
-            resources.ApplyResources(this.columnHeader1, "columnHeader1");
+            resources.ApplyResources(this.index, "index");
             // 
-            // columnHeader10
+            // alias
             // 
-            resources.ApplyResources(this.columnHeader10, "columnHeader10");
+            resources.ApplyResources(this.alias, "alias");
             // 
-            // columnHeader2
+            // outbound
             // 
-            resources.ApplyResources(this.columnHeader2, "columnHeader2");
+            resources.ApplyResources(this.outbound, "outbound");
             // 
-            // columnHeader3
+            // host
             // 
-            resources.ApplyResources(this.columnHeader3, "columnHeader3");
+            resources.ApplyResources(this.host, "host");
             // 
-            // columnHeader4
+            // port
             // 
-            resources.ApplyResources(this.columnHeader4, "columnHeader4");
+            resources.ApplyResources(this.port, "port");
             // 
-            // columnHeader5
+            // activate
             // 
-            resources.ApplyResources(this.columnHeader5, "columnHeader5");
+            resources.ApplyResources(this.activate, "activate");
             // 
-            // columnHeader6
+            // stream
             // 
-            resources.ApplyResources(this.columnHeader6, "columnHeader6");
+            resources.ApplyResources(this.stream, "stream");
             // 
-            // columnHeader7
+            // wspath
             // 
-            resources.ApplyResources(this.columnHeader7, "columnHeader7");
+            resources.ApplyResources(this.wspath, "wspath");
             // 
-            // columnHeader8
+            // enc
             // 
-            resources.ApplyResources(this.columnHeader8, "columnHeader8");
+            resources.ApplyResources(this.enc, "enc");
             // 
-            // columnHeader9
+            // disguise
             // 
-            resources.ApplyResources(this.columnHeader9, "columnHeader9");
+            resources.ApplyResources(this.disguise, "disguise");
             // 
             // ctxMenuStrip
             // 
@@ -519,15 +520,15 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem stripMenuDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader index;
+        private System.Windows.Forms.ColumnHeader outbound;
+        private System.Windows.Forms.ColumnHeader host;
+        private System.Windows.Forms.ColumnHeader port;
+        private System.Windows.Forms.ColumnHeader activate;
+        private System.Windows.Forms.ColumnHeader wspath;
+        private System.Windows.Forms.ColumnHeader stream;
+        private System.Windows.Forms.ColumnHeader enc;
+        private System.Windows.Forms.ColumnHeader disguise;
         private System.Windows.Forms.ToolStripMenuItem deleteAllServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem proxyToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -556,7 +557,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem buttomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader alias;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem systemProxyModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sysProxyDirectToolStripMenuItem;
@@ -564,11 +565,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem protocolConfigToolStripMenuItem;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ToolStripMenuItem updateCoreToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-        private System.Windows.Forms.ToolStripMenuItem updateV2rayGConToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addVmessServToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem downloadV2rayCoreToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem checkUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

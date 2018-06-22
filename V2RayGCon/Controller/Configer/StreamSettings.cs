@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using static V2RayGCon.Lib.StringResource;
 
 
@@ -115,9 +116,9 @@ namespace V2RayGCon.Controller.Configer
 
             wsPath = GetStr(prefix, "wsSettings.path");
 
-            tls = Lib.Utils.GetIndexIgnoreCase(
+            tls = Math.Max(0, Lib.Utils.GetIndexIgnoreCase(
                 Model.Data.Table.streamSecurity,
-                GetStr(prefix, "security"));
+                GetStr(prefix, "security")));
 
             kcpType = Lib.Utils.GetIndexIgnoreCase(
                 Model.Data.Table.kcpTypes,

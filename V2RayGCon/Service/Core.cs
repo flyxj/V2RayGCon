@@ -2,13 +2,14 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
 
-    class Core : Model.BaseClass.SingletonService<Core>
+    public class Core : Model.BaseClass.SingletonService<Core>
     {
         Process v2rayCore;
         Setting setting;
@@ -92,14 +93,19 @@ namespace V2RayGCon.Service
 
             Debug.WriteLine("start v2ray core");
 
-            v2rayCore = new Process();
-            v2rayCore.StartInfo.FileName = resData("Executable");
-            v2rayCore.StartInfo.Arguments = "-config=stdin: -format=json";
-            v2rayCore.StartInfo.CreateNoWindow = true;
-            v2rayCore.StartInfo.UseShellExecute = false;
-            v2rayCore.StartInfo.RedirectStandardOutput = true;
-            v2rayCore.StartInfo.RedirectStandardError = true;
-            v2rayCore.StartInfo.RedirectStandardInput = true;
+            v2rayCore = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = resData("Executable"),
+                    Arguments = "-config=stdin: -format=json",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    RedirectStandardInput = true,
+                }
+            };
 
             v2rayCore.EnableRaisingEvents = true;
             v2rayCore.Exited += (s, e) =>
@@ -168,6 +174,47 @@ namespace V2RayGCon.Service
 
             _isRunning = false;
             OnCoreStatChange?.Invoke(this, EventArgs.Empty);
+        }
+
+        public string GetCoreVersion()
+        {
+            var ver = string.Empty;
+            if (!File.Exists(resData("Executable")))
+            {
+                return ver;
+            }
+
+            var p = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = resData("Executable"),
+                    Arguments = "-version",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                }
+
+            };
+
+            Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
+            try
+            {
+                p.Start();
+                while (!p.StandardOutput.EndOfStream)
+                {
+                    var output = p.StandardOutput.ReadLine();
+                    Match match = pattern.Match(output);
+                    if (match.Success)
+                    {
+                        ver = match.Groups["version"].Value;
+                    }
+                }
+                p.WaitForExit();
+            }
+            catch { }
+
+            return ver;
         }
         #endregion
     }

@@ -102,8 +102,7 @@
     <Compile Include="Controller\Configer\SSClient.cs" />
     <Compile Include="Controller\Configer\SSServer.cs" />
     <Compile Include="Controller\Configer\StreamSettings.cs" />
-    <Compile Include="Controller\Configer\VmessClient.cs" />
-    <Compile Include="Controller\Configer\VmessServer.cs" />
+    <Compile Include="Controller\Configer\VmessCtrl.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\ProxySetter.cs" />

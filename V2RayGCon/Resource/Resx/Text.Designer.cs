@@ -243,6 +243,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Current v2ray-core version is v{0} 的本地化字符串。
+        /// </summary>
+        internal static string CurrentCoreVerIs {
+            get {
+                return ResourceManager.GetString("CurrentCoreVerIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Default 的本地化字符串。
         /// </summary>
         internal static string Default {
@@ -413,6 +422,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Get current v2ray-core version fail! 的本地化字符串。
+        /// </summary>
+        internal static string GetCoreVerFail {
+            get {
+                return ResourceManager.GetString("GetCoreVerFail", resourceCulture);
             }
         }
         

@@ -331,4 +331,10 @@ Please use [Replace server] menu.</value>
   <data name="AddServFail" xml:space="preserve">
     <value>Add server fail, please check your settings.</value>
   </data>
+  <data name="CurrentCoreVerIs" xml:space="preserve">
+    <value>Current v2ray-core version is v{0}</value>
+  </data>
+  <data name="GetCoreVerFail" xml:space="preserve">
+    <value>Get current v2ray-core version fail!</value>
+  </data>
 </root>

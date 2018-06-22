@@ -35,17 +35,23 @@
             this.btnDownload = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnCheckVersion = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.pgBarDownload = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.cboxArch = new System.Windows.Forms.ComboBox();
+            this.labelCoreVersion = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboxVer
             // 
-            resources.ApplyResources(this.cboxVer, "cboxVer");
             this.cboxVer.FormattingEnabled = true;
+            resources.ApplyResources(this.cboxVer, "cboxVer");
             this.cboxVer.Name = "cboxVer";
-            this.toolTip1.SetToolTip(this.cboxVer, resources.GetString("cboxVer.ToolTip"));
             // 
             // btnRefreshVer
             // 
@@ -71,46 +77,84 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnCheckVersion
+            // 
+            resources.ApplyResources(this.btnCheckVersion, "btnCheckVersion");
+            this.btnCheckVersion.Name = "btnCheckVersion";
+            this.toolTip1.SetToolTip(this.btnCheckVersion, resources.GetString("btnCheckVersion.ToolTip"));
+            this.btnCheckVersion.UseVisualStyleBackColor = true;
+            this.btnCheckVersion.Click += new System.EventHandler(this.btnCheckVersion_Click);
+            // 
+            // btnExit
+            // 
+            resources.ApplyResources(this.btnExit, "btnExit");
+            this.btnExit.Name = "btnExit";
+            this.toolTip1.SetToolTip(this.btnExit, resources.GetString("btnExit.ToolTip"));
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // pgBarDownload
             // 
             resources.ApplyResources(this.pgBarDownload, "pgBarDownload");
             this.pgBarDownload.Name = "pgBarDownload";
-            this.toolTip1.SetToolTip(this.pgBarDownload, resources.GetString("pgBarDownload.ToolTip"));
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // cboxArch
             // 
-            resources.ApplyResources(this.cboxArch, "cboxArch");
             this.cboxArch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxArch.FormattingEnabled = true;
             this.cboxArch.Items.AddRange(new object[] {
             resources.GetString("cboxArch.Items"),
             resources.GetString("cboxArch.Items1")});
+            resources.ApplyResources(this.cboxArch, "cboxArch");
             this.cboxArch.Name = "cboxArch";
-            this.toolTip1.SetToolTip(this.cboxArch, resources.GetString("cboxArch.ToolTip"));
+            // 
+            // labelCoreVersion
+            // 
+            resources.ApplyResources(this.labelCoreVersion, "labelCoreVersion");
+            this.labelCoreVersion.Name = "labelCoreVersion";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnCheckVersion);
+            this.groupBox1.Controls.Add(this.labelCoreVersion);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnExit);
+            this.groupBox2.Controls.Add(this.btnDownload);
+            this.groupBox2.Controls.Add(this.btnCancel);
+            this.groupBox2.Controls.Add(this.cboxArch);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.pgBarDownload);
+            this.groupBox2.Controls.Add(this.btnRefreshVer);
+            this.groupBox2.Controls.Add(this.cboxVer);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
             // 
             // FormDownloadCore
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cboxArch);
-            this.Controls.Add(this.pgBarDownload);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnDownload);
-            this.Controls.Add(this.btnRefreshVer);
-            this.Controls.Add(this.cboxVer);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDownloadCore";
-            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -124,5 +168,10 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboxArch;
+        private System.Windows.Forms.Label labelCoreVersion;
+        private System.Windows.Forms.Button btnCheckVersion;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnExit;
     }
 }

@@ -12,6 +12,16 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [TestMethod]
+        public void GetCoreVersion()
+        {
+            // need v2ray.exe for this test
+
+            var core = Service.Core.Instance;
+            var version = core.GetCoreVersion();
+            Assert.AreNotEqual(string.Empty, version);
+        }
+
+        [TestMethod]
         public void GetValue_GetBoolFromString_ReturnDefault()
         {
             var json = JObject.Parse(resData("config_min"));

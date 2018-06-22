@@ -124,8 +124,23 @@
   <data name="label1.Text" xml:space="preserve">
     <value>如果你需要更高级的功能，请使用"配置编辑器"！</value>
   </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxAID.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxPort.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label6.Text" xml:space="preserve">
     <value>端口</value>
+  </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 12</value>
@@ -133,12 +148,17 @@
   <data name="label3.Text" xml:space="preserve">
     <value>IP(主机名)</value>
   </data>
+  <data name="label3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 28</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="chkboxTLS.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 16</value>
@@ -146,11 +166,17 @@
   <data name="chkboxTLS.Text" xml:space="preserve">
     <value>Use TLS (https服务器要钩上)</value>
   </data>
+  <data name="chkboxTLS.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>mKCP伪装</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
@@ -158,14 +184,35 @@
   <data name="label4.Text" xml:space="preserve">
     <value>ws的路径</value>
   </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxKCP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="rbtnKCP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="rbtnTCP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="rbtnWS.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="rbtnNoStream.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 16</value>
   </data>
   <data name="rbtnNoStream.Text" xml:space="preserve">
     <value>不使用streamSettings</value>
   </data>
+  <data name="rbtnNoStream.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 136</value>
+  </data>
+  <data name="groupBox2.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="tboxAlias.Location" type="System.Drawing.Point, System.Drawing">
     <value>173, 284</value>
@@ -173,8 +220,8 @@
   <data name="tboxAlias.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 21</value>
   </data>
-  <data name="tboxAlias.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="tboxAlias.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 288</value>
@@ -185,11 +232,23 @@
   <data name="label7.Text" xml:space="preserve">
     <value>给这份配置起个可爱的名字</value>
   </data>
-  <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>173, 311</value>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
+    <value>109, 311</value>
+  </data>
+  <data name="btnOK.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnExit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>216, 311</value>
+  </data>
+  <data name="btnExit.Text" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="btnExit.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>427, 346</value>
@@ -6368,5 +6427,8 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>添加vmess服务器</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

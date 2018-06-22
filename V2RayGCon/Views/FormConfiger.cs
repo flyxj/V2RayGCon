@@ -158,21 +158,9 @@ namespace V2RayGCon.Views
 
         }
 
-        void BindDataVmessServer()
+        void BindDataVmess()
         {
-            var server = configer.vmessServer;
-            var bs = new BindingSource();
-            bs.DataSource = server;
-
-            tboxVServID.DataBindings.Add("Text", bs, nameof(server.ID));
-            tboxVServLevel.DataBindings.Add("Text", bs, nameof(server.level));
-            tboxVServAID.DataBindings.Add("Text", bs, nameof(server.altID));
-            tboxVServPort.DataBindings.Add("Text", bs, nameof(server.port));
-        }
-
-        void BindDataVmessClient()
-        {
-            var vmessClient = configer.vmessClient;
+            var vmessClient = configer.vmessCtrl;
             var bsVmessClient = new BindingSource();
             bsVmessClient.DataSource = vmessClient;
 
@@ -194,7 +182,7 @@ namespace V2RayGCon.Views
 
         private void btnVMessInsertClient_Click(object sender, EventArgs e)
         {
-            configer.InsertVmessClient();
+            configer.InsertVmess();
         }
 
         private void btnSSRInsertClient_Click(object sender, EventArgs e)
@@ -202,24 +190,9 @@ namespace V2RayGCon.Views
             configer.InsertSSClient();
         }
 
-        private void btnStreamInsertKCP_Click(object sender, EventArgs e)
-        {
-            configer.InsertKCP();
-        }
-
-        private void btnStreamInsertWS_Click(object sender, EventArgs e)
-        {
-            configer.InsertWS();
-        }
-
-        private void btnStreamInsertTCP_Click(object sender, EventArgs e)
-        {
-            configer.InsertTCP();
-        }
-
         private void btnVMessGenUUID_Click(object sender, EventArgs e)
         {
-            configer.vmessClient.ID = Guid.NewGuid().ToString();
+            configer.vmessCtrl.ID = Guid.NewGuid().ToString();
         }
 
         private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
@@ -250,21 +223,6 @@ namespace V2RayGCon.Views
         {
             configer.InsertSSServer();
 
-        }
-
-        private void btnGenVServID_Click(object sender, EventArgs e)
-        {
-            configer.vmessServer.ID = Guid.NewGuid().ToString();
-        }
-
-        private void btnInsertVServ_Click(object sender, EventArgs e)
-        {
-            configer.InsertVmessServer();
-        }
-
-        private void chkStreamSettingsIsServer_CheckedChanged(object sender, EventArgs e)
-        {
-            configer.StreamSettingsIsServerChange(chkStreamIsServer.Checked);
         }
 
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
@@ -411,6 +369,7 @@ namespace V2RayGCon.Views
             Fill(cboxSSSNetwork, Model.Data.Table.ssNetworks);
             Fill(cboxTCPType, Model.Data.Table.tcpTypes);
             Fill(cboxKCPType, Model.Data.Table.kcpTypes);
+            Fill(cboxStreamSecurity, Model.Data.Table.streamSecurity);
         }
 
         void InitScintilla()
@@ -476,12 +435,11 @@ namespace V2RayGCon.Views
 
         void InitDataBinding()
         {
-            BindDataVmessClient();
+            BindDataVmess();
             BindDataSSClient();
             BindDataStreamSettings();
             BindDataEditor();
             BindDataSSServer();
-            BindDataVmessServer();
             BindDataVGC();
         }
         #endregion
@@ -609,15 +567,40 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        private void btnVGC_Click(object sender, EventArgs e)
-        {
-            configer.InsertVGC();
-        }
-
         private void saveCurCfgToolStripMenuItem_Click(object sender, EventArgs e)
         {
             configer.ReplaceOriginalServer();
             SetTitle(configer.GetAlias());
+        }
+
+        private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
+        {
+            configer.SetVmessServerMode(rbtnVmessIServerMode.Checked);
+        }
+
+        private void rbtnStreamInbound_CheckedChanged(object sender, EventArgs e)
+        {
+            configer.SetStreamSettingsServerMode(rbtnStreamInbound.Checked);
+        }
+
+        private void btnStreamInsertKCP_Click(object sender, EventArgs e)
+        {
+            configer.InsertKCP();
+        }
+
+        private void btnStreamInsertWS_Click(object sender, EventArgs e)
+        {
+            configer.InsertWS();
+        }
+
+        private void btnStreamInsertTCP_Click(object sender, EventArgs e)
+        {
+            configer.InsertTCP();
+        }
+
+        private void btnVGC_Click(object sender, EventArgs e)
+        {
+            configer.InsertVGC();
         }
     }
 }

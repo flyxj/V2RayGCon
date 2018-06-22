@@ -58,10 +58,6 @@ namespace V2RayGCon.Views
         }
 
         #region private method
-        void updateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormDownloadCore.GetForm();
-        }
 
         void SettingChangeHandler(object s, EventArgs e)
         {
@@ -132,7 +128,7 @@ namespace V2RayGCon.Views
 
             foreach (var server in servers)
             {
-                server[5] = server[0].Equals(curServNum) ? "√" : string.Empty;
+                server[5] = server[0].Equals(curServNum) && core.isRunning ? "√" : string.Empty;
                 lvServers.Items.Add(new ListViewItem(server));
             }
 
@@ -330,52 +326,26 @@ namespace V2RayGCon.Views
             SwitchToProtocal(Model.Data.Enum.ProxyTypes.config);
         }
 
-        private void updateV2rayGConToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addVmessServToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            void CheckUpdate()
-            {
-                var version = Lib.Utils.GetLatestVGCVersion();
-                if (string.IsNullOrEmpty(version))
-                {
-                    MessageBox.Show(I18N("GetVGCVerFail"));
-                    return;
-                }
-
-                var verNew = new Version(version);
-                var verCur = new Version(Properties.Resources.Version);
-
-                var result = verCur.CompareTo(verNew);
-                if (result >= 0)
-                {
-                    MessageBox.Show(I18N("NoNewVGC"));
-                    return;
-                }
-
-                var confirmTpl = I18N("ConfirmDownloadNewVGC");
-                var msg = string.Format(confirmTpl, version);
-                if (Lib.UI.Confirm(msg))
-                {
-                    var tpl = resData("TplUrlVGCRelease");
-                    var url = string.Format(tpl, version);
-                    System.Diagnostics.Process.Start(url);
-                }
-
-
-            };
-            // todo check update
-            Task.Factory.StartNew(CheckUpdate);
+            Views.FormSimAddVmessClient.GetForm();
         }
 
-        #endregion
+        private void downloadV2rayCoreToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FormDownloadCore.GetForm();
+        }
+
+        private void checkUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(formMainCtrl.CheckUpdate);
+        }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Lib.UI.ShowAboutBox();
         }
 
-        private void addVmessServToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Views.FormSimAddVmessClient.GetForm();
-        }
+        #endregion
     }
 }

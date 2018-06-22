@@ -54,6 +54,7 @@
             this.tboxAlias = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -192,7 +193,6 @@
             // 
             resources.ApplyResources(this.tboxAlias, "tboxAlias");
             this.tboxAlias.Name = "tboxAlias";
-            this.toolTip1.SetToolTip(this.tboxAlias, resources.GetString("tboxAlias.ToolTip"));
             // 
             // label7
             // 
@@ -206,16 +206,25 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // btnExit
+            // 
+            resources.ApplyResources(this.btnExit, "btnExit");
+            this.btnExit.Name = "btnExit";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // FormSimAddVmessClient
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.tboxAlias);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormSimAddVmessClient";
@@ -254,5 +263,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox tboxPort;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnExit;
     }
 }

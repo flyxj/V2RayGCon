@@ -124,7 +124,7 @@
     <value>刷新</value>
   </data>
   <data name="btnRefreshVer.ToolTip" xml:space="preserve">
-    <value>刷新版本列表</value>
+    <value>从Github获取版本列表</value>
   </data>
   <data name="btnDownload.Text" xml:space="preserve">
     <value>下载</value>
@@ -137,6 +137,15 @@
   </data>
   <data name="btnCancel.ToolTip" xml:space="preserve">
     <value>停止下载</value>
+  </data>
+  <data name="btnCheckVersion.Text" xml:space="preserve">
+    <value>重新检查</value>
+  </data>
+  <data name="btnCheckVersion.ToolTip" xml:space="preserve">
+    <value>检查当前v2ray-core版本</value>
+  </data>
+  <data name="btnExit.Text" xml:space="preserve">
+    <value>退出</value>
   </data>
   <data name="pgBarDownload.ToolTip" xml:space="preserve">
     <value />
@@ -151,6 +160,21 @@
     <value>64位</value>
   </data>
   <data name="cboxArch.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="labelCoreVersion.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>当前版本</value>
+  </data>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>可用版本</value>
+  </data>
+  <data name="groupBox2.ToolTip" xml:space="preserve">
     <value />
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

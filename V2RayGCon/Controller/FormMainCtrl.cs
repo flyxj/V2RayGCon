@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller
@@ -70,6 +71,35 @@ namespace V2RayGCon.Controller
                 Lib.Utils.CopyToClipboard(s) ?
                 I18N("LinksCopied") :
                 I18N("CopyFail"));
+        }
+
+        public void CheckUpdate()
+        {
+            var version = Lib.Utils.GetLatestVGCVersion();
+            if (string.IsNullOrEmpty(version))
+            {
+                MessageBox.Show(I18N("GetVGCVerFail"));
+                return;
+            }
+
+            var verNew = new Version(version);
+            var verCur = new Version(Properties.Resources.Version);
+
+            var result = verCur.CompareTo(verNew);
+            if (result >= 0)
+            {
+                MessageBox.Show(I18N("NoNewVGC"));
+                return;
+            }
+
+            var confirmTpl = I18N("ConfirmDownloadNewVGC");
+            var msg = string.Format(confirmTpl, version);
+            if (Lib.UI.Confirm(msg))
+            {
+                var tpl = resData("TplUrlVGCRelease");
+                var url = string.Format(tpl, version);
+                System.Diagnostics.Process.Start(url);
+            }
         }
 
         public void CopyAllVmessLink()

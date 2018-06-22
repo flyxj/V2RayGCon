@@ -5,13 +5,19 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.Configer
 {
-    class VmessClient :
+    class VmessCtrl :
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
-        #region properties
-        private string _ID;
+        public VmessCtrl()
+        {
+            serverMode = false;
+        }
 
+        #region properties
+        public bool serverMode;
+
+        private string _ID;
         public string ID
         {
             get { return _ID; }
@@ -19,7 +25,6 @@ namespace V2RayGCon.Controller.Configer
         }
 
         private string _level;
-
         public string level
         {
             get { return _level; }
@@ -27,7 +32,6 @@ namespace V2RayGCon.Controller.Configer
         }
 
         private string _altID;
-
         public string altID
         {
             get { return _altID; }
@@ -37,7 +41,6 @@ namespace V2RayGCon.Controller.Configer
         private string _blackhole;
         private string _ip;
         private int _port;
-
         public string addr
         {
             get { return string.Join(":", _ip, _port); }
@@ -53,26 +56,44 @@ namespace V2RayGCon.Controller.Configer
         public JToken GetSettings()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken client = configTemplate["vmessClient"];
 
-            client["vnext"][0]["address"] = _ip;
-            client["vnext"][0]["port"] = _port;
-            client["vnext"][0]["users"][0]["id"] = ID;
-            client["vnext"][0]["users"][0]["alterId"] = Lib.Utils.Str2Int(altID);
-            client["vnext"][0]["users"][0]["level"] = Lib.Utils.Str2Int(level);
+            JToken vmess = serverMode ?
+                configTemplate["vmessServer"] :
+                configTemplate["vmessClient"];
 
-            return client;
+            if (serverMode)
+            {
+                vmess["port"] = _port;
+                vmess["listen"] = _ip;
+                vmess["settings"]["clients"][0]["id"] = ID;
+                vmess["settings"]["clients"][0]["level"] = Lib.Utils.Str2Int(level);
+                vmess["settings"]["clients"][0]["alterId"] = Lib.Utils.Str2Int(altID);
+            }
+            else
+            {
+                vmess["vnext"][0]["address"] = _ip;
+                vmess["vnext"][0]["port"] = _port;
+                vmess["vnext"][0]["users"][0]["id"] = ID;
+                vmess["vnext"][0]["users"][0]["alterId"] = Lib.Utils.Str2Int(altID);
+                vmess["vnext"][0]["users"][0]["level"] = Lib.Utils.Str2Int(level);
+            }
+
+            return vmess;
         }
 
         public void UpdateData(JObject config)
         {
-            var prefix = "outbound.settings.vnext.0.users.0";
+            var prefix = serverMode ?
+                "inbound.settings.clients.0" :
+                "outbound.settings.vnext.0.users.0";
+
             ID = Lib.Utils.GetValue<string>(config, prefix, "id");
             level = Lib.Utils.GetValue<int>(config, prefix, "level").ToString();
             altID = Lib.Utils.GetValue<int>(config, prefix, "alterId").ToString();
 
-            prefix = "outbound.settings.vnext.0";
-            addr = Lib.Utils.GetAddr(config, prefix, "address", "port");
+            addr = serverMode ?
+                Lib.Utils.GetAddr(config, "inbound", "listen", "port") :
+                Lib.Utils.GetAddr(config, "outbound.settings.vnext.0", "address", "port");
         }
         #endregion
     }

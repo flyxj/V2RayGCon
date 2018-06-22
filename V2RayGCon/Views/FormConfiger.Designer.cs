@@ -33,18 +33,23 @@
             this.cboxConfigSection = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.btnInsertVServ = new System.Windows.Forms.Button();
-            this.btnGenVServID = new System.Windows.Forms.Button();
-            this.tboxVServPort = new System.Windows.Forms.TextBox();
-            this.tboxVServAID = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.tboxVServLevel = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.tboxVServID = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbtnStreamOutbound = new System.Windows.Forms.RadioButton();
+            this.rbtnStreamInbound = new System.Windows.Forms.RadioButton();
+            this.tboxWSPath = new System.Windows.Forms.TextBox();
+            this.cboxKCPType = new System.Windows.Forms.ComboBox();
+            this.cboxTCPType = new System.Windows.Forms.ComboBox();
+            this.cboxStreamSecurity = new System.Windows.Forms.ComboBox();
+            this.btnStreamInsertTCP = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.btnStreamInsertWS = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.btnStreamInsertKCP = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rbtnVmessIServerMode = new System.Windows.Forms.RadioButton();
             this.btnVMessInsertClient = new System.Windows.Forms.Button();
             this.btnVMessGenUUID = new System.Windows.Forms.Button();
             this.tboxVMessIPaddr = new System.Windows.Forms.TextBox();
@@ -85,19 +90,6 @@
             this.btnVGC = new System.Windows.Forms.Button();
             this.tboxVGCAlias = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tboxWSPath = new System.Windows.Forms.TextBox();
-            this.cboxKCPType = new System.Windows.Forms.ComboBox();
-            this.cboxTCPType = new System.Windows.Forms.ComboBox();
-            this.chkStreamIsServer = new System.Windows.Forms.CheckBox();
-            this.cboxStreamSecurity = new System.Windows.Forms.ComboBox();
-            this.btnStreamInsertTCP = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.btnStreamInsertWS = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            this.btnStreamInsertKCP = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
             this.btnClearModify = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -128,14 +120,13 @@
             this.cboxExamples = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.pnlTools.SuspendLayout();
             this.pnlEditor.SuspendLayout();
@@ -167,96 +158,139 @@
             // tabPage1
             // 
             resources.ApplyResources(this.tabPage1, "tabPage1");
-            this.tabPage1.Controls.Add(this.groupBox5);
+            this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Name = "tabPage1";
             this.toolTip1.SetToolTip(this.tabPage1, resources.GetString("tabPage1.ToolTip"));
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // groupBox5
+            // groupBox2
             // 
-            resources.ApplyResources(this.groupBox5, "groupBox5");
-            this.groupBox5.Controls.Add(this.btnInsertVServ);
-            this.groupBox5.Controls.Add(this.btnGenVServID);
-            this.groupBox5.Controls.Add(this.tboxVServPort);
-            this.groupBox5.Controls.Add(this.tboxVServAID);
-            this.groupBox5.Controls.Add(this.label21);
-            this.groupBox5.Controls.Add(this.label22);
-            this.groupBox5.Controls.Add(this.tboxVServLevel);
-            this.groupBox5.Controls.Add(this.label23);
-            this.groupBox5.Controls.Add(this.tboxVServID);
-            this.groupBox5.Controls.Add(this.label24);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox5, resources.GetString("groupBox5.ToolTip"));
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.rbtnStreamOutbound);
+            this.groupBox2.Controls.Add(this.rbtnStreamInbound);
+            this.groupBox2.Controls.Add(this.tboxWSPath);
+            this.groupBox2.Controls.Add(this.cboxKCPType);
+            this.groupBox2.Controls.Add(this.cboxTCPType);
+            this.groupBox2.Controls.Add(this.cboxStreamSecurity);
+            this.groupBox2.Controls.Add(this.btnStreamInsertTCP);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.btnStreamInsertWS);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.btnStreamInsertKCP);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
             // 
-            // btnInsertVServ
+            // rbtnStreamOutbound
             // 
-            resources.ApplyResources(this.btnInsertVServ, "btnInsertVServ");
-            this.btnInsertVServ.Name = "btnInsertVServ";
-            this.toolTip1.SetToolTip(this.btnInsertVServ, resources.GetString("btnInsertVServ.ToolTip"));
-            this.btnInsertVServ.UseVisualStyleBackColor = true;
-            this.btnInsertVServ.Click += new System.EventHandler(this.btnInsertVServ_Click);
+            resources.ApplyResources(this.rbtnStreamOutbound, "rbtnStreamOutbound");
+            this.rbtnStreamOutbound.Checked = true;
+            this.rbtnStreamOutbound.Name = "rbtnStreamOutbound";
+            this.rbtnStreamOutbound.TabStop = true;
+            this.toolTip1.SetToolTip(this.rbtnStreamOutbound, resources.GetString("rbtnStreamOutbound.ToolTip"));
+            this.rbtnStreamOutbound.UseVisualStyleBackColor = true;
             // 
-            // btnGenVServID
+            // rbtnStreamInbound
             // 
-            resources.ApplyResources(this.btnGenVServID, "btnGenVServID");
-            this.btnGenVServID.Name = "btnGenVServID";
-            this.toolTip1.SetToolTip(this.btnGenVServID, resources.GetString("btnGenVServID.ToolTip"));
-            this.btnGenVServID.UseVisualStyleBackColor = true;
-            this.btnGenVServID.Click += new System.EventHandler(this.btnGenVServID_Click);
+            resources.ApplyResources(this.rbtnStreamInbound, "rbtnStreamInbound");
+            this.rbtnStreamInbound.Name = "rbtnStreamInbound";
+            this.toolTip1.SetToolTip(this.rbtnStreamInbound, resources.GetString("rbtnStreamInbound.ToolTip"));
+            this.rbtnStreamInbound.UseVisualStyleBackColor = true;
+            this.rbtnStreamInbound.CheckedChanged += new System.EventHandler(this.rbtnStreamInbound_CheckedChanged);
             // 
-            // tboxVServPort
+            // tboxWSPath
             // 
-            resources.ApplyResources(this.tboxVServPort, "tboxVServPort");
-            this.tboxVServPort.Name = "tboxVServPort";
-            this.toolTip1.SetToolTip(this.tboxVServPort, resources.GetString("tboxVServPort.ToolTip"));
+            resources.ApplyResources(this.tboxWSPath, "tboxWSPath");
+            this.tboxWSPath.Name = "tboxWSPath";
+            this.toolTip1.SetToolTip(this.tboxWSPath, resources.GetString("tboxWSPath.ToolTip"));
             // 
-            // tboxVServAID
+            // cboxKCPType
             // 
-            resources.ApplyResources(this.tboxVServAID, "tboxVServAID");
-            this.tboxVServAID.Name = "tboxVServAID";
-            this.toolTip1.SetToolTip(this.tboxVServAID, resources.GetString("tboxVServAID.ToolTip"));
+            resources.ApplyResources(this.cboxKCPType, "cboxKCPType");
+            this.cboxKCPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxKCPType.FormattingEnabled = true;
+            this.cboxKCPType.Items.AddRange(new object[] {
+            resources.GetString("cboxKCPType.Items")});
+            this.cboxKCPType.Name = "cboxKCPType";
+            this.toolTip1.SetToolTip(this.cboxKCPType, resources.GetString("cboxKCPType.ToolTip"));
             // 
-            // label21
+            // cboxTCPType
             // 
-            resources.ApplyResources(this.label21, "label21");
-            this.label21.Name = "label21";
-            this.toolTip1.SetToolTip(this.label21, resources.GetString("label21.ToolTip"));
+            resources.ApplyResources(this.cboxTCPType, "cboxTCPType");
+            this.cboxTCPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxTCPType.FormattingEnabled = true;
+            this.cboxTCPType.Items.AddRange(new object[] {
+            resources.GetString("cboxTCPType.Items")});
+            this.cboxTCPType.Name = "cboxTCPType";
+            this.toolTip1.SetToolTip(this.cboxTCPType, resources.GetString("cboxTCPType.ToolTip"));
             // 
-            // label22
+            // cboxStreamSecurity
             // 
-            resources.ApplyResources(this.label22, "label22");
-            this.label22.Name = "label22";
-            this.toolTip1.SetToolTip(this.label22, resources.GetString("label22.ToolTip"));
+            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
+            this.cboxStreamSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxStreamSecurity.FormattingEnabled = true;
+            this.cboxStreamSecurity.Items.AddRange(new object[] {
+            resources.GetString("cboxStreamSecurity.Items"),
+            resources.GetString("cboxStreamSecurity.Items1")});
+            this.cboxStreamSecurity.Name = "cboxStreamSecurity";
+            this.toolTip1.SetToolTip(this.cboxStreamSecurity, resources.GetString("cboxStreamSecurity.ToolTip"));
             // 
-            // tboxVServLevel
+            // btnStreamInsertTCP
             // 
-            resources.ApplyResources(this.tboxVServLevel, "tboxVServLevel");
-            this.tboxVServLevel.Name = "tboxVServLevel";
-            this.toolTip1.SetToolTip(this.tboxVServLevel, resources.GetString("tboxVServLevel.ToolTip"));
+            resources.ApplyResources(this.btnStreamInsertTCP, "btnStreamInsertTCP");
+            this.btnStreamInsertTCP.Name = "btnStreamInsertTCP";
+            this.toolTip1.SetToolTip(this.btnStreamInsertTCP, resources.GetString("btnStreamInsertTCP.ToolTip"));
+            this.btnStreamInsertTCP.UseVisualStyleBackColor = true;
+            this.btnStreamInsertTCP.Click += new System.EventHandler(this.btnStreamInsertTCP_Click);
             // 
-            // label23
+            // label14
             // 
-            resources.ApplyResources(this.label23, "label23");
-            this.label23.Name = "label23";
-            this.toolTip1.SetToolTip(this.label23, resources.GetString("label23.ToolTip"));
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            this.toolTip1.SetToolTip(this.label14, resources.GetString("label14.ToolTip"));
             // 
-            // tboxVServID
+            // label13
             // 
-            resources.ApplyResources(this.tboxVServID, "tboxVServID");
-            this.tboxVServID.Name = "tboxVServID";
-            this.toolTip1.SetToolTip(this.tboxVServID, resources.GetString("tboxVServID.ToolTip"));
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            this.toolTip1.SetToolTip(this.label13, resources.GetString("label13.ToolTip"));
             // 
-            // label24
+            // btnStreamInsertWS
             // 
-            resources.ApplyResources(this.label24, "label24");
-            this.label24.Name = "label24";
-            this.toolTip1.SetToolTip(this.label24, resources.GetString("label24.ToolTip"));
+            resources.ApplyResources(this.btnStreamInsertWS, "btnStreamInsertWS");
+            this.btnStreamInsertWS.Name = "btnStreamInsertWS";
+            this.toolTip1.SetToolTip(this.btnStreamInsertWS, resources.GetString("btnStreamInsertWS.ToolTip"));
+            this.btnStreamInsertWS.UseVisualStyleBackColor = true;
+            this.btnStreamInsertWS.Click += new System.EventHandler(this.btnStreamInsertWS_Click);
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            this.toolTip1.SetToolTip(this.label12, resources.GetString("label12.ToolTip"));
+            // 
+            // btnStreamInsertKCP
+            // 
+            resources.ApplyResources(this.btnStreamInsertKCP, "btnStreamInsertKCP");
+            this.btnStreamInsertKCP.Name = "btnStreamInsertKCP";
+            this.toolTip1.SetToolTip(this.btnStreamInsertKCP, resources.GetString("btnStreamInsertKCP.ToolTip"));
+            this.btnStreamInsertKCP.UseVisualStyleBackColor = true;
+            this.btnStreamInsertKCP.Click += new System.EventHandler(this.btnStreamInsertKCP_Click);
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            this.toolTip1.SetToolTip(this.label11, resources.GetString("label11.ToolTip"));
             // 
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.rbtnVmessIServerMode);
             this.groupBox1.Controls.Add(this.btnVMessInsertClient);
             this.groupBox1.Controls.Add(this.btnVMessGenUUID);
             this.groupBox1.Controls.Add(this.tboxVMessIPaddr);
@@ -270,6 +304,23 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             this.toolTip1.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
+            // 
+            // radioButton1
+            // 
+            resources.ApplyResources(this.radioButton1, "radioButton1");
+            this.radioButton1.Checked = true;
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.TabStop = true;
+            this.toolTip1.SetToolTip(this.radioButton1, resources.GetString("radioButton1.ToolTip"));
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // rbtnVmessIServerMode
+            // 
+            resources.ApplyResources(this.rbtnVmessIServerMode, "rbtnVmessIServerMode");
+            this.rbtnVmessIServerMode.Name = "rbtnVmessIServerMode";
+            this.toolTip1.SetToolTip(this.rbtnVmessIServerMode, resources.GetString("rbtnVmessIServerMode.ToolTip"));
+            this.rbtnVmessIServerMode.UseVisualStyleBackColor = true;
+            this.rbtnVmessIServerMode.CheckedChanged += new System.EventHandler(this.rbtnVmessIServerMode_CheckedChanged);
             // 
             // btnVMessInsertClient
             // 
@@ -520,7 +571,6 @@
             // 
             resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.groupBox6);
-            this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Name = "tabPage3";
             this.toolTip1.SetToolTip(this.tabPage3, resources.GetString("tabPage3.ToolTip"));
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -568,118 +618,6 @@
             resources.ApplyResources(this.label15, "label15");
             this.label15.Name = "label15";
             this.toolTip1.SetToolTip(this.label15, resources.GetString("label15.ToolTip"));
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.tboxWSPath);
-            this.groupBox2.Controls.Add(this.cboxKCPType);
-            this.groupBox2.Controls.Add(this.cboxTCPType);
-            this.groupBox2.Controls.Add(this.chkStreamIsServer);
-            this.groupBox2.Controls.Add(this.cboxStreamSecurity);
-            this.groupBox2.Controls.Add(this.btnStreamInsertTCP);
-            this.groupBox2.Controls.Add(this.label14);
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.btnStreamInsertWS);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.btnStreamInsertKCP);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
-            // 
-            // tboxWSPath
-            // 
-            resources.ApplyResources(this.tboxWSPath, "tboxWSPath");
-            this.tboxWSPath.Name = "tboxWSPath";
-            this.toolTip1.SetToolTip(this.tboxWSPath, resources.GetString("tboxWSPath.ToolTip"));
-            // 
-            // cboxKCPType
-            // 
-            resources.ApplyResources(this.cboxKCPType, "cboxKCPType");
-            this.cboxKCPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxKCPType.FormattingEnabled = true;
-            this.cboxKCPType.Items.AddRange(new object[] {
-            resources.GetString("cboxKCPType.Items")});
-            this.cboxKCPType.Name = "cboxKCPType";
-            this.toolTip1.SetToolTip(this.cboxKCPType, resources.GetString("cboxKCPType.ToolTip"));
-            // 
-            // cboxTCPType
-            // 
-            resources.ApplyResources(this.cboxTCPType, "cboxTCPType");
-            this.cboxTCPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxTCPType.FormattingEnabled = true;
-            this.cboxTCPType.Items.AddRange(new object[] {
-            resources.GetString("cboxTCPType.Items")});
-            this.cboxTCPType.Name = "cboxTCPType";
-            this.toolTip1.SetToolTip(this.cboxTCPType, resources.GetString("cboxTCPType.ToolTip"));
-            // 
-            // chkStreamIsServer
-            // 
-            resources.ApplyResources(this.chkStreamIsServer, "chkStreamIsServer");
-            this.chkStreamIsServer.Name = "chkStreamIsServer";
-            this.toolTip1.SetToolTip(this.chkStreamIsServer, resources.GetString("chkStreamIsServer.ToolTip"));
-            this.chkStreamIsServer.UseVisualStyleBackColor = true;
-            this.chkStreamIsServer.CheckedChanged += new System.EventHandler(this.chkStreamSettingsIsServer_CheckedChanged);
-            // 
-            // cboxStreamSecurity
-            // 
-            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
-            this.cboxStreamSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxStreamSecurity.FormattingEnabled = true;
-            this.cboxStreamSecurity.Items.AddRange(new object[] {
-            resources.GetString("cboxStreamSecurity.Items"),
-            resources.GetString("cboxStreamSecurity.Items1")});
-            this.cboxStreamSecurity.Name = "cboxStreamSecurity";
-            this.toolTip1.SetToolTip(this.cboxStreamSecurity, resources.GetString("cboxStreamSecurity.ToolTip"));
-            // 
-            // btnStreamInsertTCP
-            // 
-            resources.ApplyResources(this.btnStreamInsertTCP, "btnStreamInsertTCP");
-            this.btnStreamInsertTCP.Name = "btnStreamInsertTCP";
-            this.toolTip1.SetToolTip(this.btnStreamInsertTCP, resources.GetString("btnStreamInsertTCP.ToolTip"));
-            this.btnStreamInsertTCP.UseVisualStyleBackColor = true;
-            this.btnStreamInsertTCP.Click += new System.EventHandler(this.btnStreamInsertTCP_Click);
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            this.toolTip1.SetToolTip(this.label14, resources.GetString("label14.ToolTip"));
-            // 
-            // label13
-            // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
-            this.toolTip1.SetToolTip(this.label13, resources.GetString("label13.ToolTip"));
-            // 
-            // btnStreamInsertWS
-            // 
-            resources.ApplyResources(this.btnStreamInsertWS, "btnStreamInsertWS");
-            this.btnStreamInsertWS.Name = "btnStreamInsertWS";
-            this.toolTip1.SetToolTip(this.btnStreamInsertWS, resources.GetString("btnStreamInsertWS.ToolTip"));
-            this.btnStreamInsertWS.UseVisualStyleBackColor = true;
-            this.btnStreamInsertWS.Click += new System.EventHandler(this.btnStreamInsertWS_Click);
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
-            this.toolTip1.SetToolTip(this.label12, resources.GetString("label12.ToolTip"));
-            // 
-            // btnStreamInsertKCP
-            // 
-            resources.ApplyResources(this.btnStreamInsertKCP, "btnStreamInsertKCP");
-            this.btnStreamInsertKCP.Name = "btnStreamInsertKCP";
-            this.toolTip1.SetToolTip(this.btnStreamInsertKCP, resources.GetString("btnStreamInsertKCP.ToolTip"));
-            this.btnStreamInsertKCP.UseVisualStyleBackColor = true;
-            this.btnStreamInsertKCP.Click += new System.EventHandler(this.btnStreamInsertKCP_Click);
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
-            this.toolTip1.SetToolTip(this.label11, resources.GetString("label11.ToolTip"));
             // 
             // btnClearModify
             // 
@@ -884,8 +822,8 @@
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -896,8 +834,6 @@
             this.tabPage3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.pnlTools.ResumeLayout(false);
@@ -936,17 +872,7 @@
         private System.Windows.Forms.TextBox tboxSSCAddr;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btnStreamInsertTCP;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button btnStreamInsertWS;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button btnStreamInsertKCP;
-        private System.Windows.Forms.TextBox tboxWSPath;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox chkSSCOTA;
-        private System.Windows.Forms.ComboBox cboxStreamSecurity;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox chkSSSOTA;
         private System.Windows.Forms.Label label10;
@@ -959,19 +885,7 @@
         private System.Windows.Forms.CheckBox chkSSSShowPass;
         private System.Windows.Forms.TextBox tboxSSSPass;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.CheckBox chkStreamIsServer;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button btnInsertVServ;
-        private System.Windows.Forms.Button btnGenVServID;
-        private System.Windows.Forms.TextBox tboxVServPort;
-        private System.Windows.Forms.TextBox tboxVServAID;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox tboxVServLevel;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox tboxVServID;
-        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadJsonToolStripMenuItem;
@@ -997,14 +911,28 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripMenuItem saveCurCfgToolStripMenuItem;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbtnVmessIServerMode;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbtnStreamOutbound;
+        private System.Windows.Forms.RadioButton rbtnStreamInbound;
+        private System.Windows.Forms.TextBox tboxWSPath;
+        private System.Windows.Forms.ComboBox cboxKCPType;
+        private System.Windows.Forms.ComboBox cboxTCPType;
+        private System.Windows.Forms.ComboBox cboxStreamSecurity;
+        private System.Windows.Forms.Button btnStreamInsertTCP;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button btnStreamInsertWS;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button btnStreamInsertKCP;
+        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TextBox tboxVGCDesc;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btnVGC;
         private System.Windows.Forms.TextBox tboxVGCAlias;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox cboxTCPType;
-        private System.Windows.Forms.ComboBox cboxKCPType;
-        private System.Windows.Forms.ToolStripMenuItem saveCurCfgToolStripMenuItem;
     }
 }
