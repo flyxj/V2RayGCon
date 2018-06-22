@@ -103,16 +103,18 @@ namespace V2RayGCon.Views
             var index = GetSelectedServerIndex();
             Debug.WriteLine("FormMain: activate server " + index);
 
-            if (setting.proxyType == (int)Model.Data.Enum.ProxyTypes.http)
+            if (setting.isSysProxyHasSet)
             {
-                if (Lib.ProxySetter.getProxyState())
+                if (setting.proxyType == (int)Model.Data.Enum.ProxyTypes.http)
                 {
                     Lib.ProxySetter.setProxy(setting.proxyAddr, true);
                 }
-            }
-            else
-            {
-                Lib.ProxySetter.setProxy("", false);
+                else
+                {
+                    // e.g. http->socks should clear system proxy setting
+                    Lib.ProxySetter.setProxy("", false);
+                    setting.isSysProxyHasSet = false;
+                }
             }
 
             setting.ActivateServer(index);
@@ -144,9 +146,8 @@ namespace V2RayGCon.Views
             protocolConfigToolStripMenuItem.Checked =
                 setting.proxyType == (int)Model.Data.Enum.ProxyTypes.config;
 
-            var isSystemProxySet = Lib.ProxySetter.getProxyState();
-            sysProxyDirectToolStripMenuItem.Checked = !isSystemProxySet;
-            sysProxyHttpToolStripMenuItem.Checked = isSystemProxySet;
+
+            sysProxyHttpToolStripMenuItem.Checked = setting.isSysProxyHasSet;
 
             var isCoreRunning = core.isRunning;
             activateToolStripMenuItem.Enabled = !isCoreRunning;
@@ -301,9 +302,10 @@ namespace V2RayGCon.Views
 
         private void sysProxyHttpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var http = (int)Model.Data.Enum.ProxyTypes.http;
-
+            setting.isSysProxyHasSet = true;
             Lib.ProxySetter.setProxy(setting.proxyAddr, true);
+
+            var http = (int)Model.Data.Enum.ProxyTypes.http;
             if (core.isRunning && setting.proxyType == http)
             {
                 UpdateUI();
@@ -317,6 +319,7 @@ namespace V2RayGCon.Views
 
         private void sysProxyDirectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            setting.isSysProxyHasSet = false;
             Lib.ProxySetter.setProxy("", false);
             UpdateUI();
         }

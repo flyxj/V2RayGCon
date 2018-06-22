@@ -147,7 +147,10 @@ namespace V2RayGCon.Service
             Debug.WriteLine("Call cleanup");
             ni.Visible = false;
             core.StopCore();
-            Lib.ProxySetter.setProxy("", false);
+            if (setting.isSysProxyHasSet)
+            {
+                Lib.ProxySetter.setProxy("", false);
+            }
         }
         #endregion
     }

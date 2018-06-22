@@ -141,11 +141,17 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+
+        public bool IsCoreExist()
+        {
+            return File.Exists(resData("Executable"));
+        }
+
         public void RestartCore(string config)
         {
             StopCore();
 
-            if (File.Exists(resData("Executable")))
+            if (IsCoreExist())
             {
                 StartCore(config);
             }
@@ -179,7 +185,7 @@ namespace V2RayGCon.Service
         public string GetCoreVersion()
         {
             var ver = string.Empty;
-            if (!File.Exists(resData("Executable")))
+            if (!IsCoreExist())
             {
                 return ver;
             }

@@ -12,13 +12,20 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [TestMethod]
-        public void GetCoreVersion()
+        public void GetLocalCoreVersion()
         {
-            // need v2ray.exe for this test
 
             var core = Service.Core.Instance;
             var version = core.GetCoreVersion();
-            Assert.AreNotEqual(string.Empty, version);
+
+            if (core.IsCoreExist())
+            {
+                Assert.AreNotEqual(string.Empty, version);
+            }
+            else
+            {
+                Assert.AreEqual(string.Empty, version);
+            }
         }
 
         [TestMethod]
@@ -107,7 +114,7 @@ namespace V2RayGCon.Test
         }
 
         [TestMethod]
-        public void GetCoreVersions()
+        public void GetRemoteCoreVersions()
         {
             List<string> versions = Lib.Utils.GetCoreVersions();
             // Assert.AreNotEqual(versions, null);

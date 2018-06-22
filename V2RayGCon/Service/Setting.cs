@@ -22,6 +22,8 @@ namespace V2RayGCon.Service
             LoadServers();
             SaveServers();
 
+            isSysProxyHasSet = false;
+
             aliases = new List<string>();
             servSummarys = new List<string[]>();
             OnServerListChanged();
@@ -29,6 +31,8 @@ namespace V2RayGCon.Service
         }
 
         #region Properties
+
+        public bool isSysProxyHasSet;
 
         public int GetCurServIndex()
         {
