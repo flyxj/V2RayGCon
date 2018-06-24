@@ -150,6 +150,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDownloadCore";
+            this.Shown += new System.EventHandler(this.FormDownloadCore_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

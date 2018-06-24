@@ -167,7 +167,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.21 的本地化字符串。
+        ///   查找类似 v3.26 的本地化字符串。
         /// </summary>
         internal static string DefCoreVersion {
             get {
@@ -235,6 +235,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ExtPng {
             get {
                 return ResourceManager.GetString("ExtPng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Text File|*.txt|All File|*.* 的本地化字符串。
+        /// </summary>
+        internal static string ExtText {
+            get {
+                return ResourceManager.GetString("ExtText", resourceCulture);
             }
         }
         

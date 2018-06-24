@@ -128,7 +128,7 @@
     <value>v2ray-windows-32.zip</value>
   </data>
   <data name="DefCoreVersion" xml:space="preserve">
-    <value>v3.21</value>
+    <value>v3.26</value>
   </data>
   <data name="Executable" xml:space="preserve">
     <value>v2ray.exe</value>
@@ -184,5 +184,8 @@
   </data>
   <data name="UrlLatestVGC" xml:space="preserve">
     <value>https://github.com/nobody3u/V2RayGCon/releases/latest</value>
+  </data>
+  <data name="ExtText" xml:space="preserve">
+    <value>Text File|*.txt|All File|*.*</value>
   </data>
 </root>

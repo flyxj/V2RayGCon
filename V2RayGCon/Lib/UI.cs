@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace V2RayGCon.Lib
 {
     class UI
     {
-        public static bool ShowSaveFileDialog(string extension, string content, out string fileName)
+        public static Model.Data.Enum.SaveFileErrorCode ShowSaveFileDialog(string extension, string content, out string fileName)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
@@ -22,16 +23,16 @@ namespace V2RayGCon.Lib
             fileName = saveFileDialog.FileName;
             if (string.IsNullOrEmpty(fileName))
             {
-                return false;
+                return Model.Data.Enum.SaveFileErrorCode.Cancel;
             }
 
             try
             {
                 File.WriteAllText(fileName, content);
-                return true;
+                return Model.Data.Enum.SaveFileErrorCode.Success;
             }
             catch { }
-            return false;
+            return Model.Data.Enum.SaveFileErrorCode.Fail;
         }
 
         public static string ShowReadFileDialog(string extension, out string fileName)
@@ -80,9 +81,26 @@ namespace V2RayGCon.Lib
                 url);
             if (Confirm(msg))
             {
-                // Is it over kill a little bit?
+                // Is this a little bit overkill?
                 Task.Factory.StartNew(() => System.Diagnostics.Process.Start(url));
             }
+        }
+
+        public static void FillComboBox(ComboBox element, List<string> itemList)
+        {
+            element.Items.Clear();
+
+            if (itemList == null || itemList.Count <= 0)
+            {
+                element.SelectedIndex = -1;
+                return;
+            }
+
+            foreach (var item in itemList)
+            {
+                element.Items.Add(item);
+            }
+            element.SelectedIndex = 0;
         }
 
         [Conditional("DEBUG")]

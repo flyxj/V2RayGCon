@@ -151,6 +151,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Close window? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmCloseWindow {
+            get {
+                return ResourceManager.GetString("ConfirmCloseWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DELETE ALL SERVERS? 的本地化字符串。
         /// </summary>
         internal static string ConfirmDeleteAllServers {
@@ -426,7 +435,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Get current v2ray-core version fail! 的本地化字符串。
+        ///   查找类似 Get v2ray-core version fail! 的本地化字符串。
         /// </summary>
         internal static string GetCoreVerFail {
             get {
@@ -616,6 +625,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Server list is empty! 的本地化字符串。
+        /// </summary>
+        internal static string ServerListIsEmpty {
+            get {
+                return ResourceManager.GetString("ServerListIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set proxy mode 的本地化字符串。
         /// </summary>
         internal static string SetProxyMode {
@@ -698,7 +716,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Write file fail! 的本地化字符串。
+        ///   查找类似 Write to file fail! 的本地化字符串。
         /// </summary>
         internal static string WriteFileFail {
             get {

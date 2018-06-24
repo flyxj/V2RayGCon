@@ -333,6 +333,12 @@ https://github.com/v2ray/v2ray-core</value>
     <value>当前v2ray-core版本是 v{0}</value>
   </data>
   <data name="GetCoreVerFail" xml:space="preserve">
-    <value>获取当前v2ray-core版本失败！</value>
+    <value>获取v2ray-core版本失败！</value>
+  </data>
+  <data name="ConfirmCloseWindow" xml:space="preserve">
+    <value>关闭窗口?</value>
+  </data>
+  <data name="ServerListIsEmpty" xml:space="preserve">
+    <value>没服务器可导！</value>
   </data>
 </root>

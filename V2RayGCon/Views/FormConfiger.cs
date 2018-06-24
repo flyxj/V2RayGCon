@@ -13,20 +13,24 @@ namespace V2RayGCon.Views
         Controller.Configer.Configer configer;
         Service.Setting setting;
         Scintilla scintilla;
-        string formTitle;
         FormSearch formSearch;
 
-        delegate void UpdateServerMenuDelegate();
+        string _Title;
+        int _serverIndex;
 
         public FormConfiger(int serverIndex = -1)
         {
             setting = Service.Setting.Instance;
-            configer = new Controller.Configer.Configer(serverIndex);
+            _serverIndex = serverIndex;
             formSearch = null;
-
             InitializeComponent();
+            _Title = this.Text;
+            this.Show();
+        }
 
-            formTitle = this.Text;
+        private void FormConfiger_Shown(object sender, EventArgs e)
+        {
+            configer = new Controller.Configer.Configer(_serverIndex);
             InitComboBox();
             InitScintilla();
             InitDataBinding();
@@ -40,8 +44,6 @@ namespace V2RayGCon.Views
             {
                 setting.OnSettingChange -= SettingChange;
             };
-
-            this.Show();
 
             setting.OnSettingChange += SettingChange;
         }
@@ -263,16 +265,21 @@ namespace V2RayGCon.Views
             configer.SaveChanges();
             configer.UpdateData();
 
-            if (Lib.UI.ShowSaveFileDialog(resData("ExtJson"),
+            switch (Lib.UI.ShowSaveFileDialog(
+                resData("ExtJson"),
                 configer.GetConfigFormated(),
                 out string filename))
             {
-                SetTitle(filename);
-                MessageBox.Show(I18N("Done"));
-            }
-            else
-            {
-                MessageBox.Show(I18N("WriteFileFail"));
+                case Model.Data.Enum.SaveFileErrorCode.Success:
+                    SetTitle(filename);
+                    MessageBox.Show(I18N("Done"));
+                    break;
+                case Model.Data.Enum.SaveFileErrorCode.Fail:
+                    MessageBox.Show(I18N("WriteFileFail"));
+                    break;
+                case Model.Data.Enum.SaveFileErrorCode.Cancel:
+                    // do nothing
+                    break;
             }
         }
 
@@ -319,6 +326,42 @@ namespace V2RayGCon.Views
             ShowSearchBox();
         }
 
+        private void saveCurCfgToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            configer.ReplaceOriginalServer();
+            SetTitle(configer.GetAlias());
+        }
+
+        private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
+        {
+            configer.SetVmessServerMode(rbtnVmessIServerMode.Checked);
+        }
+
+        private void rbtnStreamInbound_CheckedChanged(object sender, EventArgs e)
+        {
+            configer.SetStreamSettingsServerMode(rbtnStreamInbound.Checked);
+        }
+
+        private void btnStreamInsertKCP_Click(object sender, EventArgs e)
+        {
+            configer.InsertKCP();
+        }
+
+        private void btnStreamInsertWS_Click(object sender, EventArgs e)
+        {
+            configer.InsertWS();
+        }
+
+        private void btnStreamInsertTCP_Click(object sender, EventArgs e)
+        {
+            configer.InsertTCP();
+        }
+
+        private void btnVGC_Click(object sender, EventArgs e)
+        {
+            configer.InsertVGC();
+        }
+
         #endregion
 
         #region bind hotkey
@@ -353,7 +396,7 @@ namespace V2RayGCon.Views
         #region init
         void InitComboBox()
         {
-            void Fill(ComboBox cbox, Dictionary<int, string> table)
+            void FillComboBox(ComboBox cbox, Dictionary<int, string> table)
             {
                 cbox.Items.Clear();
                 foreach (var item in table)
@@ -363,13 +406,13 @@ namespace V2RayGCon.Views
                 cbox.SelectedIndex = 0;
             }
 
-            Fill(cboxConfigSection, Model.Data.Table.configSections);
-            Fill(cboxSSCMethod, Model.Data.Table.ssMethods);
-            Fill(cboxSSSMethod, Model.Data.Table.ssMethods);
-            Fill(cboxSSSNetwork, Model.Data.Table.ssNetworks);
-            Fill(cboxTCPType, Model.Data.Table.tcpTypes);
-            Fill(cboxKCPType, Model.Data.Table.kcpTypes);
-            Fill(cboxStreamSecurity, Model.Data.Table.streamSecurity);
+            FillComboBox(cboxConfigSection, Model.Data.Table.configSections);
+            FillComboBox(cboxSSCMethod, Model.Data.Table.ssMethods);
+            FillComboBox(cboxSSSMethod, Model.Data.Table.ssMethods);
+            FillComboBox(cboxSSSNetwork, Model.Data.Table.ssNetworks);
+            FillComboBox(cboxTCPType, Model.Data.Table.tcpTypes);
+            FillComboBox(cboxKCPType, Model.Data.Table.kcpTypes);
+            FillComboBox(cboxStreamSecurity, Model.Data.Table.streamSecurity);
         }
 
         void InitScintilla()
@@ -472,11 +515,11 @@ namespace V2RayGCon.Views
         {
             if (string.IsNullOrEmpty(name))
             {
-                this.Text = formTitle;
+                this.Text = _Title;
             }
             else
             {
-                this.Text = string.Format("{0} - {1}", formTitle, name);
+                this.Text = string.Format("{0} - {1}", _Title, name);
             }
         }
 
@@ -546,12 +589,12 @@ namespace V2RayGCon.Views
 
         void SettingChange(object sender, EventArgs args)
         {
-            UpdateServerMenuDelegate updater =
-                new UpdateServerMenuDelegate(UpdateServerMenu);
-
             try
             {
-                mainMenu?.Invoke(updater);
+                mainMenu.Invoke((MethodInvoker)delegate
+                {
+                    UpdateServerMenu();
+                });
             }
             catch { }
         }
@@ -566,41 +609,5 @@ namespace V2RayGCon.Views
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
         #endregion
-
-        private void saveCurCfgToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            configer.ReplaceOriginalServer();
-            SetTitle(configer.GetAlias());
-        }
-
-        private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
-        {
-            configer.SetVmessServerMode(rbtnVmessIServerMode.Checked);
-        }
-
-        private void rbtnStreamInbound_CheckedChanged(object sender, EventArgs e)
-        {
-            configer.SetStreamSettingsServerMode(rbtnStreamInbound.Checked);
-        }
-
-        private void btnStreamInsertKCP_Click(object sender, EventArgs e)
-        {
-            configer.InsertKCP();
-        }
-
-        private void btnStreamInsertWS_Click(object sender, EventArgs e)
-        {
-            configer.InsertWS();
-        }
-
-        private void btnStreamInsertTCP_Click(object sender, EventArgs e)
-        {
-            configer.InsertTCP();
-        }
-
-        private void btnVGC_Click(object sender, EventArgs e)
-        {
-            configer.InsertVGC();
-        }
     }
 }

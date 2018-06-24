@@ -18,9 +18,7 @@ namespace V2RayGCon.Views
         #endregion
 
         Service.Setting setting;
-
         int maxNumberLines;
-        delegate void PushLogDelegate(string content);
 
         FormLog()
         {
@@ -39,21 +37,20 @@ namespace V2RayGCon.Views
 
         void LogReceiver(object sender, Model.Data.StrEvent e)
         {
-            PushLogDelegate pushLog = new PushLogDelegate(PushLog);
+            var content = e.Data;
             try
             {
-                rtBoxLogger?.Invoke(pushLog, e.Data);
+                rtBoxLogger.Invoke((MethodInvoker)delegate
+                {
+                    if (rtBoxLogger.Lines.Length >= maxNumberLines - 1)
+                    {
+                        rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
+                    }
+                    rtBoxLogger.AppendText(content + "\r\n");
+                });
             }
             catch { }
-        }
 
-        public void PushLog(string content)
-        {
-            if (rtBoxLogger.Lines.Length >= maxNumberLines - 1)
-            {
-                rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
-            }
-            rtBoxLogger.AppendText(content + "\r\n");
         }
 
         private void rtBoxLogger_TextChanged(object sender, System.EventArgs e)

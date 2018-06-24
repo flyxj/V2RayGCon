@@ -25,5 +25,12 @@
             TopRight,
             BottomRight,
         }
+
+        public enum SaveFileErrorCode
+        {
+            Fail,
+            Cancel,
+            Success,
+        }
     }
 }

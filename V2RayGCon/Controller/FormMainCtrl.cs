@@ -73,6 +73,39 @@ namespace V2RayGCon.Controller
                 I18N("CopyFail"));
         }
 
+        public void SaveAllV2RayLinkToTextFile()
+        {
+            if (setting.GetServerCount() <= 0)
+            {
+                MessageBox.Show(I18N("ServerListIsEmpty"));
+                return;
+            }
+
+            var servers = setting.GetAllServers();
+            string s = string.Empty;
+
+            foreach (var server in servers)
+            {
+                s += "v2ray://" + server + "\r\n\r\n";
+            }
+
+            switch (Lib.UI.ShowSaveFileDialog(
+                resData("ExtText"),
+                s,
+                out string filename))
+            {
+                case Model.Data.Enum.SaveFileErrorCode.Success:
+                    MessageBox.Show(I18N("Done"));
+                    break;
+                case Model.Data.Enum.SaveFileErrorCode.Fail:
+                    MessageBox.Show(I18N("WriteFileFail"));
+                    break;
+                case Model.Data.Enum.SaveFileErrorCode.Cancel:
+                    // do nothing
+                    break;
+            }
+        }
+
         public void CheckUpdate()
         {
             var version = Lib.Utils.GetLatestVGCVersion();

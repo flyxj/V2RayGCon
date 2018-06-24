@@ -38,7 +38,6 @@ namespace V2RayGCon.Model.Data
 
         private void notify()
         {
-            // Debug.WriteLine("notify");
             ListChanged?.Invoke();
         }
 

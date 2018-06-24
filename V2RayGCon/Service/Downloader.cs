@@ -6,23 +6,27 @@ namespace V2RayGCon.Service
 {
     class Downloader
     {
-        public event EventHandler OnDownloadCompleted, OnDownloadCancelled;
+        public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
         public event EventHandler<Model.Data.IntEvent> OnProgress;
+        Service.Core core;
         Service.Setting setting;
         string _packageName;
         string _version;
         WebClient client;
 
+
         public Downloader()
         {
             setting = Service.Setting.Instance;
-            SelectArchitecture(false);
+            core = Service.Core.Instance;
+
+            SetArchitecture(false);
             _version = resData("DefCoreVersion");
             client = null;
         }
 
         #region public method
-        public void SelectArchitecture(bool win64 = false)
+        public void SetArchitecture(bool win64 = false)
         {
             _packageName = win64 ? resData("PkgWin64") : resData("PkgWin32");
         }
@@ -37,7 +41,7 @@ namespace V2RayGCon.Service
             return _packageName;
         }
 
-        public void GetV2RayCore()
+        public void DownloadV2RayCore()
         {
             Download();
         }
@@ -49,14 +53,77 @@ namespace V2RayGCon.Service
 
         public void Cancel()
         {
-            if (client != null)
-            {
-                client.CancelAsync();
-            }
+            client?.CancelAsync();
         }
         #endregion
 
         #region private method
+        void SendProgress(int percentage)
+        {
+            try
+            {
+                OnProgress?.Invoke(this,
+                    new Model.Data.IntEvent(Math.Max(1, percentage)));
+            }
+            catch { }
+        }
+
+        bool UpdateCore()
+        {
+            try
+            {
+                var isRunning = core.isRunning;
+                if (isRunning)
+                {
+                    core.StopCore();
+                }
+                UnzipPackage();
+                if (isRunning)
+                {
+                    setting.ActivateServer();
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        void DownloadCompleted(bool cancelled)
+        {
+            client.Dispose();
+            client = null;
+
+            if (cancelled)
+            {
+                try
+                {
+                    OnDownloadCancelled?.Invoke(this, EventArgs.Empty);
+                }
+                catch { }
+                return;
+            }
+
+            setting.SendLog(string.Format("{0}", I18N("DownloadCompleted")));
+            if (UpdateCore())
+            {
+                try
+                {
+                    OnDownloadCompleted?.Invoke(this, EventArgs.Empty);
+                }
+                catch { }
+            }
+            else
+            {
+                try
+                {
+                    OnDownloadFail?.Invoke(this, EventArgs.Empty);
+                }
+                catch { }
+            }
+        }
+
         void Download()
         {
             string fileName = _packageName;
@@ -66,47 +133,18 @@ namespace V2RayGCon.Service
             Lib.Utils.SupportProtocolTLS12();
             client = new WebClient();
 
-            int preProgress = -100;
-
             client.DownloadProgressChanged += (s, a) =>
             {
-                var percentage = a.ProgressPercentage;
-
-                if (percentage >= 1)
-                {
-                    var e = new Model.Data.IntEvent(a.ProgressPercentage);
-                    try
-                    {
-                        OnProgress?.Invoke(this, e);
-                    }
-                    catch { }
-                }
-
-                if (percentage - preProgress >= 20)
-                {
-                    preProgress = percentage;
-                    setting.SendLog(string.Format("{0}: {1}%", I18N("DownloadProgress"), percentage));
-                }
+                SendProgress(a.ProgressPercentage);
             };
 
             client.DownloadFileCompleted += (s, a) =>
             {
-                if (a.Cancelled)
-                {
-                    OnDownloadCancelled?.Invoke(this, EventArgs.Empty);
-                }
-                else
-                {
-                    setting.SendLog(string.Format("{0}", I18N("DownloadCompleted")));
-                    OnDownloadCompleted?.Invoke(this, EventArgs.Empty);
-                }
-                client.Dispose();
-                client = null;
+                DownloadCompleted(a.Cancelled);
             };
 
             setting.SendLog(string.Format("{0}:{1}", I18N("Download"), url));
             client.DownloadFileAsync(new Uri(url), fileName);
-
         }
 
         #endregion

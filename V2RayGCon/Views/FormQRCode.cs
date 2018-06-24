@@ -22,18 +22,19 @@ namespace V2RayGCon.Views
         Service.Setting setting;
         int servIndex, linkType;
 
-        delegate void UpdateServerListDelegate(int index);
-
         FormQRCode()
         {
-            InitializeComponent();
             setting = Service.Setting.Instance;
-
             servIndex = 0;
             linkType = 0;
 
-            UpdateServerList();
+            InitializeComponent();
+            this.Show();
+        }
 
+        private void FormQRCode_Shown(object sender, EventArgs e)
+        {
+            UpdateServerList();
             cboxLinkType.SelectedIndex = linkType;
 
             this.FormClosed += (s, a) =>
@@ -41,19 +42,18 @@ namespace V2RayGCon.Views
                 setting.OnSettingChange -= SettingChange;
             };
 
-            this.Show();
-
             setting.OnSettingChange += SettingChange;
         }
 
         #region public methods
         void SettingChange(object sender, EventArgs args)
         {
-            UpdateServerListDelegate updater =
-                new UpdateServerListDelegate(UpdateServerList);
             try
             {
-                cboxServList?.Invoke(updater, -1);
+                cboxServList.Invoke((MethodInvoker)delegate
+                {
+                    UpdateServerList();
+                });
             }
             catch { }
         }
@@ -113,7 +113,7 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        #region private methods
+        #region UI event handler
         private void cboxLinkType_SelectedIndexChanged(object sender, EventArgs e)
         {
             linkType = cboxLinkType.SelectedIndex;
@@ -123,11 +123,12 @@ namespace V2RayGCon.Views
         private void btnSavePic_Click(object sender, EventArgs e)
         {
             Stream myStream;
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-
-            saveFileDialog1.Filter = resData("ExtPng");
-            saveFileDialog1.FilterIndex = 2;
-            saveFileDialog1.RestoreDirectory = true;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog
+            {
+                Filter = resData("ExtPng"),
+                FilterIndex = 1,
+                RestoreDirectory = true,
+            };
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -137,7 +138,6 @@ namespace V2RayGCon.Views
                     myStream.Close();
                 }
             }
-
         }
 
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)

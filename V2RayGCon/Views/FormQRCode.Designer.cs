@@ -97,6 +97,7 @@
             this.Controls.Add(this.picQRCode);
             this.MaximizeBox = false;
             this.Name = "FormQRCode";
+            this.Shown += new System.EventHandler(this.FormQRCode_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

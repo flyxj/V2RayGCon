@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -31,59 +29,105 @@ namespace V2RayGCon.Views
             setting = Service.Setting.Instance;
             core = Service.Core.Instance;
 
-            this.FormClosed += (s, e) =>
-            {
-                if (downloader != null)
-                {
-                    downloader.Cancel();
-                }
-            };
-
+            this.FormClosed += (s, e) => downloader?.Cancel();
             this.Show();
-            RefreshCurrentCoreVersion();
-
         }
 
         #region private method
 
-        void FillComboBox(ComboBox element, List<string> itemList)
-        {
-            element.Items.Clear();
 
-            if (itemList == null || itemList.Count <= 0)
-            {
-                element.SelectedIndex = -1;
-                return;
-            }
-
-            foreach (var item in itemList)
-            {
-                element.Items.Add(item);
-            }
-            element.SelectedIndex = 0;
-        }
 
         void RefreshCurrentCoreVersion()
         {
-            var version = core.GetCoreVersion();
-            if (string.IsNullOrEmpty(version))
+            var el = labelCoreVersion;
+
+            Task.Factory.StartNew(() =>
             {
-                labelCoreVersion.Text = I18N("GetCoreVerFail");
-            }
-            else
+                var version = core.GetCoreVersion();
+                var msg = string.IsNullOrEmpty(version) ?
+                    I18N("GetCoreVerFail") :
+                    string.Format(I18N("CurrentCoreVerIs"), version);
+                try
+                {
+                    el.Invoke((MethodInvoker)delegate { el.Text = msg; });
+                }
+                catch { }
+            });
+        }
+
+        void UpdateProgressBar(int percentage)
+        {
+            // window may closed before this function is called
+            try
             {
-                labelCoreVersion.Text = string.Format(I18N("CurrentCoreVerIs"), version);
+                pgBarDownload.Invoke((MethodInvoker)delegate
+                {
+                    pgBarDownload.Value = Lib.Utils.Clamp(percentage, 0, 101);
+                });
             }
+            catch { }
+        }
+
+        void EnableBtnDownload()
+        {
+            try
+            {
+                btnDownload.Invoke((MethodInvoker)delegate
+                {
+                    btnDownload.Enabled = true;
+                });
+            }
+            catch { }
+        }
+
+        void DownloadV2RayCore()
+        {
+            downloader = new Service.Downloader();
+            downloader.SetArchitecture(cboxArch.SelectedIndex == 1);
+            downloader.SetVersion(cboxVer.Text);
+
+            downloader.OnProgress += (s, a) =>
+            {
+                UpdateProgressBar(a.Data);
+            };
+
+            downloader.OnDownloadCompleted += (s, a) =>
+            {
+                ResetUI(100);
+                MessageBox.Show(I18N("DownloadCompleted"));
+            };
+
+            downloader.OnDownloadCancelled += (s, a) =>
+            {
+                ResetUI(0);
+                MessageBox.Show(I18N("DownloadCancelled"));
+            };
+
+            downloader.OnDownloadFail += (s, a) =>
+            {
+                ResetUI(0);
+                MessageBox.Show(I18N("DownloadFail"));
+            };
+
+            downloader.DownloadV2RayCore();
+            UpdateProgressBar(1);
         }
 
         #endregion
 
         #region UI
+        void ResetUI(int progress)
+        {
+            UpdateProgressBar(progress);
+            downloader = null;
+            EnableBtnDownload();
+        }
+
         void InitUI()
         {
             cboxArch.SelectedIndex = 0;
             var verList = Lib.Utils.Str2ListStr(resData("VerList"));
-            FillComboBox(cboxVer, verList);
+            Lib.UI.FillComboBox(cboxVer, verList);
             pgBarDownload.Value = 0;
         }
 
@@ -94,11 +138,27 @@ namespace V2RayGCon.Views
 
         private void btnRefreshVer_Click(object sender, System.EventArgs e)
         {
-            btnRefreshVer.Enabled = false;
+            var elRefresh = btnRefreshVer;
+            var elCboxVer = cboxVer;
+
+            elRefresh.Enabled = false;
+
             Task.Factory.StartNew(() =>
             {
                 var versions = Lib.Utils.GetCoreVersions();
-                VersionListReciever(versions);
+                try
+                {
+                    elRefresh.Invoke((MethodInvoker)delegate
+                    {
+                        elRefresh.Enabled = true;
+                    });
+
+                    elCboxVer.Invoke((MethodInvoker)delegate
+                    {
+                        Lib.UI.FillComboBox(elCboxVer, versions);
+                    });
+                }
+                catch { }
             });
         }
 
@@ -110,57 +170,15 @@ namespace V2RayGCon.Views
                 return;
             }
 
-            downloader = new Service.Downloader();
-            downloader.SelectArchitecture(cboxArch.SelectedIndex == 1);
-            downloader.SetVersion(cboxVer.Text);
-
-            string packageName = downloader.GetPackageName();
-
-            downloader.OnProgress += (s, a) =>
-                UpdateProgressBarReciever(a.Data);
-
-            downloader.OnDownloadCancelled += (s, a) =>
-            {
-                downloader = null;
-                UpdateProgressBarReciever(0);
-                MessageBox.Show(I18N("DownloadCancelled"));
-            };
-
-            downloader.OnDownloadCompleted += (s, a) =>
-            {
-                Debug.WriteLine("Download completed!");
-                string msg = I18N("DownloadCompleted");
-                try
-                {
-                    var isRunning = core.isRunning;
-                    if (isRunning)
-                    {
-                        core.StopCore();
-                    }
-                    downloader.UnzipPackage();
-                    if (isRunning)
-                    {
-                        setting.ActivateServer();
-                    }
-                }
-                catch
-                {
-                    msg = I18N("DownloadFail");
-                }
-                MessageBox.Show(msg);
-                downloader = null;
-            };
-
-            downloader.GetV2RayCore();
-
-            UpdateProgressBar(1);
+            btnDownload.Enabled = false;
+            DownloadV2RayCore();
         }
 
         void btnCancel_Click(object sender, System.EventArgs e)
         {
             if (downloader != null && Lib.UI.Confirm(I18N("CancelDownload")))
             {
-                downloader.Cancel();
+                downloader?.Cancel();
             }
         }
 
@@ -168,53 +186,12 @@ namespace V2RayGCon.Views
         {
             RefreshCurrentCoreVersion();
         }
-        #endregion
-
-        #region event handler
-        delegate void UpdateVersionListDelegate(List<string> versions);
-
-        void VersionListReciever(List<string> versions)
-        {
-            UpdateVersionListDelegate updater = new UpdateVersionListDelegate(UpdateVersionList);
-            try
-            {
-                cboxVer?.Invoke(updater, versions);
-            }
-            catch { }
-        }
-
-        void UpdateVersionList(List<string> versions)
-        {
-            btnRefreshVer.Enabled = true;
-            if (versions.Count > 0)
-            {
-                FillComboBox(cboxVer, versions);
-            }
-            else
-            {
-                MessageBox.Show(I18N("GetVersionListFail"));
-            }
-        }
-
-        delegate void UpdateProgressDelegate(int percentage);
-
-        void UpdateProgressBarReciever(int percentage)
-        {
-            UpdateProgressDelegate updater = new UpdateProgressDelegate(UpdateProgressBar);
-            try
-            {
-                pgBarDownload?.Invoke(updater, percentage);
-            }
-            catch { }
-        }
-
-        void UpdateProgressBar(int percentage)
-        {
-            pgBarDownload.Value = Lib.Utils.Clamp(percentage, 0, 101);
-        }
 
         #endregion
 
-
+        private void FormDownloadCore_Shown(object sender, System.EventArgs e)
+        {
+            RefreshCurrentCoreVersion();
+        }
     }
 }

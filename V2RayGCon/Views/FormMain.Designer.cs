@@ -39,6 +39,7 @@
             this.vmessToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.v2rayToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAllServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,6 +116,7 @@
             this.toolStripSeparator5,
             this.copyAllToolStripMenuItem,
             this.deleteAllServerToolStripMenuItem,
+            this.exportAllServerToolStripMenuItem,
             this.toolStripSeparator8,
             this.exitToolStripMenuItem});
             this.operationToolStripMenuItem.Name = "operationToolStripMenuItem";
@@ -161,6 +163,12 @@
             resources.ApplyResources(this.deleteAllServerToolStripMenuItem, "deleteAllServerToolStripMenuItem");
             this.deleteAllServerToolStripMenuItem.Name = "deleteAllServerToolStripMenuItem";
             this.deleteAllServerToolStripMenuItem.Click += new System.EventHandler(this.deleteAllServerToolStripMenuItem_Click);
+            // 
+            // exportAllServerToolStripMenuItem
+            // 
+            resources.ApplyResources(this.exportAllServerToolStripMenuItem, "exportAllServerToolStripMenuItem");
+            this.exportAllServerToolStripMenuItem.Name = "exportAllServerToolStripMenuItem";
+            this.exportAllServerToolStripMenuItem.Click += new System.EventHandler(this.exportAllServerToolStripMenuItem_Click);
             // 
             // toolStripSeparator8
             // 
@@ -501,6 +509,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ctxMenuStrip.ResumeLayout(false);
@@ -572,6 +581,7 @@
         private System.Windows.Forms.ToolStripMenuItem downloadV2rayCoreToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem checkUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportAllServerToolStripMenuItem;
     }
 }
 

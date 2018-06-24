@@ -140,9 +140,6 @@
   <data name="&gt;&gt;cboxVer.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="btnRefreshVer.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 20</value>
   </data>
@@ -155,6 +152,9 @@
   <data name="btnRefreshVer.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="btnRefreshVer.ToolTip" xml:space="preserve">
     <value>Refresh version list</value>
   </data>
@@ -197,9 +197,6 @@
   <data name="&gt;&gt;btnDownload.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>132, 77</value>
   </data>
@@ -370,13 +367,13 @@
     <value>90, 24</value>
   </data>
   <data name="labelCoreVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 12</value>
+    <value>185, 12</value>
   </data>
   <data name="labelCoreVersion.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="labelCoreVersion.Text" xml:space="preserve">
-    <value>Current v2ray-core version</value>
+    <value>Checking v2ray-core version...</value>
   </data>
   <data name="&gt;&gt;labelCoreVersion.Name" xml:space="preserve">
     <value>labelCoreVersion</value>

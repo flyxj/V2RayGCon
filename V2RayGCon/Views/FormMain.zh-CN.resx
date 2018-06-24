@@ -119,37 +119,46 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="addVmessServToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="addVmessServToolStripMenuItem.Text" xml:space="preserve">
     <value>添加vmess服务器</value>
   </data>
   <data name="ImportVmessLinkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="ImportVmessLinkToolStripMenuItem.Text" xml:space="preserve">
     <value>剪切板导入</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 6</value>
+    <value>177, 6</value>
+  </data>
+  <data name="vmessToolStripMenuItem1.ToolTipText" xml:space="preserve">
+    <value>部分设置可能和vmess链接不兼容.</value>
   </data>
   <data name="copyAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="copyAllToolStripMenuItem.Text" xml:space="preserve">
     <value>复制全部服务器</value>
   </data>
   <data name="deleteAllServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="deleteAllServerToolStripMenuItem.Text" xml:space="preserve">
     <value>删除所有服务器</value>
   </data>
+  <data name="exportAllServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="exportAllServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>导出全部服务器</value>
+  </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 6</value>
+    <value>177, 6</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>关闭窗口</value>
@@ -182,13 +191,13 @@
     <value>重启</value>
   </data>
   <data name="sysProxyDirectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="sysProxyDirectToolStripMenuItem.Text" xml:space="preserve">
     <value>清除代理设置</value>
   </data>
   <data name="sysProxyHttpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="sysProxyHttpToolStripMenuItem.Text" xml:space="preserve">
     <value>设置HTTP代理</value>
@@ -206,19 +215,19 @@
     <value>代理</value>
   </data>
   <data name="configEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="configEditorToolStripMenuItem.Text" xml:space="preserve">
     <value>配置编辑器</value>
   </data>
   <data name="qRCodeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="qRCodeToolStripMenuItem.Text" xml:space="preserve">
     <value>二维码</value>
   </data>
   <data name="logToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>136, 22</value>
   </data>
   <data name="logToolStripMenuItem.Text" xml:space="preserve">
     <value>日志</value>

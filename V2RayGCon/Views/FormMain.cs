@@ -24,15 +24,17 @@ namespace V2RayGCon.Views
         Service.Core core;
         Controller.FormMainCtrl formMainCtrl;
 
-        delegate void UpdateElementDelegate();
-
         FormMain()
         {
             setting = Service.Setting.Instance;
             core = Service.Core.Instance;
 
             InitializeComponent();
+            this.Show();
+        }
 
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
             formMainCtrl = new Controller.FormMainCtrl();
 
             ListViewSupportRightClickMenu();
@@ -52,21 +54,19 @@ namespace V2RayGCon.Views
                 Properties.Resources.AppName,
                 Properties.Resources.Version);
 
-            this.Show();
             setting.OnSettingChange += SettingChangeHandler;
             core.OnCoreStatChange += SettingChangeHandler;
         }
 
         #region private method
-
         void SettingChangeHandler(object s, EventArgs e)
         {
-            UpdateElementDelegate updater =
-                new UpdateElementDelegate(UpdateUI);
-
             try
             {
-                lvServers?.Invoke(updater);
+                lvServers.Invoke((MethodInvoker)delegate
+                {
+                    UpdateUI();
+                });
             }
             catch { }
         }
@@ -349,6 +349,10 @@ namespace V2RayGCon.Views
             Lib.UI.ShowAboutBox();
         }
 
+        private void exportAllServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            formMainCtrl.SaveAllV2RayLinkToTextFile();
+        }
         #endregion
     }
 }
