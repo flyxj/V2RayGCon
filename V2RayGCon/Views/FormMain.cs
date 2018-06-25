@@ -351,8 +351,15 @@ namespace V2RayGCon.Views
 
         private void exportAllServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.SaveAllV2RayLinkToTextFile();
+            formMainCtrl.ExportAllServersToTextFile();
+        }
+
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            formMainCtrl.ImportServersFromTextFile();
         }
         #endregion
+
+
     }
 }

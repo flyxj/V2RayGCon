@@ -148,11 +148,20 @@
   <data name="deleteAllServerToolStripMenuItem.Text" xml:space="preserve">
     <value>删除所有服务器</value>
   </data>
+  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>177, 6</value>
+  </data>
   <data name="exportAllServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
   </data>
   <data name="exportAllServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>导出全部服务器</value>
+    <value>导出到文件</value>
+  </data>
+  <data name="importToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="importToolStripMenuItem.Text" xml:space="preserve">
+    <value>从文件导入</value>
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 6</value>

@@ -73,7 +73,22 @@ namespace V2RayGCon.Controller
                 I18N("CopyFail"));
         }
 
-        public void SaveAllV2RayLinkToTextFile()
+        public void ImportServersFromTextFile()
+        {
+            string v2rayLinks = Lib.UI.ShowReadFileDialog(resData("ExtText"), out string filename);
+            if (string.IsNullOrEmpty(v2rayLinks))
+            {
+                MessageBox.Show(I18N("ImportLinkFail"));
+                return;
+            }
+
+            MessageBox.Show(
+            setting.ImportLinks(v2rayLinks) ?
+            I18N("ImportLinkSuccess") :
+            I18N("ImportLinkFail"));
+        }
+
+        public void ExportAllServersToTextFile()
         {
             if (setting.GetServerCount() <= 0)
             {

@@ -19,14 +19,12 @@ namespace V2RayGCon.Views
         #endregion
 
         Service.Core core;
-        Service.Setting setting;
         Service.Downloader downloader;
 
         FormDownloadCore()
         {
             InitializeComponent();
             InitUI();
-            setting = Service.Setting.Instance;
             core = Service.Core.Instance;
 
             this.FormClosed += (s, e) => downloader?.Cancel();
