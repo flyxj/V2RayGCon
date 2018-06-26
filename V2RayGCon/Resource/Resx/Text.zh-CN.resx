@@ -341,4 +341,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="ServerListIsEmpty" xml:space="preserve">
     <value>没服务器可导！</value>
   </data>
+  <data name="DataTooBig" xml:space="preserve">
+    <value>信息量太大，请裁减配置文件。</value>
+  </data>
+  <data name="EmptyLink" xml:space="preserve">
+    <value>空链接！</value>
+  </data>
 </root>

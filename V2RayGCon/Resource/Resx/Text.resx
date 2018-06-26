@@ -343,4 +343,10 @@ Please use [Replace server] menu.</value>
   <data name="ServerListIsEmpty" xml:space="preserve">
     <value>Server list is empty!</value>
   </data>
+  <data name="DataTooBig" xml:space="preserve">
+    <value>Data too big. Please trim down the config file.</value>
+  </data>
+  <data name="EmptyLink" xml:space="preserve">
+    <value>Link is empty!</value>
+  </data>
 </root>

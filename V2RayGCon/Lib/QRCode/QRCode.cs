@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
+
 using System.Windows.Forms;
 using ZXing;
 using ZXing.QrCode;
@@ -19,11 +20,19 @@ namespace V2RayGCon.Lib.QRCode
             CharacterSet = "UTF-8"
         };
 
-        public static Bitmap GenQRCode(string content, int size = 512)
+        public enum WriteErrors
         {
+            DataEmpty,
+            DataTooBig,
+            Success,
+        }
+
+        public static Tuple<Bitmap ,WriteErrors > GenQRCode(string content, int size = 512)
+        {
+            Bitmap binCode = null;
             if (string.IsNullOrEmpty(content))
             {
-                return null;
+                return Tuple.Create(binCode,WriteErrors.DataEmpty);
             }
 
             options.Width = size;
@@ -35,7 +44,18 @@ namespace V2RayGCon.Lib.QRCode
                 Options = options,
             };
 
-            return new Bitmap(writer.Write(content));
+            var error = WriteErrors.Success;
+
+            try
+            {
+                binCode = new Bitmap(writer.Write(content));
+            }
+            catch
+            {
+                error = WriteErrors.DataTooBig;
+            }
+
+            return Tuple.Create(binCode, error);
         }
 
         static Func<Rectangle, Rectangle, int> GenNearCenterCompareFunc(int centerX, int centerY)
@@ -169,6 +189,8 @@ namespace V2RayGCon.Lib.QRCode
             {
                 var parts = 8;
                 var scanSize = (int)(0.5 * parts);
+
+                // Debug.WriteLine("res: {0}x{1}", screen.Bounds.Width, screen.Bounds.Height);
 
                 var scanRectList = GenSquareScanWinList(new Point(
                     screen.Bounds.Width,

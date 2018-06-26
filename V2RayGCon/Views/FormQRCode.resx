@@ -121,6 +121,9 @@
   <data name="picQRCode.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="picQRCode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="picQRCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 33</value>
@@ -259,10 +262,10 @@
     <value>1</value>
   </data>
   <data name="btnSavePic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>276, 6</value>
+    <value>276, 7</value>
   </data>
   <data name="btnSavePic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 23</value>
+    <value>58, 20</value>
   </data>
   <data name="btnSavePic.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -283,9 +286,6 @@
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">

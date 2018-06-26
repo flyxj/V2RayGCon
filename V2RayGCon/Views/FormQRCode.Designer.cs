@@ -95,6 +95,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.picQRCode);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FormQRCode";
             this.Shown += new System.EventHandler(this.FormQRCode_Shown);

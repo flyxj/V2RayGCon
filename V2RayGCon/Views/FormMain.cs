@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -23,6 +24,22 @@ namespace V2RayGCon.Views
         Service.Setting setting;
         Service.Core core;
         Controller.FormMainCtrl formMainCtrl;
+
+        #region AutoScaleListView
+        private void ScaleListViewColumns(ListView listview, SizeF factor)
+        {
+            foreach (ColumnHeader column in listview.Columns)
+            {
+                column.Width = (int)Math.Round(column.Width * factor.Width);
+            }
+        }
+
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            base.ScaleControl(factor, specified);
+            ScaleListViewColumns(lvServers, factor);
+        }
+        #endregion
 
         FormMain()
         {

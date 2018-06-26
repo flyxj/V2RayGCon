@@ -1,4 +1,8 @@
-﻿namespace V2RayGCon.Views
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace V2RayGCon.Views
 {
     partial class FormMain
     {
@@ -100,6 +104,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.operationToolStripMenuItem,
             this.proxyToolStripMenuItem,
@@ -407,6 +412,7 @@
             // 
             // ctxMenuStrip
             // 
+            this.ctxMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stripMenuActivate,
             this.toolStripSeparator2,

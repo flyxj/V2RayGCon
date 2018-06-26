@@ -261,6 +261,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Data too big. Please trim down the config file. 的本地化字符串。
+        /// </summary>
+        internal static string DataTooBig {
+            get {
+                return ResourceManager.GetString("DataTooBig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Default 的本地化字符串。
         /// </summary>
         internal static string Default {
@@ -413,6 +422,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Empty {
             get {
                 return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Link is empty! 的本地化字符串。
+        /// </summary>
+        internal static string EmptyLink {
+            get {
+                return ResourceManager.GetString("EmptyLink", resourceCulture);
             }
         }
         

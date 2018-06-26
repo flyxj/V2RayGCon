@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -92,24 +93,36 @@ namespace V2RayGCon.Views
             }
 
             string link = string.Empty;
+            Tuple<Bitmap, Lib.QRCode.QRCode.WriteErrors> pair;
+
             if (linkType == 0)
             {
                 string configString = Lib.Utils.Base64Decode(server);
                 var vmess = Lib.Utils.ConfigString2Vmess(configString);
                 link = Lib.Utils.Vmess2VmessLink(vmess);
-                if (!string.IsNullOrEmpty(link))
-                {
-                    picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link, 180);
-                }
+                pair = Lib.QRCode.QRCode.GenQRCode(link, 180);
             }
             else
             {
-                var prefix = Model.Data.Table.linkPrefix[
-                    (int)Model.Data.Enum.LinkTypes.v2ray];
+                var prefix = Model.Data.Table.linkPrefix[(int)Model.Data.Enum.LinkTypes.v2ray];
                 link = prefix + server;
-                picQRCode.Image = Lib.QRCode.QRCode.GenQRCode(link, 320);
+                pair = Lib.QRCode.QRCode.GenQRCode(link, 320);
             }
 
+            switch (pair.Item2)
+            {
+                case Lib.QRCode.QRCode.WriteErrors.Success:
+                    picQRCode.Image = pair.Item1;
+                    break;
+                case Lib.QRCode.QRCode.WriteErrors.DataEmpty:
+                    picQRCode.Image = null;
+                    MessageBox.Show(I18N("EmptyLink"));
+                    break;
+                case Lib.QRCode.QRCode.WriteErrors.DataTooBig:
+                    picQRCode.Image = null;
+                    MessageBox.Show(I18N("DataTooBig"));
+                    break;
+            }
         }
         #endregion
 
