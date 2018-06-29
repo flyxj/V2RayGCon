@@ -258,11 +258,22 @@
       }
     }
   },
+  "h2": {
+    "network": "h2",
+    "security": "tls",
+    "httpSettings": {
+      "host": null,
+      "path": ""
+    }
+  },
   "ws": {
     "network": "ws",
     "security": "tls",
     "wsSettings": {
-      "path": ""
+      "path": "",
+      "headers": {
+        "Host": ""
+      }
     }
   }
 }

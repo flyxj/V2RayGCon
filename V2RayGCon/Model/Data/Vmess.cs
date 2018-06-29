@@ -1,22 +1,22 @@
-﻿using System;
-
-namespace V2RayGCon.Model.Data
+﻿namespace V2RayGCon.Model.Data
 {
     public class Vmess
     {
-        public string ps, add, port, id, aid, net, type, host, tls;
+        public string ps, add, port, id, aid, net, type, host, tls, v, path;
 
         public Vmess()
         {
-            ps = String.Empty;      // alias
-            add = String.Empty;     // ip,hostname
-            port = String.Empty;    // port
-            id = String.Empty;      // user id
-            aid = String.Empty;
-            net = String.Empty;     // ws,tcp,kcp
-            type = String.Empty;    // kcp->header
-            host = String.Empty;    // ws->path
-            tls = String.Empty;     // streamSettings->security
+            v = string.Empty;       // v1:"" v2:"2"
+            ps = string.Empty;      // alias
+            add = string.Empty;     // ip,hostname
+            port = string.Empty;    // port
+            id = string.Empty;      // user id
+            aid = string.Empty;
+            net = string.Empty;     // ws,tcp,kcp
+            type = string.Empty;    // kcp->header
+            host = string.Empty;    // v1: ws->path v2: ws->host h2->["host1","host2"]
+            path = string.Empty;    // v1: "" v2: ws->path h2->path
+            tls = string.Empty;     // streamSettings->security
         }
     }
 }

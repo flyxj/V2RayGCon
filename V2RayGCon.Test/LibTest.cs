@@ -11,6 +11,33 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow("", "")]
+        [DataRow("1", "1")]
+        [DataRow("1 , 2", "1,2")]
+        [DataRow(",  ,  ,", "")]
+        [DataRow(",,,  ,1  ,  ,2,  ,3,,,", "1,2,3")]
+        public void Str2JArray2Str(string value, string expect)
+        {
+            var array = Lib.Utils.Str2JArray(value);
+            var str = Lib.Utils.JArray2Str(array);
+            Assert.AreEqual(expect, str);
+        }
+
+        [DataTestMethod]
+        [DataRow("0", 0)]
+        [DataRow("-1", -1)]
+        [DataRow("str-1.234", 0)]
+        [DataRow("-1.234str", 0)]
+        [DataRow("-1.234", -1)]
+        [DataRow("1.432", 1)]
+        [DataRow("1.678", 2)]
+        [DataRow("-1.678", -2)]
+        public void Str2Int(string value, int expect)
+        {
+            Assert.AreEqual(expect, Lib.Utils.Str2Int(value));
+        }
+
         [TestMethod]
         public void GetLocalCoreVersion()
         {

@@ -204,7 +204,6 @@ namespace V2RayGCon.Lib
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
-            Model.Data.Vmess vmess = new Model.Data.Vmess();
             JObject json;
             try
             {
@@ -217,6 +216,8 @@ namespace V2RayGCon.Lib
 
             var GetStr = HelperGetStringByPrefixAndKey(json);
 
+            Model.Data.Vmess vmess = new Model.Data.Vmess();
+            vmess.v = "2";
             vmess.ps = GetStr("v2raygcon", "alias");
 
             var prefix = "outbound.settings.vnext.0";
@@ -228,15 +229,31 @@ namespace V2RayGCon.Lib
             prefix = "outbound.streamSettings";
             vmess.net = GetStr(prefix, "network");
             vmess.type = GetStr(prefix, "kcpSettings.header.type");
-            vmess.host = GetStr(prefix, "wsSettings.path");
             vmess.tls = GetStr(prefix, "security");
+
+            switch (vmess.net)
+            {
+                case "ws":
+                    vmess.path = GetStr(prefix, "wsSettings.path");
+                    vmess.host = GetStr(prefix, "wsSettings.headers.Host");
+                    break;
+                case "h2":
+                    try
+                    {
+                        vmess.path = GetStr(prefix, "httpSettings.path");
+                        var hosts = json["outbound"]["streamSettings"]["httpSettings"]["host"];
+                        vmess.host = JArray2Str(hosts as JArray);
+                    }
+                    catch { }
+                    break;
+            }
+
+
             return vmess;
         }
 
-        public static string VmessLink2ConfigString(string vmessString)
+        public static string Vmess2ConfigString(Model.Data.Vmess vmess)
         {
-            var vmess = VmessLink2Vmess(vmessString);
-
             if (vmess == null)
             {
                 return string.Empty;
@@ -254,7 +271,7 @@ namespace V2RayGCon.Lib
             cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
 
             // insert stream type
-            string[] streamTypes = { "ws", "tcp", "kcp" };
+            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
             string streamType = vmess.net.ToLower();
 
             if (!streamTypes.Contains(streamType))
@@ -264,23 +281,79 @@ namespace V2RayGCon.Lib
 
             config["outbound"]["streamSettings"] = tpl[streamType];
 
-            config["outbound"]["streamSettings"]["security"] = vmess.tls;
             try
             {
-                if (streamType.Equals("kcp"))
+                switch (streamType)
                 {
-                    config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
-                }
-
-                if (streamType.Equals("ws"))
-                {
-                    config["outbound"]["streamSettings"]["wsSettings"]["path"] = vmess.host;
+                    case "kcp":
+                        config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
+                        break;
+                    case "ws":
+                        config["outbound"]["streamSettings"]["wsSettings"]["path"] =
+                            string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
+                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
+                        {
+                            config["outbound"]["streamSettings"]["wsSettings"]["headers"]["Host"] = vmess.host;
+                        }
+                        break;
+                    case "h2":
+                        config["outbound"]["streamSettings"]["httpSettings"]["path"] = vmess.path;
+                        config["outbound"]["streamSettings"]["httpSettings"]["host"] = Str2JArray(vmess.host);
+                        break;
                 }
 
             }
             catch { }
 
+            try
+            {
+                // must place at the end. cos this key is add by streamSettings
+                config["outbound"]["streamSettings"]["security"] = vmess.tls;
+            }
+            catch { }
             return config.ToString();
+        }
+
+        public static JArray Str2JArray(string content)
+        {
+            var arr = new JArray();
+            var items = content.Replace(" ", "").Split(',');
+            foreach (var item in items)
+            {
+                if (item.Length > 0)
+                {
+                    arr.Add(item);
+                }
+            }
+            return arr;
+        }
+
+        public static string JArray2Str(JArray array)
+        {
+            if (array == null)
+            {
+                return string.Empty;
+            }
+            List<string> s = new List<string>();
+
+            foreach (var item in array.Children())
+            {
+                try
+                {
+                    var v = item.Value<string>();
+                    if (!string.IsNullOrEmpty(v))
+                    {
+                        s.Add(v);
+                    }
+                }
+                catch { }
+            }
+
+            if (s.Count <= 0)
+            {
+                return string.Empty;
+            }
+            return string.Join(",", s);
         }
 
         public static string Base64Encode(string plainText)
@@ -390,9 +463,13 @@ namespace V2RayGCon.Lib
             return s.Substring(0, len) + " ...";
         }
 
-        public static int Str2Int(string s)
+        public static int Str2Int(string value)
         {
-            return Int32.TryParse(s, out int number) ? number : 0;
+            if (float.TryParse(value, out float f))
+            {
+                return (int)Math.Round(f);
+            };
+            return 0;
         }
 
         public static bool TryParseIPAddr(string address, out string ip, out int port)

@@ -105,6 +105,7 @@
     <Compile Include="Controller\Configer\VmessCtrl.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
+    <Compile Include="Lib\DllLoader.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
     <Compile Include="Lib\StringResource.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />

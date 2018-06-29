@@ -42,6 +42,7 @@ namespace V2RayGCon.Views
 
         private void btnOK_Click(object sender, System.EventArgs e)
         {
+            // using vmess:// v1  do not need fix
             var vmess = new Model.Data.Vmess();
 
             vmess.add = tboxHost.Text;

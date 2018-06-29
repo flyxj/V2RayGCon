@@ -503,7 +503,8 @@ namespace V2RayGCon.Service
 
             foreach (var link in links)
             {
-                string config = Lib.Utils.VmessLink2ConfigString(link);
+                var vmess = Lib.Utils.VmessLink2Vmess(link);
+                string config = Lib.Utils.Vmess2ConfigString(vmess);
                 if (string.IsNullOrEmpty(config))
                 {
                     continue;

@@ -134,7 +134,7 @@
     <value>177, 6</value>
   </data>
   <data name="vmessToolStripMenuItem1.ToolTipText" xml:space="preserve">
-    <value>部分设置可能和vmess链接不兼容.</value>
+    <value>Vmess链接只包含主要配置信息。</value>
   </data>
   <data name="copyAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -173,7 +173,7 @@
     <value>关闭窗口</value>
   </data>
   <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+    <value>41, 20</value>
   </data>
   <data name="operationToolStripMenuItem.Text" xml:space="preserve">
     <value>操作</value>
@@ -200,13 +200,13 @@
     <value>重启</value>
   </data>
   <data name="sysProxyDirectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>142, 22</value>
   </data>
   <data name="sysProxyDirectToolStripMenuItem.Text" xml:space="preserve">
     <value>清除代理设置</value>
   </data>
   <data name="sysProxyHttpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 22</value>
+    <value>142, 22</value>
   </data>
   <data name="sysProxyHttpToolStripMenuItem.Text" xml:space="preserve">
     <value>设置HTTP代理</value>
@@ -218,55 +218,55 @@
     <value>系统代理</value>
   </data>
   <data name="proxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+    <value>41, 20</value>
   </data>
   <data name="proxyToolStripMenuItem.Text" xml:space="preserve">
     <value>代理</value>
   </data>
   <data name="configEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+    <value>130, 22</value>
   </data>
   <data name="configEditorToolStripMenuItem.Text" xml:space="preserve">
     <value>配置编辑器</value>
   </data>
   <data name="qRCodeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+    <value>130, 22</value>
   </data>
   <data name="qRCodeToolStripMenuItem.Text" xml:space="preserve">
     <value>二维码</value>
   </data>
   <data name="logToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+    <value>130, 22</value>
   </data>
   <data name="logToolStripMenuItem.Text" xml:space="preserve">
     <value>日志</value>
   </data>
   <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+    <value>41, 20</value>
   </data>
   <data name="windowToolStripMenuItem.Text" xml:space="preserve">
     <value>窗口</value>
   </data>
   <data name="downloadV2rayCoreToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="downloadV2rayCoreToolStripMenuItem1.Text" xml:space="preserve">
     <value>下载v2ray-core</value>
   </data>
   <data name="checkUpdateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="checkUpdateToolStripMenuItem.Text" xml:space="preserve">
     <value>检查更新</value>
   </data>
   <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
     <value>关于</value>
   </data>
   <data name="aboutToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+    <value>41, 20</value>
   </data>
   <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
     <value>关于</value>
@@ -316,73 +316,76 @@
     <value />
   </data>
   <data name="stripMenuActivate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="stripMenuActivate.Text" xml:space="preserve">
     <value>激活</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 6</value>
+    <value>91, 6</value>
+  </data>
+  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Vmess链接只包含主要配置信息。</value>
   </data>
   <data name="stripMenuCopy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="stripMenuCopy.Text" xml:space="preserve">
     <value>复制</value>
   </data>
   <data name="stripMenuDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="stripMenuDelete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
   <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>编辑</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 6</value>
+    <value>91, 6</value>
   </data>
   <data name="topToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="topToolStripMenuItem.Text" xml:space="preserve">
     <value>置顶</value>
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 6</value>
+    <value>91, 6</value>
   </data>
   <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="toolStripMenuItem2.Text" xml:space="preserve">
     <value>上移</value>
   </data>
   <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="toolStripMenuItem3.Text" xml:space="preserve">
     <value>下移</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 6</value>
+    <value>91, 6</value>
   </data>
   <data name="buttomToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="buttomToolStripMenuItem.Text" xml:space="preserve">
     <value>置底</value>
   </data>
   <data name="moveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 22</value>
+    <value>94, 22</value>
   </data>
   <data name="moveToolStripMenuItem.Text" xml:space="preserve">
     <value>移动</value>
   </data>
   <data name="ctxMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 126</value>
+    <value>95, 126</value>
   </data>
   <data name="ctxMenuStrip.ToolTip" xml:space="preserve">
     <value />
