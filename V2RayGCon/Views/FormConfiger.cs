@@ -229,7 +229,6 @@ namespace V2RayGCon.Views
         private void btnSSInsertServer_Click(object sender, EventArgs e)
         {
             configer.InsertSSServer();
-
         }
 
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
@@ -241,7 +240,7 @@ namespace V2RayGCon.Views
             else
             {
                 // update examples
-                UpdateExampleDescriptions();
+                UpdateExamplesDescription();
             }
         }
 
@@ -502,16 +501,15 @@ namespace V2RayGCon.Views
         #endregion
 
         #region private method
-        void UpdateExampleDescriptions()
+        void UpdateExamplesDescription()
         {
             cboxExamples.Items.Clear();
 
             cboxExamples.Items.Add(I18N("AvailableExamples"));
-            var descriptions = configer.GetExampleDescriptions();
+            var descriptions = configer.GetExamplesDescription();
             if (descriptions.Count < 1)
             {
                 cboxExamples.Enabled = false;
-                // cboxExamples.Visible = false;
             }
             else
             {

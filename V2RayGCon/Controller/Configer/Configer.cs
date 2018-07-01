@@ -89,7 +89,7 @@ namespace V2RayGCon.Controller.Configer
             return Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
         }
 
-        public List<string> GetExampleDescriptions()
+        public List<string> GetExamplesDescription()
         {
             var list = new List<string>();
 
@@ -151,43 +151,37 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        public bool SaveChanges()
+        public void SaveChanges()
         {
-            var content = editor.content;
+            var content = JToken.Parse(editor.content);
+
+            if (preSection == 0)
+            {
+                config = content as JObject;
+                return;
+            }
+
             if (preSection >= separator)
             {
-                config[sections[preSection]] =
-                    JArray.Parse(content);
+                config[sections[preSection]] = content as JArray;
             }
-            else if (preSection == 0)
+            else 
             {
-                config = JObject.Parse(content);
-
+                config[sections[preSection]] = content as JObject;
             }
-            else
-            {
-                config[sections[preSection]] =
-                    JObject.Parse(content);
-            }
-            return true;
         }
 
         public bool CheckValid()
         {
             try
             {
-                if (preSection >= separator)
-                {
-                    JArray.Parse(editor.content);
-                }
-                else
-                {
-                    JObject.Parse(editor.content);
-                }
+                JToken.Parse(editor.content);
                 return true;
             }
-            catch { }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public void UpdateData()
