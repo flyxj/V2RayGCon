@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -40,7 +41,6 @@ namespace V2RayGCon.Controller.Configer
             LoadConfig(serverIndex);
             editor.content = config.ToString();
             UpdateData();
-
         }
 
         #region public method
@@ -137,6 +137,18 @@ namespace V2RayGCon.Controller.Configer
                 }
             }
             return true;
+        }
+
+        public void FormatCurrentContent()
+        {
+            try
+            {
+                var json = JToken.Parse(editor.content);
+                editor.content = json.ToString();
+            }
+            catch {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+            }
         }
 
         public bool SaveChanges()
@@ -367,6 +379,17 @@ namespace V2RayGCon.Controller.Configer
                 {
                     InsertOutBoundSetting(vmess, "vmess");
                 }
+            });
+        }
+
+        public void InsertSkipCN()
+        {
+            var eg= JObject.Parse(resData("config_def"));
+
+            InsertConfigHelper(() => {
+                config["dns"] = eg["dnsCFnGoogle"];
+                config["routing"] = eg["routeCNIP"];
+                config["outboundDetour"] = eg["outDtrDefault"];
             });
         }
 

@@ -69,7 +69,9 @@ namespace V2RayGCon.Views
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadV2rayCoreToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.checkUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lvServers = new System.Windows.Forms.ListView();
             this.index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.alias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -329,7 +331,9 @@ namespace V2RayGCon.Views
             this.aboutToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.downloadV2rayCoreToolStripMenuItem1,
             this.checkUpdateToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.toolStripSeparator10,
+            this.aboutToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
             // 
             // downloadV2rayCoreToolStripMenuItem1
@@ -344,11 +348,22 @@ namespace V2RayGCon.Views
             this.checkUpdateToolStripMenuItem.Name = "checkUpdateToolStripMenuItem";
             this.checkUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkUpdateToolStripMenuItem_Click);
             // 
+            // toolStripSeparator10
+            // 
+            resources.ApplyResources(this.toolStripSeparator10, "toolStripSeparator10");
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            // 
             // aboutToolStripMenuItem
             // 
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // lvServers
             // 
@@ -605,6 +620,8 @@ namespace V2RayGCon.Views
         private System.Windows.Forms.ToolStripMenuItem exportAllServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator10;
+        private ToolStripMenuItem helpToolStripMenuItem;
     }
 }
 

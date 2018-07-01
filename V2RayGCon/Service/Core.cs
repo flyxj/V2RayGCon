@@ -13,7 +13,6 @@ namespace V2RayGCon.Service
     {
         Process v2rayCore;
         Setting setting;
-        bool _isRunning;
 
         public event EventHandler OnCoreStatChange;
 
@@ -21,14 +20,13 @@ namespace V2RayGCon.Service
         {
             v2rayCore = null;
             setting = Setting.Instance;
-            _isRunning = false;
-            setting.OnRequireCoreRestart += (s, a) => RestartCore();
+            setting.OnRequireCoreRestart += (s, a) => CoreRestartHandler();
         }
 
         #region properties
         public bool isRunning
         {
-            get => _isRunning;
+            get => v2rayCore != null;
         }
         #endregion
 
@@ -67,7 +65,7 @@ namespace V2RayGCon.Service
 
         }
 
-        void RestartCore()
+        void CoreRestartHandler()
         {
             var index = setting.GetCurServIndex();
             var b64Config = setting.GetServer(index);
@@ -81,6 +79,21 @@ namespace V2RayGCon.Service
             JObject config = JObject.Parse(plainText);
             OverwriteInboundSettings(config);
             RestartCore(config.ToString());
+        }
+
+        void RestartCore(string config)
+        {
+            StopCoreThen(() =>
+            {
+                if (IsCoreExist())
+                {
+                    StartCore(config);
+                }
+                else
+                {
+                    MessageBox.Show(I18N("ExeNotFound"));
+                }
+            });
         }
 
         void StartCore(string config)
@@ -111,6 +124,8 @@ namespace V2RayGCon.Service
             v2rayCore.Exited += (s, e) =>
             {
                 setting.SendLog(I18N("CoreExit"));
+                v2rayCore = null;
+                NotifyStateChange();
             };
             v2rayCore.ErrorDataReceived += (s, e) => setting.SendLog(e.Data);
             v2rayCore.OutputDataReceived += (s, e) => setting.SendLog(e.Data);
@@ -127,16 +142,23 @@ namespace V2RayGCon.Service
             catch (Exception e)
             {
                 Debug.WriteLine("Excep: {0}", e);
-                StopCore();
-                MessageBox.Show(I18N("CantLauchCore"));
+                StopCoreThen(()=> MessageBox.Show(I18N("CantLauchCore")));
                 return;
             }
 
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
 
-            _isRunning = true;
-            OnCoreStatChange?.Invoke(this, EventArgs.Empty);
+            NotifyStateChange();
+        }
+
+        void NotifyStateChange()
+        {
+            try
+            {
+                OnCoreStatChange?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
         }
         #endregion
 
@@ -147,39 +169,23 @@ namespace V2RayGCon.Service
             return File.Exists(resData("Executable"));
         }
 
-        public void RestartCore(string config)
-        {
-            StopCore();
-
-            if (IsCoreExist())
-            {
-                StartCore(config);
-            }
-            else
-            {
-                MessageBox.Show(I18N("ExeNotFound"));
-            }
-        }
-
-        public void StopCore()
+        public void StopCoreThen(Action lamda)
         {
             if (v2rayCore == null)
             {
-                Debug.WriteLine("v2ray-core is not runnig!");
+                lamda?.Invoke();
+                return;
             }
-            else
+            v2rayCore.Exited += (s, a) =>
             {
-                Debug.WriteLine("kill v2ray core");
-                try
-                {
-                    Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
-                }
-                catch { }
                 v2rayCore = null;
+                lamda?.Invoke();
+            };
+            try
+            {
+                Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
             }
-
-            _isRunning = false;
-            OnCoreStatChange?.Invoke(this, EventArgs.Empty);
+            catch { }
         }
 
         public string GetCoreVersion()

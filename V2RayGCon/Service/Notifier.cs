@@ -132,7 +132,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem("-"),
 
-                new MenuItem(I18N("About"),(s,a)=>Lib.UI.ShowAboutBox()),
+                new MenuItem(I18N("About"),(s,a)=>Lib.UI.VisitUrl(I18N("VistPorjectPage"),Properties.Resources.ProjectLink)),
 
                 new MenuItem(I18N("Exit"),(s,a)=>{
                     if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){
@@ -146,11 +146,11 @@ namespace V2RayGCon.Service
         {
             Debug.WriteLine("Call cleanup");
             ni.Visible = false;
-            core.StopCore();
             if (setting.isSysProxyHasSet)
             {
                 Lib.ProxySetter.setProxy("", false);
             }
+            core.StopCoreThen(null);
         }
         #endregion
     }

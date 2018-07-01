@@ -75,12 +75,15 @@ namespace V2RayGCon.Service
                 var isRunning = core.isRunning;
                 if (isRunning)
                 {
-                    core.StopCore();
+                    core.StopCoreThen(() =>
+                    {
+                        UnzipPackage();
+                        setting.ActivateServer();
+                    });
                 }
-                UnzipPackage();
-                if (isRunning)
+                else
                 {
-                    setting.ActivateServer();
+                    UnzipPackage();
                 }
             }
             catch

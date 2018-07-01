@@ -117,11 +117,20 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
-        ///   查找类似 1.0.7 的本地化字符串。
+        ///   查找类似 1.0.8 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/wiki 的本地化字符串。
+        /// </summary>
+        internal static string WikiLink {
+            get {
+                return ResourceManager.GetString("WikiLink", resourceCulture);
             }
         }
     }

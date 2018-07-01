@@ -316,7 +316,7 @@ Checkout download page?</value>
     <value>The current V2RayGCon is the latest version.</value>
   </data>
   <data name="VistPorjectPage" xml:space="preserve">
-    <value>Vist porject page?</value>
+    <value>Vist project page?</value>
   </data>
   <data name="ConfirmDeleteAllServers" xml:space="preserve">
     <value>DELETE ALL SERVERS?</value>
@@ -348,5 +348,11 @@ Please use [Replace server] menu.</value>
   </data>
   <data name="EmptyLink" xml:space="preserve">
     <value>Link is empty!</value>
+  </data>
+  <data name="VistWikiPage" xml:space="preserve">
+    <value>Visit wiki page of this project?</value>
+  </data>
+  <data name="CFnGoogle" xml:space="preserve">
+    <value>CF and Google</value>
   </data>
 </root>

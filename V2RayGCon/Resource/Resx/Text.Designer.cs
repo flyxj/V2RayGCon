@@ -142,6 +142,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 CF and Google 的本地化字符串。
+        /// </summary>
+        internal static string CFnGoogle {
+            get {
+                return ResourceManager.GetString("CFnGoogle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Confirm 的本地化字符串。
         /// </summary>
         internal static string Confirm {
@@ -688,11 +697,20 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Vist porject page? 的本地化字符串。
+        ///   查找类似 Vist project page? 的本地化字符串。
         /// </summary>
         internal static string VistPorjectPage {
             get {
                 return ResourceManager.GetString("VistPorjectPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visit wiki page of this project? 的本地化字符串。
+        /// </summary>
+        internal static string VistWikiPage {
+            get {
+                return ResourceManager.GetString("VistWikiPage", resourceCulture);
             }
         }
         

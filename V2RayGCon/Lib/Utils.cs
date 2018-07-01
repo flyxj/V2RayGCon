@@ -445,7 +445,8 @@ namespace V2RayGCon.Lib
         {
             foreach (var data in dict)
             {
-                if (data.Value.Equals(value, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.IsNullOrEmpty(data.Value) 
+                    && data.Value.Equals(value, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return data.Key;
                 }

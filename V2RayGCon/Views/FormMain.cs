@@ -147,7 +147,11 @@ namespace V2RayGCon.Views
 
             foreach (var server in servers)
             {
-                server[5] = server[0].Equals(curServNum) && core.isRunning ? "√" : string.Empty;
+                server[5] = 
+                    server[0] == curServNum
+                    && core.isRunning ? 
+                    "√" : string.Empty;
+
                 lvServers.Items.Add(new ListViewItem(server));
             }
 
@@ -221,7 +225,7 @@ namespace V2RayGCon.Views
 
         private void proxyAddrToolStripTextBox_TextChange(object sender, EventArgs e)
         {
-            if (!setting.proxyAddr.Equals(proxyAddrToolStripTextBox.Text))
+            if (setting.proxyAddr != proxyAddrToolStripTextBox.Text )
             {
                 setting.proxyAddr = proxyAddrToolStripTextBox.Text;
             }
@@ -249,7 +253,7 @@ namespace V2RayGCon.Views
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            core.StopCore();
+            core.StopCoreThen(null);
         }
 
         private void ImportLinkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -362,8 +366,8 @@ namespace V2RayGCon.Views
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Lib.UI.ShowAboutBox();
+        {             
+            Lib.UI.VisitUrl(I18N("VistPorjectPage"),Properties.Resources.ProjectLink);
         }
 
         private void exportAllServerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -374,6 +378,11 @@ namespace V2RayGCon.Views
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             formMainCtrl.ImportServersFromTextFile();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
         }
         #endregion
 
