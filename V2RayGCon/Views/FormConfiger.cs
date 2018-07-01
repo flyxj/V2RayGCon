@@ -40,6 +40,11 @@ namespace V2RayGCon.Views
 
             cboxConfigSection.SelectedIndex = 0;
 
+            this.FormClosing += (s, a) =>
+            {
+                a.Cancel = !Lib.UI.Confirm(I18N("ConfirmCloseWindow"));
+            };
+
             this.FormClosed += (s, a) =>
             {
                 setting.OnSettingChange -= SettingChange;
@@ -326,12 +331,6 @@ namespace V2RayGCon.Views
             ShowSearchBox();
         }
 
-        private void saveCurCfgToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            configer.ReplaceOriginalServer();
-            SetTitle(configer.GetAlias());
-        }
-
         private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
         {
             configer.SetVmessServerMode(rbtnVmessIServerMode.Checked);
@@ -362,6 +361,21 @@ namespace V2RayGCon.Views
             configer.InsertVGC();
         }
 
+        private void btnFormat_Click(object sender, EventArgs e)
+        {
+            configer.FormatCurrentContent();
+        }
+
+        private void btnQConSkipCN_Click(object sender, EventArgs e)
+        {
+            configer.InsertSkipCN();
+        }
+
+        private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
+        {
+            configer.ReplaceOriginalServer();
+            SetTitle(configer.GetAlias());
+        }
         #endregion
 
         #region bind hotkey
@@ -609,5 +623,7 @@ namespace V2RayGCon.Views
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
         #endregion
+
+        
     }
 }

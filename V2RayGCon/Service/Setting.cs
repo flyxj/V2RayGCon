@@ -538,26 +538,41 @@ namespace V2RayGCon.Service
 
         string[] GetSummaryFromConfig(JObject config)
         {
+            var summary= new string[] {
+                string.Empty,  // reserve for no.
+                string.Empty,  // reserve for alias
+                string.Empty,
+                string.Empty,  // ip
+                string.Empty,  // port
+                string.Empty,  // reserve for activate
+                string.Empty,  // stream type
+                string.Empty,  // wspath
+                string.Empty,  // tls
+                string.Empty,  // mKCP disguise
+            };
+
             var GetStr = Lib.Utils.GetStringByKeyHelper(config);
 
             var protocol = GetStr("outbound.protocol");
 
-            var keys = protocol.Equals("vmess") ?
-                Model.Data.Table.servInfoKeys["vmess"] :
-                Model.Data.Table.servInfoKeys["shadowsocks"];
+            if (string.IsNullOrEmpty(protocol))
+            {
+                return summary;
+            }
 
-            return new string[] {
-                string.Empty,     // reserve for no.
-                string.Empty,     // reserve for alias
-                protocol,
-                GetStr(keys[0]),  // ip
-                GetStr(keys[1]),  // port
-                string.Empty,     // reserve for activate
-                GetStr(keys[4]),  // stream type
-                GetStr(keys[3]),  // wspath
-                GetStr(keys[2]),  // tls
-                GetStr(keys[5]),  // mKCP disguise
-            };
+            summary[2] = protocol;
+            if (protocol == "vmess" || protocol == "shadowsocks")
+            {
+                var keys = Model.Data.Table.servInfoKeys[protocol];
+                summary[3]= GetStr(keys[0]);
+                summary[4]= GetStr(keys[1]);
+                summary[6]= GetStr(keys[4]);
+                summary[7]= GetStr(keys[3]);
+                summary[8]= GetStr(keys[2]);
+                summary[9]= GetStr(keys[5]);
+            }
+            
+            return summary;
         }
 
         void OnServerListChanged()

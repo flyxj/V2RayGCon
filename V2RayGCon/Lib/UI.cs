@@ -73,15 +73,11 @@ namespace V2RayGCon.Lib
             return confirm == DialogResult.Yes;
         }
 
-        public static void ShowAboutBox()
+        public static void VisitUrl(string msg,string url)
         {
-            var url = Properties.Resources.ProjectLink;
-            var msg = string.Format("{0}\n{1}",
-                I18N("VistPorjectPage"),
-                url);
-            if (Confirm(msg))
+            var text = string.Format("{0}\n{1}",msg,url);
+            if (Confirm(text))
             {
-                // Is this a little bit overkill?
                 Task.Factory.StartNew(() => System.Diagnostics.Process.Start(url));
             }
         }

@@ -347,4 +347,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="EmptyLink" xml:space="preserve">
     <value>空链接！</value>
   </data>
+  <data name="VistWikiPage" xml:space="preserve">
+    <value>访问本项目的wiki页面?</value>
+  </data>
+  <data name="CFnGoogle" xml:space="preserve">
+    <value>CF 和 Google</value>
+  </data>
 </root>

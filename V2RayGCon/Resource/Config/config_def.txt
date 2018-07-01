@@ -257,6 +257,13 @@
       "StatsService"
     ]
   },
+  "dnsCFnGoogle": {
+    "servers": [
+      "1.1.1.1",
+      "8.8.8.8",
+      "localhost"
+    ]
+  },
   "dnsDefault": {
     "hosts": {
       "baidu.com": "127.0.0.1"
@@ -267,7 +274,7 @@
       "localhost"
     ]
   },
-  "routeCIP": {
+  "routeCNIP": {
     "strategy": "rules",
     "settings": {
       "domainStrategy": "IPIfNonMatch",
@@ -310,7 +317,7 @@
       ]
     }
   },
-  "routeI2O": {
+  "routeIn2Out": {
     "strategy": "rules",
     "settings": {
       "rules": [

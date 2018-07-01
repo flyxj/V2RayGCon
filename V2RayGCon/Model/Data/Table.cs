@@ -130,14 +130,15 @@ namespace V2RayGCon.Model.Data
             //{ 3, "dns"},
             list = NewList();
             list.Add(SS(I18N("Default"), "dnsDefault"));
+            list.Add(SS(I18N("CFnGoogle"), "dnsCFnGoogle"));
             d.Add(3, list);
 
             //{ 4, "stats"},
 
             //{ 5, "routing"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "routeCIP"));
-            list.Add(SS("Inbound to Outbound", "routeI2O"));
+            list.Add(SS(I18N("Default"), "routeCNIP"));
+            list.Add(SS("Inbound to Outbound", "routeIn2Out"));
             list.Add(SS("All options", "routeAll"));
             d.Add(5, list);
 

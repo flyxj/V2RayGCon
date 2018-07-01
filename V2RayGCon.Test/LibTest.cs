@@ -59,7 +59,14 @@ namespace V2RayGCon.Test
         public void GetValue_GetBoolFromString_ReturnDefault()
         {
             var json = JObject.Parse(resData("config_min"));
-            Assert.AreEqual(GetValue<bool>(json, "log.loglevel"), default(bool));
+            Assert.AreEqual( default(bool),GetValue<bool>(json, "log.loglevel"));
+        }
+
+        [TestMethod]
+        public void GetValue_GetStringNotExist_ReturnNull()
+        {
+            var json = JObject.Parse(resData("config_min"));
+            Assert.AreEqual(null,GetValue<string>(json, "log.keyNotExist"));
         }
 
         [TestMethod]
@@ -67,7 +74,7 @@ namespace V2RayGCon.Test
         {
             var json = JObject.Parse(resData("config_min"));
             var value = Lib.Utils.GetValue<int>(json, "log.key_not_exist");
-            Assert.AreEqual(value, default(int));
+            Assert.AreEqual(default(int), value);
         }
 
         [DataTestMethod]
@@ -129,7 +136,7 @@ namespace V2RayGCon.Test
         {
             var content = testData("links");
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
-            Assert.AreEqual(links.Count, 2);
+            Assert.AreEqual(2,links.Count);
         }
 
         [TestMethod]
@@ -137,7 +144,7 @@ namespace V2RayGCon.Test
         {
             var content = "";
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
-            Assert.AreEqual(links.Count, 0);
+            Assert.AreEqual(0,links.Count);
         }
 
         [TestMethod]
@@ -145,7 +152,7 @@ namespace V2RayGCon.Test
         {
             List<string> versions = Lib.Utils.GetCoreVersions();
             // Assert.AreNotEqual(versions, null);
-            Assert.AreEqual(versions.Count > 0, true);
+            Assert.AreEqual(true,versions.Count > 0);
         }
 
         [TestMethod]
