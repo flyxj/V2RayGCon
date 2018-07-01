@@ -145,12 +145,12 @@ namespace V2RayGCon.Service
         void Cleanup()
         {
             Debug.WriteLine("Call cleanup");
-            core.StopCoreThen(null);
             ni.Visible = false;
             if (setting.isSysProxyHasSet)
             {
                 Lib.ProxySetter.setProxy("", false);
             }
+            core.StopCoreThen(null);
         }
         #endregion
     }
