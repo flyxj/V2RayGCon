@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -16,6 +17,7 @@ namespace V2RayGCon.Controller.Configer
         public Editor editor;
         public SSServer ssServer;
         public VGC vgc;
+        public VLink vlink;
 
         JObject config;
         int separator;
@@ -32,6 +34,7 @@ namespace V2RayGCon.Controller.Configer
             vmessCtrl = new VmessCtrl();
             editor = new Editor();
             vgc = new VGC();
+            vlink = new VLink();
 
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
@@ -281,6 +284,39 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("EditorNoExample"));
             }
+        }
+
+        public void InsertVLink()
+        {
+            void Refresh()
+            {
+                UpdateData();
+                ShowSection();
+            }
+
+            void DownloadTemplate()
+            {
+                var link = vlink.GetSettings();
+                var urls = Lib.Utils.GetValue<string>(link, "u");
+                var c = JObject.Parse(@"{}");
+                if (!string.IsNullOrEmpty(urls))
+                {
+                    foreach (var url in urls.Split('\n'))
+                    {
+                        var content = Lib.Utils.Fetch(url);
+                        try
+                        {
+                            var j = JObject.Parse(content);
+                            c = Lib.Utils.MergeJson(c, j);
+                        }
+                        catch { }
+                    }
+                }
+                config = c;
+                Refresh();
+            }
+            DownloadTemplate();
+            // Task.Factory.StartNew(DownloadTemplate);
         }
 
         public void InsertKCP()

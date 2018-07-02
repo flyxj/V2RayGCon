@@ -17,6 +17,17 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region Json
+        public static JObject MergeJson(JObject firstJson,JObject secondJson)
+        {
+            var result = firstJson.DeepClone() as JObject; // copy
+            result.Merge(secondJson, new JsonMergeSettings {
+                MergeArrayHandling=MergeArrayHandling.Union,
+                MergeNullValueHandling=MergeNullValueHandling.Merge
+            });
+
+            return result;
+        }
+
         public static T Parse<T>(string json) where T : JToken
         {
             if (json == string.Empty)
@@ -60,16 +71,23 @@ namespace V2RayGCon.Lib
         public static T GetValue<T>(JToken json, string keyChain)
         {
             var key = GetKey(json, keyChain);
+
+            var def = default(T);
+            if (def == null && typeof(T)==typeof(string))
+            {
+                def = (T)(object)string.Empty;
+            }
+
             if (key == null)
             {
-                return default(T);
+                return def;
             }
             try
             {
                 return key.Value<T>();
             }
             catch { }
-            return default(T);
+            return def;
         }
 
         public static Func<string, string, string> HelperGetStringByPrefixAndKey(JObject json)
@@ -382,7 +400,7 @@ namespace V2RayGCon.Lib
 
         #region net
 
-        static string Fetch(string url)
+        public static string Fetch(string url)
         {
             var html = string.Empty;
             try

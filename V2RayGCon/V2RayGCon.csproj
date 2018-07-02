@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="Controller\Configer\Configer.cs" />
     <Compile Include="Controller\Configer\Editor.cs" />
+    <Compile Include="Controller\Configer\VLink.cs" />
     <Compile Include="Controller\Configer\VGC.cs" />
     <Compile Include="Controller\Configer\SSClient.cs" />
     <Compile Include="Controller\Configer\SSServer.cs" />

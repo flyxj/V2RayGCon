@@ -54,6 +54,8 @@ namespace V2RayGCon.Views
         }
 
         #region data binding
+
+
         void BindDataEditor()
         {
             // bind scintilla
@@ -97,6 +99,17 @@ namespace V2RayGCon.Views
                 nameof(streamClient.tls),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        void BindDataVLink()
+        {
+            var vlink = configer.vlink;
+            var bs = new BindingSource();
+            bs.DataSource = vlink;
+            tboxVName.DataBindings.Add("Text", bs, nameof(vlink.name));
+            rtboxVUrls.DataBindings.Add("Text", bs, nameof(vlink.urls));
+            rtboxVOverwrite.DataBindings.Add("Text", bs, nameof(vlink.overwrite));
+            tboxVLink.DataBindings.Add("Text", bs, nameof(vlink.link));
         }
 
         void BindDataVGC()
@@ -497,6 +510,7 @@ namespace V2RayGCon.Views
             BindDataEditor();
             BindDataSSServer();
             BindDataVGC();
+            BindDataVLink();
         }
         #endregion
 
@@ -620,8 +634,12 @@ namespace V2RayGCon.Views
             formSearch = new FormSearch(scintilla);
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
+
         #endregion
 
-        
+        private void btnVInsert_Click(object sender, EventArgs e)
+        {
+            configer.InsertVLink();
+        }
     }
 }
