@@ -622,6 +622,7 @@
             // 
             // rtboxVOverwrite
             // 
+            this.rtboxVOverwrite.DetectUrls = false;
             resources.ApplyResources(this.rtboxVOverwrite, "rtboxVOverwrite");
             this.rtboxVOverwrite.Name = "rtboxVOverwrite";
             // 
@@ -854,6 +855,7 @@
             // 
             // rtboxVUrls
             // 
+            this.rtboxVUrls.DetectUrls = false;
             resources.ApplyResources(this.rtboxVUrls, "rtboxVUrls");
             this.rtboxVUrls.Name = "rtboxVUrls";
             // 
