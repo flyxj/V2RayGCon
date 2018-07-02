@@ -12,7 +12,7 @@ namespace V2RayGCon.Views
     {
         Controller.Configer.Configer configer;
         Service.Setting setting;
-        Scintilla scintilla;
+        Scintilla scintillaMain,scintillaVlink;
         FormSearch formSearch;
 
         string _Title;
@@ -32,7 +32,12 @@ namespace V2RayGCon.Views
         {
             configer = new Controller.Configer.Configer(_serverIndex);
             InitComboBox();
-            InitScintilla();
+
+            scintillaMain = new Scintilla();
+            InitScintilla(scintillaMain,panelScintilla);
+            scintillaVlink = new Scintilla();
+            InitScintilla(scintillaVlink,panelVOverwrite);
+
             InitDataBinding();
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
@@ -63,7 +68,7 @@ namespace V2RayGCon.Views
             var bs = new BindingSource();
 
             bs.DataSource = editor;
-            scintilla.DataBindings.Add(
+            scintillaMain.DataBindings.Add(
                 "Text",
                 bs,
                 nameof(editor.content),
@@ -106,10 +111,17 @@ namespace V2RayGCon.Views
             var vlink = configer.vlink;
             var bs = new BindingSource();
             bs.DataSource = vlink;
+
+            scintillaVlink.DataBindings.Add(
+                "Text",
+                bs,
+                nameof(vlink.overwrite),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            rtboxVLinkDecode.DataBindings.Add("Text", bs, nameof(vlink.linkDecode));
             rtboxVUrls.DataBindings.Add("Text", bs, nameof(vlink.urls));
-            rtboxVOverwrite.DataBindings.Add("Text", bs, nameof(vlink.overwrite));
-            tboxVLinkGen.DataBindings.Add("Text", bs, nameof(vlink.linkEncode));
-            tboxVLinkDecode.DataBindings.Add("Text", bs, nameof(vlink.linkDecode));
+            rtboxVLinkGen.DataBindings.Add("Text", bs, nameof(vlink.linkEncode));
         }
 
         void BindDataVGC()
@@ -201,7 +213,7 @@ namespace V2RayGCon.Views
         private void btnVCopy_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                Lib.Utils.CopyToClipboard(tboxVLinkGen.Text) ?
+                Lib.Utils.CopyToClipboard(rtboxVLinkGen.Text) ?
                 I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
@@ -458,10 +470,11 @@ namespace V2RayGCon.Views
             FillComboBox(cboxStreamSecurity, Model.Data.Table.streamSecurity);
         }
 
-        void InitScintilla()
+        void InitScintilla(Scintilla scintilla,Panel container)
         {
-            scintilla = new Scintilla();
-            panelScintilla.Controls.Add(scintilla);
+            
+            
+            container.Controls.Add(scintilla);
 
             // scintilla.Dock = DockStyle.Fill;
             scintilla.Dock = DockStyle.Fill;
@@ -648,7 +661,7 @@ namespace V2RayGCon.Views
             {
                 return;
             }
-            formSearch = new FormSearch(scintilla);
+            formSearch = new FormSearch(scintillaMain);
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
 
