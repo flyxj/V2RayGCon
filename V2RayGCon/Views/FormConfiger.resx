@@ -315,8 +315,68 @@
   <data name="&gt;&gt;misc.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;btnVLinkDecode.Name" xml:space="preserve">
+    <value>btnVLinkDecode</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.Parent" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.Name" xml:space="preserve">
+    <value>tboxVLinkDecode</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.Parent" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label23.Name" xml:space="preserve">
+    <value>label23</value>
+  </data>
+  <data name="&gt;&gt;label23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label23.Parent" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="groupBox8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 10</value>
+  </data>
+  <data name="groupBox8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>582, 71</value>
+  </data>
+  <data name="groupBox8.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="groupBox8.Text" xml:space="preserve">
+    <value>Decode</value>
+  </data>
+  <data name="&gt;&gt;groupBox8.Name" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;groupBox8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox8.Parent" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="&gt;&gt;groupBox8.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="rtboxVUrls.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 62</value>
+    <value>102, 28</value>
   </data>
   <data name="rtboxVUrls.Size" type="System.Drawing.Size, System.Drawing">
     <value>464, 103</value>
@@ -340,7 +400,7 @@
     <value>0</value>
   </data>
   <data name="rtboxVOverwrite.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 171</value>
+    <value>102, 137</value>
   </data>
   <data name="rtboxVOverwrite.Size" type="System.Drawing.Size, System.Drawing">
     <value>464, 138</value>
@@ -363,11 +423,38 @@
   <data name="&gt;&gt;rtboxVOverwrite.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="btnVCopy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnVCopy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>470, 281</value>
+  </data>
+  <data name="btnVCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 28</value>
+  </data>
+  <data name="btnVCopy.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="btnVCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="&gt;&gt;btnVCopy.Name" xml:space="preserve">
+    <value>btnVCopy</value>
+  </data>
+  <data name="&gt;&gt;btnVCopy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnVCopy.Parent" xml:space="preserve">
+    <value>groupBox7</value>
+  </data>
+  <data name="&gt;&gt;btnVCopy.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="btnVInsert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnVInsert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 26</value>
+    <value>235, 315</value>
   </data>
   <data name="btnVInsert.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 28</value>
@@ -388,82 +475,28 @@
     <value>groupBox7</value>
   </data>
   <data name="&gt;&gt;btnVInsert.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tboxVName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 28</value>
-  </data>
-  <data name="tboxVName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>362, 28</value>
-  </data>
-  <data name="tboxVName.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;tboxVName.Name" xml:space="preserve">
-    <value>tboxVName</value>
-  </data>
-  <data name="&gt;&gt;tboxVName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tboxVName.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;tboxVName.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="tboxVLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 315</value>
+  <data name="tboxVLinkGen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 281</value>
   </data>
-  <data name="tboxVLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>464, 28</value>
+  <data name="tboxVLinkGen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>362, 28</value>
   </data>
-  <data name="tboxVLink.TabIndex" type="System.Int32, mscorlib">
+  <data name="tboxVLinkGen.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;tboxVLink.Name" xml:space="preserve">
-    <value>tboxVLink</value>
+  <data name="&gt;&gt;tboxVLinkGen.Name" xml:space="preserve">
+    <value>tboxVLinkGen</value>
   </data>
-  <data name="&gt;&gt;tboxVLink.Type" xml:space="preserve">
+  <data name="&gt;&gt;tboxVLinkGen.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tboxVLink.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tboxVLinkGen.Parent" xml:space="preserve">
     <value>groupBox7</value>
   </data>
-  <data name="&gt;&gt;tboxVLink.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tboxVLinkGen.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="label20.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 33</value>
-  </data>
-  <data name="label20.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
-  </data>
-  <data name="label20.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="&gt;&gt;label20.Name" xml:space="preserve">
-    <value>label20</value>
-  </data>
-  <data name="&gt;&gt;label20.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label20.Parent" xml:space="preserve">
-    <value>groupBox7</value>
-  </data>
-  <data name="&gt;&gt;label20.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="label21.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -472,7 +505,7 @@
     <value>NoControl</value>
   </data>
   <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 171</value>
+    <value>6, 137</value>
   </data>
   <data name="label21.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -496,7 +529,7 @@
     <value>groupBox7</value>
   </data>
   <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="label22.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -505,19 +538,19 @@
     <value>NoControl</value>
   </data>
   <data name="label22.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 320</value>
+    <value>9, 286</value>
   </data>
   <data name="label22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
   <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 18</value>
+    <value>44, 18</value>
   </data>
   <data name="label22.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="label22.Text" xml:space="preserve">
-    <value>v://...</value>
+    <value>Link</value>
   </data>
   <data name="&gt;&gt;label22.Name" xml:space="preserve">
     <value>label22</value>
@@ -529,7 +562,7 @@
     <value>groupBox7</value>
   </data>
   <data name="&gt;&gt;label22.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="label24.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -538,7 +571,7 @@
     <value>NoControl</value>
   </data>
   <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 62</value>
+    <value>9, 28</value>
   </data>
   <data name="label24.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -562,10 +595,10 @@
     <value>groupBox7</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="groupBox7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 10</value>
+    <value>14, 88</value>
   </data>
   <data name="groupBox7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -580,7 +613,7 @@
     <value>1</value>
   </data>
   <data name="groupBox7.Text" xml:space="preserve">
-    <value>V</value>
+    <value>Generate</value>
   </data>
   <data name="&gt;&gt;groupBox7.Name" xml:space="preserve">
     <value>groupBox7</value>
@@ -592,7 +625,7 @@
     <value>v</value>
   </data>
   <data name="&gt;&gt;groupBox7.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="v.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 28</value>
@@ -2921,6 +2954,84 @@
   </data>
   <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="btnVLinkDecode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>470, 27</value>
+  </data>
+  <data name="btnVLinkDecode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 28</value>
+  </data>
+  <data name="btnVLinkDecode.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="btnVLinkDecode.Text" xml:space="preserve">
+    <value>Decode</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.Name" xml:space="preserve">
+    <value>btnVLinkDecode</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.Parent" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;btnVLinkDecode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tboxVLinkDecode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>102, 27</value>
+  </data>
+  <data name="tboxVLinkDecode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>362, 28</value>
+  </data>
+  <data name="tboxVLinkDecode.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.Name" xml:space="preserve">
+    <value>tboxVLinkDecode</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.Parent" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;tboxVLinkDecode.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label23.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label23.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 32</value>
+  </data>
+  <data name="label23.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 18</value>
+  </data>
+  <data name="label23.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="label23.Text" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="&gt;&gt;label23.Name" xml:space="preserve">
+    <value>label23</value>
+  </data>
+  <data name="&gt;&gt;label23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label23.Parent" xml:space="preserve">
+    <value>groupBox8</value>
+  </data>
+  <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="btnClearModify.Location" type="System.Drawing.Point, System.Drawing">
     <value>562, 0</value>

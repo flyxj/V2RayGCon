@@ -93,12 +93,16 @@
             this.tboxVGCAlias = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.v = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.btnVLinkDecode = new System.Windows.Forms.Button();
+            this.tboxVLinkDecode = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.rtboxVUrls = new System.Windows.Forms.RichTextBox();
             this.rtboxVOverwrite = new System.Windows.Forms.RichTextBox();
+            this.btnVCopy = new System.Windows.Forms.Button();
             this.btnVInsert = new System.Windows.Forms.Button();
-            this.tboxVName = new System.Windows.Forms.TextBox();
-            this.tboxVLink = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
+            this.tboxVLinkGen = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
@@ -131,7 +135,6 @@
             this.panelScintilla = new System.Windows.Forms.Panel();
             this.btnFormat = new System.Windows.Forms.Button();
             this.cboxExamples = new System.Windows.Forms.ComboBox();
-            this.rtboxVUrls = new System.Windows.Forms.RichTextBox();
             this.tabControl1.SuspendLayout();
             this.vmess.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -143,6 +146,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.v.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.pnlTools.SuspendLayout();
@@ -600,19 +604,45 @@
             // 
             // v
             // 
+            this.v.Controls.Add(this.groupBox8);
             this.v.Controls.Add(this.groupBox7);
             resources.ApplyResources(this.v, "v");
             this.v.Name = "v";
             this.v.UseVisualStyleBackColor = true;
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.btnVLinkDecode);
+            this.groupBox8.Controls.Add(this.tboxVLinkDecode);
+            this.groupBox8.Controls.Add(this.label23);
+            resources.ApplyResources(this.groupBox8, "groupBox8");
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.TabStop = false;
+            // 
+            // btnVLinkDecode
+            // 
+            resources.ApplyResources(this.btnVLinkDecode, "btnVLinkDecode");
+            this.btnVLinkDecode.Name = "btnVLinkDecode";
+            this.btnVLinkDecode.UseVisualStyleBackColor = true;
+            this.btnVLinkDecode.Click += new System.EventHandler(this.btnVLinkDecode_Click);
+            // 
+            // tboxVLinkDecode
+            // 
+            resources.ApplyResources(this.tboxVLinkDecode, "tboxVLinkDecode");
+            this.tboxVLinkDecode.Name = "tboxVLinkDecode";
+            // 
+            // label23
+            // 
+            resources.ApplyResources(this.label23, "label23");
+            this.label23.Name = "label23";
+            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.rtboxVUrls);
             this.groupBox7.Controls.Add(this.rtboxVOverwrite);
+            this.groupBox7.Controls.Add(this.btnVCopy);
             this.groupBox7.Controls.Add(this.btnVInsert);
-            this.groupBox7.Controls.Add(this.tboxVName);
-            this.groupBox7.Controls.Add(this.tboxVLink);
-            this.groupBox7.Controls.Add(this.label20);
+            this.groupBox7.Controls.Add(this.tboxVLinkGen);
             this.groupBox7.Controls.Add(this.label21);
             this.groupBox7.Controls.Add(this.label22);
             this.groupBox7.Controls.Add(this.label24);
@@ -620,11 +650,24 @@
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.TabStop = false;
             // 
+            // rtboxVUrls
+            // 
+            this.rtboxVUrls.DetectUrls = false;
+            resources.ApplyResources(this.rtboxVUrls, "rtboxVUrls");
+            this.rtboxVUrls.Name = "rtboxVUrls";
+            // 
             // rtboxVOverwrite
             // 
             this.rtboxVOverwrite.DetectUrls = false;
             resources.ApplyResources(this.rtboxVOverwrite, "rtboxVOverwrite");
             this.rtboxVOverwrite.Name = "rtboxVOverwrite";
+            // 
+            // btnVCopy
+            // 
+            resources.ApplyResources(this.btnVCopy, "btnVCopy");
+            this.btnVCopy.Name = "btnVCopy";
+            this.btnVCopy.UseVisualStyleBackColor = true;
+            this.btnVCopy.Click += new System.EventHandler(this.btnVCopy_Click);
             // 
             // btnVInsert
             // 
@@ -633,20 +676,11 @@
             this.btnVInsert.UseVisualStyleBackColor = true;
             this.btnVInsert.Click += new System.EventHandler(this.btnVInsert_Click);
             // 
-            // tboxVName
+            // tboxVLinkGen
             // 
-            resources.ApplyResources(this.tboxVName, "tboxVName");
-            this.tboxVName.Name = "tboxVName";
-            // 
-            // tboxVLink
-            // 
-            resources.ApplyResources(this.tboxVLink, "tboxVLink");
-            this.tboxVLink.Name = "tboxVLink";
-            // 
-            // label20
-            // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
+            resources.ApplyResources(this.tboxVLinkGen, "tboxVLinkGen");
+            this.tboxVLinkGen.Name = "tboxVLinkGen";
+            this.tboxVLinkGen.ReadOnly = true;
             // 
             // label21
             // 
@@ -853,12 +887,6 @@
             this.cboxExamples.Name = "cboxExamples";
             this.cboxExamples.SelectedIndexChanged += new System.EventHandler(this.cboxExamples_SelectedIndexChanged);
             // 
-            // rtboxVUrls
-            // 
-            this.rtboxVUrls.DetectUrls = false;
-            resources.ApplyResources(this.rtboxVUrls, "rtboxVUrls");
-            this.rtboxVUrls.Name = "rtboxVUrls";
-            // 
             // FormConfiger
             // 
             resources.ApplyResources(this, "$this");
@@ -886,6 +914,8 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.v.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.mainMenu.ResumeLayout(false);
@@ -995,12 +1025,15 @@
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.RichTextBox rtboxVOverwrite;
         private System.Windows.Forms.Button btnVInsert;
-        private System.Windows.Forms.TextBox tboxVName;
-        private System.Windows.Forms.TextBox tboxVLink;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox tboxVLinkGen;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.RichTextBox rtboxVUrls;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Button btnVLinkDecode;
+        private System.Windows.Forms.TextBox tboxVLinkDecode;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Button btnVCopy;
     }
 }

@@ -355,4 +355,10 @@ Please use [Replace server] menu.</value>
   <data name="CFnGoogle" xml:space="preserve">
     <value>CF and Google</value>
   </data>
+  <data name="DecodeVLinkFail" xml:space="preserve">
+    <value>Fail to decode v-link!</value>
+  </data>
+  <data name="GenVLinkFail" xml:space="preserve">
+    <value>Fail to generate v-link!</value>
+  </data>
 </root>

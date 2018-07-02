@@ -47,6 +47,19 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void DecodeVLink()
+        {
+            try
+            {
+                config = vlink.DecodeLink();
+                UpdateData();
+                ShowSection();
+            }
+            catch {
+                MessageBox.Show(I18N("DecodeVLinkFail"));
+            }
+        }
+
         public void SetVmessServerMode(bool isServer)
         {
             vmessCtrl.serverMode = isServer;
@@ -194,6 +207,7 @@ namespace V2RayGCon.Controller.Configer
             ssServer.UpdateData(config);
             streamSettings.UpdateData(config);
             vgc.UpdateData(config);
+            vlink.UpdateData(config);
         }
 
         public void DiscardChanges()
@@ -288,35 +302,16 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertVLink()
         {
-            void Refresh()
+            try
             {
-                UpdateData();
-                ShowSection();
+                config = vlink.GetSettings() as JObject;
+            }
+            catch {
+                MessageBox.Show(I18N("GenVLinkFail"));
             }
 
-            void DownloadTemplate()
-            {
-                var link = vlink.GetSettings();
-                var urls = Lib.Utils.GetValue<string>(link, "u");
-                var c = JObject.Parse(@"{}");
-                if (!string.IsNullOrEmpty(urls))
-                {
-                    foreach (var url in urls.Split('\n'))
-                    {
-                        var content = Lib.Utils.Fetch(url);
-                        try
-                        {
-                            var j = JObject.Parse(content);
-                            c = Lib.Utils.MergeJson(c, j);
-                        }
-                        catch { }
-                    }
-                }
-                config = c;
-                Refresh();
-            }
-            DownloadTemplate();
-            // Task.Factory.StartNew(DownloadTemplate);
+            UpdateData();
+            ShowSection();
         }
 
         public void InsertKCP()

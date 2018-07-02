@@ -353,4 +353,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="CFnGoogle" xml:space="preserve">
     <value>CF 和 Google</value>
   </data>
+  <data name="DecodeVLinkFail" xml:space="preserve">
+    <value>解码v-link失败!</value>
+  </data>
+  <data name="GenVLinkFail" xml:space="preserve">
+    <value>生成v-link失败!</value>
+  </data>
 </root>

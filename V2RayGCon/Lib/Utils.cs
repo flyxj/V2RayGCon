@@ -72,11 +72,9 @@ namespace V2RayGCon.Lib
         {
             var key = GetKey(json, keyChain);
 
-            var def = default(T);
-            if (def == null && typeof(T)==typeof(string))
-            {
-                def = (T)(object)string.Empty;
-            }
+            var def = default(T)==null && typeof(T)==typeof(string)?
+                (T)(object)string.Empty:
+                default(T);
 
             if (key == null)
             {

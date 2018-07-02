@@ -106,10 +106,10 @@ namespace V2RayGCon.Views
             var vlink = configer.vlink;
             var bs = new BindingSource();
             bs.DataSource = vlink;
-            tboxVName.DataBindings.Add("Text", bs, nameof(vlink.name));
             rtboxVUrls.DataBindings.Add("Text", bs, nameof(vlink.urls));
             rtboxVOverwrite.DataBindings.Add("Text", bs, nameof(vlink.overwrite));
-            tboxVLink.DataBindings.Add("Text", bs, nameof(vlink.link));
+            tboxVLinkGen.DataBindings.Add("Text", bs, nameof(vlink.linkEncode));
+            tboxVLinkDecode.DataBindings.Add("Text", bs, nameof(vlink.linkDecode));
         }
 
         void BindDataVGC()
@@ -193,6 +193,18 @@ namespace V2RayGCon.Views
         #endregion
 
         #region UI event handler
+        private void btnVInsert_Click(object sender, EventArgs e)
+        {
+            configer.InsertVLink();
+        }
+
+        private void btnVCopy_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(tboxVLinkGen.Text) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
 
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
@@ -387,6 +399,11 @@ namespace V2RayGCon.Views
         {
             configer.ReplaceOriginalServer();
             SetTitle(configer.GetAlias());
+        }
+
+        private void btnVLinkDecode_Click(object sender, EventArgs e)
+        {
+            configer.DecodeVLink();
         }
         #endregion
 
@@ -635,11 +652,9 @@ namespace V2RayGCon.Views
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
 
+
         #endregion
 
-        private void btnVInsert_Click(object sender, EventArgs e)
-        {
-            configer.InsertVLink();
-        }
+       
     }
 }
