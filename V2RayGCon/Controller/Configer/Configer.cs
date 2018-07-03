@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -16,6 +17,7 @@ namespace V2RayGCon.Controller.Configer
         public Editor editor;
         public SSServer ssServer;
         public VGC vgc;
+        public VLink vlink;
 
         JObject config;
         int separator;
@@ -32,6 +34,7 @@ namespace V2RayGCon.Controller.Configer
             vmessCtrl = new VmessCtrl();
             editor = new Editor();
             vgc = new VGC();
+            vlink = new VLink();
 
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
@@ -44,6 +47,34 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void DecodeVLink(Control element)
+        {
+            element.Enabled = false;
+            editor.content = "{}";
+
+            Task.Factory.StartNew(() => {
+                try
+                {
+                    config = vlink.DecodeLink();
+                    element.Invoke((MethodInvoker)delegate {
+                        UpdateData();
+                        ShowSection();
+                    });
+                }
+                catch
+                {
+                    MessageBox.Show(I18N("DecodeVLinkFail"));
+                }
+                finally
+                {
+                    element.Invoke((MethodInvoker)delegate {
+                        element.Enabled = true;
+                    });
+                }
+            });
+            
+        }
+
         public void SetVmessServerMode(bool isServer)
         {
             vmessCtrl.serverMode = isServer;
@@ -89,7 +120,7 @@ namespace V2RayGCon.Controller.Configer
             return Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
         }
 
-        public List<string> GetExampleDescriptions()
+        public List<string> GetExamplesDescription()
         {
             var list = new List<string>();
 
@@ -151,43 +182,37 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        public bool SaveChanges()
+        public void SaveChanges()
         {
-            var content = editor.content;
+            var content = JToken.Parse(editor.content);
+
+            if (preSection == 0)
+            {
+                config = content as JObject;
+                return;
+            }
+
             if (preSection >= separator)
             {
-                config[sections[preSection]] =
-                    JArray.Parse(content);
+                config[sections[preSection]] = content as JArray;
             }
-            else if (preSection == 0)
+            else 
             {
-                config = JObject.Parse(content);
-
+                config[sections[preSection]] = content as JObject;
             }
-            else
-            {
-                config[sections[preSection]] =
-                    JObject.Parse(content);
-            }
-            return true;
         }
 
         public bool CheckValid()
         {
             try
             {
-                if (preSection >= separator)
-                {
-                    JArray.Parse(editor.content);
-                }
-                else
-                {
-                    JObject.Parse(editor.content);
-                }
+                JToken.Parse(editor.content);
                 return true;
             }
-            catch { }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public void UpdateData()
@@ -197,6 +222,7 @@ namespace V2RayGCon.Controller.Configer
             ssServer.UpdateData(config);
             streamSettings.UpdateData(config);
             vgc.UpdateData(config);
+            vlink.UpdateData(config);
         }
 
         public void DiscardChanges()
@@ -287,6 +313,36 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("EditorNoExample"));
             }
+        }
+
+        public void GenVLink(Control element)
+        {
+            element.Enabled = false;
+            editor.content = "{}";
+
+            Task.Factory.StartNew(()=> {
+                try
+                {
+                    config = vlink.GetSettings() as JObject;
+
+                    // make sure update databinding in main UI thread
+                    element.Invoke((MethodInvoker)delegate
+                    {
+                        UpdateData();
+                        ShowSection();
+                    });
+                }
+                catch
+                {
+                    MessageBox.Show(I18N("GenVLinkFail"));
+                }
+                finally
+                {
+                    element.Invoke((MethodInvoker)delegate {
+                         element.Enabled = true;
+                    });
+                }
+            });
         }
 
         public void InsertKCP()

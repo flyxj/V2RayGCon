@@ -280,7 +280,7 @@ https://github.com/v2ray/v2ray-core</value>
     <value>成功添加服务器！</value>
   </data>
   <data name="DuplicateServer" xml:space="preserve">
-    <value>已存在相同服务器，跳过！</value>
+    <value>已存在相同服务器</value>
   </data>
   <data name="DownloadProgress" xml:space="preserve">
     <value>下载进度</value>
@@ -301,7 +301,7 @@ https://github.com/v2ray/v2ray-core</value>
     <value>取消当前下载？</value>
   </data>
   <data name="DownloadCancelled" xml:space="preserve">
-    <value>下载终止。</value>
+    <value>下载终止</value>
   </data>
   <data name="ConfirmDownloadNewVGC" xml:space="preserve">
     <value>有新版 V2RayGCon v{0} 。
@@ -352,5 +352,23 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="CFnGoogle" xml:space="preserve">
     <value>CF 和 Google</value>
+  </data>
+  <data name="DecodeVLinkFail" xml:space="preserve">
+    <value>解码v-link失败!</value>
+  </data>
+  <data name="GenVLinkFail" xml:space="preserve">
+    <value>生成v-link失败!</value>
+  </data>
+  <data name="VisitVlinkPage" xml:space="preserve">
+    <value>访问v-link的wiki说明页面？</value>
+  </data>
+  <data name="DecodeFail" xml:space="preserve">
+    <value>解码失败</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="NoLinkFound" xml:space="preserve">
+    <value>没找到任何链接。</value>
   </data>
 </root>

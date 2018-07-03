@@ -279,6 +279,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Decode fail. 的本地化字符串。
+        /// </summary>
+        internal static string DecodeFail {
+            get {
+                return ResourceManager.GetString("DecodeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fail to decode v-link! 的本地化字符串。
+        /// </summary>
+        internal static string DecodeVLinkFail {
+            get {
+                return ResourceManager.GetString("DecodeVLinkFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Default 的本地化字符串。
         /// </summary>
         internal static string Default {
@@ -371,7 +389,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Duplicate server, skip! 的本地化字符串。
+        ///   查找类似 Duplicate server 的本地化字符串。
         /// </summary>
         internal static string DuplicateServer {
             get {
@@ -462,6 +480,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Fail to generate v-link! 的本地化字符串。
+        /// </summary>
+        internal static string GenVLinkFail {
+            get {
+                return ResourceManager.GetString("GenVLinkFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Get v2ray-core version fail! 的本地化字符串。
         /// </summary>
         internal static string GetCoreVerFail {
@@ -548,6 +575,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string LoadJsonFail {
             get {
                 return ResourceManager.GetString("LoadJsonFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No links found. 的本地化字符串。
+        /// </summary>
+        internal static string NoLinkFound {
+            get {
+                return ResourceManager.GetString("NoLinkFound", resourceCulture);
             }
         }
         
@@ -693,6 +729,24 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ShowMainWin {
             get {
                 return ResourceManager.GetString("ShowMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Success. 的本地化字符串。
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Vist v-link wiki page? 的本地化字符串。
+        /// </summary>
+        internal static string VisitVlinkPage {
+            get {
+                return ResourceManager.GetString("VisitVlinkPage", resourceCulture);
             }
         }
         

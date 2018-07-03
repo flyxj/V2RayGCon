@@ -345,5 +345,14 @@ namespace V2RayGCon.Resource.Resx {
                 return ResourceManager.GetString("VerList", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/wiki/vlink 的本地化字符串。
+        /// </summary>
+        internal static string VlinkWiki {
+            get {
+                return ResourceManager.GetString("VlinkWiki", resourceCulture);
+            }
+        }
     }
 }

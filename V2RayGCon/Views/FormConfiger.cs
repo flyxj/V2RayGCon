@@ -1,7 +1,9 @@
-﻿using ScintillaNET;
+﻿using Newtonsoft.Json.Linq;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -12,7 +14,7 @@ namespace V2RayGCon.Views
     {
         Controller.Configer.Configer configer;
         Service.Setting setting;
-        Scintilla scintilla;
+        Scintilla scintillaMain,scintillaVlink;
         FormSearch formSearch;
 
         string _Title;
@@ -32,7 +34,12 @@ namespace V2RayGCon.Views
         {
             configer = new Controller.Configer.Configer(_serverIndex);
             InitComboBox();
-            InitScintilla();
+
+            scintillaMain = new Scintilla();
+            InitScintilla(scintillaMain,panelScintilla);
+            scintillaVlink = new Scintilla();
+            InitScintilla(scintillaVlink,panelVOverwrite);
+
             InitDataBinding();
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
@@ -54,6 +61,8 @@ namespace V2RayGCon.Views
         }
 
         #region data binding
+
+
         void BindDataEditor()
         {
             // bind scintilla
@@ -61,7 +70,7 @@ namespace V2RayGCon.Views
             var bs = new BindingSource();
 
             bs.DataSource = editor;
-            scintilla.DataBindings.Add(
+            scintillaMain.DataBindings.Add(
                 "Text",
                 bs,
                 nameof(editor.content),
@@ -97,6 +106,24 @@ namespace V2RayGCon.Views
                 nameof(streamClient.tls),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        void BindDataVLink()
+        {
+            var vlink = configer.vlink;
+            var bs = new BindingSource();
+            bs.DataSource = vlink;
+
+            scintillaVlink.DataBindings.Add(
+                "Text",
+                bs,
+                nameof(vlink.overwrite),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            rtboxVLinkDecode.DataBindings.Add("Text", bs, nameof(vlink.linkDecode));
+            rtboxVUrls.DataBindings.Add("Text", bs, nameof(vlink.urls));
+            rtboxVLinkGen.DataBindings.Add("Text", bs, nameof(vlink.linkEncode));
         }
 
         void BindDataVGC()
@@ -176,10 +203,34 @@ namespace V2RayGCon.Views
             tboxVMessAid.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.altID));
             tboxVMessIPaddr.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.addr));
         }
-
         #endregion
 
         #region UI event handler
+        private void btnFormatOverwrite(object sender, EventArgs e)
+        {
+            try
+            {
+                configer.vlink.overwrite =
+                    JObject.Parse(configer.vlink.overwrite).ToString();
+            }
+            catch
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+            }
+        }
+
+        private void btnVInsert_Click(object sender, EventArgs e)
+        {
+            configer.GenVLink(btnVInsert);
+        }
+
+        private void btnVCopy_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(rtboxVLinkGen.Text) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
 
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
@@ -229,7 +280,6 @@ namespace V2RayGCon.Views
         private void btnSSInsertServer_Click(object sender, EventArgs e)
         {
             configer.InsertSSServer();
-
         }
 
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
@@ -241,7 +291,7 @@ namespace V2RayGCon.Views
             else
             {
                 // update examples
-                UpdateExampleDescriptions();
+                UpdateExamplesDescription();
             }
         }
 
@@ -376,6 +426,16 @@ namespace V2RayGCon.Views
             configer.ReplaceOriginalServer();
             SetTitle(configer.GetAlias());
         }
+
+        private void btnVLinkDecode_Click(object sender, EventArgs e)
+        {
+            configer.DecodeVLink(btnVLinkDecode);
+        }
+
+        private void btnVPaste_Click(object sender, EventArgs e)
+        {
+            configer.vlink.linkDecode = Lib.Utils.GetClipboardText();
+        }
         #endregion
 
         #region bind hotkey
@@ -429,10 +489,11 @@ namespace V2RayGCon.Views
             FillComboBox(cboxStreamSecurity, Model.Data.Table.streamSecurity);
         }
 
-        void InitScintilla()
+        void InitScintilla(Scintilla scintilla,Panel container)
         {
-            scintilla = new Scintilla();
-            panelScintilla.Controls.Add(scintilla);
+            
+            
+            container.Controls.Add(scintilla);
 
             // scintilla.Dock = DockStyle.Fill;
             scintilla.Dock = DockStyle.Fill;
@@ -498,20 +559,20 @@ namespace V2RayGCon.Views
             BindDataEditor();
             BindDataSSServer();
             BindDataVGC();
+            BindDataVLink();
         }
         #endregion
 
         #region private method
-        void UpdateExampleDescriptions()
+        void UpdateExamplesDescription()
         {
             cboxExamples.Items.Clear();
 
             cboxExamples.Items.Add(I18N("AvailableExamples"));
-            var descriptions = configer.GetExampleDescriptions();
+            var descriptions = configer.GetExamplesDescription();
             if (descriptions.Count < 1)
             {
                 cboxExamples.Enabled = false;
-                // cboxExamples.Visible = false;
             }
             else
             {
@@ -613,17 +674,24 @@ namespace V2RayGCon.Views
             catch { }
         }
 
+        private void linkLabelAboutVlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Lib.UI.VisitUrl(I18N("VisitVlinkPage"), resData("VlinkWiki"));
+        }
+
         void ShowSearchBox()
         {
             if (formSearch != null)
             {
                 return;
             }
-            formSearch = new FormSearch(scintilla);
+            formSearch = new FormSearch(scintillaMain);
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
+
+
         #endregion
 
-        
+       
     }
 }

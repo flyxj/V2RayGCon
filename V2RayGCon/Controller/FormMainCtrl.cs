@@ -50,11 +50,7 @@ namespace V2RayGCon.Controller
         public void ImportLinks()
         {
             string links = Lib.Utils.GetClipboardText();
-
-            MessageBox.Show(
-                setting.ImportLinks(links) ?
-                I18N("ImportLinkSuccess") :
-                I18N("ImportLinkFail"));
+            setting.ImportLinks(links, true);
         }
 
         public void CopyAllV2RayLink()
@@ -82,10 +78,7 @@ namespace V2RayGCon.Controller
                 return;
             }
 
-            MessageBox.Show(
-            setting.ImportLinks(v2rayLinks) ?
-            I18N("ImportLinkSuccess") :
-            I18N("ImportLinkFail"));
+            setting.ImportLinks(v2rayLinks, true);
         }
 
         public void ExportAllServersToTextFile()
