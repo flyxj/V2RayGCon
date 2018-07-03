@@ -31,6 +31,11 @@ namespace V2RayGCon.Views
             this.Show();
         }
 
+        private void FormDownloadCore_Shown(object sender, System.EventArgs e)
+        {
+            RefreshCurrentCoreVersion();
+        }
+
         #region private method
 
 
@@ -186,10 +191,5 @@ namespace V2RayGCon.Views
         }
 
         #endregion
-
-        private void FormDownloadCore_Shown(object sender, System.EventArgs e)
-        {
-            RefreshCurrentCoreVersion();
-        }
     }
 }

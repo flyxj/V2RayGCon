@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using static V2RayGCon.Lib.StringResource;
 
@@ -66,7 +67,12 @@ namespace V2RayGCon.Controller.Configer
 
         string FormatUrls(string raw_urls)
         {
-            var uarr = raw_urls.Replace("\r", "").Replace(",", "\n").Split('\n');
+            var uarr = raw_urls
+                .Replace(" ","")
+                .Replace("\r", "")
+                .Replace(",", "\n")
+                .Split('\n');
+
             var result = new List<string>();
             foreach(var u in uarr)
             {
@@ -113,20 +119,21 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            // do not need update
-            var v = JObject.Parse(@"{}");
-
-            if (!string.IsNullOrEmpty(urls)) {
-                v["u"] = urls;
-            }
-
-            if (!string.IsNullOrEmpty(overwrite)) {
-                v["o"] = overwrite;
-            }
-
             try
             {
-                var b64Link = Lib.Utils.Base64Encode(v.ToString());
+                var v = JObject.Parse(@"{}");
+
+                if (!string.IsNullOrEmpty(urls))
+                {
+                    v["u"] = urls;
+                }
+
+                if (!string.IsNullOrEmpty(overwrite))
+                {
+                    v["o"] = JObject.Parse(overwrite).ToString(Formatting.None);
+                }
+
+                var b64Link = Lib.Utils.Base64Encode(v.ToString(Formatting.None));
                 linkEncode = Lib.Utils.AddLinkPrefix(b64Link, Model.Data.Enum.LinkTypes.v);
             }
             catch {

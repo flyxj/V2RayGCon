@@ -359,4 +359,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="GenVLinkFail" xml:space="preserve">
     <value>生成v-link失败!</value>
   </data>
+  <data name="VisitVlinkPage" xml:space="preserve">
+    <value>访问v-link的wiki说明页面？</value>
+  </data>
 </root>

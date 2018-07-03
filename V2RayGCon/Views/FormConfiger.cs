@@ -1,7 +1,9 @@
-﻿using ScintillaNET;
+﻿using Newtonsoft.Json.Linq;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -201,13 +203,25 @@ namespace V2RayGCon.Views
             tboxVMessAid.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.altID));
             tboxVMessIPaddr.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.addr));
         }
-
         #endregion
 
         #region UI event handler
+        private void btnFormatOverwrite(object sender, EventArgs e)
+        {
+            try
+            {
+                configer.vlink.overwrite =
+                    JObject.Parse(configer.vlink.overwrite).ToString();
+            }
+            catch
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+            }
+        }
+
         private void btnVInsert_Click(object sender, EventArgs e)
         {
-            configer.InsertVLink();
+            configer.GenVLink(btnVInsert);
         }
 
         private void btnVCopy_Click(object sender, EventArgs e)
@@ -415,7 +429,12 @@ namespace V2RayGCon.Views
 
         private void btnVLinkDecode_Click(object sender, EventArgs e)
         {
-            configer.DecodeVLink();
+            configer.DecodeVLink(btnVLinkDecode);
+        }
+
+        private void btnVPaste_Click(object sender, EventArgs e)
+        {
+            configer.vlink.linkDecode = Lib.Utils.GetClipboardText();
         }
         #endregion
 
@@ -653,6 +672,11 @@ namespace V2RayGCon.Views
                 });
             }
             catch { }
+        }
+
+        private void linkLabelAboutVlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Lib.UI.VisitUrl(I18N("VisitVlinkPage"), resData("VlinkWiki"));
         }
 
         void ShowSearchBox()

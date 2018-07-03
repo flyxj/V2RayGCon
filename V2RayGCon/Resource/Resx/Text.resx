@@ -361,4 +361,7 @@ Please use [Replace server] menu.</value>
   <data name="GenVLinkFail" xml:space="preserve">
     <value>Fail to generate v-link!</value>
   </data>
+  <data name="VisitVlinkPage" xml:space="preserve">
+    <value>Vist v-link wiki page?</value>
+  </data>
 </root>

@@ -188,4 +188,7 @@
   <data name="ExtText" xml:space="preserve">
     <value>Text File|*.txt|All File|*.*</value>
   </data>
+  <data name="VlinkWiki" xml:space="preserve">
+    <value>https://github.com/nobody3u/V2RayGCon/wiki/vlink</value>
+  </data>
 </root>

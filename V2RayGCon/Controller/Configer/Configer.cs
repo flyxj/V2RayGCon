@@ -47,17 +47,32 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
-        public void DecodeVLink()
+        public void DecodeVLink(Control element)
         {
-            try
-            {
-                config = vlink.DecodeLink();
-                UpdateData();
-                ShowSection();
-            }
-            catch {
-                MessageBox.Show(I18N("DecodeVLinkFail"));
-            }
+            element.Enabled = false;
+            editor.content = "{}";
+
+            Task.Factory.StartNew(() => {
+                try
+                {
+                    config = vlink.DecodeLink();
+                    element.Invoke((MethodInvoker)delegate {
+                        UpdateData();
+                        ShowSection();
+                    });
+                }
+                catch
+                {
+                    MessageBox.Show(I18N("DecodeVLinkFail"));
+                }
+                finally
+                {
+                    element.Invoke((MethodInvoker)delegate {
+                        element.Enabled = true;
+                    });
+                }
+            });
+            
         }
 
         public void SetVmessServerMode(bool isServer)
@@ -300,18 +315,34 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        public void InsertVLink()
+        public void GenVLink(Control element)
         {
-            try
-            {
-                config = vlink.GetSettings() as JObject;
-            }
-            catch {
-                MessageBox.Show(I18N("GenVLinkFail"));
-            }
+            element.Enabled = false;
+            editor.content = "{}";
 
-            UpdateData();
-            ShowSection();
+            Task.Factory.StartNew(()=> {
+                try
+                {
+                    config = vlink.GetSettings() as JObject;
+
+                    // make sure update databinding in main UI thread
+                    element.Invoke((MethodInvoker)delegate
+                    {
+                        UpdateData();
+                        ShowSection();
+                    });
+                }
+                catch
+                {
+                    MessageBox.Show(I18N("GenVLinkFail"));
+                }
+                finally
+                {
+                    element.Invoke((MethodInvoker)delegate {
+                         element.Enabled = true;
+                    });
+                }
+            });
         }
 
         public void InsertKCP()

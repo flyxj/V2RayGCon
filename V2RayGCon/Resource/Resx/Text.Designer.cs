@@ -715,6 +715,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Vist v-link wiki page? 的本地化字符串。
+        /// </summary>
+        internal static string VisitVlinkPage {
+            get {
+                return ResourceManager.GetString("VisitVlinkPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Vist project page? 的本地化字符串。
         /// </summary>
         internal static string VistPorjectPage {
