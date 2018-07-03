@@ -51,10 +51,10 @@ namespace V2RayGCon.Service
             };
 
 
-            new Views.FormConfiger(0);
-            // Views.FormMain.GetForm();
+            // new Views.FormConfiger(0);
+            Views.FormMain.GetForm();
             // Views.FormSimAddVmessClient.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormLog.GetForm();
             // Views.FormDownloadCore.GetForm();
 
         }
@@ -121,11 +121,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
-                    MessageBox.Show(
-                        setting.ImportLinks(links)?
-                        I18N("ImportLinkSuccess"):
-                        I18N("ImportLinkFail"));
-
+                    setting.ImportLinks(links,true);
                 }),
 
                 new MenuItem(I18N("DownloadV2rayCore"),(s,a)=>Views.FormDownloadCore.GetForm()),

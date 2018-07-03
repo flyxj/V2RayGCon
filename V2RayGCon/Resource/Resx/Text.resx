@@ -282,7 +282,7 @@ Load new config?</value>
     <value>Add server success!</value>
   </data>
   <data name="DuplicateServer" xml:space="preserve">
-    <value>Duplicate server, skip!</value>
+    <value>Duplicate server</value>
   </data>
   <data name="DownloadProgress" xml:space="preserve">
     <value>Download progress</value>
@@ -363,5 +363,14 @@ Please use [Replace server] menu.</value>
   </data>
   <data name="VisitVlinkPage" xml:space="preserve">
     <value>Vist v-link wiki page?</value>
+  </data>
+  <data name="DecodeFail" xml:space="preserve">
+    <value>Decode fail.</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success.</value>
+  </data>
+  <data name="NoLinkFound" xml:space="preserve">
+    <value>No links found.</value>
   </data>
 </root>

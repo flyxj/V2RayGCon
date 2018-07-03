@@ -279,6 +279,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Decode fail. 的本地化字符串。
+        /// </summary>
+        internal static string DecodeFail {
+            get {
+                return ResourceManager.GetString("DecodeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fail to decode v-link! 的本地化字符串。
         /// </summary>
         internal static string DecodeVLinkFail {
@@ -380,7 +389,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Duplicate server, skip! 的本地化字符串。
+        ///   查找类似 Duplicate server 的本地化字符串。
         /// </summary>
         internal static string DuplicateServer {
             get {
@@ -570,6 +579,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 No links found. 的本地化字符串。
+        /// </summary>
+        internal static string NoLinkFound {
+            get {
+                return ResourceManager.GetString("NoLinkFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The current V2RayGCon is the latest version. 的本地化字符串。
         /// </summary>
         internal static string NoNewVGC {
@@ -711,6 +729,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ShowMainWin {
             get {
                 return ResourceManager.GetString("ShowMainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Success. 的本地化字符串。
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

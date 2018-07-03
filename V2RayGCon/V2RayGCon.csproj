@@ -151,6 +151,12 @@
     <Compile Include="Views\FormDownloadCore.Designer.cs">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\FormImportLinksResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormImportLinksResult.Designer.cs">
+      <DependentUpon>FormImportLinksResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\FormLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,6 +225,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormDownloadCore.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormImportLinksResult.resx">
+      <DependentUpon>FormImportLinksResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormImportLinksResult.zh-CN.resx">
+      <DependentUpon>FormImportLinksResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormLog.resx">
       <DependentUpon>FormLog.cs</DependentUpon>
