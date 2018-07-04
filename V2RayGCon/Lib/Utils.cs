@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -398,13 +399,19 @@ namespace V2RayGCon.Lib
 
         #region net
 
-        public static string Fetch(string url)
+        public static string Fetch(string url, int timeout=-1)
         {
             var html = string.Empty;
             try
             {
                 Lib.Utils.SupportProtocolTLS12();
-                html = new WebClient().DownloadString(url);
+                if (timeout < 0) {
+                    html = new WebClient().DownloadString(url);
+                }
+                else
+                {
+                    html = new TimedWebClient { Timeout = timeout }.DownloadString(url);
+                }
             }
             catch { }
             return html;
@@ -577,6 +584,23 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region process
+
+        public static void RunAsSTAThread(Action lamda)
+        {
+            // https://www.codeproject.com/Questions/727531/ThreadStateException-cant-handeled-in-ClipBoard-Se
+            AutoResetEvent @event = new AutoResetEvent(false);
+            Thread thread = new Thread(
+                () =>
+                {
+                    lamda();
+                    @event.Set();
+                });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            @event.WaitOne();
+        }
+
+
         public static void KillProcessAndChildrens(int pid)
         {
             ManagementObjectSearcher processSearcher = new ManagementObjectSearcher

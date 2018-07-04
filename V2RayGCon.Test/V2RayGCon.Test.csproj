@@ -51,8 +51,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VLink.cs" />
-    <Compile Include="LibTest.cs" />
+    <Compile Include="MainTest.cs" />
+    <Compile Include="VLinkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource\Resx\Data.Designer.cs">
       <AutoGen>True</AutoGen>

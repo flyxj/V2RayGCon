@@ -35,6 +35,7 @@
             this.status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.msg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnCopy = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvResult
@@ -45,9 +46,13 @@
             this.Link,
             this.status,
             this.msg});
+            this.lvResult.FullRowSelect = true;
+            this.lvResult.GridLines = true;
+            this.lvResult.HideSelection = false;
             this.lvResult.Name = "lvResult";
             this.lvResult.UseCompatibleStateImageBehavior = false;
             this.lvResult.View = System.Windows.Forms.View.Details;
+            this.lvResult.Click += new System.EventHandler(this.lvResult_Click);
             // 
             // index
             // 
@@ -72,10 +77,18 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // btnCopy
+            // 
+            resources.ApplyResources(this.btnCopy, "btnCopy");
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
             // FormImportLinksResult
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lvResult);
             this.MaximizeBox = false;
@@ -94,5 +107,6 @@
         private System.Windows.Forms.ColumnHeader Link;
         private System.Windows.Forms.ColumnHeader status;
         private System.Windows.Forms.ColumnHeader msg;
+        private System.Windows.Forms.Button btnCopy;
     }
 }

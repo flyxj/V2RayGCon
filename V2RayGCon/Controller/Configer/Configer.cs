@@ -55,7 +55,7 @@ namespace V2RayGCon.Controller.Configer
             Task.Factory.StartNew(() => {
                 try
                 {
-                    config = vlink.DecodeLink();
+                    config = Lib.VLinkCodec.DecodeLink(vlink.linkDecode);
                     element.Invoke((MethodInvoker)delegate {
                         UpdateData();
                         ShowSection();
@@ -71,8 +71,7 @@ namespace V2RayGCon.Controller.Configer
                         element.Enabled = true;
                     });
                 }
-            });
-            
+            });           
         }
 
         public void SetVmessServerMode(bool isServer)

@@ -66,7 +66,7 @@ namespace V2RayGCon.Test
         public void GetValue_GetStringNotExist_ReturnNull()
         {
             var json = JObject.Parse(resData("config_min"));
-            Assert.AreEqual(null,GetValue<string>(json, "log.keyNotExist"));
+            Assert.AreEqual(string.Empty, GetValue<string>(json, "log.keyNotExist"));
         }
 
         [TestMethod]

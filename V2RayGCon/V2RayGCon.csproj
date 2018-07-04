@@ -111,7 +111,11 @@
     <Compile Include="Lib\StringResource.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
+    <Compile Include="Lib\TimedWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Lib\UI.cs" />
+    <Compile Include="Lib\VLinkCodec.cs" />
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />

@@ -579,6 +579,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Network timeout 的本地化字符串。
+        /// </summary>
+        internal static string NetworkTimeout {
+            get {
+                return ResourceManager.GetString("NetworkTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No links found. 的本地化字符串。
         /// </summary>
         internal static string NoLinkFound {

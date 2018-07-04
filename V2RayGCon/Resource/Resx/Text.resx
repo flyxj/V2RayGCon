@@ -373,4 +373,7 @@ Please use [Replace server] menu.</value>
   <data name="NoLinkFound" xml:space="preserve">
     <value>No links found.</value>
   </data>
+  <data name="NetworkTimeout" xml:space="preserve">
+    <value>Network timeout</value>
+  </data>
 </root>
