@@ -50,7 +50,7 @@ namespace V2RayGCon.Controller
         public void ImportLinks()
         {
             string links = Lib.Utils.GetClipboardText();
-            setting.ImportLinks(links, true);
+            setting.ImportLinks(links);
         }
 
         public void CopyAllV2RayLink()
@@ -78,7 +78,7 @@ namespace V2RayGCon.Controller
                 return;
             }
 
-            setting.ImportLinks(v2rayLinks, true);
+            setting.ImportLinks(v2rayLinks);
         }
 
         public void ExportAllServersToTextFile()

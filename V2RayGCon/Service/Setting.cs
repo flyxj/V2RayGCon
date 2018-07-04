@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -18,12 +19,16 @@ namespace V2RayGCon.Service
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
 
+        private object addServerLock;
+
+
         Setting()
         {
             LoadServers();
             SaveServers();
 
             isSysProxyHasSet = false;
+            addServerLock = new object();
 
             aliases = new List<string>();
             servSummarys = new List<string[]>();
@@ -288,42 +293,53 @@ namespace V2RayGCon.Service
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
-        public bool ImportLinks(string links, bool showResultForm=false)
+        public void ImportLinks(string links)
         {
-            var vmess = ImportVmessLinks(links, true);
-            var v2ray = ImportV2RayLinks(links, true);
-            var ss = ImportSSLinks(links, true);
+            var that = this;
 
-            var allResults = new List<string[]>(
-                v2ray.Item2.Count+
-                vmess.Item2.Count+
-                ss.Item2.Count);
+            var tasks = new Task<Tuple<bool, List<string[]>>>[] {
+                new Task<Tuple<bool, List<string[]>>>(()=>ImportVmessLinks(links)),
+                new Task<Tuple<bool, List<string[]>>>(()=>ImportV2RayLinks(links)),
+                new Task<Tuple<bool, List<string[]>>>(()=>ImportSSLinks(links)),
+            };
 
-            allResults.AddRange(v2ray.Item2);
-            allResults.AddRange(vmess.Item2);
-            allResults.AddRange(ss.Item2);
+            Task.Factory.StartNew(()=> {
+                // import all links
+                foreach(var task in tasks)
+                {
+                    task.Start();
+                }
+                
+                Task.WaitAll(tasks);
 
-            var r = false;
-            if (vmess.Item1 || v2ray.Item1 || ss.Item1)
-            {
-                servers.Notify();
-                OnSettingChange?.Invoke(this, EventArgs.Empty);
-                r = true;
-            }
+                // get results
+                var allResults = new List<string[]>();
+                var isAddNewServer = false;
 
-            if (allResults.Count>0)
-            {
-                if (showResultForm)
+                foreach(var task in tasks)
+                {
+                    isAddNewServer = isAddNewServer || task.Result.Item1;
+                    allResults.AddRange(task.Result.Item2);
+                    task.Dispose();
+                }
+
+                // show results
+                if (isAddNewServer)
+                {
+                    servers.Notify();
+                    OnSettingChange?.Invoke(that, EventArgs.Empty);
+                }
+
+                if (allResults.Count > 0)
                 {
                     new Views.FormImportLinksResult(allResults);
+                    Application.Run();
                 }
-            }
-            else
-            {
-                MessageBox.Show(I18N("NoLinkFound"));
-            }
-
-            return r;
+                else
+                {
+                    MessageBox.Show(I18N("NoLinkFound"));
+                }
+            });
         }
 
         public ReadOnlyCollection<string> GetAllAliases()
@@ -398,24 +414,35 @@ namespace V2RayGCon.Service
 
         public bool AddServer(string b64ConfigString, bool quiet = false)
         {
-            if (GetServerIndex(b64ConfigString) >= 0)
+            var result = false;
+
+            lock (addServerLock)
             {
-                SendLog(I18N("DuplicateServer") + "\r\n");
-                return false;
+                if (GetServerIndex(b64ConfigString) < 0)
+                {
+                    result = true;
+                    if (quiet)
+                    {
+                        servers.AddQuiet(b64ConfigString);
+                    }
+                    else
+                    {
+                        servers.Add(b64ConfigString);
+                    }
+                    SaveServers();
+                }
             }
-            if (quiet)
+
+            if (result && !quiet)
             {
-                servers.AddQuiet(b64ConfigString);
-                SaveServers();
+                try
+                {
+                    OnSettingChange?.Invoke(this, EventArgs.Empty);
+                }
+                catch { }
             }
-            else
-            {
-                servers.Add(b64ConfigString);
-                SaveServers();
-                OnSettingChange?.Invoke(this, EventArgs.Empty);
-            }
-            SendLog(I18N("AddServSuccess") + "\r\n");
-            return true;
+            
+            return result;
         }
 
         public void ActivateServer(int index = -1)
@@ -456,7 +483,7 @@ namespace V2RayGCon.Service
 
         #region private method
 
-        Tuple<bool, List<string[]>> ImportSSLinks(string text, bool quiet = false)
+        Tuple<bool, List<string[]>> ImportSSLinks(string text)
         {
             var isAddNewServer = false;
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.ss);
@@ -470,9 +497,8 @@ namespace V2RayGCon.Service
                     result.Add(GenImportResult(link, false, I18N("DecodeFail")));
                     continue;
                 }
-                var msg = Lib.Utils.CutStr(link, 90);
-                SendLog(I18N("AddServer") + ": " + msg);
-                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
+
+                if (AddServer(Lib.Utils.Base64Encode(config), true))
                 {
                     isAddNewServer = true;
                     result.Add(GenImportResult(link, true, I18N("Success")));
@@ -483,15 +509,10 @@ namespace V2RayGCon.Service
                 }
             }
 
-            if (!quiet && isAddNewServer)
-            {
-                servers.Notify();
-            }
-
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-        Tuple<bool, List<string[]>> ImportV2RayLinks(string text, bool quiet = false)
+        Tuple<bool, List<string[]>> ImportV2RayLinks(string text)
         {
             bool isAddNewServer = false;
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.v2ray);
@@ -505,9 +526,7 @@ namespace V2RayGCon.Service
                     string config = Lib.Utils.Base64Decode(b64Config);
                     if (JObject.Parse(config) != null)
                     {
-                        var msg = Lib.Utils.CutStr(link, 90);
-                        SendLog(I18N("AddServer") + ": " + msg);
-                        if (AddServer(b64Config, quiet))
+                        if (AddServer(b64Config, true))
                         {
                             isAddNewServer = true;
                             result.Add(GenImportResult(link, true, I18N("Success")));
@@ -525,11 +544,6 @@ namespace V2RayGCon.Service
                 }
             }
 
-            if (!quiet && isAddNewServer)
-            {
-                servers.Notify();
-            }
-
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
@@ -544,7 +558,7 @@ namespace V2RayGCon.Service
             };
         }
 
-        Tuple<bool,List<string[]>> ImportVmessLinks(string text, bool quiet = false)
+        Tuple<bool,List<string[]>> ImportVmessLinks(string text)
         {
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.vmess);
             var result = new List<string[]>();
@@ -560,9 +574,8 @@ namespace V2RayGCon.Service
                     continue;
                 }
                 var msg = Lib.Utils.CutStr(link, 90);
-                SendLog(I18N("AddServer") + ": " + msg);
                 
-                if (AddServer(Lib.Utils.Base64Encode(config), quiet))
+                if (AddServer(Lib.Utils.Base64Encode(config),true))
                 {
                     result.Add(GenImportResult(link, true, I18N("Success")));
                     isAddNewServer = true;
@@ -571,11 +584,6 @@ namespace V2RayGCon.Service
                 {
                     result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
                 }
-            }
-
-            if (!quiet && isAddNewServer)
-            {
-                servers.Notify();
             }
 
             return new Tuple<bool, List<string[]>>( isAddNewServer, result );
