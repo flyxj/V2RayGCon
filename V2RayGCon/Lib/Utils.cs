@@ -18,12 +18,13 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region Json
-        public static JObject MergeJson(JObject firstJson,JObject secondJson)
+        public static JObject MergeJson(JObject firstJson, JObject secondJson)
         {
             var result = firstJson.DeepClone() as JObject; // copy
-            result.Merge(secondJson, new JsonMergeSettings {
-                MergeArrayHandling=MergeArrayHandling.Union,
-                MergeNullValueHandling=MergeNullValueHandling.Merge
+            result.Merge(secondJson, new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Union,
+                MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
             return result;
@@ -73,8 +74,8 @@ namespace V2RayGCon.Lib
         {
             var key = GetKey(json, keyChain);
 
-            var def = default(T)==null && typeof(T)==typeof(string)?
-                (T)(object)string.Empty:
+            var def = default(T) == null && typeof(T) == typeof(string) ?
+                (T)(object)string.Empty :
                 default(T);
 
             if (key == null)
@@ -399,28 +400,30 @@ namespace V2RayGCon.Lib
 
         #region net
 
-        public static string Fetch(string url, int timeout=-1)
+        public static string Fetch(string url, int timeout = -1)
         {
             var html = string.Empty;
-            try
+            Lib.Utils.SupportProtocolTLS12();
+            if (timeout < 0)
             {
-                Lib.Utils.SupportProtocolTLS12();
-                if (timeout < 0) {
-                    html = new WebClient().DownloadString(url);
-                }
-                else
-                {
-                    html = new TimedWebClient { Timeout = timeout }.DownloadString(url);
-                }
+                html = new WebClient().DownloadString(url);
             }
-            catch { }
+            else
+            {
+                html = new TimedWebClient { Timeout = timeout }.DownloadString(url);
+            }
             return html;
         }
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(resData("UrlLatestVGC"));
-            if (string.IsNullOrEmpty(html))
+            string html = string.Empty;
+
+            try
+            {
+                html = Fetch(resData("UrlLatestVGC"), 10000);
+            }
+            catch (System.Net.WebException)
             {
                 return string.Empty;
             }
@@ -439,8 +442,13 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(resData("ReleasePageUrl"));
-            if (string.IsNullOrEmpty(html))
+            string html = string.Empty;
+
+            try
+            {
+                html = Fetch(resData("ReleasePageUrl"), 10000);
+            }
+            catch (System.Net.WebException)
             {
                 return versions;
             }
@@ -468,7 +476,7 @@ namespace V2RayGCon.Lib
         {
             foreach (var data in dict)
             {
-                if (!string.IsNullOrEmpty(data.Value) 
+                if (!string.IsNullOrEmpty(data.Value)
                     && data.Value.Equals(value, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return data.Key;

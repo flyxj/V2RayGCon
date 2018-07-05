@@ -48,6 +48,9 @@ namespace V2RayGCon.Test
             // invalid url {"u":"569GaT"}
             test<System.Net.WebException>("v://eyJ1IjoiNTY5R2FUIn0K");
 
+            // invalid url '{"u":"569GaT,aaaa,bbbb,cccc"}'
+            test<System.Net.WebException>("v://eyJ1IjoiNTY5R2FULGFhYWEsYmJiYixjY2NjIn0K");
+
             // base64 decode fail
             test<FormatException>("v://***");
 
@@ -56,8 +59,6 @@ namespace V2RayGCon.Test
 
             // decode error
             test<Newtonsoft.Json.JsonReaderException>("v://aa");
-
-
         }
 
 

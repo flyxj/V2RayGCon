@@ -32,7 +32,7 @@ namespace V2RayGCon.Views
         {
             lvResult.Items.Clear();
             int count = 1;
-            foreach(var result in results)
+            foreach (var result in results)
             {
                 result[0] = count.ToString();
                 lvResult.Items.Add(new ListViewItem(result));
@@ -42,26 +42,50 @@ namespace V2RayGCon.Views
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            Lib.Utils.RunAsSTAThread(()=> {
-                MessageBox.Show(
-                Lib.Utils.CopyToClipboard(string.Join(Environment.NewLine, linksCache)) ?
-                I18N("CopySuccess") :
-                I18N("CopyFail"));
-            });
+            CopyToClipboard(linksCache);
+        }
+
+        string ConvertListViewItemToString(ListViewItem item)
+        {
+            var count = item.SubItems.Count;
+            var list = new List<string>();
+            for (var i = 0; i < count; i++)
+            {
+                list.Add(item.SubItems[i].Text);
+            }
+            return string.Join(",", list);
         }
 
         private void lvResult_Click(object sender, EventArgs e)
         {
             linksCache = new List<string>();
-            var items = lvResult.SelectedItems;
-            foreach (ListViewItem item in items)
+
+            foreach (ListViewItem item in lvResult.SelectedItems)
             {
-                linksCache.Add(string.Format(
-                    "{0}.{1}",item.SubItems[0].Text,
-                    item.SubItems[1].Text));
+                linksCache.Add(ConvertListViewItemToString(item));
+            }
+        }
+
+        void CopyToClipboard(List<string> links)
+        {
+            Lib.Utils.RunAsSTAThread(() =>
+            {
+                MessageBox.Show(
+                Lib.Utils.CopyToClipboard(string.Join(Environment.NewLine, links)) ?
+                I18N("CopySuccess") :
+                I18N("CopyFail"));
+            });
+        }
+
+        private void btnCopyAll_Click(object sender, EventArgs e)
+        {
+            var links = new List<string>();
+            foreach (ListViewItem item in lvResult.Items)
+            {
+                links.Add(ConvertListViewItemToString(item));
             }
 
-            Debug.WriteLine("selected:{0} ", linksCache.Count);
+            CopyToClipboard(links);
         }
     }
 }

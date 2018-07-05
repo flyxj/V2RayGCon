@@ -35,7 +35,8 @@
             this.status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.msg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnCopy = new System.Windows.Forms.Button();
+            this.btnCopySelected = new System.Windows.Forms.Button();
+            this.btnCopyAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvResult
@@ -77,20 +78,28 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnCopy
+            // btnCopySelected
             // 
-            resources.ApplyResources(this.btnCopy, "btnCopy");
-            this.btnCopy.Name = "btnCopy";
-            this.btnCopy.UseVisualStyleBackColor = true;
-            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            resources.ApplyResources(this.btnCopySelected, "btnCopySelected");
+            this.btnCopySelected.Name = "btnCopySelected";
+            this.btnCopySelected.UseVisualStyleBackColor = true;
+            this.btnCopySelected.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
+            // btnCopyAll
+            // 
+            resources.ApplyResources(this.btnCopyAll, "btnCopyAll");
+            this.btnCopyAll.Name = "btnCopyAll";
+            this.btnCopyAll.UseVisualStyleBackColor = true;
+            this.btnCopyAll.Click += new System.EventHandler(this.btnCopyAll_Click);
             // 
             // FormImportLinksResult
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnCopy);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lvResult);
+            this.Controls.Add(this.btnCopySelected);
+            this.Controls.Add(this.btnCopyAll);
+            this.Controls.Add(this.btnClose);
             this.Name = "FormImportLinksResult";
             this.Shown += new System.EventHandler(this.FormImportLinksResult_Shown);
             this.ResumeLayout(false);
@@ -105,6 +114,7 @@
         private System.Windows.Forms.ColumnHeader Link;
         private System.Windows.Forms.ColumnHeader status;
         private System.Windows.Forms.ColumnHeader msg;
-        private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.Button btnCopySelected;
+        private System.Windows.Forms.Button btnCopyAll;
     }
 }

@@ -20,26 +20,34 @@ namespace V2RayGCon.Lib
             return Lib.Utils.MergeJson(config, JObject.Parse(overwrite));
         }
 
-        static List<string> FetchAllUrls(string urls,int timeout)
+        static List<string> FetchAllUrls(string urls, int timeout)
         {
             var tasks = new List<Task<string>>();
-            foreach(var url in urls.Split(','))
+            foreach (var url in urls.Split(','))
             {
-                var task = new Task<string>(()=> {
+                var task = new Task<string>(() =>
+                {
                     var content = Lib.Utils.Fetch(url, timeout);
-                    if (string.IsNullOrEmpty(content))
-                    {
-                        throw new System.Net.WebException();
-                    }
                     return content;
                 });
                 tasks.Add(task);
                 task.Start();
             }
 
-            Task.WaitAll(tasks.ToArray());
-            var result =new List<string>();
-            foreach(var task in tasks)
+            try
+            {
+                Task.WaitAll(tasks.ToArray());
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
+                    throw e;
+                }
+            }
+
+            var result = new List<string>();
+            foreach (var task in tasks)
             {
                 result.Add(task.Result);
             }
@@ -53,14 +61,14 @@ namespace V2RayGCon.Lib
                 return config;
             }
 
-            var contents = FetchAllUrls(urls,timeout);
+            var contents = FetchAllUrls(urls, timeout);
 
             foreach (var content in contents)
             {
                 var cfg = JObject.Parse(content);
                 config = Lib.Utils.MergeJson(config, cfg);
             }
-           
+
             return config;
         }
 
@@ -86,8 +94,8 @@ namespace V2RayGCon.Lib
                 }
             }
 
-            return result.Count > 0 ? 
-                string.Join(",", result) : 
+            return result.Count > 0 ?
+                string.Join(",", result) :
                 string.Empty;
         }
 
@@ -111,7 +119,7 @@ namespace V2RayGCon.Lib
             }
 
             var b64Link = Lib.Utils.Base64Encode(v.ToString(Formatting.None));
-            return Lib.Utils.AddLinkPrefix(b64Link, Model.Data.Enum.LinkTypes.v);   
+            return Lib.Utils.AddLinkPrefix(b64Link, Model.Data.Enum.LinkTypes.v);
         }
 
         /*
@@ -120,7 +128,7 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException>("v://eyJ1IjoiaHR0cDovL3N1by5pbS81NjlHYVQifQ==", 1);
          * test<Newtonsoft.Json.JsonReaderException>("v://aa");
          */
-        public static JObject DecodeLink(string vlink,int timeout=-1)
+        public static JObject DecodeLink(string vlink, int timeout = -1)
         {
             var b64Link = Lib.Utils.GetLinkBody(vlink);
             var l = Lib.Utils.Base64Decode(b64Link);
