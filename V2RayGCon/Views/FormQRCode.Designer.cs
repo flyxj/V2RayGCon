@@ -35,6 +35,8 @@
             this.cboxServList = new System.Windows.Forms.ComboBox();
             this.cboxLinkType = new System.Windows.Forms.ComboBox();
             this.btnSavePic = new System.Windows.Forms.Button();
+            this.tboxLink = new System.Windows.Forms.TextBox();
+            this.btnCopy = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,10 +87,25 @@
             this.btnSavePic.UseVisualStyleBackColor = true;
             this.btnSavePic.Click += new System.EventHandler(this.btnSavePic_Click);
             // 
+            // tboxLink
+            // 
+            resources.ApplyResources(this.tboxLink, "tboxLink");
+            this.tboxLink.Name = "tboxLink";
+            this.tboxLink.TextChanged += new System.EventHandler(this.tboxLink_TextChanged);
+            // 
+            // btnCopy
+            // 
+            resources.ApplyResources(this.btnCopy, "btnCopy");
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
             // FormQRCode
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnCopy);
+            this.Controls.Add(this.tboxLink);
             this.Controls.Add(this.btnSavePic);
             this.Controls.Add(this.cboxLinkType);
             this.Controls.Add(this.cboxServList);
@@ -113,5 +130,7 @@
         private System.Windows.Forms.ComboBox cboxServList;
         private System.Windows.Forms.ComboBox cboxLinkType;
         private System.Windows.Forms.Button btnSavePic;
+        private System.Windows.Forms.TextBox tboxLink;
+        private System.Windows.Forms.Button btnCopy;
     }
 }
