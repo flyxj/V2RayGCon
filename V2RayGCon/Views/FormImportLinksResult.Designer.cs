@@ -91,8 +91,6 @@
             this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lvResult);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FormImportLinksResult";
             this.Shown += new System.EventHandler(this.FormImportLinksResult_Shown);
             this.ResumeLayout(false);

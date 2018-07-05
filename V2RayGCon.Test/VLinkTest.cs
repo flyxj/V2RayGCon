@@ -13,27 +13,26 @@ namespace V2RayGCon.Test
     public class VLink
     {
         [DataTestMethod]
-        [DataRow(@"{}", @"{}",@"{}")]
+        [DataRow(@"{}", @"{}", @"{}")]
         [DataRow(@"{a:'123',b:null}", @"{a:null,b:'123'}", @"{a:null,b:'123'}")]
         [DataRow(@"{a:[1,2],b:{}}", @"{a:[3],b:{a:[1,2,3]}}", @"{a:[1,2,3],b:{a:[1,2,3]}}")]
-        public void MergeJson(string first,string second, string expect)
+        public void MergeJson(string first, string second, string expect)
         {
             var v = Lib.Utils.MergeJson(JObject.Parse(first), JObject.Parse(second));
             var e = JObject.Parse(expect);
-            
-            Assert.AreEqual(true, JObject.DeepEquals(v,e));
+
+            Assert.AreEqual(true, JObject.DeepEquals(v, e));
         }
 
         [TestMethod]
-        public void EncodeVLink() {
-            void test<T>(string urls,string overwrite) where T : System.Exception
+        public void EncodeVLink()
+        {
+            try
             {
-                Assert.ThrowsException<T>(() => Lib.VLinkCodec.EncodeLink(urls,overwrite));
-            }
-
-            try {
                 Lib.VLinkCodec.EncodeLink(null, null);
-            } catch {
+            }
+            catch
+            {
                 Assert.Fail("Encode(null,null) should success but fail");
             }
         }
@@ -41,9 +40,9 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void DecodeVLink()
         {
-            void test<T>(string vlink,int timeout=-1) where T : System.Exception
+            void test<T>(string vlink, int timeout = -1) where T : System.Exception
             {
-               Assert.ThrowsException<T>(()=> Lib.VLinkCodec.DecodeLink(vlink,timeout));
+                Assert.ThrowsException<T>(() => Lib.VLinkCodec.DecodeLink(vlink, timeout));
             }
 
             // invalid url {"u":"569GaT"}
@@ -57,10 +56,10 @@ namespace V2RayGCon.Test
 
             // decode error
             test<Newtonsoft.Json.JsonReaderException>("v://aa");
-            
+
 
         }
-     
+
 
     }
 }
