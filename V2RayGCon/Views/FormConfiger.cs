@@ -208,10 +208,20 @@ namespace V2RayGCon.Views
         #region UI event handler
         private void btnFormatOverwrite(object sender, EventArgs e)
         {
+            configer.vlink.urls = 
+                Lib.VLinkCodec.TrimUrls(configer.vlink.urls)
+                .Replace(",", "\n");
+
+            if (string.IsNullOrEmpty(configer.vlink.overwrite))
+            {
+                return;
+            }
+
             try
             {
                 configer.vlink.overwrite =
-                    JObject.Parse(configer.vlink.overwrite).ToString();
+                    JObject.Parse(configer.vlink.overwrite)
+                    .ToString();
             }
             catch
             {

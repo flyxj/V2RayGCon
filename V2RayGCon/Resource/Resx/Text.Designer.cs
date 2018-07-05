@@ -507,7 +507,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Fetch v2ray-core versions fail! 的本地化字符串。
+        ///   查找类似 Get v2ray-core versions list fail! 的本地化字符串。
         /// </summary>
         internal static string GetVersionListFail {
             get {
@@ -575,6 +575,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string LoadJsonFail {
             get {
                 return ResourceManager.GetString("LoadJsonFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Network timeout 的本地化字符串。
+        /// </summary>
+        internal static string NetworkTimeout {
+            get {
+                return ResourceManager.GetString("NetworkTimeout", resourceCulture);
             }
         }
         
@@ -657,6 +666,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ProxyModePAC {
             get {
                 return ResourceManager.GetString("ProxyModePAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reason 的本地化字符串。
+        /// </summary>
+        internal static string Reason {
+            get {
+                return ResourceManager.GetString("Reason", resourceCulture);
             }
         }
         

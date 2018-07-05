@@ -158,7 +158,14 @@ namespace V2RayGCon.Views
 
                     elCboxVer.Invoke((MethodInvoker)delegate
                     {
-                        Lib.UI.FillComboBox(elCboxVer, versions);
+                        if (versions.Count > 0)
+                        {
+                            Lib.UI.FillComboBox(elCboxVer, versions);
+                        }
+                        else
+                        {
+                            MessageBox.Show(I18N("GetVersionListFail"));
+                        }
                     });
                 }
                 catch { }

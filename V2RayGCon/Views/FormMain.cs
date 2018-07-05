@@ -25,22 +25,6 @@ namespace V2RayGCon.Views
         Service.Core core;
         Controller.FormMainCtrl formMainCtrl;
 
-        #region AutoScaleListView
-        private void ScaleListViewColumns(ListView listview, SizeF factor)
-        {
-            foreach (ColumnHeader column in listview.Columns)
-            {
-                column.Width = (int)Math.Round(column.Width * factor.Width);
-            }
-        }
-
-        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-        {
-            base.ScaleControl(factor, specified);
-            ScaleListViewColumns(lvServers, factor);
-        }
-        #endregion
-
         FormMain()
         {
             setting = Service.Setting.Instance;
@@ -147,9 +131,9 @@ namespace V2RayGCon.Views
 
             foreach (var server in servers)
             {
-                server[5] = 
+                server[5] =
                     server[0] == curServNum
-                    && core.isRunning ? 
+                    && core.isRunning ?
                     "√" : string.Empty;
 
                 lvServers.Items.Add(new ListViewItem(server));
@@ -225,7 +209,7 @@ namespace V2RayGCon.Views
 
         private void proxyAddrToolStripTextBox_TextChange(object sender, EventArgs e)
         {
-            if (setting.proxyAddr != proxyAddrToolStripTextBox.Text )
+            if (setting.proxyAddr != proxyAddrToolStripTextBox.Text)
             {
                 setting.proxyAddr = proxyAddrToolStripTextBox.Text;
             }
@@ -366,8 +350,8 @@ namespace V2RayGCon.Views
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {             
-            Lib.UI.VisitUrl(I18N("VistPorjectPage"),Properties.Resources.ProjectLink);
+        {
+            Lib.UI.VisitUrl(I18N("VistPorjectPage"), Properties.Resources.ProjectLink);
         }
 
         private void exportAllServerToolStripMenuItem_Click(object sender, EventArgs e)

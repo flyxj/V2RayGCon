@@ -76,16 +76,8 @@ namespace V2RayGCon.Views
 
             var link = Lib.Utils.Vmess2VmessLink(vmess);
 
-            if (setting.ImportLinks(link))
-            {
-                MessageBox.Show(I18N("AddServSuccess"));
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show(I18N("AddServFail"));
-            }
-
+            setting.ImportLinks(link);
+            this.Close();
         }
 
         private void btnExit_Click(object sender, EventArgs e)

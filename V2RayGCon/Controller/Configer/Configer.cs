@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -52,14 +51,48 @@ namespace V2RayGCon.Controller.Configer
             element.Enabled = false;
             editor.content = "{}";
 
-            Task.Factory.StartNew(() => {
+            Task.Factory.StartNew(() =>
+            {
                 try
                 {
-                    config = vlink.DecodeLink();
-                    element.Invoke((MethodInvoker)delegate {
+                    config = Lib.VLinkCodec.DecodeLink(vlink.linkDecode);
+                    var v = JObject.Parse(
+                        Lib.Utils.Base64Decode(
+                            Lib.Utils.GetLinkBody(vlink.linkDecode)));
+
+                    element.Invoke((MethodInvoker)delegate
+                    {
+                        var urls = Lib.Utils.GetValue<string>(v, "u");
+                        var overwrite = Lib.Utils.GetValue<string>(v, "o");
+                        if (!string.IsNullOrEmpty(urls))
+                        {
+                            vlink.urls = urls;
+                        }
+                        if (!string.IsNullOrEmpty(overwrite))
+                        {
+                            vlink.overwrite = overwrite;
+                        }
+
                         UpdateData();
                         ShowSection();
                     });
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show(I18N("DecodeVLinkFail"));
+                }
+                catch (System.Net.WebException)
+                {
+                    MessageBox.Show(
+                        string.Format(
+                            "{0}{1}{2}",
+                            I18N("DecodeVLinkFail"),
+                            Environment.NewLine,
+                            I18N("NetworkTimeout")));
+                }
+                catch (Newtonsoft.Json.JsonReaderException)
+                {
+                    MessageBox.Show(I18N("DecodeVLinkFail"));
                 }
                 catch
                 {
@@ -67,12 +100,12 @@ namespace V2RayGCon.Controller.Configer
                 }
                 finally
                 {
-                    element.Invoke((MethodInvoker)delegate {
+                    element.Invoke((MethodInvoker)delegate
+                    {
                         element.Enabled = true;
                     });
                 }
             });
-            
         }
 
         public void SetVmessServerMode(bool isServer)
@@ -177,7 +210,8 @@ namespace V2RayGCon.Controller.Configer
                 var json = JToken.Parse(editor.content);
                 editor.content = json.ToString();
             }
-            catch {
+            catch
+            {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
             }
         }
@@ -196,7 +230,7 @@ namespace V2RayGCon.Controller.Configer
             {
                 config[sections[preSection]] = content as JArray;
             }
-            else 
+            else
             {
                 config[sections[preSection]] = content as JObject;
             }
@@ -320,7 +354,8 @@ namespace V2RayGCon.Controller.Configer
             element.Enabled = false;
             editor.content = "{}";
 
-            Task.Factory.StartNew(()=> {
+            Task.Factory.StartNew(() =>
+            {
                 try
                 {
                     config = vlink.GetSettings() as JObject;
@@ -338,8 +373,9 @@ namespace V2RayGCon.Controller.Configer
                 }
                 finally
                 {
-                    element.Invoke((MethodInvoker)delegate {
-                         element.Enabled = true;
+                    element.Invoke((MethodInvoker)delegate
+                    {
+                        element.Enabled = true;
                     });
                 }
             });
@@ -440,9 +476,10 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertSkipCN()
         {
-            var eg= JObject.Parse(resData("config_def"));
+            var eg = JObject.Parse(resData("config_def"));
 
-            InsertConfigHelper(() => {
+            InsertConfigHelper(() =>
+            {
                 config["dns"] = eg["dnsCFnGoogle"];
                 config["routing"] = eg["routeCNIP"];
                 config["outboundDetour"] = eg["outDtrDefault"];
@@ -502,6 +539,8 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region private method
+
+
 
         bool FlushEditor()
         {

@@ -105,10 +105,7 @@ namespace V2RayGCon.Service
                     {
                         var msg=Lib.Utils.CutStr(link,90);
                         setting.SendLog($"QRCode: {msg}");
-                        MessageBox.Show(
-                            setting.ImportLinks(link)?
-                            I18N("ImportLinkSuccess"):
-                            I18N("NotSupportLinkType"));
+                        setting.ImportLinks(link);
                     }
 
                     void Fail()
@@ -121,7 +118,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
-                    setting.ImportLinks(links,true);
+                    setting.ImportLinks(links);
                 }),
 
                 new MenuItem(I18N("DownloadV2rayCore"),(s,a)=>Views.FormDownloadCore.GetForm()),
