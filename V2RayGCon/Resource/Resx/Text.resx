@@ -297,7 +297,7 @@ Load new config?</value>
     <value>Get latest version fail!</value>
   </data>
   <data name="GetVersionListFail" xml:space="preserve">
-    <value>Fetch v2ray-core versions fail!</value>
+    <value>Get v2ray-core versions list fail!</value>
   </data>
   <data name="CancelDownload" xml:space="preserve">
     <value>Cancel current download?</value>
@@ -375,5 +375,8 @@ Please use [Replace server] menu.</value>
   </data>
   <data name="NetworkTimeout" xml:space="preserve">
     <value>Network timeout</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
   </data>
 </root>

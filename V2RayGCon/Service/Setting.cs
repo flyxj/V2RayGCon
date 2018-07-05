@@ -303,20 +303,21 @@ namespace V2RayGCon.Service
                 new Task<Tuple<bool, List<string[]>>>(()=>ImportVLinks(links)),
             };
 
-            Task.Factory.StartNew(()=> {
+            Task.Factory.StartNew(() =>
+            {
                 // import all links
-                foreach(var task in tasks)
+                foreach (var task in tasks)
                 {
                     task.Start();
                 }
-                
+
                 Task.WaitAll(tasks);
 
                 // get results
                 var allResults = new List<string[]>();
                 var isAddNewServer = false;
 
-                foreach(var task in tasks)
+                foreach (var task in tasks)
                 {
                     isAddNewServer = isAddNewServer || task.Result.Item1;
                     allResults.AddRange(task.Result.Item2);
@@ -441,7 +442,7 @@ namespace V2RayGCon.Service
                 }
                 catch { }
             }
-            
+
             return result;
         }
 
@@ -547,7 +548,7 @@ namespace V2RayGCon.Service
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-        string[] GenImportResult(string link,bool success,string reason)
+        string[] GenImportResult(string link, bool success, string reason)
         {
             return new string[]
             {
@@ -558,9 +559,10 @@ namespace V2RayGCon.Service
             };
         }
 
-        Task<Tuple<bool, string[]>>  GenDecodeVLinkTask(string link)
+        Task<Tuple<bool, string[]>> GenDecodeVLinkTask(string link)
         {
-            return new Task<Tuple<bool, string[]>>(()=> {
+            return new Task<Tuple<bool, string[]>>(() =>
+            {
                 var _isAddNewServer = true;
                 var _result = GenImportResult(link, true, I18N("Success"));
 
@@ -596,9 +598,9 @@ namespace V2RayGCon.Service
             var isAddNewServer = false;
             var result = new List<string[]>();
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.v);
-            var tasks =new List<Task<Tuple<bool, string[]>>>();
+            var tasks = new List<Task<Tuple<bool, string[]>>>();
 
-            foreach(var link in links)
+            foreach (var link in links)
             {
                 var task = GenDecodeVLinkTask(link);
                 tasks.Add(task);
@@ -607,7 +609,7 @@ namespace V2RayGCon.Service
 
             Task.WaitAll(tasks.ToArray());
 
-            foreach(var task in tasks)
+            foreach (var task in tasks)
             {
                 isAddNewServer = isAddNewServer || task.Result.Item1;
                 result.Add(task.Result.Item2);
@@ -617,7 +619,7 @@ namespace V2RayGCon.Service
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-        Tuple<bool,List<string[]>> ImportVmessLinks(string text)
+        Tuple<bool, List<string[]>> ImportVmessLinks(string text)
         {
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.vmess);
             var result = new List<string[]>();
@@ -629,11 +631,11 @@ namespace V2RayGCon.Service
                 string config = Lib.Utils.Vmess2ConfigString(vmess);
                 if (string.IsNullOrEmpty(config))
                 {
-                    result.Add(GenImportResult(link,false,I18N("DecodeFail")));
+                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
                     continue;
                 }
-                
-                if (AddServer(Lib.Utils.Base64Encode(config),true))
+
+                if (AddServer(Lib.Utils.Base64Encode(config), true))
                 {
                     result.Add(GenImportResult(link, true, I18N("Success")));
                     isAddNewServer = true;
@@ -644,7 +646,7 @@ namespace V2RayGCon.Service
                 }
             }
 
-            return new Tuple<bool, List<string[]>>( isAddNewServer, result );
+            return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
         string GetAliasFromConfig(JObject config)
@@ -659,7 +661,7 @@ namespace V2RayGCon.Service
 
         string[] GetSummaryFromConfig(JObject config)
         {
-            var summary= new string[] {
+            var summary = new string[] {
                 string.Empty,  // reserve for no.
                 string.Empty,  // reserve for alias
                 string.Empty,
@@ -685,14 +687,14 @@ namespace V2RayGCon.Service
             if (protocol == "vmess" || protocol == "shadowsocks")
             {
                 var keys = Model.Data.Table.servInfoKeys[protocol];
-                summary[3]= GetStr(keys[0]);
-                summary[4]= GetStr(keys[1]);
-                summary[6]= GetStr(keys[4]);
-                summary[7]= GetStr(keys[3]);
-                summary[8]= GetStr(keys[2]);
-                summary[9]= GetStr(keys[5]);
+                summary[3] = GetStr(keys[0]);
+                summary[4] = GetStr(keys[1]);
+                summary[6] = GetStr(keys[4]);
+                summary[7] = GetStr(keys[3]);
+                summary[8] = GetStr(keys[2]);
+                summary[9] = GetStr(keys[5]);
             }
-            
+
             return summary;
         }
 

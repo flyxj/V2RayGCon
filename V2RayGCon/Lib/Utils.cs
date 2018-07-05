@@ -406,11 +406,18 @@ namespace V2RayGCon.Lib
             Lib.Utils.SupportProtocolTLS12();
             if (timeout < 0)
             {
-                html = new WebClient().DownloadString(url);
+                html = new WebClient
+                {
+                    Encoding = System.Text.Encoding.UTF8,
+                }.DownloadString(url);
             }
             else
             {
-                html = new TimedWebClient { Timeout = timeout }.DownloadString(url);
+                html = new TimedWebClient
+                {
+                    Encoding = System.Text.Encoding.UTF8,
+                    Timeout = timeout,
+                }.DownloadString(url);
             }
             return html;
         }
