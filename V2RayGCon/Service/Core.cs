@@ -77,6 +77,16 @@ namespace V2RayGCon.Service
 
             string plainText = Lib.Utils.Base64Decode(b64Config);
             JObject config = JObject.Parse(plainText);
+            try
+            {
+                var timeout = Lib.Utils.Str2Int(resData("ParseImportTimeOut"));
+                config = Lib.ImportParser.ParseImport(config, timeout * 1000);
+            }
+            catch
+            {
+                setting.SendLog(I18N("DecodeImportFail"));
+                return;
+            }
             OverwriteInboundSettings(config);
             RestartCore(config.ToString());
         }

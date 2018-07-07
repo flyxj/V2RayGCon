@@ -191,7 +191,7 @@
   <data name="VlinkWiki" xml:space="preserve">
     <value>https://github.com/nobody3u/V2RayGCon/wiki/vlink</value>
   </data>
-  <data name="ImportVLinkTimeOut" xml:space="preserve">
+  <data name="ParseImportTimeOut" xml:space="preserve">
     <value>5</value>
     <comment>seconds</comment>
   </data>

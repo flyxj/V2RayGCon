@@ -115,7 +115,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Lib\UI.cs" />
-    <Compile Include="Lib\ImportDecoder.cs" />
+    <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
@@ -212,6 +212,7 @@
     <EmbeddedResource Include="Resource\Resx\Data.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Data.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Resx\Text.zh-CN.resx">
       <Generator>ResXFileCodeGenerator</Generator>
