@@ -102,7 +102,13 @@ namespace V2RayGCon.Lib
         public static JObject ParseImport(JObject config,int timeout=-1)
         {
             var urls = GetImportUrls(config);
-            var cfg = MergeOnlineConfig(config, urls, timeout);
+            var cfgTpl = MergeOnlineConfig(
+                JObject.Parse(@"{}"),
+                urls, 
+                timeout);
+
+            var cfg = Lib.Utils.MergeJson(cfgTpl, config);
+
             var import = Lib.Utils.GetKey(cfg, "v2raygcon.import");
             if (import != null)
             {
