@@ -98,7 +98,7 @@
   <ItemGroup>
     <Compile Include="Controller\Configer\Configer.cs" />
     <Compile Include="Controller\Configer\Editor.cs" />
-    <Compile Include="Controller\Configer\VLink.cs" />
+    <Compile Include="Controller\Configer\Import.cs" />
     <Compile Include="Controller\Configer\VGC.cs" />
     <Compile Include="Controller\Configer\SSClient.cs" />
     <Compile Include="Controller\Configer\SSServer.cs" />
@@ -115,7 +115,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Lib\UI.cs" />
-    <Compile Include="Lib\VLinkCodec.cs" />
+    <Compile Include="Lib\ImportDecoder.cs" />
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />

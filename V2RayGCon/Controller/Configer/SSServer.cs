@@ -90,7 +90,7 @@ namespace V2RayGCon.Controller.Configer
         {
             port = Lib.Utils.GetValue<int>(config, "inbound", "port").ToString();
 
-            var GetStr = Lib.Utils.HelperGetStringByPrefixAndKey(config);
+            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
             var prefix = "inbound.settings";
 
             SetMethod(GetStr(prefix, "method"));

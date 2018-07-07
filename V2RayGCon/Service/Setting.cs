@@ -300,7 +300,6 @@ namespace V2RayGCon.Service
                 new Task<Tuple<bool, List<string[]>>>(()=>ImportVmessLinks(links)),
                 new Task<Tuple<bool, List<string[]>>>(()=>ImportV2RayLinks(links)),
                 new Task<Tuple<bool, List<string[]>>>(()=>ImportSSLinks(links)),
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportVLinks(links)),
             };
 
             Task.Factory.StartNew(() =>
@@ -557,66 +556,6 @@ namespace V2RayGCon.Service
                 success?"√":"×",
                 reason,
             };
-        }
-
-        Task<Tuple<bool, string[]>> GenDecodeVLinkTask(string link)
-        {
-            return new Task<Tuple<bool, string[]>>(() =>
-            {
-                var _isAddNewServer = true;
-                var _result = GenImportResult(link, true, I18N("Success"));
-
-                try
-                {
-                    var timeout = Lib.Utils.Str2Int(resData("ImportVLinkTimeOut")) * 1000;
-                    var config = Lib.VLinkCodec.DecodeLink(link, timeout).ToString();
-                    if (!AddServer(Lib.Utils.Base64Encode(config), true))
-                    {
-                        _isAddNewServer = false;
-                        _result = GenImportResult(link, false, I18N("DuplicateServer"));
-                    }
-                }
-                catch (FormatException)
-                {
-                    _result = GenImportResult(link, false, I18N("DecodeFail"));
-                }
-                catch (System.Net.WebException)
-                {
-                    _result = GenImportResult(link, false, I18N("NetworkTimeout"));
-                }
-                catch (Newtonsoft.Json.JsonReaderException)
-                {
-                    _result = GenImportResult(link, false, I18N("DecodeFail"));
-                }
-
-                return new Tuple<bool, string[]>(_isAddNewServer, _result);
-            });
-        }
-
-        Tuple<bool, List<string[]>> ImportVLinks(string text)
-        {
-            var isAddNewServer = false;
-            var result = new List<string[]>();
-            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.v);
-            var tasks = new List<Task<Tuple<bool, string[]>>>();
-
-            foreach (var link in links)
-            {
-                var task = GenDecodeVLinkTask(link);
-                tasks.Add(task);
-                task.Start();
-            }
-
-            Task.WaitAll(tasks.ToArray());
-
-            foreach (var task in tasks)
-            {
-                isAddNewServer = isAddNewServer || task.Result.Item1;
-                result.Add(task.Result.Item2);
-                task.Dispose();
-            }
-
-            return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
         Tuple<bool, List<string[]>> ImportVmessLinks(string text)

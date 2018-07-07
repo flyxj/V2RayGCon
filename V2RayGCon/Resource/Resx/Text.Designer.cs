@@ -288,6 +288,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Decode import fail! 的本地化字符串。
+        /// </summary>
+        internal static string DecodeImportFail {
+            get {
+                return ResourceManager.GetString("DecodeImportFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fail to decode v-link! 的本地化字符串。
         /// </summary>
         internal static string DecodeVLinkFail {
@@ -521,6 +530,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string GetVGCVerFail {
             get {
                 return ResourceManager.GetString("GetVGCVerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import 的本地化字符串。
+        /// </summary>
+        internal static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
             }
         }
         
