@@ -248,20 +248,20 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 5 的本地化字符串。
-        /// </summary>
-        internal static string ImportVLinkTimeOut {
-            get {
-                return ResourceManager.GetString("ImportVLinkTimeOut", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 https://github.com/v2ray/v2ray-core/releases/latest 的本地化字符串。
         /// </summary>
         internal static string LatestCoreLink {
             get {
                 return ResourceManager.GetString("LatestCoreLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 5 的本地化字符串。
+        /// </summary>
+        internal static string ParseImportTimeOut {
+            get {
+                return ResourceManager.GetString("ParseImportTimeOut", resourceCulture);
             }
         }
         

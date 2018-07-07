@@ -16,7 +16,7 @@ namespace V2RayGCon.Controller.Configer
         public Editor editor;
         public SSServer ssServer;
         public VGC vgc;
-        public VLink vlink;
+        public Import import;
 
         JObject config;
         int separator;
@@ -24,7 +24,7 @@ namespace V2RayGCon.Controller.Configer
         Dictionary<int, string> sections;
         string originalConfig;
 
-        public Configer(int serverIndex = -1)
+        public Configer(Control element, int serverIndex = -1)
         {
             setting = Service.Setting.Instance;
             ssServer = new SSServer();
@@ -33,7 +33,7 @@ namespace V2RayGCon.Controller.Configer
             vmessCtrl = new VmessCtrl();
             editor = new Editor();
             vgc = new VGC();
-            vlink = new VLink();
+            import = new Import(element);
 
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
@@ -46,67 +46,6 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
-        public void DecodeVLink(Control element)
-        {
-            element.Enabled = false;
-            editor.content = "{}";
-
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    config = Lib.VLinkCodec.DecodeLink(vlink.linkDecode);
-                    var v = JObject.Parse(
-                        Lib.Utils.Base64Decode(
-                            Lib.Utils.GetLinkBody(vlink.linkDecode)));
-
-                    element.Invoke((MethodInvoker)delegate
-                    {
-                        var urls = Lib.Utils.GetValue<string>(v, "u");
-                        var overwrite = Lib.Utils.GetValue<string>(v, "o");
-                        if (!string.IsNullOrEmpty(urls))
-                        {
-                            vlink.urls = urls;
-                        }
-                        if (!string.IsNullOrEmpty(overwrite))
-                        {
-                            vlink.overwrite = overwrite;
-                        }
-
-                        UpdateData();
-                        ShowSection();
-                    });
-                }
-                catch (FormatException)
-                {
-                    MessageBox.Show(I18N("DecodeVLinkFail"));
-                }
-                catch (System.Net.WebException)
-                {
-                    MessageBox.Show(
-                        string.Format(
-                            "{0}{1}{2}",
-                            I18N("DecodeVLinkFail"),
-                            Environment.NewLine,
-                            I18N("NetworkTimeout")));
-                }
-                catch (Newtonsoft.Json.JsonReaderException)
-                {
-                    MessageBox.Show(I18N("DecodeVLinkFail"));
-                }
-                catch
-                {
-                    MessageBox.Show(I18N("DecodeVLinkFail"));
-                }
-                finally
-                {
-                    element.Invoke((MethodInvoker)delegate
-                    {
-                        element.Enabled = true;
-                    });
-                }
-            });
-        }
 
         public void SetVmessServerMode(bool isServer)
         {
@@ -256,7 +195,7 @@ namespace V2RayGCon.Controller.Configer
             ssServer.UpdateData(config);
             streamSettings.UpdateData(config);
             vgc.UpdateData(config);
-            vlink.UpdateData(config);
+            import.UpdateData(config);
         }
 
         public void DiscardChanges()
@@ -347,38 +286,6 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("EditorNoExample"));
             }
-        }
-
-        public void GenVLink(Control element)
-        {
-            element.Enabled = false;
-            editor.content = "{}";
-
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    config = vlink.GetSettings() as JObject;
-
-                    // make sure update databinding in main UI thread
-                    element.Invoke((MethodInvoker)delegate
-                    {
-                        UpdateData();
-                        ShowSection();
-                    });
-                }
-                catch
-                {
-                    MessageBox.Show(I18N("GenVLinkFail"));
-                }
-                finally
-                {
-                    element.Invoke((MethodInvoker)delegate
-                    {
-                        element.Enabled = true;
-                    });
-                }
-            });
         }
 
         public void InsertKCP()

@@ -79,35 +79,50 @@ namespace V2RayGCon.Views
 
             servIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count);
             cboxServList.SelectedIndex = servIndex;
-            ShowQRCode();
+            UpdateLink();
+        }
+
+        void UpdateLink()
+        {
+            var server = setting.GetServer(servIndex);
+
+            if (string.IsNullOrEmpty(server))
+            {
+                tboxLink.Text = string.Empty;
+            }
+
+            string link = string.Empty;
+
+            if (linkType == 0)
+            {
+                link = Lib.Utils.Vmess2VmessLink(
+                    Lib.Utils.ConfigString2Vmess(
+                        Lib.Utils.Base64Decode(server)));
+            }
+            else
+            {
+                link = Lib.Utils.AddLinkPrefix(
+                    server,
+                    Model.Data.Enum.LinkTypes.v2ray);
+            }
+
+            tboxLink.Text = link;
         }
 
         void ShowQRCode()
         {
             picQRCode.InitialImage = null;
 
-            var server = setting.GetServer(servIndex);
-            if (string.IsNullOrEmpty(server))
+            var link = tboxLink.Text;
+
+            if (string.IsNullOrEmpty(link))
             {
                 return;
             }
 
-            string link = string.Empty;
-            Tuple<Bitmap, Lib.QRCode.QRCode.WriteErrors> pair;
-
-            if (linkType == 0)
-            {
-                string configString = Lib.Utils.Base64Decode(server);
-                var vmess = Lib.Utils.ConfigString2Vmess(configString);
-                link = Lib.Utils.Vmess2VmessLink(vmess);
-                pair = Lib.QRCode.QRCode.GenQRCode(link, 180);
-            }
-            else
-            {
-                var prefix = Model.Data.Table.linkPrefix[(int)Model.Data.Enum.LinkTypes.v2ray];
-                link = prefix + server;
-                pair = Lib.QRCode.QRCode.GenQRCode(link, 320);
-            }
+            Tuple<Bitmap, Lib.QRCode.QRCode.WriteErrors> pair =
+                Lib.QRCode.QRCode.GenQRCode(
+                    link, linkType == 0 ? 180 : 320);
 
             switch (pair.Item2)
             {
@@ -130,7 +145,7 @@ namespace V2RayGCon.Views
         private void cboxLinkType_SelectedIndexChanged(object sender, EventArgs e)
         {
             linkType = cboxLinkType.SelectedIndex;
-            ShowQRCode();
+            UpdateLink();
         }
 
         private void btnSavePic_Click(object sender, EventArgs e)
@@ -153,10 +168,23 @@ namespace V2RayGCon.Views
             }
         }
 
+        private void tboxLink_TextChanged(object sender, EventArgs e)
+        {
+            ShowQRCode();
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(tboxLink.Text) ?
+                I18N("CopySuccess") :
+                I18N("CopyFail"));
+        }
+
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)
         {
             servIndex = cboxServList.SelectedIndex;
-            ShowQRCode();
+            UpdateLink();
         }
         #endregion
     }

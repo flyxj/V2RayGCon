@@ -36,7 +36,6 @@ namespace V2RayGCon.Model.Data
             {0,"vmess://" },
             {1,"v2ray://" },
             {2,"ss://" },
-            {3,"v://" },
         };
 
         public static Dictionary<int, string> ssMethods => _ssMethods;
@@ -174,6 +173,7 @@ namespace V2RayGCon.Model.Data
             //{ 10,"v2raygcon" },
             list = NewList();
             list.Add(SS(I18N("Default"), "v2raygcon"));
+            list.Add(SS(I18N("Import"), "vgcImport"));
             d.Add(10, list);
 
             //{ 11,"inboundDetour"}, 

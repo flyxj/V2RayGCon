@@ -92,23 +92,9 @@
             this.btnVGC = new System.Windows.Forms.Button();
             this.tboxVGCAlias = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.vlink = new System.Windows.Forms.TabPage();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.btnVLinkDecode = new System.Windows.Forms.Button();
-            this.btnVPaste = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.rtboxVLinkDecode = new System.Windows.Forms.RichTextBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.linkLabelAboutVlink = new System.Windows.Forms.LinkLabel();
-            this.rtboxVUrls = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnVCopy = new System.Windows.Forms.Button();
-            this.btnVInsert = new System.Windows.Forms.Button();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.panelVOverwrite = new System.Windows.Forms.Panel();
-            this.rtboxVLinkGen = new System.Windows.Forms.RichTextBox();
+            this.tabExpand = new System.Windows.Forms.TabPage();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.panelExpandConfig = new System.Windows.Forms.Panel();
             this.btnClearModify = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -148,9 +134,8 @@
             this.misc.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.vlink.SuspendLayout();
-            this.groupBox8.SuspendLayout();
-            this.groupBox7.SuspendLayout();
+            this.tabExpand.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.pnlTools.SuspendLayout();
             this.pnlEditor.SuspendLayout();
@@ -175,7 +160,7 @@
             this.tabControl1.Controls.Add(this.vmess);
             this.tabControl1.Controls.Add(this.ss);
             this.tabControl1.Controls.Add(this.misc);
-            this.tabControl1.Controls.Add(this.vlink);
+            this.tabControl1.Controls.Add(this.tabExpand);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
@@ -661,143 +646,27 @@
             this.label15.Name = "label15";
             this.toolTip1.SetToolTip(this.label15, resources.GetString("label15.ToolTip"));
             // 
-            // vlink
+            // tabExpand
             // 
-            resources.ApplyResources(this.vlink, "vlink");
-            this.vlink.Controls.Add(this.groupBox8);
-            this.vlink.Controls.Add(this.groupBox7);
-            this.vlink.Name = "vlink";
-            this.toolTip1.SetToolTip(this.vlink, resources.GetString("vlink.ToolTip"));
-            this.vlink.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.tabExpand, "tabExpand");
+            this.tabExpand.Controls.Add(this.groupBox9);
+            this.tabExpand.Name = "tabExpand";
+            this.toolTip1.SetToolTip(this.tabExpand, resources.GetString("tabExpand.ToolTip"));
+            this.tabExpand.UseVisualStyleBackColor = true;
             // 
-            // groupBox8
+            // groupBox9
             // 
-            resources.ApplyResources(this.groupBox8, "groupBox8");
-            this.groupBox8.Controls.Add(this.btnVLinkDecode);
-            this.groupBox8.Controls.Add(this.btnVPaste);
-            this.groupBox8.Controls.Add(this.label23);
-            this.groupBox8.Controls.Add(this.rtboxVLinkDecode);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox8, resources.GetString("groupBox8.ToolTip"));
+            resources.ApplyResources(this.groupBox9, "groupBox9");
+            this.groupBox9.Controls.Add(this.panelExpandConfig);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox9, resources.GetString("groupBox9.ToolTip"));
             // 
-            // btnVLinkDecode
+            // panelExpandConfig
             // 
-            resources.ApplyResources(this.btnVLinkDecode, "btnVLinkDecode");
-            this.btnVLinkDecode.Name = "btnVLinkDecode";
-            this.toolTip1.SetToolTip(this.btnVLinkDecode, resources.GetString("btnVLinkDecode.ToolTip"));
-            this.btnVLinkDecode.UseVisualStyleBackColor = true;
-            this.btnVLinkDecode.Click += new System.EventHandler(this.btnVLinkDecode_Click);
-            // 
-            // btnVPaste
-            // 
-            resources.ApplyResources(this.btnVPaste, "btnVPaste");
-            this.btnVPaste.Name = "btnVPaste";
-            this.toolTip1.SetToolTip(this.btnVPaste, resources.GetString("btnVPaste.ToolTip"));
-            this.btnVPaste.UseVisualStyleBackColor = true;
-            this.btnVPaste.Click += new System.EventHandler(this.btnVPaste_Click);
-            // 
-            // label23
-            // 
-            resources.ApplyResources(this.label23, "label23");
-            this.label23.Name = "label23";
-            this.toolTip1.SetToolTip(this.label23, resources.GetString("label23.ToolTip"));
-            // 
-            // rtboxVLinkDecode
-            // 
-            resources.ApplyResources(this.rtboxVLinkDecode, "rtboxVLinkDecode");
-            this.rtboxVLinkDecode.DetectUrls = false;
-            this.rtboxVLinkDecode.Name = "rtboxVLinkDecode";
-            this.toolTip1.SetToolTip(this.rtboxVLinkDecode, resources.GetString("rtboxVLinkDecode.ToolTip"));
-            // 
-            // groupBox7
-            // 
-            resources.ApplyResources(this.groupBox7, "groupBox7");
-            this.groupBox7.Controls.Add(this.linkLabelAboutVlink);
-            this.groupBox7.Controls.Add(this.rtboxVUrls);
-            this.groupBox7.Controls.Add(this.button1);
-            this.groupBox7.Controls.Add(this.btnVCopy);
-            this.groupBox7.Controls.Add(this.btnVInsert);
-            this.groupBox7.Controls.Add(this.label21);
-            this.groupBox7.Controls.Add(this.label22);
-            this.groupBox7.Controls.Add(this.label24);
-            this.groupBox7.Controls.Add(this.panelVOverwrite);
-            this.groupBox7.Controls.Add(this.rtboxVLinkGen);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox7, resources.GetString("groupBox7.ToolTip"));
-            // 
-            // linkLabelAboutVlink
-            // 
-            resources.ApplyResources(this.linkLabelAboutVlink, "linkLabelAboutVlink");
-            this.linkLabelAboutVlink.Name = "linkLabelAboutVlink";
-            this.linkLabelAboutVlink.TabStop = true;
-            this.toolTip1.SetToolTip(this.linkLabelAboutVlink, resources.GetString("linkLabelAboutVlink.ToolTip"));
-            this.linkLabelAboutVlink.UseCompatibleTextRendering = true;
-            this.linkLabelAboutVlink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelAboutVlink_LinkClicked);
-            // 
-            // rtboxVUrls
-            // 
-            resources.ApplyResources(this.rtboxVUrls, "rtboxVUrls");
-            this.rtboxVUrls.DetectUrls = false;
-            this.rtboxVUrls.Name = "rtboxVUrls";
-            this.toolTip1.SetToolTip(this.rtboxVUrls, resources.GetString("rtboxVUrls.ToolTip"));
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.toolTip1.SetToolTip(this.button1, resources.GetString("button1.ToolTip"));
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnFormatOverwrite);
-            // 
-            // btnVCopy
-            // 
-            resources.ApplyResources(this.btnVCopy, "btnVCopy");
-            this.btnVCopy.Name = "btnVCopy";
-            this.toolTip1.SetToolTip(this.btnVCopy, resources.GetString("btnVCopy.ToolTip"));
-            this.btnVCopy.UseVisualStyleBackColor = true;
-            this.btnVCopy.Click += new System.EventHandler(this.btnVCopy_Click);
-            // 
-            // btnVInsert
-            // 
-            resources.ApplyResources(this.btnVInsert, "btnVInsert");
-            this.btnVInsert.Name = "btnVInsert";
-            this.toolTip1.SetToolTip(this.btnVInsert, resources.GetString("btnVInsert.ToolTip"));
-            this.btnVInsert.UseVisualStyleBackColor = true;
-            this.btnVInsert.Click += new System.EventHandler(this.btnVInsert_Click);
-            // 
-            // label21
-            // 
-            resources.ApplyResources(this.label21, "label21");
-            this.label21.Name = "label21";
-            this.toolTip1.SetToolTip(this.label21, resources.GetString("label21.ToolTip"));
-            // 
-            // label22
-            // 
-            resources.ApplyResources(this.label22, "label22");
-            this.label22.Name = "label22";
-            this.toolTip1.SetToolTip(this.label22, resources.GetString("label22.ToolTip"));
-            // 
-            // label24
-            // 
-            resources.ApplyResources(this.label24, "label24");
-            this.label24.Name = "label24";
-            this.toolTip1.SetToolTip(this.label24, resources.GetString("label24.ToolTip"));
-            // 
-            // panelVOverwrite
-            // 
-            resources.ApplyResources(this.panelVOverwrite, "panelVOverwrite");
-            this.panelVOverwrite.Name = "panelVOverwrite";
-            this.toolTip1.SetToolTip(this.panelVOverwrite, resources.GetString("panelVOverwrite.ToolTip"));
-            // 
-            // rtboxVLinkGen
-            // 
-            resources.ApplyResources(this.rtboxVLinkGen, "rtboxVLinkGen");
-            this.rtboxVLinkGen.DetectUrls = false;
-            this.rtboxVLinkGen.Name = "rtboxVLinkGen";
-            this.rtboxVLinkGen.ReadOnly = true;
-            this.toolTip1.SetToolTip(this.rtboxVLinkGen, resources.GetString("rtboxVLinkGen.ToolTip"));
+            resources.ApplyResources(this.panelExpandConfig, "panelExpandConfig");
+            this.panelExpandConfig.Name = "panelExpandConfig";
+            this.toolTip1.SetToolTip(this.panelExpandConfig, resources.GetString("panelExpandConfig.ToolTip"));
             // 
             // btnClearModify
             // 
@@ -1026,11 +895,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.vlink.ResumeLayout(false);
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
+            this.tabExpand.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.pnlTools.ResumeLayout(false);
@@ -1134,22 +1000,8 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button btnQConSkipCN;
         private System.Windows.Forms.ToolStripMenuItem saveConfigStripMenuItem;
-        private System.Windows.Forms.TabPage vlink;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Button btnVInsert;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.RichTextBox rtboxVUrls;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Button btnVLinkDecode;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Button btnVCopy;
-        private System.Windows.Forms.RichTextBox rtboxVLinkDecode;
-        private System.Windows.Forms.RichTextBox rtboxVLinkGen;
-        private System.Windows.Forms.Panel panelVOverwrite;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btnVPaste;
-        private System.Windows.Forms.LinkLabel linkLabelAboutVlink;
+        private System.Windows.Forms.TabPage tabExpand;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Panel panelExpandConfig;
     }
 }

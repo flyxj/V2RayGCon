@@ -14,7 +14,7 @@ namespace V2RayGCon.Views
     {
         Controller.Configer.Configer configer;
         Service.Setting setting;
-        Scintilla scintillaMain,scintillaVlink;
+        Scintilla scintillaMain, scintillaImport;
         FormSearch formSearch;
 
         string _Title;
@@ -32,13 +32,14 @@ namespace V2RayGCon.Views
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
-            configer = new Controller.Configer.Configer(_serverIndex);
+            configer = new Controller.Configer.Configer(this.panelExpandConfig,_serverIndex);
             InitComboBox();
 
             scintillaMain = new Scintilla();
             InitScintilla(scintillaMain,panelScintilla);
-            scintillaVlink = new Scintilla();
-            InitScintilla(scintillaVlink,panelVOverwrite);
+            scintillaImport = new Scintilla();
+            InitScintilla(scintillaImport,panelExpandConfig);
+            // scintillaImport.ReadOnly = true;
 
             InitDataBinding();
             UpdateServerMenu();
@@ -108,22 +109,18 @@ namespace V2RayGCon.Views
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        void BindDataVLink()
+        void BindDataImport()
         {
-            var vlink = configer.vlink;
+            var import = configer.import;
             var bs = new BindingSource();
-            bs.DataSource = vlink;
+            bs.DataSource = import;
 
-            scintillaVlink.DataBindings.Add(
+            scintillaImport.DataBindings.Add(
                 "Text",
                 bs,
-                nameof(vlink.overwrite),
+                nameof(import.content),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
-
-            rtboxVLinkDecode.DataBindings.Add("Text", bs, nameof(vlink.linkDecode));
-            rtboxVUrls.DataBindings.Add("Text", bs, nameof(vlink.urls));
-            rtboxVLinkGen.DataBindings.Add("Text", bs, nameof(vlink.linkEncode));
         }
 
         void BindDataVGC()
@@ -206,42 +203,6 @@ namespace V2RayGCon.Views
         #endregion
 
         #region UI event handler
-        private void btnFormatOverwrite(object sender, EventArgs e)
-        {
-            configer.vlink.urls = 
-                Lib.VLinkCodec.TrimUrls(configer.vlink.urls)
-                .Replace(",", "\n");
-
-            if (string.IsNullOrEmpty(configer.vlink.overwrite))
-            {
-                return;
-            }
-
-            try
-            {
-                configer.vlink.overwrite =
-                    JObject.Parse(configer.vlink.overwrite)
-                    .ToString();
-            }
-            catch
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-            }
-        }
-
-        private void btnVInsert_Click(object sender, EventArgs e)
-        {
-            configer.GenVLink(btnVInsert);
-        }
-
-        private void btnVCopy_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(rtboxVLinkGen.Text) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
-        }
-
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
             cboxExamples.SelectedIndex = 0;
@@ -436,16 +397,6 @@ namespace V2RayGCon.Views
             configer.ReplaceOriginalServer();
             SetTitle(configer.GetAlias());
         }
-
-        private void btnVLinkDecode_Click(object sender, EventArgs e)
-        {
-            configer.DecodeVLink(btnVLinkDecode);
-        }
-
-        private void btnVPaste_Click(object sender, EventArgs e)
-        {
-            configer.vlink.linkDecode = Lib.Utils.GetClipboardText();
-        }
         #endregion
 
         #region bind hotkey
@@ -569,7 +520,7 @@ namespace V2RayGCon.Views
             BindDataEditor();
             BindDataSSServer();
             BindDataVGC();
-            BindDataVLink();
+            BindDataImport();
         }
         #endregion
 
@@ -682,11 +633,6 @@ namespace V2RayGCon.Views
                 });
             }
             catch { }
-        }
-
-        private void linkLabelAboutVlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Lib.UI.VisitUrl(I18N("VisitVlinkPage"), resData("VlinkWiki"));
         }
 
         void ShowSearchBox()

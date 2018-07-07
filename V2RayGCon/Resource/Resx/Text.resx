@@ -379,4 +379,10 @@ Please use [Replace server] menu.</value>
   <data name="Reason" xml:space="preserve">
     <value>Reason</value>
   </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="DecodeImportFail" xml:space="preserve">
+    <value>Decode import fail!</value>
+  </data>
 </root>

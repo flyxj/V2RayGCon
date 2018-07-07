@@ -185,6 +185,14 @@
     "alias": "My Server1",
     "description": ""
   },
+  "vgcImport": {
+    "alias": "My Server2",
+    "description": "",
+    "import": [
+      "http://a.com/a.json",
+      "http://a.com/b.json"
+    ]
+  },
   "policyDefault": {
     "levels": {
       "0": {

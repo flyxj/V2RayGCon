@@ -39,7 +39,7 @@ namespace V2RayGCon.Lib
             return (T)JToken.Parse(json);
         }
 
-        static JToken GetKey(JToken json, string path)
+        public static JToken GetKey(JToken json, string path)
         {
             var curPos = json;
             var keys = path.Split('.');
@@ -90,7 +90,7 @@ namespace V2RayGCon.Lib
             return def;
         }
 
-        public static Func<string, string, string> HelperGetStringByPrefixAndKey(JObject json)
+        public static Func<string, string, string> GetStringByPrefixAndKeyHelper(JObject json)
         {
             var o = json;
             return (prefix, key) =>
@@ -232,7 +232,7 @@ namespace V2RayGCon.Lib
                 return null;
             }
 
-            var GetStr = HelperGetStringByPrefixAndKey(json);
+            var GetStr = GetStringByPrefixAndKeyHelper(json);
 
             Model.Data.Vmess vmess = new Model.Data.Vmess();
             vmess.v = "2";
@@ -402,22 +402,28 @@ namespace V2RayGCon.Lib
 
         public static string Fetch(string url, int timeout = -1)
         {
-            var html = string.Empty;
             Lib.Utils.SupportProtocolTLS12();
+            WebClient wc;
+            
             if (timeout < 0)
             {
-                html = new WebClient
+                wc = new WebClient
                 {
                     Encoding = System.Text.Encoding.UTF8,
-                }.DownloadString(url);
+                };
             }
             else
             {
-                html = new TimedWebClient
+                wc = new TimedWebClient
                 {
                     Encoding = System.Text.Encoding.UTF8,
                     Timeout = timeout,
-                }.DownloadString(url);
+                };
+            }
+            var html = string.Empty;
+            using (wc)
+            {
+                html = wc.DownloadString(url);
             }
             return html;
         }

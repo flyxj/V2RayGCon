@@ -101,7 +101,7 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
-            var GetStr = Lib.Utils.HelperGetStringByPrefixAndKey(config);
+            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
 
             string prefix;
 
