@@ -23,7 +23,7 @@ namespace V2RayGCon.Lib
             var result = firstJson.DeepClone() as JObject; // copy
             result.Merge(secondJson, new JsonMergeSettings
             {
-                MergeArrayHandling = MergeArrayHandling.Union,
+                MergeArrayHandling = MergeArrayHandling.Merge,
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
 
