@@ -87,6 +87,7 @@ namespace V2RayGCon.Views
             bs.DataSource = streamClient;
 
             tboxWSPath.DataBindings.Add("Text", bs, nameof(streamClient.wsPath));
+            tboxH2Path.DataBindings.Add("Text", bs, nameof(streamClient.h2Path));
 
             cboxKCPType.DataBindings.Add(
                 nameof(cboxKCPType.SelectedIndex),
@@ -658,6 +659,11 @@ namespace V2RayGCon.Views
         private void button1_Click(object sender, EventArgs e)
         {
             configer.InsertDtrMTProto();
+        }
+
+        private void btnStreamInsertH2_Click(object sender, EventArgs e)
+        {
+            configer.InsertH2();
         }
 
         void ShowSearchBox()

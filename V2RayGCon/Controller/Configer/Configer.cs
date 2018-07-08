@@ -310,6 +310,21 @@ namespace V2RayGCon.Controller.Configer
             });
         }
 
+        public void InsertH2()
+        {
+            InsertConfigHelper(() =>
+            {
+                if (streamSettings.isServer)
+                {
+                    config["inbound"]["streamSettings"] = streamSettings.GetH2Setting();
+                }
+                else
+                {
+                    config["outbound"]["streamSettings"] = streamSettings.GetH2Setting();
+                }
+            });
+        }
+
         public void InsertWS()
         {
             InsertConfigHelper(() =>
