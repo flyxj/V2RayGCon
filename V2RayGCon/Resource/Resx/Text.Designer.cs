@@ -660,8 +660,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Can not find origin config!
-        ///Please use [Replace server] menu. 的本地化字符串。
+        ///   查找类似 Can not find original config!
+        ///Please use [Add new server] or [Replace server]. 的本地化字符串。
         /// </summary>
         internal static string OrgServNotFound {
             get {

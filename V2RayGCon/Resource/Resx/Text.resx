@@ -325,8 +325,8 @@ Checkout download page?</value>
     <value>Save current config?</value>
   </data>
   <data name="OrgServNotFound" xml:space="preserve">
-    <value>Can not find origin config!
-Please use [Replace server] menu.</value>
+    <value>Can not find original config!
+Please use [Add new server] or [Replace server].</value>
   </data>
   <data name="AddServFail" xml:space="preserve">
     <value>Add server fail, please check your settings.</value>

@@ -40,7 +40,7 @@ namespace V2RayGCon.Controller.Configer
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
             preSection = 0;
-            originalConfig = string.Empty;
+            ClearOriginalConfig();
 
             LoadConfig(serverIndex);
             editor.content = config.ToString();
@@ -48,6 +48,10 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void ClearOriginalConfig()
+        {
+            originalConfig = string.Empty;
+        }
 
         public void InsertDtrMTProto()
         {
@@ -219,38 +223,33 @@ namespace V2RayGCon.Controller.Configer
                 config[sections[preSection]].ToString();
         }
 
-        public void ReplaceOriginalServer()
+        public bool ReplaceOriginalServer()
         {
-            if (string.IsNullOrEmpty(originalConfig))
-            {
-                // no origin, add a new server.
-                AddNewServer();
-                return;
-            }
-
-            // find out index
             var index = setting.GetServerIndex(originalConfig);
-            if (index >= 0)
+            if (string.IsNullOrEmpty(originalConfig) || index < 0)
             {
-                ReplaceServer(index);
+                MessageBox.Show(I18N("OrgServNotFound"));
+                return false;
             }
             else
             {
-                MessageBox.Show(I18N("OrgServNotFound"));
+                return ReplaceServer(index);
             }
         }
 
-        public void ReplaceServer(int serverIndex)
+        public bool ReplaceServer(int serverIndex)
         {
             if (!FlushEditor())
             {
-                return;
+                return false;
             }
 
             if (setting.ReplaceServer(config, serverIndex)) {
                 originalConfig = Lib.Utils.Config2Base64String(config);
+                return true;
             }else{
                 MessageBox.Show(I18N("DuplicateServer"));
+                return false;
             }
         }
 

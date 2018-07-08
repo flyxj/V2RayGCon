@@ -285,13 +285,7 @@ namespace V2RayGCon.Views
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!configer.CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-            configer.SaveChanges();
-            configer.UpdateData();
+            configer.InsertConfigHelper(null);
 
             switch (Lib.UI.ShowSaveFileDialog(
                 resData("ExtJson"),
@@ -300,6 +294,7 @@ namespace V2RayGCon.Views
             {
                 case Model.Data.Enum.SaveFileErrorCode.Success:
                     SetTitle(filename);
+                    configer.ClearOriginalConfig();
                     MessageBox.Show(I18N("Done"));
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Fail:
@@ -326,17 +321,20 @@ namespace V2RayGCon.Views
             {
                 return;
             }
+
             string json = Lib.UI.ShowReadFileDialog(resData("ExtJson"), out string filename);
             if (configer.SetConfig(json))
             {
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
+                configer.ClearOriginalConfig();
                 I18N("Done");
             }
             else
             {
                 I18N("LoadJsonFail");
             }
+           
         }
 
         private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -397,8 +395,10 @@ namespace V2RayGCon.Views
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig"))) {
-                configer.ReplaceOriginalServer();
-                SetTitle(configer.GetAlias());
+                if (configer.ReplaceOriginalServer())
+                {
+                    SetTitle(configer.GetAlias());
+                }
             }
         }
         #endregion
@@ -590,8 +590,10 @@ namespace V2RayGCon.Views
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
-                        configer.ReplaceServer(index);
-                        SetTitle(configer.GetAlias());
+                        if (configer.ReplaceServer(index))
+                        {
+                            SetTitle(configer.GetAlias());
+                        }
                     }
                 }));
 

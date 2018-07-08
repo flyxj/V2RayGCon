@@ -320,8 +320,8 @@ https://github.com/v2ray/v2ray-core</value>
     <value>保存当前配置？</value>
   </data>
   <data name="OrgServNotFound" xml:space="preserve">
-    <value>找不到原配置！
-请使用“覆盖原服务器”菜单。</value>
+    <value>找不到原服务器!
+请使用 "添加新服务" 或 "覆盖服务器"</value>
   </data>
   <data name="AddServFail" xml:space="preserve">
     <value>添加服务器失败，请检查你的设置。</value>
