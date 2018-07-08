@@ -18,6 +18,10 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region Json
+        public static JObject LoadExamples()
+        {
+            return JObject.Parse(resData("config_def"));
+        }
         public static JObject MergeJson(JObject firstJson, JObject secondJson)
         {
             var result = firstJson.DeepClone() as JObject; // copy
@@ -480,6 +484,20 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+
+        private static Random random = new Random();
+        public static string RandomHex(int length)
+        {
+            //  https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c
+            if (length <= 0)
+            {
+                return string.Empty;
+            }
+
+            const string chars = "0123456789abcdef";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         public static int Clamp(int value, int min, int max)
         {

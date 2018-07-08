@@ -653,6 +653,11 @@ namespace V2RayGCon.Views
             configer.InsertConfigHelper(null);
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            configer.InsertDtrMTProto();
+        }
+
         void ShowSearchBox()
         {
             if (formSearch != null)

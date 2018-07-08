@@ -85,6 +85,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.misc = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnQConSkipCN = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tboxVGCDesc = new System.Windows.Forms.TextBox();
@@ -541,10 +542,18 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.button1);
             this.groupBox5.Controls.Add(this.btnQConSkipCN);
             resources.ApplyResources(this.groupBox5, "groupBox5");
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnQConSkipCN
             // 
@@ -953,5 +962,6 @@
         private System.Windows.Forms.Panel panelExpandConfig;
         private System.Windows.Forms.Button btnExpanseImport;
         private System.Windows.Forms.Button btnCopyExpansedConfig;
+        private System.Windows.Forms.Button button1;
     }
 }

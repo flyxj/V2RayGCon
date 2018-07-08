@@ -48,6 +48,17 @@ namespace V2RayGCon.Controller.Configer
 
         #region public method
 
+        public void InsertDtrMTProto()
+        {
+            InsertConfigHelper(()=> {
+                var eg = Lib.Utils.LoadExamples();
+                var mtproto = eg["dtrMTProto"] as JObject;
+                mtproto["inboundDetour"][0]["settings"]["users"][0]["secret"] =
+                    Lib.Utils.RandomHex(32);
+                config = Lib.Utils.MergeJson(config, mtproto);
+            });
+        }
+
         public void SetVmessServerMode(bool isServer)
         {
             vmessCtrl.serverMode = isServer;
@@ -383,12 +394,14 @@ namespace V2RayGCon.Controller.Configer
         public void InsertSkipCN()
         {
             var eg = JObject.Parse(resData("config_def"));
+            var c = JObject.Parse(@"{}");
+            c["dns"] = eg["dnsCFnGoogle"];
+            c["routing"] = eg["routeCNIP"];
+            c["outboundDetour"] = eg["outDtrDefault"];
 
             InsertConfigHelper(() =>
             {
-                config["dns"] = eg["dnsCFnGoogle"];
-                config["routing"] = eg["routeCNIP"];
-                config["outboundDetour"] = eg["outDtrDefault"];
+                config=Lib.Utils.MergeJson(config, c);
             });
         }
 
