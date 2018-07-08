@@ -123,6 +123,11 @@ namespace V2RayGCon.Lib
 
         #region convert
 
+        public static string Config2Base64String(JObject config)
+        {
+            return Base64Encode(config.ToString(Formatting.None));
+        }
+
         public static List<string> Str2ListStr(string serial)
         {
             var list = new List<string> { };

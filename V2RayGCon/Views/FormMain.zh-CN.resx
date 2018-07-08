@@ -290,7 +290,7 @@
     <value>别名</value>
   </data>
   <data name="outbound.Text" xml:space="preserve">
-    <value>Outbound协议</value>
+    <value>Out协议</value>
   </data>
   <data name="host.Text" xml:space="preserve">
     <value>IP/主机</value>
@@ -310,9 +310,6 @@
   </data>
   <data name="wspath.Text" xml:space="preserve">
     <value>WS路径</value>
-  </data>
-  <data name="wspath.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Left</value>
   </data>
   <data name="enc.Text" xml:space="preserve">
     <value>加密</value>

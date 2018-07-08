@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
@@ -220,11 +221,6 @@ namespace V2RayGCon.Controller.Configer
 
         public void ReplaceOriginalServer()
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
-            {
-                return;
-            }
-
             if (string.IsNullOrEmpty(originalConfig))
             {
                 // no origin, add a new server.
@@ -242,7 +238,6 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("OrgServNotFound"));
             }
-
         }
 
         public void ReplaceServer(int serverIndex)
@@ -252,8 +247,9 @@ namespace V2RayGCon.Controller.Configer
                 return;
             }
 
-            if (!setting.ReplaceServer(config, serverIndex))
-            {
+            if (setting.ReplaceServer(config, serverIndex)) {
+                originalConfig = Lib.Utils.Config2Base64String(config);
+            }else{
                 MessageBox.Show(I18N("DuplicateServer"));
             }
         }
@@ -336,8 +332,11 @@ namespace V2RayGCon.Controller.Configer
                 return;
             }
 
-            if (!setting.AddServer(config))
+            if (setting.AddServer(config))
             {
+                originalConfig = Lib.Utils.Config2Base64String(config);
+            }
+            else{
                 MessageBox.Show(I18N("DuplicateServer"));
             }
         }

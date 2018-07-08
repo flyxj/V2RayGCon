@@ -395,8 +395,10 @@ namespace V2RayGCon.Views
 
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
         {
-            configer.ReplaceOriginalServer();
-            SetTitle(configer.GetAlias());
+            if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig"))) {
+                configer.ReplaceOriginalServer();
+                SetTitle(configer.GetAlias());
+            }
         }
         #endregion
 

@@ -415,8 +415,7 @@ namespace V2RayGCon.Service
         public bool AddServer(JObject config, bool quiet = false)
         {
             var result = false;
-            var b64ConfigString = Lib.Utils.Base64Encode(
-                config.ToString(Formatting.None));
+            var b64ConfigString = Lib.Utils.Config2Base64String(config);
 
             lock (addServerLock)
             {
@@ -464,8 +463,7 @@ namespace V2RayGCon.Service
                 return AddServer(config);
             }
 
-            var b64ConfigString = Lib.Utils.Base64Encode(
-                config.ToString(Formatting.None));
+            var b64ConfigString = Lib.Utils.Config2Base64String(config);
 
             if (GetServerIndex(b64ConfigString) >= 0)
             {
