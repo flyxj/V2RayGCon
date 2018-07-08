@@ -262,7 +262,6 @@
     "network": "h2",
     "security": "tls",
     "httpSettings": {
-      "host": null,
       "path": ""
     }
   },

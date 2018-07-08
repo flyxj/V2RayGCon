@@ -325,8 +325,8 @@ Checkout download page?</value>
     <value>Save current config?</value>
   </data>
   <data name="OrgServNotFound" xml:space="preserve">
-    <value>Can not find origin config!
-Please use [Replace server] menu.</value>
+    <value>Can not find original config!
+Please use [Add new server] or [Replace server].</value>
   </data>
   <data name="AddServFail" xml:space="preserve">
     <value>Add server fail, please check your settings.</value>
@@ -384,5 +384,11 @@ Please use [Replace server] menu.</value>
   </data>
   <data name="DecodeImportFail" xml:space="preserve">
     <value>Decode import fail!</value>
+  </data>
+  <data name="AnalysingImport" xml:space="preserve">
+    <value>Analysing import, please wait ...</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File not found!</value>
   </data>
 </root>

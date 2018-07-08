@@ -14,8 +14,11 @@ namespace V2RayGCon.Lib
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
+                InitialDirectory = "c:\\",
                 Filter = extension,
+                RestoreDirectory = true,
                 Title = I18N("SaveAs"),
+                ShowHelp = true,
             };
 
             saveFileDialog.ShowDialog();
@@ -44,6 +47,7 @@ namespace V2RayGCon.Lib
                 RestoreDirectory = true,
                 CheckFileExists = true,
                 CheckPathExists = true,
+                ShowHelp = true,
             };
 
             fileName = string.Empty;

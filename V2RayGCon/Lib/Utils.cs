@@ -18,6 +18,10 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region Json
+        public static JObject LoadExamples()
+        {
+            return JObject.Parse(resData("config_def"));
+        }
         public static JObject MergeJson(JObject firstJson, JObject secondJson)
         {
             var result = firstJson.DeepClone() as JObject; // copy
@@ -119,6 +123,11 @@ namespace V2RayGCon.Lib
 
         #region convert
 
+        public static string Config2Base64String(JObject config)
+        {
+            return Base64Encode(config.ToString(Formatting.None));
+        }
+
         public static List<string> Str2ListStr(string serial)
         {
             var list = new List<string> { };
@@ -199,12 +208,12 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static string SSLink2ConfigString(string ssLink)
+        public static JObject SSLink2Config(string ssLink)
         {
             Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
             if (ss == null)
             {
-                return string.Empty;
+                return null;
             }
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
@@ -217,7 +226,7 @@ namespace V2RayGCon.Lib
             setting["method"] = ss.method;
             setting["password"] = ss.pass;
 
-            return config.ToString();
+            return config.DeepClone() as JObject;
         }
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
@@ -270,11 +279,11 @@ namespace V2RayGCon.Lib
             return vmess;
         }
 
-        public static string Vmess2ConfigString(Model.Data.Vmess vmess)
+        public static JObject Vmess2Config(Model.Data.Vmess vmess)
         {
             if (vmess == null)
             {
-                return string.Empty;
+                return null;
             }
 
             // prepare template
@@ -294,7 +303,7 @@ namespace V2RayGCon.Lib
 
             if (!streamTypes.Contains(streamType))
             {
-                return config.ToString();
+                return config.DeepClone() as JObject;
             }
 
             config["outbound"]["streamSettings"] = tpl[streamType];
@@ -329,7 +338,7 @@ namespace V2RayGCon.Lib
                 config["outbound"]["streamSettings"]["security"] = vmess.tls;
             }
             catch { }
-            return config.ToString();
+            return config.DeepClone() as JObject;
         }
 
         public static JArray Str2JArray(string content)
@@ -420,23 +429,28 @@ namespace V2RayGCon.Lib
                     Timeout = timeout,
                 };
             }
+
             var html = string.Empty;
             using (wc)
             {
-                html = wc.DownloadString(url);
+                /* 如果用抛出异常的写法
+                 * task中调用此函数时
+                 * 会弹出用户未处理异常警告
+                 */
+                try
+                {
+                    html = wc.DownloadString(url);
+                }
+                catch { }
             }
             return html;
         }
 
         public static string GetLatestVGCVersion()
         {
-            string html = string.Empty;
+            string html =  Fetch(resData("UrlLatestVGC"), 10000);
 
-            try
-            {
-                html = Fetch(resData("UrlLatestVGC"), 10000);
-            }
-            catch (System.Net.WebException)
+            if(string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
@@ -455,13 +469,9 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = string.Empty;
-
-            try
-            {
-                html = Fetch(resData("ReleasePageUrl"), 10000);
-            }
-            catch (System.Net.WebException)
+            string html =  Fetch(resData("ReleasePageUrl"), 10000);
+            
+            if(string.IsNullOrEmpty(html))
             {
                 return versions;
             }
@@ -479,6 +489,20 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+
+        private static Random random = new Random();
+        public static string RandomHex(int length)
+        {
+            //  https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c
+            if (length <= 0)
+            {
+                return string.Empty;
+            }
+
+            const string chars = "0123456789abcdef";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         public static int Clamp(int value, int min, int max)
         {
@@ -572,6 +596,14 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region UI related
+        public static void CopyToClipboardAndPrompt(string content)
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(content) ?
+                I18N("CopySuccess") :
+                I18N("CopyFail"));
+        }
+
         public static bool CopyToClipboard(string content)
         {
             try

@@ -320,8 +320,8 @@ https://github.com/v2ray/v2ray-core</value>
     <value>保存当前配置？</value>
   </data>
   <data name="OrgServNotFound" xml:space="preserve">
-    <value>找不到原配置！
-请使用“覆盖原服务器”菜单。</value>
+    <value>找不到原服务器!
+请使用 "添加新服务" 或 "覆盖服务器"</value>
   </data>
   <data name="AddServFail" xml:space="preserve">
     <value>添加服务器失败，请检查你的设置。</value>
@@ -382,5 +382,11 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="DecodeImportFail" xml:space="preserve">
     <value>解码Import失败!</value>
+  </data>
+  <data name="AnalysingImport" xml:space="preserve">
+    <value>正在分析import请稍等...</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>未能找到文件！</value>
   </data>
 </root>

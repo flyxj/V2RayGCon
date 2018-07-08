@@ -117,6 +117,43 @@
       }
     ]
   },
+  "dtrMTProto": {
+    "inboundDetour": [
+      {
+        "protocol": "mtproto",
+        "port": "443",
+        "tag": "tg-in",
+        "settings": {
+          "users": [
+            {
+              "secret": "nothing"
+            }
+          ]
+        }
+      }
+    ],
+    "outboundDetour": [
+      {
+        "protocol": "mtproto",
+        "tag": "tg-out",
+        "settings": {}
+      }
+    ],
+    "routing": {
+      "strategy": "rules",
+      "settings": {
+        "rules": [
+          {
+            "type": "field",
+            "inboundTag": [
+              "tg-in"
+            ],
+            "outboundTag": "tg-out"
+          }
+        ]
+      }
+    }
+  },
   "outFree": {
     "domainStrategy": "AsIs",
     "timeout": 0,
@@ -188,10 +225,10 @@
   "vgcImport": {
     "alias": "My Server2",
     "description": "",
-    "import": [
-      "http://a.com/a.json",
-      "http://a.com/b.json"
-    ]
+    "import": {
+      "http://a.com/a.json": "对a.json的注释",
+      "http://a.com/b.json": "对b.json的注释"
+    }
   },
   "policyDefault": {
     "levels": {

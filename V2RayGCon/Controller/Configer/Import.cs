@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -19,15 +21,19 @@ namespace V2RayGCon.Controller.Configer
         public string content
         {
             get { return _content; }
-            set { SetField(ref _content, value); }
+            set {
+                editor.ReadOnly = false;
+                SetField(ref _content, value);
+                editor.ReadOnly = true;
+            }
         }
         #endregion
 
         #region public method
-        Control element;
-        public Import(Control elementForInvoke)
+        Scintilla editor;
+        public Import(Scintilla elementForInvoke)
         {
-            element = elementForInvoke;
+            editor = elementForInvoke;
         }
         public JToken GetSettings()
         {
@@ -36,12 +42,23 @@ namespace V2RayGCon.Controller.Configer
 
         public void UpdateData(JObject config)
         {
+            content = I18N("AnalysingImport");
             // todo
             Task.Factory.StartNew(() => {
                 var cfg = "{}";
                 try
                 {
                     cfg = Lib.ImportParser.ParseImport(config).ToString();
+                }
+                catch (FileNotFoundException)
+                {
+                    // webclient 竟然可以读本地文件！
+
+                    cfg = string.Format(
+                            "{0}{1}{2}",
+                            I18N("DecodeImportFail"),
+                            Environment.NewLine,
+                            I18N("FileNotFound"));
                 }
                 catch (FormatException)
                 {
@@ -59,12 +76,8 @@ namespace V2RayGCon.Controller.Configer
                 {
                     cfg = I18N("DecodeImportFail");
                 }
-                catch
-                {
-                    cfg = I18N("DecodeImportFail");
-                }
 
-                element.Invoke((MethodInvoker)delegate{
+                editor.Invoke((MethodInvoker)delegate{
                     content = cfg;
                 });
             });

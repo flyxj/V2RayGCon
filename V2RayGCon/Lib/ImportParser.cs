@@ -15,17 +15,16 @@ namespace V2RayGCon.Lib
         {
             var result = new List<string>();
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
-            if(import != null && import is JArray)
+            if(import != null && import is JObject)
             {
-                var urls = import.ToObject<string[]>();
-                for(var i = 0; i < urls.Length; i++)
+                var urls = ((JObject)import).Properties().Select(p => p.Name).ToList();
+
+                if (urls == null)
                 {
-                    var url = urls[i];
-                    if (url.Length > 0 && !result.Contains(url))
-                    {
-                        result.Add(url);
-                    }
+                    return result;
                 }
+
+                return urls;
             }
             return result;
         }
@@ -42,14 +41,16 @@ namespace V2RayGCon.Lib
 
         static List<string> FetchAllUrls(List<string> urls, int timeout)
         {
+            if (urls.Count <= 0)
+            {
+                return new List<string>();
+            }
+
             var tasks = new List<Task<string>>();
             foreach (var url in urls)
             {
-                var task = new Task<string>(() =>
-                {
-                    var content = Lib.Utils.Fetch(url, timeout);
-                    return content;
-                });
+                var task = new Task<string>(
+                    () =>Lib.Utils.Fetch(url, timeout));
                 tasks.Add(task);
                 task.Start();
             }
@@ -86,6 +87,10 @@ namespace V2RayGCon.Lib
 
             foreach (var content in contents)
             {
+                if (string.IsNullOrEmpty(content))
+                {
+                    throw new System.Net.WebException();
+                }
                 var cfg = JObject.Parse(content);
                 config = Lib.Utils.MergeJson(config, cfg);
             }
@@ -102,6 +107,7 @@ namespace V2RayGCon.Lib
         public static JObject ParseImport(JObject config,int timeout=-1)
         {
             var urls = GetImportUrls(config);
+
             var cfgTpl = MergeOnlineConfig(
                 JObject.Parse(@"{}"),
                 urls, 

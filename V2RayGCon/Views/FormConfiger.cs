@@ -32,15 +32,16 @@ namespace V2RayGCon.Views
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
-            configer = new Controller.Configer.Configer(this.panelExpandConfig,_serverIndex);
-            InitComboBox();
-
             scintillaMain = new Scintilla();
             InitScintilla(scintillaMain,panelScintilla);
             scintillaImport = new Scintilla();
-            InitScintilla(scintillaImport,panelExpandConfig);
-            // scintillaImport.ReadOnly = true;
+            InitScintilla(scintillaImport,panelExpandConfig,true);
+            
+            configer = new Controller.Configer.Configer(
+                scintillaImport,
+                _serverIndex);
 
+            InitComboBox();
             InitDataBinding();
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
@@ -86,6 +87,7 @@ namespace V2RayGCon.Views
             bs.DataSource = streamClient;
 
             tboxWSPath.DataBindings.Add("Text", bs, nameof(streamClient.wsPath));
+            tboxH2Path.DataBindings.Add("Text", bs, nameof(streamClient.h2Path));
 
             cboxKCPType.DataBindings.Add(
                 nameof(cboxKCPType.SelectedIndex),
@@ -283,13 +285,7 @@ namespace V2RayGCon.Views
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!configer.CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-            configer.SaveChanges();
-            configer.UpdateData();
+            configer.InsertConfigHelper(null);
 
             switch (Lib.UI.ShowSaveFileDialog(
                 resData("ExtJson"),
@@ -298,6 +294,7 @@ namespace V2RayGCon.Views
             {
                 case Model.Data.Enum.SaveFileErrorCode.Success:
                     SetTitle(filename);
+                    configer.ClearOriginalConfig();
                     MessageBox.Show(I18N("Done"));
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Fail:
@@ -324,17 +321,20 @@ namespace V2RayGCon.Views
             {
                 return;
             }
+
             string json = Lib.UI.ShowReadFileDialog(resData("ExtJson"), out string filename);
             if (configer.SetConfig(json))
             {
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
+                configer.ClearOriginalConfig();
                 I18N("Done");
             }
             else
             {
                 I18N("LoadJsonFail");
             }
+           
         }
 
         private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -394,8 +394,12 @@ namespace V2RayGCon.Views
 
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
         {
-            configer.ReplaceOriginalServer();
-            SetTitle(configer.GetAlias());
+            if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig"))) {
+                if (configer.ReplaceOriginalServer())
+                {
+                    SetTitle(configer.GetAlias());
+                }
+            }
         }
         #endregion
 
@@ -413,15 +417,7 @@ namespace V2RayGCon.Views
                     ShowSearchBox();
                     break;
                 case (Keys.Control | Keys.S):
-                    if (configer.CheckValid())
-                    {
-                        configer.SaveChanges();
-                        configer.UpdateData();
-                    }
-                    else
-                    {
-                        MessageBox.Show(I18N("PleaseCheckConfig"));
-                    }
+                    configer.InsertConfigHelper(null);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyCode);
@@ -450,10 +446,8 @@ namespace V2RayGCon.Views
             FillComboBox(cboxStreamSecurity, Model.Data.Table.streamSecurity);
         }
 
-        void InitScintilla(Scintilla scintilla,Panel container)
+        void InitScintilla(Scintilla scintilla, Panel container, bool readOnlyMode = false)
         {
-            
-            
             container.Controls.Add(scintilla);
 
             // scintilla.Dock = DockStyle.Fill;
@@ -464,6 +458,22 @@ namespace V2RayGCon.Views
             // Configure the JSON lexer styles
             scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 11;
+            if (readOnlyMode) {
+                var bgColor = this.BackColor;
+                scintilla.Styles[Style.Default].BackColor = bgColor;
+                scintilla.Styles[Style.Json.BlockComment].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Default].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Error].BackColor = bgColor;
+                scintilla.Styles[Style.Json.EscapeSequence].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Keyword].BackColor = bgColor;
+                scintilla.Styles[Style.Json.LineComment].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Number].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Operator].BackColor = bgColor;
+                scintilla.Styles[Style.Json.PropertyName].BackColor = bgColor;
+                scintilla.Styles[Style.Json.String].BackColor = bgColor;
+                scintilla.Styles[Style.Json.CompactIRI].BackColor = bgColor;
+                scintilla.ReadOnly = true;
+            }
             scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
             scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
             scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
@@ -580,8 +590,10 @@ namespace V2RayGCon.Views
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
-                        configer.ReplaceServer(index);
-                        SetTitle(configer.GetAlias());
+                        if (configer.ReplaceServer(index))
+                        {
+                            SetTitle(configer.GetAlias());
+                        }
                     }
                 }));
 
@@ -633,6 +645,27 @@ namespace V2RayGCon.Views
                 });
             }
             catch { }
+        }
+
+        private void btnCopyExpansedConfig_Click(object sender, EventArgs e)
+        {
+            Lib.Utils.CopyToClipboardAndPrompt(
+                scintillaImport.Text);
+        }
+
+        private void btnExpanseImport_Click(object sender, EventArgs e)
+        {
+            configer.InsertConfigHelper(null);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            configer.InsertDtrMTProto();
+        }
+
+        private void btnStreamInsertH2_Click(object sender, EventArgs e)
+        {
+            configer.InsertH2();
         }
 
         void ShowSearchBox()

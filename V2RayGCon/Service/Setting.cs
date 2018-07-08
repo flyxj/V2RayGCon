@@ -412,9 +412,10 @@ namespace V2RayGCon.Service
             return servers[index];
         }
 
-        public bool AddServer(string b64ConfigString, bool quiet = false)
+        public bool AddServer(JObject config, bool quiet = false)
         {
             var result = false;
+            var b64ConfigString = Lib.Utils.Config2Base64String(config);
 
             lock (addServerLock)
             {
@@ -455,12 +456,14 @@ namespace V2RayGCon.Service
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
-        public bool ReplaceServer(string b64ConfigString, int index)
+        public bool ReplaceServer(JObject config, int index)
         {
             if (index < 0 || index >= GetServerCount())
             {
-                return AddServer(b64ConfigString);
+                return AddServer(config);
             }
+
+            var b64ConfigString = Lib.Utils.Config2Base64String(config);
 
             if (GetServerIndex(b64ConfigString) >= 0)
             {
@@ -491,14 +494,15 @@ namespace V2RayGCon.Service
 
             foreach (var link in links)
             {
-                string config = Lib.Utils.SSLink2ConfigString(link);
-                if (string.IsNullOrEmpty(config))
+                var config = Lib.Utils.SSLink2Config(link);
+
+                if (config == null)
                 {
                     result.Add(GenImportResult(link, false, I18N("DecodeFail")));
                     continue;
                 }
 
-                if (AddServer(Lib.Utils.Base64Encode(config), true))
+                if (AddServer(config, true))
                 {
                     isAddNewServer = true;
                     result.Add(GenImportResult(link, true, I18N("Success")));
@@ -522,11 +526,13 @@ namespace V2RayGCon.Service
             {
                 try
                 {
-                    string b64Config = Lib.Utils.GetLinkBody(link);
-                    string config = Lib.Utils.Base64Decode(b64Config);
-                    if (JObject.Parse(config) != null)
+                    var config = JObject.Parse(
+                        Lib.Utils.Base64Decode(
+                            Lib.Utils.GetLinkBody(link)));
+
+                    if (config != null)
                     {
-                        if (AddServer(b64Config, true))
+                        if (AddServer(config, true))
                         {
                             isAddNewServer = true;
                             result.Add(GenImportResult(link, true, I18N("Success")));
@@ -567,14 +573,15 @@ namespace V2RayGCon.Service
             foreach (var link in links)
             {
                 var vmess = Lib.Utils.VmessLink2Vmess(link);
-                string config = Lib.Utils.Vmess2ConfigString(vmess);
-                if (string.IsNullOrEmpty(config))
+                var config = Lib.Utils.Vmess2Config(vmess);
+
+                if (config == null)
                 {
                     result.Add(GenImportResult(link, false, I18N("DecodeFail")));
                     continue;
                 }
 
-                if (AddServer(Lib.Utils.Base64Encode(config), true))
+                if (AddServer(config, true))
                 {
                     result.Add(GenImportResult(link, true, I18N("Success")));
                     isAddNewServer = true;

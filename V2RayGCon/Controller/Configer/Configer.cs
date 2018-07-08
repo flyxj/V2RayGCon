@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,7 +26,7 @@ namespace V2RayGCon.Controller.Configer
         Dictionary<int, string> sections;
         string originalConfig;
 
-        public Configer(Control element, int serverIndex = -1)
+        public Configer(Scintilla element, int serverIndex = -1)
         {
             setting = Service.Setting.Instance;
             ssServer = new SSServer();
@@ -38,7 +40,7 @@ namespace V2RayGCon.Controller.Configer
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
             preSection = 0;
-            originalConfig = string.Empty;
+            ClearOriginalConfig();
 
             LoadConfig(serverIndex);
             editor.content = config.ToString();
@@ -46,6 +48,21 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void ClearOriginalConfig()
+        {
+            originalConfig = string.Empty;
+        }
+
+        public void InsertDtrMTProto()
+        {
+            InsertConfigHelper(()=> {
+                var eg = Lib.Utils.LoadExamples();
+                var mtproto = eg["dtrMTProto"] as JObject;
+                mtproto["inboundDetour"][0]["settings"]["users"][0]["secret"] =
+                    Lib.Utils.RandomHex(32);
+                config = Lib.Utils.MergeJson(config, mtproto);
+            });
+        }
 
         public void SetVmessServerMode(bool isServer)
         {
@@ -206,44 +223,33 @@ namespace V2RayGCon.Controller.Configer
                 config[sections[preSection]].ToString();
         }
 
-        public void ReplaceOriginalServer()
+        public bool ReplaceOriginalServer()
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(originalConfig))
-            {
-                // no origin, add a new server.
-                AddNewServer();
-                return;
-            }
-
-            // find out index
             var index = setting.GetServerIndex(originalConfig);
-            if (index >= 0)
+            if (string.IsNullOrEmpty(originalConfig) || index < 0)
             {
-                ReplaceServer(index);
+                MessageBox.Show(I18N("OrgServNotFound"));
+                return false;
             }
             else
             {
-                MessageBox.Show(I18N("OrgServNotFound"));
+                return ReplaceServer(index);
             }
-
         }
 
-        public void ReplaceServer(int serverIndex)
+        public bool ReplaceServer(int serverIndex)
         {
             if (!FlushEditor())
             {
-                return;
+                return false;
             }
 
-            originalConfig = Lib.Utils.Base64Encode(config.ToString());
-            if (!setting.ReplaceServer(originalConfig, serverIndex))
-            {
+            if (setting.ReplaceServer(config, serverIndex)) {
+                originalConfig = Lib.Utils.Config2Base64String(config);
+                return true;
+            }else{
                 MessageBox.Show(I18N("DuplicateServer"));
+                return false;
             }
         }
 
@@ -303,6 +309,21 @@ namespace V2RayGCon.Controller.Configer
             });
         }
 
+        public void InsertH2()
+        {
+            InsertConfigHelper(() =>
+            {
+                if (streamSettings.isServer)
+                {
+                    config["inbound"]["streamSettings"] = streamSettings.GetH2Setting();
+                }
+                else
+                {
+                    config["outbound"]["streamSettings"] = streamSettings.GetH2Setting();
+                }
+            });
+        }
+
         public void InsertWS()
         {
             InsertConfigHelper(() =>
@@ -325,9 +346,11 @@ namespace V2RayGCon.Controller.Configer
                 return;
             }
 
-            originalConfig = Lib.Utils.Base64Encode(config.ToString());
-            if (!setting.AddServer(originalConfig))
+            if (setting.AddServer(config))
             {
+                originalConfig = Lib.Utils.Config2Base64String(config);
+            }
+            else{
                 MessageBox.Show(I18N("DuplicateServer"));
             }
         }
@@ -384,12 +407,14 @@ namespace V2RayGCon.Controller.Configer
         public void InsertSkipCN()
         {
             var eg = JObject.Parse(resData("config_def"));
+            var c = JObject.Parse(@"{}");
+            c["dns"] = eg["dnsCFnGoogle"];
+            c["routing"] = eg["routeCNIP"];
+            c["outboundDetour"] = eg["outDtrDefault"];
 
             InsertConfigHelper(() =>
             {
-                config["dns"] = eg["dnsCFnGoogle"];
-                config["routing"] = eg["routeCNIP"];
-                config["outboundDetour"] = eg["outDtrDefault"];
+                config=Lib.Utils.MergeJson(config, c);
             });
         }
 
@@ -468,7 +493,7 @@ namespace V2RayGCon.Controller.Configer
             return true;
         }
 
-        void InsertConfigHelper(Action lamda)
+        public void InsertConfigHelper(Action lamda)
         {
             if (!CheckValid())
             {
@@ -480,7 +505,7 @@ namespace V2RayGCon.Controller.Configer
 
             try
             {
-                lamda();
+                lamda?.Invoke();
             }
             catch { }
 

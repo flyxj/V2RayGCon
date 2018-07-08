@@ -35,6 +35,13 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _wsPath, value); }
         }
 
+        private string _h2Path;
+        public string h2Path
+        {
+            get { return _h2Path; }
+            set { SetField(ref _h2Path, value); }
+        }
+
         private int _tls;
         public int tls
         {
@@ -70,6 +77,17 @@ namespace V2RayGCon.Controller.Configer
             return stream;
         }
 
+        public JToken GetH2Setting()
+        {
+            var configTemplate = JObject.Parse(resData("config_tpl"));
+
+            JToken stream = configTemplate["h2"];
+            stream["httpSettings"]["path"] = h2Path;
+
+            PlugTlsSettings(stream);
+            return stream;
+        }
+
         public JToken GetWSSetting()
         {
             var configTemplate = JObject.Parse(resData("config_tpl"));
@@ -83,8 +101,6 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetTCPSetting()
         {
-
-
             // 0 -> none -> tcp
             // 1 -> http -> tcp_http
             var key = "tcp";

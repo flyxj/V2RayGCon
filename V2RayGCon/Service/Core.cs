@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -20,7 +21,9 @@ namespace V2RayGCon.Service
         {
             v2rayCore = null;
             setting = Setting.Instance;
-            setting.OnRequireCoreRestart += (s, a) => CoreRestartHandler();
+            setting.OnRequireCoreRestart += (s, a) => {
+               Task.Factory.StartNew(()=> CoreRestartHandler());
+            };
         }
 
         #region properties
@@ -85,6 +88,7 @@ namespace V2RayGCon.Service
             catch
             {
                 setting.SendLog(I18N("DecodeImportFail"));
+                StopCoreThen(null);
                 return;
             }
             OverwriteInboundSettings(config);
