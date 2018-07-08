@@ -106,6 +106,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Analysing import, please wait ... 的本地化字符串。
+        /// </summary>
+        internal static string AnalysingImport {
+            get {
+                return ResourceManager.GetString("AnalysingImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Available examples ... 的本地化字符串。
         /// </summary>
         internal static string AvailableExamples {
@@ -485,6 +494,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File not found! 的本地化字符串。
+        /// </summary>
+        internal static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
             }
         }
         

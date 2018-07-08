@@ -70,10 +70,8 @@ namespace V2RayGCon.Views
         {
             Lib.Utils.RunAsSTAThread(() =>
             {
-                MessageBox.Show(
-                Lib.Utils.CopyToClipboard(string.Join(Environment.NewLine, links)) ?
-                I18N("CopySuccess") :
-                I18N("CopyFail"));
+                Lib.Utils.CopyToClipboardAndPrompt(
+                    string.Join(Environment.NewLine, links));
             });
         }
 

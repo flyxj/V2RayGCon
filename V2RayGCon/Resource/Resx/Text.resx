@@ -385,4 +385,10 @@ Please use [Replace server] menu.</value>
   <data name="DecodeImportFail" xml:space="preserve">
     <value>Decode import fail!</value>
   </data>
+  <data name="AnalysingImport" xml:space="preserve">
+    <value>Analysing import, please wait ...</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File not found!</value>
+  </data>
 </root>

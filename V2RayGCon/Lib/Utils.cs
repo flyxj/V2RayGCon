@@ -420,23 +420,28 @@ namespace V2RayGCon.Lib
                     Timeout = timeout,
                 };
             }
+
             var html = string.Empty;
             using (wc)
             {
-                html = wc.DownloadString(url);
+                /* 如果用抛出异常的写法
+                 * task中调用此函数时
+                 * 会弹出用户未处理异常警告
+                 */
+                try
+                {
+                    html = wc.DownloadString(url);
+                }
+                catch { }
             }
             return html;
         }
 
         public static string GetLatestVGCVersion()
         {
-            string html = string.Empty;
+            string html =  Fetch(resData("UrlLatestVGC"), 10000);
 
-            try
-            {
-                html = Fetch(resData("UrlLatestVGC"), 10000);
-            }
-            catch (System.Net.WebException)
+            if(string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
@@ -455,13 +460,9 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = string.Empty;
-
-            try
-            {
-                html = Fetch(resData("ReleasePageUrl"), 10000);
-            }
-            catch (System.Net.WebException)
+            string html =  Fetch(resData("ReleasePageUrl"), 10000);
+            
+            if(string.IsNullOrEmpty(html))
             {
                 return versions;
             }
@@ -572,6 +573,14 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region UI related
+        public static void CopyToClipboardAndPrompt(string content)
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(content) ?
+                I18N("CopySuccess") :
+                I18N("CopyFail"));
+        }
+
         public static bool CopyToClipboard(string content)
         {
             try

@@ -175,10 +175,7 @@ namespace V2RayGCon.Views
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(tboxLink.Text) ?
-                I18N("CopySuccess") :
-                I18N("CopyFail"));
+            Lib.Utils.CopyToClipboardAndPrompt(tboxLink.Text);
         }
 
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)

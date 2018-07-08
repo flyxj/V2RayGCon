@@ -415,11 +415,23 @@
   <data name="misc.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="btnExpanseImport.Text" xml:space="preserve">
+    <value>展开</value>
+  </data>
+  <data name="btnExpanseImport.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnCopyExpansedConfig.Text" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="btnCopyExpansedConfig.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="panelExpandConfig.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="groupBox9.Text" xml:space="preserve">
-    <value>展开 imports</value>
+    <value>展开import(只读)</value>
   </data>
   <data name="groupBox9.ToolTip" xml:space="preserve">
     <value />

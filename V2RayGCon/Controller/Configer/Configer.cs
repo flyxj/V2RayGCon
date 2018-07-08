@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace V2RayGCon.Controller.Configer
         Dictionary<int, string> sections;
         string originalConfig;
 
-        public Configer(Control element, int serverIndex = -1)
+        public Configer(Scintilla element, int serverIndex = -1)
         {
             setting = Service.Setting.Instance;
             ssServer = new SSServer();
@@ -466,7 +467,7 @@ namespace V2RayGCon.Controller.Configer
             return true;
         }
 
-        void InsertConfigHelper(Action lamda)
+        public void InsertConfigHelper(Action lamda)
         {
             if (!CheckValid())
             {
@@ -478,7 +479,7 @@ namespace V2RayGCon.Controller.Configer
 
             try
             {
-                lamda();
+                lamda?.Invoke();
             }
             catch { }
 
