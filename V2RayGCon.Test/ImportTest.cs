@@ -35,7 +35,7 @@ namespace V2RayGCon.Test
         [DataTestMethod]
         [DataRow(@"{}", @"{}", @"{}")]
         [DataRow(@"{a:'123',b:null}", @"{a:null,b:'123'}", @"{a:null,b:'123'}")]
-        [DataRow(@"{a:[1,2],b:{}}", @"{a:[3],b:{a:[1,2,3]}}", @"{a:[1,2,3],b:{a:[1,2,3]}}")]
+        [DataRow(@"{a:[1,2],b:{}}", @"{a:[3],b:{a:[1,2,3]}}", @"{a:[3,2],b:{a:[1,2,3]}}")]
         public void MergeJson(string first, string second, string expect)
         {
             var v = Lib.Utils.MergeJson(JObject.Parse(first), JObject.Parse(second));

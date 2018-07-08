@@ -240,8 +240,7 @@ namespace V2RayGCon.Controller.Configer
                 return;
             }
 
-            originalConfig = Lib.Utils.Base64Encode(config.ToString());
-            if (!setting.ReplaceServer(originalConfig, serverIndex))
+            if (!setting.ReplaceServer(config, serverIndex))
             {
                 MessageBox.Show(I18N("DuplicateServer"));
             }
@@ -325,8 +324,7 @@ namespace V2RayGCon.Controller.Configer
                 return;
             }
 
-            originalConfig = Lib.Utils.Base64Encode(config.ToString());
-            if (!setting.AddServer(originalConfig))
+            if (!setting.AddServer(config))
             {
                 MessageBox.Show(I18N("DuplicateServer"));
             }

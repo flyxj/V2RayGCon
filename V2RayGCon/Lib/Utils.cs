@@ -199,12 +199,12 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static string SSLink2ConfigString(string ssLink)
+        public static JObject SSLink2Config(string ssLink)
         {
             Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
             if (ss == null)
             {
-                return string.Empty;
+                return null;
             }
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
@@ -217,7 +217,7 @@ namespace V2RayGCon.Lib
             setting["method"] = ss.method;
             setting["password"] = ss.pass;
 
-            return config.ToString();
+            return config.DeepClone() as JObject;
         }
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
@@ -270,11 +270,11 @@ namespace V2RayGCon.Lib
             return vmess;
         }
 
-        public static string Vmess2ConfigString(Model.Data.Vmess vmess)
+        public static JObject Vmess2Config(Model.Data.Vmess vmess)
         {
             if (vmess == null)
             {
-                return string.Empty;
+                return null;
             }
 
             // prepare template
@@ -294,7 +294,7 @@ namespace V2RayGCon.Lib
 
             if (!streamTypes.Contains(streamType))
             {
-                return config.ToString();
+                return config.DeepClone() as JObject;
             }
 
             config["outbound"]["streamSettings"] = tpl[streamType];
@@ -329,7 +329,7 @@ namespace V2RayGCon.Lib
                 config["outbound"]["streamSettings"]["security"] = vmess.tls;
             }
             catch { }
-            return config.ToString();
+            return config.DeepClone() as JObject;
         }
 
         public static JArray Str2JArray(string content)
