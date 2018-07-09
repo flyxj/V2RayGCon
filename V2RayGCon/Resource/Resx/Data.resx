@@ -196,7 +196,7 @@
     <comment>seconds</comment>
   </data>
   <data name="ParseImportDepth" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
     <comment>layer</comment>
   </data>
   <data name="ParseImportRetry" xml:space="preserve">

@@ -257,7 +257,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 3 的本地化字符串。
+        ///   查找类似 5 的本地化字符串。
         /// </summary>
         internal static string ParseImportDepth {
             get {

@@ -10,6 +10,7 @@ using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -413,7 +414,7 @@ namespace V2RayGCon.Lib
         {
             Lib.Utils.SupportProtocolTLS12();
             WebClient wc;
-            
+
             if (timeout < 0)
             {
                 wc = new WebClient
@@ -448,9 +449,9 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html =  Fetch(resData("UrlLatestVGC"), 10000);
+            string html = Fetch(resData("UrlLatestVGC"), 10000);
 
-            if(string.IsNullOrEmpty(html))
+            if (string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
@@ -469,9 +470,9 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html =  Fetch(resData("ReleasePageUrl"), 10000);
-            
-            if(string.IsNullOrEmpty(html))
+            string html = Fetch(resData("ReleasePageUrl"), 10000);
+
+            if (string.IsNullOrEmpty(html))
             {
                 return versions;
             }
@@ -637,6 +638,42 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region process
+
+        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lamda)
+        {
+            var result = new List<TResult>();
+
+            if (values.Count <= 0)
+            {
+                return result;
+            }
+
+            var taskList = new List<Task<TResult>>();
+            foreach (var value in values)
+            {
+                var task = new Task<TResult>(() => lamda(value));
+                taskList.Add(task);
+                task.Start();
+            }
+            try
+            {
+                Task.WaitAll(taskList.ToArray());
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
+                    throw e;
+                }
+            }
+
+            foreach (var task in taskList)
+            {
+                result.Add(task.Result);
+            }
+
+            return result;
+        }
 
         public static void RunAsSTAThread(Action lamda)
         {

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Lib
@@ -39,56 +38,26 @@ namespace V2RayGCon.Lib
 
         static List<string> FetchAllUrls(List<string> urls, int timeout)
         {
-            if (urls.Count <= 0)
-            {
-                return new List<string>();
-            }
-
             var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
 
-            var tasks = new List<Task<string>>();
-            foreach (var url in urls)
-            {
-                var task = new Task<string>(
-                    () =>
-                    {
-                        var html = string.Empty;
-
-                        for (var i = 0;
-                        i < retry && string.IsNullOrEmpty(html);
-                        i++)
-                        {
-                            html = Lib.Utils.Fetch(url, timeout);
-                        }
-
-                        return html;
-                    });
-                tasks.Add(task);
-                task.Start();
-            }
-
-            try
-            {
-                Task.WaitAll(tasks.ToArray());
-            }
-            catch (AggregateException ae)
-            {
-                // throw ae.Flatten();
-                foreach (var e in ae.InnerExceptions)
+            return Lib.Utils.ExecuteInParallel<string, string>(
+                urls,
+                (url) =>
                 {
-                    throw e;
-                }
-            }
+                    var html = string.Empty;
 
-            var result = new List<string>();
-            foreach (var task in tasks)
-            {
-                result.Add(task.Result);
-            }
-            return result;
+                    for (var i = 0;
+                    i < retry && string.IsNullOrEmpty(html);
+                    i++)
+                    {
+                        html = Lib.Utils.Fetch(url, timeout);
+                    }
+
+                    return html;
+                });
         }
 
-        static void ClearImport(JObject config)
+        public static void ClearImport(JObject config)
         {
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
             if (import != null)
@@ -107,40 +76,47 @@ namespace V2RayGCon.Lib
         {
             var maxDepth = Lib.Utils.Str2Int(resData("ParseImportDepth"));
 
-            List<string> GetContent(List<string> urls)
-            {
-                return FetchAllUrls(urls, timeout);
-            }
+            var result = ParseImportRecursively(
+                (urls) => FetchAllUrls(urls, timeout),
+                config,
+                maxDepth);
 
+            ClearImport(result);
 
-            var cfg = ParseImportRecursively(config, maxDepth, GetContent);
-
-
-            // ClearImport(cfg);
-
-            return cfg;
+            return result;
         }
 
-        static JObject ParseImportRecursively(JObject config, int depth, Func<List<string>, List<string>> fetcher)
+        public static JObject ParseImportRecursively(
+            Func<List<string>, List<string>> fetcher,
+            JObject config,
+            int depth)
         {
-            var cfg = JObject.Parse(@"{}");
+            var result = JObject.Parse(@"{}");
+
             if (depth <= 0)
             {
-                return cfg;
+                return result;
             }
 
             var urls = GetImportUrls(config);
-            foreach (var content in fetcher(urls))
-            {
-                var c = ParseImportRecursively(
-                    JObject.Parse(content),
-                    depth - 1,
-                    fetcher);
+            var contents = fetcher(urls);
+            var configList =
+                Lib.Utils.ExecuteInParallel<string, JObject>(
+                    contents,
+                    (content) =>
+                    {
+                        return ParseImportRecursively(
+                            fetcher,
+                            JObject.Parse(content),
+                            depth - 1);
+                    });
 
-                cfg = Lib.Utils.MergeJson(cfg, c);
+            foreach (var c in configList)
+            {
+                result = Lib.Utils.MergeJson(result, c);
             }
 
-            return Lib.Utils.MergeJson(config, cfg);
+            return Lib.Utils.MergeJson(result, config);
         }
 
     }
