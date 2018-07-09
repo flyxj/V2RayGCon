@@ -257,6 +257,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 5 的本地化字符串。
+        /// </summary>
+        internal static string ParseImportDepth {
+            get {
+                return ResourceManager.GetString("ParseImportDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 3 的本地化字符串。
+        /// </summary>
+        internal static string ParseImportRetry {
+            get {
+                return ResourceManager.GetString("ParseImportRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 8 的本地化字符串。
         /// </summary>
         internal static string ParseImportTimeOut {

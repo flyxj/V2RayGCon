@@ -1,21 +1,18 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Lib
 {
     public class ImportParser
     {
-
         static List<string> GetImportUrls(JObject config)
         {
             var result = new List<string>();
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
-            if(import != null && import is JObject)
+            if (import != null && import is JObject)
             {
                 var urls = ((JObject)import).Properties().Select(p => p.Name).ToList();
 
@@ -41,61 +38,32 @@ namespace V2RayGCon.Lib
 
         static List<string> FetchAllUrls(List<string> urls, int timeout)
         {
-            if (urls.Count <= 0)
-            {
-                return new List<string>();
-            }
+            var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
 
-            var tasks = new List<Task<string>>();
-            foreach (var url in urls)
-            {
-                var task = new Task<string>(
-                    () =>Lib.Utils.Fetch(url, timeout));
-                tasks.Add(task);
-                task.Start();
-            }
-
-            try
-            {
-                Task.WaitAll(tasks.ToArray());
-            }
-            catch (AggregateException ae)
-            {
-                // throw ae.Flatten();
-                foreach (var e in ae.InnerExceptions)
+            return Lib.Utils.ExecuteInParallel<string, string>(
+                urls,
+                (url) =>
                 {
-                    throw e;
-                }
-            }
-            
-            var result = new List<string>();
-            foreach (var task in tasks)
-            {
-                result.Add(task.Result);
-            }
-            return result;
+                    var html = string.Empty;
+
+                    for (var i = 0;
+                    i < retry && string.IsNullOrEmpty(html);
+                    i++)
+                    {
+                        html = Lib.Utils.Fetch(url, timeout);
+                    }
+
+                    return html;
+                });
         }
 
-        static JObject MergeOnlineConfig(JObject config, List<string> urls, int timeout)
+        public static void ClearImport(JObject config)
         {
-            if (urls.Count<=0)
+            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
+            if (import != null)
             {
-                return config;
+                ((JObject)config["v2raygcon"]).Property("import")?.Remove();
             }
-
-            var contents = FetchAllUrls(urls, timeout);
-
-            foreach (var content in contents)
-            {
-                if (string.IsNullOrEmpty(content))
-                {
-                    throw new System.Net.WebException();
-                }
-                var cfg = JObject.Parse(content);
-                config = Lib.Utils.MergeJson(config, cfg);
-            }
-
-            return config;
         }
 
         /*
@@ -104,23 +72,51 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException> url not exist
          * test<Newtonsoft.Json.JsonReaderException> json decode fail
          */
-        public static JObject ParseImport(JObject config,int timeout=-1)
+        public static JObject ParseImport(JObject config, int timeout = -1)
         {
-            var urls = GetImportUrls(config);
+            var maxDepth = Lib.Utils.Str2Int(resData("ParseImportDepth"));
 
-            var cfgTpl = MergeOnlineConfig(
-                JObject.Parse(@"{}"),
-                urls, 
-                timeout);
+            var result = ParseImportRecursively(
+                (urls) => FetchAllUrls(urls, timeout),
+                config,
+                maxDepth);
 
-            var cfg = Lib.Utils.MergeJson(cfgTpl, config);
+            ClearImport(result);
 
-            var import = Lib.Utils.GetKey(cfg, "v2raygcon.import");
-            if (import != null)
+            return result;
+        }
+
+        public static JObject ParseImportRecursively(
+            Func<List<string>, List<string>> fetcher,
+            JObject config,
+            int depth)
+        {
+            var result = JObject.Parse(@"{}");
+
+            if (depth <= 0)
             {
-                ((JObject)cfg["v2raygcon"]).Property("import")?.Remove();
+                return result;
             }
-            return cfg;
+
+            var urls = GetImportUrls(config);
+            var contents = fetcher(urls);
+            var configList =
+                Lib.Utils.ExecuteInParallel<string, JObject>(
+                    contents,
+                    (content) =>
+                    {
+                        return ParseImportRecursively(
+                            fetcher,
+                            JObject.Parse(content),
+                            depth - 1);
+                    });
+
+            foreach (var c in configList)
+            {
+                result = Lib.Utils.MergeJson(result, c);
+            }
+
+            return Lib.Utils.MergeJson(result, config);
         }
 
     }
