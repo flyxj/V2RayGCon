@@ -436,6 +436,12 @@
   <data name="misc.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="btnImportClearCache.Text" xml:space="preserve">
+    <value>清理缓存</value>
+  </data>
+  <data name="btnImportClearCache.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnExpanseImport.Text" xml:space="preserve">
     <value>展开</value>
   </data>
@@ -511,15 +517,6 @@
   <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>覆盖原服务器设置 </value>
   </data>
-  <data name="saveConfigStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 30</value>
-  </data>
-  <data name="saveConfigStripMenuItem.Text" xml:space="preserve">
-    <value>保存当前配置</value>
-  </data>
-  <data name="saveConfigStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>用当前配置替换原选中的服务器。</value>
-  </data>
   <data name="addNewServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 30</value>
   </data>
@@ -528,6 +525,15 @@
   </data>
   <data name="addNewServerToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>用当前配置创建一个新服务器。</value>
+  </data>
+  <data name="saveConfigStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 30</value>
+  </data>
+  <data name="saveConfigStripMenuItem.Text" xml:space="preserve">
+    <value>保存当前配置</value>
+  </data>
+  <data name="saveConfigStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>用当前配置替换原选中的服务器。</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 6</value>

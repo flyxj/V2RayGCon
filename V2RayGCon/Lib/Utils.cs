@@ -410,29 +410,54 @@ namespace V2RayGCon.Lib
 
         #region net
 
-        public static string Fetch(string url, int timeout = -1)
+        static string FetchFromCache(string url)
         {
-            Lib.Utils.SupportProtocolTLS12();
-            WebClient wc;
+            var cache = Service.Cache.Instance.
+                GetCache<string>(resData("CacheHTML")).
+                Item2;
 
-            if (timeout < 0)
+            if (cache.ContainsKey(url))
             {
-                wc = new WebClient
-                {
-                    Encoding = System.Text.Encoding.UTF8,
-                };
+                return cache[url];
             }
-            else
+            return null;
+        }
+
+        static void UpdateHTMLCache(string url, string html)
+        {
+            if (html == null || string.IsNullOrEmpty(html))
             {
-                wc = new TimedWebClient
+                return;
+            }
+
+            var cache = Service.Cache.Instance.
+                GetCache<string>(resData("CacheHTML"));
+
+            lock (cache.Item1)
+            {
+                cache.Item2[url] = html;
+            }
+        }
+
+        public static string Fetch(string url, int timeout = -1, bool useCache = false)
+        {
+            if (useCache)
+            {
+                var cache = FetchFromCache(url);
+                if (cache != null)
                 {
-                    Encoding = System.Text.Encoding.UTF8,
-                    Timeout = timeout,
-                };
+                    return cache;
+                }
             }
 
             var html = string.Empty;
-            using (wc)
+
+            Lib.Utils.SupportProtocolTLS12();
+            using (WebClient wc = new TimedWebClient
+            {
+                Encoding = System.Text.Encoding.UTF8,
+                Timeout = timeout,
+            })
             {
                 /* 如果用抛出异常的写法
                  * task中调用此函数时
@@ -441,6 +466,7 @@ namespace V2RayGCon.Lib
                 try
                 {
                     html = wc.DownloadString(url);
+                    UpdateHTMLCache(url, html);
                 }
                 catch { }
             }

@@ -8,7 +8,8 @@ namespace V2RayGCon.Lib
 {
     public class ImportParser
     {
-        static List<string> GetImportUrls(JObject config)
+        #region public method
+        public static List<string> GetImportUrls(JObject config)
         {
             var result = new List<string>();
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
@@ -24,51 +25,6 @@ namespace V2RayGCon.Lib
                 return urls;
             }
             return result;
-        }
-
-        static JObject OverwriteConfig(JObject config, string overwrite)
-        {
-            var o = overwrite;
-            if (string.IsNullOrEmpty(o))
-            {
-                return config;
-            }
-            return Lib.Utils.MergeJson(config, JObject.Parse(overwrite));
-        }
-
-        static List<string> FetchAllUrls(List<string> urls, int timeout)
-        {
-            if (urls.Count <= 0)
-            {
-                return new List<string>();
-            }
-
-            var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
-
-            return Lib.Utils.ExecuteInParallel<string, string>(
-                urls,
-                (url) =>
-                {
-                    var html = string.Empty;
-
-                    for (var i = 0;
-                    i < retry && string.IsNullOrEmpty(html);
-                    i++)
-                    {
-                        html = Lib.Utils.Fetch(url, timeout);
-                    }
-
-                    return html;
-                });
-        }
-
-        public static void ClearImport(JObject config)
-        {
-            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
-            if (import != null)
-            {
-                ((JObject)config["v2raygcon"]).Property("import")?.Remove();
-            }
         }
 
         /*
@@ -129,6 +85,55 @@ namespace V2RayGCon.Lib
 
             return Lib.Utils.MergeJson(result, config);
         }
+        #endregion
+
+        #region private method
+        static JObject OverwriteConfig(JObject config, string overwrite)
+        {
+            var o = overwrite;
+            if (string.IsNullOrEmpty(o))
+            {
+                return config;
+            }
+            return Lib.Utils.MergeJson(config, JObject.Parse(overwrite));
+        }
+
+        static List<string> FetchAllUrls(List<string> urls, int timeout)
+        {
+            if (urls.Count <= 0)
+            {
+                return new List<string>();
+            }
+
+            var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
+
+            return Lib.Utils.ExecuteInParallel<string, string>(
+                urls,
+                (url) =>
+                {
+                    var html = string.Empty;
+
+                    for (var i = 0;
+                    i < retry && string.IsNullOrEmpty(html);
+                    i++)
+                    {
+                        html = Lib.Utils.Fetch(url, timeout, true);
+                    }
+
+                    return html;
+                });
+        }
+
+        public static void ClearImport(JObject config)
+        {
+            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
+            if (import != null)
+            {
+                ((JObject)config["v2raygcon"]).Property("import")?.Remove();
+            }
+        }
+
+        #endregion
 
     }
 }

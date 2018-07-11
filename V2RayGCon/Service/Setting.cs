@@ -13,12 +13,15 @@ namespace V2RayGCon.Service
     class Setting : Model.BaseClass.SingletonService<Setting>
     {
         private Model.Data.EventList<string> servers;
-        private Dictionary<string, string[]> summaryCache;
+
+        // summaryCache = ( writeLock, cachedData)
+        private Tuple<object, Dictionary<string, string[]>> summaryCache;
+
         public event EventHandler OnSettingChange;
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
 
-        private object addServerLock, updateSummaryCacheLock;
+        private object addServerLock;
 
         Setting()
         {
@@ -27,8 +30,9 @@ namespace V2RayGCon.Service
 
             isSysProxyHasSet = false;
             addServerLock = new object();
-            updateSummaryCacheLock = new object();
-            summaryCache = new Dictionary<string, string[]>();
+
+            summaryCache = Cache.Instance.GetCache<string[]>(
+                resData("CacheSummary"));
 
             OnServerListChanged();
             servers.ListChanged += OnServerListChanged;
@@ -398,13 +402,14 @@ namespace V2RayGCon.Service
         {
             var serverList = new List<string>(servers);
             var summarys = new List<string[]>();
+            var data = summaryCache.Item2;
 
             for (var i = 0; i < serverList.Count; i++)
             {
                 var key = serverList[i];
                 string[] summary = null;
-                if (!summaryCache.ContainsKey(key)
-                    || summaryCache[key] == null)
+                if (!data.ContainsKey(key)
+                    || data[key] == null)
                 {
                     summary = GetSummaryFromConfig(
                         JObject.Parse(
@@ -412,7 +417,7 @@ namespace V2RayGCon.Service
                 }
                 else
                 {
-                    summary = summaryCache[key];
+                    summary = data[key];
                 }
 
                 summary[0] = (i + 1).ToString();
@@ -707,10 +712,11 @@ namespace V2RayGCon.Service
         void UpdateSummaryCache(List<string> updateList)
         {
             var serverList = new List<string>();
+            var data = summaryCache.Item2;
             foreach (var server in updateList)
             {
-                if (!summaryCache.ContainsKey(server)
-                    || summaryCache[server] == null)
+                if (!data.ContainsKey(server)
+                    || data[server] == null)
                 {
                     serverList.Add(server);
                 }
@@ -725,14 +731,14 @@ namespace V2RayGCon.Service
             {
                 var summaryList = ParseAllConfigsImport(serverList);
 
-                lock (updateSummaryCacheLock)
+                lock (summaryCache.Item1)
                 {
 
                     for (var i = 0; i < serverList.Count; i++)
                     {
                         var key = serverList[i];
                         var value = summaryList[i];
-                        summaryCache[key] = value;
+                        data[key] = value;
                     }
                 }
 

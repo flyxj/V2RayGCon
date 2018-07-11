@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -48,6 +46,15 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void ClearHTMLCache()
+        {
+            InsertConfigHelper(() =>
+            {
+                Service.Cache.Instance.RemoveFromCache<string>(
+                    resData("CacheHTML"),
+                    Lib.ImportParser.GetImportUrls(config));
+            });
+        }
         public void ClearOriginalConfig()
         {
             originalConfig = string.Empty;
@@ -55,7 +62,8 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertDtrMTProto()
         {
-            InsertConfigHelper(()=> {
+            InsertConfigHelper(() =>
+            {
                 var eg = Lib.Utils.LoadExamples();
                 var mtproto = eg["dtrMTProto"] as JObject;
                 mtproto["inboundDetour"][0]["settings"]["users"][0]["secret"] =
@@ -244,10 +252,13 @@ namespace V2RayGCon.Controller.Configer
                 return false;
             }
 
-            if (setting.ReplaceServer(config, serverIndex)) {
+            if (setting.ReplaceServer(config, serverIndex))
+            {
                 originalConfig = Lib.Utils.Config2Base64String(config);
                 return true;
-            }else{
+            }
+            else
+            {
                 MessageBox.Show(I18N("DuplicateServer"));
                 return false;
             }
@@ -350,7 +361,8 @@ namespace V2RayGCon.Controller.Configer
             {
                 originalConfig = Lib.Utils.Config2Base64String(config);
             }
-            else{
+            else
+            {
                 MessageBox.Show(I18N("DuplicateServer"));
             }
         }
@@ -414,7 +426,7 @@ namespace V2RayGCon.Controller.Configer
 
             InsertConfigHelper(() =>
             {
-                config=Lib.Utils.MergeJson(config, c);
+                config = Lib.Utils.MergeJson(config, c);
             });
         }
 
