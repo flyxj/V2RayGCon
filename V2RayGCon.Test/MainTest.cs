@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using static V2RayGCon.Lib.StringResource;
@@ -11,6 +12,58 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow(@"{'a':{'c':null},'b':1}", "a.b.c")]
+        [DataRow(@"{'a':[0,1,2],'b':1}", "a.0")]
+        public void RemoveKeyFromJsonFailTest(string json, string key)
+        {
+            // outboundDetour inboundDetour
+            var j = JObject.Parse(json);
+            Assert.ThrowsException<JsonReaderException>(() =>
+            {
+                RemoveKeyFromJson(j, key);
+            });
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{'a':{'c':null,'a':2},'b':1}", "a.c", @"{'a':{'a':2},'b':1}")]
+        [DataRow(@"{'a':{'c':1},'b':1}", "a.c", @"{'a':{},'b':1}")]
+        [DataRow(@"{'a':{'c':1},'b':1}", "a.b", @"{'a':{'c':1},'b':1}")]
+        [DataRow(@"{'a':1,'b':1}", "c", @"{'a':1,'b':1}")]
+        [DataRow(@"{'a':1,'b':1}", "a", @"{'b':1}")]
+        [DataRow(@"{}", "", @"{}")]
+        public void RemoveKeyFromJsonNormalTest(string json, string key, string expect)
+        {
+            // outboundDetour inboundDetour
+            var j = JObject.Parse(json);
+            RemoveKeyFromJson(j, key);
+            var e = JObject.Parse(expect);
+            Assert.AreEqual(true, JObject.DeepEquals(e, j));
+        }
+
+        [DataTestMethod]
+        [DataRow(
+            @"{'inboundDetour':[{'a':1}],'outboundDetour':null}",
+            @"{'inboundDetour':null,'outboundDetour':[{'b':1}]}",
+            @"{'inboundDetour':[{'a':1}],'outboundDetour':[{'b':1}]}")]
+        [DataRow(
+            @"{'inboundDetour':[{'a':1}]}",
+            @"{'inboundDetour':[{'b':1}]}",
+            @"{'inboundDetour':[{'b':1},{'a':1}]}")]
+        [DataRow(@"{'a':1,'b':1}", @"{'b':2}", @"{'a':1,'b':2}")]
+        [DataRow(@"{'a':1}", @"{'b':1}", @"{'a':1,'b':1}")]
+        [DataRow(@"{}", @"{}", @"{}")]
+        public void MergeConfigTest(string left, string right, string expect)
+        {
+            // outboundDetour inboundDetour
+            var l = JObject.Parse(left);
+            var r = JObject.Parse(right);
+            var e = JObject.Parse(expect);
+            var result = Lib.Utils.MergeConfig(l, r);
+
+            Assert.AreEqual(true, JObject.DeepEquals(e, result));
+        }
+
         [DataTestMethod]
         [DataRow("", "")]
         [DataRow("1", "1")]
@@ -59,7 +112,7 @@ namespace V2RayGCon.Test
         public void GetValue_GetBoolFromString_ReturnDefault()
         {
             var json = JObject.Parse(resData("config_min"));
-            Assert.AreEqual( default(bool),GetValue<bool>(json, "log.loglevel"));
+            Assert.AreEqual(default(bool), GetValue<bool>(json, "log.loglevel"));
         }
 
         [TestMethod]
@@ -136,7 +189,7 @@ namespace V2RayGCon.Test
         {
             var content = testData("links");
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
-            Assert.AreEqual(2,links.Count);
+            Assert.AreEqual(2, links.Count);
         }
 
         [TestMethod]
@@ -144,7 +197,7 @@ namespace V2RayGCon.Test
         {
             var content = "";
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
-            Assert.AreEqual(0,links.Count);
+            Assert.AreEqual(0, links.Count);
         }
 
         [TestMethod]
@@ -152,7 +205,7 @@ namespace V2RayGCon.Test
         {
             List<string> versions = Lib.Utils.GetCoreVersions();
             // Assert.AreNotEqual(versions, null);
-            Assert.AreEqual(true,versions.Count > 0);
+            Assert.AreEqual(true, versions.Count > 0);
         }
 
         [TestMethod]

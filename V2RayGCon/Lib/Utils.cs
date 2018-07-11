@@ -19,10 +19,75 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region Json
+        static JObject ExtractJObjectPart(string key, JObject source)
+        {
+            var result = JObject.Parse("{}");
+            var part = Lib.Utils.GetKey(source, key);
+            if (part != null)
+            {
+                result[key] = part.DeepClone();
+            }
+            return result;
+        }
+
+        public static void RemoveKeyFromJson(JObject json, string path)
+        {
+            var index = path.LastIndexOf('.');
+            JObject parent;
+            string key;
+            if (index < 0)
+            {
+                key = path;
+                parent = json;
+            }
+            else
+            {
+                parent = Lib.Utils.GetKey(
+                    json, path.Substring(0,
+                    Math.Min(path.Length, index)))
+                    as JObject;
+
+                key = path.Substring(Math.Min(path.Length - 1, index + 1));
+            }
+
+            if (parent == null)
+            {
+                throw new JsonReaderException();
+            }
+
+            (parent as JObject).Property(key)?.Remove();
+        }
+
+        public static JObject MergeConfig(JObject left, JObject right)
+        {
+            var l = left.DeepClone() as JObject;
+            var r = right.DeepClone() as JObject;
+
+            var result = JObject.Parse("{}");
+            foreach (var part in new JObject[] { r, l })
+            {
+                foreach (var key in new string[] { "inboundDetour", "outboundDetour" })
+                {
+                    var mergeOptionForDtr = new JsonMergeSettings
+                    {
+                        MergeArrayHandling = MergeArrayHandling.Concat,
+                        MergeNullValueHandling = MergeNullValueHandling.Ignore
+                    };
+
+                    result.Merge(ExtractJObjectPart(key, part), mergeOptionForDtr);
+                    RemoveKeyFromJson(part, key);
+                }
+            }
+
+            result = MergeJson(result, l);
+            return MergeJson(result, r);
+        }
+
         public static JObject LoadExamples()
         {
             return JObject.Parse(resData("config_def"));
         }
+
         public static JObject MergeJson(JObject firstJson, JObject secondJson)
         {
             var result = firstJson.DeepClone() as JObject; // copy

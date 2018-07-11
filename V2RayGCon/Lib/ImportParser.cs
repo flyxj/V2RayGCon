@@ -42,8 +42,7 @@ namespace V2RayGCon.Lib
                 config,
                 maxDepth);
 
-            ClearImport(result);
-
+            Lib.Utils.RemoveKeyFromJson(result, "v2raygcon.import");
             return result;
         }
 
@@ -80,10 +79,10 @@ namespace V2RayGCon.Lib
 
             foreach (var c in configList)
             {
-                result = Lib.Utils.MergeJson(result, c);
+                result = Lib.Utils.MergeConfig(result, c);
             }
 
-            return Lib.Utils.MergeJson(result, config);
+            return Lib.Utils.MergeConfig(result, config);
         }
         #endregion
 
@@ -95,7 +94,7 @@ namespace V2RayGCon.Lib
             {
                 return config;
             }
-            return Lib.Utils.MergeJson(config, JObject.Parse(overwrite));
+            return Lib.Utils.MergeConfig(config, JObject.Parse(overwrite));
         }
 
         static List<string> FetchAllUrls(List<string> urls, int timeout)
@@ -122,15 +121,6 @@ namespace V2RayGCon.Lib
 
                     return html;
                 });
-        }
-
-        public static void ClearImport(JObject config)
-        {
-            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
-            if (import != null)
-            {
-                ((JObject)config["v2raygcon"]).Property("import")?.Remove();
-            }
         }
 
         #endregion
