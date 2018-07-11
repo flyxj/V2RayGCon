@@ -13,13 +13,12 @@ namespace V2RayGCon.Service
     class Setting : Model.BaseClass.SingletonService<Setting>
     {
         private Model.Data.EventList<string> servers;
-        private List<string> aliases;
-        private List<string[]> servSummarys;
+        private Dictionary<string, string[]> summaryCache;
         public event EventHandler OnSettingChange;
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnRequireCoreRestart;
 
-        private object addServerLock;
+        private object addServerLock, updateSummaryCacheLock;
 
         Setting()
         {
@@ -28,9 +27,9 @@ namespace V2RayGCon.Service
 
             isSysProxyHasSet = false;
             addServerLock = new object();
+            updateSummaryCacheLock = new object();
+            summaryCache = new Dictionary<string, string[]>();
 
-            aliases = new List<string>();
-            servSummarys = new List<string[]>();
             OnServerListChanged();
             servers.ListChanged += OnServerListChanged;
         }
@@ -344,7 +343,17 @@ namespace V2RayGCon.Service
 
         public ReadOnlyCollection<string> GetAllAliases()
         {
-            return aliases.AsReadOnly();
+            var alias = new List<string>();
+            var count = 1;
+            foreach (var s in GetAllServersSummary())
+            {
+                alias.Add(
+                    string.Format(
+                        "{0}.{1}",
+                        count++,
+                        s[1]));
+            };
+            return alias.AsReadOnly();
         }
 
         public void LoadServers()
@@ -385,9 +394,32 @@ namespace V2RayGCon.Service
             servers = new Model.Data.EventList<string>(serverList);
         }
 
-        public ReadOnlyCollection<string[]> GetAllServerSummarys()
+        public ReadOnlyCollection<string[]> GetAllServersSummary()
         {
-            return servSummarys.AsReadOnly();
+            var serverList = new List<string>(servers);
+            var summarys = new List<string[]>();
+
+            for (var i = 0; i < serverList.Count; i++)
+            {
+                var key = serverList[i];
+                string[] summary = null;
+                if (!summaryCache.ContainsKey(key)
+                    || summaryCache[key] == null)
+                {
+                    summary = GetSummaryFromConfig(
+                        JObject.Parse(
+                        Lib.Utils.Base64Decode(key)));
+                }
+                else
+                {
+                    summary = summaryCache[key];
+                }
+
+                summary[0] = (i + 1).ToString();
+                summarys.Add(summary);
+            }
+
+            return summarys.AsReadOnly();
         }
 
         public ReadOnlyCollection<string> GetAllServers()
@@ -482,6 +514,10 @@ namespace V2RayGCon.Service
             return true;
         }
 
+        public void FixServersSummary()
+        {
+            UpdateSummaryCache(new List<string>(servers));
+        }
         #endregion
 
         #region private method
@@ -620,6 +656,12 @@ namespace V2RayGCon.Service
                 string.Empty,  // mKCP disguise
             };
 
+            var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
+
+            summary[1] = string.IsNullOrEmpty(name) ?
+                I18N("Empty") :
+                Lib.Utils.CutStr(name, 20);
+
             var GetStr = Lib.Utils.GetStringByKeyHelper(config);
 
             var protocol = GetStr("outbound.protocol");
@@ -644,28 +686,63 @@ namespace V2RayGCon.Service
             return summary;
         }
 
-        void OnServerListChanged()
+        List<string[]> ParseAllConfigsImport(List<string> serverList)
         {
-            aliases.Clear();
-            servSummarys.Clear();
-
-            for (int i = 0; i < servers.Count; i++)
+            return Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
             {
+                var config = JObject.Parse(Lib.Utils.Base64Decode(server));
                 try
                 {
-                    var configString = Lib.Utils.Base64Decode(servers[i]);
-                    var config = JObject.Parse(configString);
-
-                    var alias = GetAliasFromConfig(config);
-                    aliases.Add(string.Join(".", i + 1, alias));
-
-                    var summary = GetSummaryFromConfig(config);
-                    summary[0] = (i + 1).ToString();
-                    summary[1] = alias;
-                    servSummarys.Add(summary);
+                    var timeout = Lib.Utils.Str2Int(resData("ParseImportTimeOut"));
+                    config = Lib.ImportParser.ParseImport(config, timeout * 1000);
+                    return GetSummaryFromConfig(config);
                 }
-                catch { }
+                catch
+                {
+                    return null;
+                }
+            });
+        }
+
+        void UpdateSummaryCache(List<string> updateList)
+        {
+            var serverList = new List<string>();
+            foreach (var server in updateList)
+            {
+                if (!summaryCache.ContainsKey(server)
+                    || summaryCache[server] == null)
+                {
+                    serverList.Add(server);
+                }
             }
+
+            if (serverList.Count <= 0)
+            {
+                return;
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                var summaryList = ParseAllConfigsImport(serverList);
+
+                lock (updateSummaryCacheLock)
+                {
+
+                    for (var i = 0; i < serverList.Count; i++)
+                    {
+                        var key = serverList[i];
+                        var value = summaryList[i];
+                        summaryCache[key] = value;
+                    }
+                }
+
+                OnSettingChange?.Invoke(this, EventArgs.Empty);
+            });
+        }
+
+        void OnServerListChanged()
+        {
+            UpdateSummaryCache(new List<string>(servers));
         }
 
         void SaveServers()

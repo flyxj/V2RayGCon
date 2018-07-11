@@ -38,6 +38,11 @@ namespace V2RayGCon.Lib
 
         static List<string> FetchAllUrls(List<string> urls, int timeout)
         {
+            if (urls.Count <= 0)
+            {
+                return new List<string>();
+            }
+
             var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
 
             return Lib.Utils.ExecuteInParallel<string, string>(
@@ -100,6 +105,12 @@ namespace V2RayGCon.Lib
 
             var urls = GetImportUrls(config);
             var contents = fetcher(urls);
+
+            if (contents.Count <= 0)
+            {
+                return config.DeepClone() as JObject;
+            }
+
             var configList =
                 Lib.Utils.ExecuteInParallel<string, JObject>(
                     contents,
