@@ -1,20 +1,55 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
-    class Cache : Model.BaseClass.SingletonService<Cache>
+    public class Cache : Model.BaseClass.SingletonService<Cache>
     {
         Dictionary<string, object> wLock;
         Dictionary<string, object> data;
+        Dictionary<string, JObject> json;
 
         Cache()
         {
             wLock = new Dictionary<string, object>();
             data = new Dictionary<string, object>();
+            json = new Dictionary<string, JObject> {
+                { "template",JObject.Parse(resData("config_tpl"))},
+                { "example",JObject.Parse(resData("config_def"))},
+                { "minConfig",JObject.Parse(resData("config_min"))},
+            };
         }
 
         #region public method
+
+        JToken LoadJObjectPart(JObject source, string path)
+        {
+            var result = Lib.Utils.GetKey(source, path);
+            if (result == null)
+            {
+                throw new JsonReaderException();
+            }
+            return result.DeepClone();
+        }
+
+        public JToken LoadTemplate(string key)
+        {
+            return LoadJObjectPart(json["template"], key);
+        }
+
+        public JObject LoadMinConfig()
+        {
+            return json["minConfig"].DeepClone() as JObject;
+        }
+
+        public JToken LoadExample(string key)
+        {
+            return LoadJObjectPart(json["example"], key);
+        }
+
         public void RemoveFromCache<T>(string cacheName, List<string> keys)
         {
             if (!data.ContainsKey(cacheName))

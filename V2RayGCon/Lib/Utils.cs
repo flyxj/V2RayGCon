@@ -19,43 +19,74 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region Json
-        static JObject ExtractJObjectPart(string key, JObject source)
+        public static Tuple<string, string> ParsePathIntoParentAndKey(string path)
         {
-            var result = JObject.Parse("{}");
-            var part = Lib.Utils.GetKey(source, key);
-            if (part != null)
+            var index = path.LastIndexOf('.');
+            string key;
+            string parent = string.Empty;
+            if (index < 0)
             {
-                result[key] = part.DeepClone();
+                key = path;
+            }
+            else if (index == 0)
+            {
+                key = path.Substring(1);
+            }
+            else
+            {
+                key = path.Substring(index + 1);
+                parent = path.Substring(0, index);
+            }
+
+            return new Tuple<string, string>(parent, key);
+        }
+
+        static JObject ExtractJObjectPart(string path, JObject source)
+        {
+            var key = ParsePathIntoParentAndKey(path).Item2;
+            var result = JObject.Parse("{}");
+
+            var node = Lib.Utils.GetKey(source, path);
+            if (node != null && !string.IsNullOrEmpty(key))
+            {
+                result[key] = node.DeepClone();
             }
             return result;
         }
 
-        public static void RemoveKeyFromJson(JObject json, string path)
+        public static void RemoveKeyFromJObject(JObject json, string path)
         {
-            var index = path.LastIndexOf('.');
-            JObject parent;
-            string key;
-            if (index < 0)
-            {
-                key = path;
-                parent = json;
-            }
-            else
-            {
-                parent = Lib.Utils.GetKey(
-                    json, path.Substring(0,
-                    Math.Min(path.Length, index)))
-                    as JObject;
+            var parts = ParsePathIntoParentAndKey(path);
 
-                key = path.Substring(Math.Min(path.Length - 1, index + 1));
+            var parent = parts.Item1;
+            var key = parts.Item2;
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new KeyNotFoundException();
             }
 
-            if (parent == null)
+            var node = string.IsNullOrEmpty(parent) ?
+                json : GetKey(json, parent);
+
+            if (node == null || !(node is JObject))
             {
-                throw new JsonReaderException();
+                throw new KeyNotFoundException();
             }
 
-            (parent as JObject).Property(key)?.Remove();
+            (node as JObject).Property(key)?.Remove();
+        }
+
+        static JObject ConcatJson(JObject left, JObject right)
+        {
+            var options = new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Concat,
+                MergeNullValueHandling = MergeNullValueHandling.Ignore,
+            };
+            var result = left.DeepClone() as JObject;
+            result.Merge(right, options);
+            return result;
         }
 
         public static JObject MergeConfig(JObject left, JObject right)
@@ -63,24 +94,43 @@ namespace V2RayGCon.Lib
             var l = left.DeepClone() as JObject;
             var r = right.DeepClone() as JObject;
 
+            // in(out)Dtr
             var result = JObject.Parse("{}");
+            var rules = JObject.Parse("{}");
+            var rulesPath = "routing.settings.rules";
             foreach (var part in new JObject[] { r, l })
             {
-                foreach (var key in new string[] { "inboundDetour", "outboundDetour" })
+                foreach (var key in new string[] {
+                    "inboundDetour",
+                    "outboundDetour"})
                 {
-                    var mergeOptionForDtr = new JsonMergeSettings
-                    {
-                        MergeArrayHandling = MergeArrayHandling.Concat,
-                        MergeNullValueHandling = MergeNullValueHandling.Ignore
-                    };
+                    result = ConcatJson(result, ExtractJObjectPart(key, part));
+                    RemoveKeyFromJObject(part, key);
+                }
 
-                    result.Merge(ExtractJObjectPart(key, part), mergeOptionForDtr);
-                    RemoveKeyFromJson(part, key);
+                rules = ConcatJson(rules, ExtractJObjectPart(rulesPath, part));
+                try
+                {
+                    RemoveKeyFromJObject(part, rulesPath);
+                }
+                catch (KeyNotFoundException)
+                {
+                    // do nothing;
                 }
             }
 
             result = MergeJson(result, l);
-            return MergeJson(result, r);
+            result = MergeJson(result, r);
+
+            var rule = Lib.Utils.GetKey(rules, "rules");
+            if (rule != null && rule is JArray)
+            {
+                var routing = Service.Cache.Instance.LoadTemplate("routingRules");
+                routing["routing"]["settings"]["rules"] = rule;
+                result = MergeJson(result, routing as JObject);
+            }
+
+            return result;
         }
 
         public static JObject LoadExamples()

@@ -9,6 +9,67 @@ namespace V2RayGCon.Test
     [TestClass]
     public class ImportTest
     {
+        [DataTestMethod]
+        [DataRow("a.b.", "a.b", "")]
+        [DataRow("a.b.c", "a.b", "c")]
+        [DataRow(".", "", "")]
+        [DataRow(".b", "", "b")]
+        [DataRow("", "", "")]
+        public void PathParseTest(string path, string parent, string key)
+        {
+            var v = Lib.Utils.ParsePathIntoParentAndKey(path);
+            Assert.AreEqual<string>(parent, v.Item1);
+            Assert.AreEqual<string>(key, v.Item2);
+
+        }
+
+        [DataTestMethod]
+        [DataRow(
+            @"{'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
+            @"{'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
+            @"{'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
+        [DataRow(
+            @"{'routing':{'a':1,'settings':{'c':1,'rules':[{'a':1}]}}}",
+            @"{'routing':{'b':2,'settings':{'c':2,'rules':[]}}}",
+            @"{'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}")]
+        [DataRow(
+            @"{'routing':{'a':1,'settings':{'c':1,'rules':null}}}",
+            @"{'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
+            @"{'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}")]
+        [DataRow(
+            @"{'routing':{'a':1,'settings':{'rules':[]}}}",
+            @"{'routing':{'b':2,'settings':{'rules':[]}}}",
+            @"{'routing':{'a':1,'b':2,'settings':{'rules':[]}}}")]
+        [DataRow(
+            @"{'routing':{'a':1}}",
+            @"{'routing':{'b':2,'settings':{'rules':[{'b':1}]}}}",
+            @"{'routing':{'a':1,'b':2,'settings':{'rules':[{'b':1}]}}}")]
+        [DataRow(
+            @"{'routing':{'a':1,'settings':{'rules':[{'b':2}]}}}",
+            @"{'routing':{'a':2,'settings':{'rules':[{'b':1}]}}}",
+            @"{'routing':{'a':2,'settings':{'rules':[{'b':1},{'b':2}]}}}")]
+        [DataRow(
+            @"{'inboundDetour':[{'a':1}],'outboundDetour':null}",
+            @"{'inboundDetour':null,'outboundDetour':[{'b':1}]}",
+            @"{'inboundDetour':[{'a':1}],'outboundDetour':[{'b':1}]}")]
+        [DataRow(
+            @"{'inboundDetour':[{'a':1}]}",
+            @"{'inboundDetour':[{'b':1}]}",
+            @"{'inboundDetour':[{'b':1},{'a':1}]}")]
+        [DataRow(@"{'a':1,'b':1}", @"{'b':2}", @"{'a':1,'b':2}")]
+        [DataRow(@"{'a':1}", @"{'b':1}", @"{'a':1,'b':1}")]
+        [DataRow(@"{}", @"{}", @"{}")]
+        public void MergeConfigTest(string left, string right, string expect)
+        {
+            // outboundDetour inboundDetour
+            var l = JObject.Parse(left);
+            var r = JObject.Parse(right);
+            var e = JObject.Parse(expect);
+            var result = Lib.Utils.MergeConfig(l, r);
+
+            Assert.AreEqual(true, JObject.DeepEquals(e, result));
+        }
+
         [TestMethod]
         public void DetectJArrayTest()
         {

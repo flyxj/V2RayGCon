@@ -1,4 +1,9 @@
 ﻿{
+  "routingRules": {
+    "routing": {
+      "settings": {}
+    }
+  },
   "vgc": {
     "alias": "",
     "description": ""
