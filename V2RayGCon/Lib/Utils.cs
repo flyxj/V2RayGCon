@@ -18,11 +18,123 @@ namespace V2RayGCon.Lib
 {
     public class Utils
     {
+        public static Service.Cache cache = Service.Cache.Instance;
+
         #region Json
-        public static JObject LoadExamples()
+        public static Tuple<string, string> ParsePathIntoParentAndKey(string path)
         {
-            return JObject.Parse(resData("config_def"));
+            var index = path.LastIndexOf('.');
+            string key;
+            string parent = string.Empty;
+            if (index < 0)
+            {
+                key = path;
+            }
+            else if (index == 0)
+            {
+                key = path.Substring(1);
+            }
+            else
+            {
+                key = path.Substring(index + 1);
+                parent = path.Substring(0, index);
+            }
+
+            return new Tuple<string, string>(parent, key);
         }
+
+        static JObject ExtractJObjectPart(string path, JObject source)
+        {
+            var key = ParsePathIntoParentAndKey(path).Item2;
+            var result = JObject.Parse("{}");
+
+            var node = Lib.Utils.GetKey(source, path);
+            if (node != null && !string.IsNullOrEmpty(key))
+            {
+                result[key] = node.DeepClone();
+            }
+            return result;
+        }
+
+        public static void RemoveKeyFromJObject(JObject json, string path)
+        {
+            var parts = ParsePathIntoParentAndKey(path);
+
+            var parent = parts.Item1;
+            var key = parts.Item2;
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new KeyNotFoundException();
+            }
+
+            var node = string.IsNullOrEmpty(parent) ?
+                json : GetKey(json, parent);
+
+            if (node == null || !(node is JObject))
+            {
+                throw new KeyNotFoundException();
+            }
+
+            (node as JObject).Property(key)?.Remove();
+        }
+
+        static JObject ConcatJson(JObject left, JObject right)
+        {
+            var options = new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Concat,
+                MergeNullValueHandling = MergeNullValueHandling.Ignore,
+            };
+            var result = left.DeepClone() as JObject;
+            result.Merge(right, options);
+            return result;
+        }
+
+        public static JObject MergeConfig(JObject left, JObject right)
+        {
+            var l = left.DeepClone() as JObject;
+            var r = right.DeepClone() as JObject;
+
+            // in(out)Dtr
+            var result = JObject.Parse("{}");
+            var rules = JObject.Parse("{}");
+            var rulesPath = "routing.settings.rules";
+            foreach (var part in new JObject[] { r, l })
+            {
+                foreach (var key in new string[] {
+                    "inboundDetour",
+                    "outboundDetour"})
+                {
+                    result = ConcatJson(result, ExtractJObjectPart(key, part));
+                    RemoveKeyFromJObject(part, key);
+                }
+
+                rules = ConcatJson(rules, ExtractJObjectPart(rulesPath, part));
+                try
+                {
+                    RemoveKeyFromJObject(part, rulesPath);
+                }
+                catch (KeyNotFoundException)
+                {
+                    // do nothing;
+                }
+            }
+
+            result = MergeJson(result, l);
+            result = MergeJson(result, r);
+
+            var rule = Lib.Utils.GetKey(rules, "rules");
+            if (rule != null && rule is JArray)
+            {
+                var routing = Service.Cache.Instance.LoadTemplate("routingRules");
+                routing["routing"]["settings"]["rules"] = rule;
+                result = MergeJson(result, routing as JObject);
+            }
+
+            return result;
+        }
+
         public static JObject MergeJson(JObject firstJson, JObject secondJson)
         {
             var result = firstJson.DeepClone() as JObject; // copy
@@ -218,8 +330,8 @@ namespace V2RayGCon.Lib
             }
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
-            var tpl = JObject.Parse(resData("config_tpl"));
-            var config = tpl["tplImportSS"];
+
+            var config = cache.LoadTemplate("tplImportSS");
 
             var setting = config["outbound"]["settings"]["servers"][0];
             setting["address"] = ip;
@@ -288,8 +400,7 @@ namespace V2RayGCon.Lib
             }
 
             // prepare template
-            var tpl = JObject.Parse(resData("config_tpl"));
-            var config = tpl["tplImportVmess"];
+            var config = cache.LoadTemplate("tplImportVmess");
             config["v2raygcon"]["alias"] = vmess.ps;
 
             var cPos = config["outbound"]["settings"]["vnext"][0];
@@ -307,7 +418,7 @@ namespace V2RayGCon.Lib
                 return config.DeepClone() as JObject;
             }
 
-            config["outbound"]["streamSettings"] = tpl[streamType];
+            config["outbound"]["streamSettings"] = cache.LoadTemplate(streamType);
 
             try
             {
@@ -410,29 +521,54 @@ namespace V2RayGCon.Lib
 
         #region net
 
-        public static string Fetch(string url, int timeout = -1)
+        static string FetchFromCache(string url)
         {
-            Lib.Utils.SupportProtocolTLS12();
-            WebClient wc;
+            var cache = Service.Cache.Instance.
+                GetCache<string>(resData("CacheHTML")).
+                Item2;
 
-            if (timeout < 0)
+            if (cache.ContainsKey(url))
             {
-                wc = new WebClient
-                {
-                    Encoding = System.Text.Encoding.UTF8,
-                };
+                return cache[url];
             }
-            else
+            return null;
+        }
+
+        static void UpdateHTMLCache(string url, string html)
+        {
+            if (html == null || string.IsNullOrEmpty(html))
             {
-                wc = new TimedWebClient
+                return;
+            }
+
+            var cache = Service.Cache.Instance.
+                GetCache<string>(resData("CacheHTML"));
+
+            lock (cache.Item1)
+            {
+                cache.Item2[url] = html;
+            }
+        }
+
+        public static string Fetch(string url, int timeout = -1, bool useCache = false)
+        {
+            if (useCache)
+            {
+                var cache = FetchFromCache(url);
+                if (cache != null)
                 {
-                    Encoding = System.Text.Encoding.UTF8,
-                    Timeout = timeout,
-                };
+                    return cache;
+                }
             }
 
             var html = string.Empty;
-            using (wc)
+
+            Lib.Utils.SupportProtocolTLS12();
+            using (WebClient wc = new TimedWebClient
+            {
+                Encoding = System.Text.Encoding.UTF8,
+                Timeout = timeout,
+            })
             {
                 /* 如果用抛出异常的写法
                  * task中调用此函数时
@@ -441,6 +577,10 @@ namespace V2RayGCon.Lib
                 try
                 {
                     html = wc.DownloadString(url);
+                    if (!string.IsNullOrEmpty(html))
+                    {
+                        UpdateHTMLCache(url, html);
+                    }
                 }
                 catch { }
             }

@@ -9,7 +9,6 @@
             ss = 2,
         }
 
-
         public enum ProxyTypes
         {
             config = 0,

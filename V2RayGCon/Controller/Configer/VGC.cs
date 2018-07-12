@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 
-using static V2RayGCon.Lib.StringResource;
-
 
 namespace V2RayGCon.Controller.Configer
 {
@@ -32,8 +30,7 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetSettings()
         {
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken vgc = configTemplate["vgc"];
+            JToken vgc = Service.Cache.Instance.LoadTemplate("vgc");
 
             vgc["alias"] = alias;
             vgc["description"] = description;

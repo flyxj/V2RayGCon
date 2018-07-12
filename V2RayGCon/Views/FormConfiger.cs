@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using ScintillaNET;
+﻿using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -33,10 +31,10 @@ namespace V2RayGCon.Views
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
             scintillaMain = new Scintilla();
-            InitScintilla(scintillaMain,panelScintilla);
+            InitScintilla(scintillaMain, panelScintilla);
             scintillaImport = new Scintilla();
-            InitScintilla(scintillaImport,panelExpandConfig,true);
-            
+            InitScintilla(scintillaImport, panelExpandConfig, true);
+
             configer = new Controller.Configer.Configer(
                 scintillaImport,
                 _serverIndex);
@@ -334,7 +332,7 @@ namespace V2RayGCon.Views
             {
                 I18N("LoadJsonFail");
             }
-           
+
         }
 
         private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -394,7 +392,8 @@ namespace V2RayGCon.Views
 
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig"))) {
+            if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
+            {
                 if (configer.ReplaceOriginalServer())
                 {
                     SetTitle(configer.GetAlias());
@@ -458,7 +457,8 @@ namespace V2RayGCon.Views
             // Configure the JSON lexer styles
             scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 11;
-            if (readOnlyMode) {
+            if (readOnlyMode)
+            {
                 var bgColor = this.BackColor;
                 scintilla.Styles[Style.Default].BackColor = bgColor;
                 scintilla.Styles[Style.Json.BlockComment].BackColor = bgColor;
@@ -668,6 +668,11 @@ namespace V2RayGCon.Views
             configer.InsertH2();
         }
 
+        private void btnImportClearCache_Click(object sender, EventArgs e)
+        {
+            configer.ClearHTMLCache();
+        }
+
         void ShowSearchBox()
         {
             if (formSearch != null)
@@ -681,6 +686,6 @@ namespace V2RayGCon.Views
 
         #endregion
 
-       
+
     }
 }

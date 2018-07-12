@@ -21,8 +21,9 @@ namespace V2RayGCon.Service
         {
             v2rayCore = null;
             setting = Setting.Instance;
-            setting.OnRequireCoreRestart += (s, a) => {
-               Task.Factory.StartNew(()=> CoreRestartHandler());
+            setting.OnRequireCoreRestart += (s, a) =>
+            {
+                Task.Factory.StartNew(() => CoreRestartHandler());
             };
         }
 
@@ -47,14 +48,13 @@ namespace V2RayGCon.Service
             var protocol = Model.Data.Table.proxyTypesString[type];
 
             Lib.Utils.TryParseIPAddr(setting.proxyAddr, out string ip, out int port);
-            var tpl = JObject.Parse(resData("config_tpl"));
             var part = protocol + "In";
             try
             {
                 config["inbound"]["protocol"] = protocol;
                 config["inbound"]["listen"] = ip;
                 config["inbound"]["port"] = port;
-                config["inbound"]["settings"] = tpl[part];
+                config["inbound"]["settings"] = Cache.Instance.LoadTemplate(part);
                 if (type == (int)Model.Data.Enum.ProxyTypes.socks)
                 {
                     config["inbound"]["settings"]["ip"] = ip;
@@ -156,7 +156,7 @@ namespace V2RayGCon.Service
             catch (Exception e)
             {
                 Debug.WriteLine("Excep: {0}", e);
-                StopCoreThen(()=> MessageBox.Show(I18N("CantLauchCore")));
+                StopCoreThen(() => MessageBox.Show(I18N("CantLauchCore")));
                 return;
             }
 

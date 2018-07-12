@@ -12,6 +12,35 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow(@"{'a':{'c':null},'b':1}", "a.b.c")]
+        [DataRow(@"{'a':[0,1,2],'b':1}", "a.0")]
+        [DataRow(@"{}", "")]
+        public void RemoveKeyFromJsonFailTest(string json, string key)
+        {
+            // outboundDetour inboundDetour
+            var j = JObject.Parse(json);
+            Assert.ThrowsException<KeyNotFoundException>(() =>
+            {
+                RemoveKeyFromJObject(j, key);
+            });
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{'a':{'c':null,'a':2},'b':1}", "a.c", @"{'a':{'a':2},'b':1}")]
+        [DataRow(@"{'a':{'c':1},'b':1}", "a.c", @"{'a':{},'b':1}")]
+        [DataRow(@"{'a':{'c':1},'b':1}", "a.b", @"{'a':{'c':1},'b':1}")]
+        [DataRow(@"{'a':1,'b':1}", "c", @"{'a':1,'b':1}")]
+        [DataRow(@"{'a':1,'b':1}", "a", @"{'b':1}")]
+        public void RemoveKeyFromJsonNormalTest(string json, string key, string expect)
+        {
+            // outboundDetour inboundDetour
+            var j = JObject.Parse(json);
+            RemoveKeyFromJObject(j, key);
+            var e = JObject.Parse(expect);
+            Assert.AreEqual(true, JObject.DeepEquals(e, j));
+        }
+
+        [DataTestMethod]
         [DataRow("", "")]
         [DataRow("1", "1")]
         [DataRow("1 , 2", "1,2")]
@@ -58,21 +87,21 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void GetValue_GetBoolFromString_ReturnDefault()
         {
-            var json = JObject.Parse(resData("config_min"));
-            Assert.AreEqual( default(bool),GetValue<bool>(json, "log.loglevel"));
+            var json = Service.Cache.Instance.LoadMinConfig();
+            Assert.AreEqual(default(bool), GetValue<bool>(json, "log.loglevel"));
         }
 
         [TestMethod]
         public void GetValue_GetStringNotExist_ReturnNull()
         {
-            var json = JObject.Parse(resData("config_min"));
+            var json = Service.Cache.Instance.LoadMinConfig();
             Assert.AreEqual(string.Empty, GetValue<string>(json, "log.keyNotExist"));
         }
 
         [TestMethod]
         public void GetValue_KeyNotExist_ReturnDefault()
         {
-            var json = JObject.Parse(resData("config_min"));
+            var json = Service.Cache.Instance.LoadMinConfig();
             var value = Lib.Utils.GetValue<int>(json, "log.key_not_exist");
             Assert.AreEqual(default(int), value);
         }
@@ -108,9 +137,16 @@ namespace V2RayGCon.Test
 
         [DataTestMethod]
         [DataRow("this_resource_key_not_exist")]
-        public void LoadString_ThrowExceptionWhenKeyNotExist(string key)
+        public void resData_ThrowExceptionWhenKeyNotExist(string key)
         {
             Assert.ThrowsException<KeyNotFoundException>(() => resData(key));
+        }
+
+        [DataTestMethod]
+        [DataRow("Executable", "v2ray.exe")]
+        public void resData_Test(string key, string expect)
+        {
+            Assert.AreEqual<string>(expect, resData(key));
         }
 
         [TestMethod]
@@ -136,7 +172,7 @@ namespace V2RayGCon.Test
         {
             var content = testData("links");
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
-            Assert.AreEqual(2,links.Count);
+            Assert.AreEqual(2, links.Count);
         }
 
         [TestMethod]
@@ -144,7 +180,7 @@ namespace V2RayGCon.Test
         {
             var content = "";
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
-            Assert.AreEqual(0,links.Count);
+            Assert.AreEqual(0, links.Count);
         }
 
         [TestMethod]
@@ -152,7 +188,7 @@ namespace V2RayGCon.Test
         {
             List<string> versions = Lib.Utils.GetCoreVersions();
             // Assert.AreNotEqual(versions, null);
-            Assert.AreEqual(true,versions.Count > 0);
+            Assert.AreEqual(true, versions.Count > 0);
         }
 
         [TestMethod]

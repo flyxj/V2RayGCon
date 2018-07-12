@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using static V2RayGCon.Lib.StringResource;
 
 
 
@@ -8,8 +7,10 @@ namespace V2RayGCon.Controller.Configer
 {
     class StreamSettings : Model.BaseClass.NotifyComponent
     {
+        Service.Cache cache;
         public StreamSettings()
         {
+            cache = Service.Cache.Instance;
             _isServer = false;
         }
 
@@ -71,17 +72,14 @@ namespace V2RayGCon.Controller.Configer
                 key = "kcp_" + Model.Data.Table.kcpTypes[kcpType];
             }
 
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken stream = configTemplate[key];
+            JToken stream = cache.LoadTemplate(key);
             PlugTlsSettings(stream);
             return stream;
         }
 
         public JToken GetH2Setting()
         {
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-
-            JToken stream = configTemplate["h2"];
+            JToken stream = cache.LoadTemplate("h2");
             stream["httpSettings"]["path"] = h2Path;
 
             PlugTlsSettings(stream);
@@ -90,9 +88,7 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetWSSetting()
         {
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-
-            JToken stream = configTemplate["ws"];
+            JToken stream = cache.LoadTemplate("ws");
             stream["wsSettings"]["path"] = wsPath;
 
             PlugTlsSettings(stream);
@@ -109,8 +105,7 @@ namespace V2RayGCon.Controller.Configer
                 key = "tcp_" + Model.Data.Table.tcpTypes[tcpType];
             }
 
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-            var stream = configTemplate[key];
+            var stream = cache.LoadTemplate(key);
             PlugTlsSettings(stream);
             return stream;
         }
@@ -149,8 +144,7 @@ namespace V2RayGCon.Controller.Configer
         #region private method
         void PlugTlsSettings(JToken streamSettings)
         {
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-            var tlsTpl = configTemplate["tls"];
+            var tlsTpl = cache.LoadTemplate("tls");
             if (tls <= 0)
             {
                 streamSettings["security"] = string.Empty;

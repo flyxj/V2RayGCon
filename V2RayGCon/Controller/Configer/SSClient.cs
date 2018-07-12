@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 
-using static V2RayGCon.Lib.StringResource;
-
 
 namespace V2RayGCon.Controller.Configer
 {
@@ -57,8 +55,9 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetSettings()
         {
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-            JToken client = configTemplate["ssClient"];
+            JToken client = Service.Cache.Instance.
+                LoadTemplate("ssClient");
+
             var ssMethods = Model.Data.Table.ssMethods;
 
             client["servers"][0]["address"] = _ip;

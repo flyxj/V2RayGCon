@@ -140,6 +140,7 @@
       <DependentUpon>Text.resx</DependentUpon>
     </Compile>
     <Compile Include="Model\Data\Vmess.cs" />
+    <Compile Include="Service\Cache.cs" />
     <Compile Include="Service\Downloader.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Settings.cs" />

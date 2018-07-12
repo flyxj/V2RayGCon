@@ -98,6 +98,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.tabExpanseImport = new System.Windows.Forms.TabPage();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnImportClearCache = new System.Windows.Forms.Button();
             this.btnExpanseImport = new System.Windows.Forms.Button();
             this.btnCopyExpansedConfig = new System.Windows.Forms.Button();
             this.panelExpandConfig = new System.Windows.Forms.Panel();
@@ -634,11 +635,19 @@
             // groupBox9
             // 
             resources.ApplyResources(this.groupBox9, "groupBox9");
+            this.groupBox9.Controls.Add(this.btnImportClearCache);
             this.groupBox9.Controls.Add(this.btnExpanseImport);
             this.groupBox9.Controls.Add(this.btnCopyExpansedConfig);
             this.groupBox9.Controls.Add(this.panelExpandConfig);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.TabStop = false;
+            // 
+            // btnImportClearCache
+            // 
+            resources.ApplyResources(this.btnImportClearCache, "btnImportClearCache");
+            this.btnImportClearCache.Name = "btnImportClearCache";
+            this.btnImportClearCache.UseVisualStyleBackColor = true;
+            this.btnImportClearCache.Click += new System.EventHandler(this.btnImportClearCache_Click);
             // 
             // btnExpanseImport
             // 
@@ -989,5 +998,6 @@
         private System.Windows.Forms.Button btnStreamInsertH2;
         private System.Windows.Forms.TextBox tboxH2Path;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button btnImportClearCache;
     }
 }

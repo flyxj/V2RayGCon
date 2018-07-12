@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using static V2RayGCon.Lib.StringResource;
 
 
 
@@ -55,11 +54,8 @@ namespace V2RayGCon.Controller.Configer
         #region public method
         public JToken GetSettings()
         {
-            var configTemplate = JObject.Parse(resData("config_tpl"));
-
-            JToken vmess = serverMode ?
-                configTemplate["vmessServer"] :
-                configTemplate["vmessClient"];
+            JToken vmess = Service.Cache.Instance.LoadTemplate(
+                serverMode ? "vmessServer" : "vmessClient");
 
             if (serverMode)
             {

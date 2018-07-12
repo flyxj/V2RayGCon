@@ -8,7 +8,8 @@ namespace V2RayGCon.Lib
 {
     public class ImportParser
     {
-        static List<string> GetImportUrls(JObject config)
+        #region public method
+        public static List<string> GetImportUrls(JObject config)
         {
             var result = new List<string>();
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
@@ -26,46 +27,6 @@ namespace V2RayGCon.Lib
             return result;
         }
 
-        static JObject OverwriteConfig(JObject config, string overwrite)
-        {
-            var o = overwrite;
-            if (string.IsNullOrEmpty(o))
-            {
-                return config;
-            }
-            return Lib.Utils.MergeJson(config, JObject.Parse(overwrite));
-        }
-
-        static List<string> FetchAllUrls(List<string> urls, int timeout)
-        {
-            var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
-
-            return Lib.Utils.ExecuteInParallel<string, string>(
-                urls,
-                (url) =>
-                {
-                    var html = string.Empty;
-
-                    for (var i = 0;
-                    i < retry && string.IsNullOrEmpty(html);
-                    i++)
-                    {
-                        html = Lib.Utils.Fetch(url, timeout);
-                    }
-
-                    return html;
-                });
-        }
-
-        public static void ClearImport(JObject config)
-        {
-            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
-            if (import != null)
-            {
-                ((JObject)config["v2raygcon"]).Property("import")?.Remove();
-            }
-        }
-
         /*
          * exceptions  
          * test<FormatException> base64 decode fail
@@ -81,7 +42,14 @@ namespace V2RayGCon.Lib
                 config,
                 maxDepth);
 
-            ClearImport(result);
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(result, "v2raygcon.import");
+            }
+            catch (KeyNotFoundException)
+            {
+                // do nothing;
+            }
 
             return result;
         }
@@ -100,6 +68,12 @@ namespace V2RayGCon.Lib
 
             var urls = GetImportUrls(config);
             var contents = fetcher(urls);
+
+            if (contents.Count <= 0)
+            {
+                return config.DeepClone() as JObject;
+            }
+
             var configList =
                 Lib.Utils.ExecuteInParallel<string, JObject>(
                     contents,
@@ -113,11 +87,51 @@ namespace V2RayGCon.Lib
 
             foreach (var c in configList)
             {
-                result = Lib.Utils.MergeJson(result, c);
+                result = Lib.Utils.MergeConfig(result, c);
             }
 
-            return Lib.Utils.MergeJson(result, config);
+            return Lib.Utils.MergeConfig(result, config);
         }
+        #endregion
+
+        #region private method
+        static JObject OverwriteConfig(JObject config, string overwrite)
+        {
+            var o = overwrite;
+            if (string.IsNullOrEmpty(o))
+            {
+                return config;
+            }
+            return Lib.Utils.MergeConfig(config, JObject.Parse(overwrite));
+        }
+
+        static List<string> FetchAllUrls(List<string> urls, int timeout)
+        {
+            if (urls.Count <= 0)
+            {
+                return new List<string>();
+            }
+
+            var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
+
+            return Lib.Utils.ExecuteInParallel<string, string>(
+                urls,
+                (url) =>
+                {
+                    var html = string.Empty;
+
+                    for (var i = 0;
+                    i < retry && string.IsNullOrEmpty(html);
+                    i++)
+                    {
+                        html = Lib.Utils.Fetch(url, timeout, true);
+                    }
+
+                    return html;
+                });
+        }
+
+        #endregion
 
     }
 }

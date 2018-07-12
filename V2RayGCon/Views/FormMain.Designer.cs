@@ -73,16 +73,16 @@ namespace V2RayGCon.Views
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lvServers = new System.Windows.Forms.ListView();
-            this.index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.alias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.outbound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.host = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.port = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.activate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.stream = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.wspath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.enc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.disguise = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmAlias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmOut = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmHost = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmPort = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmActivate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmStream = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmWspath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmEnc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colmDisguise = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ctxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.stripMenuActivate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -368,16 +368,16 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.lvServers, "lvServers");
             this.lvServers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.index,
-            this.alias,
-            this.outbound,
-            this.host,
-            this.port,
-            this.activate,
-            this.stream,
-            this.wspath,
-            this.enc,
-            this.disguise});
+            this.colmIndex,
+            this.colmAlias,
+            this.colmOut,
+            this.colmHost,
+            this.colmPort,
+            this.colmActivate,
+            this.colmStream,
+            this.colmWspath,
+            this.colmEnc,
+            this.colmDisguise});
             this.lvServers.FullRowSelect = true;
             this.lvServers.GridLines = true;
             this.lvServers.MultiSelect = false;
@@ -385,45 +385,45 @@ namespace V2RayGCon.Views
             this.lvServers.UseCompatibleStateImageBehavior = false;
             this.lvServers.View = System.Windows.Forms.View.Details;
             // 
-            // index
+            // colmIndex
             // 
-            resources.ApplyResources(this.index, "index");
+            resources.ApplyResources(this.colmIndex, "colmIndex");
             // 
-            // alias
+            // colmAlias
             // 
-            resources.ApplyResources(this.alias, "alias");
+            resources.ApplyResources(this.colmAlias, "colmAlias");
             // 
-            // outbound
+            // colmOut
             // 
-            resources.ApplyResources(this.outbound, "outbound");
+            resources.ApplyResources(this.colmOut, "colmOut");
             // 
-            // host
+            // colmHost
             // 
-            resources.ApplyResources(this.host, "host");
+            resources.ApplyResources(this.colmHost, "colmHost");
             // 
-            // port
+            // colmPort
             // 
-            resources.ApplyResources(this.port, "port");
+            resources.ApplyResources(this.colmPort, "colmPort");
             // 
-            // activate
+            // colmActivate
             // 
-            resources.ApplyResources(this.activate, "activate");
+            resources.ApplyResources(this.colmActivate, "colmActivate");
             // 
-            // stream
+            // colmStream
             // 
-            resources.ApplyResources(this.stream, "stream");
+            resources.ApplyResources(this.colmStream, "colmStream");
             // 
-            // wspath
+            // colmWspath
             // 
-            resources.ApplyResources(this.wspath, "wspath");
+            resources.ApplyResources(this.colmWspath, "colmWspath");
             // 
-            // enc
+            // colmEnc
             // 
-            resources.ApplyResources(this.enc, "enc");
+            resources.ApplyResources(this.colmEnc, "colmEnc");
             // 
-            // disguise
+            // colmDisguise
             // 
-            resources.ApplyResources(this.disguise, "disguise");
+            resources.ApplyResources(this.colmDisguise, "colmDisguise");
             // 
             // ctxMenuStrip
             // 
@@ -563,15 +563,15 @@ namespace V2RayGCon.Views
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem stripMenuDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ColumnHeader index;
-        private System.Windows.Forms.ColumnHeader outbound;
-        private System.Windows.Forms.ColumnHeader host;
-        private System.Windows.Forms.ColumnHeader port;
-        private System.Windows.Forms.ColumnHeader activate;
-        private System.Windows.Forms.ColumnHeader wspath;
-        private System.Windows.Forms.ColumnHeader stream;
-        private System.Windows.Forms.ColumnHeader enc;
-        private System.Windows.Forms.ColumnHeader disguise;
+        private System.Windows.Forms.ColumnHeader colmIndex;
+        private System.Windows.Forms.ColumnHeader colmOut;
+        private System.Windows.Forms.ColumnHeader colmHost;
+        private System.Windows.Forms.ColumnHeader colmPort;
+        private System.Windows.Forms.ColumnHeader colmActivate;
+        private System.Windows.Forms.ColumnHeader colmWspath;
+        private System.Windows.Forms.ColumnHeader colmStream;
+        private System.Windows.Forms.ColumnHeader colmEnc;
+        private System.Windows.Forms.ColumnHeader colmDisguise;
         private System.Windows.Forms.ToolStripMenuItem deleteAllServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem proxyToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -600,7 +600,7 @@ namespace V2RayGCon.Views
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem buttomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader alias;
+        private System.Windows.Forms.ColumnHeader colmAlias;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem systemProxyModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sysProxyDirectToolStripMenuItem;

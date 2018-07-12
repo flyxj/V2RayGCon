@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -25,9 +23,11 @@ namespace V2RayGCon.Controller.Configer
         public int preSection;
         Dictionary<int, string> sections;
         string originalConfig;
+        Service.Cache cache;
 
         public Configer(Scintilla element, int serverIndex = -1)
         {
+            cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
             ssServer = new SSServer();
             ssClient = new SSClient();
@@ -48,6 +48,15 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+        public void ClearHTMLCache()
+        {
+            InsertConfigHelper(() =>
+            {
+                Service.Cache.Instance.RemoveFromCache<string>(
+                    resData("CacheHTML"),
+                    Lib.ImportParser.GetImportUrls(config));
+            });
+        }
         public void ClearOriginalConfig()
         {
             originalConfig = string.Empty;
@@ -55,9 +64,9 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertDtrMTProto()
         {
-            InsertConfigHelper(()=> {
-                var eg = Lib.Utils.LoadExamples();
-                var mtproto = eg["dtrMTProto"] as JObject;
+            InsertConfigHelper(() =>
+            {
+                var mtproto = cache.LoadTemplate("dtrMTProto") as JObject;
                 mtproto["inboundDetour"][0]["settings"]["users"][0]["secret"] =
                     Lib.Utils.RandomHex(32);
                 config = Lib.Utils.MergeJson(config, mtproto);
@@ -244,10 +253,13 @@ namespace V2RayGCon.Controller.Configer
                 return false;
             }
 
-            if (setting.ReplaceServer(config, serverIndex)) {
+            if (setting.ReplaceServer(config, serverIndex))
+            {
                 originalConfig = Lib.Utils.Config2Base64String(config);
                 return true;
-            }else{
+            }
+            else
+            {
                 MessageBox.Show(I18N("DuplicateServer"));
                 return false;
             }
@@ -260,7 +272,6 @@ namespace V2RayGCon.Controller.Configer
                 return;
             }
 
-            var defConfig = JObject.Parse(resData("config_def"));
             var examples = Model.Data.Table.examples;
             try
             {
@@ -269,21 +280,21 @@ namespace V2RayGCon.Controller.Configer
 
                 if (preSection == Model.Data.Table.inboundIndex)
                 {
-                    var inTpl = defConfig["inTpl"];
+                    var inTpl = cache.LoadExample("inTpl");
                     inTpl["protocol"] = examples[preSection][index][2];
-                    inTpl["settings"] = defConfig[key];
+                    inTpl["settings"] = cache.LoadExample(key);
                     content = inTpl.ToString();
                 }
                 else if (preSection == Model.Data.Table.outboundIndex)
                 {
-                    var outTpl = defConfig["outTpl"];
+                    var outTpl = cache.LoadExample("outTpl");
                     outTpl["protocol"] = examples[preSection][index][2];
-                    outTpl["settings"] = defConfig[key];
+                    outTpl["settings"] = cache.LoadExample(key);
                     content = outTpl.ToString();
                 }
                 else
                 {
-                    content = defConfig[key].ToString();
+                    content = cache.LoadExample(key).ToString();
                 }
 
                 editor.content = content;
@@ -298,14 +309,8 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                if (streamSettings.isServer)
-                {
-                    config["inbound"]["streamSettings"] = streamSettings.GetKCPSetting();
-                }
-                else
-                {
-                    config["outbound"]["streamSettings"] = streamSettings.GetKCPSetting();
-                }
+                InsertStreamSetting(
+                    streamSettings.GetKCPSetting());
             });
         }
 
@@ -313,14 +318,8 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                if (streamSettings.isServer)
-                {
-                    config["inbound"]["streamSettings"] = streamSettings.GetH2Setting();
-                }
-                else
-                {
-                    config["outbound"]["streamSettings"] = streamSettings.GetH2Setting();
-                }
+                InsertStreamSetting(
+                    streamSettings.GetH2Setting());
             });
         }
 
@@ -328,14 +327,8 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                if (streamSettings.isServer)
-                {
-                    config["inbound"]["streamSettings"] = streamSettings.GetWSSetting();
-                }
-                else
-                {
-                    config["outbound"]["streamSettings"] = streamSettings.GetWSSetting();
-                }
+                InsertStreamSetting(
+                    streamSettings.GetWSSetting());
             });
         }
 
@@ -350,7 +343,8 @@ namespace V2RayGCon.Controller.Configer
             {
                 originalConfig = Lib.Utils.Config2Base64String(config);
             }
-            else{
+            else
+            {
                 MessageBox.Show(I18N("DuplicateServer"));
             }
         }
@@ -359,14 +353,8 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                if (streamSettings.isServer)
-                {
-                    config["inbound"]["streamSettings"] = streamSettings.GetTCPSetting();
-                }
-                else
-                {
-                    config["outbound"]["streamSettings"] = streamSettings.GetTCPSetting();
-                }
+                InsertStreamSetting(
+                    streamSettings.GetTCPSetting());
             });
         }
 
@@ -385,17 +373,19 @@ namespace V2RayGCon.Controller.Configer
                 var vmess = vmessCtrl.GetSettings();
                 if (vmessCtrl.serverMode)
                 {
+
                     var keys = new List<string> {
                         "port",
                         "listen",
                         "settings",
                         "protocol" };
 
+                    var temp = cache.LoadTemplate("emptyInOut");
                     foreach (var key in keys)
                     {
-                        config["inbound"][key] = vmess[key];
+                        temp["inbound"][key] = vmess[key];
                     }
-                    // config["inbound"] = vmess;
+                    config = Lib.Utils.MergeConfig(config, temp as JObject);
                 }
                 else
                 {
@@ -406,15 +396,14 @@ namespace V2RayGCon.Controller.Configer
 
         public void InsertSkipCN()
         {
-            var eg = JObject.Parse(resData("config_def"));
             var c = JObject.Parse(@"{}");
-            c["dns"] = eg["dnsCFnGoogle"];
-            c["routing"] = eg["routeCNIP"];
-            c["outboundDetour"] = eg["outDtrDefault"];
+            c["dns"] = cache.LoadExample("dnsCFnGoogle");
+            c["routing"] = cache.LoadExample("routeCNIP");
+            c["outboundDetour"] = cache.LoadExample("outDtrDefault");
 
             InsertConfigHelper(() =>
             {
-                config=Lib.Utils.MergeJson(config, c);
+                config = Lib.Utils.MergeJson(config, c);
             });
         }
 
@@ -430,7 +419,9 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                config["inbound"] = ssServer.GetSettings();
+                var temp = cache.LoadTemplate("emptyInOut") as JObject;
+                temp["inbound"] = ssServer.GetSettings();
+                config = Lib.Utils.MergeConfig(config, temp);
             });
         }
 
@@ -472,7 +463,19 @@ namespace V2RayGCon.Controller.Configer
 
         #region private method
 
-
+        void InsertStreamSetting(JToken streamSetting)
+        {
+            var temp = cache.LoadTemplate("emptyInOut") as JObject;
+            if (streamSettings.isServer)
+            {
+                temp["inbound"]["streamSettings"] = streamSetting;
+            }
+            else
+            {
+                temp["inbound"]["streamSettings"] = streamSetting;
+            }
+            config = Lib.Utils.MergeConfig(config, temp);
+        }
 
         bool FlushEditor()
         {
@@ -515,22 +518,11 @@ namespace V2RayGCon.Controller.Configer
 
         void InsertOutBoundSetting(JToken settings, string protocol)
         {
-            try
-            {
-                config["outbound"]["settings"] = settings;
-            }
-            catch { }
-            try
-            {
-                config["outbound"]["protocol"] = protocol;
-            }
-            catch { }
-            try
-            {
-                config["outbound"]["tag"] = "agentout";
-            }
-            catch { }
-
+            var temp = cache.LoadTemplate("emptyInOut");
+            temp["outbound"]["settings"] = settings;
+            temp["outbound"]["protocol"] = protocol;
+            temp["outbound"]["tag"] = "agentout";
+            config = Lib.Utils.MergeConfig(config, temp as JObject);
         }
 
         void LoadConfig(int index = -1)
@@ -548,7 +540,7 @@ namespace V2RayGCon.Controller.Configer
 
             if (o == null)
             {
-                o = JObject.Parse(resData("config_min"));
+                o = cache.LoadMinConfig();
                 MessageBox.Show(I18N("EditorCannotLoadServerConfig"));
             }
 

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -46,6 +46,8 @@ namespace V2RayGCon.Views
             {
                 setting.OnSettingChange -= SettingChangeHandler;
                 core.OnCoreStatChange -= SettingChangeHandler;
+                var serverList = new List<string>(setting.GetAllServers());
+                setting.FixServersSummary();
             };
 
             Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
@@ -125,7 +127,7 @@ namespace V2RayGCon.Views
         {
             // update list view
             lvServers.Items.Clear();
-            var servers = setting.GetAllServerSummarys();
+            var servers = setting.GetAllServersSummary();
             var curServIndex = setting.GetCurServIndex();
             var curServNum = (curServIndex + 1).ToString();
 

@@ -117,13 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cboxConfigSection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>54, 5</value>
-  </data>
-  <data name="cboxConfigSection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 29</value>
-  </data>
   <data name="cboxConfigSection.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -163,6 +156,7 @@
   <data name="btnStreamInsertTCP.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 18</value>
   </data>
@@ -210,9 +204,6 @@
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 247</value>
   </data>
   <data name="groupBox2.ToolTip" xml:space="preserve">
     <value />
@@ -285,9 +276,6 @@
   </data>
   <data name="label19.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="label18.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 47</value>
   </data>
   <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 18</value>
@@ -436,6 +424,12 @@
   <data name="misc.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="btnImportClearCache.Text" xml:space="preserve">
+    <value>清理缓存</value>
+  </data>
+  <data name="btnImportClearCache.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnExpanseImport.Text" xml:space="preserve">
     <value>展开</value>
   </data>
@@ -462,9 +456,6 @@
   </data>
   <data name="tabControl1.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="btnClearModify.Location" type="System.Drawing.Point, System.Drawing">
-    <value>562, 3</value>
   </data>
   <data name="btnClearModify.Text" xml:space="preserve">
     <value>取消更改</value>
@@ -511,15 +502,6 @@
   <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>覆盖原服务器设置 </value>
   </data>
-  <data name="saveConfigStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 30</value>
-  </data>
-  <data name="saveConfigStripMenuItem.Text" xml:space="preserve">
-    <value>保存当前配置</value>
-  </data>
-  <data name="saveConfigStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>用当前配置替换原选中的服务器。</value>
-  </data>
   <data name="addNewServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 30</value>
   </data>
@@ -528,6 +510,15 @@
   </data>
   <data name="addNewServerToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>用当前配置创建一个新服务器。</value>
+  </data>
+  <data name="saveConfigStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 30</value>
+  </data>
+  <data name="saveConfigStripMenuItem.Text" xml:space="preserve">
+    <value>保存当前配置</value>
+  </data>
+  <data name="saveConfigStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>用当前配置替换原选中的服务器。</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 6</value>
@@ -583,12 +574,6 @@
   <data name="pnlTools.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 10</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
-  </data>
   <data name="label7.Text" xml:space="preserve">
     <value>分节</value>
   </data>
@@ -604,20 +589,11 @@
   <data name="panel1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="btnFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>458, 3</value>
-  </data>
   <data name="btnFormat.Text" xml:space="preserve">
     <value>格式化</value>
   </data>
   <data name="btnFormat.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="cboxExamples.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 6</value>
-  </data>
-  <data name="cboxExamples.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 26</value>
   </data>
   <data name="cboxExamples.ToolTip" xml:space="preserve">
     <value />
