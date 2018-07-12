@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using static V2RayGCon.Lib.StringResource;
 
 
 namespace V2RayGCon.Test
@@ -73,8 +72,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void DetectJArrayTest()
         {
-            var config = JObject.Parse(resData("config_def"));
-            var domainOverride = Lib.Utils.GetKey(config, "inTpl.domainOverride");
+            var domainOverride = Service.Cache.Instance.LoadExample("inTpl.domainOverride");
             var isArray = domainOverride is JArray;
             var isObject = domainOverride is JObject;
 

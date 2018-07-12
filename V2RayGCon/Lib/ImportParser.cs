@@ -42,7 +42,15 @@ namespace V2RayGCon.Lib
                 config,
                 maxDepth);
 
-            Lib.Utils.RemoveKeyFromJObject(result, "v2raygcon.import");
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(result, "v2raygcon.import");
+            }
+            catch (KeyNotFoundException)
+            {
+                // do nothing;
+            }
+
             return result;
         }
 

@@ -18,6 +18,8 @@ namespace V2RayGCon.Lib
 {
     public class Utils
     {
+        public static Service.Cache cache = Service.Cache.Instance;
+
         #region Json
         public static Tuple<string, string> ParsePathIntoParentAndKey(string path)
         {
@@ -131,11 +133,6 @@ namespace V2RayGCon.Lib
             }
 
             return result;
-        }
-
-        public static JObject LoadExamples()
-        {
-            return JObject.Parse(resData("config_def"));
         }
 
         public static JObject MergeJson(JObject firstJson, JObject secondJson)
@@ -333,8 +330,8 @@ namespace V2RayGCon.Lib
             }
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
-            var tpl = JObject.Parse(resData("config_tpl"));
-            var config = tpl["tplImportSS"];
+
+            var config = cache.LoadTemplate("tplImportSS");
 
             var setting = config["outbound"]["settings"]["servers"][0];
             setting["address"] = ip;
@@ -403,8 +400,7 @@ namespace V2RayGCon.Lib
             }
 
             // prepare template
-            var tpl = JObject.Parse(resData("config_tpl"));
-            var config = tpl["tplImportVmess"];
+            var config = cache.LoadTemplate("tplImportVmess");
             config["v2raygcon"]["alias"] = vmess.ps;
 
             var cPos = config["outbound"]["settings"]["vnext"][0];
@@ -422,7 +418,7 @@ namespace V2RayGCon.Lib
                 return config.DeepClone() as JObject;
             }
 
-            config["outbound"]["streamSettings"] = tpl[streamType];
+            config["outbound"]["streamSettings"] = cache.LoadTemplate(streamType);
 
             try
             {

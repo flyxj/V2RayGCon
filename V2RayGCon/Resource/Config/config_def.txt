@@ -117,43 +117,6 @@
       }
     ]
   },
-  "dtrMTProto": {
-    "inboundDetour": [
-      {
-        "protocol": "mtproto",
-        "port": "443",
-        "tag": "tg-in",
-        "settings": {
-          "users": [
-            {
-              "secret": "nothing"
-            }
-          ]
-        }
-      }
-    ],
-    "outboundDetour": [
-      {
-        "protocol": "mtproto",
-        "tag": "tg-out",
-        "settings": {}
-      }
-    ],
-    "routing": {
-      "strategy": "rules",
-      "settings": {
-        "rules": [
-          {
-            "type": "field",
-            "inboundTag": [
-              "tg-in"
-            ],
-            "outboundTag": "tg-out"
-          }
-        ]
-      }
-    }
-  },
   "outFree": {
     "domainStrategy": "AsIs",
     "timeout": 0,
