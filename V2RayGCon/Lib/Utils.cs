@@ -577,7 +577,10 @@ namespace V2RayGCon.Lib
                 try
                 {
                     html = wc.DownloadString(url);
-                    UpdateHTMLCache(url, html);
+                    if (!string.IsNullOrEmpty(html))
+                    {
+                        UpdateHTMLCache(url, html);
+                    }
                 }
                 catch { }
             }
