@@ -53,7 +53,7 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 Service.Cache.Instance.RemoveFromCache<string>(
-                    resData("CacheHTML"),
+                    StrConst("CacheHTML"),
                     Lib.ImportParser.GetImportUrls(config));
             });
         }
@@ -385,7 +385,7 @@ namespace V2RayGCon.Controller.Configer
                     {
                         temp["inbound"][key] = vmess[key];
                     }
-                    config = Lib.Utils.MergeConfig(config, temp as JObject);
+                    config = Lib.Utils.CombineConfig(config, temp as JObject);
                 }
                 else
                 {
@@ -421,7 +421,7 @@ namespace V2RayGCon.Controller.Configer
             {
                 var temp = cache.LoadTemplate("emptyInOut") as JObject;
                 temp["inbound"] = ssServer.GetSettings();
-                config = Lib.Utils.MergeConfig(config, temp);
+                config = Lib.Utils.CombineConfig(config, temp);
             });
         }
 
@@ -474,7 +474,7 @@ namespace V2RayGCon.Controller.Configer
             {
                 temp["inbound"]["streamSettings"] = streamSetting;
             }
-            config = Lib.Utils.MergeConfig(config, temp);
+            config = Lib.Utils.CombineConfig(config, temp);
         }
 
         bool FlushEditor()
@@ -522,7 +522,7 @@ namespace V2RayGCon.Controller.Configer
             temp["outbound"]["settings"] = settings;
             temp["outbound"]["protocol"] = protocol;
             temp["outbound"]["tag"] = "agentout";
-            config = Lib.Utils.MergeConfig(config, temp as JObject);
+            config = Lib.Utils.CombineConfig(config, temp as JObject);
         }
 
         void LoadConfig(int index = -1)

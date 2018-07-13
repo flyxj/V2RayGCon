@@ -153,7 +153,7 @@ namespace V2RayGCon.Views
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
-                Filter = resData("ExtPng"),
+                Filter = StrConst("ExtPng"),
                 FilterIndex = 1,
                 RestoreDirectory = true,
             };

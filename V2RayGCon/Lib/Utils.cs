@@ -43,16 +43,63 @@ namespace V2RayGCon.Lib
             return new Tuple<string, string>(parent, key);
         }
 
-        static JObject ExtractJObjectPart(string path, JObject source)
+        public static JObject CreateJObject(string path)
         {
-            var key = ParsePathIntoParentAndKey(path).Item2;
-            var result = JObject.Parse("{}");
+            var result = JObject.Parse(@"{}");
 
-            var node = Lib.Utils.GetKey(source, path);
-            if (node != null && !string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(path))
             {
-                result[key] = node.DeepClone();
+                return result;
             }
+            var curNode = result as JToken;
+            foreach (var p in path.Split('.'))
+            {
+                if (string.IsNullOrEmpty(p))
+                {
+                    throw new KeyNotFoundException("Parent contain empty key");
+                }
+
+                if (int.TryParse(p, out int num))
+                {
+                    throw new KeyNotFoundException("All parents must be JObject");
+                }
+
+                curNode[p] = JObject.Parse(@"{}");
+                curNode = curNode[p];
+            }
+
+            return result;
+        }
+
+        public static JObject ExtractJObjectPart(JObject source, string path)
+        {
+            var parts = ParsePathIntoParentAndKey(path);
+            var key = parts.Item2;
+            var parentPath = parts.Item1;
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new KeyNotFoundException("key is empty");
+            }
+
+            var node = GetKey(source, path);
+            if (node == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            var result = CreateJObject(parentPath);
+
+            var parent = string.IsNullOrEmpty(parentPath) ?
+                result : GetKey(result, parentPath);
+
+            if (parent == null || !(parent is JObject))
+            {
+                throw new KeyNotFoundException("Create parent JObject fail!");
+            }
+
+            parent[key] = node.DeepClone();
+
             return result;
         }
 
@@ -91,46 +138,36 @@ namespace V2RayGCon.Lib
             return result;
         }
 
-        public static JObject MergeConfig(JObject left, JObject right)
+        public static JObject CombineConfig(JObject left, JObject right)
         {
             var l = left.DeepClone() as JObject;
             var r = right.DeepClone() as JObject;
 
             // in(out)Dtr
             var result = JObject.Parse("{}");
-            var rules = JObject.Parse("{}");
-            var rulesPath = "routing.settings.rules";
+
             foreach (var part in new JObject[] { r, l })
             {
                 foreach (var key in new string[] {
                     "inboundDetour",
-                    "outboundDetour"})
+                    "outboundDetour",
+                    "routing.settings.rules"})
                 {
-                    result = ConcatJson(result, ExtractJObjectPart(key, part));
-                    RemoveKeyFromJObject(part, key);
-                }
-
-                rules = ConcatJson(rules, ExtractJObjectPart(rulesPath, part));
-                try
-                {
-                    RemoveKeyFromJObject(part, rulesPath);
-                }
-                catch (KeyNotFoundException)
-                {
-                    // do nothing;
+                    try
+                    {
+                        var node = ExtractJObjectPart(part, key);
+                        result = ConcatJson(result, node);
+                        RemoveKeyFromJObject(part, key);
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        // skip if key not exist
+                    }
                 }
             }
 
             result = MergeJson(result, l);
             result = MergeJson(result, r);
-
-            var rule = Lib.Utils.GetKey(rules, "rules");
-            if (rule != null && rule is JArray)
-            {
-                var routing = Service.Cache.Instance.LoadTemplate("routingRules");
-                routing["routing"]["settings"]["rules"] = rule;
-                result = MergeJson(result, routing as JObject);
-            }
 
             return result;
         }
@@ -145,15 +182,6 @@ namespace V2RayGCon.Lib
             });
 
             return result;
-        }
-
-        public static T Parse<T>(string json) where T : JToken
-        {
-            if (json == string.Empty)
-            {
-                return null;
-            }
-            return (T)JToken.Parse(json);
         }
 
         public static JToken GetKey(JToken json, string path)
@@ -187,9 +215,9 @@ namespace V2RayGCon.Lib
             return GetValue<T>(json, $"{prefix}.{key}");
         }
 
-        public static T GetValue<T>(JToken json, string keyChain)
+        public static T GetValue<T>(JToken json, string path)
         {
-            var key = GetKey(json, keyChain);
+            var key = GetKey(json, path);
 
             var def = default(T) == null && typeof(T) == typeof(string) ?
                 (T)(object)string.Empty :
@@ -524,7 +552,7 @@ namespace V2RayGCon.Lib
         static string FetchFromCache(string url)
         {
             var cache = Service.Cache.Instance.
-                GetCache<string>(resData("CacheHTML")).
+                GetCache<string>(StrConst("CacheHTML")).
                 Item2;
 
             if (cache.ContainsKey(url))
@@ -532,22 +560,6 @@ namespace V2RayGCon.Lib
                 return cache[url];
             }
             return null;
-        }
-
-        static void UpdateHTMLCache(string url, string html)
-        {
-            if (html == null || string.IsNullOrEmpty(html))
-            {
-                return;
-            }
-
-            var cache = Service.Cache.Instance.
-                GetCache<string>(resData("CacheHTML"));
-
-            lock (cache.Item1)
-            {
-                cache.Item2[url] = html;
-            }
         }
 
         public static string Fetch(string url, int timeout = -1, bool useCache = false)
@@ -579,7 +591,7 @@ namespace V2RayGCon.Lib
                     html = wc.DownloadString(url);
                     if (!string.IsNullOrEmpty(html))
                     {
-                        UpdateHTMLCache(url, html);
+                        cache.UpdateHTMLCache(url, html);
                     }
                 }
                 catch { }
@@ -589,14 +601,14 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(resData("UrlLatestVGC"), 10000);
+            string html = Fetch(StrConst("UrlLatestVGC"), 10000);
 
             if (string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
 
-            string p = resData("PatternLatestVGC");
+            string p = StrConst("PatternLatestVGC");
             var match = Regex.Match(html, p, RegexOptions.IgnoreCase);
             if (match.Success)
             {
@@ -610,14 +622,14 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(resData("ReleasePageUrl"), 10000);
+            string html = Fetch(StrConst("ReleasePageUrl"), 10000);
 
             if (string.IsNullOrEmpty(html))
             {
                 return versions;
             }
 
-            string pattern = resData("PatternDownloadLink");
+            string pattern = StrConst("PatternDownloadLink");
             var matches = Regex.Matches(html, pattern, RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
@@ -707,9 +719,9 @@ namespace V2RayGCon.Lib
         {
             return string.Format(
                "{0}{1}{2}",
-               resData("PatternNonAlphabet"), // vme[ss]
+               StrConst("PatternNonAlphabet"), // vme[ss]
                GetLinkPrefix(linkType),
-               resData("PatternBase64"));
+               StrConst("PatternBase64"));
         }
 
         public static string AddLinkPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
@@ -829,7 +841,6 @@ namespace V2RayGCon.Lib
             thread.Start();
             @event.WaitOne();
         }
-
 
         public static void KillProcessAndChildrens(int pid)
         {

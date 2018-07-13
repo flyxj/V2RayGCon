@@ -82,7 +82,7 @@ namespace V2RayGCon.Service
             JObject config = JObject.Parse(plainText);
             try
             {
-                var timeout = Lib.Utils.Str2Int(resData("ParseImportTimeOut"));
+                var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
                 config = Lib.ImportParser.ParseImport(config, timeout * 1000);
             }
             catch
@@ -124,7 +124,7 @@ namespace V2RayGCon.Service
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = resData("Executable"),
+                    FileName = StrConst("Executable"),
                     Arguments = "-config=stdin: -format=json",
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -180,7 +180,7 @@ namespace V2RayGCon.Service
 
         public bool IsCoreExist()
         {
-            return File.Exists(resData("Executable"));
+            return File.Exists(StrConst("Executable"));
         }
 
         public void StopCoreThen(Action lamda)
@@ -214,7 +214,7 @@ namespace V2RayGCon.Service
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = resData("Executable"),
+                    FileName = StrConst("Executable"),
                     Arguments = "-version",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,

@@ -21,14 +21,14 @@ namespace V2RayGCon.Service
             core = Service.Core.Instance;
 
             SetArchitecture(false);
-            _version = resData("DefCoreVersion");
+            _version = StrConst("DefCoreVersion");
             client = null;
         }
 
         #region public method
         public void SetArchitecture(bool win64 = false)
         {
-            _packageName = win64 ? resData("PkgWin64") : resData("PkgWin32");
+            _packageName = win64 ? StrConst("PkgWin64") : StrConst("PkgWin32");
         }
 
         public void SetVersion(string version)
@@ -130,7 +130,7 @@ namespace V2RayGCon.Service
         void Download()
         {
             string fileName = _packageName;
-            string tpl = resData("DownloadLinkTpl");
+            string tpl = StrConst("DownloadLinkTpl");
             string url = string.Format(tpl, _version, fileName);
 
             Lib.Utils.SupportProtocolTLS12();

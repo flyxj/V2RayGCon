@@ -71,7 +71,7 @@ namespace V2RayGCon.Controller
 
         public void ImportServersFromTextFile()
         {
-            string v2rayLinks = Lib.UI.ShowReadFileDialog(resData("ExtText"), out string filename);
+            string v2rayLinks = Lib.UI.ShowReadFileDialog(StrConst("ExtText"), out string filename);
             if (string.IsNullOrEmpty(filename))
             {
                 return;
@@ -97,7 +97,7 @@ namespace V2RayGCon.Controller
             }
 
             switch (Lib.UI.ShowSaveFileDialog(
-                resData("ExtText"),
+                StrConst("ExtText"),
                 s,
                 out string filename))
             {
@@ -136,7 +136,7 @@ namespace V2RayGCon.Controller
             var msg = string.Format(confirmTpl, version);
             if (Lib.UI.Confirm(msg))
             {
-                var tpl = resData("TplUrlVGCRelease");
+                var tpl = StrConst("TplUrlVGCRelease");
                 var url = string.Format(tpl, version);
                 System.Diagnostics.Process.Start(url);
             }

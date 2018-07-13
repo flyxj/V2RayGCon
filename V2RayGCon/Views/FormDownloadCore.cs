@@ -129,7 +129,7 @@ namespace V2RayGCon.Views
         void InitUI()
         {
             cboxArch.SelectedIndex = 0;
-            var verList = Lib.Utils.Str2ListStr(resData("VerList"));
+            var verList = Lib.Utils.Str2ListStr(StrConst("VerList"));
             Lib.UI.FillComboBox(cboxVer, verList);
             pgBarDownload.Value = 0;
         }
