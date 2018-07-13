@@ -21,6 +21,69 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region Json
+
+        public static bool Contain(JToken main, JToken sub)
+        {
+            if (main.Type != sub.Type)
+            {
+                return false;
+            }
+
+            if (sub.Type == JTokenType.Property)
+            {
+                var m = main as JProperty;
+                var s = sub as JProperty;
+                return Contain(m.Value, s.Value);
+            }
+
+            if (sub.Type == JTokenType.Object)
+            {
+                var m = main as JObject;
+                var s = sub as JObject;
+
+                foreach (var item in s)
+                {
+                    var key = item.Key;
+                    if (!m.ContainsKey(key))
+                    {
+                        return false;
+                    }
+
+                    if (!Contain(m[key], s[key]))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            if (sub.Type == JTokenType.Array)
+            {
+                var m = main as JArray;
+                var s = sub as JArray;
+
+                foreach (var sItem in s)
+                {
+                    foreach (var mItem in m)
+                    {
+                        if (Contain(mItem, sItem))
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+                return false;
+            }
+
+            // jvalue
+            var mv = main as JValue;
+            var ms = sub as JValue;
+
+            return mv.Equals(ms);
+        }
+
         public static Tuple<string, string> ParsePathIntoParentAndKey(string path)
         {
             var index = path.LastIndexOf('.');

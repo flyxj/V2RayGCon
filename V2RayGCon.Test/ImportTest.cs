@@ -9,6 +9,35 @@ namespace V2RayGCon.Test
     public class ImportTest
     {
         [DataTestMethod]
+        [DataRow(@"{'a':null}", @"{'a':''}", false)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'c':['1','2','3'],'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'a':{'c':{'1':'2'}}}]}",
+            false)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'c':['1','2','3'],'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'a':{'c':['1','2']}}]}",
+            true)]
+        [DataRow(@"{'a':'1'}", @"{'a':'1'}", true)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'a':1,'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'a':{'c':1}}]}",
+            false)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'a':1,'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'b':1}]}",
+            true)]
+        [DataRow(@"{'a':1,'b':2,'c':3}", @"{'a':1,'b':2}", true)]
+        [DataRow(@"{'a':1,'b':2,'d':3}", @"{'a':1,'b':2,'c':3}", false)]
+        [DataRow(@"{}", @"{}", true)]
+        public void ContainTest(string main, string sub, bool expect)
+        {
+            var m = JObject.Parse(main);
+            var s = JObject.Parse(sub);
+            Assert.AreEqual<bool>(expect, Lib.Utils.Contain(m, s));
+        }
+
+        [DataTestMethod]
         [DataRow(".")]
         [DataRow("a.0.")]
         [DataRow("b.")]
