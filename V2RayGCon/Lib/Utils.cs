@@ -22,6 +22,50 @@ namespace V2RayGCon.Lib
 
         #region Json
 
+        static bool Contain(JProperty main, JProperty sub)
+        {
+            return Contain(main.Value, sub.Value);
+        }
+
+        static bool Contain(JArray main, JArray sub)
+        {
+            foreach (var sItem in sub)
+            {
+                foreach (var mItem in main)
+                {
+                    if (Contain(mItem, sItem))
+                    {
+                        return true;
+                    }
+                }
+
+            }
+            return false;
+        }
+
+        static bool Contain(JObject main, JObject sub)
+        {
+            foreach (var item in sub)
+            {
+                var key = item.Key;
+                if (!main.ContainsKey(key))
+                {
+                    return false;
+                }
+
+                if (!Contain(main[key], sub[key]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool Contain(JValue main, JValue sub)
+        {
+            return main.Equals(sub);
+        }
+
         public static bool Contain(JToken main, JToken sub)
         {
             if (main.Type != sub.Type)
@@ -29,59 +73,17 @@ namespace V2RayGCon.Lib
                 return false;
             }
 
-            if (sub.Type == JTokenType.Property)
+            switch (sub.Type)
             {
-                var m = main as JProperty;
-                var s = sub as JProperty;
-                return Contain(m.Value, s.Value);
+                case JTokenType.Property:
+                    return Contain(main as JProperty, sub as JProperty);
+                case JTokenType.Object:
+                    return Contain(main as JObject, sub as JObject);
+                case JTokenType.Array:
+                    return Contain(main as JArray, sub as JArray);
+                default:
+                    return Contain(main as JValue, sub as JValue);
             }
-
-            if (sub.Type == JTokenType.Object)
-            {
-                var m = main as JObject;
-                var s = sub as JObject;
-
-                foreach (var item in s)
-                {
-                    var key = item.Key;
-                    if (!m.ContainsKey(key))
-                    {
-                        return false;
-                    }
-
-                    if (!Contain(m[key], s[key]))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            if (sub.Type == JTokenType.Array)
-            {
-                var m = main as JArray;
-                var s = sub as JArray;
-
-                foreach (var sItem in s)
-                {
-                    foreach (var mItem in m)
-                    {
-                        if (Contain(mItem, sItem))
-                        {
-                            return true;
-                        }
-                    }
-
-                }
-                return false;
-            }
-
-            // jvalue
-            var mv = main as JValue;
-            var ms = sub as JValue;
-
-            return mv.Equals(ms);
         }
 
         public static Tuple<string, string> ParsePathIntoParentAndKey(string path)
