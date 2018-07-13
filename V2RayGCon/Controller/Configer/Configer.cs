@@ -68,8 +68,28 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 var mtproto = cache.LoadTemplate("dtrMTProto") as JObject;
+
+                foreach (string key in new string[] {
+                    "inboundDetour",
+                    "outboundDetour",
+                    "routing",
+                })
+                {
+                    var part = Lib.Utils.ExtractJObjectPart(mtproto, key);
+                    if (Lib.Utils.Contain(config, part))
+                    {
+                        try
+                        {
+                            Lib.Utils.RemoveKeyFromJObject(mtproto, key);
+                        }
+                        catch (KeyNotFoundException) { }
+                    }
+                }
                 var user0 = Lib.Utils.GetKey(mtproto, "inboundDetour.0.settings.users.0");
-                user0["secret"] = Lib.Utils.RandomHex(32);
+                if (user0 != null && user0 is JObject)
+                {
+                    user0["secret"] = Lib.Utils.RandomHex(32);
+                }
                 config = Lib.Utils.CombineConfig(config, mtproto);
             });
         }
@@ -400,9 +420,25 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 var c = JObject.Parse(@"{}");
-                c["dns"] = cache.LoadExample("dnsCFnGoogle");
-                c["routing"] = cache.LoadExample("routeCNIP");
-                c["outboundDetour"] = cache.LoadExample("outDtrDefault");
+
+                var dict = new Dictionary<string, string> {
+                    { "dns","dnsCFnGoogle" },
+                    { "routing","routeCNIP" },
+                    { "outboundDetour","outDtrDefault" },
+                };
+
+                foreach (var item in dict)
+                {
+                    var tpl = Lib.Utils.CreateJObject(item.Key);
+                    var value = cache.LoadExample(item.Value);
+                    tpl[item.Key] = value;
+
+                    if (!Lib.Utils.Contain(config, tpl))
+                    {
+                        c[item.Key] = value;
+                    }
+                }
+
                 config = Lib.Utils.CombineConfig(config, c);
             });
         }
