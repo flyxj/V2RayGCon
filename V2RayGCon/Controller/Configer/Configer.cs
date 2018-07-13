@@ -363,7 +363,17 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                InsertOutBoundSetting(ssClient.GetSettings(), "shadowsocks");
+                var outbound = Lib.Utils.CreateJObject("outbound");
+                outbound["outbound"]["settings"] = ssClient.GetSettings();
+                outbound["outbound"]["protocol"] = "shadowsocks";
+
+                try
+                {
+                    Lib.Utils.RemoveKeyFromJObject(config, "outbound.settings");
+                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, outbound);
             });
         }
 
@@ -371,46 +381,28 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                var vmess = vmessCtrl.GetSettings();
-                if (vmessCtrl.serverMode)
+                var key = vmessCtrl.serverMode ? "inbound" : "outbound";
+                var vmess = Lib.Utils.CreateJObject(key);
+                vmess[key] = vmessCtrl.GetSettings();
+
+                try
                 {
-                    var keys = new List<string> {
-                        "port",
-                        "listen",
-                        "settings",
-                        "protocol" };
-
-                    var inbound = Lib.Utils.CreateJObject("inbound");
-
-                    foreach (var key in keys)
-                    {
-                        inbound["inbound"][key] = vmess[key];
-                    }
-
-                    try
-                    {
-                        Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
-                    }
-                    catch (KeyNotFoundException) { }
-
-                    config = Lib.Utils.CombineConfig(config, inbound);
+                    Lib.Utils.RemoveKeyFromJObject(config, key + ".settings");
                 }
-                else
-                {
-                    InsertOutBoundSetting(vmess, "vmess");
-                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, vmess);
             });
         }
 
         public void InsertSkipCN()
         {
-            var c = JObject.Parse(@"{}");
-            c["dns"] = cache.LoadExample("dnsCFnGoogle");
-            c["routing"] = cache.LoadExample("routeCNIP");
-            c["outboundDetour"] = cache.LoadExample("outDtrDefault");
-
             InsertConfigHelper(() =>
             {
+                var c = JObject.Parse(@"{}");
+                c["dns"] = cache.LoadExample("dnsCFnGoogle");
+                c["routing"] = cache.LoadExample("routeCNIP");
+                c["outboundDetour"] = cache.LoadExample("outDtrDefault");
                 config = Lib.Utils.CombineConfig(config, c);
             });
         }
@@ -429,6 +421,7 @@ namespace V2RayGCon.Controller.Configer
             {
                 var inbound = Lib.Utils.CreateJObject("inbound");
                 inbound["inbound"] = ssServer.GetSettings();
+
                 try
                 {
                     Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
@@ -527,22 +520,7 @@ namespace V2RayGCon.Controller.Configer
             return true;
         }
 
-        void InsertOutBoundSetting(JToken settings, string protocol)
-        {
-            var outbound = Lib.Utils.CreateJObject("outbound");
 
-            outbound["outbound"]["settings"] = settings;
-            outbound["outbound"]["protocol"] = protocol;
-            outbound["outbound"]["tag"] = "agentout";
-
-            try
-            {
-                Lib.Utils.RemoveKeyFromJObject(config, "outbound.settings");
-            }
-            catch (KeyNotFoundException) { }
-
-            config = Lib.Utils.CombineConfig(config, outbound);
-        }
 
         void LoadConfig(int index = -1)
         {
