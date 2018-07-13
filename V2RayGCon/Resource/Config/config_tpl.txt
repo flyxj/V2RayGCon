@@ -11,9 +11,7 @@
         "tag": "tg-in",
         "settings": {
           "users": [
-            {
-              "secret": "nothing"
-            }
+            {}
           ]
         }
       }

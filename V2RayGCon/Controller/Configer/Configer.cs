@@ -68,9 +68,9 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 var mtproto = cache.LoadTemplate("dtrMTProto") as JObject;
-                mtproto["inboundDetour"][0]["settings"]["users"][0]["secret"] =
-                    Lib.Utils.RandomHex(32);
-                config = Lib.Utils.MergeJson(config, mtproto);
+                var user0 = Lib.Utils.GetKey(mtproto, "inboundDetour.0.settings.users.0");
+                user0["secret"] = Lib.Utils.RandomHex(32);
+                config = Lib.Utils.CombineConfig(config, mtproto);
             });
         }
 
@@ -374,19 +374,26 @@ namespace V2RayGCon.Controller.Configer
                 var vmess = vmessCtrl.GetSettings();
                 if (vmessCtrl.serverMode)
                 {
-
                     var keys = new List<string> {
                         "port",
                         "listen",
                         "settings",
                         "protocol" };
 
-                    var temp = cache.LoadTemplate("emptyInOut");
+                    var inbound = Lib.Utils.CreateJObject("inbound");
+
                     foreach (var key in keys)
                     {
-                        temp["inbound"][key] = vmess[key];
+                        inbound["inbound"][key] = vmess[key];
                     }
-                    config = Lib.Utils.CombineConfig(config, temp as JObject);
+
+                    try
+                    {
+                        Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
+                    }
+                    catch (KeyNotFoundException) { }
+
+                    config = Lib.Utils.CombineConfig(config, inbound);
                 }
                 else
                 {
@@ -404,7 +411,7 @@ namespace V2RayGCon.Controller.Configer
 
             InsertConfigHelper(() =>
             {
-                config = Lib.Utils.MergeJson(config, c);
+                config = Lib.Utils.CombineConfig(config, c);
             });
         }
 
@@ -420,9 +427,15 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                var temp = cache.LoadTemplate("emptyInOut") as JObject;
-                temp["inbound"] = ssServer.GetSettings();
-                config = Lib.Utils.CombineConfig(config, temp);
+                var inbound = Lib.Utils.CreateJObject("inbound");
+                inbound["inbound"] = ssServer.GetSettings();
+                try
+                {
+                    Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
+                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, inbound);
             });
         }
 
@@ -471,11 +484,7 @@ namespace V2RayGCon.Controller.Configer
 
             SaveChanges();
 
-            try
-            {
-                lamda?.Invoke();
-            }
-            catch { }
+            lamda?.Invoke();
 
             UpdateData();
             ShowSection();
@@ -487,17 +496,16 @@ namespace V2RayGCon.Controller.Configer
 
         void InsertStreamSetting(JToken streamSetting)
         {
-            var empty = cache.LoadTemplate("emptyInOut") as JObject;
-            var temp = empty.DeepClone() as JObject;
-
-            // clear original stream setting
-            // insert new stream setting
             var key = streamSettings.isServer ? "inbound" : "outbound";
-            empty[key]["streamSettings"] = null;
-            temp[key]["streamSettings"] = streamSetting;
 
-            config = Lib.Utils.CombineConfig(config, empty);
-            config = Lib.Utils.CombineConfig(config, temp);
+            var empty = Lib.Utils.CreateJObject(key);
+            var stream = empty.DeepClone() as JObject;
+
+            empty[key]["streamSettings"] = null;
+            stream[key]["streamSettings"] = streamSetting;
+
+            var temp = Lib.Utils.CombineConfig(config, empty);
+            config = Lib.Utils.CombineConfig(temp, stream);
         }
 
         bool FlushEditor()
@@ -521,11 +529,19 @@ namespace V2RayGCon.Controller.Configer
 
         void InsertOutBoundSetting(JToken settings, string protocol)
         {
-            var temp = cache.LoadTemplate("emptyInOut");
-            temp["outbound"]["settings"] = settings;
-            temp["outbound"]["protocol"] = protocol;
-            temp["outbound"]["tag"] = "agentout";
-            config = Lib.Utils.CombineConfig(config, temp as JObject);
+            var outbound = Lib.Utils.CreateJObject("outbound");
+
+            outbound["outbound"]["settings"] = settings;
+            outbound["outbound"]["protocol"] = protocol;
+            outbound["outbound"]["tag"] = "agentout";
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(config, "outbound.settings");
+            }
+            catch (KeyNotFoundException) { }
+
+            config = Lib.Utils.CombineConfig(config, outbound);
         }
 
         void LoadConfig(int index = -1)
