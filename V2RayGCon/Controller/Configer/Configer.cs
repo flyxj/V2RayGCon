@@ -57,6 +57,7 @@ namespace V2RayGCon.Controller.Configer
                     Lib.ImportParser.GetImportUrls(config));
             });
         }
+
         public void ClearOriginalConfig()
         {
             originalConfig = string.Empty;
@@ -459,21 +460,43 @@ namespace V2RayGCon.Controller.Configer
             UpdateData();
             ShowSection();
         }
+
+        public void InsertConfigHelper(Action lamda)
+        {
+            if (!CheckValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
+
+            try
+            {
+                lamda?.Invoke();
+            }
+            catch { }
+
+            UpdateData();
+            ShowSection();
+        }
+
         #endregion
 
         #region private method
 
         void InsertStreamSetting(JToken streamSetting)
         {
-            var temp = cache.LoadTemplate("emptyInOut") as JObject;
-            if (streamSettings.isServer)
-            {
-                temp["inbound"]["streamSettings"] = streamSetting;
-            }
-            else
-            {
-                temp["inbound"]["streamSettings"] = streamSetting;
-            }
+            var empty = cache.LoadTemplate("emptyInOut") as JObject;
+            var temp = empty.DeepClone() as JObject;
+
+            // clear original stream setting
+            // insert new stream setting
+            var key = streamSettings.isServer ? "inbound" : "outbound";
+            empty[key]["streamSettings"] = null;
+            temp[key]["streamSettings"] = streamSetting;
+
+            config = Lib.Utils.CombineConfig(config, empty);
             config = Lib.Utils.CombineConfig(config, temp);
         }
 
@@ -494,26 +517,6 @@ namespace V2RayGCon.Controller.Configer
             SaveChanges();
             UpdateData();
             return true;
-        }
-
-        public void InsertConfigHelper(Action lamda)
-        {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-
-            SaveChanges();
-
-            try
-            {
-                lamda?.Invoke();
-            }
-            catch { }
-
-            UpdateData();
-            ShowSection();
         }
 
         void InsertOutBoundSetting(JToken settings, string protocol)
