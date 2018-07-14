@@ -521,6 +521,7 @@ namespace V2RayGCon.Service
 
         public void FixServersSummary()
         {
+            Cache.Instance.ClearAllCache();
             UpdateSummaryCache(new List<string>(servers));
         }
         #endregion

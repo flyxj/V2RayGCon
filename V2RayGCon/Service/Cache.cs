@@ -24,6 +24,37 @@ namespace V2RayGCon.Service
         }
 
         #region public method
+        public void ClearAllCache()
+        {
+            var cache = GetCache<string>(StrConst("CacheHTML"));
+            lock (cache.Item1)
+            {
+                var d = cache.Item2 as Dictionary<string, string>;
+                var keys = new List<string>(d.Keys);
+                foreach (var key in keys)
+                {
+                    if (d.ContainsKey(key))
+                    {
+                        d.Remove(key);
+                    }
+                }
+            }
+
+            var summary = GetCache<string[]>(StrConst("CacheSummary"));
+            lock (summary.Item1)
+            {
+                var d = summary.Item2 as Dictionary<string, string[]>;
+                var keys = new List<string>(d.Keys);
+                foreach (var key in keys)
+                {
+                    if (d.ContainsKey(key))
+                    {
+                        d.Remove(key);
+                    }
+                }
+            }
+        }
+
         public void UpdateHTMLCache(string url, string html)
         {
             if (html == null || string.IsNullOrEmpty(html))
@@ -35,7 +66,8 @@ namespace V2RayGCon.Service
 
             lock (cache.Item1)
             {
-                cache.Item2[url] = html;
+                var d = cache.Item2 as Dictionary<string, string>;
+                d[url] = html;
             }
         }
 
@@ -67,7 +99,10 @@ namespace V2RayGCon.Service
 
                 foreach (var key in keys)
                 {
-                    d.Remove(key);
+                    if (d.ContainsKey(key))
+                    {
+                        d.Remove(key);
+                    }
                 }
             }
         }

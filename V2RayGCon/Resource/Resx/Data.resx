@@ -192,7 +192,7 @@
     <value>https://github.com/nobody3u/V2RayGCon/wiki/vlink</value>
   </data>
   <data name="ParseImportTimeOut" xml:space="preserve">
-    <value>8</value>
+    <value>12</value>
     <comment>seconds</comment>
   </data>
   <data name="ParseImportDepth" xml:space="preserve">
