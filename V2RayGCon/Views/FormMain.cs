@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -46,8 +45,6 @@ namespace V2RayGCon.Views
             {
                 setting.OnSettingChange -= SettingChangeHandler;
                 core.OnCoreStatChange -= SettingChangeHandler;
-                var serverList = new List<string>(setting.GetAllServers());
-                setting.FixServersSummary();
             };
 
             Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
@@ -62,6 +59,11 @@ namespace V2RayGCon.Views
         }
 
         #region private method
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setting.FixServersSummary();
+        }
+
         void SettingChangeHandler(object s, EventArgs e)
         {
             try
@@ -370,6 +372,7 @@ namespace V2RayGCon.Views
         {
             Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
         }
+
         #endregion
 
 

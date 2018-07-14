@@ -32,7 +32,7 @@ namespace V2RayGCon.Service
             addServerLock = new object();
 
             summaryCache = Cache.Instance.GetCache<string[]>(
-                resData("CacheSummary"));
+                StrConst("CacheSummary"));
 
             OnServerListChanged();
             servers.ListChanged += OnServerListChanged;
@@ -521,6 +521,7 @@ namespace V2RayGCon.Service
 
         public void FixServersSummary()
         {
+            Cache.Instance.ClearAllCache();
             UpdateSummaryCache(new List<string>(servers));
         }
         #endregion
@@ -698,7 +699,7 @@ namespace V2RayGCon.Service
                 var config = JObject.Parse(Lib.Utils.Base64Decode(server));
                 try
                 {
-                    var timeout = Lib.Utils.Str2Int(resData("ParseImportTimeOut"));
+                    var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
                     config = Lib.ImportParser.ParseImport(config, timeout * 1000);
                     return GetSummaryFromConfig(config);
                 }

@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using ScintillaNET;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,7 +9,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.Configer
 {
-    class Import:
+    class Import :
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
@@ -21,7 +19,8 @@ namespace V2RayGCon.Controller.Configer
         public string content
         {
             get { return _content; }
-            set {
+            set
+            {
                 editor.ReadOnly = false;
                 SetField(ref _content, value);
                 editor.ReadOnly = true;
@@ -31,10 +30,12 @@ namespace V2RayGCon.Controller.Configer
 
         #region public method
         Scintilla editor;
+
         public Import(Scintilla elementForInvoke)
         {
             editor = elementForInvoke;
         }
+
         public JToken GetSettings()
         {
             return JToken.Parse(@"{}");
@@ -44,7 +45,8 @@ namespace V2RayGCon.Controller.Configer
         {
             content = I18N("AnalysingImport");
             // todo
-            Task.Factory.StartNew(() => {
+            Task.Factory.StartNew(() =>
+            {
                 var cfg = "{}";
                 try
                 {
@@ -77,7 +79,8 @@ namespace V2RayGCon.Controller.Configer
                     cfg = I18N("DecodeImportFail");
                 }
 
-                editor.Invoke((MethodInvoker)delegate{
+                editor.Invoke((MethodInvoker)delegate
+                {
                     content = cfg;
                 });
             });

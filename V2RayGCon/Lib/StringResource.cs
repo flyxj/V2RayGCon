@@ -26,7 +26,7 @@ namespace V2RayGCon.Lib
             return LoadString(res["i18n"], key);
         }
 
-        public static string resData(string key)
+        public static string StrConst(string key)
         {
             return LoadString(res["data"], key);
         }

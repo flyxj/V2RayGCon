@@ -112,9 +112,14 @@ namespace V2RayGCon.Test
         [DataRow("config_def")]
         public void ConfigResource_Validate(string filename)
         {
-            var configMin = resData(filename);
-            var json = Parse<JObject>(configMin);
-            Assert.IsNotNull(json);
+            try
+            {
+                JObject.Parse(StrConst(filename));
+            }
+            catch
+            {
+                Assert.Fail();
+            }
         }
 
         [TestMethod]
@@ -139,21 +144,14 @@ namespace V2RayGCon.Test
         [DataRow("this_resource_key_not_exist")]
         public void resData_ThrowExceptionWhenKeyNotExist(string key)
         {
-            Assert.ThrowsException<KeyNotFoundException>(() => resData(key));
+            Assert.ThrowsException<KeyNotFoundException>(() => StrConst(key));
         }
 
         [DataTestMethod]
         [DataRow("Executable", "v2ray.exe")]
         public void resData_Test(string key, string expect)
         {
-            Assert.AreEqual<string>(expect, resData(key));
-        }
-
-        [TestMethod]
-        public void JsonParser_EmptyStringReturnNull()
-        {
-            var json = Parse<JToken>(string.Empty);
-            Assert.IsNull(json);
+            Assert.AreEqual<string>(expect, StrConst(key));
         }
 
         [TestMethod]

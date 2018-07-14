@@ -27,7 +27,6 @@ namespace V2RayGCon.Controller.Configer
 
         #region public method
 
-
         public JToken GetSettings()
         {
             JToken vgc = Service.Cache.Instance.LoadTemplate("vgc");

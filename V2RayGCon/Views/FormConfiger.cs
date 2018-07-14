@@ -286,7 +286,7 @@ namespace V2RayGCon.Views
             configer.InsertConfigHelper(null);
 
             switch (Lib.UI.ShowSaveFileDialog(
-                resData("ExtJson"),
+                StrConst("ExtJson"),
                 configer.GetConfigFormated(),
                 out string filename))
             {
@@ -320,7 +320,7 @@ namespace V2RayGCon.Views
                 return;
             }
 
-            string json = Lib.UI.ShowReadFileDialog(resData("ExtJson"), out string filename);
+            string json = Lib.UI.ShowReadFileDialog(StrConst("ExtJson"), out string filename);
             if (configer.SetConfig(json))
             {
                 cboxConfigSection.SelectedIndex = 0;

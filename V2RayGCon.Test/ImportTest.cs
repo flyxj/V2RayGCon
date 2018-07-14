@@ -9,6 +9,84 @@ namespace V2RayGCon.Test
     public class ImportTest
     {
         [DataTestMethod]
+        [DataRow(@"{'a':null}", @"{'a':''}", false)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'c':['1','2','3'],'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'a':{'c':{'1':'2'}}}]}",
+            false)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'c':['1','2','3'],'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'a':{'c':['1','2']}}]}",
+            true)]
+        [DataRow(@"{'a':'1'}", @"{'a':'1'}", true)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'a':1,'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'a':{'c':1}}]}",
+            false)]
+        [DataRow(
+            @"{'a':1,'b':[{'a':{'a':1,'b':1}},{'b':1}],'c':3}",
+            @"{'a':1,'b':[{'b':1}]}",
+            true)]
+        [DataRow(@"{'a':1,'b':2,'c':3}", @"{'a':1,'b':2}", true)]
+        [DataRow(@"{'a':1,'b':2,'d':3}", @"{'a':1,'b':2,'c':3}", false)]
+        [DataRow(@"{}", @"{}", true)]
+        public void ContainTest(string main, string sub, bool expect)
+        {
+            var m = JObject.Parse(main);
+            var s = JObject.Parse(sub);
+            Assert.AreEqual<bool>(expect, Lib.Utils.Contain(m, s));
+        }
+
+        [DataTestMethod]
+        [DataRow(".")]
+        [DataRow("a.0.")]
+        [DataRow("b.")]
+        public void CreateJObjectFailTest(string path)
+        {
+            Assert.ThrowsException<KeyNotFoundException>(() =>
+            {
+                Lib.Utils.CreateJObject(path);
+            });
+        }
+
+        [DataTestMethod]
+        [DataRow("a", @"{'a':{}}")]
+        [DataRow("a.b", @"{'a':{'b':{}}}")]
+        [DataRow("a.b.c.d.e", @"{'a':{'b':{'c':{'d':{'e':{}}}}}}")]
+        [DataRow("", @"{}")]
+        public void CreateJObjectNormalTest(string path, string expect)
+        {
+            var result = Lib.Utils.CreateJObject(path);
+            var e = JObject.Parse(expect);
+            Assert.AreEqual<bool>(true, JObject.DeepEquals(result, e));
+        }
+
+
+        [DataTestMethod]
+        [DataRow(@"{'a':1}", "b")]
+        [DataRow(@"{}", "")]
+        public void ExtractJObjectPartFailTest(string json, string path)
+        {
+            Assert.ThrowsException<KeyNotFoundException>(() =>
+            {
+                Lib.Utils.ExtractJObjectPart(JObject.Parse(json), path);
+            });
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{'a':{'b':{'c':[]}},'b':1}", "a", @"{'a':{'b':{'c':[]}}}")]
+        [DataRow(@"{'a':1,'b':1}", "a", @"{'a':1}")]
+        [DataRow(@"{'a':1}", "a", @"{'a':1}")]
+        public void ExtractJObjectPartNormalTest(string json, string path, string expect)
+        {
+            var source = JObject.Parse(json);
+            var part = Lib.Utils.ExtractJObjectPart(source, path);
+            var e = JObject.Parse(expect);
+
+            Assert.AreEqual<bool>(true, JObject.DeepEquals(e, part));
+        }
+
+        [DataTestMethod]
         [DataRow("a.b.", "a.b", "")]
         [DataRow("a.b.c", "a.b", "c")]
         [DataRow(".", "", "")]
@@ -64,7 +142,7 @@ namespace V2RayGCon.Test
             var l = JObject.Parse(left);
             var r = JObject.Parse(right);
             var e = JObject.Parse(expect);
-            var result = Lib.Utils.MergeConfig(l, r);
+            var result = Lib.Utils.CombineConfig(l, r);
 
             Assert.AreEqual(true, JObject.DeepEquals(e, result));
         }

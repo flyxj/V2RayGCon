@@ -150,33 +150,34 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
-        ///  &quot;vgc&quot;: {
-        ///    &quot;alias&quot;: &quot;&quot;,
-        ///    &quot;description&quot;: &quot;&quot;
+        ///  &quot;emptyInOut&quot;: {
+        ///    &quot;inbound&quot;: {},
+        ///    &quot;outbound&quot;: {}
         ///  },
-        ///  &quot;vmessClient&quot;: {
-        ///    &quot;vnext&quot;: [
+        ///  &quot;dtrMTProto&quot;: {
+        ///    &quot;inboundDetour&quot;: [
         ///      {
-        ///        &quot;address&quot;: &quot;127.0.0.1&quot;,
-        ///        &quot;port&quot;: 37192,
-        ///        &quot;users&quot;: [
-        ///          {
-        ///            &quot;id&quot;: &quot;27848739-7e62-4138-9fd3-098a63964b6b&quot;,
-        ///            &quot;alterId&quot;: 10,
-        ///            &quot;security&quot;: &quot;auto&quot;,
-        ///            &quot;level&quot;: 0
-        ///          }
-        ///        ]
+        ///        &quot;protocol&quot;: &quot;mtproto&quot;,
+        ///        &quot;port&quot;: &quot;443&quot;,
+        ///        &quot;tag&quot;: &quot;tg-in&quot;,
+        ///        &quot;settings&quot;: {
+        ///          &quot;users&quot;: [
+        ///            {}
+        ///          ]
+        ///        }
         ///      }
-        ///    ]
-        ///  },
-        ///  &quot;httpIn&quot;: {
-        ///    &quot;timeout&quot;: 0,
-        ///    &quot;accounts&quot;: [],
-        ///    &quot;allowTransparent&quot;: false,
-        ///    &quot;userLevel&quot;: 0
-        ///  },
-        ///  &quot;socksIn&quot;: [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    ],
+        ///    &quot;outboundDetour&quot;: [
+        ///      {
+        ///        &quot;protocol&quot;: &quot;mtproto&quot;,
+        ///        &quot;tag&quot;: &quot;tg-out&quot;,
+        ///        &quot;settings&quot;: {}
+        ///      }
+        ///    ],
+        ///    &quot;routing&quot;: {
+        ///      &quot;strategy&quot;: &quot;rules&quot;,
+        ///      &quot;settings&quot;: {
+        ///        &quot; [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
@@ -293,7 +294,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 8 的本地化字符串。
+        ///   查找类似 12 的本地化字符串。
         /// </summary>
         internal static string ParseImportTimeOut {
             get {

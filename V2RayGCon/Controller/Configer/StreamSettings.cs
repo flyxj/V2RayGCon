@@ -73,7 +73,7 @@ namespace V2RayGCon.Controller.Configer
             }
 
             JToken stream = cache.LoadTemplate(key);
-            PlugTlsSettings(stream);
+            InsertTLSSettings(stream);
             return stream;
         }
 
@@ -82,7 +82,7 @@ namespace V2RayGCon.Controller.Configer
             JToken stream = cache.LoadTemplate("h2");
             stream["httpSettings"]["path"] = h2Path;
 
-            PlugTlsSettings(stream);
+            InsertTLSSettings(stream);
             return stream;
         }
 
@@ -91,7 +91,7 @@ namespace V2RayGCon.Controller.Configer
             JToken stream = cache.LoadTemplate("ws");
             stream["wsSettings"]["path"] = wsPath;
 
-            PlugTlsSettings(stream);
+            InsertTLSSettings(stream);
             return stream;
         }
 
@@ -106,7 +106,7 @@ namespace V2RayGCon.Controller.Configer
             }
 
             var stream = cache.LoadTemplate(key);
-            PlugTlsSettings(stream);
+            InsertTLSSettings(stream);
             return stream;
         }
 
@@ -125,6 +125,8 @@ namespace V2RayGCon.Controller.Configer
                 prefix = "outbound.streamSettings";
             }
 
+            h2Path = GetStr(prefix, "httpSettings.path");
+
             wsPath = GetStr(prefix, "wsSettings.path");
 
             tls = Math.Max(0, Lib.Utils.GetIndexIgnoreCase(
@@ -142,7 +144,7 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region private method
-        void PlugTlsSettings(JToken streamSettings)
+        void InsertTLSSettings(JToken streamSettings)
         {
             var tlsTpl = cache.LoadTemplate("tls");
             if (tls <= 0)

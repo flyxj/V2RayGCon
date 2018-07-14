@@ -35,7 +35,7 @@ namespace V2RayGCon.Lib
          */
         public static JObject ParseImport(JObject config, int timeout = -1)
         {
-            var maxDepth = Lib.Utils.Str2Int(resData("ParseImportDepth"));
+            var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
 
             var result = ParseImportRecursively(
                 (urls) => FetchAllUrls(urls, timeout),
@@ -87,10 +87,10 @@ namespace V2RayGCon.Lib
 
             foreach (var c in configList)
             {
-                result = Lib.Utils.MergeConfig(result, c);
+                result = Lib.Utils.CombineConfig(result, c);
             }
 
-            return Lib.Utils.MergeConfig(result, config);
+            return Lib.Utils.CombineConfig(result, config);
         }
         #endregion
 
@@ -102,7 +102,7 @@ namespace V2RayGCon.Lib
             {
                 return config;
             }
-            return Lib.Utils.MergeConfig(config, JObject.Parse(overwrite));
+            return Lib.Utils.CombineConfig(config, JObject.Parse(overwrite));
         }
 
         static List<string> FetchAllUrls(List<string> urls, int timeout)
@@ -112,7 +112,7 @@ namespace V2RayGCon.Lib
                 return new List<string>();
             }
 
-            var retry = Lib.Utils.Str2Int(resData("ParseImportRetry"));
+            var retry = Lib.Utils.Str2Int(StrConst("ParseImportRetry"));
 
             return Lib.Utils.ExecuteInParallel<string, string>(
                 urls,

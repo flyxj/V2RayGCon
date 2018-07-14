@@ -67,11 +67,11 @@ namespace V2RayGCon.Controller.Configer
             }
             else
             {
-                vmess["vnext"][0]["address"] = _ip;
-                vmess["vnext"][0]["port"] = _port;
-                vmess["vnext"][0]["users"][0]["id"] = ID;
-                vmess["vnext"][0]["users"][0]["alterId"] = Lib.Utils.Str2Int(altID);
-                vmess["vnext"][0]["users"][0]["level"] = Lib.Utils.Str2Int(level);
+                vmess["settings"]["vnext"][0]["address"] = _ip;
+                vmess["settings"]["vnext"][0]["port"] = _port;
+                vmess["settings"]["vnext"][0]["users"][0]["id"] = ID;
+                vmess["settings"]["vnext"][0]["users"][0]["alterId"] = Lib.Utils.Str2Int(altID);
+                vmess["settings"]["vnext"][0]["users"][0]["level"] = Lib.Utils.Str2Int(level);
             }
 
             return vmess;

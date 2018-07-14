@@ -53,10 +53,11 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 Service.Cache.Instance.RemoveFromCache<string>(
-                    resData("CacheHTML"),
+                    StrConst("CacheHTML"),
                     Lib.ImportParser.GetImportUrls(config));
             });
         }
+
         public void ClearOriginalConfig()
         {
             originalConfig = string.Empty;
@@ -67,9 +68,29 @@ namespace V2RayGCon.Controller.Configer
             InsertConfigHelper(() =>
             {
                 var mtproto = cache.LoadTemplate("dtrMTProto") as JObject;
-                mtproto["inboundDetour"][0]["settings"]["users"][0]["secret"] =
-                    Lib.Utils.RandomHex(32);
-                config = Lib.Utils.MergeJson(config, mtproto);
+
+                foreach (string key in new string[] {
+                    "inboundDetour",
+                    "outboundDetour",
+                    "routing",
+                })
+                {
+                    var part = Lib.Utils.ExtractJObjectPart(mtproto, key);
+                    if (Lib.Utils.Contain(config, part))
+                    {
+                        try
+                        {
+                            Lib.Utils.RemoveKeyFromJObject(mtproto, key);
+                        }
+                        catch (KeyNotFoundException) { }
+                    }
+                }
+                var user0 = Lib.Utils.GetKey(mtproto, "inboundDetour.0.settings.users.0");
+                if (user0 != null && user0 is JObject)
+                {
+                    user0["secret"] = Lib.Utils.RandomHex(32);
+                }
+                config = Lib.Utils.CombineConfig(config, mtproto);
             });
         }
 
@@ -362,7 +383,17 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                InsertOutBoundSetting(ssClient.GetSettings(), "shadowsocks");
+                var outbound = Lib.Utils.CreateJObject("outbound");
+                outbound["outbound"]["settings"] = ssClient.GetSettings();
+                outbound["outbound"]["protocol"] = "shadowsocks";
+
+                try
+                {
+                    Lib.Utils.RemoveKeyFromJObject(config, "outbound.settings");
+                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, outbound);
             });
         }
 
@@ -370,40 +401,45 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                var vmess = vmessCtrl.GetSettings();
-                if (vmessCtrl.serverMode)
-                {
+                var key = vmessCtrl.serverMode ? "inbound" : "outbound";
+                var vmess = Lib.Utils.CreateJObject(key);
+                vmess[key] = vmessCtrl.GetSettings();
 
-                    var keys = new List<string> {
-                        "port",
-                        "listen",
-                        "settings",
-                        "protocol" };
-
-                    var temp = cache.LoadTemplate("emptyInOut");
-                    foreach (var key in keys)
-                    {
-                        temp["inbound"][key] = vmess[key];
-                    }
-                    config = Lib.Utils.MergeConfig(config, temp as JObject);
-                }
-                else
+                try
                 {
-                    InsertOutBoundSetting(vmess, "vmess");
+                    Lib.Utils.RemoveKeyFromJObject(config, key + ".settings");
                 }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, vmess);
             });
         }
 
         public void InsertSkipCN()
         {
-            var c = JObject.Parse(@"{}");
-            c["dns"] = cache.LoadExample("dnsCFnGoogle");
-            c["routing"] = cache.LoadExample("routeCNIP");
-            c["outboundDetour"] = cache.LoadExample("outDtrDefault");
-
             InsertConfigHelper(() =>
             {
-                config = Lib.Utils.MergeJson(config, c);
+                var c = JObject.Parse(@"{}");
+
+                var dict = new Dictionary<string, string> {
+                    { "dns","dnsCFnGoogle" },
+                    { "routing","routeCNIP" },
+                    { "outboundDetour","outDtrDefault" },
+                };
+
+                foreach (var item in dict)
+                {
+                    var tpl = Lib.Utils.CreateJObject(item.Key);
+                    var value = cache.LoadExample(item.Value);
+                    tpl[item.Key] = value;
+
+                    if (!Lib.Utils.Contain(config, tpl))
+                    {
+                        c[item.Key] = value;
+                    }
+                }
+
+                config = Lib.Utils.CombineConfig(config, c);
             });
         }
 
@@ -419,9 +455,16 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                var temp = cache.LoadTemplate("emptyInOut") as JObject;
-                temp["inbound"] = ssServer.GetSettings();
-                config = Lib.Utils.MergeConfig(config, temp);
+                var inbound = Lib.Utils.CreateJObject("inbound");
+                inbound["inbound"] = ssServer.GetSettings();
+
+                try
+                {
+                    Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
+                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, inbound);
             });
         }
 
@@ -459,22 +502,39 @@ namespace V2RayGCon.Controller.Configer
             UpdateData();
             ShowSection();
         }
+
+        public void InsertConfigHelper(Action lamda)
+        {
+            if (!CheckValid())
+            {
+                MessageBox.Show(I18N("PleaseCheckConfig"));
+                return;
+            }
+
+            SaveChanges();
+
+            lamda?.Invoke();
+
+            UpdateData();
+            ShowSection();
+        }
+
         #endregion
 
         #region private method
 
         void InsertStreamSetting(JToken streamSetting)
         {
-            var temp = cache.LoadTemplate("emptyInOut") as JObject;
-            if (streamSettings.isServer)
-            {
-                temp["inbound"]["streamSettings"] = streamSetting;
-            }
-            else
-            {
-                temp["inbound"]["streamSettings"] = streamSetting;
-            }
-            config = Lib.Utils.MergeConfig(config, temp);
+            var key = streamSettings.isServer ? "inbound" : "outbound";
+
+            var empty = Lib.Utils.CreateJObject(key);
+            var stream = empty.DeepClone() as JObject;
+
+            empty[key]["streamSettings"] = null;
+            stream[key]["streamSettings"] = streamSetting;
+
+            var temp = Lib.Utils.CombineConfig(config, empty);
+            config = Lib.Utils.CombineConfig(temp, stream);
         }
 
         bool FlushEditor()
@@ -496,34 +556,7 @@ namespace V2RayGCon.Controller.Configer
             return true;
         }
 
-        public void InsertConfigHelper(Action lamda)
-        {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
 
-            SaveChanges();
-
-            try
-            {
-                lamda?.Invoke();
-            }
-            catch { }
-
-            UpdateData();
-            ShowSection();
-        }
-
-        void InsertOutBoundSetting(JToken settings, string protocol)
-        {
-            var temp = cache.LoadTemplate("emptyInOut");
-            temp["outbound"]["settings"] = settings;
-            temp["outbound"]["protocol"] = protocol;
-            temp["outbound"]["tag"] = "agentout";
-            config = Lib.Utils.MergeConfig(config, temp as JObject);
-        }
 
         void LoadConfig(int index = -1)
         {
