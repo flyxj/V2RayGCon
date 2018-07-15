@@ -61,15 +61,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 html 的本地化字符串。
-        /// </summary>
-        internal static string CacheHTML {
-            get {
-                return ResourceManager.GetString("CacheHTML", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 summary 的本地化字符串。
         /// </summary>
         internal static string CacheSummary {

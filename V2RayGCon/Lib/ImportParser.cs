@@ -33,12 +33,12 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException> url not exist
          * test<Newtonsoft.Json.JsonReaderException> json decode fail
          */
-        public static JObject ParseImport(JObject config, int timeout = -1)
+        public static JObject ParseImport(JObject config)
         {
             var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
 
             var result = ParseImportRecursively(
-                (urls) => FetchAllUrls(urls, timeout),
+                GetContentFromCache,
                 config,
                 maxDepth);
 
@@ -105,7 +105,7 @@ namespace V2RayGCon.Lib
             return Lib.Utils.CombineConfig(config, JObject.Parse(overwrite));
         }
 
-        static List<string> FetchAllUrls(List<string> urls, int timeout)
+        static List<string> GetContentFromCache(List<string> urls)
         {
             if (urls.Count <= 0)
             {
@@ -116,19 +116,7 @@ namespace V2RayGCon.Lib
 
             return Lib.Utils.ExecuteInParallel<string, string>(
                 urls,
-                (url) =>
-                {
-                    var html = string.Empty;
-
-                    for (var i = 0;
-                    i < retry && string.IsNullOrEmpty(html);
-                    i++)
-                    {
-                        html = Lib.Utils.Fetch(url, timeout, true);
-                    }
-
-                    return html;
-                });
+                Service.Cache.Instance.html.GetCache);
         }
 
         #endregion

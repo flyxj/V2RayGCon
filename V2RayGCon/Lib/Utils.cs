@@ -613,31 +613,8 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region net
-
-        static string FetchFromCache(string url)
+        public static string Fetch(string url, int timeout = -1)
         {
-            var cache = Service.Cache.Instance.
-                GetCache<string>(StrConst("CacheHTML")).
-                Item2;
-
-            if (cache.ContainsKey(url))
-            {
-                return cache[url];
-            }
-            return null;
-        }
-
-        public static string Fetch(string url, int timeout = -1, bool useCache = false)
-        {
-            if (useCache)
-            {
-                var cache = FetchFromCache(url);
-                if (cache != null)
-                {
-                    return cache;
-                }
-            }
-
             var html = string.Empty;
 
             Lib.Utils.SupportProtocolTLS12();
@@ -654,10 +631,6 @@ namespace V2RayGCon.Lib
                 try
                 {
                     html = wc.DownloadString(url);
-                    if (!string.IsNullOrEmpty(html))
-                    {
-                        cache.UpdateHTMLCache(url, html);
-                    }
                 }
                 catch { }
             }
@@ -666,7 +639,7 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(StrConst("UrlLatestVGC"), 10000);
+            string html = Fetch(StrConst("UrlLatestVGC"));
 
             if (string.IsNullOrEmpty(html))
             {
@@ -687,7 +660,7 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(StrConst("ReleasePageUrl"), 10000);
+            string html = Fetch(StrConst("ReleasePageUrl"));
 
             if (string.IsNullOrEmpty(html))
             {

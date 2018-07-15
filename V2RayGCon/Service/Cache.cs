@@ -13,6 +13,7 @@ namespace V2RayGCon.Service
         Dictionary<string, JObject> json;
         Dictionary<string, string> decode;
         object writeDecodeCacheLock;
+        public Caches.HTML html;
 
         Cache()
         {
@@ -25,6 +26,7 @@ namespace V2RayGCon.Service
                 { "example",JObject.Parse(StrConst("config_def"))},
                 { "minConfig",JObject.Parse(StrConst("config_min"))},
             };
+            html = new Caches.HTML();
         }
 
         #region public method
@@ -76,22 +78,8 @@ namespace V2RayGCon.Service
             }
         }
 
-        public void ClearAllCache()
+        public void ClearSummariesCache()
         {
-            var cache = GetCache<string>(StrConst("CacheHTML"));
-            lock (cache.Item1)
-            {
-                var d = cache.Item2 as Dictionary<string, string>;
-                var keys = new List<string>(d.Keys);
-                foreach (var key in keys)
-                {
-                    if (d.ContainsKey(key))
-                    {
-                        d.Remove(key);
-                    }
-                }
-            }
-
             var summary = GetCache<string[]>(StrConst("CacheSummary"));
             lock (summary.Item1)
             {
@@ -104,22 +92,6 @@ namespace V2RayGCon.Service
                         d.Remove(key);
                     }
                 }
-            }
-        }
-
-        public void UpdateHTMLCache(string url, string html)
-        {
-            if (html == null || string.IsNullOrEmpty(html))
-            {
-                return;
-            }
-
-            var cache = GetCache<string>(StrConst("CacheHTML"));
-
-            lock (cache.Item1)
-            {
-                var d = cache.Item2 as Dictionary<string, string>;
-                d[url] = html;
             }
         }
 

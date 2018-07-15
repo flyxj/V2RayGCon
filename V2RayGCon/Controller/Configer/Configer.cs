@@ -52,8 +52,7 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                Service.Cache.Instance.RemoveFromCache<string>(
-                    StrConst("CacheHTML"),
+                Service.Cache.Instance.html.RemoveCache(
                     Lib.ImportParser.GetImportUrls(config));
             });
         }

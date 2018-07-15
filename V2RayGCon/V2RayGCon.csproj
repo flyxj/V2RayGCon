@@ -119,6 +119,8 @@
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
+    <Compile Include="Model\Data\LockStrPair.cs" />
+    <Compile Include="Service\Caches\HTML.cs" />
     <Compile Include="Model\Data\EventList.cs" />
     <Compile Include="Model\Data\DataEvent.cs" />
     <Compile Include="Model\Data\Enum.cs" />
@@ -303,5 +305,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

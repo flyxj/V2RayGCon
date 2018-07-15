@@ -522,7 +522,8 @@ namespace V2RayGCon.Service
 
         public void FixServersSummary()
         {
-            Cache.Instance.ClearAllCache();
+            Cache.Instance.ClearSummariesCache();
+            Cache.Instance.html.RemoveAllCache();
             UpdateSummaryCache(new List<string>(servers));
         }
         #endregion
@@ -700,8 +701,7 @@ namespace V2RayGCon.Service
                 var config = JObject.Parse(Lib.Utils.Base64Decode(server));
                 try
                 {
-                    var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
-                    config = Lib.ImportParser.ParseImport(config, timeout * 1000);
+                    config = Lib.ImportParser.ParseImport(config);
                     return GetSummaryFromConfig(config);
                 }
                 catch

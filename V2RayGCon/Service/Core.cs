@@ -85,8 +85,7 @@ namespace V2RayGCon.Service
 
             try
             {
-                var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
-                config = Lib.ImportParser.ParseImport(config, timeout * 1000);
+                config = Lib.ImportParser.ParseImport(config);
                 cache.UpdateDecodeCache(b64Config, config.ToString(Newtonsoft.Json.Formatting.None));
             }
             catch

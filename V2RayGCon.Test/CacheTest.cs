@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Net;
 
 namespace V2RayGCon.Test
 {
@@ -7,9 +9,48 @@ namespace V2RayGCon.Test
     public class CacheTest
     {
         V2RayGCon.Service.Cache cache;
+
         public CacheTest()
         {
             cache = V2RayGCon.Service.Cache.Instance;
+        }
+
+        [TestMethod]
+        public void HTMLFailTest()
+        {
+            Assert.ThrowsException<WebException>(() =>
+            {
+                cache.html.GetCache("");
+            });
+        }
+
+        [DataTestMethod]
+        [DataRow("http://suo.im/4CTgF5")]
+        [DataRow("http://suo.im/4CTgF5,http://suo.im/5lp5PJ")]
+        [DataRow("http://suo.im/4CTgF5,http://suo.im/5lp5PJ,http://suo.im/4JJwhs")]
+        public void HTMLNormalTest(string rawData)
+        {
+            var data = rawData.Split(',');
+            var urls = new List<string>();
+            var len = data.Length;
+            for (var i = 0; i < 1000; i++)
+            {
+                urls.Add(data[i % len]);
+            }
+            var html = cache.html;
+
+            try
+            {
+                Lib.Utils.ExecuteInParallel<string, string>(urls, (url) =>
+                {
+                    return html.GetCache(url);
+                });
+                html.RemoveAllCache();
+            }
+            catch
+            {
+                Assert.Fail();
+            }
         }
 
         [DataTestMethod]
