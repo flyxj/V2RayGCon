@@ -14,12 +14,14 @@ namespace V2RayGCon.Service
     {
         Process v2rayCore;
         Setting setting;
+        Cache cache;
 
         public event EventHandler OnCoreStatChange;
 
         Core()
         {
             v2rayCore = null;
+            cache = Cache.Instance;
             setting = Setting.Instance;
             setting.OnRequireCoreRestart += (s, a) =>
             {
@@ -80,17 +82,26 @@ namespace V2RayGCon.Service
 
             string plainText = Lib.Utils.Base64Decode(b64Config);
             JObject config = JObject.Parse(plainText);
+
             try
             {
                 var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
                 config = Lib.ImportParser.ParseImport(config, timeout * 1000);
+                cache.UpdateDecodeCache(b64Config, config.ToString(Newtonsoft.Json.Formatting.None));
             }
             catch
             {
                 setting.SendLog(I18N("DecodeImportFail"));
-                StopCoreThen(null);
-                return;
+                var cacheConfig = cache.GetDecodeCache(b64Config);
+                if (string.IsNullOrEmpty(cacheConfig))
+                {
+                    StopCoreThen(null);
+                    return;
+                }
+                setting.SendLog(I18N("UsingDecodeCache"));
+                config = JObject.Parse(cacheConfig);
             }
+
             OverwriteInboundSettings(config);
             RestartCore(config.ToString());
         }

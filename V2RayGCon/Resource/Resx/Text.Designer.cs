@@ -796,6 +796,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Use decode cache. 的本地化字符串。
+        /// </summary>
+        internal static string UsingDecodeCache {
+            get {
+                return ResourceManager.GetString("UsingDecodeCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Vist v-link wiki page? 的本地化字符串。
         /// </summary>
         internal static string VisitVlinkPage {

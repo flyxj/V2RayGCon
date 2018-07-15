@@ -391,4 +391,7 @@ Please use [Add new server] or [Replace server].</value>
   <data name="FileNotFound" xml:space="preserve">
     <value>File not found!</value>
   </data>
+  <data name="UsingDecodeCache" xml:space="preserve">
+    <value>Use decode cache.</value>
+  </data>
 </root>

@@ -11,11 +11,13 @@ namespace V2RayGCon.Service
         Dictionary<string, object> writeLock;
         Dictionary<string, object> data;
         Dictionary<string, JObject> json;
+        Dictionary<string, string> decode;
 
         Cache()
         {
             writeLock = new Dictionary<string, object>();
             data = new Dictionary<string, object>();
+            decode = LoadDecodeCache();
             json = new Dictionary<string, JObject> {
                 { "template",JObject.Parse(StrConst("config_tpl"))},
                 { "example",JObject.Parse(StrConst("config_def"))},
@@ -24,6 +26,42 @@ namespace V2RayGCon.Service
         }
 
         #region public method
+        public string GetDecodeCache(string configString)
+        {
+            if (decode.ContainsKey(configString))
+            {
+                return decode[configString];
+            }
+
+            return string.Empty;
+        }
+
+        public void UpdateDecodeCache(string configString, string decodedString)
+        {
+            try
+            {
+                JObject.Parse(decodedString);
+            }
+            catch
+            {
+                return;
+            }
+
+            var keys = new List<string>(decode.Keys);
+            var cacheSize = Lib.Utils.Str2Int(StrConst("DecodeCacheSize"));
+
+            for (var i = 0; i < keys.Count - cacheSize; i++)
+            {
+                if (decode.ContainsKey(keys[i]))
+                {
+                    decode.Remove(keys[i]);
+                }
+            }
+
+            decode[configString] = decodedString;
+            SaveDecodeCache();
+        }
+
         public void ClearAllCache()
         {
             var cache = GetCache<string>(StrConst("CacheHTML"));
@@ -121,6 +159,37 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        Dictionary<string, string> LoadDecodeCache()
+        {
+            var result = new Dictionary<string, string>();
+            var decodeRawStr = Properties.Settings.Default.DecodeCache;
+            try
+            {
+                var temp = JsonConvert.DeserializeObject<Dictionary<string, string>>(decodeRawStr);
+                foreach (var item in temp)
+                {
+                    try
+                    {
+                        JObject.Parse(item.Value);
+                        result[item.Key] = item.Value;
+                    }
+                    catch
+                    {
+                        // continue
+                    }
+                }
+            }
+            catch { }
+            return result;
+        }
+
+        void SaveDecodeCache()
+        {
+            string json = JsonConvert.SerializeObject(decode);
+            Properties.Settings.Default.DecodeCache = json;
+            Properties.Settings.Default.Save();
+        }
+
         JToken LoadJObjectPart(JObject source, string path)
         {
             var result = Lib.Utils.GetKey(source, path);
