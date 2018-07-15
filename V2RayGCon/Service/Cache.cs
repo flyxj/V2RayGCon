@@ -12,9 +12,11 @@ namespace V2RayGCon.Service
         Dictionary<string, object> data;
         Dictionary<string, JObject> json;
         Dictionary<string, string> decode;
+        object writeDecodeCacheLock;
 
         Cache()
         {
+            writeDecodeCacheLock = new object();
             writeLock = new Dictionary<string, object>();
             data = new Dictionary<string, object>();
             decode = LoadDecodeCache();
@@ -26,6 +28,15 @@ namespace V2RayGCon.Service
         }
 
         #region public method
+        public void ClearDecodeCache()
+        {
+            lock (writeDecodeCacheLock)
+            {
+                decode = new Dictionary<string, string>();
+                SaveDecodeCache();
+            }
+        }
+
         public string GetDecodeCache(string configString)
         {
             if (decode.ContainsKey(configString))
@@ -47,19 +58,22 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            var keys = new List<string>(decode.Keys);
-            var cacheSize = Lib.Utils.Str2Int(StrConst("DecodeCacheSize"));
-
-            for (var i = 0; i < keys.Count - cacheSize; i++)
+            lock (writeDecodeCacheLock)
             {
-                if (decode.ContainsKey(keys[i]))
-                {
-                    decode.Remove(keys[i]);
-                }
-            }
+                var keys = new List<string>(decode.Keys);
+                var cacheSize = Lib.Utils.Str2Int(StrConst("DecodeCacheSize"));
 
-            decode[configString] = decodedString;
-            SaveDecodeCache();
+                for (var i = 0; i < keys.Count - cacheSize; i++)
+                {
+                    if (decode.ContainsKey(keys[i]))
+                    {
+                        decode.Remove(keys[i]);
+                    }
+                }
+
+                decode[configString] = decodedString;
+                SaveDecodeCache();
+            }
         }
 
         public void ClearAllCache()

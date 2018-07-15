@@ -257,6 +257,7 @@ namespace V2RayGCon.Service
         {
             servers.Clear();
             SaveServers();
+            Cache.Instance.ClearDecodeCache();
             OnSettingChange?.Invoke(this, EventArgs.Empty);
             OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
         }
