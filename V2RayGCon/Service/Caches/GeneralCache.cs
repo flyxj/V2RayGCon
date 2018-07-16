@@ -5,8 +5,8 @@ namespace V2RayGCon.Service.Caches
 {
     public class GeneralCache<TKey, TValue> : Model.BaseClass.ICacheComponent<TKey, TValue>
     {
-        object writeLock;
-        Dictionary<TKey, Model.Data.LockValuePair<TValue>> data;
+        public object writeLock;
+        public Dictionary<TKey, Model.Data.LockValuePair<TValue>> data;
 
         public GeneralCache()
         {
@@ -15,6 +15,11 @@ namespace V2RayGCon.Service.Caches
         }
 
         #region public method
+        public bool ContainsKey(TKey key)
+        {
+            return data.ContainsKey(key);
+        }
+
         public int Count
         {
             get => data.Count;
@@ -61,7 +66,21 @@ namespace V2RayGCon.Service.Caches
                     return data[key].content;
                 }
             }
+            set
+            {
+                lock (writeLock)
+                {
+                    if (!data.ContainsKey(key))
+                    {
+                        data[key] = new Model.Data.LockValuePair<TValue>();
+                    }
+                    data[key].content = value;
+                }
+            }
         }
+        #endregion
+
+        #region private method
         #endregion
     }
 }

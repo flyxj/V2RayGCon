@@ -1,67 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service.Caches
 {
-
-    public class HTML : Model.BaseClass.ICacheComponent<string, string>
+    public class HTML : GeneralCache<string, string>
     {
-        // main lock
-        object writeLock;
-
-        // url=(rwLock, content)
-        Dictionary<string, Model.Data.LockValuePair<string>> data;
-
-        public HTML()
-        {
-            writeLock = new object();
-            Clear();
-        }
-
         #region public method
-        public int Count
-        {
-            get => data.Count;
-        }
-
-        public string[] Keys
-        {
-            get => data.Keys.ToArray();
-        }
-
-        public void Remove(List<string> urls)
-        {
-            lock (writeLock)
-            {
-                foreach (var url in urls)
-                {
-                    if (data.ContainsKey(url))
-                    {
-                        lock (data[url].rwLock)
-                        {
-                            data.Remove(url);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void Clear()
-        {
-            lock (writeLock)
-            {
-                data = new Dictionary<string, Model.Data.LockValuePair<string>>();
-            }
-        }
-
-        public string this[string url]
+        public new string this[string url]
         {
             get => GetCache(url);
         }
-
-
         #endregion
 
         #region private method
@@ -69,7 +17,7 @@ namespace V2RayGCon.Service.Caches
         {
             lock (writeLock)
             {
-                if (!data.ContainsKey(url))
+                if (!ContainsKey(url))
                 {
                     data[url] = new Model.Data.LockValuePair<string>();
                 }

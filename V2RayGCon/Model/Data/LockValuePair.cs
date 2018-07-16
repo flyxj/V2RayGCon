@@ -1,6 +1,6 @@
 ﻿namespace V2RayGCon.Model.Data
 {
-    class LockValuePair<TValue>
+    public class LockValuePair<TValue>
     {
         public object rwLock;
         public TValue content;
