@@ -424,7 +424,7 @@ namespace V2RayGCon.Lib
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
 
-            var config = cache.LoadTemplate("tplImportSS");
+            var config = cache.tpl.LoadTemplate("tplImportSS");
 
             var setting = config["outbound"]["settings"]["servers"][0];
             setting["address"] = ip;
@@ -493,7 +493,7 @@ namespace V2RayGCon.Lib
             }
 
             // prepare template
-            var config = cache.LoadTemplate("tplImportVmess");
+            var config = cache.tpl.LoadTemplate("tplImportVmess");
             config["v2raygcon"]["alias"] = vmess.ps;
 
             var cPos = config["outbound"]["settings"]["vnext"][0];
@@ -511,7 +511,8 @@ namespace V2RayGCon.Lib
                 return config.DeepClone() as JObject;
             }
 
-            config["outbound"]["streamSettings"] = cache.LoadTemplate(streamType);
+            config["outbound"]["streamSettings"] =
+                cache.tpl.LoadTemplate(streamType);
 
             try
             {

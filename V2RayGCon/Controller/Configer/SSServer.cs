@@ -70,7 +70,8 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetSettings()
         {
-            JToken server = Service.Cache.Instance.LoadTemplate("ssServer");
+            JToken server = Service.Cache.Instance.
+                tpl.LoadTemplate("ssServer");
 
             var methods = Model.Data.Table.ssMethods;
             var networks = Model.Data.Table.ssNetworks;

@@ -116,10 +116,13 @@
     </Compile>
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
+    <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
-    <Compile Include="Model\Data\LockStrPair.cs" />
+    <Compile Include="Model\Data\LockValuePair.cs" />
+    <Compile Include="Service\Caches\CoreCache.cs" />
+    <Compile Include="Service\Caches\GeneralCache.cs" />
     <Compile Include="Service\Caches\HTML.cs" />
     <Compile Include="Model\Data\EventList.cs" />
     <Compile Include="Model\Data\DataEvent.cs" />
@@ -143,6 +146,7 @@
     </Compile>
     <Compile Include="Model\Data\Vmess.cs" />
     <Compile Include="Service\Cache.cs" />
+    <Compile Include="Service\Caches\Template.cs" />
     <Compile Include="Service\Downloader.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Settings.cs" />

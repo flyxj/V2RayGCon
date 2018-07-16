@@ -56,7 +56,8 @@ namespace V2RayGCon.Service
                 config["inbound"]["protocol"] = protocol;
                 config["inbound"]["listen"] = ip;
                 config["inbound"]["port"] = port;
-                config["inbound"]["settings"] = Cache.Instance.LoadTemplate(part);
+                config["inbound"]["settings"] =
+                    Cache.Instance.tpl.LoadTemplate(part);
                 if (type == (int)Model.Data.Enum.ProxyTypes.socks)
                 {
                     config["inbound"]["settings"]["ip"] = ip;
@@ -86,12 +87,12 @@ namespace V2RayGCon.Service
             try
             {
                 config = Lib.ImportParser.ParseImport(config);
-                cache.UpdateDecodeCache(b64Config, config.ToString(Newtonsoft.Json.Formatting.None));
+                cache.core[b64Config] = config.ToString(Newtonsoft.Json.Formatting.None);
             }
             catch
             {
                 setting.SendLog(I18N("DecodeImportFail"));
-                var cacheConfig = cache.GetDecodeCache(b64Config);
+                var cacheConfig = cache.core[b64Config];
                 if (string.IsNullOrEmpty(cacheConfig))
                 {
                     StopCoreThen(null);

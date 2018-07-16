@@ -56,7 +56,7 @@ namespace V2RayGCon.Controller.Configer
         public JToken GetSettings()
         {
             JToken client = Service.Cache.Instance.
-                LoadTemplate("ssClient");
+                tpl.LoadTemplate("ssClient");
 
             var ssMethods = Model.Data.Table.ssMethods;
 

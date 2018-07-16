@@ -87,21 +87,24 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void GetValue_GetBoolFromString_ReturnDefault()
         {
-            var json = Service.Cache.Instance.LoadMinConfig();
+            var json = Service.Cache.Instance.
+                tpl.LoadMinConfig();
             Assert.AreEqual(default(bool), GetValue<bool>(json, "log.loglevel"));
         }
 
         [TestMethod]
         public void GetValue_GetStringNotExist_ReturnNull()
         {
-            var json = Service.Cache.Instance.LoadMinConfig();
+            var json = Service.Cache.Instance.
+                tpl.LoadMinConfig();
             Assert.AreEqual(string.Empty, GetValue<string>(json, "log.keyNotExist"));
         }
 
         [TestMethod]
         public void GetValue_KeyNotExist_ReturnDefault()
         {
-            var json = Service.Cache.Instance.LoadMinConfig();
+            var json = Service.Cache.Instance.
+                tpl.LoadMinConfig();
             var value = Lib.Utils.GetValue<int>(json, "log.key_not_exist");
             Assert.AreEqual(default(int), value);
         }

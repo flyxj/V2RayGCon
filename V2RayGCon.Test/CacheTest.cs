@@ -16,11 +16,17 @@ namespace V2RayGCon.Test
         }
 
         [TestMethod]
+        public void GeneralCacheNormalTest()
+        {
+
+        }
+
+        [TestMethod]
         public void HTMLFailTest()
         {
             Assert.ThrowsException<WebException>(() =>
             {
-                cache.html.GetCache("");
+                var t = cache.html[""];
             });
         }
 
@@ -38,26 +44,30 @@ namespace V2RayGCon.Test
                 urls.Add(data[i % len]);
             }
             var html = cache.html;
+            html.Clear();
 
             try
             {
                 Lib.Utils.ExecuteInParallel<string, string>(urls, (url) =>
                 {
-                    return html.GetCache(url);
+                    return html[url];
                 });
-                html.RemoveAllCache();
             }
             catch
             {
                 Assert.Fail();
             }
+
+            Assert.AreEqual<int>(data.Length, html.Count);
+            html.Clear();
+            Assert.AreEqual<int>(0, html.Count);
         }
 
         [DataTestMethod]
         [DataRow(@"inTpl.domainOverride", @"['http','tls']")]
         public void LoadExampleTest(string key, string expect)
         {
-            var v = cache.LoadExample(key);
+            var v = cache.tpl.LoadExample(key);
             var e = JToken.Parse(expect);
             Assert.AreEqual(true, JToken.DeepEquals(v, e));
 
@@ -67,7 +77,7 @@ namespace V2RayGCon.Test
         [DataRow(@"vgc", @"{'alias': '','description': ''}")]
         public void LoadTplTest(string key, string expect)
         {
-            var v = cache.LoadTemplate(key);
+            var v = cache.tpl.LoadTemplate(key);
             var e = JObject.Parse(expect);
             Assert.AreEqual(true, JObject.DeepEquals(v, e));
         }
@@ -75,7 +85,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void LoadMinConfigTest()
         {
-            var min = cache.LoadMinConfig();
+            var min = cache.tpl.LoadMinConfig();
             var v = Lib.Utils.GetValue<string>(min, "log.loglevel");
             Assert.AreEqual<string>("warning", v);
         }

@@ -52,7 +52,7 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                Service.Cache.Instance.html.RemoveCache(
+                Service.Cache.Instance.html.Remove(
                     Lib.ImportParser.GetImportUrls(config));
             });
         }
@@ -66,7 +66,7 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                var mtproto = cache.LoadTemplate("dtrMTProto") as JObject;
+                var mtproto = cache.tpl.LoadTemplate("dtrMTProto") as JObject;
 
                 foreach (string key in new string[] {
                     "inboundDetour",
@@ -300,21 +300,21 @@ namespace V2RayGCon.Controller.Configer
 
                 if (preSection == Model.Data.Table.inboundIndex)
                 {
-                    var inTpl = cache.LoadExample("inTpl");
+                    var inTpl = cache.tpl.LoadExample("inTpl");
                     inTpl["protocol"] = examples[preSection][index][2];
-                    inTpl["settings"] = cache.LoadExample(key);
+                    inTpl["settings"] = cache.tpl.LoadExample(key);
                     content = inTpl.ToString();
                 }
                 else if (preSection == Model.Data.Table.outboundIndex)
                 {
-                    var outTpl = cache.LoadExample("outTpl");
+                    var outTpl = cache.tpl.LoadExample("outTpl");
                     outTpl["protocol"] = examples[preSection][index][2];
-                    outTpl["settings"] = cache.LoadExample(key);
+                    outTpl["settings"] = cache.tpl.LoadExample(key);
                     content = outTpl.ToString();
                 }
                 else
                 {
-                    content = cache.LoadExample(key).ToString();
+                    content = cache.tpl.LoadExample(key).ToString();
                 }
 
                 editor.content = content;
@@ -429,7 +429,7 @@ namespace V2RayGCon.Controller.Configer
                 foreach (var item in dict)
                 {
                     var tpl = Lib.Utils.CreateJObject(item.Key);
-                    var value = cache.LoadExample(item.Value);
+                    var value = cache.tpl.LoadExample(item.Value);
                     tpl[item.Key] = value;
 
                     if (!Lib.Utils.Contain(config, tpl))
@@ -572,7 +572,7 @@ namespace V2RayGCon.Controller.Configer
 
             if (o == null)
             {
-                o = cache.LoadMinConfig();
+                o = cache.tpl.LoadMinConfig();
                 MessageBox.Show(I18N("EditorCannotLoadServerConfig"));
             }
 

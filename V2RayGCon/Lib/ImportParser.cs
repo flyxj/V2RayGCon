@@ -112,11 +112,9 @@ namespace V2RayGCon.Lib
                 return new List<string>();
             }
 
-            var retry = Lib.Utils.Str2Int(StrConst("ParseImportRetry"));
-
             return Lib.Utils.ExecuteInParallel<string, string>(
                 urls,
-                Service.Cache.Instance.html.GetCache);
+                (url) => Service.Cache.Instance.html[url]);
         }
 
         #endregion

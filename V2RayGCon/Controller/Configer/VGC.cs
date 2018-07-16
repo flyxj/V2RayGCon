@@ -29,7 +29,8 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetSettings()
         {
-            JToken vgc = Service.Cache.Instance.LoadTemplate("vgc");
+            JToken vgc = Service.Cache.Instance.
+                tpl.LoadTemplate("vgc");
 
             vgc["alias"] = alias;
             vgc["description"] = description;

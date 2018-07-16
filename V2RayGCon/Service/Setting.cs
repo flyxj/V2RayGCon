@@ -257,7 +257,7 @@ namespace V2RayGCon.Service
         {
             servers.Clear();
             SaveServers();
-            Cache.Instance.ClearDecodeCache();
+            Cache.Instance.core.Clear();
             OnSettingChange?.Invoke(this, EventArgs.Empty);
             OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
         }
@@ -520,10 +520,10 @@ namespace V2RayGCon.Service
             return true;
         }
 
-        public void FixServersSummary()
+        public void RefreshSummaries()
         {
-            Cache.Instance.ClearSummariesCache();
-            Cache.Instance.html.RemoveAllCache();
+            Cache.Instance.Clear<string[]>(StrConst("CacheSummary"));
+            Cache.Instance.html.Clear();
             UpdateSummaryCache(new List<string>(servers));
         }
         #endregion

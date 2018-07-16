@@ -1,14 +1,14 @@
 ﻿namespace V2RayGCon.Model.Data
 {
-    class LockStrPair
+    class LockValuePair<TValue>
     {
         public object rwLock;
-        public string content;
+        public TValue content;
 
-        public LockStrPair()
+        public LockValuePair()
         {
             rwLock = new object();
-            content = null;
+            content = default(TValue);
         }
 
     }

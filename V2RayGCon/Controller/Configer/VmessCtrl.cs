@@ -54,8 +54,9 @@ namespace V2RayGCon.Controller.Configer
         #region public method
         public JToken GetSettings()
         {
-            JToken vmess = Service.Cache.Instance.LoadTemplate(
-                serverMode ? "vmessServer" : "vmessClient");
+            JToken vmess = Service.Cache.Instance.
+                tpl.LoadTemplate(serverMode ?
+                "vmessServer" : "vmessClient");
 
             if (serverMode)
             {

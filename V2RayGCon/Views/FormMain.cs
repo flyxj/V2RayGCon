@@ -61,7 +61,7 @@ namespace V2RayGCon.Views
         #region private method
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setting.FixServersSummary();
+            setting.RefreshSummaries();
         }
 
         void SettingChangeHandler(object s, EventArgs e)

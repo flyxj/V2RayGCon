@@ -72,14 +72,14 @@ namespace V2RayGCon.Controller.Configer
                 key = "kcp_" + Model.Data.Table.kcpTypes[kcpType];
             }
 
-            JToken stream = cache.LoadTemplate(key);
+            JToken stream = cache.tpl.LoadTemplate(key);
             InsertTLSSettings(stream);
             return stream;
         }
 
         public JToken GetH2Setting()
         {
-            JToken stream = cache.LoadTemplate("h2");
+            JToken stream = cache.tpl.LoadTemplate("h2");
             stream["httpSettings"]["path"] = h2Path;
 
             InsertTLSSettings(stream);
@@ -88,7 +88,7 @@ namespace V2RayGCon.Controller.Configer
 
         public JToken GetWSSetting()
         {
-            JToken stream = cache.LoadTemplate("ws");
+            JToken stream = cache.tpl.LoadTemplate("ws");
             stream["wsSettings"]["path"] = wsPath;
 
             InsertTLSSettings(stream);
@@ -105,7 +105,7 @@ namespace V2RayGCon.Controller.Configer
                 key = "tcp_" + Model.Data.Table.tcpTypes[tcpType];
             }
 
-            var stream = cache.LoadTemplate(key);
+            var stream = cache.tpl.LoadTemplate(key);
             InsertTLSSettings(stream);
             return stream;
         }
@@ -146,7 +146,7 @@ namespace V2RayGCon.Controller.Configer
         #region private method
         void InsertTLSSettings(JToken streamSettings)
         {
-            var tlsTpl = cache.LoadTemplate("tls");
+            var tlsTpl = cache.tpl.LoadTemplate("tls");
             if (tls <= 0)
             {
                 streamSettings["security"] = string.Empty;
