@@ -3,7 +3,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service.Caches
 {
-    public class HTML : GeneralCache<string, string>
+    public class HTML : Model.BaseClass.CacheComponent<string, string>
     {
         #region public method
         public new string this[string url]

@@ -61,15 +61,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 summary 的本地化字符串。
-        /// </summary>
-        internal static string CacheSummary {
-            get {
-                return ResourceManager.GetString("CacheSummary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {
         ///  &quot;inTpl&quot;: {
         ///    &quot;port&quot;: 1080,

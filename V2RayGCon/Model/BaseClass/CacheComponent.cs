@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace V2RayGCon.Service.Caches
+namespace V2RayGCon.Model.BaseClass
 {
-    public class GeneralCache<TKey, TValue> : Model.BaseClass.ICacheComponent<TKey, TValue>
+    public class CacheComponent<TKey, TValue> : ICacheComponent<TKey, TValue>
     {
         public object writeLock;
         public Dictionary<TKey, Model.Data.LockValuePair<TValue>> data;
 
-        public GeneralCache()
+        public CacheComponent()
         {
             writeLock = new object();
             Clear();

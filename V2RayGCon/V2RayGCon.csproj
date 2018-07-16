@@ -122,7 +122,7 @@
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
     <Compile Include="Service\Caches\CoreCache.cs" />
-    <Compile Include="Service\Caches\GeneralCache.cs" />
+    <Compile Include="Model\BaseClass\CacheComponent.cs" />
     <Compile Include="Service\Caches\HTML.cs" />
     <Compile Include="Model\Data\EventList.cs" />
     <Compile Include="Model\Data\DataEvent.cs" />
