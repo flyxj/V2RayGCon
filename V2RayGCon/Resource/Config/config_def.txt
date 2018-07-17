@@ -140,7 +140,8 @@
     "tcpSettings": {},
     "kcpSettings": {},
     "wsSettings": {},
-    "httpSettings": {}
+    "httpSettings": {},
+    "dsSettings": {}
   },
   "inDtrDefault": [
     {

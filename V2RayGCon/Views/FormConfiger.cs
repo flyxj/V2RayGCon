@@ -86,6 +86,7 @@ namespace V2RayGCon.Views
 
             tboxWSPath.DataBindings.Add("Text", bs, nameof(streamClient.wsPath));
             tboxH2Path.DataBindings.Add("Text", bs, nameof(streamClient.h2Path));
+            tboxDSockPath.DataBindings.Add("Text", bs, nameof(streamClient.domainSocketPath));
 
             cboxKCPType.DataBindings.Add(
                 nameof(cboxKCPType.SelectedIndex),
@@ -671,6 +672,11 @@ namespace V2RayGCon.Views
         private void btnImportClearCache_Click(object sender, EventArgs e)
         {
             configer.ClearHTMLCache();
+        }
+
+        private void btnStreamInsertDSock_Click(object sender, EventArgs e)
+        {
+            configer.InsertDSock();
         }
 
         void ShowSearchBox()

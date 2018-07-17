@@ -343,6 +343,15 @@ namespace V2RayGCon.Controller.Configer
             });
         }
 
+        public void InsertDSock()
+        {
+            InsertConfigHelper(() =>
+            {
+                InsertStreamSetting(
+                    streamSettings.GetDSockSetting());
+            });
+        }
+
         public void InsertWS()
         {
             InsertConfigHelper(() =>

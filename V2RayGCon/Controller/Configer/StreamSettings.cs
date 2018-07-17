@@ -36,6 +36,13 @@ namespace V2RayGCon.Controller.Configer
             set { SetField(ref _wsPath, value); }
         }
 
+        private string _dsPath;
+        public string domainSocketPath
+        {
+            get { return _dsPath; }
+            set { SetField(ref _dsPath, value); }
+        }
+
         private string _h2Path;
         public string h2Path
         {
@@ -95,6 +102,15 @@ namespace V2RayGCon.Controller.Configer
             return stream;
         }
 
+        public JToken GetDSockSetting()
+        {
+            JToken stream = cache.tpl.LoadTemplate("dsock");
+            stream["dsSettings"]["path"] = domainSocketPath;
+
+            InsertTLSSettings(stream);
+            return stream;
+        }
+
         public JToken GetTCPSetting()
         {
             // 0 -> none -> tcp
@@ -128,6 +144,8 @@ namespace V2RayGCon.Controller.Configer
             h2Path = GetStr(prefix, "httpSettings.path");
 
             wsPath = GetStr(prefix, "wsSettings.path");
+
+            domainSocketPath = GetStr(prefix, "dsSettings.path");
 
             tls = Math.Max(0, Lib.Utils.GetIndexIgnoreCase(
                 Model.Data.Table.streamSecurity,
