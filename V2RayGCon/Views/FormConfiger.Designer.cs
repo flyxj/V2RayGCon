@@ -853,8 +853,8 @@
             // cboxExamples
             // 
             this.cboxExamples.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxExamples.FormattingEnabled = true;
             resources.ApplyResources(this.cboxExamples, "cboxExamples");
+            this.cboxExamples.FormattingEnabled = true;
             this.cboxExamples.Name = "cboxExamples";
             this.cboxExamples.SelectedIndexChanged += new System.EventHandler(this.cboxExamples_SelectedIndexChanged);
             // 
