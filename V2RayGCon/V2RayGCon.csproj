@@ -120,6 +120,7 @@
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
+    <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
     <Compile Include="Service\Caches\CoreCache.cs" />
     <Compile Include="Model\BaseClass\CacheComponent.cs" />

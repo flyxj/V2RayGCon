@@ -136,6 +136,32 @@ namespace V2RayGCon.Lib
             return result;
         }
 
+        public static bool SetValue<T>(JObject json, string path, T value)
+        {
+            var parts = ParsePathIntoParentAndKey(path);
+            var r = json;
+
+            var key = parts.Item2;
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            var parent = parts.Item1;
+            if (!string.IsNullOrEmpty(parent))
+            {
+                var p = GetKey(json, parent);
+                if (p == null || !(p is JObject))
+                {
+                    return false;
+                }
+                r = p as JObject;
+            }
+
+            r[key] = new JValue(value);
+            return true;
+        }
+
         public static JObject ExtractJObjectPart(JObject source, string path)
         {
             var parts = ParsePathIntoParentAndKey(path);

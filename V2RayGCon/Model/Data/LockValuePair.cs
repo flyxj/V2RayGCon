@@ -10,6 +10,5 @@
             rwLock = new object();
             content = default(TValue);
         }
-
     }
 }

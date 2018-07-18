@@ -12,6 +12,28 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow(@"{}", "a", "abc", @"{'a':'abc'}")]
+        [DataRow(@"{'a':{'b':{'c':1234}}}", "a.b.c", "abc", @"{'a':{'b':{'c':'abc'}}}")]
+        public void SetValueStringTest(string json, string path, string value, string expect)
+        {
+            var r = JObject.Parse(json);
+            var e = JObject.Parse(expect);
+            Lib.Utils.SetValue<string>(r, path, value);
+            Assert.AreEqual(true, JObject.DeepEquals(e, r));
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{}", "a", 1, @"{'a':1}")]
+        [DataRow(@"{'a':{'b':{'c':1234}}}", "a.b.c", 5678, @"{'a':{'b':{'c':5678}}}")]
+        public void SetValueIntTest(string json, string path, int value, string expect)
+        {
+            var r = JObject.Parse(json);
+            var e = JObject.Parse(expect);
+            Lib.Utils.SetValue<int>(r, path, value);
+            Assert.AreEqual(true, JObject.DeepEquals(e, r));
+        }
+
+        [DataTestMethod]
         [DataRow(@"{'a':{'c':null},'b':1}", "a.b.c")]
         [DataRow(@"{'a':[0,1,2],'b':1}", "a.0")]
         [DataRow(@"{}", "")]

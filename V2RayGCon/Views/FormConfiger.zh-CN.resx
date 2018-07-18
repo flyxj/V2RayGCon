@@ -117,69 +117,81 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnStreamInsertDSock.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="cboxConfigSection.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="tboxDSockPath.ToolTip" xml:space="preserve">
-    <value>Domain socket path (不支持windows)</value>
-  </data>
-  <data name="btnStreamInsertH2.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="cboxStreamTLS.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="rbtnStreamOutbound.Text" xml:space="preserve">
     <value>Outbound(客户端)</value>
   </data>
+  <data name="rbtnStreamOutbound.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="rbtnStreamInbound.Text" xml:space="preserve">
     <value>Inbound(服务器)</value>
   </data>
-  <data name="btnStreamInsertTCP.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="rbtnStreamInbound.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxStreamType.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxStreamParam.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label12.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 18</value>
-  </data>
-  <data name="label21.Text" xml:space="preserve">
-    <value>DS路径</value>
-  </data>
-  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 18</value>
-  </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>H2路径</value>
-  </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 18</value>
+    <value>44, 18</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
-    <value>TCP伪装</value>
+    <value>参数</value>
   </data>
-  <data name="btnStreamInsertWS.Text" xml:space="preserve">
+  <data name="label14.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnInsertStream.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 18</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>WS路径</value>
-  </data>
-  <data name="btnStreamInsertKCP.Text" xml:space="preserve">
-    <value>插入→</value>
+  <data name="btnInsertStream.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>mKCP伪装</value>
+    <value>类型</value>
+  </data>
+  <data name="label11.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox2.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="radioButton1.Text" xml:space="preserve">
     <value>Outbound(客户端)</value>
   </data>
+  <data name="radioButton1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="rbtnVmessIServerMode.Text" xml:space="preserve">
     <value>Inbound(服务器)</value>
+  </data>
+  <data name="rbtnVmessIServerMode.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="btnVMessInsertClient.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
+  <data name="btnVMessInsertClient.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnVMessGenUUID.Text" xml:space="preserve">
     <value>生成 User ID</value>
+  </data>
+  <data name="btnVMessGenUUID.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="tboxVMessAid.ToolTip" xml:space="preserve">
     <value>服务器和客户端要相同</value>
@@ -187,17 +199,44 @@
   <data name="label4.Text" xml:space="preserve">
     <value>IP:端口</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>服务器</value>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="vmess.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="btnSSInsertServer.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
+  <data name="btnSSInsertServer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="chkSSSShowPass.Text" xml:space="preserve">
     <value>显示</value>
   </data>
+  <data name="chkSSSShowPass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxSSSPass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label19.Text" xml:space="preserve">
     <value>密码</value>
+  </data>
+  <data name="label19.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 18</value>
@@ -205,8 +244,23 @@
   <data name="label18.Text" xml:space="preserve">
     <value>网络类型</value>
   </data>
+  <data name="label18.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxSSSMethod.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxSSSPort.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label17.Text" xml:space="preserve">
     <value>端口</value>
+  </data>
+  <data name="label17.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkSSSOTA.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>
@@ -214,11 +268,29 @@
   <data name="label10.Text" xml:space="preserve">
     <value>加密</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>客户端</value>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxSSSNetwork.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>服务器</value>
+  </data>
+  <data name="groupBox4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="chkSSCOTA.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="btnSSRInsertClient.Text" xml:space="preserve">
     <value>插入→</value>
+  </data>
+  <data name="btnSSRInsertClient.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxSSCMethod.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>
@@ -226,17 +298,44 @@
   <data name="label9.Text" xml:space="preserve">
     <value>加密</value>
   </data>
+  <data name="label9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="chkSSCShowPass.Text" xml:space="preserve">
     <value>显示</value>
+  </data>
+  <data name="chkSSCShowPass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxSSCPass.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>密码</value>
   </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxSSCAddr.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label6.Text" xml:space="preserve">
     <value>IP:端口</value>
   </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>快速配置</value>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>客户端</value>
+  </data>
+  <data name="groupBox3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ss.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="btnQConSkipCN.Text" xml:space="preserve">
     <value>跳过CN网站</value>
@@ -244,14 +343,32 @@
   <data name="btnQConSkipCN.ToolTip" xml:space="preserve">
     <value>CN网站不走代理</value>
   </data>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>快速配置</value>
+  </data>
+  <data name="groupBox5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxVGCDesc.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>
   </data>
   <data name="label16.Text" xml:space="preserve">
     <value>描述</value>
   </data>
+  <data name="label16.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnVGC.Text" xml:space="preserve">
     <value>插入→</value>
+  </data>
+  <data name="btnVGC.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tboxVGCAlias.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>
@@ -259,29 +376,53 @@
   <data name="label15.Text" xml:space="preserve">
     <value>别名</value>
   </data>
-  <data name="groupBox9.Text" xml:space="preserve">
-    <value>展开import(只读)</value>
+  <data name="label15.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="misc.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="btnImportClearCache.Text" xml:space="preserve">
     <value>清理缓存</value>
   </data>
+  <data name="btnImportClearCache.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnExpanseImport.Text" xml:space="preserve">
     <value>展开</value>
+  </data>
+  <data name="btnExpanseImport.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="btnCopyExpansedConfig.Text" xml:space="preserve">
     <value>复制</value>
   </data>
+  <data name="btnCopyExpansedConfig.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="panelExpandConfig.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox9.Text" xml:space="preserve">
+    <value>展开import(只读)</value>
+  </data>
+  <data name="groupBox9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabExpanseImport.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabControl1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnClearModify.Text" xml:space="preserve">
     <value>取消更改</value>
   </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 28</value>
-  </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>文件</value>
-  </data>
-  <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>覆盖原服务器设置 </value>
+  <data name="btnClearModify.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="newWinToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 30</value>
@@ -313,11 +454,14 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>关闭</value>
   </data>
-  <data name="configToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 28</value>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 28</value>
   </data>
-  <data name="configToolStripMenuItem.Text" xml:space="preserve">
-    <value>服务器</value>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>覆盖原服务器设置 </value>
   </data>
   <data name="addNewServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 30</value>
@@ -352,11 +496,11 @@
   <data name="replaceExistServerToolStripMenuItem.Text" xml:space="preserve">
     <value>覆盖服务器</value>
   </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 28</value>
+  <data name="configToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 28</value>
   </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>视图</value>
+  <data name="configToolStripMenuItem.Text" xml:space="preserve">
+    <value>服务器</value>
   </data>
   <data name="searchBoxToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 30</value>
@@ -379,14 +523,47 @@
   <data name="hideLeftPanelToolStripMenuItem.Text" xml:space="preserve">
     <value>隐藏左面板</value>
   </data>
+  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 28</value>
+  </data>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="mainMenu.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pnlTools.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>分节</value>
   </data>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="panelScintilla.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnFormat.Text" xml:space="preserve">
     <value>格式化</value>
+  </data>
+  <data name="btnFormat.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cboxExamples.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pnlEditor.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6562,5 +6739,8 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>配置编辑器</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -48,6 +48,26 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+
+        public void InsertStreamSettings()
+        {
+            InsertConfigHelper(() =>
+            {
+                var settings = streamSettings.GetSettings();
+                var key = streamSettings.isServer ? "inbound" : "outbound";
+                JObject stream = Lib.Utils.CreateJObject(key);
+                stream[key]["streamSettings"] = settings;
+
+                try
+                {
+                    Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
+                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, stream);
+            });
+        }
+
         public void ClearHTMLCache()
         {
             InsertConfigHelper(() =>
@@ -325,42 +345,6 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        public void InsertKCP()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetKCPSetting());
-            });
-        }
-
-        public void InsertH2()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetH2Setting());
-            });
-        }
-
-        public void InsertDSock()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetDSockSetting());
-            });
-        }
-
-        public void InsertWS()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetWSSetting());
-            });
-        }
-
         public void AddNewServer()
         {
             if (!FlushEditor())
@@ -376,15 +360,6 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("DuplicateServer"));
             }
-        }
-
-        public void InsertTCP()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetTCPSetting());
-            });
         }
 
         public void InsertSSClient()
@@ -530,21 +505,6 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region private method
-
-        void InsertStreamSetting(JToken streamSetting)
-        {
-            var key = streamSettings.isServer ? "inbound" : "outbound";
-
-            var empty = Lib.Utils.CreateJObject(key);
-            var stream = empty.DeepClone() as JObject;
-
-            empty[key]["streamSettings"] = null;
-            stream[key]["streamSettings"] = streamSetting;
-
-            var temp = Lib.Utils.CombineConfig(config, empty);
-            config = Lib.Utils.CombineConfig(temp, stream);
-        }
-
         bool FlushEditor()
         {
             if (!CheckValid())
