@@ -5,8 +5,7 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
-        public static Dictionary<int, string> configSections => _configSections;
-        static Dictionary<int, string> _configSections = new Dictionary<int, string>
+        public static Dictionary<int, string> configSections = new Dictionary<int, string>
         {
                 { 0, "config.json"},
                 { 1, "log"},
@@ -30,16 +29,14 @@ namespace V2RayGCon.Model.Data
         public static string[] proxyTypesString = new string[] { "config", "http", "socks" };
 
 
-        public static Dictionary<int, string> linkPrefix => _linkPrefix;
-        static Dictionary<int, string> _linkPrefix = new Dictionary<int, string>
+        public static Dictionary<int, string> linkPrefix = new Dictionary<int, string>
         {
             {0,"vmess://" },
             {1,"v2ray://" },
             {2,"ss://" },
         };
 
-        public static Dictionary<int, string> ssMethods => _ssMethods;
-        static Dictionary<int, string> _ssMethods = new Dictionary<int, string>
+        public static Dictionary<int, string> ssMethods = new Dictionary<int, string>
         {
             { 0,"aes-128-cfb"},
             { 1,"aes-128-gcm"},
@@ -51,41 +48,94 @@ namespace V2RayGCon.Model.Data
             { 7,"chacha20-ietf-poly1305"},
         };
 
-        public static Dictionary<int, string> streamSecurity => _streamSecurity;
-        static Dictionary<int, string> _streamSecurity = new Dictionary<int, string>
+        public static Dictionary<int, string> streamTLS = new Dictionary<int, string>
         {
             { 0, "none" },
             { 1, "tls" },
         };
 
-        public static Dictionary<int, string> ssNetworks => _ssNetworks;
-        static Dictionary<int, string> _ssNetworks = new Dictionary<int, string>
+        public static Dictionary<int, string> ssNetworks = new Dictionary<int, string>
         {
             { 0, "tcp" },
             { 1, "udp" },
             { 2, "tcp,udp" },
         };
 
-        public static Dictionary<int, string> tcpTypes => _tcpTypes;
-        static Dictionary<int, string> _tcpTypes = new Dictionary<int, string>
-        {
-            { 0, "none" },
-            { 1, "http" },
+        public static Dictionary<int, string> kcpTypes = new Dictionary<int, string> {
+            {0, "none" },
+            {1, "srtp" },
+            {2, "utp" },
+            {3, "wechat-video" },
+            {4, "dtls" },
         };
 
-        public static Dictionary<int, string> kcpTypes => _kcpTypes;
-        static Dictionary<int, string> _kcpTypes = new Dictionary<int, string>
+        public static Dictionary<int, StreamComponent> streamSettings = new Dictionary<int, Model.Data.StreamComponent>
         {
-            { 0, "none" },
-            { 1, "srtp" },
-            { 2, "utp" },
-            { 3, "wechat-video" },
-            { 4, "dtls" },
+            //public bool dropDownStyle;
+            //public string name;
+            //public string network;
+            //public string path;
+            //public string template;
+            //public List<string> options;
+
+            // kcp
+            { 0, new StreamComponent{
+                dropDownStyle=true,
+                name="mKCP",
+                network="kcp",
+                optionPath="kcpSettings.header.type",
+                options=new Dictionary<string,string>{
+                    { "none", "kcp"},
+                    { "srtp","kcp_srtp" },
+                    {"utp", "kcp_utp"},
+                    {"wechat-video","kcp_wechat-video" },
+                    {"dtls", "kcp_dtls"},
+                },
+            } },
+            // tcp
+            { 1, new StreamComponent{
+                dropDownStyle=true,
+                name="TCP",
+                network="tcp",
+                optionPath="tcpSettings.header.type",
+                options=new Dictionary<string, string>{
+                    { "none","tcp" },
+                    { "http","tcp_http" },
+                },
+            } },
+
+            // h2 ws dsock
+            { 2, new StreamComponent{
+                dropDownStyle=false,
+                name="HTTP/2",
+                network="h2",
+                optionPath="httpSettings.path",
+                options=new Dictionary<string, string>{
+                    { "none","h2" },
+                },
+            } },
+            { 3, new StreamComponent{
+                dropDownStyle=false,
+                name="WebSocket",
+                network="ws",
+                optionPath="wsSettings.path",
+                options=new Dictionary<string, string>{
+                    { "none","ws" },
+                },
+            } },
+            { 4, new StreamComponent{
+                dropDownStyle=false,
+                name="DomainSocket",
+                network="domainsocket",
+                optionPath="dsSettings.path",
+                options=new Dictionary<string, string>{
+                    { "none","dsock" },
+                },
+            } },
         };
 
-        public static Dictionary<int, List<string[]>> examples => _examples;
-        static Dictionary<int, List<string[]>> _examples = ExampleHelper();
-
+        // editor examples
+        public static Dictionary<int, List<string[]>> examples = ExampleHelper();
         static Dictionary<int, List<string[]>> ExampleHelper()
         {
             string[] SS(string description, string key)
@@ -190,8 +240,8 @@ namespace V2RayGCon.Model.Data
             return d;
         }
 
-        public static Dictionary<string, string[]> servInfoKeys => _servInfoKeys;
-        static Dictionary<string, string[]> _servInfoKeys = ServInfoKeysHelper();
+        // servers summary
+        public static Dictionary<string, string[]> servInfoKeys = ServInfoKeysHelper();
         static Dictionary<string, string[]> ServInfoKeysHelper()
         {
             var streamType = "outbound.streamSettings.network";

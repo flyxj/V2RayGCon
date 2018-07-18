@@ -61,24 +61,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 html 的本地化字符串。
-        /// </summary>
-        internal static string CacheHTML {
-            get {
-                return ResourceManager.GetString("CacheHTML", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 summary 的本地化字符串。
-        /// </summary>
-        internal static string CacheSummary {
-            get {
-                return ResourceManager.GetString("CacheSummary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {
         ///  &quot;inTpl&quot;: {
         ///    &quot;port&quot;: 1080,
@@ -182,6 +164,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string config_tpl {
             get {
                 return ResourceManager.GetString("config_tpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 10 的本地化字符串。
+        /// </summary>
+        internal static string DecodeCacheSize {
+            get {
+                return ResourceManager.GetString("DecodeCacheSize", resourceCulture);
             }
         }
         

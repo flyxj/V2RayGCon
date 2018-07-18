@@ -84,25 +84,22 @@ namespace V2RayGCon.Views
             var bs = new BindingSource();
             bs.DataSource = streamClient;
 
-            tboxWSPath.DataBindings.Add("Text", bs, nameof(streamClient.wsPath));
-            tboxH2Path.DataBindings.Add("Text", bs, nameof(streamClient.h2Path));
-
-            cboxKCPType.DataBindings.Add(
-                nameof(cboxKCPType.SelectedIndex),
+            cboxStreamType.DataBindings.Add(
+                nameof(cboxStreamType.SelectedIndex),
                 bs,
-                nameof(streamClient.kcpType),
+                nameof(streamClient.streamType),
+                true,
+                DataSourceUpdateMode.OnValidation);
+
+            cboxStreamParam.DataBindings.Add(
+                nameof(cboxStreamParam.Text),
+                bs,
+                nameof(streamClient.streamParamText),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
 
-            cboxTCPType.DataBindings.Add(
-                nameof(cboxTCPType.SelectedIndex),
-                bs,
-                nameof(streamClient.tcpType),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            cboxStreamSecurity.DataBindings.Add(
-                nameof(cboxStreamSecurity.SelectedIndex),
+            cboxStreamTLS.DataBindings.Add(
+                nameof(cboxStreamTLS.SelectedIndex),
                 bs,
                 nameof(streamClient.tls),
                 true,
@@ -360,19 +357,9 @@ namespace V2RayGCon.Views
             configer.SetStreamSettingsServerMode(rbtnStreamInbound.Checked);
         }
 
-        private void btnStreamInsertKCP_Click(object sender, EventArgs e)
+        private void btnInsertStreamSetting(object sender, EventArgs e)
         {
-            configer.InsertKCP();
-        }
-
-        private void btnStreamInsertWS_Click(object sender, EventArgs e)
-        {
-            configer.InsertWS();
-        }
-
-        private void btnStreamInsertTCP_Click(object sender, EventArgs e)
-        {
-            configer.InsertTCP();
+            configer.InsertStreamSettings();
         }
 
         private void btnVGC_Click(object sender, EventArgs e)
@@ -433,16 +420,21 @@ namespace V2RayGCon.Views
                 {
                     cbox.Items.Add(item.Value);
                 }
-                cbox.SelectedIndex = 0;
+                cbox.SelectedIndex = table.Count > 0 ? 0 : -1;
             }
 
             FillComboBox(cboxConfigSection, Model.Data.Table.configSections);
             FillComboBox(cboxSSCMethod, Model.Data.Table.ssMethods);
             FillComboBox(cboxSSSMethod, Model.Data.Table.ssMethods);
             FillComboBox(cboxSSSNetwork, Model.Data.Table.ssNetworks);
-            FillComboBox(cboxTCPType, Model.Data.Table.tcpTypes);
-            FillComboBox(cboxKCPType, Model.Data.Table.kcpTypes);
-            FillComboBox(cboxStreamSecurity, Model.Data.Table.streamSecurity);
+            FillComboBox(cboxStreamTLS, Model.Data.Table.streamTLS);
+
+            var streamType = new Dictionary<int, string>();
+            foreach (var type in Model.Data.Table.streamSettings)
+            {
+                streamType.Add(type.Key, type.Value.name);
+            }
+            FillComboBox(cboxStreamType, streamType);
         }
 
         void InitScintilla(Scintilla scintilla, Panel container, bool readOnlyMode = false)
@@ -535,6 +527,8 @@ namespace V2RayGCon.Views
         #endregion
 
         #region private method
+
+
         void UpdateExamplesDescription()
         {
             cboxExamples.Items.Clear();
@@ -663,14 +657,36 @@ namespace V2RayGCon.Views
             configer.InsertDtrMTProto();
         }
 
-        private void btnStreamInsertH2_Click(object sender, EventArgs e)
-        {
-            configer.InsertH2();
-        }
-
         private void btnImportClearCache_Click(object sender, EventArgs e)
         {
             configer.ClearHTMLCache();
+        }
+
+        private void cboxStreamType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var index = cboxStreamType.SelectedIndex;
+            if (index < 0)
+            {
+                cboxStreamParam.SelectedIndex = -1;
+                cboxStreamParam.Items.Clear();
+                return;
+            }
+
+            var s = Model.Data.Table.streamSettings[index];
+
+            cboxStreamParam.Items.Clear();
+
+            if (!s.dropDownStyle)
+            {
+                cboxStreamParam.DropDownStyle = ComboBoxStyle.Simple;
+                return;
+            }
+
+            cboxStreamParam.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (var option in s.options)
+            {
+                cboxStreamParam.Items.Add(option.Key);
+            }
         }
 
         void ShowSearchBox()

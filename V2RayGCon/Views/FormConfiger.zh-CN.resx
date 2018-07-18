@@ -120,13 +120,7 @@
   <data name="cboxConfigSection.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="btnStreamInsertH2.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnStreamInsertH2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxH2Path.ToolTip" xml:space="preserve">
+  <data name="cboxStreamTLS.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="rbtnStreamOutbound.Text" xml:space="preserve">
@@ -141,66 +135,33 @@
   <data name="rbtnStreamInbound.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="cboxKCPType.ToolTip" xml:space="preserve">
+  <data name="cboxStreamType.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="cboxTCPType.ToolTip" xml:space="preserve">
+  <data name="cboxStreamParam.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="cboxStreamSecurity.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnStreamInsertTCP.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnStreamInsertTCP.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 18</value>
-  </data>
-  <data name="label20.Text" xml:space="preserve">
-    <value>H2路径</value>
-  </data>
-  <data name="label20.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 18</value>
-  </data>
-  <data name="label14.Text" xml:space="preserve">
-    <value>TCP伪装</value>
-  </data>
-  <data name="label14.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label13.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnStreamInsertWS.Text" xml:space="preserve">
-    <value>插入→</value>
-  </data>
-  <data name="btnStreamInsertWS.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 18</value>
-  </data>
-  <data name="label12.Text" xml:space="preserve">
-    <value>WS路径</value>
   </data>
   <data name="label12.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="btnStreamInsertKCP.Text" xml:space="preserve">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 18</value>
+  </data>
+  <data name="label14.Text" xml:space="preserve">
+    <value>参数</value>
+  </data>
+  <data name="label14.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnInsertStream.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
-  <data name="btnStreamInsertKCP.ToolTip" xml:space="preserve">
+  <data name="btnInsertStream.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>mKCP伪装</value>
+    <value>类型</value>
   </data>
   <data name="label11.ToolTip" xml:space="preserve">
     <value />
@@ -573,6 +534,9 @@
   </data>
   <data name="pnlTools.ToolTip" xml:space="preserve">
     <value />
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 18</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>分节</value>

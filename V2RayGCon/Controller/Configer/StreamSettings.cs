@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-
-
 
 namespace V2RayGCon.Controller.Configer
 {
-    class StreamSettings : Model.BaseClass.NotifyComponent
+    class StreamSettings :
+        Model.BaseClass.NotifyComponent,
+        Model.BaseClass.IConfigerComponent
     {
         Service.Cache cache;
         public StreamSettings()
@@ -15,32 +14,18 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region properties
-        private int _kcpType;
-        public int kcpType
+        private int _streamType;
+        public int streamType
         {
-            get { return _kcpType; }
-            set { SetField(ref _kcpType, value); }
+            get { return _streamType; }
+            set { SetField(ref _streamType, value); }
         }
 
-        private int _tcpType;
-        public int tcpType
+        private string _streamParamText;
+        public string streamParamText
         {
-            get { return _tcpType; }
-            set { SetField(ref _tcpType, value); }
-        }
-
-        private string _wsPath;
-        public string wsPath
-        {
-            get { return _wsPath; }
-            set { SetField(ref _wsPath, value); }
-        }
-
-        private string _h2Path;
-        public string h2Path
-        {
-            get { return _h2Path; }
-            set { SetField(ref _h2Path, value); }
+            get { return _streamParamText; }
+            set { SetField(ref _streamParamText, value); }
         }
 
         private int _tls;
@@ -51,7 +36,6 @@ namespace V2RayGCon.Controller.Configer
         }
 
         private bool _isServer;
-
         public bool isServer
         {
             get { return _isServer; }
@@ -60,100 +44,78 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region public method
-        public JToken GetKCPSetting()
+        public JToken GetSettings()
         {
-            // 0 -> none -> kcp
-            // 1 -> srtp -> kcp_srtp
-            // ...
+            streamType = Lib.Utils.Clamp(
+                streamType,
+                0,
+                Model.Data.Table.streamSettings.Count);
 
-            var key = "kcp";
-            if (kcpType > 0)
+            var key = "none";
+            var s = Model.Data.Table.streamSettings[streamType];
+            if (s.dropDownStyle && s.options.ContainsKey(streamParamText))
             {
-                key = "kcp_" + Model.Data.Table.kcpTypes[kcpType];
+                key = streamParamText;
             }
 
-            JToken stream = cache.LoadTemplate(key);
-            InsertTLSSettings(stream);
-            return stream;
-        }
-
-        public JToken GetH2Setting()
-        {
-            JToken stream = cache.LoadTemplate("h2");
-            stream["httpSettings"]["path"] = h2Path;
-
-            InsertTLSSettings(stream);
-            return stream;
-        }
-
-        public JToken GetWSSetting()
-        {
-            JToken stream = cache.LoadTemplate("ws");
-            stream["wsSettings"]["path"] = wsPath;
-
-            InsertTLSSettings(stream);
-            return stream;
-        }
-
-        public JToken GetTCPSetting()
-        {
-            // 0 -> none -> tcp
-            // 1 -> http -> tcp_http
-            var key = "tcp";
-            if (tcpType > 0)
+            var tpl = cache.tpl.LoadTemplate(s.options[key]) as JObject;
+            if (!s.dropDownStyle)
             {
-                key = "tcp_" + Model.Data.Table.tcpTypes[tcpType];
+                Lib.Utils.SetValue<string>(tpl, s.optionPath, streamParamText);
             }
 
-            var stream = cache.LoadTemplate(key);
-            InsertTLSSettings(stream);
-            return stream;
+            InsertTLSSettings(tpl);
+            return tpl;
         }
 
         public void UpdateData(JObject config)
         {
             var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
 
-            string prefix;
+            string prefix = isServer ?
+                "inbound.streamSettings" :
+                "outbound.streamSettings";
 
-            if (_isServer)
-            {
-                prefix = "inbound.streamSettings";
-            }
-            else
-            {
-                prefix = "outbound.streamSettings";
-            }
+            var index = GetIndexByNetwork(GetStr(prefix, "network"));
+            streamType = index;
+            streamParamText = index < 0 ? string.Empty :
+                GetStr(
+                    prefix,
+                    Model.Data.Table.streamSettings[index].optionPath);
 
-            h2Path = GetStr(prefix, "httpSettings.path");
-
-            wsPath = GetStr(prefix, "wsSettings.path");
-
-            tls = Math.Max(0, Lib.Utils.GetIndexIgnoreCase(
-                Model.Data.Table.streamSecurity,
-                GetStr(prefix, "security")));
-
-            kcpType = Lib.Utils.GetIndexIgnoreCase(
-                Model.Data.Table.kcpTypes,
-                GetStr(prefix, "kcpSettings.header.type"));
-
-            tcpType = Lib.Utils.GetIndexIgnoreCase(
-                Model.Data.Table.tcpTypes,
-                GetStr(prefix, "tcpSettings.header.type"));
+            tls = GetStr(prefix, "security") == "tls" ? 1 : 0;
         }
         #endregion
 
         #region private method
+        int GetIndexByNetwork(string network)
+        {
+            if (string.IsNullOrEmpty(network))
+            {
+                return -1;
+            }
+
+            foreach (var item in Model.Data.Table.streamSettings)
+            {
+                if (item.Value.network == network)
+                {
+                    return item.Key;
+                }
+            }
+
+            return -1;
+        }
+
         void InsertTLSSettings(JToken streamSettings)
         {
-            var tlsTpl = cache.LoadTemplate("tls");
+            var tlsTpl = cache.tpl.LoadTemplate("tls");
             if (tls <= 0)
             {
                 streamSettings["security"] = string.Empty;
             }
             else
             {
-                var streamSecurity = Model.Data.Table.streamSecurity;
+                var streamSecurity = Model.Data.Table.streamTLS;
                 streamSettings["security"] = streamSecurity[tls];
                 streamSettings["tlsSettings"] = tlsTpl;
             }

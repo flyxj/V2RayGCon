@@ -150,7 +150,8 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void DetectJArrayTest()
         {
-            var domainOverride = Service.Cache.Instance.LoadExample("inTpl.domainOverride");
+            var domainOverride = Service.Cache.Instance.
+                tpl.LoadExample("inTpl.domainOverride");
             var isArray = domainOverride is JArray;
             var isObject = domainOverride is JObject;
 

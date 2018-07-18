@@ -48,12 +48,31 @@ namespace V2RayGCon.Controller.Configer
         }
 
         #region public method
+
+        public void InsertStreamSettings()
+        {
+            InsertConfigHelper(() =>
+            {
+                var settings = streamSettings.GetSettings();
+                var key = streamSettings.isServer ? "inbound" : "outbound";
+                JObject stream = Lib.Utils.CreateJObject(key);
+                stream[key]["streamSettings"] = settings;
+
+                try
+                {
+                    Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
+                }
+                catch (KeyNotFoundException) { }
+
+                config = Lib.Utils.CombineConfig(config, stream);
+            });
+        }
+
         public void ClearHTMLCache()
         {
             InsertConfigHelper(() =>
             {
-                Service.Cache.Instance.RemoveFromCache<string>(
-                    StrConst("CacheHTML"),
+                Service.Cache.Instance.html.Remove(
                     Lib.ImportParser.GetImportUrls(config));
             });
         }
@@ -67,7 +86,7 @@ namespace V2RayGCon.Controller.Configer
         {
             InsertConfigHelper(() =>
             {
-                var mtproto = cache.LoadTemplate("dtrMTProto") as JObject;
+                var mtproto = cache.tpl.LoadTemplate("dtrMTProto") as JObject;
 
                 foreach (string key in new string[] {
                     "inboundDetour",
@@ -301,21 +320,21 @@ namespace V2RayGCon.Controller.Configer
 
                 if (preSection == Model.Data.Table.inboundIndex)
                 {
-                    var inTpl = cache.LoadExample("inTpl");
+                    var inTpl = cache.tpl.LoadExample("inTpl");
                     inTpl["protocol"] = examples[preSection][index][2];
-                    inTpl["settings"] = cache.LoadExample(key);
+                    inTpl["settings"] = cache.tpl.LoadExample(key);
                     content = inTpl.ToString();
                 }
                 else if (preSection == Model.Data.Table.outboundIndex)
                 {
-                    var outTpl = cache.LoadExample("outTpl");
+                    var outTpl = cache.tpl.LoadExample("outTpl");
                     outTpl["protocol"] = examples[preSection][index][2];
-                    outTpl["settings"] = cache.LoadExample(key);
+                    outTpl["settings"] = cache.tpl.LoadExample(key);
                     content = outTpl.ToString();
                 }
                 else
                 {
-                    content = cache.LoadExample(key).ToString();
+                    content = cache.tpl.LoadExample(key).ToString();
                 }
 
                 editor.content = content;
@@ -324,33 +343,6 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("EditorNoExample"));
             }
-        }
-
-        public void InsertKCP()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetKCPSetting());
-            });
-        }
-
-        public void InsertH2()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetH2Setting());
-            });
-        }
-
-        public void InsertWS()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetWSSetting());
-            });
         }
 
         public void AddNewServer()
@@ -368,15 +360,6 @@ namespace V2RayGCon.Controller.Configer
             {
                 MessageBox.Show(I18N("DuplicateServer"));
             }
-        }
-
-        public void InsertTCP()
-        {
-            InsertConfigHelper(() =>
-            {
-                InsertStreamSetting(
-                    streamSettings.GetTCPSetting());
-            });
         }
 
         public void InsertSSClient()
@@ -430,7 +413,7 @@ namespace V2RayGCon.Controller.Configer
                 foreach (var item in dict)
                 {
                     var tpl = Lib.Utils.CreateJObject(item.Key);
-                    var value = cache.LoadExample(item.Value);
+                    var value = cache.tpl.LoadExample(item.Value);
                     tpl[item.Key] = value;
 
                     if (!Lib.Utils.Contain(config, tpl))
@@ -522,21 +505,6 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region private method
-
-        void InsertStreamSetting(JToken streamSetting)
-        {
-            var key = streamSettings.isServer ? "inbound" : "outbound";
-
-            var empty = Lib.Utils.CreateJObject(key);
-            var stream = empty.DeepClone() as JObject;
-
-            empty[key]["streamSettings"] = null;
-            stream[key]["streamSettings"] = streamSetting;
-
-            var temp = Lib.Utils.CombineConfig(config, empty);
-            config = Lib.Utils.CombineConfig(temp, stream);
-        }
-
         bool FlushEditor()
         {
             if (!CheckValid())
@@ -573,7 +541,7 @@ namespace V2RayGCon.Controller.Configer
 
             if (o == null)
             {
-                o = cache.LoadMinConfig();
+                o = cache.tpl.LoadMinConfig();
                 MessageBox.Show(I18N("EditorCannotLoadServerConfig"));
             }
 

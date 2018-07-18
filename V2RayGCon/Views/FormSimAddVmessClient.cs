@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
@@ -83,6 +82,11 @@ namespace V2RayGCon.Views
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void linkConfigEditor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new FormConfiger();
         }
     }
 }

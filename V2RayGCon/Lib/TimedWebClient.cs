@@ -9,7 +9,7 @@ namespace V2RayGCon.Lib
     {
         // https://stackoverflow.com/questions/12878857/how-to-limit-the-time-downloadstringurl-allowed-by-500-milliseconds
         // Timeout in milliseconds, default = 600,000 msec
-        const int TIMEOUT = 100000;
+        const int TIMEOUT = 30000;
 
         public int Timeout { get; set; }
 

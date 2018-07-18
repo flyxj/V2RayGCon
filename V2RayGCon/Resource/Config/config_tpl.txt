@@ -321,5 +321,12 @@
         "Host": ""
       }
     }
+  },
+  "dsock": {
+    "network": "domainsocket",
+    "security": "tls",
+    "dsSettings": {
+      "path": ""
+    }
   }
 }

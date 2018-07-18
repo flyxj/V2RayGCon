@@ -136,6 +136,32 @@ namespace V2RayGCon.Lib
             return result;
         }
 
+        public static bool SetValue<T>(JObject json, string path, T value)
+        {
+            var parts = ParsePathIntoParentAndKey(path);
+            var r = json;
+
+            var key = parts.Item2;
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            var parent = parts.Item1;
+            if (!string.IsNullOrEmpty(parent))
+            {
+                var p = GetKey(json, parent);
+                if (p == null || !(p is JObject))
+                {
+                    return false;
+                }
+                r = p as JObject;
+            }
+
+            r[key] = new JValue(value);
+            return true;
+        }
+
         public static JObject ExtractJObjectPart(JObject source, string path)
         {
             var parts = ParsePathIntoParentAndKey(path);
@@ -424,7 +450,7 @@ namespace V2RayGCon.Lib
 
             TryParseIPAddr(ss.addr, out string ip, out int port);
 
-            var config = cache.LoadTemplate("tplImportSS");
+            var config = cache.tpl.LoadTemplate("tplImportSS");
 
             var setting = config["outbound"]["settings"]["servers"][0];
             setting["address"] = ip;
@@ -493,7 +519,7 @@ namespace V2RayGCon.Lib
             }
 
             // prepare template
-            var config = cache.LoadTemplate("tplImportVmess");
+            var config = cache.tpl.LoadTemplate("tplImportVmess");
             config["v2raygcon"]["alias"] = vmess.ps;
 
             var cPos = config["outbound"]["settings"]["vnext"][0];
@@ -511,7 +537,8 @@ namespace V2RayGCon.Lib
                 return config.DeepClone() as JObject;
             }
 
-            config["outbound"]["streamSettings"] = cache.LoadTemplate(streamType);
+            config["outbound"]["streamSettings"] =
+                cache.tpl.LoadTemplate(streamType);
 
             try
             {
@@ -613,31 +640,8 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region net
-
-        static string FetchFromCache(string url)
+        public static string Fetch(string url, int timeout = -1)
         {
-            var cache = Service.Cache.Instance.
-                GetCache<string>(StrConst("CacheHTML")).
-                Item2;
-
-            if (cache.ContainsKey(url))
-            {
-                return cache[url];
-            }
-            return null;
-        }
-
-        public static string Fetch(string url, int timeout = -1, bool useCache = false)
-        {
-            if (useCache)
-            {
-                var cache = FetchFromCache(url);
-                if (cache != null)
-                {
-                    return cache;
-                }
-            }
-
             var html = string.Empty;
 
             Lib.Utils.SupportProtocolTLS12();
@@ -654,10 +658,6 @@ namespace V2RayGCon.Lib
                 try
                 {
                     html = wc.DownloadString(url);
-                    if (!string.IsNullOrEmpty(html))
-                    {
-                        cache.UpdateHTMLCache(url, html);
-                    }
                 }
                 catch { }
             }
@@ -666,7 +666,7 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(StrConst("UrlLatestVGC"), 10000);
+            string html = Fetch(StrConst("UrlLatestVGC"));
 
             if (string.IsNullOrEmpty(html))
             {
@@ -687,7 +687,7 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(StrConst("ReleasePageUrl"), 10000);
+            string html = Fetch(StrConst("ReleasePageUrl"));
 
             if (string.IsNullOrEmpty(html))
             {

@@ -389,4 +389,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="FileNotFound" xml:space="preserve">
     <value>未能找到文件！</value>
   </data>
+  <data name="UsingDecodeCache" xml:space="preserve">
+    <value>使用解码缓存</value>
+  </data>
 </root>

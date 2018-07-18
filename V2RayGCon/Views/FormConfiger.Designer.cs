@@ -34,21 +34,14 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.vmess = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnStreamInsertH2 = new System.Windows.Forms.Button();
-            this.tboxH2Path = new System.Windows.Forms.TextBox();
+            this.cboxStreamTLS = new System.Windows.Forms.ComboBox();
             this.rbtnStreamOutbound = new System.Windows.Forms.RadioButton();
             this.rbtnStreamInbound = new System.Windows.Forms.RadioButton();
-            this.tboxWSPath = new System.Windows.Forms.TextBox();
-            this.cboxKCPType = new System.Windows.Forms.ComboBox();
-            this.cboxTCPType = new System.Windows.Forms.ComboBox();
-            this.cboxStreamSecurity = new System.Windows.Forms.ComboBox();
-            this.btnStreamInsertTCP = new System.Windows.Forms.Button();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.btnStreamInsertWS = new System.Windows.Forms.Button();
+            this.cboxStreamType = new System.Windows.Forms.ComboBox();
+            this.cboxStreamParam = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.btnStreamInsertKCP = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.btnInsertStream = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
@@ -180,37 +173,25 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnStreamInsertH2);
-            this.groupBox2.Controls.Add(this.tboxH2Path);
+            this.groupBox2.Controls.Add(this.cboxStreamTLS);
             this.groupBox2.Controls.Add(this.rbtnStreamOutbound);
             this.groupBox2.Controls.Add(this.rbtnStreamInbound);
-            this.groupBox2.Controls.Add(this.tboxWSPath);
-            this.groupBox2.Controls.Add(this.cboxKCPType);
-            this.groupBox2.Controls.Add(this.cboxTCPType);
-            this.groupBox2.Controls.Add(this.cboxStreamSecurity);
-            this.groupBox2.Controls.Add(this.btnStreamInsertTCP);
-            this.groupBox2.Controls.Add(this.label20);
-            this.groupBox2.Controls.Add(this.label14);
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.btnStreamInsertWS);
+            this.groupBox2.Controls.Add(this.cboxStreamType);
+            this.groupBox2.Controls.Add(this.cboxStreamParam);
             this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.btnStreamInsertKCP);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.btnInsertStream);
             this.groupBox2.Controls.Add(this.label11);
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
-            // btnStreamInsertH2
+            // cboxStreamTLS
             // 
-            resources.ApplyResources(this.btnStreamInsertH2, "btnStreamInsertH2");
-            this.btnStreamInsertH2.Name = "btnStreamInsertH2";
-            this.btnStreamInsertH2.UseVisualStyleBackColor = true;
-            this.btnStreamInsertH2.Click += new System.EventHandler(this.btnStreamInsertH2_Click);
-            // 
-            // tboxH2Path
-            // 
-            resources.ApplyResources(this.tboxH2Path, "tboxH2Path");
-            this.tboxH2Path.Name = "tboxH2Path";
+            this.cboxStreamTLS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxStreamTLS.FormattingEnabled = true;
+            resources.ApplyResources(this.cboxStreamTLS, "cboxStreamTLS");
+            this.cboxStreamTLS.Name = "cboxStreamTLS";
             // 
             // rbtnStreamOutbound
             // 
@@ -227,80 +208,41 @@
             this.rbtnStreamInbound.UseVisualStyleBackColor = true;
             this.rbtnStreamInbound.CheckedChanged += new System.EventHandler(this.rbtnStreamInbound_CheckedChanged);
             // 
-            // tboxWSPath
+            // cboxStreamType
             // 
-            resources.ApplyResources(this.tboxWSPath, "tboxWSPath");
-            this.tboxWSPath.Name = "tboxWSPath";
-            this.toolTip1.SetToolTip(this.tboxWSPath, resources.GetString("tboxWSPath.ToolTip"));
+            this.cboxStreamType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxStreamType.FormattingEnabled = true;
+            this.cboxStreamType.Items.AddRange(new object[] {
+            resources.GetString("cboxStreamType.Items")});
+            resources.ApplyResources(this.cboxStreamType, "cboxStreamType");
+            this.cboxStreamType.Name = "cboxStreamType";
+            this.cboxStreamType.SelectedIndexChanged += new System.EventHandler(this.cboxStreamType_SelectedIndexChanged);
             // 
-            // cboxKCPType
+            // cboxStreamParam
             // 
-            this.cboxKCPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxKCPType.FormattingEnabled = true;
-            this.cboxKCPType.Items.AddRange(new object[] {
-            resources.GetString("cboxKCPType.Items")});
-            resources.ApplyResources(this.cboxKCPType, "cboxKCPType");
-            this.cboxKCPType.Name = "cboxKCPType";
-            // 
-            // cboxTCPType
-            // 
-            this.cboxTCPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxTCPType.FormattingEnabled = true;
-            this.cboxTCPType.Items.AddRange(new object[] {
-            resources.GetString("cboxTCPType.Items")});
-            resources.ApplyResources(this.cboxTCPType, "cboxTCPType");
-            this.cboxTCPType.Name = "cboxTCPType";
-            // 
-            // cboxStreamSecurity
-            // 
-            this.cboxStreamSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxStreamSecurity.FormattingEnabled = true;
-            this.cboxStreamSecurity.Items.AddRange(new object[] {
-            resources.GetString("cboxStreamSecurity.Items"),
-            resources.GetString("cboxStreamSecurity.Items1")});
-            resources.ApplyResources(this.cboxStreamSecurity, "cboxStreamSecurity");
-            this.cboxStreamSecurity.Name = "cboxStreamSecurity";
-            // 
-            // btnStreamInsertTCP
-            // 
-            resources.ApplyResources(this.btnStreamInsertTCP, "btnStreamInsertTCP");
-            this.btnStreamInsertTCP.Name = "btnStreamInsertTCP";
-            this.btnStreamInsertTCP.UseVisualStyleBackColor = true;
-            this.btnStreamInsertTCP.Click += new System.EventHandler(this.btnStreamInsertTCP_Click);
-            // 
-            // label20
-            // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            // 
-            // label13
-            // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
-            // 
-            // btnStreamInsertWS
-            // 
-            resources.ApplyResources(this.btnStreamInsertWS, "btnStreamInsertWS");
-            this.btnStreamInsertWS.Name = "btnStreamInsertWS";
-            this.btnStreamInsertWS.UseVisualStyleBackColor = true;
-            this.btnStreamInsertWS.Click += new System.EventHandler(this.btnStreamInsertWS_Click);
+            this.cboxStreamParam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxStreamParam.FormattingEnabled = true;
+            this.cboxStreamParam.Items.AddRange(new object[] {
+            resources.GetString("cboxStreamParam.Items")});
+            resources.ApplyResources(this.cboxStreamParam, "cboxStreamParam");
+            this.cboxStreamParam.Name = "cboxStreamParam";
             // 
             // label12
             // 
             resources.ApplyResources(this.label12, "label12");
             this.label12.Name = "label12";
             // 
-            // btnStreamInsertKCP
+            // label14
             // 
-            resources.ApplyResources(this.btnStreamInsertKCP, "btnStreamInsertKCP");
-            this.btnStreamInsertKCP.Name = "btnStreamInsertKCP";
-            this.btnStreamInsertKCP.UseVisualStyleBackColor = true;
-            this.btnStreamInsertKCP.Click += new System.EventHandler(this.btnStreamInsertKCP_Click);
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            // 
+            // btnInsertStream
+            // 
+            resources.ApplyResources(this.btnInsertStream, "btnInsertStream");
+            this.btnInsertStream.Name = "btnInsertStream";
+            this.btnInsertStream.UseVisualStyleBackColor = true;
+            this.btnInsertStream.Click += new System.EventHandler(this.btnInsertStreamSetting);
             // 
             // label11
             // 
@@ -853,8 +795,8 @@
             // cboxExamples
             // 
             this.cboxExamples.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxExamples.FormattingEnabled = true;
             resources.ApplyResources(this.cboxExamples, "cboxExamples");
+            this.cboxExamples.FormattingEnabled = true;
             this.cboxExamples.Name = "cboxExamples";
             this.cboxExamples.SelectedIndexChanged += new System.EventHandler(this.cboxExamples_SelectedIndexChanged);
             // 
@@ -968,16 +910,10 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbtnStreamOutbound;
         private System.Windows.Forms.RadioButton rbtnStreamInbound;
-        private System.Windows.Forms.TextBox tboxWSPath;
-        private System.Windows.Forms.ComboBox cboxKCPType;
-        private System.Windows.Forms.ComboBox cboxTCPType;
-        private System.Windows.Forms.ComboBox cboxStreamSecurity;
-        private System.Windows.Forms.Button btnStreamInsertTCP;
+        private System.Windows.Forms.ComboBox cboxStreamType;
+        private System.Windows.Forms.ComboBox cboxStreamParam;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Button btnStreamInsertWS;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button btnStreamInsertKCP;
+        private System.Windows.Forms.Button btnInsertStream;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TextBox tboxVGCDesc;
@@ -995,9 +931,8 @@
         private System.Windows.Forms.Button btnExpanseImport;
         private System.Windows.Forms.Button btnCopyExpansedConfig;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btnStreamInsertH2;
-        private System.Windows.Forms.TextBox tboxH2Path;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button btnImportClearCache;
+        private System.Windows.Forms.ComboBox cboxStreamTLS;
+        private System.Windows.Forms.Label label12;
     }
 }

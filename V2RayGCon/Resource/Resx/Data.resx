@@ -203,10 +203,7 @@
     <value>3</value>
     <comment>times</comment>
   </data>
-  <data name="CacheHTML" xml:space="preserve">
-    <value>html</value>
-  </data>
-  <data name="CacheSummary" xml:space="preserve">
-    <value>summary</value>
+  <data name="DecodeCacheSize" xml:space="preserve">
+    <value>10</value>
   </data>
 </root>
