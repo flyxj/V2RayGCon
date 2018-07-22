@@ -374,7 +374,7 @@ namespace V2RayGCon.Views
 
         private void btnQConSkipCN_Click(object sender, EventArgs e)
         {
-            configer.InsertSkipCN();
+            configer.InsertSkipCNSite();
         }
 
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
