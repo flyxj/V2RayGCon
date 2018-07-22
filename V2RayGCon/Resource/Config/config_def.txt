@@ -162,14 +162,14 @@
       ]
     }
   ],
-  "outDtrDefault": [
+  "outDtrFreedom": [
     {
       "protocol": "freedom",
       "tag": "direct",
       "settings": {}
     }
   ],
-  "outDtrAll": [
+  "outDtrDefault": [
     {
       "protocol": "协议名称",
       "sendThrough": "0.0.0.0",
@@ -350,6 +350,11 @@
     ],
     "inboundTag": [
       "tag-vmess"
+    ],
+    "protocol": [
+      "http",
+      "tls",
+      "bittorrent"
     ],
     "outboundTag": "direct"
   }
