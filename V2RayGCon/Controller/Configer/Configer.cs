@@ -398,7 +398,7 @@ namespace V2RayGCon.Controller.Configer
             });
         }
 
-        public void InsertSkipCN()
+        public void InsertSkipCNSite()
         {
             InsertConfigHelper(() =>
             {
@@ -407,7 +407,7 @@ namespace V2RayGCon.Controller.Configer
                 var dict = new Dictionary<string, string> {
                     { "dns","dnsCFnGoogle" },
                     { "routing","routeCNIP" },
-                    { "outboundDetour","outDtrDefault" },
+                    { "outboundDetour","outDtrFreedom" },
                 };
 
                 foreach (var item in dict)

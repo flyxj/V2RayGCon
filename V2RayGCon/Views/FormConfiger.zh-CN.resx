@@ -407,7 +407,7 @@
     <value />
   </data>
   <data name="groupBox9.Text" xml:space="preserve">
-    <value>展开import(只读)</value>
+    <value>展开import</value>
   </data>
   <data name="groupBox9.ToolTip" xml:space="preserve">
     <value />
@@ -415,7 +415,7 @@
   <data name="tabExpanseImport.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="tabControl1.ToolTip" xml:space="preserve">
+  <data name="tabCtrlToolPanel.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="btnClearModify.Text" xml:space="preserve">
@@ -534,6 +534,9 @@
   </data>
   <data name="pnlTools.ToolTip" xml:space="preserve">
     <value />
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 8</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>

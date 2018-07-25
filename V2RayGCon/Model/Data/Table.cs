@@ -74,9 +74,8 @@ namespace V2RayGCon.Model.Data
             //public bool dropDownStyle;
             //public string name;
             //public string network;
-            //public string path;
-            //public string template;
-            //public List<string> options;
+            //public string optionPath;
+            //public Dictionary<string, string> options;
 
             // kcp
             { 0, new StreamComponent{
@@ -92,6 +91,7 @@ namespace V2RayGCon.Model.Data
                     {"dtls", "kcp_dtls"},
                 },
             } },
+
             // tcp
             { 1, new StreamComponent{
                 dropDownStyle=true,
@@ -187,9 +187,9 @@ namespace V2RayGCon.Model.Data
 
             //{ 5, "routing"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "routeCNIP"));
+            list.Add(SS(I18N("Default"), "routeAll"));
+            list.Add(SS("CN site", "routeCNIP"));
             list.Add(SS("Inbound to Outbound", "routeIn2Out"));
-            list.Add(SS("All options", "routeAll"));
             d.Add(5, list);
 
             //{ 6, "policy"},
@@ -234,7 +234,7 @@ namespace V2RayGCon.Model.Data
             //{ 12,"outboundDetour"}, outDtrDefault
             list = NewList();
             list.Add(SS(I18N("Default"), "outDtrDefault"));
-            list.Add(SS("All options", "outDtrAll"));
+            list.Add(SS("Freedom", "outDtrFreedom"));
             d.Add(12, list);
 
             return d;
