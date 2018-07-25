@@ -117,13 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cboxConfigSection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 1</value>
-  </data>
-  <data name="cboxConfigSection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 20</value>
-  </data>
   <data name="cboxConfigSection.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -151,6 +144,7 @@
   <data name="label12.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
   </data>

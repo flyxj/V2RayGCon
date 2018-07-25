@@ -8,14 +8,55 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
+    struct ElementProperties
+    {
+        public string formTitle;
+        public Rectangle toolsPanel;
+        public Rectangle editor;
+        public int span;
+        public int tabWidth;
+        public List<Rectangle> tabsRect;
+        public Rectangle pageRect;
+        public Timer hideToolsPanelTimer;
+
+        public void SetTimer(Action lambda, int milliSecond = 500)
+        {
+            if (hideToolsPanelTimer != null)
+            {
+                return;
+            }
+
+            hideToolsPanelTimer = new Timer();
+            hideToolsPanelTimer.Interval = milliSecond;
+            var that = this;
+            hideToolsPanelTimer.Tick += (s, e) =>
+            {
+                that.ClearTimer();
+                lambda();
+            };
+            hideToolsPanelTimer.Start();
+        }
+
+        public void ClearTimer()
+        {
+            if (hideToolsPanelTimer == null)
+            {
+                return;
+            }
+
+            hideToolsPanelTimer.Stop();
+            hideToolsPanelTimer = null;
+        }
+    };
+
     public partial class FormConfiger : Form
     {
         Controller.Configer.Configer configer;
         Service.Setting setting;
         Scintilla scintillaMain, scintillaImport;
         FormSearch formSearch;
+        ElementProperties elProperties;
 
-        string _Title;
         int _serverIndex;
 
         public FormConfiger(int serverIndex = -1)
@@ -24,14 +65,18 @@ namespace V2RayGCon.Views
             _serverIndex = serverIndex;
             formSearch = null;
             InitializeComponent();
-            _Title = this.Text;
+            elProperties.formTitle = this.Text;
             this.Show();
         }
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
+            SaveElementPosition();
+
             scintillaMain = new Scintilla();
             InitScintilla(scintillaMain, panelScintilla);
+            scintillaMain.MouseClick += OnMouseLeaveToolsPanel;
+
             scintillaImport = new Scintilla();
             InitScintilla(scintillaImport, panelExpandConfig, true);
 
@@ -61,7 +106,6 @@ namespace V2RayGCon.Views
         }
 
         #region data binding
-
 
         void BindDataEditor()
         {
@@ -527,7 +571,45 @@ namespace V2RayGCon.Views
         #endregion
 
         #region private method
+        private void SaveElementPosition()
+        {
+            elProperties.hideToolsPanelTimer = null;
 
+            elProperties.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
+            elProperties.toolsPanel = new Rectangle(pnlTools.Location, pnlTools.Size);
+            elProperties.span = (this.ClientRectangle.Width - elProperties.toolsPanel.Width - elProperties.editor.Width) / 3;
+            elProperties.tabWidth = tabCtrlToolPanel.ItemSize.Width;
+
+            var page = tabCtrlToolPanel.TabPages[0];
+            elProperties.pageRect = new Rectangle(
+                pnlTools.Location.X + page.Left,
+                pnlTools.Location.Y + page.Top,
+                page.Width,
+                page.Height);
+
+            elProperties.tabsRect = new List<Rectangle>();
+
+            for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
+            {
+                elProperties.tabsRect.Add(tabCtrlToolPanel.GetTabRect(i));
+                tabCtrlToolPanel.TabPages[i].MouseEnter += OnMouseEnterToolsPanel;
+                tabCtrlToolPanel.TabPages[i].MouseLeave += (s, e) =>
+                {
+                    var cursor = Cursor.Position;
+                    var point = this.PointToClient(cursor);
+                    var rect = elProperties.pageRect;
+                    rect.Height = pnlEditor.Height;
+                    // the mouse is outside the control bounds
+                    if (!rect.Contains(point))
+                    {
+                        OnMouseLeaveToolsPanel(s, e);
+                    }
+                };
+            }
+
+            tabCtrlToolPanel.MouseLeave += OnMouseLeaveToolsPanel;
+            tabCtrlToolPanel.MouseEnter += OnMouseEnterToolsPanel;
+        }
 
         void UpdateExamplesDescription()
         {
@@ -555,11 +637,11 @@ namespace V2RayGCon.Views
         {
             if (string.IsNullOrEmpty(name))
             {
-                this.Text = _Title;
+                this.Text = elProperties.formTitle;
             }
             else
             {
-                this.Text = string.Format("{0} - {1}", _Title, name);
+                this.Text = string.Format("{0} - {1}", elProperties.formTitle, name);
             }
         }
 
@@ -605,23 +687,26 @@ namespace V2RayGCon.Views
 
         void ToggleToolsPanel(bool visible)
         {
-            var margin = 4;
             var formSize = this.ClientSize;
             var editorSize = pnlEditor.Size;
 
-            pnlTools.Visible = visible;
+            pnlTools.Visible = false;
             pnlEditor.Visible = false;
+
             if (visible)
             {
-                pnlEditor.Left = pnlTools.Left + pnlTools.Width + margin;
-                editorSize.Width = formSize.Width - pnlTools.Width - margin * 3;
+                pnlTools.Width = elProperties.toolsPanel.Width;
+                pnlEditor.Left = pnlTools.Left + pnlTools.Width + elProperties.span;
+                pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - elProperties.span;
             }
             else
             {
-                pnlEditor.Left = margin;
-                editorSize.Width = formSize.Width - margin * 2;
+                pnlEditor.Left = elProperties.span + elProperties.tabWidth;
+                pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - elProperties.span;
+                pnlTools.Width = elProperties.tabWidth;
             }
-            pnlEditor.Size = editorSize;
+
+            pnlTools.Visible = true;
             pnlEditor.Visible = true;
 
             showLeftPanelToolStripMenuItem.Checked = visible;
@@ -689,6 +774,52 @@ namespace V2RayGCon.Views
             }
         }
 
+        private void OnMouseEnterToolsPanel(object sender, EventArgs e)
+        {
+            elProperties.ClearTimer();
+
+            var width = elProperties.toolsPanel.Width;
+            if (pnlTools.Width != width)
+            {
+                pnlTools.Width = width;
+            }
+        }
+
+        private void ResetToolsPanelWidth()
+        {
+
+            var visible = setting.isShowConfigureToolsPanel;
+            var width = elProperties.toolsPanel.Width;
+
+            if (!visible)
+            {
+                width = elProperties.tabWidth;
+            }
+
+            if (pnlTools.Width != width)
+            {
+                pnlTools.Width = width;
+            }
+        }
+
+        private void tabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            for (int i = 0; i < elProperties.tabsRect.Count; i++)
+            {
+                if (elProperties.tabsRect[i].Contains(e.Location))
+                {
+                    if (tabCtrlToolPanel.SelectedIndex != i)
+                        tabCtrlToolPanel.SelectTab(i);
+                    break;
+                }
+            }
+        }
+
+        private void OnMouseLeaveToolsPanel(object sender, EventArgs e)
+        {
+            elProperties.SetTimer(ResetToolsPanelWidth);
+        }
+
         void ShowSearchBox()
         {
             if (formSearch != null)
@@ -701,7 +832,5 @@ namespace V2RayGCon.Views
 
 
         #endregion
-
-
     }
 }
