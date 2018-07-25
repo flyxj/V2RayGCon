@@ -15,7 +15,6 @@ namespace V2RayGCon.Views
         public Rectangle editor;
         public int span;
         public int tabWidth;
-        public List<Rectangle> tabsRect;
         public Rectangle pageRect;
         public Timer hideToolsPanelTimer;
 
@@ -573,12 +572,10 @@ namespace V2RayGCon.Views
         #region private method
         private void SaveElementPosition()
         {
-            elProperties.hideToolsPanelTimer = null;
-
             elProperties.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
             elProperties.toolsPanel = new Rectangle(pnlTools.Location, pnlTools.Size);
             elProperties.span = (this.ClientRectangle.Width - elProperties.toolsPanel.Width - elProperties.editor.Width) / 3;
-            elProperties.tabWidth = tabCtrlToolPanel.ItemSize.Width;
+            elProperties.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
             var page = tabCtrlToolPanel.TabPages[0];
             elProperties.pageRect = new Rectangle(
@@ -587,18 +584,15 @@ namespace V2RayGCon.Views
                 page.Width,
                 page.Height);
 
-            elProperties.tabsRect = new List<Rectangle>();
-
             for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
             {
-                elProperties.tabsRect.Add(tabCtrlToolPanel.GetTabRect(i));
                 tabCtrlToolPanel.TabPages[i].MouseEnter += OnMouseEnterToolsPanel;
                 tabCtrlToolPanel.TabPages[i].MouseLeave += (s, e) =>
                 {
                     var cursor = Cursor.Position;
                     var point = this.PointToClient(cursor);
                     var rect = elProperties.pageRect;
-                    rect.Height = pnlEditor.Height;
+                    rect.Height = tabCtrlToolPanel.TabPages[0].Height;
                     // the mouse is outside the control bounds
                     if (!rect.Contains(point))
                     {
@@ -701,9 +695,9 @@ namespace V2RayGCon.Views
             }
             else
             {
-                pnlEditor.Left = elProperties.span + elProperties.tabWidth;
-                pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - elProperties.span;
                 pnlTools.Width = elProperties.tabWidth;
+                pnlEditor.Left = pnlTools.Left + pnlTools.Width;
+                pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - elProperties.span;
             }
 
             pnlTools.Visible = true;
@@ -804,9 +798,14 @@ namespace V2RayGCon.Views
 
         private void tabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            for (int i = 0; i < elProperties.tabsRect.Count; i++)
+            if (setting.isShowConfigureToolsPanel)
             {
-                if (elProperties.tabsRect[i].Contains(e.Location))
+                return;
+            }
+
+            for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
+            {
+                if (tabCtrlToolPanel.GetTabRect(i).Contains(e.Location))
                 {
                     if (tabCtrlToolPanel.SelectedIndex != i)
                         tabCtrlToolPanel.SelectTab(i);
