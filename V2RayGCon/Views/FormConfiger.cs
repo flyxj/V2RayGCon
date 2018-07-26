@@ -10,41 +10,64 @@ namespace V2RayGCon.Views
 {
     struct ToolsPanelHandler
     {
-        public string formTitle;
         public Rectangle toolsPanel;
         public Rectangle editor;
         public int span;
         public int tabWidth;
         public Rectangle pageRect;
-        public Timer hideToolsPanelTimer;
 
-        public void SetTimer(Action lambda, int milliSecond = 500)
+
+        Timer hideToolsPanelTimer;
+        EventHandler onTick;
+
+        public void InitTimer()
         {
-            if (hideToolsPanelTimer != null)
+            if (hideToolsPanelTimer == null)
             {
-                return;
+                hideToolsPanelTimer = new Timer();
             }
-
-            hideToolsPanelTimer = new Timer();
-            hideToolsPanelTimer.Interval = milliSecond;
-            var that = this;
-            hideToolsPanelTimer.Tick += (s, e) =>
-            {
-                that.ClearTimer();
-                lambda();
-            };
-            hideToolsPanelTimer.Start();
+            ClearTimer();
         }
 
-        public void ClearTimer()
+        public void Dispose()
         {
             if (hideToolsPanelTimer == null)
             {
                 return;
             }
-
-            hideToolsPanelTimer.Stop();
+            ClearTimer();
+            hideToolsPanelTimer.Dispose();
             hideToolsPanelTimer = null;
+        }
+
+        public void SetTimer(Action lambda, int milliSecond = 500)
+        {
+            if (hideToolsPanelTimer.Enabled)
+            {
+                return;
+            }
+
+            var that = this;
+            onTick = (s, e) =>
+            {
+                that.ClearTimer();
+                lambda();
+            };
+
+            hideToolsPanelTimer.Interval = milliSecond;
+            hideToolsPanelTimer.Tick += onTick;
+            hideToolsPanelTimer.Start();
+        }
+
+        public void ClearTimer()
+        {
+            if (!hideToolsPanelTimer.Enabled)
+            {
+                return;
+            }
+
+            hideToolsPanelTimer.Tick -= onTick;
+            hideToolsPanelTimer.Stop();
         }
     };
 
@@ -57,6 +80,7 @@ namespace V2RayGCon.Views
         ToolsPanelHandler toolsPanelHandler;
 
         int _serverIndex;
+        string formTitle;
 
         public FormConfiger(int serverIndex = -1)
         {
@@ -64,7 +88,7 @@ namespace V2RayGCon.Views
             _serverIndex = serverIndex;
             formSearch = null;
             InitializeComponent();
-            toolsPanelHandler.formTitle = this.Text;
+            formTitle = this.Text;
             this.Show();
         }
 
@@ -87,7 +111,7 @@ namespace V2RayGCon.Views
             InitDataBinding();
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
-            ToggleToolsPanel(setting.isShowConfigureToolsPanel);
+            ToggleToolsPanel(setting.isShowConfigerToolsPanel);
 
             cboxConfigSection.SelectedIndex = 0;
 
@@ -99,6 +123,7 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, a) =>
             {
                 setting.OnSettingChange -= SettingChange;
+                toolsPanelHandler.Dispose();
             };
 
             setting.OnSettingChange += SettingChange;
@@ -438,8 +463,8 @@ namespace V2RayGCon.Views
             switch (keyCode)
             {
                 case (Keys.Control | Keys.P):
-                    var visible = !setting.isShowConfigureToolsPanel;
-                    setting.isShowConfigureToolsPanel = visible;
+                    var visible = !setting.isShowConfigerToolsPanel;
+                    setting.isShowConfigerToolsPanel = visible;
                     ToggleToolsPanel(visible);
                     break;
                 case (Keys.Control | Keys.F):
@@ -572,6 +597,7 @@ namespace V2RayGCon.Views
         #region private method
         private void InitToolsPanel()
         {
+            toolsPanelHandler.InitTimer();
             toolsPanelHandler.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
             toolsPanelHandler.toolsPanel = new Rectangle(pnlTools.Location, pnlTools.Size);
             toolsPanelHandler.span = (this.ClientRectangle.Width - toolsPanelHandler.toolsPanel.Width - toolsPanelHandler.editor.Width) / 3;
@@ -627,11 +653,11 @@ namespace V2RayGCon.Views
         {
             if (string.IsNullOrEmpty(name))
             {
-                this.Text = toolsPanelHandler.formTitle;
+                this.Text = formTitle;
             }
             else
             {
-                this.Text = string.Format("{0} - {1}", toolsPanelHandler.formTitle, name);
+                this.Text = string.Format("{0} - {1}", formTitle, name);
             }
         }
 
@@ -701,7 +727,7 @@ namespace V2RayGCon.Views
 
             showLeftPanelToolStripMenuItem.Checked = visible;
             hideLeftPanelToolStripMenuItem.Checked = !visible;
-            setting.isShowConfigureToolsPanel = visible;
+            setting.isShowConfigerToolsPanel = visible;
         }
 
         void SettingChange(object sender, EventArgs args)
@@ -777,7 +803,7 @@ namespace V2RayGCon.Views
 
         private void ResetToolsPanelWidth()
         {
-            var visible = setting.isShowConfigureToolsPanel;
+            var visible = setting.isShowConfigerToolsPanel;
             var width = toolsPanelHandler.toolsPanel.Width;
 
             if (!visible)
@@ -793,7 +819,7 @@ namespace V2RayGCon.Views
 
         private void tabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (setting.isShowConfigureToolsPanel)
+            if (setting.isShowConfigerToolsPanel)
             {
                 return;
             }
