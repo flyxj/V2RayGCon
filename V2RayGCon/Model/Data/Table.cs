@@ -85,10 +85,10 @@ namespace V2RayGCon.Model.Data
                 optionPath="kcpSettings.header.type",
                 options=new Dictionary<string,string>{
                     { "none", "kcp"},
-                    { "srtp","kcp_srtp" },
-                    {"utp", "kcp_utp"},
-                    {"wechat-video","kcp_wechat-video" },
-                    {"dtls", "kcp_dtls"},
+                    { "srtp", "kcp_srtp" },
+                    { "utp", "kcp_utp"},
+                    { "wechat-video", "kcp_wechat-video" },
+                    { "dtls", "kcp_dtls"},
                 },
             } },
 
@@ -188,7 +188,7 @@ namespace V2RayGCon.Model.Data
             //{ 5, "routing"},
             list = NewList();
             list.Add(SS(I18N("Default"), "routeAll"));
-            list.Add(SS("CN site", "routeCNIP"));
+            list.Add(SS("skip CN web site", "routeCNIP"));
             list.Add(SS("Inbound to Outbound", "routeIn2Out"));
             d.Add(5, list);
 

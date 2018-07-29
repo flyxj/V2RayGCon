@@ -6,10 +6,13 @@
     "settings": {},
     "streamSettings": {},
     "tag": "标识",
-    "domainOverride": [
-      "http",
-      "tls"
-    ]
+    "sniffing": {
+      "enabled": false,
+      "destOverride": [
+        "http",
+        "tls"
+      ]
+    }
   },
   "inSS": {
     "email": "love@v2ray.com",
@@ -156,10 +159,13 @@
       },
       "settings": {},
       "streamSettings": {},
-      "domainOverride": [
-        "http",
-        "tls"
-      ]
+      "sniffing": {
+        "enabled": false,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
     }
   ],
   "outDtrFreedom": [
@@ -281,7 +287,8 @@
       "8.8.8.8",
       "8.8.4.4",
       "localhost"
-    ]
+    ],
+    "clientIp": "1.2.3.4"
   },
   "routeCNIP": {
     "strategy": "rules",

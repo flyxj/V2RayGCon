@@ -640,11 +640,21 @@ namespace V2RayGCon.Views
             }
             else
             {
+                int maxWidth = 0, temp = 0;
+                var font = cboxExamples.Font;
                 cboxExamples.Enabled = true;
                 foreach (var description in descriptions)
                 {
                     cboxExamples.Items.Add(description);
+                    temp = TextRenderer.MeasureText(description, font).Width;
+                    if (temp > maxWidth)
+                    {
+                        maxWidth = temp;
+                    }
                 }
+                cboxExamples.DropDownWidth = Math.Max(
+                    cboxExamples.Width,
+                    maxWidth + SystemInformation.VerticalScrollBarWidth);
             }
             cboxExamples.SelectedIndex = 0;
         }
