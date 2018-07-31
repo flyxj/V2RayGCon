@@ -217,6 +217,7 @@
       "statsInboundDownlink": false
     }
   },
+  "cfgEmpty": {},
   "cfgMin": {
     "log": {
       "loglevel": "warning"
@@ -298,13 +299,6 @@
         {
           "type": "field",
           "outboundTag": "direct",
-          "ip": [
-            "geoip:private"
-          ]
-        },
-        {
-          "type": "field",
-          "outboundTag": "direct",
           "domain": [
             "geosite:cn"
           ]
@@ -313,7 +307,8 @@
           "type": "field",
           "outboundTag": "direct",
           "ip": [
-            "geoip:cn"
+            "geoip:cn",
+            "geoip:private"
           ]
         }
       ]

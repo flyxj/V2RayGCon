@@ -160,6 +160,7 @@ namespace V2RayGCon.Model.Data
             // { 0, "config.json"},
             list = NewList();
             list.Add(SS(I18N("Default"), "cfgMin"));
+            list.Add(SS("Empty", "cfgEmpty"));
             d.Add(0, list);
 
             //{ 1, "log"},

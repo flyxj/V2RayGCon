@@ -152,7 +152,6 @@
             resources.GetString("cboxConfigSection.Items1")});
             this.cboxConfigSection.Name = "cboxConfigSection";
             this.toolTip1.SetToolTip(this.cboxConfigSection, resources.GetString("cboxConfigSection.ToolTip"));
-            this.cboxConfigSection.SelectedIndexChanged += new System.EventHandler(this.cboxConfigSection_SelectedIndexChanged);
             // 
             // tabCtrlToolPanel
             // 
@@ -662,7 +661,6 @@
             this.btnClearModify.Name = "btnClearModify";
             this.toolTip1.SetToolTip(this.btnClearModify, resources.GetString("btnClearModify.ToolTip"));
             this.btnClearModify.UseVisualStyleBackColor = true;
-            this.btnClearModify.Click += new System.EventHandler(this.btnDiscardChanges_Click);
             // 
             // mainMenu
             // 
@@ -845,7 +843,6 @@
             this.btnFormat.Name = "btnFormat";
             this.toolTip1.SetToolTip(this.btnFormat, resources.GetString("btnFormat.ToolTip"));
             this.btnFormat.UseVisualStyleBackColor = true;
-            this.btnFormat.Click += new System.EventHandler(this.btnFormat_Click);
             // 
             // cboxExamples
             // 
@@ -854,7 +851,6 @@
             this.cboxExamples.FormattingEnabled = true;
             this.cboxExamples.Name = "cboxExamples";
             this.toolTip1.SetToolTip(this.cboxExamples, resources.GetString("cboxExamples.ToolTip"));
-            this.cboxExamples.SelectedIndexChanged += new System.EventHandler(this.cboxExamples_SelectedIndexChanged);
             // 
             // FormConfiger
             // 

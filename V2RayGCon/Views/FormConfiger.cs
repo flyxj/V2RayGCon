@@ -97,12 +97,10 @@ namespace V2RayGCon.Views
         {
             InitToolsPanel();
 
-            scintillaMain = new Scintilla();
-            InitScintilla(scintillaMain, panelScintilla);
+            scintillaMain = InitScintilla(panelScintilla);
             scintillaMain.MouseClick += OnMouseLeaveToolsPanel;
 
-            scintillaImport = new Scintilla();
-            InitScintilla(scintillaImport, panelExpandConfig, true);
+            scintillaImport = InitScintilla(panelExpandConfig, true);
 
             InitConfiger();
             InitComboBox();
@@ -128,25 +126,6 @@ namespace V2RayGCon.Views
         }
 
         #region UI event handler
-        private void btnDiscardChanges_Click(object sender, EventArgs e)
-        {
-            cboxExamples.SelectedIndex = 0;
-            configer.DiscardChanges();
-        }
-
-        private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!configer.OnSectionChanged(cboxConfigSection.SelectedIndex))
-            {
-                cboxConfigSection.SelectedIndex = configer.preSection;
-            }
-            else
-            {
-                // update examples
-                UpdateExamplesDescription();
-            }
-        }
-
         private void showLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToggleToolsPanel(true);
@@ -220,19 +199,9 @@ namespace V2RayGCon.Views
             new FormConfiger();
         }
 
-        private void cboxExamples_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            configer.LoadExample(cboxExamples.SelectedIndex - 1);
-        }
-
         private void searchBoxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowSearchBox();
-        }
-
-        private void btnFormat_Click(object sender, EventArgs e)
-        {
-            configer.FormatCurrentContent();
         }
 
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
@@ -295,8 +264,10 @@ namespace V2RayGCon.Views
             FillComboBox(cboxStreamType, streamType);
         }
 
-        void InitScintilla(Scintilla scintilla, Panel container, bool readOnlyMode = false)
+        Scintilla InitScintilla(Panel container, bool readOnlyMode = false)
         {
+            var scintilla = new Scintilla();
+
             container.Controls.Add(scintilla);
 
             // scintilla.Dock = DockStyle.Fill;
@@ -371,11 +342,20 @@ namespace V2RayGCon.Views
             scintilla.ClearCmdKey(Keys.Control | Keys.P);
             scintilla.ClearCmdKey(Keys.Control | Keys.S);
             scintilla.ClearCmdKey(Keys.Control | Keys.F);
+
+            return scintilla;
         }
 
         void InitConfiger()
         {
-            configer = new Controller.Configer(scintillaMain, _serverIndex);
+            configer = new Controller.Configer(
+                _serverIndex,
+                new Controller.ConfigerComponet.Editor(
+                    scintillaMain,
+                    cboxConfigSection,
+                    cboxExamples,
+                    btnFormat,
+                    btnClearModify));
 
             configer.AddComponent(
                 "vmess",
@@ -475,36 +455,6 @@ namespace V2RayGCon.Views
         #endregion
 
         #region private method
-        void UpdateExamplesDescription()
-        {
-            cboxExamples.Items.Clear();
-
-            cboxExamples.Items.Add(I18N("AvailableExamples"));
-            var descriptions = configer.GetExamplesDescription();
-            if (descriptions.Count < 1)
-            {
-                cboxExamples.Enabled = false;
-            }
-            else
-            {
-                int maxWidth = 0, temp = 0;
-                var font = cboxExamples.Font;
-                cboxExamples.Enabled = true;
-                foreach (var description in descriptions)
-                {
-                    cboxExamples.Items.Add(description);
-                    temp = TextRenderer.MeasureText(description, font).Width;
-                    if (temp > maxWidth)
-                    {
-                        maxWidth = temp;
-                    }
-                }
-                cboxExamples.DropDownWidth = Math.Max(
-                    cboxExamples.Width,
-                    maxWidth + SystemInformation.VerticalScrollBarWidth);
-            }
-            cboxExamples.SelectedIndex = 0;
-        }
 
         void SetTitle(string name)
         {
