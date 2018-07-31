@@ -1,19 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class StreamSettings :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class StreamSettings : Model.BaseClass.ConfigerComponent
     {
         Service.Cache cache;
-        public StreamSettings()
+        public StreamSettings(
+            ComboBox type,
+            ComboBox param,
+            ComboBox tls,
+            RadioButton inbound,
+            Button insert)
         {
             cache = Service.Cache.Instance;
             _isServer = false;
+
+            DataBinding(type, param, tls);
+            Connect(type, param);
+            AttachEvent(inbound, insert);
         }
 
         #region properties
@@ -47,59 +53,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region public method
-
-        // combo box [type, param, tls]
-        public void Bind(List<Control> controls)
-        {
-
-            if (controls.Count != 3)
-            {
-                throw new ArgumentException();
-            }
-
-            var bs = new BindingSource();
-            bs.DataSource = this;
-
-            controls[0].DataBindings.Add(
-                nameof(ComboBox.SelectedIndex),
-                bs,
-                nameof(this.streamType),
-                true,
-                DataSourceUpdateMode.OnValidation);
-
-            controls[1].DataBindings.Add(
-                nameof(ComboBox.Text),
-                bs,
-                nameof(this.streamParamText),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            controls[2].DataBindings.Add(
-                nameof(ComboBox.SelectedIndex),
-                bs,
-                nameof(this.tls),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-        }
-
-        public JObject Inject(JObject config)
-        {
-            var settings = GetSettings();
-            var key = isServer ? "inbound" : "outbound";
-            JObject stream = Lib.Utils.CreateJObject(key);
-            stream[key]["streamSettings"] = settings;
-
-            try
-            {
-                Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
-            }
-            catch (KeyNotFoundException) { }
-
-            return Lib.Utils.CombineConfig(config, stream);
-        }
-
-        public void Update(JObject config)
+        public override void Update(JObject config)
         {
             var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
 
@@ -119,6 +73,97 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
+        void Connect(ComboBox type, ComboBox param)
+        {
+            type.SelectedIndexChanged += (sender, arg) =>
+            {
+                var index = type.SelectedIndex;
+
+                if (index < 0)
+                {
+                    param.SelectedIndex = -1;
+                    param.Items.Clear();
+                    return;
+                }
+
+                var s = Model.Data.Table.streamSettings[index];
+
+                param.Items.Clear();
+
+                if (!s.dropDownStyle)
+                {
+                    param.DropDownStyle = ComboBoxStyle.Simple;
+                    return;
+                }
+
+                param.DropDownStyle = ComboBoxStyle.DropDownList;
+                foreach (var option in s.options)
+                {
+                    param.Items.Add(option.Key);
+                }
+            };
+        }
+
+        void AttachEvent(RadioButton inbound, Button insert)
+        {
+            inbound.CheckedChanged += (s, a) =>
+            {
+                this.isServer = inbound.Checked;
+                this.Update(container.config);
+            };
+
+            insert.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(() =>
+                {
+                    container.config = Inject(container.config);
+                });
+            };
+        }
+
+        void DataBinding(ComboBox type, ComboBox param, ComboBox tls)
+        {
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            type.DataBindings.Add(
+                nameof(ComboBox.SelectedIndex),
+                bs,
+                nameof(this.streamType),
+                true,
+                DataSourceUpdateMode.OnValidation);
+
+            param.DataBindings.Add(
+                nameof(ComboBox.Text),
+                bs,
+                nameof(this.streamParamText),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            tls.DataBindings.Add(
+                nameof(ComboBox.SelectedIndex),
+                bs,
+                nameof(this.tls),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        JObject Inject(JObject config)
+        {
+            var settings = GetSettings();
+            var key = isServer ? "inbound" : "outbound";
+            JObject stream = Lib.Utils.CreateJObject(key);
+            stream[key]["streamSettings"] = settings;
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
+            }
+            catch (KeyNotFoundException) { }
+
+            return Lib.Utils.CombineConfig(config, stream);
+        }
+
         JToken GetSettings()
         {
             streamType = Lib.Utils.Clamp(

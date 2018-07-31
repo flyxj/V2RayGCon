@@ -14,7 +14,7 @@ namespace V2RayGCon.Controller
         Service.Setting setting;
         Service.Cache cache;
 
-        JObject config;
+        public JObject config;
         int separator;
         string originalConfig;
         Dictionary<int, string> sections;
@@ -22,7 +22,7 @@ namespace V2RayGCon.Controller
         ConfigerComponet.Editor editor;
         Dictionary<string, Model.BaseClass.IConfigerComponent> components;
 
-        public Configer(Scintilla scintilla, int serverIndex = -1)
+        public Configer(Scintilla mainEditor, int serverIndex = -1)
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
@@ -35,7 +35,7 @@ namespace V2RayGCon.Controller
 
             components = new Dictionary<string, Model.BaseClass.IConfigerComponent>();
             editor = new ConfigerComponet.Editor();
-            BindEditor(scintilla);
+            BindEditor(mainEditor);
             editor.content = config.ToString();
 
             Update();
@@ -54,69 +54,15 @@ namespace V2RayGCon.Controller
 
         public void AddComponent(
             string componentName,
-            Model.BaseClass.IConfigerComponent component,
-            List<Control> controls)
+            Model.BaseClass.IConfigerComponent component)
         {
-            component.Bind(controls);
+            component.Bind(this);
             components[componentName] = component;
-        }
-
-        public void Inject(string componentName)
-        {
-            if (!components.ContainsKey(componentName))
-            {
-                throw new KeyNotFoundException();
-            }
-
-            InsertConfigHelper(() =>
-            {
-                config = components[componentName].Inject(config);
-            });
-        }
-
-        public void ClearHTMLCache()
-        {
-            InsertConfigHelper(() =>
-            {
-                Service.Cache.Instance.html.Remove(
-                    Lib.ImportParser.GetImportUrls(config));
-            });
         }
 
         public void ClearOriginalConfig()
         {
             originalConfig = string.Empty;
-        }
-
-        public void InsertDtrMTProto()
-        {
-            InsertConfigHelper(() =>
-            {
-                var mtproto = cache.tpl.LoadTemplate("dtrMTProto") as JObject;
-
-                foreach (string key in new string[] {
-                    "inboundDetour",
-                    "outboundDetour",
-                    "routing",
-                })
-                {
-                    var part = Lib.Utils.ExtractJObjectPart(mtproto, key);
-                    if (Lib.Utils.Contain(config, part))
-                    {
-                        try
-                        {
-                            Lib.Utils.RemoveKeyFromJObject(mtproto, key);
-                        }
-                        catch (KeyNotFoundException) { }
-                    }
-                }
-                var user0 = Lib.Utils.GetKey(mtproto, "inboundDetour.0.settings.users.0");
-                if (user0 != null && user0 is JObject)
-                {
-                    user0["secret"] = Lib.Utils.RandomHex(32);
-                }
-                config = Lib.Utils.CombineConfig(config, mtproto);
-            });
         }
 
         public void ShowSection(int section = -1)
@@ -176,7 +122,7 @@ namespace V2RayGCon.Controller
         {
             if (curSection == preSection)
             {
-                // prevent inf loop
+                // prevent loop infinitely
                 return true;
             }
 
@@ -212,39 +158,6 @@ namespace V2RayGCon.Controller
             catch
             {
                 MessageBox.Show(I18N("PleaseCheckConfig"));
-            }
-        }
-
-        public void SaveChanges()
-        {
-            var content = JToken.Parse(editor.content);
-
-            if (preSection == 0)
-            {
-                config = content as JObject;
-                return;
-            }
-
-            if (preSection >= separator)
-            {
-                config[sections[preSection]] = content as JArray;
-            }
-            else
-            {
-                config[sections[preSection]] = content as JObject;
-            }
-        }
-
-        public bool CheckValid()
-        {
-            try
-            {
-                JToken.Parse(editor.content);
-                return true;
-            }
-            catch
-            {
-                return false;
             }
         }
 
@@ -354,34 +267,6 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public void InsertSkipCNSite()
-        {
-            InsertConfigHelper(() =>
-            {
-                var c = JObject.Parse(@"{}");
-
-                var dict = new Dictionary<string, string> {
-                    { "dns","dnsCFnGoogle" },
-                    { "routing","routeCNIP" },
-                    { "outboundDetour","outDtrFreedom" },
-                };
-
-                foreach (var item in dict)
-                {
-                    var tpl = Lib.Utils.CreateJObject(item.Key);
-                    var value = cache.tpl.LoadExample(item.Value);
-                    tpl[item.Key] = value;
-
-                    if (!Lib.Utils.Contain(config, tpl))
-                    {
-                        c[item.Key] = value;
-                    }
-                }
-
-                config = Lib.Utils.CombineConfig(config, c);
-            });
-        }
-
         public string GetConfigFormated()
         {
             return config.ToString(Newtonsoft.Json.Formatting.Indented);
@@ -417,7 +302,7 @@ namespace V2RayGCon.Controller
             ShowSection();
         }
 
-        public void InsertConfigHelper(Action lamda)
+        public void InjectConfigHelper(Action lamda)
         {
             if (!CheckValid())
             {
@@ -468,7 +353,38 @@ namespace V2RayGCon.Controller
             return true;
         }
 
+        void SaveChanges()
+        {
+            var content = JToken.Parse(editor.content);
 
+            if (preSection == 0)
+            {
+                config = content as JObject;
+                return;
+            }
+
+            if (preSection >= separator)
+            {
+                config[sections[preSection]] = content as JArray;
+            }
+            else
+            {
+                config[sections[preSection]] = content as JObject;
+            }
+        }
+
+        bool CheckValid()
+        {
+            try
+            {
+                JToken.Parse(editor.content);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         void LoadConfig(int index = -1)
         {

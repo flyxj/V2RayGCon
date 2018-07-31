@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using ScintillaNET;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,10 +9,21 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Import :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class Import : Model.BaseClass.ConfigerComponent
     {
+        Scintilla editor;
+
+        public Import(
+            Scintilla editor,
+            Button expanse,
+            Button clearCache,
+            Button copy)
+        {
+            this.editor = editor;
+            DataBinding();
+            AttachEvent(expanse, clearCache, copy);
+        }
+
         #region properties
         private string _content;
 
@@ -30,46 +40,47 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
-
-        #endregion
-
-        #region public method
-        Scintilla editor;
-
-        public void Bind(List<Control> controls)
+        void AttachEvent(Button expanse,
+            Button clearCache,
+            Button copy)
         {
-            if (controls.Count != 1)
+            expanse.Click += (s, a) =>
             {
-                throw new ArgumentException();
-            }
+                container.InjectConfigHelper(null);
+            };
 
-            var el = controls[0];
-
-            if (!(el is Scintilla))
+            clearCache.Click += (s, a) =>
             {
-                throw new ArgumentException();
-            }
+                container.InjectConfigHelper(() =>
+                {
+                    Service.Cache.Instance.html.Remove(
+                        Lib.ImportParser.GetImportUrls(
+                            container.config));
+                });
+            };
 
-            editor = el as Scintilla;
+            copy.Click += (s, a) =>
+            {
+                Lib.Utils.CopyToClipboardAndPrompt(editor.Text);
+            };
+        }
 
-
+        void DataBinding()
+        {
             var bs = new BindingSource();
             bs.DataSource = this;
 
-            el.DataBindings.Add(
+            editor.DataBindings.Add(
                 "Text",
                 bs,
                 nameof(this.content),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
         }
+        #endregion
 
-        public JObject Inject(JObject config)
-        {
-            return config;
-        }
-
-        public void Update(JObject config)
+        #region public method
+        public override void Update(JObject config)
         {
             content = I18N("AnalysingImport");
             // todo

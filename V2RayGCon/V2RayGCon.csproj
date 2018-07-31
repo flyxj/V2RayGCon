@@ -105,6 +105,7 @@
     <Compile Include="Controller\ConfigerComponent\StreamSettings.cs" />
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
+    <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\DllLoader.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
@@ -116,6 +117,7 @@
     </Compile>
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
+    <Compile Include="Model\BaseClass\ConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />

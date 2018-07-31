@@ -17,7 +17,6 @@ namespace V2RayGCon.Views
         public int tabWidth;
         public Rectangle pageRect;
 
-
         Timer hideToolsPanelTimer;
         EventHandler onTick;
 
@@ -135,51 +134,6 @@ namespace V2RayGCon.Views
             configer.DiscardChanges();
         }
 
-        private void btnInsertVmess_Click(object sender, EventArgs e)
-        {
-            configer.Inject("vmess");
-        }
-
-        private void btnSSRInsertClient_Click(object sender, EventArgs e)
-        {
-            configer.Inject("ssClient");
-        }
-
-        private void btnVMessGenUUID_Click(object sender, EventArgs e)
-        {
-            var vmess = configer.GetComponent("vmess") as Controller.ConfigerComponet.Vmess;
-            vmess.ID = Guid.NewGuid().ToString();
-        }
-
-        private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSSCShowPass.Checked == true)
-            {
-                tboxSSCPass.PasswordChar = '\0';
-            }
-            else
-            {
-                tboxSSCPass.PasswordChar = '*';
-            }
-        }
-
-        private void chkSSSShowPass_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSSSShowPass.Checked == true)
-            {
-                tboxSSSPass.PasswordChar = '\0';
-            }
-            else
-            {
-                tboxSSSPass.PasswordChar = '*';
-            }
-        }
-
-        private void btnSSInsertServer_Click(object sender, EventArgs e)
-        {
-            configer.Inject("ssServer");
-        }
-
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!configer.OnSectionChanged(cboxConfigSection.SelectedIndex))
@@ -210,7 +164,7 @@ namespace V2RayGCon.Views
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            configer.InsertConfigHelper(null);
+            configer.InjectConfigHelper(null);
 
             switch (Lib.UI.ShowSaveFileDialog(
                 StrConst("ExtJson"),
@@ -253,13 +207,12 @@ namespace V2RayGCon.Views
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
                 configer.ClearOriginalConfig();
-                I18N("Done");
+                MessageBox.Show(I18N("Done"));
             }
             else
             {
-                I18N("LoadJsonFail");
+                MessageBox.Show(I18N("LoadJsonFail"));
             }
-
         }
 
         private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -277,39 +230,9 @@ namespace V2RayGCon.Views
             ShowSearchBox();
         }
 
-        private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
-        {
-            // todo
-            var vmess = configer.GetComponent("vmess") as Controller.ConfigerComponet.Vmess;
-            vmess.serverMode = rbtnVmessIServerMode.Checked;
-            configer.Update();
-        }
-
-        private void rbtnStreamInbound_CheckedChanged(object sender, EventArgs e)
-        {
-            var stream = configer.GetComponent("stream") as Controller.ConfigerComponet.StreamSettings;
-            stream.isServer = rbtnStreamInbound.Checked;
-            configer.Update();
-        }
-
-        private void btnInsertStreamSetting(object sender, EventArgs e)
-        {
-            configer.Inject("stream");
-        }
-
-        private void btnVGC_Click(object sender, EventArgs e)
-        {
-            configer.Inject("vgc");
-        }
-
         private void btnFormat_Click(object sender, EventArgs e)
         {
             configer.FormatCurrentContent();
-        }
-
-        private void btnQConSkipCN_Click(object sender, EventArgs e)
-        {
-            configer.InsertSkipCNSite();
         }
 
         private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
@@ -338,7 +261,7 @@ namespace V2RayGCon.Views
                     ShowSearchBox();
                     break;
                 case (Keys.Control | Keys.S):
-                    configer.InsertConfigHelper(null);
+                    configer.InjectConfigHelper(null);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyCode);
@@ -449,68 +372,75 @@ namespace V2RayGCon.Views
             scintilla.ClearCmdKey(Keys.Control | Keys.S);
             scintilla.ClearCmdKey(Keys.Control | Keys.F);
         }
-        #endregion
 
-        #region private method
         void InitConfiger()
         {
             configer = new Controller.Configer(scintillaMain, _serverIndex);
 
             configer.AddComponent(
                 "vmess",
-                new Controller.ConfigerComponet.Vmess(),
-                new List<Control> {
+                new Controller.ConfigerComponet.Vmess(
                     tboxVMessID,
                     tboxVMessLevel,
                     tboxVMessAid,
                     tboxVMessIPaddr,
-             });
+                    rbtnVmessIServerMode,
+                    btnVMessGenUUID,
+                    btnVMessInsertClient));
 
             configer.AddComponent(
                 "vgc",
-                new Controller.ConfigerComponet.VGC(),
-                new List<Control> {
+                new Controller.ConfigerComponet.VGC(
                     tboxVGCAlias,
                     tboxVGCDesc,
-                });
+                    btnInsertVGC));
 
             configer.AddComponent(
                 "stream",
-                new Controller.ConfigerComponet.StreamSettings(),
-                new List<Control> {
+                new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
                     cboxStreamTLS,
-                });
+                    rbtnStreamInbound,
+                    btnInsertStream));
 
             configer.AddComponent(
                 "ssClient",
-                new Controller.ConfigerComponet.SSClient(),
-                new List<Control> {
+                new Controller.ConfigerComponet.SSClient(
                     tboxSSCAddr,
                     tboxSSCPass,
                     cboxSSCMethod,
                     chkSSCOTA,
-                });
+                    chkSSCShowPass,
+                    btnSSRInsertClient));
 
             configer.AddComponent(
-            "ssServer",
-            new Controller.ConfigerComponet.SSServer(),
-            new List<Control> {
-                    tboxSSSPass,
-                    tboxSSSPort,
-                    cboxSSSNetwork,
-                    cboxSSSMethod,
-                    chkSSSOTA,
-            });
+                "ssServer",
+                new Controller.ConfigerComponet.SSServer(
+                        tboxSSSPass,
+                        tboxSSSPort,
+                        cboxSSSNetwork,
+                        cboxSSSMethod,
+                        chkSSSOTA,
+                        chkSSSShowPass,
+                        btnSSInsertServer));
 
             configer.AddComponent(
                 "import",
-                new Controller.ConfigerComponet.Import(),
-                new List<Control> { scintillaImport });
+                new Controller.ConfigerComponet.Import(
+                    scintillaImport,
+                    btnExpanseImport,
+                    btnImportClearCache,
+                    btnCopyExpansedConfig));
+
+            configer.AddComponent(
+                "quick",
+                new Controller.ConfigerComponet.Quick(
+                    btnQConSkipCN,
+                    btnQConMTProto));
         }
 
-        private void InitToolsPanel()
+        void InitToolsPanel()
         {
             toolsPanelHandler.InitTimer();
             toolsPanelHandler.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
@@ -542,7 +472,9 @@ namespace V2RayGCon.Views
             tabCtrlToolPanel.MouseLeave += OnMouseLeaveToolsPanel;
             tabCtrlToolPanel.MouseEnter += OnMouseEnterToolsPanel;
         }
+        #endregion
 
+        #region private method
         void UpdateExamplesDescription()
         {
             cboxExamples.Items.Clear();
@@ -667,54 +599,6 @@ namespace V2RayGCon.Views
             catch { }
         }
 
-        private void btnCopyExpansedConfig_Click(object sender, EventArgs e)
-        {
-            Lib.Utils.CopyToClipboardAndPrompt(
-                scintillaImport.Text);
-        }
-
-        private void btnExpanseImport_Click(object sender, EventArgs e)
-        {
-            configer.InsertConfigHelper(null);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            configer.InsertDtrMTProto();
-        }
-
-        private void btnImportClearCache_Click(object sender, EventArgs e)
-        {
-            configer.ClearHTMLCache();
-        }
-
-        private void cboxStreamType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var index = cboxStreamType.SelectedIndex;
-            if (index < 0)
-            {
-                cboxStreamParam.SelectedIndex = -1;
-                cboxStreamParam.Items.Clear();
-                return;
-            }
-
-            var s = Model.Data.Table.streamSettings[index];
-
-            cboxStreamParam.Items.Clear();
-
-            if (!s.dropDownStyle)
-            {
-                cboxStreamParam.DropDownStyle = ComboBoxStyle.Simple;
-                return;
-            }
-
-            cboxStreamParam.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (var option in s.options)
-            {
-                cboxStreamParam.Items.Add(option.Key);
-            }
-        }
-
         private void OnMouseEnterToolsPanel(object sender, EventArgs e)
         {
             toolsPanelHandler.ClearTimer();
@@ -765,11 +649,6 @@ namespace V2RayGCon.Views
             toolsPanelHandler.SetTimer(ResetToolsPanelWidth);
         }
 
-        private void cboxSSCMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         void ShowSearchBox()
         {
             if (formSearch != null)
@@ -779,8 +658,6 @@ namespace V2RayGCon.Views
             formSearch = new FormSearch(scintillaMain);
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
-
-
         #endregion
     }
 }

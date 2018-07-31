@@ -5,13 +5,21 @@ using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Vmess :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class Vmess : Model.BaseClass.ConfigerComponent
     {
-        public Vmess()
+        // textbox [id, level, aid, ipaddr]
+        public Vmess(
+            TextBox id,
+            TextBox level,
+            TextBox alterID,
+            TextBox ipAddr,
+            RadioButton inbound,
+            Button genID,
+            Button insert)
         {
             serverMode = false;
+            DataBinding(id, level, alterID, ipAddr);
+            AttachEvent(inbound, genID, insert);
         }
 
         #region properties
@@ -53,6 +61,39 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
+        void AttachEvent(RadioButton inbound, Button genID, Button insert)
+        {
+            inbound.CheckedChanged += (s, a) =>
+            {
+                this.serverMode = inbound.Checked;
+                this.Update(container.config);
+            };
+
+            genID.Click += (s, a) =>
+            {
+                this.ID = Guid.NewGuid().ToString();
+            };
+
+            insert.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(() =>
+                {
+                    container.config = Inject(container.config);
+                });
+            };
+        }
+
+        void DataBinding(TextBox id, TextBox level, TextBox alterID, TextBox ipAddr)
+        {
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            id.DataBindings.Add("Text", bs, nameof(this.ID));
+            level.DataBindings.Add("Text", bs, nameof(this.level));
+            alterID.DataBindings.Add("Text", bs, nameof(this.altID));
+            ipAddr.DataBindings.Add("Text", bs, nameof(this.addr));
+        }
+
         JToken GetSettings()
         {
             JToken vmess = Service.Cache.Instance.
@@ -78,35 +119,8 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
             return vmess;
         }
-        #endregion
 
-        #region public method
-        // textbox [id, level, aid, ipaddr]
-        public void Bind(List<Control> controls)
-        {
-            if (controls.Count != 4)
-            {
-                throw new ArgumentException();
-            }
-
-            foreach (var c in controls)
-            {
-                if (!(c is TextBox))
-                {
-                    throw new ArgumentException();
-                }
-            }
-
-            var bs = new BindingSource();
-            bs.DataSource = this;
-
-            controls[0].DataBindings.Add("Text", bs, nameof(this.ID));
-            controls[1].DataBindings.Add("Text", bs, nameof(this.level));
-            controls[2].DataBindings.Add("Text", bs, nameof(this.altID));
-            controls[3].DataBindings.Add("Text", bs, nameof(this.addr));
-        }
-
-        public JObject Inject(JObject config)
+        JObject Inject(JObject config)
         {
             var key = serverMode ? "inbound" : "outbound";
             var vmess = Lib.Utils.CreateJObject(key);
@@ -120,8 +134,10 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
             return Lib.Utils.CombineConfig(config, vmess);
         }
+        #endregion
 
-        public void Update(JObject config)
+        #region public method
+        public override void Update(JObject config)
         {
             var prefix = serverMode ?
                 "inbound.settings.clients.0" :

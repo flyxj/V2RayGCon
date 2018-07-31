@@ -1,14 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class SSServer :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class SSServer : Model.BaseClass.ConfigerComponent
     {
+        public SSServer(
+            TextBox pass,
+            TextBox port,
+            ComboBox network,
+            ComboBox method,
+            CheckBox ota,
+            CheckBox showPass,
+            Button insert)
+        {
+
+            DataBinding(pass, port, network, method, ota);
+            AttachEvent(showPass, insert, pass);
+        }
+
         #region properties
 
         private string _port;
@@ -56,6 +67,73 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
+        void AttachEvent(CheckBox showPass, Button insert, TextBox pass)
+        {
+            showPass.CheckedChanged += (s, a) =>
+            {
+                pass.PasswordChar = showPass.Checked ? '\0' : '*';
+            };
+
+            insert.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(() =>
+                {
+                    container.config = Inject(container.config);
+                });
+            };
+        }
+
+        // inject component settings into config
+        JObject Inject(JObject config)
+        {
+            var inbound = Lib.Utils.CreateJObject("inbound");
+            inbound["inbound"] = GetSettings();
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
+            }
+            catch (KeyNotFoundException) { }
+
+            return Lib.Utils.CombineConfig(config, inbound);
+        }
+
+        // bind UI controls with component
+        void DataBinding(
+            TextBox pass,
+            TextBox port,
+            ComboBox network,
+            ComboBox method,
+            CheckBox ota)
+        {
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            pass.DataBindings.Add("Text", bs, nameof(this.pass));
+            port.DataBindings.Add("Text", bs, nameof(this.port));
+
+            network.DataBindings.Add(
+                nameof(ComboBox.SelectedIndex),
+                bs,
+                nameof(this.network),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            method.DataBindings.Add(
+                nameof(ComboBox.SelectedIndex),
+                bs,
+                nameof(this.method),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            ota.DataBindings.Add(
+                nameof(CheckBox.Checked),
+                bs,
+                nameof(this.OTA),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+
         JToken GetSettings()
         {
             JToken server = Service.Cache.Instance.
@@ -89,59 +167,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region public method
-        // inject component settings into config
-        public JObject Inject(JObject config)
-        {
-            var inbound = Lib.Utils.CreateJObject("inbound");
-            inbound["inbound"] = GetSettings();
-
-            try
-            {
-                Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
-            }
-            catch (KeyNotFoundException) { }
-
-            return Lib.Utils.CombineConfig(config, inbound);
-        }
-
-        // bind UI controls with component
-        public void Bind(List<Control> controls)
-        {
-
-            if (controls.Count != 5)
-            {
-                throw new ArgumentException();
-            }
-
-            var bs = new BindingSource();
-            bs.DataSource = this;
-
-            controls[0].DataBindings.Add("Text", bs, nameof(this.pass));
-            controls[1].DataBindings.Add("Text", bs, nameof(this.port));
-
-            controls[2].DataBindings.Add(
-                nameof(ComboBox.SelectedIndex),
-                bs,
-                nameof(this.network),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            controls[3].DataBindings.Add(
-                nameof(ComboBox.SelectedIndex),
-                bs,
-                nameof(this.method),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            controls[4].DataBindings.Add(
-                nameof(CheckBox.Checked),
-                bs,
-                nameof(this.OTA),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        public void Update(JObject config)
+        public override void Update(JObject config)
         {
             port = Lib.Utils.GetValue<int>(config, "inbound", "port").ToString();
 
