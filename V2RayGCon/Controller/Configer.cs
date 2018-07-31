@@ -15,39 +15,28 @@ namespace V2RayGCon.Controller
         string originalConfig;
         ConfigerComponet.Editor editor;
 
-        Dictionary<string, Model.BaseClass.IConfigerComponent> components;
+        List<Model.BaseClass.IConfigerComponent> components;
 
         public Configer(int serverIndex, ConfigerComponet.Editor editor)
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
 
-            components = new Dictionary<string, Model.BaseClass.IConfigerComponent>();
+            components = new List<Model.BaseClass.IConfigerComponent>();
             ClearOriginalConfig();
             LoadConfig(serverIndex);
 
             this.editor = editor;
             this.editor.Bind(this);
-            this.editor.content = GetConfigFormated();
+            this.editor.ShowSection();
         }
 
         #region public method
 
-        public Model.BaseClass.IConfigerComponent GetComponent(string componentName)
-        {
-            if (!components.ContainsKey(componentName))
-            {
-                throw new KeyNotFoundException();
-            }
-            return components[componentName];
-        }
-
-        public void AddComponent(
-            string componentName,
-            Model.BaseClass.IConfigerComponent component)
+        public void AddComponent(Model.BaseClass.IConfigerComponent component)
         {
             component.Bind(this);
-            components[componentName] = component;
+            components.Add(component);
         }
 
         public void ClearOriginalConfig()
@@ -64,7 +53,7 @@ namespace V2RayGCon.Controller
         {
             foreach (var component in components)
             {
-                component.Value.Update(config);
+                component.Update(config);
             }
         }
 
@@ -89,6 +78,8 @@ namespace V2RayGCon.Controller
                 return false;
             }
 
+            Update();
+
             if (setting.ReplaceServer(config, serverIndex))
             {
                 originalConfig = Lib.Utils.Config2Base64String(config);
@@ -107,6 +98,8 @@ namespace V2RayGCon.Controller
             {
                 return;
             }
+
+            Update();
 
             if (setting.AddServer(config))
             {
@@ -155,7 +148,15 @@ namespace V2RayGCon.Controller
 
         public void InjectConfigHelper(Action lambda)
         {
-            editor.InjectConfigHelper(lambda);
+            if (!editor.Flush())
+            {
+                return;
+            }
+
+            lambda?.Invoke();
+
+            Update();
+            editor.ShowSection();
         }
 
         #endregion

@@ -358,7 +358,6 @@ namespace V2RayGCon.Views
                     btnClearModify));
 
             configer.AddComponent(
-                "vmess",
                 new Controller.ConfigerComponet.Vmess(
                     tboxVMessID,
                     tboxVMessLevel,
@@ -369,14 +368,12 @@ namespace V2RayGCon.Views
                     btnVMessInsertClient));
 
             configer.AddComponent(
-                "vgc",
                 new Controller.ConfigerComponet.VGC(
                     tboxVGCAlias,
                     tboxVGCDesc,
                     btnInsertVGC));
 
             configer.AddComponent(
-                "stream",
                 new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
@@ -385,7 +382,6 @@ namespace V2RayGCon.Views
                     btnInsertStream));
 
             configer.AddComponent(
-                "ssClient",
                 new Controller.ConfigerComponet.SSClient(
                     tboxSSCAddr,
                     tboxSSCPass,
@@ -395,7 +391,6 @@ namespace V2RayGCon.Views
                     btnSSRInsertClient));
 
             configer.AddComponent(
-                "ssServer",
                 new Controller.ConfigerComponet.SSServer(
                         tboxSSSPass,
                         tboxSSSPort,
@@ -406,18 +401,18 @@ namespace V2RayGCon.Views
                         btnSSInsertServer));
 
             configer.AddComponent(
-                "import",
                 new Controller.ConfigerComponet.Import(
                     scintillaImport,
-                    btnExpanseImport,
+                    btnExpandImport,
                     btnImportClearCache,
                     btnCopyExpansedConfig));
 
             configer.AddComponent(
-                "quick",
                 new Controller.ConfigerComponet.Quick(
                     btnQConSkipCN,
                     btnQConMTProto));
+
+            configer.Update();
         }
 
         void InitToolsPanel()

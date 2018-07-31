@@ -15,13 +15,13 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         public Import(
             Scintilla editor,
-            Button expanse,
+            Button expand,
             Button clearCache,
             Button copy)
         {
             this.editor = editor;
             DataBinding();
-            AttachEvent(expanse, clearCache, copy);
+            AttachEvent(expand, clearCache, copy);
         }
 
         #region properties
@@ -40,11 +40,12 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
-        void AttachEvent(Button expanse,
+        void AttachEvent(
+            Button expand,
             Button clearCache,
             Button copy)
         {
-            expanse.Click += (s, a) =>
+            expand.Click += (s, a) =>
             {
                 container.InjectConfigHelper(null);
             };

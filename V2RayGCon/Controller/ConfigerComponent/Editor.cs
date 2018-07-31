@@ -50,22 +50,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region pulbic method
-        public void InjectConfigHelper(Action lamda)
-        {
-            if (!CheckValid())
-            {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
-                return;
-            }
-
-            SaveChanges();
-
-            lamda?.Invoke();
-
-            container.Update();
-            ShowSection();
-        }
-
         public void ShowSection(int section = -1)
         {
             var index = section < 0 ? preSection : section;
@@ -110,7 +94,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
 
             SaveChanges();
-            container.Update();
             return true;
         }
 
@@ -147,6 +130,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
             restore.Click += (s, e) =>
             {
+                example.SelectedIndex = 0;
                 DiscardChanges();
             };
 
@@ -277,8 +261,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
             return list;
         }
 
-
-
         void FormatCurrentContent()
         {
             try
@@ -301,8 +283,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 config.ToString() :
                 config[sections[preSection]].ToString();
         }
-
-
 
         void SaveChanges()
         {

@@ -92,7 +92,7 @@
             this.tabExpanseImport = new System.Windows.Forms.TabPage();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.btnImportClearCache = new System.Windows.Forms.Button();
-            this.btnExpanseImport = new System.Windows.Forms.Button();
+            this.btnExpandImport = new System.Windows.Forms.Button();
             this.btnCopyExpansedConfig = new System.Windows.Forms.Button();
             this.panelExpandConfig = new System.Windows.Forms.Panel();
             this.btnClearModify = new System.Windows.Forms.Button();
@@ -621,7 +621,7 @@
             // 
             resources.ApplyResources(this.groupBox9, "groupBox9");
             this.groupBox9.Controls.Add(this.btnImportClearCache);
-            this.groupBox9.Controls.Add(this.btnExpanseImport);
+            this.groupBox9.Controls.Add(this.btnExpandImport);
             this.groupBox9.Controls.Add(this.btnCopyExpansedConfig);
             this.groupBox9.Controls.Add(this.panelExpandConfig);
             this.groupBox9.Name = "groupBox9";
@@ -635,12 +635,12 @@
             this.toolTip1.SetToolTip(this.btnImportClearCache, resources.GetString("btnImportClearCache.ToolTip"));
             this.btnImportClearCache.UseVisualStyleBackColor = true;
             // 
-            // btnExpanseImport
+            // btnExpandImport
             // 
-            resources.ApplyResources(this.btnExpanseImport, "btnExpanseImport");
-            this.btnExpanseImport.Name = "btnExpanseImport";
-            this.toolTip1.SetToolTip(this.btnExpanseImport, resources.GetString("btnExpanseImport.ToolTip"));
-            this.btnExpanseImport.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.btnExpandImport, "btnExpandImport");
+            this.btnExpandImport.Name = "btnExpandImport";
+            this.toolTip1.SetToolTip(this.btnExpandImport, resources.GetString("btnExpandImport.ToolTip"));
+            this.btnExpandImport.UseVisualStyleBackColor = true;
             // 
             // btnCopyExpansedConfig
             // 
@@ -981,7 +981,7 @@
         private System.Windows.Forms.TabPage tabExpanseImport;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Panel panelExpandConfig;
-        private System.Windows.Forms.Button btnExpanseImport;
+        private System.Windows.Forms.Button btnExpandImport;
         private System.Windows.Forms.Button btnCopyExpansedConfig;
         private System.Windows.Forms.Button btnQConMTProto;
         private System.Windows.Forms.Button btnImportClearCache;
