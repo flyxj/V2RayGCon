@@ -1,13 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using ScintillaNET;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller.ConfigerComponet
 {
     class Import :
         Model.BaseClass.NotifyComponent,
@@ -28,20 +29,47 @@ namespace V2RayGCon.Controller.Configer
         }
         #endregion
 
+        #region private method
+
+        #endregion
+
         #region public method
         Scintilla editor;
 
-        public Import(Scintilla elementForInvoke)
+        public void Bind(List<Control> controls)
         {
-            editor = elementForInvoke;
+            if (controls.Count != 1)
+            {
+                throw new ArgumentException();
+            }
+
+            var el = controls[0];
+
+            if (!(el is Scintilla))
+            {
+                throw new ArgumentException();
+            }
+
+            editor = el as Scintilla;
+
+
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            el.DataBindings.Add(
+                "Text",
+                bs,
+                nameof(this.content),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        public JToken GetSettings()
+        public JObject Inject(JObject config)
         {
-            return JToken.Parse(@"{}");
+            return config;
         }
 
-        public void UpdateData(JObject config)
+        public void Update(JObject config)
         {
             content = I18N("AnalysingImport");
             // todo

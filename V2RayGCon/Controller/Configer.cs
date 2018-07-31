@@ -5,66 +5,72 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller
 {
     class Configer
     {
+        public int preSection;
+
         Service.Setting setting;
-        public SSClient ssClient;
-        public StreamSettings streamSettings;
-        public VmessCtrl vmessCtrl;
-        public Editor editor;
-        public SSServer ssServer;
-        public VGC vgc;
-        public Import import;
+        Service.Cache cache;
 
         JObject config;
         int separator;
-        public int preSection;
-        Dictionary<int, string> sections;
         string originalConfig;
-        Service.Cache cache;
+        Dictionary<int, string> sections;
 
-        public Configer(Scintilla element, int serverIndex = -1)
+        ConfigerComponet.Editor editor;
+        Dictionary<string, Model.BaseClass.IConfigerComponent> components;
+
+        public Configer(Scintilla scintilla, int serverIndex = -1)
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
-            ssServer = new SSServer();
-            ssClient = new SSClient();
-            streamSettings = new StreamSettings();
-            vmessCtrl = new VmessCtrl();
-            editor = new Editor();
-            vgc = new VGC();
-            import = new Import(element);
 
             separator = Model.Data.Table.sectionSeparator;
             sections = Model.Data.Table.configSections;
             preSection = 0;
             ClearOriginalConfig();
-
             LoadConfig(serverIndex);
+
+            components = new Dictionary<string, Model.BaseClass.IConfigerComponent>();
+            editor = new ConfigerComponet.Editor();
+            BindEditor(scintilla);
             editor.content = config.ToString();
-            UpdateData();
+
+            Update();
         }
 
         #region public method
 
-        public void InsertStreamSettings()
+        public Model.BaseClass.IConfigerComponent GetComponent(string componentName)
         {
+            if (!components.ContainsKey(componentName))
+            {
+                throw new KeyNotFoundException();
+            }
+            return components[componentName];
+        }
+
+        public void AddComponent(
+            string componentName,
+            Model.BaseClass.IConfigerComponent component,
+            List<Control> controls)
+        {
+            component.Bind(controls);
+            components[componentName] = component;
+        }
+
+        public void Inject(string componentName)
+        {
+            if (!components.ContainsKey(componentName))
+            {
+                throw new KeyNotFoundException();
+            }
+
             InsertConfigHelper(() =>
             {
-                var settings = streamSettings.GetSettings();
-                var key = streamSettings.isServer ? "inbound" : "outbound";
-                JObject stream = Lib.Utils.CreateJObject(key);
-                stream[key]["streamSettings"] = settings;
-
-                try
-                {
-                    Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
-                }
-                catch (KeyNotFoundException) { }
-
-                config = Lib.Utils.CombineConfig(config, stream);
+                config = components[componentName].Inject(config);
             });
         }
 
@@ -111,18 +117,6 @@ namespace V2RayGCon.Controller.Configer
                 }
                 config = Lib.Utils.CombineConfig(config, mtproto);
             });
-        }
-
-        public void SetVmessServerMode(bool isServer)
-        {
-            vmessCtrl.serverMode = isServer;
-            vmessCtrl.UpdateData(config);
-        }
-
-        public void SetStreamSettingsServerMode(bool isServer)
-        {
-            streamSettings.isServer = isServer;
-            streamSettings.UpdateData(config);
         }
 
         public void ShowSection(int section = -1)
@@ -191,7 +185,7 @@ namespace V2RayGCon.Controller.Configer
                 SaveChanges();
                 preSection = curSection;
                 ShowSection();
-                UpdateData();
+                Update();
             }
             else
             {
@@ -254,14 +248,12 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        public void UpdateData()
+        public void Update()
         {
-            vmessCtrl.UpdateData(config);
-            ssClient.UpdateData(config);
-            ssServer.UpdateData(config);
-            streamSettings.UpdateData(config);
-            vgc.UpdateData(config);
-            import.UpdateData(config);
+            foreach (var component in components)
+            {
+                component.Value.Update(config);
+            }
         }
 
         public void DiscardChanges()
@@ -362,42 +354,6 @@ namespace V2RayGCon.Controller.Configer
             }
         }
 
-        public void InsertSSClient()
-        {
-            InsertConfigHelper(() =>
-            {
-                var outbound = Lib.Utils.CreateJObject("outbound");
-                outbound["outbound"]["settings"] = ssClient.GetSettings();
-                outbound["outbound"]["protocol"] = "shadowsocks";
-
-                try
-                {
-                    Lib.Utils.RemoveKeyFromJObject(config, "outbound.settings");
-                }
-                catch (KeyNotFoundException) { }
-
-                config = Lib.Utils.CombineConfig(config, outbound);
-            });
-        }
-
-        public void InsertVmess()
-        {
-            InsertConfigHelper(() =>
-            {
-                var key = vmessCtrl.serverMode ? "inbound" : "outbound";
-                var vmess = Lib.Utils.CreateJObject(key);
-                vmess[key] = vmessCtrl.GetSettings();
-
-                try
-                {
-                    Lib.Utils.RemoveKeyFromJObject(config, key + ".settings");
-                }
-                catch (KeyNotFoundException) { }
-
-                config = Lib.Utils.CombineConfig(config, vmess);
-            });
-        }
-
         public void InsertSkipCNSite()
         {
             InsertConfigHelper(() =>
@@ -426,31 +382,6 @@ namespace V2RayGCon.Controller.Configer
             });
         }
 
-        public void InsertVGC()
-        {
-            InsertConfigHelper(() =>
-            {
-                config["v2raygcon"] = vgc.GetSettings();
-            });
-        }
-
-        public void InsertSSServer()
-        {
-            InsertConfigHelper(() =>
-            {
-                var inbound = Lib.Utils.CreateJObject("inbound");
-                inbound["inbound"] = ssServer.GetSettings();
-
-                try
-                {
-                    Lib.Utils.RemoveKeyFromJObject(config, "inbound.settings");
-                }
-                catch (KeyNotFoundException) { }
-
-                config = Lib.Utils.CombineConfig(config, inbound);
-            });
-        }
-
         public string GetConfigFormated()
         {
             return config.ToString(Newtonsoft.Json.Formatting.Indented);
@@ -471,7 +402,7 @@ namespace V2RayGCon.Controller.Configer
                     return false;
                 }
                 config = o;
-                UpdateData();
+                Update();
                 ShowSection();
                 return true;
             }
@@ -482,7 +413,7 @@ namespace V2RayGCon.Controller.Configer
         public void LoadServer(int index)
         {
             LoadConfig(index);
-            UpdateData();
+            Update();
             ShowSection();
         }
 
@@ -498,13 +429,26 @@ namespace V2RayGCon.Controller.Configer
 
             lamda?.Invoke();
 
-            UpdateData();
+            Update();
             ShowSection();
         }
 
         #endregion
 
         #region private method
+        void BindEditor(Control scintilla)
+        {
+            // bind scintilla
+            var bs = new BindingSource();
+            bs.DataSource = editor;
+            scintilla.DataBindings.Add(
+                "Text",
+                bs,
+                nameof(editor.content),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+
         bool FlushEditor()
         {
             if (!CheckValid())
@@ -520,7 +464,7 @@ namespace V2RayGCon.Controller.Configer
             }
 
             SaveChanges();
-            UpdateData();
+            Update();
             return true;
         }
 

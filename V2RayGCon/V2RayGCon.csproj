@@ -96,14 +96,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\Configer\Configer.cs" />
-    <Compile Include="Controller\Configer\Editor.cs" />
-    <Compile Include="Controller\Configer\Import.cs" />
-    <Compile Include="Controller\Configer\VGC.cs" />
-    <Compile Include="Controller\Configer\SSClient.cs" />
-    <Compile Include="Controller\Configer\SSServer.cs" />
-    <Compile Include="Controller\Configer\StreamSettings.cs" />
-    <Compile Include="Controller\Configer\VmessCtrl.cs" />
+    <Compile Include="Controller\Configer.cs" />
+    <Compile Include="Controller\ConfigerComponent\Editor.cs" />
+    <Compile Include="Controller\ConfigerComponent\Import.cs" />
+    <Compile Include="Controller\ConfigerComponent\VGC.cs" />
+    <Compile Include="Controller\ConfigerComponent\SSClient.cs" />
+    <Compile Include="Controller\ConfigerComponent\SSServer.cs" />
+    <Compile Include="Controller\ConfigerComponent\StreamSettings.cs" />
+    <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\DllLoader.cs" />

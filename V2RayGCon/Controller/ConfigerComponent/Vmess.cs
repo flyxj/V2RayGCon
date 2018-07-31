@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
-
-
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class VmessCtrl :
+    class Vmess :
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IConfigerComponent
     {
-        public VmessCtrl()
+        public Vmess()
         {
             serverMode = false;
         }
@@ -51,8 +52,8 @@ namespace V2RayGCon.Controller.Configer
         }
         #endregion
 
-        #region public method
-        public JToken GetSettings()
+        #region private method
+        JToken GetSettings()
         {
             JToken vmess = Service.Cache.Instance.
                 tpl.LoadTemplate(serverMode ?
@@ -77,8 +78,50 @@ namespace V2RayGCon.Controller.Configer
 
             return vmess;
         }
+        #endregion
 
-        public void UpdateData(JObject config)
+        #region public method
+        // textbox [id, level, aid, ipaddr]
+        public void Bind(List<Control> controls)
+        {
+            if (controls.Count != 4)
+            {
+                throw new ArgumentException();
+            }
+
+            foreach (var c in controls)
+            {
+                if (!(c is TextBox))
+                {
+                    throw new ArgumentException();
+                }
+            }
+
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            controls[0].DataBindings.Add("Text", bs, nameof(this.ID));
+            controls[1].DataBindings.Add("Text", bs, nameof(this.level));
+            controls[2].DataBindings.Add("Text", bs, nameof(this.altID));
+            controls[3].DataBindings.Add("Text", bs, nameof(this.addr));
+        }
+
+        public JObject Inject(JObject config)
+        {
+            var key = serverMode ? "inbound" : "outbound";
+            var vmess = Lib.Utils.CreateJObject(key);
+            vmess[key] = GetSettings();
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(config, key + ".settings");
+            }
+            catch (KeyNotFoundException) { }
+
+            return Lib.Utils.CombineConfig(config, vmess);
+        }
+
+        public void Update(JObject config)
         {
             var prefix = serverMode ?
                 "inbound.settings.clients.0" :

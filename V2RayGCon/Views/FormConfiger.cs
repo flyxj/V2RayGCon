@@ -8,6 +8,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
+    #region auto hide tools panel
     struct ToolsPanelHandler
     {
         public Rectangle toolsPanel;
@@ -70,10 +71,11 @@ namespace V2RayGCon.Views
             hideToolsPanelTimer.Stop();
         }
     };
+    #endregion
 
     public partial class FormConfiger : Form
     {
-        Controller.Configer.Configer configer;
+        Controller.Configer configer;
         Service.Setting setting;
         Scintilla scintillaMain, scintillaImport;
         FormSearch formSearch;
@@ -103,12 +105,9 @@ namespace V2RayGCon.Views
             scintillaImport = new Scintilla();
             InitScintilla(scintillaImport, panelExpandConfig, true);
 
-            configer = new Controller.Configer.Configer(
-                scintillaImport,
-                _serverIndex);
-
+            InitConfiger();
             InitComboBox();
-            InitDataBinding();
+
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
             ToggleToolsPanel(setting.isShowConfigerToolsPanel);
@@ -129,144 +128,6 @@ namespace V2RayGCon.Views
             setting.OnSettingChange += SettingChange;
         }
 
-        #region data binding
-
-        void BindDataEditor()
-        {
-            // bind scintilla
-            var editor = configer.editor;
-            var bs = new BindingSource();
-
-            bs.DataSource = editor;
-            scintillaMain.DataBindings.Add(
-                "Text",
-                bs,
-                nameof(editor.content),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataStreamSettings()
-        {
-            var streamClient = configer.streamSettings;
-            var bs = new BindingSource();
-            bs.DataSource = streamClient;
-
-            cboxStreamType.DataBindings.Add(
-                nameof(cboxStreamType.SelectedIndex),
-                bs,
-                nameof(streamClient.streamType),
-                true,
-                DataSourceUpdateMode.OnValidation);
-
-            cboxStreamParam.DataBindings.Add(
-                nameof(cboxStreamParam.Text),
-                bs,
-                nameof(streamClient.streamParamText),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            cboxStreamTLS.DataBindings.Add(
-                nameof(cboxStreamTLS.SelectedIndex),
-                bs,
-                nameof(streamClient.tls),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataImport()
-        {
-            var import = configer.import;
-            var bs = new BindingSource();
-            bs.DataSource = import;
-
-            scintillaImport.DataBindings.Add(
-                "Text",
-                bs,
-                nameof(import.content),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataVGC()
-        {
-            var vgc = configer.vgc;
-            var bs = new BindingSource();
-            bs.DataSource = vgc;
-            tboxVGCAlias.DataBindings.Add("Text", bs, nameof(vgc.alias));
-            tboxVGCDesc.DataBindings.Add("Text", bs, nameof(vgc.description));
-        }
-
-        void BindDataSSServer()
-        {
-            var server = configer.ssServer;
-            var bs = new BindingSource();
-            bs.DataSource = server;
-
-            tboxSSSPass.DataBindings.Add("Text", bs, nameof(server.pass));
-            tboxSSSPort.DataBindings.Add("Text", bs, nameof(server.port));
-
-            cboxSSSNetwork.DataBindings.Add(
-                nameof(cboxSSSNetwork.SelectedIndex),
-                bs,
-                nameof(server.network),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            cboxSSSMethod.DataBindings.Add(
-                nameof(cboxSSSMethod.SelectedIndex),
-                bs,
-                nameof(server.method),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            chkSSSOTA.DataBindings.Add(
-                nameof(chkSSSOTA.Checked),
-                bs,
-                nameof(server.OTA),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataSSClient()
-        {
-            var ssClient = configer.ssClient;
-
-            var bs = new BindingSource();
-            bs.DataSource = ssClient;
-
-            tboxSSCAddr.DataBindings.Add("Text", bs, nameof(ssClient.addr));
-            tboxSSCPass.DataBindings.Add("Text", bs, nameof(ssClient.pass));
-
-            cboxSSCMethod.DataBindings.Add(
-                nameof(cboxSSCMethod.SelectedIndex),
-                bs,
-                nameof(ssClient.method),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            chkSSCOTA.DataBindings.Add(
-                nameof(chkSSCOTA.Checked),
-                bs,
-                nameof(ssClient.OTA),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-        }
-
-        void BindDataVmess()
-        {
-            var vmessClient = configer.vmessCtrl;
-            var bsVmessClient = new BindingSource();
-            bsVmessClient.DataSource = vmessClient;
-
-            tboxVMessID.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.ID));
-            tboxVMessLevel.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.level));
-            tboxVMessAid.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.altID));
-            tboxVMessIPaddr.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.addr));
-        }
-        #endregion
-
         #region UI event handler
         private void btnDiscardChanges_Click(object sender, EventArgs e)
         {
@@ -274,19 +135,20 @@ namespace V2RayGCon.Views
             configer.DiscardChanges();
         }
 
-        private void btnVMessInsertClient_Click(object sender, EventArgs e)
+        private void btnInsertVmess_Click(object sender, EventArgs e)
         {
-            configer.InsertVmess();
+            configer.Inject("vmess");
         }
 
         private void btnSSRInsertClient_Click(object sender, EventArgs e)
         {
-            configer.InsertSSClient();
+            configer.Inject("ssClient");
         }
 
         private void btnVMessGenUUID_Click(object sender, EventArgs e)
         {
-            configer.vmessCtrl.ID = Guid.NewGuid().ToString();
+            var vmess = configer.GetComponent("vmess") as Controller.ConfigerComponet.Vmess;
+            vmess.ID = Guid.NewGuid().ToString();
         }
 
         private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
@@ -315,7 +177,7 @@ namespace V2RayGCon.Views
 
         private void btnSSInsertServer_Click(object sender, EventArgs e)
         {
-            configer.InsertSSServer();
+            configer.Inject("ssServer");
         }
 
         private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
@@ -417,22 +279,27 @@ namespace V2RayGCon.Views
 
         private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
         {
-            configer.SetVmessServerMode(rbtnVmessIServerMode.Checked);
+            // todo
+            var vmess = configer.GetComponent("vmess") as Controller.ConfigerComponet.Vmess;
+            vmess.serverMode = rbtnVmessIServerMode.Checked;
+            configer.Update();
         }
 
         private void rbtnStreamInbound_CheckedChanged(object sender, EventArgs e)
         {
-            configer.SetStreamSettingsServerMode(rbtnStreamInbound.Checked);
+            var stream = configer.GetComponent("stream") as Controller.ConfigerComponet.StreamSettings;
+            stream.isServer = rbtnStreamInbound.Checked;
+            configer.Update();
         }
 
         private void btnInsertStreamSetting(object sender, EventArgs e)
         {
-            configer.InsertStreamSettings();
+            configer.Inject("stream");
         }
 
         private void btnVGC_Click(object sender, EventArgs e)
         {
-            configer.InsertVGC();
+            configer.Inject("vgc");
         }
 
         private void btnFormat_Click(object sender, EventArgs e)
@@ -534,6 +401,7 @@ namespace V2RayGCon.Views
                 scintilla.Styles[Style.Json.CompactIRI].BackColor = bgColor;
                 scintilla.ReadOnly = true;
             }
+
             scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
             scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
             scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
@@ -581,20 +449,67 @@ namespace V2RayGCon.Views
             scintilla.ClearCmdKey(Keys.Control | Keys.S);
             scintilla.ClearCmdKey(Keys.Control | Keys.F);
         }
-
-        void InitDataBinding()
-        {
-            BindDataVmess();
-            BindDataSSClient();
-            BindDataStreamSettings();
-            BindDataEditor();
-            BindDataSSServer();
-            BindDataVGC();
-            BindDataImport();
-        }
         #endregion
 
         #region private method
+        void InitConfiger()
+        {
+            configer = new Controller.Configer(scintillaMain, _serverIndex);
+
+            configer.AddComponent(
+                "vmess",
+                new Controller.ConfigerComponet.Vmess(),
+                new List<Control> {
+                    tboxVMessID,
+                    tboxVMessLevel,
+                    tboxVMessAid,
+                    tboxVMessIPaddr,
+             });
+
+            configer.AddComponent(
+                "vgc",
+                new Controller.ConfigerComponet.VGC(),
+                new List<Control> {
+                    tboxVGCAlias,
+                    tboxVGCDesc,
+                });
+
+            configer.AddComponent(
+                "stream",
+                new Controller.ConfigerComponet.StreamSettings(),
+                new List<Control> {
+                    cboxStreamType,
+                    cboxStreamParam,
+                    cboxStreamTLS,
+                });
+
+            configer.AddComponent(
+                "ssClient",
+                new Controller.ConfigerComponet.SSClient(),
+                new List<Control> {
+                    tboxSSCAddr,
+                    tboxSSCPass,
+                    cboxSSCMethod,
+                    chkSSCOTA,
+                });
+
+            configer.AddComponent(
+            "ssServer",
+            new Controller.ConfigerComponet.SSServer(),
+            new List<Control> {
+                    tboxSSSPass,
+                    tboxSSSPort,
+                    cboxSSSNetwork,
+                    cboxSSSMethod,
+                    chkSSSOTA,
+            });
+
+            configer.AddComponent(
+                "import",
+                new Controller.ConfigerComponet.Import(),
+                new List<Control> { scintillaImport });
+        }
+
         private void InitToolsPanel()
         {
             toolsPanelHandler.InitTimer();
@@ -848,6 +763,11 @@ namespace V2RayGCon.Views
         private void OnMouseLeaveToolsPanel(object sender, EventArgs e)
         {
             toolsPanelHandler.SetTimer(ResetToolsPanelWidth);
+        }
+
+        private void cboxSSCMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         void ShowSearchBox()

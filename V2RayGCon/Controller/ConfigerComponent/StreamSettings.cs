@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller.ConfigerComponet
 {
     class StreamSettings :
         Model.BaseClass.NotifyComponent,
@@ -44,7 +47,79 @@ namespace V2RayGCon.Controller.Configer
         #endregion
 
         #region public method
-        public JToken GetSettings()
+
+        // combo box [type, param, tls]
+        public void Bind(List<Control> controls)
+        {
+
+            if (controls.Count != 3)
+            {
+                throw new ArgumentException();
+            }
+
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            controls[0].DataBindings.Add(
+                nameof(ComboBox.SelectedIndex),
+                bs,
+                nameof(this.streamType),
+                true,
+                DataSourceUpdateMode.OnValidation);
+
+            controls[1].DataBindings.Add(
+                nameof(ComboBox.Text),
+                bs,
+                nameof(this.streamParamText),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            controls[2].DataBindings.Add(
+                nameof(ComboBox.SelectedIndex),
+                bs,
+                nameof(this.tls),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+        }
+
+        public JObject Inject(JObject config)
+        {
+            var settings = GetSettings();
+            var key = isServer ? "inbound" : "outbound";
+            JObject stream = Lib.Utils.CreateJObject(key);
+            stream[key]["streamSettings"] = settings;
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
+            }
+            catch (KeyNotFoundException) { }
+
+            return Lib.Utils.CombineConfig(config, stream);
+        }
+
+        public void Update(JObject config)
+        {
+            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
+
+            string prefix = isServer ?
+                "inbound.streamSettings" :
+                "outbound.streamSettings";
+
+            var index = GetIndexByNetwork(GetStr(prefix, "network"));
+            streamType = index;
+            streamParamText = index < 0 ? string.Empty :
+                GetStr(
+                    prefix,
+                    Model.Data.Table.streamSettings[index].optionPath);
+
+            tls = GetStr(prefix, "security") == "tls" ? 1 : 0;
+        }
+        #endregion
+
+        #region private method
+        JToken GetSettings()
         {
             streamType = Lib.Utils.Clamp(
                 streamType,
@@ -68,26 +143,6 @@ namespace V2RayGCon.Controller.Configer
             return tpl;
         }
 
-        public void UpdateData(JObject config)
-        {
-            var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
-
-            string prefix = isServer ?
-                "inbound.streamSettings" :
-                "outbound.streamSettings";
-
-            var index = GetIndexByNetwork(GetStr(prefix, "network"));
-            streamType = index;
-            streamParamText = index < 0 ? string.Empty :
-                GetStr(
-                    prefix,
-                    Model.Data.Table.streamSettings[index].optionPath);
-
-            tls = GetStr(prefix, "security") == "tls" ? 1 : 0;
-        }
-        #endregion
-
-        #region private method
         int GetIndexByNetwork(string network)
         {
             if (string.IsNullOrEmpty(network))
