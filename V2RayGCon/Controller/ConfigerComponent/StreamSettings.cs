@@ -20,6 +20,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             DataBinding(type, param, tls);
             Connect(type, param);
             AttachEvent(inbound, insert);
+            InitComboBox(tls, type);
         }
 
         #region properties
@@ -73,6 +74,18 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
+        void InitComboBox(ComboBox tls, ComboBox cboxType)
+        {
+            Lib.UI.FillComboBox(tls, Model.Data.Table.streamTLS);
+
+            var streamType = new Dictionary<int, string>();
+            foreach (var type in Model.Data.Table.streamSettings)
+            {
+                streamType.Add(type.Key, type.Value.name);
+            }
+            Lib.UI.FillComboBox(cboxType, streamType);
+        }
+
         void Connect(ComboBox type, ComboBox param)
         {
             type.SelectedIndexChanged += (sender, arg) =>

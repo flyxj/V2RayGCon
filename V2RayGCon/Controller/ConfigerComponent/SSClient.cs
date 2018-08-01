@@ -16,6 +16,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             DataBind(address, pass, method, ota);
             AttachEvent(showPass, insert, pass);
+            Lib.UI.FillComboBox(method, Model.Data.Table.ssMethods);
 
         }
 

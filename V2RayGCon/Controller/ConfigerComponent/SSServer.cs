@@ -18,6 +18,8 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
             DataBinding(pass, port, network, method, ota);
             AttachEvent(showPass, insert, pass);
+            Lib.UI.FillComboBox(method, Model.Data.Table.ssMethods);
+            Lib.UI.FillComboBox(network, Model.Data.Table.ssNetworks);
         }
 
         #region properties

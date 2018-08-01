@@ -13,11 +13,12 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         int preSection;
         int separator;
+        Scintilla editor;
 
         Dictionary<int, string> sections;
 
         public Editor(
-            Scintilla editor,
+            Panel container,
             ComboBox section,
             ComboBox example,
             Button format,
@@ -29,8 +30,10 @@ namespace V2RayGCon.Controller.ConfigerComponet
             sections = Model.Data.Table.configSections;
             preSection = 0;
 
-            BindEditor(editor);
+            BindEditor(container);
             AttachEvent(section, example, format, restore);
+
+            Lib.UI.FillComboBox(section, Model.Data.Table.configSections);
         }
 
         #region properties
@@ -50,6 +53,15 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region pulbic method
+        public Scintilla GetEditor()
+        {
+            if (editor == null)
+            {
+                throw new NullReferenceException("Editor not ready!");
+            }
+            return editor;
+        }
+
         public void ShowSection(int section = -1)
         {
             var index = section < 0 ? preSection : section;
@@ -317,8 +329,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
         }
 
-        void BindEditor(Scintilla editor)
+        void BindEditor(Panel container)
         {
+            var editor = Lib.UI.CreateScintilla(container);
+            this.editor = editor;
+
             // bind scintilla
             var bs = new BindingSource();
             bs.DataSource = this;

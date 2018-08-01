@@ -14,12 +14,12 @@ namespace V2RayGCon.Controller.ConfigerComponet
         Scintilla editor;
 
         public Import(
-            Scintilla editor,
+            Panel container,
             Button expand,
             Button clearCache,
             Button copy)
         {
-            this.editor = editor;
+            this.editor = Lib.UI.CreateScintilla(container, true);
             DataBinding();
             AttachEvent(expand, clearCache, copy);
         }

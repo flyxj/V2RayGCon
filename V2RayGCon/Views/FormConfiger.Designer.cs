@@ -164,7 +164,7 @@
             this.tabCtrlToolPanel.Name = "tabCtrlToolPanel";
             this.tabCtrlToolPanel.SelectedIndex = 0;
             this.toolTip1.SetToolTip(this.tabCtrlToolPanel, resources.GetString("tabCtrlToolPanel.ToolTip"));
-            this.tabCtrlToolPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabCtrlToolPanel_MouseMove);
+            this.tabCtrlToolPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TabCtrlToolPanel_MouseMove);
             // 
             // vmess
             // 
@@ -689,7 +689,7 @@
             // 
             resources.ApplyResources(this.newWinToolStripMenuItem1, "newWinToolStripMenuItem1");
             this.newWinToolStripMenuItem1.Name = "newWinToolStripMenuItem1";
-            this.newWinToolStripMenuItem1.Click += new System.EventHandler(this.newWinToolStripMenuItem1_Click);
+            this.newWinToolStripMenuItem1.Click += new System.EventHandler(this.NewWinToolStripMenuItem1_Click);
             // 
             // toolStripSeparator4
             // 
@@ -700,13 +700,13 @@
             // 
             resources.ApplyResources(this.loadJsonToolStripMenuItem, "loadJsonToolStripMenuItem");
             this.loadJsonToolStripMenuItem.Name = "loadJsonToolStripMenuItem";
-            this.loadJsonToolStripMenuItem.Click += new System.EventHandler(this.loadJsonToolStripMenuItem_Click);
+            this.loadJsonToolStripMenuItem.Click += new System.EventHandler(this.LoadJsonToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             resources.ApplyResources(this.saveAsToolStripMenuItem, "saveAsToolStripMenuItem");
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -717,7 +717,7 @@
             // 
             resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // configToolStripMenuItem
             // 
@@ -734,13 +734,13 @@
             // 
             resources.ApplyResources(this.addNewServerToolStripMenuItem, "addNewServerToolStripMenuItem");
             this.addNewServerToolStripMenuItem.Name = "addNewServerToolStripMenuItem";
-            this.addNewServerToolStripMenuItem.Click += new System.EventHandler(this.addNewServerToolStripMenuItem_Click);
+            this.addNewServerToolStripMenuItem.Click += new System.EventHandler(this.AddNewServerToolStripMenuItem_Click);
             // 
             // saveConfigStripMenuItem
             // 
             resources.ApplyResources(this.saveConfigStripMenuItem, "saveConfigStripMenuItem");
             this.saveConfigStripMenuItem.Name = "saveConfigStripMenuItem";
-            this.saveConfigStripMenuItem.Click += new System.EventHandler(this.saveConfigStripMenuItem_Click);
+            this.saveConfigStripMenuItem.Click += new System.EventHandler(this.SaveConfigStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -771,7 +771,7 @@
             // 
             resources.ApplyResources(this.searchBoxToolStripMenuItem, "searchBoxToolStripMenuItem");
             this.searchBoxToolStripMenuItem.Name = "searchBoxToolStripMenuItem";
-            this.searchBoxToolStripMenuItem.Click += new System.EventHandler(this.searchBoxToolStripMenuItem_Click);
+            this.searchBoxToolStripMenuItem.Click += new System.EventHandler(this.SearchBoxToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -784,13 +784,13 @@
             this.showLeftPanelToolStripMenuItem.Checked = true;
             this.showLeftPanelToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showLeftPanelToolStripMenuItem.Name = "showLeftPanelToolStripMenuItem";
-            this.showLeftPanelToolStripMenuItem.Click += new System.EventHandler(this.showLeftPanelToolStripMenuItem_Click);
+            this.showLeftPanelToolStripMenuItem.Click += new System.EventHandler(this.ShowLeftPanelToolStripMenuItem_Click);
             // 
             // hideLeftPanelToolStripMenuItem
             // 
             resources.ApplyResources(this.hideLeftPanelToolStripMenuItem, "hideLeftPanelToolStripMenuItem");
             this.hideLeftPanelToolStripMenuItem.Name = "hideLeftPanelToolStripMenuItem";
-            this.hideLeftPanelToolStripMenuItem.Click += new System.EventHandler(this.hideLeftPanelToolStripMenuItem_Click);
+            this.hideLeftPanelToolStripMenuItem.Click += new System.EventHandler(this.HideLeftPanelToolStripMenuItem_Click);
             // 
             // pnlTools
             // 
