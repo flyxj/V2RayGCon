@@ -348,8 +348,9 @@ namespace V2RayGCon.Views
 
         void InitConfiger()
         {
-            configer = new Controller.Configer(
-                _serverIndex,
+            var components = new List<Model.BaseClass.ConfigerComponent>();
+
+            components.Add(
                 new Controller.ConfigerComponet.Editor(
                     scintillaMain,
                     cboxConfigSection,
@@ -357,7 +358,7 @@ namespace V2RayGCon.Views
                     btnFormat,
                     btnClearModify));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.Vmess(
                     tboxVMessID,
                     tboxVMessLevel,
@@ -367,13 +368,13 @@ namespace V2RayGCon.Views
                     btnVMessGenUUID,
                     btnVMessInsertClient));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.VGC(
                     tboxVGCAlias,
                     tboxVGCDesc,
                     btnInsertVGC));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
@@ -381,7 +382,7 @@ namespace V2RayGCon.Views
                     rbtnStreamInbound,
                     btnInsertStream));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.SSClient(
                     tboxSSCAddr,
                     tboxSSCPass,
@@ -390,7 +391,7 @@ namespace V2RayGCon.Views
                     chkSSCShowPass,
                     btnSSRInsertClient));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.SSServer(
                         tboxSSSPass,
                         tboxSSSPort,
@@ -400,19 +401,21 @@ namespace V2RayGCon.Views
                         chkSSSShowPass,
                         btnSSInsertServer));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.Import(
                     scintillaImport,
                     btnExpandImport,
                     btnImportClearCache,
                     btnCopyExpansedConfig));
 
-            configer.AddComponent(
+            components.Add(
                 new Controller.ConfigerComponet.Quick(
                     btnQConSkipCN,
                     btnQConMTProto));
 
-            configer.Update();
+            configer = new Controller.Configer(_serverIndex);
+            configer.Plug(components);
+            configer.Prepare();
         }
 
         void InitToolsPanel()

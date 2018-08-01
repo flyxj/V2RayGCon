@@ -16,7 +16,6 @@
             socks = 2,
         }
 
-
         public enum FormLocations
         {
             TopLeft,

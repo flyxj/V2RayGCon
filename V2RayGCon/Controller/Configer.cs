@@ -15,28 +15,56 @@ namespace V2RayGCon.Controller
         string originalConfig;
         ConfigerComponet.Editor editor;
 
-        List<Model.BaseClass.IConfigerComponent> components;
+        Dictionary<Type, Model.BaseClass.ConfigerComponent> components;
 
-        public Configer(int serverIndex, ConfigerComponet.Editor editor)
+        public Configer(int serverIndex = -1)
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
 
-            components = new List<Model.BaseClass.IConfigerComponent>();
+            components = new Dictionary<Type, Model.BaseClass.ConfigerComponent>();
             ClearOriginalConfig();
             LoadConfig(serverIndex);
-
-            this.editor = editor;
-            this.editor.Bind(this);
-            this.editor.ShowSection();
         }
 
         #region public method
-
-        public void AddComponent(Model.BaseClass.IConfigerComponent component)
+        public T GetComponent<T>() where T : Model.BaseClass.ConfigerComponent
         {
+            var type = typeof(T);
+
+            if (!components.ContainsKey(type))
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return components[type] as T;
+        }
+
+        public void Prepare()
+        {
+            editor = GetComponent<ConfigerComponet.Editor>();
+            editor.ShowSection();
+            Update();
+        }
+
+        public void Plug(Model.BaseClass.ConfigerComponent component)
+        {
+            var type = component.GetType();
+            if (components.ContainsKey(type))
+            {
+                throw new ArgumentException("Key already existed!");
+            }
+
             component.Bind(this);
-            components.Add(component);
+            components[type] = component;
+        }
+
+        public void Plug(List<Model.BaseClass.ConfigerComponent> components)
+        {
+            foreach (var component in components)
+            {
+                Plug(component);
+            }
         }
 
         public void ClearOriginalConfig()
@@ -53,7 +81,7 @@ namespace V2RayGCon.Controller
         {
             foreach (var component in components)
             {
-                component.Update(config);
+                component.Value.Update(config);
             }
         }
 
@@ -162,6 +190,8 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
+
+
         void LoadConfig(int index = -1)
         {
             var serverIndex = index < 0 ? 0 : index;
