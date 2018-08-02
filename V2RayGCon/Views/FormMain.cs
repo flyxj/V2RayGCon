@@ -373,6 +373,10 @@ namespace V2RayGCon.Views
             Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
         }
 
+        private void configTesterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormConfigTester();
+        }
         #endregion
 
 
