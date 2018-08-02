@@ -10,63 +10,18 @@ namespace V2RayGCon.Views
     #region auto hide tools panel
     struct ToolsPanelHandler
     {
-        public Rectangle toolsPanel;
-        public Rectangle editor;
         public int span;
         public int tabWidth;
-        public Rectangle pageRect;
 
-        Timer hideToolsPanelTimer;
-        EventHandler onTick;
+        public Rectangle panel;
+        public Rectangle editor;
+        public Rectangle page;
 
-        public void InitTimer()
-        {
-            if (hideToolsPanelTimer == null)
-            {
-                hideToolsPanelTimer = new Timer();
-            }
-            ClearTimer();
-        }
+        public Model.BaseClass.CancelableTimeout timer;
 
         public void Dispose()
         {
-            if (hideToolsPanelTimer == null)
-            {
-                return;
-            }
-            ClearTimer();
-            hideToolsPanelTimer.Dispose();
-            hideToolsPanelTimer = null;
-        }
-
-        public void SetTimer(Action lambda, int milliSecond = 500)
-        {
-            if (hideToolsPanelTimer.Enabled)
-            {
-                return;
-            }
-
-            var that = this;
-            onTick = (s, e) =>
-            {
-                that.ClearTimer();
-                lambda();
-            };
-
-            hideToolsPanelTimer.Interval = milliSecond;
-            hideToolsPanelTimer.Tick += onTick;
-            hideToolsPanelTimer.Start();
-        }
-
-        public void ClearTimer()
-        {
-            if (!hideToolsPanelTimer.Enabled)
-            {
-                return;
-            }
-
-            hideToolsPanelTimer.Tick -= onTick;
-            hideToolsPanelTimer.Stop();
+            timer?.Dispose();
         }
     };
     #endregion
@@ -206,6 +161,24 @@ namespace V2RayGCon.Views
                 }
             }
         }
+
+        private void TabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (setting.isShowConfigerToolsPanel)
+            {
+                return;
+            }
+
+            for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
+            {
+                if (tabCtrlToolPanel.GetTabRect(i).Contains(e.Location))
+                {
+                    if (tabCtrlToolPanel.SelectedIndex != i)
+                        tabCtrlToolPanel.SelectTab(i);
+                    break;
+                }
+            }
+        }
         #endregion
 
         #region bind hotkey
@@ -298,14 +271,16 @@ namespace V2RayGCon.Views
 
         void InitToolsPanel()
         {
-            toolsPanelHandler.InitTimer();
             toolsPanelHandler.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
-            toolsPanelHandler.toolsPanel = new Rectangle(pnlTools.Location, pnlTools.Size);
-            toolsPanelHandler.span = (this.ClientRectangle.Width - toolsPanelHandler.toolsPanel.Width - toolsPanelHandler.editor.Width) / 3;
+            toolsPanelHandler.panel = new Rectangle(pnlTools.Location, pnlTools.Size);
+
+            toolsPanelHandler.span = (ClientRectangle.Width - toolsPanelHandler.panel.Width - toolsPanelHandler.editor.Width) / 3;
             toolsPanelHandler.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
+            toolsPanelHandler.timer = new Model.BaseClass.CancelableTimeout(ResetToolsPanelWidth, 800);
+
             var page = tabCtrlToolPanel.TabPages[0];
-            toolsPanelHandler.pageRect = new Rectangle(
+            toolsPanelHandler.page = new Rectangle(
                 pnlTools.Location.X + page.Left,
                 pnlTools.Location.Y + page.Top,
                 page.Width,
@@ -316,9 +291,9 @@ namespace V2RayGCon.Views
                 tabCtrlToolPanel.TabPages[i].MouseEnter += OnMouseEnterToolsPanel;
                 tabCtrlToolPanel.TabPages[i].MouseLeave += (s, e) =>
                 {
-                    var rect = toolsPanelHandler.pageRect;
+                    var rect = toolsPanelHandler.page;
                     rect.Height = tabCtrlToolPanel.TabPages[0].Height;
-                    if (!rect.Contains(this.PointToClient(Cursor.Position)))
+                    if (!rect.Contains(PointToClient(Cursor.Position)))
                     {
                         OnMouseLeaveToolsPanel(s, e);
                     }
@@ -394,7 +369,7 @@ namespace V2RayGCon.Views
 
             if (visible)
             {
-                pnlTools.Width = toolsPanelHandler.toolsPanel.Width;
+                pnlTools.Width = toolsPanelHandler.panel.Width;
                 pnlEditor.Left = pnlTools.Left + pnlTools.Width + toolsPanelHandler.span;
                 pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - toolsPanelHandler.span;
             }
@@ -425,21 +400,21 @@ namespace V2RayGCon.Views
             catch { }
         }
 
-        private void OnMouseEnterToolsPanel(object sender, EventArgs e)
+        void OnMouseEnterToolsPanel(object sender, EventArgs e)
         {
-            toolsPanelHandler.ClearTimer();
+            toolsPanelHandler.timer.Cancel();
 
-            var width = toolsPanelHandler.toolsPanel.Width;
+            var width = toolsPanelHandler.panel.Width;
             if (pnlTools.Width != width)
             {
                 pnlTools.Width = width;
             }
         }
 
-        private void ResetToolsPanelWidth()
+        void ResetToolsPanelWidth()
         {
             var visible = setting.isShowConfigerToolsPanel;
-            var width = toolsPanelHandler.toolsPanel.Width;
+            var width = toolsPanelHandler.panel.Width;
 
             if (!visible)
             {
@@ -452,27 +427,9 @@ namespace V2RayGCon.Views
             }
         }
 
-        private void TabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
+        void OnMouseLeaveToolsPanel(object sender, EventArgs e)
         {
-            if (setting.isShowConfigerToolsPanel)
-            {
-                return;
-            }
-
-            for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
-            {
-                if (tabCtrlToolPanel.GetTabRect(i).Contains(e.Location))
-                {
-                    if (tabCtrlToolPanel.SelectedIndex != i)
-                        tabCtrlToolPanel.SelectTab(i);
-                    break;
-                }
-            }
-        }
-
-        private void OnMouseLeaveToolsPanel(object sender, EventArgs e)
-        {
-            toolsPanelHandler.SetTimer(ResetToolsPanelWidth);
+            toolsPanelHandler.timer.Start();
         }
 
         void ShowSearchBox()
