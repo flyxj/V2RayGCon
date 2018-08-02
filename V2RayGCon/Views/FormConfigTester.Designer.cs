@@ -28,77 +28,70 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormConfigTester));
             this.rtboxLog = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cboxServList = new System.Windows.Forms.ComboBox();
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
+            this.btnNew = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // rtboxLog
             // 
-            this.rtboxLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtboxLog.Location = new System.Drawing.Point(0, 32);
+            resources.ApplyResources(this.rtboxLog, "rtboxLog");
             this.rtboxLog.Name = "rtboxLog";
             this.rtboxLog.ReadOnly = true;
-            this.rtboxLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtboxLog.Size = new System.Drawing.Size(619, 290);
-            this.rtboxLog.TabIndex = 0;
-            this.rtboxLog.Text = "";
+            this.rtboxLog.TextChanged += new System.EventHandler(this.rtboxLog_TextChanged);
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Server";
             // 
             // cboxServList
             // 
             this.cboxServList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxServList.FormattingEnabled = true;
-            this.cboxServList.Location = new System.Drawing.Point(59, 6);
+            resources.ApplyResources(this.cboxServList, "cboxServList");
             this.cboxServList.Name = "cboxServList";
-            this.cboxServList.Size = new System.Drawing.Size(121, 20);
-            this.cboxServList.TabIndex = 2;
             this.cboxServList.SelectedIndexChanged += new System.EventHandler(this.cboxServList_SelectedIndexChanged);
             // 
             // btnRestart
             // 
-            this.btnRestart.Location = new System.Drawing.Point(186, 6);
+            resources.ApplyResources(this.btnRestart, "btnRestart");
             this.btnRestart.Name = "btnRestart";
-            this.btnRestart.Size = new System.Drawing.Size(75, 20);
-            this.btnRestart.TabIndex = 3;
-            this.btnRestart.Text = "Restart";
             this.btnRestart.UseVisualStyleBackColor = true;
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(267, 6);
+            resources.ApplyResources(this.btnStop, "btnStop");
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 20);
-            this.btnStop.TabIndex = 3;
-            this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnNew
+            // 
+            resources.ApplyResources(this.btnNew, "btnNew");
+            this.btnNew.Name = "btnNew";
+            this.toolTip1.SetToolTip(this.btnNew, resources.GetString("btnNew.ToolTip"));
+            this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // FormConfigTester
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 322);
+            this.Controls.Add(this.btnNew);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.cboxServList);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rtboxLog);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormConfigTester";
-            this.Text = "Config tester";
             this.Shown += new System.EventHandler(this.FormConfigTester_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -112,5 +105,7 @@
         private System.Windows.Forms.ComboBox cboxServList;
         private System.Windows.Forms.Button btnRestart;
         private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

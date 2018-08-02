@@ -106,6 +106,7 @@
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
+    <Compile Include="Controller\Tester.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\DllLoader.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
@@ -246,6 +247,9 @@
       <DependentUpon>FormConfiger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormConfigTester.resx">
+      <DependentUpon>FormConfigTester.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormConfigTester.zh-CN.resx">
       <DependentUpon>FormConfigTester.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormDownloadCore.resx">

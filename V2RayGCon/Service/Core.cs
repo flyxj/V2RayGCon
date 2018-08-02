@@ -194,17 +194,17 @@ namespace V2RayGCon.Service
             return File.Exists(StrConst("Executable"));
         }
 
-        public void StopCoreThen(Action lamda)
+        public void StopCoreThen(Action lambda)
         {
             if (v2rayCore == null)
             {
-                lamda?.Invoke();
+                lambda?.Invoke();
                 return;
             }
             v2rayCore.Exited += (s, a) =>
             {
                 v2rayCore = null;
-                lamda?.Invoke();
+                lambda?.Invoke();
             };
             try
             {
