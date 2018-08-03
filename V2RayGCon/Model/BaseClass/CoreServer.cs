@@ -5,23 +5,47 @@ using System.IO;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
-namespace V2RayGCon.Controller
+namespace V2RayGCon.Model.BaseClass
 {
-    class Tester
+    class CoreServer
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
 
         Process v2rayCore;
         Service.Setting setting;
 
-        public Tester()
+        public CoreServer()
         {
             setting = Service.Setting.Instance;
         }
 
         #region public method
+        public bool IsExecutableExist()
+        {
+            return File.Exists(StrConst("Executable"));
+        }
 
-        public void RestartCore(int index)
+        public bool isRunning
+        {
+            get => v2rayCore != null;
+        }
+
+        public void RestartCore(string config, Action OnStateChanged = null)
+        {
+            StopCoreThen(() =>
+            {
+                if (IsExecutableExist())
+                {
+                    StartCore(config, OnStateChanged);
+                }
+                else
+                {
+                    MessageBox.Show(I18N("ExeNotFound"));
+                }
+            });
+        }
+
+        public virtual void RestartCore(int index)
         {
             if (index < 0)
             {
@@ -45,7 +69,7 @@ namespace V2RayGCon.Controller
             }
             catch
             {
-                setting.SendLog(I18N("DecodeImportFail"));
+                SendLog(I18N("DecodeImportFail"));
                 StopCoreThen(null);
                 return;
             }
@@ -63,7 +87,6 @@ namespace V2RayGCon.Controller
 
             v2rayCore.Exited += (s, a) =>
             {
-                v2rayCore = null;
                 lambda?.Invoke();
             };
 
@@ -76,27 +99,8 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
-        bool IsExecutableExist()
-        {
-            return File.Exists(StrConst("Executable"));
-        }
 
-        void RestartCore(string config)
-        {
-            StopCoreThen(() =>
-            {
-                if (IsExecutableExist())
-                {
-                    StartCore(config);
-                }
-                else
-                {
-                    MessageBox.Show(I18N("ExeNotFound"));
-                }
-            });
-        }
-
-        void StartCore(string config)
+        void StartCore(string config, Action OnStateChanged = null)
         {
             if (v2rayCore != null)
             {
@@ -122,8 +126,12 @@ namespace V2RayGCon.Controller
             v2rayCore.Exited += (s, e) =>
             {
                 SendLog(I18N("CoreExit"));
+
+                // isRunning need to set v2rayCore to null first
                 v2rayCore = null;
+                OnStateChanged?.Invoke();
             };
+
             v2rayCore.ErrorDataReceived += (s, e) => SendLog(e.Data);
             v2rayCore.OutputDataReceived += (s, e) => SendLog(e.Data);
 
@@ -144,6 +152,7 @@ namespace V2RayGCon.Controller
 
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
+            OnStateChanged?.Invoke();
         }
 
         void SendLog(string log)
@@ -153,6 +162,5 @@ namespace V2RayGCon.Controller
         }
 
         #endregion
-
     }
 }

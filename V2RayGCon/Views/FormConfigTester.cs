@@ -10,7 +10,7 @@ namespace V2RayGCon.Views
         int preIndex, maxNumberLines;
 
         Service.Setting setting;
-        Controller.Tester tester;
+        Model.BaseClass.CoreServer tester;
 
         public FormConfigTester()
         {
@@ -29,7 +29,7 @@ namespace V2RayGCon.Views
 
             UpdateServerList();
 
-            tester = new Controller.Tester();
+            tester = new Model.BaseClass.CoreServer();
             tester.OnLog += LogReceiver;
 
             setting.OnSettingChange += SettingChange;
