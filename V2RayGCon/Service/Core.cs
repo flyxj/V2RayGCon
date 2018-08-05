@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +11,9 @@ namespace V2RayGCon.Service
 
     public class Core : Model.BaseClass.SingletonService<Core>
     {
-        Process v2rayCore;
+
+        Model.BaseClass.CoreServer coreServer;
+
         Setting setting;
         Cache cache;
 
@@ -20,19 +21,20 @@ namespace V2RayGCon.Service
 
         Core()
         {
-            v2rayCore = null;
             cache = Cache.Instance;
+
             setting = Setting.Instance;
             setting.OnRequireCoreRestart += (s, a) =>
-            {
                 Task.Factory.StartNew(() => CoreRestartHandler());
-            };
+
+            coreServer = new Model.BaseClass.CoreServer();
+            coreServer.OnLog += (s, a) => setting.SendLog(a.Data);
         }
 
         #region properties
         public bool isRunning
         {
-            get => v2rayCore != null;
+            get => coreServer.isRunning;
         }
         #endregion
 
@@ -103,78 +105,9 @@ namespace V2RayGCon.Service
             }
 
             OverwriteInboundSettings(config);
-            RestartCore(config.ToString());
-        }
 
-        void RestartCore(string config)
-        {
-            StopCoreThen(() =>
-            {
-                if (IsCoreExist())
-                {
-                    StartCore(config);
-                }
-                else
-                {
-                    MessageBox.Show(I18N("ExeNotFound"));
-                }
-            });
-        }
+            coreServer.RestartCore(config.ToString(), NotifyStateChange);
 
-        void StartCore(string config)
-        {
-            if (v2rayCore != null)
-            {
-                Debug.WriteLine("Error: v2ray core is running!");
-                return;
-            }
-
-            Debug.WriteLine("start v2ray core");
-
-            v2rayCore = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = StrConst("Executable"),
-                    Arguments = "-config=stdin: -format=json",
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    RedirectStandardInput = true,
-                }
-            };
-
-            v2rayCore.EnableRaisingEvents = true;
-            v2rayCore.Exited += (s, e) =>
-            {
-                setting.SendLog(I18N("CoreExit"));
-                v2rayCore = null;
-                NotifyStateChange();
-            };
-            v2rayCore.ErrorDataReceived += (s, e) => setting.SendLog(e.Data);
-            v2rayCore.OutputDataReceived += (s, e) => setting.SendLog(e.Data);
-
-            try
-            {
-                v2rayCore.Start();
-                v2rayCore.StandardInput.WriteLine(config);
-                v2rayCore.StandardInput.Close();
-
-                // Add to JOB object support win8+ only
-                Lib.ChildProcessTracker.AddProcess(v2rayCore);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Excep: {0}", e);
-                StopCoreThen(() => MessageBox.Show(I18N("CantLauchCore")));
-                return;
-            }
-
-            v2rayCore.BeginErrorReadLine();
-            v2rayCore.BeginOutputReadLine();
-
-            NotifyStateChange();
         }
 
         void NotifyStateChange()
@@ -191,26 +124,12 @@ namespace V2RayGCon.Service
 
         public bool IsCoreExist()
         {
-            return File.Exists(StrConst("Executable"));
+            return coreServer.IsExecutableExist();
         }
 
-        public void StopCoreThen(Action lamda)
+        public void StopCoreThen(Action lambda)
         {
-            if (v2rayCore == null)
-            {
-                lamda?.Invoke();
-                return;
-            }
-            v2rayCore.Exited += (s, a) =>
-            {
-                v2rayCore = null;
-                lamda?.Invoke();
-            };
-            try
-            {
-                Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
-            }
-            catch { }
+            coreServer.StopCoreThen(lambda);
         }
 
         public string GetCoreVersion()

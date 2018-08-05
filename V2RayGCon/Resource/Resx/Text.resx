@@ -195,13 +195,13 @@ Discard latest changes and continue?</value>
   <data name="ImportLinkSuccess" xml:space="preserve">
     <value>Import Success!</value>
   </data>
-  <data name="ShowConfigWin" xml:space="preserve">
+  <data name="ConfigEditor" xml:space="preserve">
     <value>Config Editor</value>
   </data>
-  <data name="ShowLogWin" xml:space="preserve">
-    <value>Show Log</value>
+  <data name="OtherWin" xml:space="preserve">
+    <value>Other windows</value>
   </data>
-  <data name="ShowMainWin" xml:space="preserve">
+  <data name="MainWin" xml:space="preserve">
     <value>Main Window</value>
   </data>
   <data name="LinksCopied" xml:space="preserve">
@@ -393,5 +393,17 @@ Please use [Add new server] or [Replace server].</value>
   </data>
   <data name="UsingDecodeCache" xml:space="preserve">
     <value>Use decode cache.</value>
+  </data>
+  <data name="ConfigTester" xml:space="preserve">
+    <value>ConfigTester</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="GenQRCode" xml:space="preserve">
+    <value>Generate QRCode</value>
   </data>
 </root>

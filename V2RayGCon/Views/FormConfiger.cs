@@ -1,5 +1,4 @@
-﻿using ScintillaNET;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -8,55 +7,34 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
+    #region auto hide tools panel
     struct ToolsPanelHandler
     {
-        public string formTitle;
-        public Rectangle toolsPanel;
-        public Rectangle editor;
         public int span;
         public int tabWidth;
-        public Rectangle pageRect;
-        public Timer hideToolsPanelTimer;
 
-        public void SetTimer(Action lambda, int milliSecond = 500)
+        public Rectangle panel;
+        public Rectangle editor;
+        public Rectangle page;
+
+        public Model.BaseClass.CancelableTimeout timer;
+
+        public void Dispose()
         {
-            if (hideToolsPanelTimer != null)
-            {
-                return;
-            }
-
-            hideToolsPanelTimer = new Timer();
-            hideToolsPanelTimer.Interval = milliSecond;
-            var that = this;
-            hideToolsPanelTimer.Tick += (s, e) =>
-            {
-                that.ClearTimer();
-                lambda();
-            };
-            hideToolsPanelTimer.Start();
-        }
-
-        public void ClearTimer()
-        {
-            if (hideToolsPanelTimer == null)
-            {
-                return;
-            }
-
-            hideToolsPanelTimer.Stop();
-            hideToolsPanelTimer = null;
+            timer?.Dispose();
         }
     };
+    #endregion
 
     public partial class FormConfiger : Form
     {
-        Controller.Configer.Configer configer;
+        Controller.Configer configer;
         Service.Setting setting;
-        Scintilla scintillaMain, scintillaImport;
         FormSearch formSearch;
         ToolsPanelHandler toolsPanelHandler;
 
         int _serverIndex;
+        string formTitle;
 
         public FormConfiger(int serverIndex = -1)
         {
@@ -64,32 +42,18 @@ namespace V2RayGCon.Views
             _serverIndex = serverIndex;
             formSearch = null;
             InitializeComponent();
-            toolsPanelHandler.formTitle = this.Text;
+            formTitle = this.Text;
             this.Show();
         }
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
             InitToolsPanel();
+            InitConfiger();
 
-            scintillaMain = new Scintilla();
-            InitScintilla(scintillaMain, panelScintilla);
-            scintillaMain.MouseClick += OnMouseLeaveToolsPanel;
-
-            scintillaImport = new Scintilla();
-            InitScintilla(scintillaImport, panelExpandConfig, true);
-
-            configer = new Controller.Configer.Configer(
-                scintillaImport,
-                _serverIndex);
-
-            InitComboBox();
-            InitDataBinding();
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
-            ToggleToolsPanel(setting.isShowConfigureToolsPanel);
-
-            cboxConfigSection.SelectedIndex = 0;
+            ToggleToolsPanel(setting.isShowConfigerToolsPanel);
 
             this.FormClosing += (s, a) =>
             {
@@ -98,232 +62,35 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnSettingChange -= SettingChange;
+                setting.OnSettingChange -= OnSettingChange;
+                toolsPanelHandler.Dispose();
             };
 
-            setting.OnSettingChange += SettingChange;
+            var editor = configer.GetComponent<Controller.ConfigerComponet.Editor>();
+            editor.GetEditor().Click += OnMouseLeaveToolsPanel;
+
+            setting.OnSettingChange += OnSettingChange;
         }
-
-        #region data binding
-
-        void BindDataEditor()
-        {
-            // bind scintilla
-            var editor = configer.editor;
-            var bs = new BindingSource();
-
-            bs.DataSource = editor;
-            scintillaMain.DataBindings.Add(
-                "Text",
-                bs,
-                nameof(editor.content),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataStreamSettings()
-        {
-            var streamClient = configer.streamSettings;
-            var bs = new BindingSource();
-            bs.DataSource = streamClient;
-
-            cboxStreamType.DataBindings.Add(
-                nameof(cboxStreamType.SelectedIndex),
-                bs,
-                nameof(streamClient.streamType),
-                true,
-                DataSourceUpdateMode.OnValidation);
-
-            cboxStreamParam.DataBindings.Add(
-                nameof(cboxStreamParam.Text),
-                bs,
-                nameof(streamClient.streamParamText),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            cboxStreamTLS.DataBindings.Add(
-                nameof(cboxStreamTLS.SelectedIndex),
-                bs,
-                nameof(streamClient.tls),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataImport()
-        {
-            var import = configer.import;
-            var bs = new BindingSource();
-            bs.DataSource = import;
-
-            scintillaImport.DataBindings.Add(
-                "Text",
-                bs,
-                nameof(import.content),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataVGC()
-        {
-            var vgc = configer.vgc;
-            var bs = new BindingSource();
-            bs.DataSource = vgc;
-            tboxVGCAlias.DataBindings.Add("Text", bs, nameof(vgc.alias));
-            tboxVGCDesc.DataBindings.Add("Text", bs, nameof(vgc.description));
-        }
-
-        void BindDataSSServer()
-        {
-            var server = configer.ssServer;
-            var bs = new BindingSource();
-            bs.DataSource = server;
-
-            tboxSSSPass.DataBindings.Add("Text", bs, nameof(server.pass));
-            tboxSSSPort.DataBindings.Add("Text", bs, nameof(server.port));
-
-            cboxSSSNetwork.DataBindings.Add(
-                nameof(cboxSSSNetwork.SelectedIndex),
-                bs,
-                nameof(server.network),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            cboxSSSMethod.DataBindings.Add(
-                nameof(cboxSSSMethod.SelectedIndex),
-                bs,
-                nameof(server.method),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            chkSSSOTA.DataBindings.Add(
-                nameof(chkSSSOTA.Checked),
-                bs,
-                nameof(server.OTA),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        void BindDataSSClient()
-        {
-            var ssClient = configer.ssClient;
-
-            var bs = new BindingSource();
-            bs.DataSource = ssClient;
-
-            tboxSSCAddr.DataBindings.Add("Text", bs, nameof(ssClient.addr));
-            tboxSSCPass.DataBindings.Add("Text", bs, nameof(ssClient.pass));
-
-            cboxSSCMethod.DataBindings.Add(
-                nameof(cboxSSCMethod.SelectedIndex),
-                bs,
-                nameof(ssClient.method),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            chkSSCOTA.DataBindings.Add(
-                nameof(chkSSCOTA.Checked),
-                bs,
-                nameof(ssClient.OTA),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-        }
-
-        void BindDataVmess()
-        {
-            var vmessClient = configer.vmessCtrl;
-            var bsVmessClient = new BindingSource();
-            bsVmessClient.DataSource = vmessClient;
-
-            tboxVMessID.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.ID));
-            tboxVMessLevel.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.level));
-            tboxVMessAid.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.altID));
-            tboxVMessIPaddr.DataBindings.Add("Text", bsVmessClient, nameof(vmessClient.addr));
-        }
-        #endregion
 
         #region UI event handler
-        private void btnDiscardChanges_Click(object sender, EventArgs e)
-        {
-            cboxExamples.SelectedIndex = 0;
-            configer.DiscardChanges();
-        }
-
-        private void btnVMessInsertClient_Click(object sender, EventArgs e)
-        {
-            configer.InsertVmess();
-        }
-
-        private void btnSSRInsertClient_Click(object sender, EventArgs e)
-        {
-            configer.InsertSSClient();
-        }
-
-        private void btnVMessGenUUID_Click(object sender, EventArgs e)
-        {
-            configer.vmessCtrl.ID = Guid.NewGuid().ToString();
-        }
-
-        private void cboxShowPassWord_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSSCShowPass.Checked == true)
-            {
-                tboxSSCPass.PasswordChar = '\0';
-            }
-            else
-            {
-                tboxSSCPass.PasswordChar = '*';
-            }
-        }
-
-        private void chkSSSShowPass_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSSSShowPass.Checked == true)
-            {
-                tboxSSSPass.PasswordChar = '\0';
-            }
-            else
-            {
-                tboxSSSPass.PasswordChar = '*';
-            }
-        }
-
-        private void btnSSInsertServer_Click(object sender, EventArgs e)
-        {
-            configer.InsertSSServer();
-        }
-
-        private void cboxConfigSection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!configer.OnSectionChanged(cboxConfigSection.SelectedIndex))
-            {
-                cboxConfigSection.SelectedIndex = configer.preSection;
-            }
-            else
-            {
-                // update examples
-                UpdateExamplesDescription();
-            }
-        }
-
-        private void showLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToggleToolsPanel(true);
         }
 
-        private void hideLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HideLeftPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToggleToolsPanel(false);
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            configer.InsertConfigHelper(null);
+            configer.InjectConfigHelper(null);
 
             switch (Lib.UI.ShowSaveFileDialog(
                 StrConst("ExtJson"),
@@ -344,7 +111,7 @@ namespace V2RayGCon.Views
             }
         }
 
-        private void addNewServerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddNewServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Lib.UI.Confirm(I18N("AddNewServer")))
             {
@@ -353,7 +120,7 @@ namespace V2RayGCon.Views
             }
         }
 
-        private void loadJsonToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadJsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
             {
@@ -366,67 +133,49 @@ namespace V2RayGCon.Views
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
                 configer.ClearOriginalConfig();
-                I18N("Done");
+                MessageBox.Show(I18N("Done"));
             }
             else
             {
-                I18N("LoadJsonFail");
+                MessageBox.Show(I18N("LoadJsonFail"));
             }
-
         }
 
-        private void newWinToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void NewWinToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             new FormConfiger();
         }
 
-        private void cboxExamples_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            configer.LoadExample(cboxExamples.SelectedIndex - 1);
-        }
-
-        private void searchBoxToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SearchBoxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowSearchBox();
         }
 
-        private void rbtnVmessIServerMode_CheckedChanged(object sender, EventArgs e)
-        {
-            configer.SetVmessServerMode(rbtnVmessIServerMode.Checked);
-        }
-
-        private void rbtnStreamInbound_CheckedChanged(object sender, EventArgs e)
-        {
-            configer.SetStreamSettingsServerMode(rbtnStreamInbound.Checked);
-        }
-
-        private void btnInsertStreamSetting(object sender, EventArgs e)
-        {
-            configer.InsertStreamSettings();
-        }
-
-        private void btnVGC_Click(object sender, EventArgs e)
-        {
-            configer.InsertVGC();
-        }
-
-        private void btnFormat_Click(object sender, EventArgs e)
-        {
-            configer.FormatCurrentContent();
-        }
-
-        private void btnQConSkipCN_Click(object sender, EventArgs e)
-        {
-            configer.InsertSkipCNSite();
-        }
-
-        private void saveConfigStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveConfigStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
             {
                 if (configer.ReplaceOriginalServer())
                 {
                     SetTitle(configer.GetAlias());
+                }
+            }
+        }
+
+        private void TabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (setting.isShowConfigerToolsPanel)
+            {
+                return;
+            }
+
+            for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
+            {
+                if (tabCtrlToolPanel.GetTabRect(i).Contains(e.Location))
+                {
+                    if (tabCtrlToolPanel.SelectedIndex != i)
+                        tabCtrlToolPanel.SelectTab(i);
+                    break;
                 }
             }
         }
@@ -438,15 +187,15 @@ namespace V2RayGCon.Views
             switch (keyCode)
             {
                 case (Keys.Control | Keys.P):
-                    var visible = !setting.isShowConfigureToolsPanel;
-                    setting.isShowConfigureToolsPanel = visible;
+                    var visible = !setting.isShowConfigerToolsPanel;
+                    setting.isShowConfigerToolsPanel = visible;
                     ToggleToolsPanel(visible);
                     break;
                 case (Keys.Control | Keys.F):
                     ShowSearchBox();
                     break;
                 case (Keys.Control | Keys.S):
-                    configer.InsertConfigHelper(null);
+                    configer.InjectConfigHelper(null);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyCode);
@@ -454,131 +203,84 @@ namespace V2RayGCon.Views
         #endregion
 
         #region init
-        void InitComboBox()
+        void InitConfiger()
         {
-            void FillComboBox(ComboBox cbox, Dictionary<int, string> table)
-            {
-                cbox.Items.Clear();
-                foreach (var item in table)
-                {
-                    cbox.Items.Add(item.Value);
-                }
-                cbox.SelectedIndex = table.Count > 0 ? 0 : -1;
-            }
+            var components = new List<Model.BaseClass.ConfigerComponent> {
 
-            FillComboBox(cboxConfigSection, Model.Data.Table.configSections);
-            FillComboBox(cboxSSCMethod, Model.Data.Table.ssMethods);
-            FillComboBox(cboxSSSMethod, Model.Data.Table.ssMethods);
-            FillComboBox(cboxSSSNetwork, Model.Data.Table.ssNetworks);
-            FillComboBox(cboxStreamTLS, Model.Data.Table.streamTLS);
+                new Controller.ConfigerComponet.Editor(
+                    panelScintilla,
+                    cboxConfigSection,
+                    cboxExamples,
+                    btnFormat,
+                    btnClearModify),
 
-            var streamType = new Dictionary<int, string>();
-            foreach (var type in Model.Data.Table.streamSettings)
-            {
-                streamType.Add(type.Key, type.Value.name);
-            }
-            FillComboBox(cboxStreamType, streamType);
+                new Controller.ConfigerComponet.Vmess(
+                    tboxVMessID,
+                    tboxVMessLevel,
+                    tboxVMessAid,
+                    tboxVMessIPaddr,
+                    rbtnVmessIServerMode,
+                    btnVMessGenUUID,
+                    btnVMessInsertClient),
+
+                new Controller.ConfigerComponet.VGC(
+                    tboxVGCAlias,
+                    tboxVGCDesc,
+                    btnInsertVGC),
+
+                new Controller.ConfigerComponet.StreamSettings(
+                    cboxStreamType,
+                    cboxStreamParam,
+                    cboxStreamTLS,
+                    rbtnStreamInbound,
+                    btnInsertStream),
+
+                new Controller.ConfigerComponet.SSClient(
+                    tboxSSCAddr,
+                    tboxSSCPass,
+                    cboxSSCMethod,
+                    chkSSCOTA,
+                    chkSSCShowPass,
+                    btnSSRInsertClient),
+
+                new Controller.ConfigerComponet.SSServer(
+                    tboxSSSPass,
+                    tboxSSSPort,
+                    cboxSSSNetwork,
+                    cboxSSSMethod,
+                    chkSSSOTA,
+                    chkSSSShowPass,
+                    btnSSInsertServer),
+
+                new Controller.ConfigerComponet.Import(
+                    panelExpandConfig,
+                    btnExpandImport,
+                    btnImportClearCache,
+                    btnCopyExpansedConfig),
+
+                new Controller.ConfigerComponet.Quick(
+                    btnQConSkipCN,
+                    btnQConMTProto),
+
+            };
+
+            configer = new Controller.Configer(_serverIndex);
+            configer.Plug(components);
+            configer.Prepare();
         }
 
-        void InitScintilla(Scintilla scintilla, Panel container, bool readOnlyMode = false)
-        {
-            container.Controls.Add(scintilla);
-
-            // scintilla.Dock = DockStyle.Fill;
-            scintilla.Dock = DockStyle.Fill;
-            scintilla.WrapMode = WrapMode.None;
-            scintilla.IndentationGuides = IndentView.LookBoth;
-
-            // Configure the JSON lexer styles
-            scintilla.Styles[Style.Default].Font = "Consolas";
-            scintilla.Styles[Style.Default].Size = 11;
-            if (readOnlyMode)
-            {
-                var bgColor = this.BackColor;
-                scintilla.Styles[Style.Default].BackColor = bgColor;
-                scintilla.Styles[Style.Json.BlockComment].BackColor = bgColor;
-                scintilla.Styles[Style.Json.Default].BackColor = bgColor;
-                scintilla.Styles[Style.Json.Error].BackColor = bgColor;
-                scintilla.Styles[Style.Json.EscapeSequence].BackColor = bgColor;
-                scintilla.Styles[Style.Json.Keyword].BackColor = bgColor;
-                scintilla.Styles[Style.Json.LineComment].BackColor = bgColor;
-                scintilla.Styles[Style.Json.Number].BackColor = bgColor;
-                scintilla.Styles[Style.Json.Operator].BackColor = bgColor;
-                scintilla.Styles[Style.Json.PropertyName].BackColor = bgColor;
-                scintilla.Styles[Style.Json.String].BackColor = bgColor;
-                scintilla.Styles[Style.Json.CompactIRI].BackColor = bgColor;
-                scintilla.ReadOnly = true;
-            }
-            scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
-            scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
-            scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
-            scintilla.Styles[Style.Json.Number].ForeColor = Color.Olive;
-            scintilla.Styles[Style.Json.PropertyName].ForeColor = Color.Blue;
-            scintilla.Styles[Style.Json.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
-            scintilla.Styles[Style.Json.StringEol].BackColor = Color.Pink;
-            scintilla.Styles[Style.Json.Operator].ForeColor = Color.Purple;
-            scintilla.Lexer = Lexer.Json;
-
-            // folding
-            // Instruct the lexer to calculate folding
-            scintilla.SetProperty("fold", "1");
-            scintilla.SetProperty("fold.compact", "1");
-
-            // Configure a margin to display folding symbols
-            scintilla.Margins[2].Type = MarginType.Symbol;
-            scintilla.Margins[2].Mask = Marker.MaskFolders;
-            scintilla.Margins[2].Sensitive = true;
-            scintilla.Margins[2].Width = 20;
-
-            // Set colors for all folding markers
-            for (int i = 25; i <= 31; i++)
-            {
-                scintilla.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                scintilla.Markers[i].SetBackColor(SystemColors.ControlDark);
-            }
-
-            // Configure folding markers with respective symbols
-            scintilla.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
-            scintilla.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
-            scintilla.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
-            scintilla.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
-            scintilla.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
-            scintilla.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
-            scintilla.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
-
-            // Enable automatic folding
-            scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
-
-            // key binding
-
-            // clear default keyboard shortcut
-            scintilla.ClearCmdKey(Keys.Control | Keys.P);
-            scintilla.ClearCmdKey(Keys.Control | Keys.S);
-            scintilla.ClearCmdKey(Keys.Control | Keys.F);
-        }
-
-        void InitDataBinding()
-        {
-            BindDataVmess();
-            BindDataSSClient();
-            BindDataStreamSettings();
-            BindDataEditor();
-            BindDataSSServer();
-            BindDataVGC();
-            BindDataImport();
-        }
-        #endregion
-
-        #region private method
-        private void InitToolsPanel()
+        void InitToolsPanel()
         {
             toolsPanelHandler.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
-            toolsPanelHandler.toolsPanel = new Rectangle(pnlTools.Location, pnlTools.Size);
-            toolsPanelHandler.span = (this.ClientRectangle.Width - toolsPanelHandler.toolsPanel.Width - toolsPanelHandler.editor.Width) / 3;
+            toolsPanelHandler.panel = new Rectangle(pnlTools.Location, pnlTools.Size);
+
+            toolsPanelHandler.span = (ClientRectangle.Width - toolsPanelHandler.panel.Width - toolsPanelHandler.editor.Width) / 3;
             toolsPanelHandler.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
+            toolsPanelHandler.timer = new Model.BaseClass.CancelableTimeout(ResetToolsPanelWidth, 800);
+
             var page = tabCtrlToolPanel.TabPages[0];
-            toolsPanelHandler.pageRect = new Rectangle(
+            toolsPanelHandler.page = new Rectangle(
                 pnlTools.Location.X + page.Left,
                 pnlTools.Location.Y + page.Top,
                 page.Width,
@@ -589,9 +291,9 @@ namespace V2RayGCon.Views
                 tabCtrlToolPanel.TabPages[i].MouseEnter += OnMouseEnterToolsPanel;
                 tabCtrlToolPanel.TabPages[i].MouseLeave += (s, e) =>
                 {
-                    var rect = toolsPanelHandler.pageRect;
+                    var rect = toolsPanelHandler.page;
                     rect.Height = tabCtrlToolPanel.TabPages[0].Height;
-                    if (!rect.Contains(this.PointToClient(Cursor.Position)))
+                    if (!rect.Contains(PointToClient(Cursor.Position)))
                     {
                         OnMouseLeaveToolsPanel(s, e);
                     }
@@ -601,37 +303,19 @@ namespace V2RayGCon.Views
             tabCtrlToolPanel.MouseLeave += OnMouseLeaveToolsPanel;
             tabCtrlToolPanel.MouseEnter += OnMouseEnterToolsPanel;
         }
+        #endregion
 
-        void UpdateExamplesDescription()
-        {
-            cboxExamples.Items.Clear();
-
-            cboxExamples.Items.Add(I18N("AvailableExamples"));
-            var descriptions = configer.GetExamplesDescription();
-            if (descriptions.Count < 1)
-            {
-                cboxExamples.Enabled = false;
-            }
-            else
-            {
-                cboxExamples.Enabled = true;
-                foreach (var description in descriptions)
-                {
-                    cboxExamples.Items.Add(description);
-                }
-            }
-            cboxExamples.SelectedIndex = 0;
-        }
+        #region private method
 
         void SetTitle(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                this.Text = toolsPanelHandler.formTitle;
+                this.Text = formTitle;
             }
             else
             {
-                this.Text = string.Format("{0} - {1}", toolsPanelHandler.formTitle, name);
+                this.Text = string.Format("{0} - {1}", formTitle, name);
             }
         }
 
@@ -685,7 +369,7 @@ namespace V2RayGCon.Views
 
             if (visible)
             {
-                pnlTools.Width = toolsPanelHandler.toolsPanel.Width;
+                pnlTools.Width = toolsPanelHandler.panel.Width;
                 pnlEditor.Left = pnlTools.Left + pnlTools.Width + toolsPanelHandler.span;
                 pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - toolsPanelHandler.span;
             }
@@ -701,10 +385,10 @@ namespace V2RayGCon.Views
 
             showLeftPanelToolStripMenuItem.Checked = visible;
             hideLeftPanelToolStripMenuItem.Checked = !visible;
-            setting.isShowConfigureToolsPanel = visible;
+            setting.isShowConfigerToolsPanel = visible;
         }
 
-        void SettingChange(object sender, EventArgs args)
+        void OnSettingChange(object sender, EventArgs args)
         {
             try
             {
@@ -716,69 +400,21 @@ namespace V2RayGCon.Views
             catch { }
         }
 
-        private void btnCopyExpansedConfig_Click(object sender, EventArgs e)
+        void OnMouseEnterToolsPanel(object sender, EventArgs e)
         {
-            Lib.Utils.CopyToClipboardAndPrompt(
-                scintillaImport.Text);
-        }
+            toolsPanelHandler.timer.Cancel();
 
-        private void btnExpanseImport_Click(object sender, EventArgs e)
-        {
-            configer.InsertConfigHelper(null);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            configer.InsertDtrMTProto();
-        }
-
-        private void btnImportClearCache_Click(object sender, EventArgs e)
-        {
-            configer.ClearHTMLCache();
-        }
-
-        private void cboxStreamType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var index = cboxStreamType.SelectedIndex;
-            if (index < 0)
-            {
-                cboxStreamParam.SelectedIndex = -1;
-                cboxStreamParam.Items.Clear();
-                return;
-            }
-
-            var s = Model.Data.Table.streamSettings[index];
-
-            cboxStreamParam.Items.Clear();
-
-            if (!s.dropDownStyle)
-            {
-                cboxStreamParam.DropDownStyle = ComboBoxStyle.Simple;
-                return;
-            }
-
-            cboxStreamParam.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (var option in s.options)
-            {
-                cboxStreamParam.Items.Add(option.Key);
-            }
-        }
-
-        private void OnMouseEnterToolsPanel(object sender, EventArgs e)
-        {
-            toolsPanelHandler.ClearTimer();
-
-            var width = toolsPanelHandler.toolsPanel.Width;
+            var width = toolsPanelHandler.panel.Width;
             if (pnlTools.Width != width)
             {
                 pnlTools.Width = width;
             }
         }
 
-        private void ResetToolsPanelWidth()
+        void ResetToolsPanelWidth()
         {
-            var visible = setting.isShowConfigureToolsPanel;
-            var width = toolsPanelHandler.toolsPanel.Width;
+            var visible = setting.isShowConfigerToolsPanel;
+            var width = toolsPanelHandler.panel.Width;
 
             if (!visible)
             {
@@ -791,27 +427,9 @@ namespace V2RayGCon.Views
             }
         }
 
-        private void tabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
+        void OnMouseLeaveToolsPanel(object sender, EventArgs e)
         {
-            if (setting.isShowConfigureToolsPanel)
-            {
-                return;
-            }
-
-            for (int i = 0; i < tabCtrlToolPanel.TabCount; i++)
-            {
-                if (tabCtrlToolPanel.GetTabRect(i).Contains(e.Location))
-                {
-                    if (tabCtrlToolPanel.SelectedIndex != i)
-                        tabCtrlToolPanel.SelectTab(i);
-                    break;
-                }
-            }
-        }
-
-        private void OnMouseLeaveToolsPanel(object sender, EventArgs e)
-        {
-            toolsPanelHandler.SetTimer(ResetToolsPanelWidth);
+            toolsPanelHandler.timer.Start();
         }
 
         void ShowSearchBox()
@@ -820,11 +438,10 @@ namespace V2RayGCon.Views
             {
                 return;
             }
-            formSearch = new FormSearch(scintillaMain);
+            var editor = configer.GetComponent<Controller.ConfigerComponet.Editor>();
+            formSearch = new FormSearch(editor.GetEditor());
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
-
-
         #endregion
     }
 }

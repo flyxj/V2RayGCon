@@ -1,16 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
-
-
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class VmessCtrl :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class Vmess : Model.BaseClass.ConfigerComponent
     {
-        public VmessCtrl()
+        // textbox [id, level, aid, ipaddr]
+        public Vmess(
+            TextBox id,
+            TextBox level,
+            TextBox alterID,
+            TextBox ipAddr,
+            RadioButton inbound,
+            Button genID,
+            Button insert)
         {
             serverMode = false;
+            DataBinding(id, level, alterID, ipAddr);
+            AttachEvent(inbound, genID, insert);
         }
 
         #region properties
@@ -51,8 +60,41 @@ namespace V2RayGCon.Controller.Configer
         }
         #endregion
 
-        #region public method
-        public JToken GetSettings()
+        #region private method
+        void AttachEvent(RadioButton inbound, Button genID, Button insert)
+        {
+            inbound.CheckedChanged += (s, a) =>
+            {
+                this.serverMode = inbound.Checked;
+                this.Update(container.config);
+            };
+
+            genID.Click += (s, a) =>
+            {
+                this.ID = Guid.NewGuid().ToString();
+            };
+
+            insert.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(() =>
+                {
+                    container.config = Inject(container.config);
+                });
+            };
+        }
+
+        void DataBinding(TextBox id, TextBox level, TextBox alterID, TextBox ipAddr)
+        {
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            id.DataBindings.Add("Text", bs, nameof(this.ID));
+            level.DataBindings.Add("Text", bs, nameof(this.level));
+            alterID.DataBindings.Add("Text", bs, nameof(this.altID));
+            ipAddr.DataBindings.Add("Text", bs, nameof(this.addr));
+        }
+
+        JToken GetSettings()
         {
             JToken vmess = Service.Cache.Instance.
                 tpl.LoadTemplate(serverMode ?
@@ -78,7 +120,24 @@ namespace V2RayGCon.Controller.Configer
             return vmess;
         }
 
-        public void UpdateData(JObject config)
+        JObject Inject(JObject config)
+        {
+            var key = serverMode ? "inbound" : "outbound";
+            var vmess = Lib.Utils.CreateJObject(key);
+            vmess[key] = GetSettings();
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(config, key + ".settings");
+            }
+            catch (KeyNotFoundException) { }
+
+            return Lib.Utils.CombineConfig(config, vmess);
+        }
+        #endregion
+
+        #region public method
+        public override void Update(JObject config)
         {
             var prefix = serverMode ?
                 "inbound.settings.clients.0" :

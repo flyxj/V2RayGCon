@@ -66,6 +66,7 @@ namespace V2RayGCon.Views
             this.configEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.qRCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configTesterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadV2rayCoreToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.checkUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,8 +92,8 @@ namespace V2RayGCon.Views
             this.v2rayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stripMenuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -302,6 +303,7 @@ namespace V2RayGCon.Views
             // 
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configEditorToolStripMenuItem,
+            this.configTesterToolStripMenuItem,
             this.qRCodeToolStripMenuItem,
             this.logToolStripMenuItem});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
@@ -324,6 +326,12 @@ namespace V2RayGCon.Views
             this.logToolStripMenuItem.Name = "logToolStripMenuItem";
             resources.ApplyResources(this.logToolStripMenuItem, "logToolStripMenuItem");
             this.logToolStripMenuItem.Click += new System.EventHandler(this.ShowFormLogToolStripMenuItem_Click);
+            // 
+            // configTesterToolStripMenuItem
+            // 
+            this.configTesterToolStripMenuItem.Name = "configTesterToolStripMenuItem";
+            resources.ApplyResources(this.configTesterToolStripMenuItem, "configTesterToolStripMenuItem");
+            this.configTesterToolStripMenuItem.Click += new System.EventHandler(this.configTesterToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem1
             // 
@@ -484,16 +492,16 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             resources.ApplyResources(this.refreshToolStripMenuItem, "refreshToolStripMenuItem");
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // moveToolStripMenuItem
             // 
@@ -627,6 +635,7 @@ namespace V2RayGCon.Views
         private ToolStripSeparator toolStripSeparator10;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem refreshToolStripMenuItem;
+        private ToolStripMenuItem configTesterToolStripMenuItem;
     }
 }
 

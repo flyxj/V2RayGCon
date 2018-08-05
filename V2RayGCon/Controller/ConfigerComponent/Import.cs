@@ -7,12 +7,23 @@ using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Import :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class Import : Model.BaseClass.ConfigerComponent
     {
+        Scintilla editor;
+
+        public Import(
+            Panel container,
+            Button expand,
+            Button clearCache,
+            Button copy)
+        {
+            this.editor = Lib.UI.CreateScintilla(container, true);
+            DataBinding();
+            AttachEvent(expand, clearCache, copy);
+        }
+
         #region properties
         private string _content;
 
@@ -28,20 +39,49 @@ namespace V2RayGCon.Controller.Configer
         }
         #endregion
 
+        #region private method
+        void AttachEvent(
+            Button expand,
+            Button clearCache,
+            Button copy)
+        {
+            expand.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(null);
+            };
+
+            clearCache.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(() =>
+                {
+                    Service.Cache.Instance.html.Remove(
+                        Lib.ImportParser.GetImportUrls(
+                            container.config));
+                });
+            };
+
+            copy.Click += (s, a) =>
+            {
+                Lib.Utils.CopyToClipboardAndPrompt(editor.Text);
+            };
+        }
+
+        void DataBinding()
+        {
+            var bs = new BindingSource();
+            bs.DataSource = this;
+
+            editor.DataBindings.Add(
+                "Text",
+                bs,
+                nameof(this.content),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+        }
+        #endregion
+
         #region public method
-        Scintilla editor;
-
-        public Import(Scintilla elementForInvoke)
-        {
-            editor = elementForInvoke;
-        }
-
-        public JToken GetSettings()
-        {
-            return JToken.Parse(@"{}");
-        }
-
-        public void UpdateData(JObject config)
+        public override void Update(JObject config)
         {
             content = I18N("AnalysingImport");
             // todo

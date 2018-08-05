@@ -191,13 +191,13 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="ImportLinkSuccess" xml:space="preserve">
     <value>链接导入成功！</value>
   </data>
-  <data name="ShowConfigWin" xml:space="preserve">
-    <value>设置编辑器</value>
+  <data name="ConfigEditor" xml:space="preserve">
+    <value>配置编辑器</value>
   </data>
-  <data name="ShowLogWin" xml:space="preserve">
-    <value>显示日志</value>
+  <data name="OtherWin" xml:space="preserve">
+    <value>其他窗口</value>
   </data>
-  <data name="ShowMainWin" xml:space="preserve">
+  <data name="MainWin" xml:space="preserve">
     <value>主窗口</value>
   </data>
   <data name="LinksCopied" xml:space="preserve">
@@ -391,5 +391,17 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="UsingDecodeCache" xml:space="preserve">
     <value>使用解码缓存</value>
+  </data>
+  <data name="ConfigTester" xml:space="preserve">
+    <value>配置测试器</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="GenQRCode" xml:space="preserve">
+    <value>生成二维码</value>
   </data>
 </root>

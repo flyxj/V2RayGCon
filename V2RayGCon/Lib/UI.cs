@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ScintillaNET;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -10,6 +11,98 @@ namespace V2RayGCon.Lib
 {
     class UI
     {
+        public static Scintilla CreateScintilla(Panel container, bool readOnlyMode = false)
+        {
+            var scintilla = new Scintilla();
+
+            container.Controls.Add(scintilla);
+
+            // scintilla.Dock = DockStyle.Fill;
+            scintilla.Dock = DockStyle.Fill;
+            scintilla.WrapMode = WrapMode.None;
+            scintilla.IndentationGuides = IndentView.LookBoth;
+
+            // Configure the JSON lexer styles
+            scintilla.Styles[Style.Default].Font = "Consolas";
+            scintilla.Styles[Style.Default].Size = 11;
+            if (readOnlyMode)
+            {
+                var bgColor = Color.FromArgb(240, 240, 240);
+                scintilla.Styles[Style.Default].BackColor = bgColor;
+                scintilla.Styles[Style.Json.BlockComment].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Default].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Error].BackColor = bgColor;
+                scintilla.Styles[Style.Json.EscapeSequence].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Keyword].BackColor = bgColor;
+                scintilla.Styles[Style.Json.LineComment].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Number].BackColor = bgColor;
+                scintilla.Styles[Style.Json.Operator].BackColor = bgColor;
+                scintilla.Styles[Style.Json.PropertyName].BackColor = bgColor;
+                scintilla.Styles[Style.Json.String].BackColor = bgColor;
+                scintilla.Styles[Style.Json.CompactIRI].BackColor = bgColor;
+                scintilla.ReadOnly = true;
+            }
+
+            scintilla.Styles[Style.Json.Default].ForeColor = Color.Silver;
+            scintilla.Styles[Style.Json.BlockComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla.Styles[Style.Json.LineComment].ForeColor = Color.FromArgb(0, 128, 0); // Green
+            scintilla.Styles[Style.Json.Number].ForeColor = Color.Olive;
+            scintilla.Styles[Style.Json.PropertyName].ForeColor = Color.Blue;
+            scintilla.Styles[Style.Json.String].ForeColor = Color.FromArgb(163, 21, 21); // Red
+            scintilla.Styles[Style.Json.StringEol].BackColor = Color.Pink;
+            scintilla.Styles[Style.Json.Operator].ForeColor = Color.Purple;
+            scintilla.Lexer = Lexer.Json;
+
+            // folding
+            // Instruct the lexer to calculate folding
+            scintilla.SetProperty("fold", "1");
+            scintilla.SetProperty("fold.compact", "1");
+
+            // Configure a margin to display folding symbols
+            scintilla.Margins[2].Type = MarginType.Symbol;
+            scintilla.Margins[2].Mask = Marker.MaskFolders;
+            scintilla.Margins[2].Sensitive = true;
+            scintilla.Margins[2].Width = 20;
+
+            // Set colors for all folding markers
+            for (int i = 25; i <= 31; i++)
+            {
+                scintilla.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                scintilla.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+
+            // Configure folding markers with respective symbols
+            scintilla.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            scintilla.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            scintilla.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            scintilla.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            scintilla.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            scintilla.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            scintilla.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+            // Enable automatic folding
+            scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
+
+            // key binding
+
+            // clear default keyboard shortcut
+            scintilla.ClearCmdKey(Keys.Control | Keys.P);
+            scintilla.ClearCmdKey(Keys.Control | Keys.S);
+            scintilla.ClearCmdKey(Keys.Control | Keys.F);
+
+            return scintilla;
+        }
+
+        public static void FillComboBox(ComboBox cbox, Dictionary<int, string> table)
+        {
+            cbox.Items.Clear();
+            foreach (var item in table)
+            {
+                cbox.Items.Add(item.Value);
+            }
+            cbox.SelectedIndex = table.Count > 0 ? 0 : -1;
+        }
+
         public static Model.Data.Enum.SaveFileErrorCode ShowSaveFileDialog(string extension, string content, out string fileName)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -77,9 +170,9 @@ namespace V2RayGCon.Lib
             return confirm == DialogResult.Yes;
         }
 
-        public static void VisitUrl(string msg,string url)
+        public static void VisitUrl(string msg, string url)
         {
-            var text = string.Format("{0}\n{1}",msg,url);
+            var text = string.Format("{0}\n{1}", msg, url);
             if (Confirm(text))
             {
                 Task.Factory.StartNew(() => System.Diagnostics.Process.Start(url));

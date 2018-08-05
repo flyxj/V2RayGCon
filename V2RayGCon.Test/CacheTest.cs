@@ -64,13 +64,12 @@ namespace V2RayGCon.Test
         }
 
         [DataTestMethod]
-        [DataRow(@"inTpl.domainOverride", @"['http','tls']")]
+        [DataRow(@"inTpl.sniffing", @"{'enabled':false,'destOverride':['http','tls']}")]
         public void LoadExampleTest(string key, string expect)
         {
             var v = cache.tpl.LoadExample(key);
             var e = JToken.Parse(expect);
             Assert.AreEqual(true, JToken.DeepEquals(v, e));
-
         }
 
         [DataTestMethod]

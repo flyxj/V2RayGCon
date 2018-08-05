@@ -96,15 +96,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\Configer\Configer.cs" />
-    <Compile Include="Controller\Configer\Editor.cs" />
-    <Compile Include="Controller\Configer\Import.cs" />
-    <Compile Include="Controller\Configer\VGC.cs" />
-    <Compile Include="Controller\Configer\SSClient.cs" />
-    <Compile Include="Controller\Configer\SSServer.cs" />
-    <Compile Include="Controller\Configer\StreamSettings.cs" />
-    <Compile Include="Controller\Configer\VmessCtrl.cs" />
+    <Compile Include="Controller\Configer.cs" />
+    <Compile Include="Controller\ConfigerComponent\Editor.cs" />
+    <Compile Include="Controller\ConfigerComponent\Import.cs" />
+    <Compile Include="Controller\ConfigerComponent\VGC.cs" />
+    <Compile Include="Controller\ConfigerComponent\SSClient.cs" />
+    <Compile Include="Controller\ConfigerComponent\SSServer.cs" />
+    <Compile Include="Controller\ConfigerComponent\StreamSettings.cs" />
+    <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
+    <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\DllLoader.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
@@ -116,6 +117,9 @@
     </Compile>
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
+    <Compile Include="Model\BaseClass\CancelableTimeout.cs" />
+    <Compile Include="Model\BaseClass\ConfigerComponent.cs" />
+    <Compile Include="Model\BaseClass\CoreServer.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
@@ -156,6 +160,12 @@
     </Compile>
     <Compile Include="Views\FormConfiger.Designer.cs">
       <DependentUpon>FormConfiger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FormConfigTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormConfigTester.Designer.cs">
+      <DependentUpon>FormConfigTester.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\FormDownloadCore.cs">
       <SubType>Form</SubType>
@@ -235,6 +245,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormConfiger.zh-CN.resx">
       <DependentUpon>FormConfiger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormConfigTester.resx">
+      <DependentUpon>FormConfigTester.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormConfigTester.zh-CN.resx">
+      <DependentUpon>FormConfigTester.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormDownloadCore.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>

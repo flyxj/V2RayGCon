@@ -61,7 +61,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        public bool isShowConfigureToolsPanel
+        public bool isShowConfigerToolsPanel
         {
             get
             {

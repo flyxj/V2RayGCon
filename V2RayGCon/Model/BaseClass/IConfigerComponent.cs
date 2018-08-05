@@ -4,7 +4,10 @@ namespace V2RayGCon.Model.BaseClass
 {
     interface IConfigerComponent
     {
-        JToken GetSettings();
-        void UpdateData(JObject config);
+        // bind UI controls with component
+        void Bind(Controller.Configer container);
+
+        // update component settings from config
+        void Update(JObject config);
     }
 }

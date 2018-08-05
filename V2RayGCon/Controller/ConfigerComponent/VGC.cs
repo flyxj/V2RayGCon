@@ -1,12 +1,26 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
 
-
-namespace V2RayGCon.Controller.Configer
+namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class VGC :
-        Model.BaseClass.NotifyComponent,
-        Model.BaseClass.IConfigerComponent
+    class VGC : Model.BaseClass.ConfigerComponent
     {
+        public VGC(TextBox alias, TextBox description, Button insert)
+        {
+            var bs = new BindingSource();
+            bs.DataSource = this;
+            alias.DataBindings.Add("Text", bs, nameof(this.alias));
+            description.DataBindings.Add("Text", bs, nameof(this.description));
+
+            insert.Click += (s, a) =>
+            {
+                container.InjectConfigHelper(() =>
+                {
+                    container.config["v2raygcon"] = GetSettings();
+                });
+            };
+        }
+
         #region properties
         private string _alias;
         private string _description;
@@ -25,9 +39,8 @@ namespace V2RayGCon.Controller.Configer
 
         #endregion
 
-        #region public method
-
-        public JToken GetSettings()
+        #region private method
+        JToken GetSettings()
         {
             JToken vgc = Service.Cache.Instance.
                 tpl.LoadTemplate("vgc");
@@ -37,8 +50,10 @@ namespace V2RayGCon.Controller.Configer
 
             return vgc;
         }
+        #endregion
 
-        public void UpdateData(JObject config)
+        #region public method
+        public override void Update(JObject config)
         {
             var prefix = "v2raygcon";
 
