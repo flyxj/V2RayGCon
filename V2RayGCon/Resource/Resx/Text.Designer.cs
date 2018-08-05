@@ -160,6 +160,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Config Editor 的本地化字符串。
+        /// </summary>
+        internal static string ConfigEditor {
+            get {
+                return ResourceManager.GetString("ConfigEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ConfigTester 的本地化字符串。
+        /// </summary>
+        internal static string ConfigTester {
+            get {
+                return ResourceManager.GetString("ConfigTester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Confirm 的本地化字符串。
         /// </summary>
         internal static string Confirm {
@@ -507,6 +525,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Generate QRCode 的本地化字符串。
+        /// </summary>
+        internal static string GenQRCode {
+            get {
+                return ResourceManager.GetString("GenQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fail to generate v-link! 的本地化字符串。
         /// </summary>
         internal static string GenVLinkFail {
@@ -548,6 +575,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string GetVGCVerFail {
             get {
                 return ResourceManager.GetString("GetVGCVerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Help 的本地化字符串。
+        /// </summary>
+        internal static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
@@ -615,6 +651,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Log 的本地化字符串。
+        /// </summary>
+        internal static string Log {
+            get {
+                return ResourceManager.GetString("Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Main Window 的本地化字符串。
+        /// </summary>
+        internal static string MainWin {
+            get {
+                return ResourceManager.GetString("MainWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Network timeout 的本地化字符串。
         /// </summary>
         internal static string NetworkTimeout {
@@ -666,6 +720,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string OrgServNotFound {
             get {
                 return ResourceManager.GetString("OrgServNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Other windows 的本地化字符串。
+        /// </summary>
+        internal static string OtherWin {
+            get {
+                return ResourceManager.GetString("OtherWin", resourceCulture);
             }
         }
         
@@ -756,33 +819,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SetProxyMode {
             get {
                 return ResourceManager.GetString("SetProxyMode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Config Editor 的本地化字符串。
-        /// </summary>
-        internal static string ShowConfigWin {
-            get {
-                return ResourceManager.GetString("ShowConfigWin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Show Log 的本地化字符串。
-        /// </summary>
-        internal static string ShowLogWin {
-            get {
-                return ResourceManager.GetString("ShowLogWin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Main Window 的本地化字符串。
-        /// </summary>
-        internal static string ShowMainWin {
-            get {
-                return ResourceManager.GetString("ShowMainWin", resourceCulture);
             }
         }
         

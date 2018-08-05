@@ -98,9 +98,14 @@ namespace V2RayGCon.Service
         {
             return new ContextMenu(new MenuItem[] {
 
-                new MenuItem(I18N("ShowMainWin"),(s,a)=>Views.FormMain.GetForm()),
+                new MenuItem(I18N("MainWin"),(s,a)=>Views.FormMain.GetForm()),
 
-                new MenuItem(I18N("ShowLogWin"),(s,a)=>Views.FormLog.GetForm()),
+                new MenuItem(I18N("OtherWin"),new MenuItem[]{
+                    new MenuItem(I18N("ConfigEditor"),(s,a)=>new Views.FormConfiger() ),
+                    new MenuItem(I18N("ConfigTester"),(s,a)=>new Views.FormConfigTester() ),
+                    new MenuItem(I18N("GenQRCode"),(s,a)=>Views.FormQRCode.GetForm() ),
+                    new MenuItem(I18N("Log"),(s,a)=>Views.FormLog.GetForm() ),
+                }),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
                     void Success(string link)
@@ -127,7 +132,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem("-"),
 
-                new MenuItem(I18N("About"),(s,a)=>Lib.UI.VisitUrl(I18N("VistPorjectPage"),Properties.Resources.ProjectLink)),
+                new MenuItem(I18N("Help"),(s,a)=>Lib.UI.VisitUrl(I18N("VistWikiPage"),Properties.Resources.WikiLink)),
 
                 new MenuItem(I18N("Exit"),(s,a)=>{
                     if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){

@@ -35,7 +35,6 @@
             this.cboxServList = new System.Windows.Forms.ComboBox();
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.btnNew = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
@@ -73,19 +72,10 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // btnNew
-            // 
-            resources.ApplyResources(this.btnNew, "btnNew");
-            this.btnNew.Name = "btnNew";
-            this.toolTip1.SetToolTip(this.btnNew, resources.GetString("btnNew.ToolTip"));
-            this.btnNew.UseVisualStyleBackColor = true;
-            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
             // FormConfigTester
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnNew);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.cboxServList);
@@ -105,7 +95,6 @@
         private System.Windows.Forms.ComboBox cboxServList;
         private System.Windows.Forms.Button btnRestart;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.ToolTip toolTip1;
     }
 }

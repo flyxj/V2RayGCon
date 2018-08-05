@@ -124,11 +124,6 @@ namespace V2RayGCon.Views
             rtboxLog.ScrollToCaret();
         }
 
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            new FormConfigTester();
-        }
-
         private void btnStop_Click(object sender, EventArgs e)
         {
             tester.StopCoreThen(null);
