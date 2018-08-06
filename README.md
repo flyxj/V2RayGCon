@@ -32,6 +32,9 @@ V2Ray的windows图形界面。
 ### 截图 screenshot  
 系统托盘图标  
 ![systray.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/systray.png)  
+
+下载v2ray-core  
+![downloader.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/downloader.png)  
   
 主界面  
 ![mainform.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/mainform.png)  
