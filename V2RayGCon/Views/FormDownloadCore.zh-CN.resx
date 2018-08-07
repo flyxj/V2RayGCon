@@ -147,6 +147,9 @@
   <data name="btnExit.Text" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="btnExit.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="pgBarDownload.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -164,7 +167,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="labelCoreVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 12</value>
+    <value>242, 18</value>
   </data>
   <data name="labelCoreVersion.Text" xml:space="preserve">
     <value>正在查询v2ray-core版本 ...</value>
