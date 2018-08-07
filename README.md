@@ -7,11 +7,11 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
   
 ### 使用方法  
   
-详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)  
+（详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)）  
   
 下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGcon.zip到任意目录  
-首次运行先下载[v2ray-core](https://github.com/v2ray/v2ray-core)，可用托盘图标的下载菜单自动下载  
-网络不好的可以手动下载，然后将解压后所有文件复制进V2RayGCon目录内。  
+首次运行需下载[v2ray-core](https://github.com/v2ray/v2ray-core)，可用托盘图标的下载菜单自动下载  
+网络不好的可手动下载，然后将解压出来的文件复制进V2RayGCon目录内。  
   
 可以通过以下几种方式添加服务器：  
 1. 托盘菜单->`扫描二维码`  
@@ -19,8 +19,8 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 3. 托盘菜单->`主窗口`->`操作`->`添加vmess服务器`  
 4. 托盘菜单->`主窗口`->`窗口`->`配置编辑器`  
   
-添加服务器后，双击服务器启用相应服务器  
-首次使用建议打开日志窗口，查看输出信息  
+添加服务器后，在主窗口双击启用相应服务器  
+首次启用建议打开日志窗口，查看输出信息  
   
 ### 设计目标
 1. 尽可能保留用户对v2ray-core的操控能力  
