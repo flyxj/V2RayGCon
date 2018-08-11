@@ -17,6 +17,7 @@ namespace V2RayGCon.Service
             CreateNotifyIcon();
 
             Application.ApplicationExit += (s, a) => Cleanup();
+            Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
             core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if DEBUG
@@ -149,6 +150,7 @@ namespace V2RayGCon.Service
             if (setting.isSysProxyHasSet)
             {
                 Lib.ProxySetter.setProxy("", false);
+                setting.isSysProxyHasSet = false;
             }
             core.StopCoreThen(null);
         }
