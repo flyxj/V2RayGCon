@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace V2RayGCon.Model.Data
 {
-    class StrEvent : EventArgs
+    public class StrEvent : EventArgs
     {
         public string Data;
         public StrEvent(string data)
@@ -15,7 +12,7 @@ namespace V2RayGCon.Model.Data
 
     }
 
-    class IntEvent : EventArgs
+    public class IntEvent : EventArgs
     {
         public int Data;
         public IntEvent(int data)

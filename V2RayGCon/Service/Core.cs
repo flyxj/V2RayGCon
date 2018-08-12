@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -134,43 +133,7 @@ namespace V2RayGCon.Service
 
         public string GetCoreVersion()
         {
-            var ver = string.Empty;
-            if (!IsCoreExist())
-            {
-                return ver;
-            }
-
-            var p = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = StrConst("Executable"),
-                    Arguments = "-version",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                }
-
-            };
-
-            Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
-            try
-            {
-                p.Start();
-                while (!p.StandardOutput.EndOfStream)
-                {
-                    var output = p.StandardOutput.ReadLine();
-                    Match match = pattern.Match(output);
-                    if (match.Success)
-                    {
-                        ver = match.Groups["version"].Value;
-                    }
-                }
-                p.WaitForExit();
-            }
-            catch { }
-
-            return ver;
+            return coreServer.GetCoreVersion();
         }
         #endregion
     }

@@ -17,6 +17,7 @@ namespace V2RayGCon.Service
             CreateNotifyIcon();
 
             Application.ApplicationExit += (s, a) => Cleanup();
+            Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
             core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if DEBUG
@@ -53,11 +54,11 @@ namespace V2RayGCon.Service
 
             // new Views.FormConfiger(0);
 
-            new Views.FormConfigTester();
+            // new Views.FormConfigTester();
             Views.FormMain.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormLog.GetForm();
             // Views.FormSimAddVmessClient.GetForm();
-            // Views.FormDownloadCore.GetForm();
+            Views.FormDownloadCore.GetForm();
 
         }
 #endif
@@ -149,6 +150,7 @@ namespace V2RayGCon.Service
             if (setting.isSysProxyHasSet)
             {
                 Lib.ProxySetter.setProxy("", false);
+                setting.isSysProxyHasSet = false;
             }
             core.StopCoreThen(null);
         }

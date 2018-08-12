@@ -2,12 +2,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.BaseClass
 {
-    class CoreServer
+    public class CoreServer
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
 
@@ -20,9 +21,69 @@ namespace V2RayGCon.Model.BaseClass
         }
 
         #region public method
+        public string GetCoreVersion()
+        {
+            var ver = string.Empty;
+            if (!IsExecutableExist())
+            {
+                return ver;
+            }
+
+            var p = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = GetExecutablePath(),
+                    Arguments = "-version",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                }
+
+            };
+
+            Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
+            try
+            {
+                p.Start();
+                while (!p.StandardOutput.EndOfStream)
+                {
+                    var output = p.StandardOutput.ReadLine();
+                    Match match = pattern.Match(output);
+                    if (match.Success)
+                    {
+                        ver = match.Groups["version"].Value;
+                    }
+                }
+                p.WaitForExit();
+            }
+            catch { }
+
+            return ver;
+        }
+
         public bool IsExecutableExist()
         {
-            return File.Exists(StrConst("Executable"));
+            return !string.IsNullOrEmpty(GetExecutablePath());
+        }
+
+        public string GetExecutablePath()
+        {
+            var folders = new string[]{
+                Lib.Utils.GetAppDataFolder(), //piror
+                Lib.Utils.GetAppDir(),  // fallback
+            };
+
+            for (var i = 0; i < folders.Length; i++)
+            {
+                var file = Path.Combine(folders[i], StrConst("Executable"));
+                if (File.Exists(file))
+                {
+                    return file;
+                }
+            }
+
+            return string.Empty;
         }
 
         public bool isRunning
@@ -111,7 +172,7 @@ namespace V2RayGCon.Model.BaseClass
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = StrConst("Executable"),
+                    FileName = GetExecutablePath(),
                     Arguments = "-config=stdin: -format=json",
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -127,7 +188,8 @@ namespace V2RayGCon.Model.BaseClass
             {
                 SendLog(I18N("CoreExit"));
 
-                // isRunning need to set v2rayCore to null first
+                // isRunning() need this.v2rayCore to be set to null 
+                // before invoking OnStateChanged
                 v2rayCore = null;
                 OnStateChanged?.Invoke();
             };
@@ -141,7 +203,7 @@ namespace V2RayGCon.Model.BaseClass
                 v2rayCore.StandardInput.WriteLine(config);
                 v2rayCore.StandardInput.Close();
 
-                // Add to JOB object support win8+ only
+                // Add to JOB object support win8+ 
                 Lib.ChildProcessTracker.AddProcess(v2rayCore);
             }
             catch

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using static V2RayGCon.Lib.StringResource;
 
@@ -8,8 +9,8 @@ namespace V2RayGCon.Service
     {
         public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
         public event EventHandler<Model.Data.IntEvent> OnProgress;
-        Service.Core core;
-        Service.Setting setting;
+        Core core;
+        Setting setting;
         string _packageName;
         string _version;
         WebClient client;
@@ -17,8 +18,8 @@ namespace V2RayGCon.Service
 
         public Downloader()
         {
-            setting = Service.Setting.Instance;
-            core = Service.Core.Instance;
+            setting = Setting.Instance;
+            core = Core.Instance;
 
             SetArchitecture(false);
             _version = StrConst("DefCoreVersion");
@@ -48,7 +49,9 @@ namespace V2RayGCon.Service
 
         public void UnzipPackage()
         {
-            Lib.Utils.ZipFileDecompress(_packageName);
+            Lib.Utils.ZipFileDecompress(
+                GetLocalFilePath(),
+                Lib.Utils.GetAppDataFolder());
         }
 
         public void Cancel()
@@ -127,11 +130,16 @@ namespace V2RayGCon.Service
             }
         }
 
+        string GetLocalFilePath()
+        {
+            var appData = Lib.Utils.GetAppDataFolder();
+            return Path.Combine(appData, _packageName);
+        }
+
         void Download()
         {
-            string fileName = _packageName;
             string tpl = StrConst("DownloadLinkTpl");
-            string url = string.Format(tpl, _version, fileName);
+            string url = string.Format(tpl, _version, _packageName);
 
             Lib.Utils.SupportProtocolTLS12();
             client = new WebClient();
@@ -146,8 +154,9 @@ namespace V2RayGCon.Service
                 DownloadCompleted(a.Cancelled);
             };
 
+            Lib.Utils.CreateAppDataFolder();
             setting.SendLog(string.Format("{0}:{1}", I18N("Download"), url));
-            client.DownloadFileAsync(new Uri(url), fileName);
+            client.DownloadFileAsync(new Uri(url), GetLocalFilePath());
         }
 
         #endregion
