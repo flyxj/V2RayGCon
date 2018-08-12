@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -376,6 +377,34 @@ namespace V2RayGCon.Views
         private void configTesterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FormConfigTester();
+        }
+
+        private void removeV2rayCoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Lib.UI.Confirm(I18N("ConfirmRemoveV2RayCore")))
+            {
+                return;
+            }
+
+            if (!Directory.Exists(Lib.Utils.GetAppDataFolder()))
+            {
+                MessageBox.Show(I18N("Done"));
+                return;
+            }
+
+            core.StopCoreThen(() =>
+            {
+                try
+                {
+                    Lib.Utils.DeleteAppDataFolder();
+                }
+                catch (System.IO.IOException)
+                {
+                    MessageBox.Show(I18N("FileInUse"));
+                    return;
+                }
+                MessageBox.Show(I18N("Done"));
+            });
         }
         #endregion
 

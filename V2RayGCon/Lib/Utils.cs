@@ -706,9 +706,31 @@ namespace V2RayGCon.Lib
         }
         #endregion
 
-        #region Miscellaneous
+        #region files
+        public static string GetAppDataFolder()
+        {
+            var appData = System.Environment.GetFolderPath(
+                Environment.SpecialFolder.CommonApplicationData);
+            return Path.Combine(appData, Properties.Resources.AppName);
+        }
 
-        private static Random random = new Random();
+        public static void CreateAppDataFolder()
+        {
+            var path = GetAppDataFolder();
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        public static void DeleteAppDataFolder()
+        {
+            Directory.Delete(GetAppDataFolder(), recursive: true);
+        }
+        #endregion
+
+        #region Miscellaneous
         public static string RandomHex(int length)
         {
             //  https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c
@@ -717,9 +739,12 @@ namespace V2RayGCon.Lib
                 return string.Empty;
             }
 
+            Random random = new Random();
             const string chars = "0123456789abcdef";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            return new string(
+                Enumerable.Repeat(chars, length)
+                    .Select(s => s[random.Next(s.Length)])
+                    .ToArray());
         }
 
         public static int Clamp(int value, int min, int max)
@@ -800,14 +825,14 @@ namespace V2RayGCon.Lib
             return re.Replace(link, string.Empty);
         }
 
-        public static void ZipFileDecompress(string fileName)
+        public static void ZipFileDecompress(string zipFile, string outFolder)
         {
             // let downloader handle exception
-            using (ZipFile zip = ZipFile.Read(fileName))
+            using (ZipFile zip = ZipFile.Read(zipFile))
             {
                 var flattenFoldersOnExtract = zip.FlattenFoldersOnExtract;
                 zip.FlattenFoldersOnExtract = true;
-                zip.ExtractAll(GetAppDir(), ExtractExistingFileAction.OverwriteSilently);
+                zip.ExtractAll(outFolder, ExtractExistingFileAction.OverwriteSilently);
                 zip.FlattenFoldersOnExtract = flattenFoldersOnExtract;
             }
         }
@@ -835,7 +860,12 @@ namespace V2RayGCon.Lib
 
         public static string GetAppDir()
         {
-            return Path.GetDirectoryName(Application.ExecutablePath);
+            // The code below will fail in test.
+            // return Path.GetDirectoryName(Application.ExecutablePath);
+
+            // https://stackoverflow.com/questions/6041332/best-way-to-get-application-folder-path/35295609
+            return System.IO.Path.GetDirectoryName(
+                System.Reflection.Assembly.GetExecutingAssembly().Location);
         }
 
         public static void SupportProtocolTLS12()

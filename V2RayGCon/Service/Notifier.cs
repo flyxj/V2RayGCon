@@ -54,11 +54,11 @@ namespace V2RayGCon.Service
 
             // new Views.FormConfiger(0);
 
-            new Views.FormConfigTester();
+            // new Views.FormConfigTester();
             Views.FormMain.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormLog.GetForm();
             // Views.FormSimAddVmessClient.GetForm();
-            // Views.FormDownloadCore.GetForm();
+            Views.FormDownloadCore.GetForm();
 
         }
 #endif

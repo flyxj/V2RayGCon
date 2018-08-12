@@ -243,6 +243,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remove v2ray-core from this computer? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmRemoveV2RayCore {
+            get {
+                return ResourceManager.GetString("ConfirmRemoveV2RayCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Save current config? 的本地化字符串。
         /// </summary>
         internal static string ConfirmSaveCurConfig {
@@ -512,6 +521,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The file is in use. Please close v2ray-core first. 的本地化字符串。
+        /// </summary>
+        internal static string FileInUse {
+            get {
+                return ResourceManager.GetString("FileInUse", resourceCulture);
             }
         }
         
