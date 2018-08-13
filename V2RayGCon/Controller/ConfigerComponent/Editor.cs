@@ -14,6 +14,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         int preSection;
         int separator;
         Scintilla editor;
+        ComboBox cboxSection;
 
         Dictionary<int, string> sections;
 
@@ -30,6 +31,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             sections = Model.Data.Table.configSections;
             preSection = 0;
 
+            this.cboxSection = section;
             BindEditor(container);
             AttachEvent(section, example, format, restore);
 
@@ -53,6 +55,34 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region pulbic method
+        public void DiscardChanges()
+        {
+            var config = container.config;
+
+            content =
+                preSection == 0 ?
+                config.ToString() :
+                config[sections[preSection]].ToString();
+        }
+
+        public bool IsChanged()
+        {
+            if (!CheckValid())
+            {
+                return true;
+            }
+
+            var content = JToken.Parse(this.content);
+            var section = GetCurConfigSection();
+
+            if (JToken.DeepEquals(content, section))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public Scintilla GetEditor()
         {
             if (editor == null)
@@ -89,6 +119,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 config[sections[index]] = part;
             }
             content = part.ToString();
+        }
+
+        public void SelectSection(int index)
+        {
+            this.cboxSection.SelectedIndex = index;
         }
 
         public bool Flush()
@@ -286,14 +321,15 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
         }
 
-        public void DiscardChanges()
+        JToken GetCurConfigSection()
         {
             var config = container.config;
 
-            content =
-                preSection == 0 ?
-                config.ToString() :
-                config[sections[preSection]].ToString();
+            JToken section = preSection == 0 ?
+                config as JToken :
+                config[sections[preSection]];
+
+            return section.DeepClone();
         }
 
         void SaveChanges()

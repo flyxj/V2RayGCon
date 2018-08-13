@@ -196,6 +196,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Discard unsaved changes and close the window? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmCloseWinWithoutSave {
+            get {
+                return ResourceManager.GetString("ConfirmCloseWinWithoutSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DELETE ALL SERVERS? 的本地化字符串。
         /// </summary>
         internal static string ConfirmDeleteAllServers {

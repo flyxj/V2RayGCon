@@ -57,7 +57,10 @@ namespace V2RayGCon.Views
 
             this.FormClosing += (s, a) =>
             {
-                a.Cancel = !Lib.UI.Confirm(I18N("ConfirmCloseWindow"));
+                if (!configer.IsConfigSaved())
+                {
+                    a.Cancel = !Lib.UI.Confirm(I18N("ConfirmCloseWinWithoutSave"));
+                }
             };
 
             this.FormClosed += (s, a) =>
@@ -99,7 +102,7 @@ namespace V2RayGCon.Views
             {
                 case Model.Data.Enum.SaveFileErrorCode.Success:
                     SetTitle(filename);
-                    configer.ClearOriginalConfig();
+                    configer.MarkOriginalFile();
                     MessageBox.Show(I18N("Done"));
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Fail:
@@ -122,17 +125,17 @@ namespace V2RayGCon.Views
 
         private void LoadJsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+            if (!configer.IsConfigSaved()
+                && !Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
             {
                 return;
             }
 
             string json = Lib.UI.ShowReadFileDialog(StrConst("ExtJson"), out string filename);
-            if (configer.SetConfig(json))
+            if (configer.LoadJsonFromFile(json))
             {
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
-                configer.ClearOriginalConfig();
                 MessageBox.Show(I18N("Done"));
             }
             else
@@ -321,10 +324,10 @@ namespace V2RayGCon.Views
 
         void UpdateServerMenu()
         {
-            var menuRepalceServer = replaceExistServerToolStripMenuItem.DropDownItems;
+            var menuReplaceServer = replaceExistServerToolStripMenuItem.DropDownItems;
             var menuLoadServer = loadServerToolStripMenuItem.DropDownItems;
 
-            menuRepalceServer.Clear();
+            menuReplaceServer.Clear();
             menuLoadServer.Clear();
 
             var aliases = setting.GetAllAliases();
@@ -336,7 +339,7 @@ namespace V2RayGCon.Views
             for (int i = 0; i < aliases.Count; i++)
             {
                 var index = i;
-                menuRepalceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                menuReplaceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
@@ -349,12 +352,14 @@ namespace V2RayGCon.Views
 
                 menuLoadServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
                 {
-                    if (Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+                    if (!configer.IsConfigSaved()
+                    && !Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
                     {
-                        configer.LoadServer(index);
-                        SetTitle(configer.GetAlias());
-                        cboxConfigSection.SelectedIndex = 0;
+                        return;
                     }
+
+                    configer.LoadServer(index);
+                    SetTitle(configer.GetAlias());
                 }));
             }
         }
