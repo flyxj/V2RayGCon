@@ -143,7 +143,9 @@ namespace V2RayGCon.Views
             {
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
-                MessageBox.Show(I18N("Done"));
+
+                // SetTitle is enough.
+                // MessageBox.Show(I18N("Done"));
             }
             else
             {
