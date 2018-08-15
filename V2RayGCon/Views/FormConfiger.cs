@@ -132,6 +132,13 @@ namespace V2RayGCon.Views
             }
 
             string json = Lib.UI.ShowReadFileDialog(StrConst("ExtJson"), out string filename);
+
+            // user cancelled.
+            if (json == null)
+            {
+                return;
+            }
+
             if (configer.LoadJsonFromFile(json))
             {
                 cboxConfigSection.SelectedIndex = 0;
