@@ -170,12 +170,13 @@ namespace V2RayGCon.Test
         [DataRow(@"{}", @"{}", @"{}")]
         [DataRow(@"{a:'123',b:null}", @"{a:null,b:'123'}", @"{a:null,b:'123'}")]
         [DataRow(@"{a:[1,2],b:{}}", @"{a:[3],b:{a:[1,2,3]}}", @"{a:[3,2],b:{a:[1,2,3]}}")]
-        public void MergeJson(string first, string second, string expect)
+        public void MergeJson(string bodyStr, string mixinStr, string expect)
         {
-            var v = Lib.Utils.MergeJson(JObject.Parse(first), JObject.Parse(second));
-            var e = JObject.Parse(expect);
+            var body = JObject.Parse(bodyStr);
+            Lib.Utils.MergeJson(ref body, JObject.Parse(mixinStr));
 
-            Assert.AreEqual(true, JObject.DeepEquals(v, e));
+            var e = JObject.Parse(expect);
+            Assert.AreEqual(true, JObject.DeepEquals(body, e));
         }
 
         [TestMethod]

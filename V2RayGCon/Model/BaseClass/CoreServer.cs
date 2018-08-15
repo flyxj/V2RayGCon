@@ -188,6 +188,9 @@ namespace V2RayGCon.Model.BaseClass
             {
                 SendLog(I18N("CoreExit"));
 
+                // exit code always equal -1
+                // SendLog("Exit code " + v2rayCore.ExitCode);
+
                 // isRunning() need this.v2rayCore to be set to null 
                 // before invoking OnStateChanged
                 v2rayCore = null;

@@ -217,16 +217,13 @@ namespace V2RayGCon.Lib
             (node as JObject).Property(key)?.Remove();
         }
 
-        static JObject ConcatJson(JObject left, JObject right)
+        static void ConcatJson(ref JObject body, JObject mixin)
         {
-            var options = new JsonMergeSettings
+            body.Merge(mixin, new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Concat,
                 MergeNullValueHandling = MergeNullValueHandling.Ignore,
-            };
-            var result = left.DeepClone() as JObject;
-            result.Merge(right, options);
-            return result;
+            });
         }
 
         public static JObject CombineConfig(JObject left, JObject right)
@@ -247,7 +244,7 @@ namespace V2RayGCon.Lib
                     try
                     {
                         var node = ExtractJObjectPart(part, key);
-                        result = ConcatJson(result, node);
+                        ConcatJson(ref result, node);
                         RemoveKeyFromJObject(part, key);
                     }
                     catch (KeyNotFoundException)
@@ -257,22 +254,22 @@ namespace V2RayGCon.Lib
                 }
             }
 
-            result = MergeJson(result, l);
-            result = MergeJson(result, r);
+            MergeJson(ref result, l);
+            MergeJson(ref result, r);
+
+            l = null;
+            r = null;
 
             return result;
         }
 
-        public static JObject MergeJson(JObject firstJson, JObject secondJson)
+        public static void MergeJson(ref JObject body, JObject mixin)
         {
-            var result = firstJson.DeepClone() as JObject; // copy
-            result.Merge(secondJson, new JsonMergeSettings
+            body.Merge(mixin, new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Merge,
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
-
-            return result;
         }
 
         public static JToken GetKey(JToken json, string path)

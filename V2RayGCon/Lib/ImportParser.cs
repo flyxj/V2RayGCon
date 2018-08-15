@@ -11,20 +11,14 @@ namespace V2RayGCon.Lib
         #region public method
         public static List<string> GetImportUrls(JObject config)
         {
-            var result = new List<string>();
+            List<string> urls = null;
+            var empty = new List<string>();
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
             if (import != null && import is JObject)
             {
-                var urls = ((JObject)import).Properties().Select(p => p.Name).ToList();
-
-                if (urls == null)
-                {
-                    return result;
-                }
-
-                return urls;
+                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
             }
-            return result;
+            return urls ?? new List<string>();
         }
 
         /*
@@ -107,14 +101,11 @@ namespace V2RayGCon.Lib
 
         static List<string> GetContentFromCache(List<string> urls)
         {
-            if (urls.Count <= 0)
-            {
-                return new List<string>();
-            }
-
-            return Lib.Utils.ExecuteInParallel<string, string>(
-                urls,
-                (url) => Service.Cache.Instance.html[url]);
+            return urls.Count <= 0 ?
+                urls :
+                Lib.Utils.ExecuteInParallel<string, string>(
+                    urls,
+                    (url) => Service.Cache.Instance.html[url]);
         }
 
         #endregion

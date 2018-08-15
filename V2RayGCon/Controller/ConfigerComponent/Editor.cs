@@ -218,6 +218,28 @@ namespace V2RayGCon.Controller.ConfigerComponet
             cboxExamples.SelectedIndex = 0;
         }
 
+        string LoadInOutBoundExample(string[] example, bool isInbound)
+        {
+            var tpl = isInbound ?
+                cache.tpl.LoadExample("inTpl") :
+                cache.tpl.LoadExample("outTpl");
+
+            var protocol = example[2];
+
+            tpl["protocol"] = protocol;
+            tpl["settings"] = cache.tpl.LoadExample(example[1]);
+
+            // issue #5
+            string[] servProto = { "vmess", "shadowsocks" };
+            if (isInbound && Array.IndexOf(servProto, protocol) >= 0)
+            {
+                tpl["listen"] = "0.0.0.0";
+            }
+
+            return tpl.ToString();
+        }
+
+
         void LoadExample(int index)
         {
             if (index < 0)
@@ -225,32 +247,21 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 return;
             }
 
-            var examples = Model.Data.Table.examples;
+            var example = Model.Data.Table.examples[preSection][index];
             try
             {
-                string key = examples[preSection][index][1];
-                string content;
-
-                if (preSection == Model.Data.Table.inboundIndex)
+                switch (preSection)
                 {
-                    var inTpl = cache.tpl.LoadExample("inTpl");
-                    inTpl["protocol"] = examples[preSection][index][2];
-                    inTpl["settings"] = cache.tpl.LoadExample(key);
-                    content = inTpl.ToString();
+                    case Model.Data.Table.inboundIndex:
+                        this.content = LoadInOutBoundExample(example, true);
+                        break;
+                    case Model.Data.Table.outboundIndex:
+                        this.content = LoadInOutBoundExample(example, false);
+                        break;
+                    default:
+                        this.content = cache.tpl.LoadExample(example[1]).ToString();
+                        break;
                 }
-                else if (preSection == Model.Data.Table.outboundIndex)
-                {
-                    var outTpl = cache.tpl.LoadExample("outTpl");
-                    outTpl["protocol"] = examples[preSection][index][2];
-                    outTpl["settings"] = cache.tpl.LoadExample(key);
-                    content = outTpl.ToString();
-                }
-                else
-                {
-                    content = cache.tpl.LoadExample(key).ToString();
-                }
-
-                this.content = content;
             }
             catch
             {
