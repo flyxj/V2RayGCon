@@ -917,6 +917,7 @@ namespace V2RayGCon.Lib
             foreach (var task in taskList)
             {
                 result.Add(task.Result);
+                task.Dispose();
             }
 
             return result;

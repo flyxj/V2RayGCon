@@ -27,12 +27,12 @@ namespace V2RayGCon.Lib.QRCode
             Success,
         }
 
-        public static Tuple<Bitmap ,WriteErrors > GenQRCode(string content, int size = 512)
+        public static Tuple<Bitmap, WriteErrors> GenQRCode(string content, int size = 512)
         {
             Bitmap binCode = null;
             if (string.IsNullOrEmpty(content))
             {
-                return Tuple.Create(binCode,WriteErrors.DataEmpty);
+                return Tuple.Create(binCode, WriteErrors.DataEmpty);
             }
 
             options.Width = size;
@@ -256,8 +256,7 @@ namespace V2RayGCon.Lib.QRCode
                 Application.Run();
             }
 
-            Task task = new Task(ShowFormInBackground);
-            task.Start();
+            Task.Factory.StartNew(() => ShowFormInBackground());
         }
 
         static bool ScanWindow(Bitmap screenshot, Point screenLocation, Rectangle winRect, Rectangle screenRect, Action<string> success)
