@@ -423,6 +423,7 @@ namespace V2RayGCon.Service
                 summarys.Add(summary);
             }
 
+            System.GC.Collect();
             return summarys.AsReadOnly();
         }
 
@@ -695,19 +696,20 @@ namespace V2RayGCon.Service
         List<string[]> ParseAllConfigsImport(List<string> serverList)
         {
             var result = Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
-             {
-                 try
-                 {
-                     return GetSummaryFromConfig(
-                         Lib.ImportParser.ParseImport(
-                             Lib.Utils.Base64Decode(server), false));
-                 }
-                 catch
-                 {
-                     return null;
-                 }
-             });
+            {
+                try
+                {
+                    return GetSummaryFromConfig(
+                        Lib.ImportParser.ParseImport(
+                            Lib.Utils.Base64Decode(server)));
+                }
+                catch
+                {
+                    return null;
+                }
+            });
 
+            System.GC.Collect();
             return result;
         }
 
@@ -746,7 +748,6 @@ namespace V2RayGCon.Service
                     }
                 }
 
-                GC.Collect();
                 OnSettingChange?.Invoke(this, EventArgs.Empty);
             });
         }

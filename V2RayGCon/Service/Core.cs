@@ -87,7 +87,7 @@ namespace V2RayGCon.Service
 
             try
             {
-                config = Lib.ImportParser.ParseImport(plainText, true);
+                config = Lib.ImportParser.ParseImport(plainText);
                 cache.core[b64Config] = config.ToString();
             }
             catch
@@ -105,8 +105,10 @@ namespace V2RayGCon.Service
 
             OverwriteInboundSettings(config);
 
-            coreServer.RestartCore(config.ToString(), NotifyStateChange);
-
+            var s = config.ToString();
+            config = null;
+            GC.Collect();
+            coreServer.RestartCore(s, NotifyStateChange);
         }
 
         void NotifyStateChange()

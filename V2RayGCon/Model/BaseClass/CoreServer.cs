@@ -147,7 +147,7 @@ namespace V2RayGCon.Model.BaseClass
             try
             {
                 string plainText = Lib.Utils.Base64Decode(b64Config);
-                config = Lib.ImportParser.ParseImport(plainText, true);
+                config = Lib.ImportParser.ParseImport(plainText);
             }
             catch
             {
@@ -156,7 +156,10 @@ namespace V2RayGCon.Model.BaseClass
                 return;
             }
 
-            RestartCore(config.ToString());
+            var s = config.ToString();
+            config = null;
+            System.GC.Collect();
+            RestartCore(s);
         }
 
         public void StopCoreThen(Action lambda)
