@@ -412,7 +412,7 @@ namespace V2RayGCon.Service
                     || data[key] == null)
                 {
                     summary = GetSummaryFromConfig(
-                        Lib.Utils.Base64Decode(key));
+                        JObject.Parse(Lib.Utils.Base64Decode(key)));
                 }
                 else
                 {
@@ -647,7 +647,7 @@ namespace V2RayGCon.Service
                 Lib.Utils.CutStr(name, 20);
         }
 
-        string[] GetSummaryFromConfig(string configString)
+        string[] GetSummaryFromConfig(JObject config)
         {
             var summary = new string[] {
                 string.Empty,  // reserve for no.
@@ -661,8 +661,6 @@ namespace V2RayGCon.Service
                 string.Empty,  // tls
                 string.Empty,  // mKCP disguise
             };
-
-            var config = JObject.Parse(configString);
 
             var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
 
@@ -700,8 +698,9 @@ namespace V2RayGCon.Service
              {
                  try
                  {
-                     var config = Lib.ImportParser.ParseImport(Lib.Utils.Base64Decode(server), false);
-                     return GetSummaryFromConfig(config);
+                     return GetSummaryFromConfig(
+                         Lib.ImportParser.ParseImport(
+                             Lib.Utils.Base64Decode(server), false));
                  }
                  catch
                  {

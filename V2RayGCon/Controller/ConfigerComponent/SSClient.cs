@@ -85,7 +85,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config = Inject(container.config);
+                    Inject(ref container.config);
                 });
             };
         }
@@ -119,7 +119,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        JObject Inject(JObject config)
+        void Inject(ref JObject config)
         {
             var outbound = Lib.Utils.CreateJObject("outbound");
             outbound["outbound"]["settings"] = GetSettings();
@@ -131,7 +131,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             catch (KeyNotFoundException) { }
 
-            return Lib.Utils.CombineConfig(config, outbound);
+            Lib.Utils.CombineConfig(ref config, outbound);
         }
 
         void SetMethod(string selectedMethod)

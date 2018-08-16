@@ -136,15 +136,24 @@ namespace V2RayGCon.Test
         [DataRow(@"{'a':1,'b':1}", @"{'b':2}", @"{'a':1,'b':2}")]
         [DataRow(@"{'a':1}", @"{'b':1}", @"{'a':1,'b':1}")]
         [DataRow(@"{}", @"{}", @"{}")]
-        public void MergeConfigTest(string left, string right, string expect)
+        public void CombineConfigTest(string left, string right, string expect)
         {
             // outboundDetour inboundDetour
-            var l = JObject.Parse(left);
-            var r = JObject.Parse(right);
-            var e = JObject.Parse(expect);
-            var result = Lib.Utils.CombineConfig(l, r);
+            var body = JObject.Parse(left);
+            var mixin = JObject.Parse(right);
 
-            Assert.AreEqual(true, JObject.DeepEquals(e, result));
+            Lib.Utils.CombineConfig(ref body, mixin);
+
+            var e = JObject.Parse(expect);
+            var dbg = body.ToString();
+            var equal = JObject.DeepEquals(e, body);
+
+            Assert.AreEqual(true, equal);
+
+            // test whether mixin changed
+            var orgMixin = JObject.Parse(right);
+            var same = JObject.DeepEquals(orgMixin, mixin);
+            Assert.AreEqual(true, same);
         }
 
         [TestMethod]
@@ -243,9 +252,8 @@ namespace V2RayGCon.Test
 
             JObject parse(string key, int depth = 3)
             {
-                var config = data[key];
-                var exp = Lib.ImportParser.ParseImportRecursively(fetcher, data[key], depth);
-                return JObject.Parse(exp);
+                var config = JObject.Parse(data[key]);
+                return Lib.ImportParser.ParseImportRecursively(fetcher, config, depth);
             }
 
             void check(string expect, string value)

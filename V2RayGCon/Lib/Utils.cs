@@ -226,44 +226,45 @@ namespace V2RayGCon.Lib
             });
         }
 
-        public static JObject CombineConfig(JObject left, JObject right)
+        public static void CombineConfig(ref JObject body, JObject mixin)
         {
-            var l = left.DeepClone() as JObject;
-            var r = right.DeepClone() as JObject;
-
             // in(out)Dtr
-            var result = JObject.Parse("{}");
 
-            foreach (var part in new JObject[] { r, l })
-            {
-                foreach (var key in new string[] {
+            JObject backup = JObject.Parse(@"{}");
+
+            foreach (var key in new string[] {
                     "inboundDetour",
                     "outboundDetour",
                     "routing.settings.rules"})
+            {
+                JObject nodeBody = null;
+                JObject nodeMixin = null;
+                try
                 {
-                    try
-                    {
-                        var node = ExtractJObjectPart(part, key);
-                        ConcatJson(ref result, node);
-                        RemoveKeyFromJObject(part, key);
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        // skip if key not exist
-                    }
+                    nodeBody = ExtractJObjectPart(body, key);
+                    RemoveKeyFromJObject(body, key);
+                }
+                catch (KeyNotFoundException) { }
+
+                try
+                {
+                    nodeMixin = ExtractJObjectPart(mixin, key);
+                    ConcatJson(ref backup, nodeMixin);
+                    RemoveKeyFromJObject(mixin, key);
+                    ConcatJson(ref body, nodeMixin);
+                }
+                catch (KeyNotFoundException) { }
+
+                if (nodeBody != null)
+                {
+                    ConcatJson(ref body, nodeBody);
                 }
             }
 
-            MergeJson(ref result, l);
-            MergeJson(ref result, r);
+            ConcatJson(ref body, mixin);
 
-            var s = result.ToString();
-            result = null;
-            l = null;
-            r = null;
-
-            // memory neg optimize
-            return JObject.Parse(s);
+            // restore mixin
+            ConcatJson(ref mixin, backup);
         }
 
         public static void MergeJson(ref JObject body, JObject mixin)

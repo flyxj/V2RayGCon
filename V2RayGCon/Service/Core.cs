@@ -87,9 +87,8 @@ namespace V2RayGCon.Service
 
             try
             {
-                var exp = Lib.ImportParser.ParseImport(plainText, true);
-                config = JObject.Parse(exp);
-                cache.core[b64Config] = exp;
+                config = Lib.ImportParser.ParseImport(plainText, true);
+                cache.core[b64Config] = config.ToString();
             }
             catch
             {

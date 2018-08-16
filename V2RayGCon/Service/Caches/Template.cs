@@ -6,14 +6,19 @@ namespace V2RayGCon.Service.Caches
 {
     public class Template
     {
+        JObject template, example;
+
+        public Template()
+        {
+            template = JObject.Parse(StrConst("config_tpl"));
+            example = JObject.Parse(StrConst("config_def"));
+        }
+
         #region public method
         public JToken LoadTemplate(string key)
         {
-            var tpl = JObject.Parse(StrConst("config_tpl"));
-            var part = LoadJObjectPart(tpl, key);
-
-            // memory neg optimize
-            return JToken.Parse(part.ToString());
+            var node = LoadJObjectPart(template, key);
+            return JToken.Parse(node.ToString());
         }
 
         public JObject LoadMinConfig()
@@ -23,11 +28,8 @@ namespace V2RayGCon.Service.Caches
 
         public JToken LoadExample(string key)
         {
-            var tpl = JObject.Parse(StrConst("config_def"));
-            var part = LoadJObjectPart(tpl, key);
-
-            // memory neg optimize
-            return JToken.Parse(part.ToString());
+            var node = LoadJObjectPart(example, key);
+            return JToken.Parse(node.ToString());
         }
         #endregion
 

@@ -147,7 +147,7 @@ namespace V2RayGCon.Model.BaseClass
             try
             {
                 string plainText = Lib.Utils.Base64Decode(b64Config);
-                config = JObject.Parse(Lib.ImportParser.ParseImport(plainText, true));
+                config = Lib.ImportParser.ParseImport(plainText, true);
             }
             catch
             {

@@ -16,7 +16,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config = GetSkipCNSite();
+                    InsertSkipCNSite();
                 });
             };
 
@@ -24,7 +24,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config = GetMTProto();
+                    InsertMTProto();
                 });
             };
         }
@@ -36,7 +36,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
-        JObject GetMTProto()
+        void InsertMTProto()
         {
             var mtproto = cache.tpl.LoadTemplate("dtrMTProto") as JObject;
 
@@ -61,10 +61,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 user0["secret"] = Lib.Utils.RandomHex(32);
             }
-            return Lib.Utils.CombineConfig(container.config, mtproto);
+
+            Lib.Utils.CombineConfig(ref container.config, mtproto);
         }
 
-        JObject GetSkipCNSite()
+        void InsertSkipCNSite()
         {
             var c = JObject.Parse(@"{}");
 
@@ -86,11 +87,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 }
             }
 
-            var r = Lib.Utils.CombineConfig(container.config, c).ToString();
-
-            c = null;
-
-            return JObject.Parse(r);
+            Lib.Utils.CombineConfig(ref container.config, c);
         }
         #endregion
     }

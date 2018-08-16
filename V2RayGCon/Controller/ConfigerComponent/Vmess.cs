@@ -78,7 +78,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config = Inject(container.config);
+                    Inject(ref container.config);
                 });
             };
         }
@@ -120,7 +120,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             return vmess;
         }
 
-        JObject Inject(JObject config)
+        void Inject(ref JObject config)
         {
             var key = serverMode ? "inbound" : "outbound";
             var vmess = Lib.Utils.CreateJObject(key);
@@ -132,7 +132,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             catch (KeyNotFoundException) { }
 
-            return Lib.Utils.CombineConfig(config, vmess);
+            Lib.Utils.CombineConfig(ref config, vmess);
         }
         #endregion
 

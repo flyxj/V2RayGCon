@@ -27,92 +27,86 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException> url not exist
          * test<Newtonsoft.Json.JsonReaderException> json decode fail
          */
-        public static string ParseImport(string configString, bool cleanup = false)
+        public static JObject ParseImport(string configString, bool cleanup = false)
         {
             var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
 
             var result = ParseImportRecursively(
                 GetContentFromCache,
-                configString,
+                JObject.Parse(configString),
                 maxDepth);
-
-            var config = JObject.Parse(result);
 
             try
             {
-                Lib.Utils.RemoveKeyFromJObject(config, "v2raygcon.import");
+                Lib.Utils.RemoveKeyFromJObject(result, "v2raygcon.import");
             }
             catch (KeyNotFoundException)
             {
                 // do nothing;
             }
 
-            var s = config.ToString();
-
             if (cleanup)
             {
-                config = null;
-                result = null;
                 GC.Collect();
             }
 
-            return s;
+            return result;
+            //var s = result.ToString();
+
+            //if (cleanup)
+            //{
+            //    result = null;
+            //    GC.Collect();
+            //}
+
+            //return s;
         }
 
-        public static string ParseImportRecursively(
+        public static JObject ParseImportRecursively(
             Func<List<string>, List<string>> fetcher,
-            string configString,
+            JObject config,
             int depth)
         {
-            var empty = @"{}";
+            var empty = JObject.Parse(@"{}");
 
             if (depth <= 0)
             {
                 return empty;
             }
 
-            var config = JObject.Parse(configString);
+            // var config = JObject.Parse(configString);
 
             var urls = GetImportUrls(config);
             var contents = fetcher(urls);
 
             if (contents.Count <= 0)
             {
-                return configString;
+                return config;
             }
 
             var configList =
-                Lib.Utils.ExecuteInParallel<string, string>(
+                Lib.Utils.ExecuteInParallel<string, JObject>(
                     contents,
                     (content) =>
                     {
                         return ParseImportRecursively(
                             fetcher,
-                            content,
+                            JObject.Parse(content),
                             depth - 1);
                     });
 
-            var result = JObject.Parse(empty);
+            var result = empty;
             foreach (var c in configList)
             {
-                result = Lib.Utils.CombineConfig(result, JObject.Parse(c));
+                Lib.Utils.CombineConfig(ref result, c);
             }
+            Lib.Utils.CombineConfig(ref result, config);
 
-            return Lib.Utils.CombineConfig(result, config).ToString();
+            return result;
         }
         #endregion
 
         #region private method
-        static JObject OverwriteConfig(JObject config, string overwrite)
-        {
-            var o = overwrite;
-            if (string.IsNullOrEmpty(o))
-            {
-                return config;
-            }
-            return Lib.Utils.CombineConfig(config, JObject.Parse(overwrite));
-        }
-
         static List<string> GetContentFromCache(List<string> urls)
         {
             return urls.Count <= 0 ?
