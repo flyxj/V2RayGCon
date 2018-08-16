@@ -243,8 +243,9 @@ namespace V2RayGCon.Test
 
             JObject parse(string key, int depth = 3)
             {
-                var config = JObject.Parse(data[key]);
-                return Lib.ImportParser.ParseImportRecursively(fetcher, config, depth);
+                var config = data[key];
+                var exp = Lib.ImportParser.ParseImportRecursively(fetcher, data[key], depth);
+                return JObject.Parse(exp);
             }
 
             void check(string expect, string value)

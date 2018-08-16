@@ -412,8 +412,7 @@ namespace V2RayGCon.Service
                     || data[key] == null)
                 {
                     summary = GetSummaryFromConfig(
-                        JObject.Parse(
-                        Lib.Utils.Base64Decode(key)));
+                        Lib.Utils.Base64Decode(key));
                 }
                 else
                 {
@@ -648,7 +647,7 @@ namespace V2RayGCon.Service
                 Lib.Utils.CutStr(name, 20);
         }
 
-        string[] GetSummaryFromConfig(JObject config)
+        string[] GetSummaryFromConfig(string configString)
         {
             var summary = new string[] {
                 string.Empty,  // reserve for no.
@@ -662,6 +661,8 @@ namespace V2RayGCon.Service
                 string.Empty,  // tls
                 string.Empty,  // mKCP disguise
             };
+
+            var config = JObject.Parse(configString);
 
             var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
 
@@ -695,19 +696,20 @@ namespace V2RayGCon.Service
 
         List<string[]> ParseAllConfigsImport(List<string> serverList)
         {
-            return Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
-            {
-                var config = JObject.Parse(Lib.Utils.Base64Decode(server));
-                try
-                {
-                    config = Lib.ImportParser.ParseImport(config);
-                    return GetSummaryFromConfig(config);
-                }
-                catch
-                {
-                    return null;
-                }
-            });
+            var result = Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
+             {
+                 try
+                 {
+                     var config = Lib.ImportParser.ParseImport(Lib.Utils.Base64Decode(server), false);
+                     return GetSummaryFromConfig(config);
+                 }
+                 catch
+                 {
+                     return null;
+                 }
+             });
+
+            return result;
         }
 
         List<string> FilterSummaryUpdateList(List<string> updateList)
@@ -745,6 +747,7 @@ namespace V2RayGCon.Service
                     }
                 }
 
+                GC.Collect();
                 OnSettingChange?.Invoke(this, EventArgs.Empty);
             });
         }

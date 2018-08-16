@@ -83,12 +83,13 @@ namespace V2RayGCon.Service
             }
 
             string plainText = Lib.Utils.Base64Decode(b64Config);
-            JObject config = JObject.Parse(plainText);
+            JObject config = null;
 
             try
             {
-                config = Lib.ImportParser.ParseImport(config);
-                cache.core[b64Config] = config.ToString(Newtonsoft.Json.Formatting.None);
+                var exp = Lib.ImportParser.ParseImport(plainText, true);
+                config = JObject.Parse(exp);
+                cache.core[b64Config] = exp;
             }
             catch
             {

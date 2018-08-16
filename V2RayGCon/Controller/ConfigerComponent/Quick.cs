@@ -86,7 +86,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 }
             }
 
-            return Lib.Utils.CombineConfig(container.config, c);
+            var r = Lib.Utils.CombineConfig(container.config, c).ToString();
+
+            c = null;
+
+            return JObject.Parse(r);
         }
         #endregion
     }

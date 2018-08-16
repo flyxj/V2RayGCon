@@ -50,6 +50,8 @@ namespace V2RayGCon
                 typeof(SetProcessDpiAwareness),
                 (method) => ((SetProcessDpiAwareness)method).Invoke(2));
 
+            // Application.Run(Form winForm)
+            // So do not pass this as parameter to that function.
             Service.Notifier noty = Service.Notifier.Instance;
 
             Application.Run();

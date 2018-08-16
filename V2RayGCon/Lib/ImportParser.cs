@@ -27,64 +27,78 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException> url not exist
          * test<Newtonsoft.Json.JsonReaderException> json decode fail
          */
-        public static JObject ParseImport(JObject config)
+        public static string ParseImport(string configString, bool cleanup = false)
         {
             var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
 
             var result = ParseImportRecursively(
                 GetContentFromCache,
-                config,
+                configString,
                 maxDepth);
+
+            var config = JObject.Parse(result);
 
             try
             {
-                Lib.Utils.RemoveKeyFromJObject(result, "v2raygcon.import");
+                Lib.Utils.RemoveKeyFromJObject(config, "v2raygcon.import");
             }
             catch (KeyNotFoundException)
             {
                 // do nothing;
             }
 
-            return result;
+            var s = config.ToString();
+
+            if (cleanup)
+            {
+                config = null;
+                result = null;
+                GC.Collect();
+            }
+
+            return s;
         }
 
-        public static JObject ParseImportRecursively(
+        public static string ParseImportRecursively(
             Func<List<string>, List<string>> fetcher,
-            JObject config,
+            string configString,
             int depth)
         {
-            var result = JObject.Parse(@"{}");
+            var empty = @"{}";
 
             if (depth <= 0)
             {
-                return result;
+                return empty;
             }
+
+            var config = JObject.Parse(configString);
 
             var urls = GetImportUrls(config);
             var contents = fetcher(urls);
 
             if (contents.Count <= 0)
             {
-                return config.DeepClone() as JObject;
+                return configString;
             }
 
             var configList =
-                Lib.Utils.ExecuteInParallel<string, JObject>(
+                Lib.Utils.ExecuteInParallel<string, string>(
                     contents,
                     (content) =>
                     {
                         return ParseImportRecursively(
                             fetcher,
-                            JObject.Parse(content),
+                            content,
                             depth - 1);
                     });
 
+            var result = JObject.Parse(empty);
             foreach (var c in configList)
             {
-                result = Lib.Utils.CombineConfig(result, c);
+                result = Lib.Utils.CombineConfig(result, JObject.Parse(c));
             }
 
-            return Lib.Utils.CombineConfig(result, config);
+            return Lib.Utils.CombineConfig(result, config).ToString();
         }
         #endregion
 

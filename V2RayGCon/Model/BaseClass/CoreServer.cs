@@ -121,12 +121,13 @@ namespace V2RayGCon.Model.BaseClass
                 return;
             }
 
-            string plainText = Lib.Utils.Base64Decode(b64Config);
-            JObject config = JObject.Parse(plainText);
+
+            JObject config = null;
 
             try
             {
-                config = Lib.ImportParser.ParseImport(config);
+                string plainText = Lib.Utils.Base64Decode(b64Config);
+                config = JObject.Parse(Lib.ImportParser.ParseImport(plainText, true));
             }
             catch
             {

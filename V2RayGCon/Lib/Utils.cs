@@ -257,10 +257,13 @@ namespace V2RayGCon.Lib
             MergeJson(ref result, l);
             MergeJson(ref result, r);
 
+            var s = result.ToString();
+            result = null;
             l = null;
             r = null;
 
-            return result;
+            // memory neg optimize
+            return JObject.Parse(s);
         }
 
         public static void MergeJson(ref JObject body, JObject mixin)
