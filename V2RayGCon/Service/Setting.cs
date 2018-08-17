@@ -726,6 +726,7 @@ namespace V2RayGCon.Service
             }
             return result;
         }
+
         void UpdateSummaryCache(List<string> updateList)
         {
             var serverList = FilterSummaryUpdateList(updateList);

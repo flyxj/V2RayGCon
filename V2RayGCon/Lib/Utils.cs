@@ -261,7 +261,7 @@ namespace V2RayGCon.Lib
                 }
             }
 
-            ConcatJson(ref body, mixin);
+            MergeJson(ref body, mixin);
 
             // restore mixin
             ConcatJson(ref mixin, backup);

@@ -102,6 +102,14 @@ namespace V2RayGCon.Test
 
         [DataTestMethod]
         [DataRow(
+            @"{'a':1,'arr':[1,2,3],'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
+            @"{'a':2,'b':1,'arr':null,'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
+            @"{'a':2,'b':1,'arr':null,'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
+        [DataRow(
+            @"{'arr':[1,2],'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
+            @"{'arr':[4,5,6],'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
+            @"{'arr':[4,5,6],'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
+        [DataRow(
             @"{'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
             @"{'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
             @"{'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
