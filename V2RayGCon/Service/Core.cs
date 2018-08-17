@@ -83,12 +83,12 @@ namespace V2RayGCon.Service
             }
 
             string plainText = Lib.Utils.Base64Decode(b64Config);
-            JObject config = JObject.Parse(plainText);
+            JObject config = null;
 
             try
             {
-                config = Lib.ImportParser.ParseImport(config);
-                cache.core[b64Config] = config.ToString(Newtonsoft.Json.Formatting.None);
+                config = Lib.ImportParser.ParseImport(plainText);
+                cache.core[b64Config] = config.ToString();
             }
             catch
             {
@@ -105,8 +105,10 @@ namespace V2RayGCon.Service
 
             OverwriteInboundSettings(config);
 
-            coreServer.RestartCore(config.ToString(), NotifyStateChange);
-
+            var s = config.ToString();
+            config = null;
+            GC.Collect();
+            coreServer.RestartCore(s, NotifyStateChange);
         }
 
         void NotifyStateChange()

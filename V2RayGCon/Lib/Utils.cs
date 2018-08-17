@@ -217,62 +217,63 @@ namespace V2RayGCon.Lib
             (node as JObject).Property(key)?.Remove();
         }
 
-        static JObject ConcatJson(JObject left, JObject right)
+        static void ConcatJson(ref JObject body, JObject mixin)
         {
-            var options = new JsonMergeSettings
+            body.Merge(mixin, new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Concat,
                 MergeNullValueHandling = MergeNullValueHandling.Ignore,
-            };
-            var result = left.DeepClone() as JObject;
-            result.Merge(right, options);
-            return result;
+            });
         }
 
-        public static JObject CombineConfig(JObject left, JObject right)
+        public static void CombineConfig(ref JObject body, JObject mixin)
         {
-            var l = left.DeepClone() as JObject;
-            var r = right.DeepClone() as JObject;
-
             // in(out)Dtr
-            var result = JObject.Parse("{}");
 
-            foreach (var part in new JObject[] { r, l })
-            {
-                foreach (var key in new string[] {
+            JObject backup = JObject.Parse(@"{}");
+
+            foreach (var key in new string[] {
                     "inboundDetour",
                     "outboundDetour",
                     "routing.settings.rules"})
+            {
+                JObject nodeBody = null;
+                JObject nodeMixin = null;
+                try
                 {
-                    try
-                    {
-                        var node = ExtractJObjectPart(part, key);
-                        result = ConcatJson(result, node);
-                        RemoveKeyFromJObject(part, key);
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        // skip if key not exist
-                    }
+                    nodeBody = ExtractJObjectPart(body, key);
+                    RemoveKeyFromJObject(body, key);
+                }
+                catch (KeyNotFoundException) { }
+
+                try
+                {
+                    nodeMixin = ExtractJObjectPart(mixin, key);
+                    ConcatJson(ref backup, nodeMixin);
+                    RemoveKeyFromJObject(mixin, key);
+                    ConcatJson(ref body, nodeMixin);
+                }
+                catch (KeyNotFoundException) { }
+
+                if (nodeBody != null)
+                {
+                    ConcatJson(ref body, nodeBody);
                 }
             }
 
-            result = MergeJson(result, l);
-            result = MergeJson(result, r);
+            MergeJson(ref body, mixin);
 
-            return result;
+            // restore mixin
+            ConcatJson(ref mixin, backup);
         }
 
-        public static JObject MergeJson(JObject firstJson, JObject secondJson)
+        public static void MergeJson(ref JObject body, JObject mixin)
         {
-            var result = firstJson.DeepClone() as JObject; // copy
-            result.Merge(secondJson, new JsonMergeSettings
+            body.Merge(mixin, new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Merge,
                 MergeNullValueHandling = MergeNullValueHandling.Merge
             });
-
-            return result;
         }
 
         public static JToken GetKey(JToken json, string path)
@@ -917,6 +918,7 @@ namespace V2RayGCon.Lib
             foreach (var task in taskList)
             {
                 result.Add(task.Result);
+                task.Dispose();
             }
 
             return result;

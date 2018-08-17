@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.IO;
 using static V2RayGCon.Lib.StringResource;
 using static V2RayGCon.Lib.Utils;
 using static V2RayGCon.Test.Resource.StringResource;
@@ -17,10 +16,12 @@ namespace V2RayGCon.Test
         {
             var appFolder = Lib.Utils.GetAppDataFolder();
             Assert.AreEqual(false, string.IsNullOrEmpty(appFolder));
-            Lib.Utils.CreateAppDataFolder();
-            Assert.AreEqual(true, Directory.Exists(appFolder));
-            Lib.Utils.DeleteAppDataFolder();
-            Assert.AreEqual(false, Directory.Exists(appFolder));
+
+            // do not run these tests 
+            // Lib.Utils.CreateAppDataFolder();
+            // Assert.AreEqual(true, Directory.Exists(appFolder));
+            // Lib.Utils.DeleteAppDataFolder();
+            // Assert.AreEqual(false, Directory.Exists(appFolder));
         }
 
         [DataTestMethod]

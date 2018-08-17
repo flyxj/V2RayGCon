@@ -131,6 +131,11 @@ namespace V2RayGCon.Lib
             return Model.Data.Enum.SaveFileErrorCode.Fail;
         }
 
+        /* return:
+         * 
+         * Null means cancelled.
+         * string.Empty means file is empty or error occurred.
+         */
         public static string ShowReadFileDialog(string extension, out string fileName)
         {
             OpenFileDialog readFileDialog = new OpenFileDialog
@@ -145,17 +150,19 @@ namespace V2RayGCon.Lib
 
             fileName = string.Empty;
 
-            if (readFileDialog.ShowDialog() == DialogResult.OK)
+            if (readFileDialog.ShowDialog() != DialogResult.OK)
             {
-                fileName = readFileDialog.FileName;
-                try
-                {
-                    return File.ReadAllText(fileName);
-                }
-                catch { }
+                return null;
             }
 
-            return string.Empty;
+            fileName = readFileDialog.FileName;
+            var content = string.Empty;
+            try
+            {
+                content = File.ReadAllText(fileName);
+            }
+            catch { }
+            return content;
         }
 
         public static bool Confirm(string content)

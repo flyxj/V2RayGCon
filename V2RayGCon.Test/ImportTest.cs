@@ -102,6 +102,14 @@ namespace V2RayGCon.Test
 
         [DataTestMethod]
         [DataRow(
+            @"{'a':1,'arr':[1,2,3],'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
+            @"{'a':2,'b':1,'arr':null,'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
+            @"{'a':2,'b':1,'arr':null,'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
+        [DataRow(
+            @"{'arr':[1,2],'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
+            @"{'arr':[4,5,6],'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
+            @"{'arr':[4,5,6],'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
+        [DataRow(
             @"{'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
             @"{'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
             @"{'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
@@ -136,15 +144,24 @@ namespace V2RayGCon.Test
         [DataRow(@"{'a':1,'b':1}", @"{'b':2}", @"{'a':1,'b':2}")]
         [DataRow(@"{'a':1}", @"{'b':1}", @"{'a':1,'b':1}")]
         [DataRow(@"{}", @"{}", @"{}")]
-        public void MergeConfigTest(string left, string right, string expect)
+        public void CombineConfigTest(string left, string right, string expect)
         {
             // outboundDetour inboundDetour
-            var l = JObject.Parse(left);
-            var r = JObject.Parse(right);
-            var e = JObject.Parse(expect);
-            var result = Lib.Utils.CombineConfig(l, r);
+            var body = JObject.Parse(left);
+            var mixin = JObject.Parse(right);
 
-            Assert.AreEqual(true, JObject.DeepEquals(e, result));
+            Lib.Utils.CombineConfig(ref body, mixin);
+
+            var e = JObject.Parse(expect);
+            var dbg = body.ToString();
+            var equal = JObject.DeepEquals(e, body);
+
+            Assert.AreEqual(true, equal);
+
+            // test whether mixin changed
+            var orgMixin = JObject.Parse(right);
+            var same = JObject.DeepEquals(orgMixin, mixin);
+            Assert.AreEqual(true, same);
         }
 
         [TestMethod]
@@ -170,12 +187,13 @@ namespace V2RayGCon.Test
         [DataRow(@"{}", @"{}", @"{}")]
         [DataRow(@"{a:'123',b:null}", @"{a:null,b:'123'}", @"{a:null,b:'123'}")]
         [DataRow(@"{a:[1,2],b:{}}", @"{a:[3],b:{a:[1,2,3]}}", @"{a:[3,2],b:{a:[1,2,3]}}")]
-        public void MergeJson(string first, string second, string expect)
+        public void MergeJson(string bodyStr, string mixinStr, string expect)
         {
-            var v = Lib.Utils.MergeJson(JObject.Parse(first), JObject.Parse(second));
-            var e = JObject.Parse(expect);
+            var body = JObject.Parse(bodyStr);
+            Lib.Utils.MergeJson(ref body, JObject.Parse(mixinStr));
 
-            Assert.AreEqual(true, JObject.DeepEquals(v, e));
+            var e = JObject.Parse(expect);
+            Assert.AreEqual(true, JObject.DeepEquals(body, e));
         }
 
         [TestMethod]

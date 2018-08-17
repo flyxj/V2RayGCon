@@ -412,4 +412,13 @@ Please use [Add new server] or [Replace server].</value>
   <data name="FileInUse" xml:space="preserve">
     <value>The file is in use. Please close v2ray-core first.</value>
   </data>
+  <data name="ConfirmCloseWinWithoutSave" xml:space="preserve">
+    <value>Discard unsaved changes and close the window?</value>
+  </data>
+  <data name="AttachToV2rayCoreProcessFail" xml:space="preserve">
+    <value>Attach to v2ray-core process fail!</value>
+  </data>
+  <data name="V2rayCoreExitAbnormally" xml:space="preserve">
+    <value>V2ray-core exit abnormally.</value>
+  </data>
 </root>

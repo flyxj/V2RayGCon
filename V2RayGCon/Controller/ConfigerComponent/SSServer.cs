@@ -80,13 +80,13 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config = Inject(container.config);
+                    Inject(ref container.config);
                 });
             };
         }
 
         // inject component settings into config
-        JObject Inject(JObject config)
+        void Inject(ref JObject config)
         {
             var inbound = Lib.Utils.CreateJObject("inbound");
             inbound["inbound"] = GetSettings();
@@ -97,7 +97,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             catch (KeyNotFoundException) { }
 
-            return Lib.Utils.CombineConfig(config, inbound);
+            Lib.Utils.CombineConfig(ref config, inbound);
         }
 
         // bind UI controls with component

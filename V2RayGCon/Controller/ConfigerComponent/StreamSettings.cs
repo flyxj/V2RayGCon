@@ -129,7 +129,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config = Inject(container.config);
+                    Inject(ref container.config);
                 });
             };
         }
@@ -161,7 +161,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        JObject Inject(JObject config)
+        void Inject(ref JObject config)
         {
             var settings = GetSettings();
             var key = isServer ? "inbound" : "outbound";
@@ -174,7 +174,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             catch (KeyNotFoundException) { }
 
-            return Lib.Utils.CombineConfig(config, stream);
+            Lib.Utils.CombineConfig(ref config, stream);
         }
 
         JToken GetSettings()

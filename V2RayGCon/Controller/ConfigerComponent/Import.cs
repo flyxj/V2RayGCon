@@ -90,7 +90,10 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 var cfg = "{}";
                 try
                 {
-                    cfg = Lib.ImportParser.ParseImport(config).ToString();
+                    cfg = Lib.ImportParser.ParseImport(
+                        config.ToString())
+                        .ToString();
+                    System.GC.Collect();
                 }
                 catch (FileNotFoundException)
                 {

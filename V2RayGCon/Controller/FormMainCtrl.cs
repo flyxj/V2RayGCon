@@ -72,7 +72,8 @@ namespace V2RayGCon.Controller
         public void ImportServersFromTextFile()
         {
             string v2rayLinks = Lib.UI.ShowReadFileDialog(StrConst("ExtText"), out string filename);
-            if (string.IsNullOrEmpty(filename))
+
+            if (v2rayLinks == null)
             {
                 return;
             }

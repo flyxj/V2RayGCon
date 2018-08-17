@@ -115,6 +115,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Attach to v2ray-core process fail! 的本地化字符串。
+        /// </summary>
+        internal static string AttachToV2rayCoreProcessFail {
+            get {
+                return ResourceManager.GetString("AttachToV2rayCoreProcessFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Available examples ... 的本地化字符串。
         /// </summary>
         internal static string AvailableExamples {
@@ -192,6 +201,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmCloseWindow {
             get {
                 return ResourceManager.GetString("ConfirmCloseWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Discard unsaved changes and close the window? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmCloseWinWithoutSave {
+            get {
+                return ResourceManager.GetString("ConfirmCloseWinWithoutSave", resourceCulture);
             }
         }
         
@@ -855,6 +873,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string UsingDecodeCache {
             get {
                 return ResourceManager.GetString("UsingDecodeCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 V2ray-core exit abnormally. 的本地化字符串。
+        /// </summary>
+        internal static string V2rayCoreExitAbnormally {
+            get {
+                return ResourceManager.GetString("V2rayCoreExitAbnormally", resourceCulture);
             }
         }
         

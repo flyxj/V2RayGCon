@@ -412,8 +412,7 @@ namespace V2RayGCon.Service
                     || data[key] == null)
                 {
                     summary = GetSummaryFromConfig(
-                        JObject.Parse(
-                        Lib.Utils.Base64Decode(key)));
+                        JObject.Parse(Lib.Utils.Base64Decode(key)));
                 }
                 else
                 {
@@ -424,6 +423,7 @@ namespace V2RayGCon.Service
                 summarys.Add(summary);
             }
 
+            System.GC.Collect();
             return summarys.AsReadOnly();
         }
 
@@ -695,19 +695,22 @@ namespace V2RayGCon.Service
 
         List<string[]> ParseAllConfigsImport(List<string> serverList)
         {
-            return Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
+            var result = Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
             {
-                var config = JObject.Parse(Lib.Utils.Base64Decode(server));
                 try
                 {
-                    config = Lib.ImportParser.ParseImport(config);
-                    return GetSummaryFromConfig(config);
+                    return GetSummaryFromConfig(
+                        Lib.ImportParser.ParseImport(
+                            Lib.Utils.Base64Decode(server)));
                 }
                 catch
                 {
                     return null;
                 }
             });
+
+            System.GC.Collect();
+            return result;
         }
 
         List<string> FilterSummaryUpdateList(List<string> updateList)
@@ -723,6 +726,7 @@ namespace V2RayGCon.Service
             }
             return result;
         }
+
         void UpdateSummaryCache(List<string> updateList)
         {
             var serverList = FilterSummaryUpdateList(updateList);

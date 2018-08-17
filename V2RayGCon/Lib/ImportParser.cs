@@ -11,20 +11,14 @@ namespace V2RayGCon.Lib
         #region public method
         public static List<string> GetImportUrls(JObject config)
         {
-            var result = new List<string>();
+            List<string> urls = null;
+            var empty = new List<string>();
             var import = Lib.Utils.GetKey(config, "v2raygcon.import");
             if (import != null && import is JObject)
             {
-                var urls = ((JObject)import).Properties().Select(p => p.Name).ToList();
-
-                if (urls == null)
-                {
-                    return result;
-                }
-
-                return urls;
+                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
             }
-            return result;
+            return urls ?? new List<string>();
         }
 
         /*
@@ -33,13 +27,13 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException> url not exist
          * test<Newtonsoft.Json.JsonReaderException> json decode fail
          */
-        public static JObject ParseImport(JObject config)
+        public static JObject ParseImport(string configString)
         {
             var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
 
             var result = ParseImportRecursively(
                 GetContentFromCache,
-                config,
+                JObject.Parse(configString),
                 maxDepth);
 
             try
@@ -59,19 +53,21 @@ namespace V2RayGCon.Lib
             JObject config,
             int depth)
         {
-            var result = JObject.Parse(@"{}");
+            var empty = JObject.Parse(@"{}");
 
             if (depth <= 0)
             {
-                return result;
+                return empty;
             }
+
+            // var config = JObject.Parse(configString);
 
             var urls = GetImportUrls(config);
             var contents = fetcher(urls);
 
             if (contents.Count <= 0)
             {
-                return config.DeepClone() as JObject;
+                return config;
             }
 
             var configList =
@@ -85,36 +81,25 @@ namespace V2RayGCon.Lib
                             depth - 1);
                     });
 
+            var result = empty;
             foreach (var c in configList)
             {
-                result = Lib.Utils.CombineConfig(result, c);
+                Lib.Utils.CombineConfig(ref result, c);
             }
+            Lib.Utils.CombineConfig(ref result, config);
 
-            return Lib.Utils.CombineConfig(result, config);
+            return result;
         }
         #endregion
 
         #region private method
-        static JObject OverwriteConfig(JObject config, string overwrite)
-        {
-            var o = overwrite;
-            if (string.IsNullOrEmpty(o))
-            {
-                return config;
-            }
-            return Lib.Utils.CombineConfig(config, JObject.Parse(overwrite));
-        }
-
         static List<string> GetContentFromCache(List<string> urls)
         {
-            if (urls.Count <= 0)
-            {
-                return new List<string>();
-            }
-
-            return Lib.Utils.ExecuteInParallel<string, string>(
-                urls,
-                (url) => Service.Cache.Instance.html[url]);
+            return urls.Count <= 0 ?
+                urls :
+                Lib.Utils.ExecuteInParallel<string, string>(
+                    urls,
+                    (url) => Service.Cache.Instance.html[url]);
         }
 
         #endregion

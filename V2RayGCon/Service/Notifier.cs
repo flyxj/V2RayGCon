@@ -58,7 +58,7 @@ namespace V2RayGCon.Service
             Views.FormMain.GetForm();
             Views.FormLog.GetForm();
             // Views.FormSimAddVmessClient.GetForm();
-            Views.FormDownloadCore.GetForm();
+            // Views.FormDownloadCore.GetForm();
 
         }
 #endif

@@ -12,7 +12,7 @@ namespace V2RayGCon.Controller
         Service.Cache cache;
 
         public JObject config;
-        string originalConfig;
+        string originalConfig, originalFile;
         ConfigerComponet.Editor editor;
 
         Dictionary<Type, Model.BaseClass.ConfigerComponent> components;
@@ -23,7 +23,9 @@ namespace V2RayGCon.Controller
             setting = Service.Setting.Instance;
 
             components = new Dictionary<Type, Model.BaseClass.ConfigerComponent>();
-            ClearOriginalConfig();
+            originalFile = string.Empty;
+            originalConfig = string.Empty;
+
             LoadConfig(serverIndex);
         }
 
@@ -47,6 +49,30 @@ namespace V2RayGCon.Controller
             Update();
         }
 
+        public bool IsConfigSaved()
+        {
+            if (editor.IsChanged())
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(originalConfig)
+                && string.IsNullOrEmpty(originalFile))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(originalFile))
+            {
+                JObject orgConfig = JObject.Parse(
+                Lib.Utils.Base64Decode(originalConfig));
+                return JObject.DeepEquals(orgConfig, config);
+            }
+
+            JObject orgFile = JObject.Parse(originalFile);
+            return JObject.DeepEquals(orgFile, config);
+        }
+
         public void Plug(Model.BaseClass.ConfigerComponent component)
         {
             var type = component.GetType();
@@ -65,11 +91,6 @@ namespace V2RayGCon.Controller
             {
                 Plug(component);
             }
-        }
-
-        public void ClearOriginalConfig()
-        {
-            originalConfig = string.Empty;
         }
 
         public string GetAlias()
@@ -110,7 +131,7 @@ namespace V2RayGCon.Controller
 
             if (setting.ReplaceServer(config, serverIndex))
             {
-                originalConfig = Lib.Utils.Config2Base64String(config);
+                MarkOriginalConfig();
                 return true;
             }
             else
@@ -131,7 +152,7 @@ namespace V2RayGCon.Controller
 
             if (setting.AddServer(config))
             {
-                originalConfig = Lib.Utils.Config2Base64String(config);
+                MarkOriginalConfig();
             }
             else
             {
@@ -139,21 +160,33 @@ namespace V2RayGCon.Controller
             }
         }
 
+        public void MarkOriginalConfig()
+        {
+            originalFile = string.Empty;
+            originalConfig = Lib.Utils.Config2Base64String(config);
+        }
+
+        public void MarkOriginalFile()
+        {
+            originalConfig = string.Empty;
+            originalFile = GetConfigFormated();
+        }
+
         public string GetConfigFormated()
         {
             return config.ToString(Newtonsoft.Json.Formatting.Indented);
         }
 
-        public bool SetConfig(string json)
+        public bool LoadJsonFromFile(string content)
         {
-            if (string.IsNullOrEmpty(json))
+            if (string.IsNullOrEmpty(content))
             {
                 return false;
             }
 
             try
             {
-                var o = JObject.Parse(json);
+                var o = JObject.Parse(content);
                 if (o == null)
                 {
                     return false;
@@ -161,6 +194,7 @@ namespace V2RayGCon.Controller
                 config = o;
                 Update();
                 editor.ShowSection();
+                MarkOriginalFile();
                 return true;
             }
             catch { }
@@ -169,6 +203,8 @@ namespace V2RayGCon.Controller
 
         public void LoadServer(int index)
         {
+            editor.DiscardChanges();
+            editor.SelectSection(0);
             LoadConfig(index);
             Update();
             editor.ShowSection();
@@ -190,8 +226,6 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
-
-
         void LoadConfig(int index = -1)
         {
             var serverIndex = index < 0 ? 0 : index;
@@ -201,7 +235,6 @@ namespace V2RayGCon.Controller
 
             if (!string.IsNullOrEmpty(b64Config))
             {
-                originalConfig = b64Config;
                 o = JObject.Parse(Lib.Utils.Base64Decode(b64Config));
             }
 
@@ -212,6 +245,7 @@ namespace V2RayGCon.Controller
             }
 
             config = o;
+            MarkOriginalConfig();
         }
         #endregion
     }
