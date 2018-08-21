@@ -9,7 +9,7 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
   
 （详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)）  
   
-下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGcon.zip到任意目录  
+下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGCon.zip到任意目录  
 首次运行需下载[v2ray-core](https://github.com/v2ray/v2ray-core)，可用托盘图标的下载菜单自动下载  
 网络不好的可手动下载，然后将解压出来的文件复制进V2RayGCon目录内  
   
