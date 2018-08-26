@@ -47,17 +47,15 @@
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             // 
             // tabPageSubscribe
             // 
-            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Controls.Add(this.btnDownload);
             this.tabPageSubscribe.Controls.Add(this.btnSave);
             this.tabPageSubscribe.Controls.Add(this.btnAddSubUrl);
             this.tabPageSubscribe.Controls.Add(this.flySubUrlContainer);
+            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Name = "tabPageSubscribe";
-            this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
             this.tabPageSubscribe.UseVisualStyleBackColor = true;
             // 
             // btnDownload
@@ -72,7 +70,6 @@
             // 
             resources.ApplyResources(this.btnSave, "btnSave");
             this.btnSave.Name = "btnSave";
-            this.toolTip1.SetToolTip(this.btnSave, resources.GetString("btnSave.ToolTip"));
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -86,11 +83,10 @@
             // 
             // flySubUrlContainer
             // 
-            resources.ApplyResources(this.flySubUrlContainer, "flySubUrlContainer");
             this.flySubUrlContainer.AllowDrop = true;
+            resources.ApplyResources(this.flySubUrlContainer, "flySubUrlContainer");
             this.flySubUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flySubUrlContainer.Name = "flySubUrlContainer";
-            this.toolTip1.SetToolTip(this.flySubUrlContainer, resources.GetString("flySubUrlContainer.ToolTip"));
             this.flySubUrlContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.flySubUrlContainer_DragDrop);
             this.flySubUrlContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.flySubUrlContainer_DragEnter);
             // 
@@ -100,7 +96,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Name = "FormOption";
-            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormOption_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);

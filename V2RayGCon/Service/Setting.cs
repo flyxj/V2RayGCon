@@ -23,8 +23,12 @@ namespace V2RayGCon.Service
 
         private object addServerLock;
 
+        Queue<string> logCache;
+
         Setting()
         {
+            logCache = new Queue<string>();
+
             LoadServers();
             SaveServers();
 
@@ -121,8 +125,23 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public string GetLogCache()
+        {
+            return string.Join("\n", logCache);
+        }
+
         public void SendLog(string log)
         {
+            // keep 200 lines of log in cache
+            if (logCache.Count > 300)
+            {
+                for (var i = 0; i < 100; i++)
+                {
+                    logCache.Dequeue();
+                }
+            }
+            logCache.Enqueue(log);
+
             var arg = new Model.Data.StrEvent(log);
             OnLog?.Invoke(this, arg);
         }
