@@ -118,5 +118,17 @@ namespace V2RayGCon.Properties {
                 this["DecodeCache"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SubscribeUrls {
+            get {
+                return ((string)(this["SubscribeUrls"]));
+            }
+            set {
+                this["SubscribeUrls"] = value;
+            }
+        }
     }
 }
