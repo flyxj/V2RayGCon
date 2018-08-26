@@ -176,6 +176,11 @@ namespace V2RayGCon.Views
         #endregion
 
         #region UI event handler
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Views.FormOption.GetForm();
+        }
+
         private void activateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ActivateServer();
@@ -406,6 +411,7 @@ namespace V2RayGCon.Views
                 MessageBox.Show(I18N("Done"));
             });
         }
+
         #endregion
 
 

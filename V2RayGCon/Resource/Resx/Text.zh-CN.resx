@@ -419,4 +419,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="V2rayCoreExitAbnormally" xml:space="preserve">
     <value>V2ray-core非正常终止！</value>
   </data>
+  <data name="Options" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="NoSubsUrlAvailable" xml:space="preserve">
+    <value>没有可用的订阅链接</value>
+  </data>
 </root>

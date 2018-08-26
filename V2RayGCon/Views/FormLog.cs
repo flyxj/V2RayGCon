@@ -32,6 +32,9 @@ namespace V2RayGCon.Views
             Lib.UI.SetFormLocation<FormLog>(this, Model.Data.Enum.FormLocations.BottomLeft);
 
             this.Show();
+
+            rtBoxLogger.Text = setting.GetLogCache();
+
             setting.OnLog += LogReceiver;
         }
 

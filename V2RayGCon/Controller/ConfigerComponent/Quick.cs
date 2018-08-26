@@ -47,7 +47,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 })
             {
                 var part = Lib.Utils.ExtractJObjectPart(mtproto, key);
-                if (Lib.Utils.Contain(container.config, part))
+                if (Lib.Utils.Contains(container.config, part))
                 {
                     try
                     {
@@ -81,7 +81,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 var value = cache.tpl.LoadExample(item.Value);
                 tpl[item.Key] = value;
 
-                if (!Lib.Utils.Contain(container.config, tpl))
+                if (!Lib.Utils.Contains(container.config, tpl))
                 {
                     c[item.Key] = value;
                 }

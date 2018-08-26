@@ -22,18 +22,18 @@ namespace V2RayGCon.Lib
 
         #region Json
 
-        static bool Contain(JProperty main, JProperty sub)
+        static bool Contains(JProperty main, JProperty sub)
         {
-            return Contain(main.Value, sub.Value);
+            return Contains(main.Value, sub.Value);
         }
 
-        static bool Contain(JArray main, JArray sub)
+        static bool Contains(JArray main, JArray sub)
         {
             foreach (var sItem in sub)
             {
                 foreach (var mItem in main)
                 {
-                    if (Contain(mItem, sItem))
+                    if (Contains(mItem, sItem))
                     {
                         return true;
                     }
@@ -43,7 +43,7 @@ namespace V2RayGCon.Lib
             return false;
         }
 
-        static bool Contain(JObject main, JObject sub)
+        static bool Contains(JObject main, JObject sub)
         {
             foreach (var item in sub)
             {
@@ -53,7 +53,7 @@ namespace V2RayGCon.Lib
                     return false;
                 }
 
-                if (!Contain(main[key], sub[key]))
+                if (!Contains(main[key], sub[key]))
                 {
                     return false;
                 }
@@ -61,12 +61,12 @@ namespace V2RayGCon.Lib
             return true;
         }
 
-        public static bool Contain(JValue main, JValue sub)
+        public static bool Contains(JValue main, JValue sub)
         {
             return main.Equals(sub);
         }
 
-        public static bool Contain(JToken main, JToken sub)
+        public static bool Contains(JToken main, JToken sub)
         {
             if (main.Type != sub.Type)
             {
@@ -76,13 +76,13 @@ namespace V2RayGCon.Lib
             switch (sub.Type)
             {
                 case JTokenType.Property:
-                    return Contain(main as JProperty, sub as JProperty);
+                    return Contains(main as JProperty, sub as JProperty);
                 case JTokenType.Object:
-                    return Contain(main as JObject, sub as JObject);
+                    return Contains(main as JObject, sub as JObject);
                 case JTokenType.Array:
-                    return Contain(main as JArray, sub as JArray);
+                    return Contains(main as JArray, sub as JArray);
                 default:
-                    return Contain(main as JValue, sub as JValue);
+                    return Contains(main as JValue, sub as JValue);
             }
         }
 

@@ -23,8 +23,12 @@ namespace V2RayGCon.Service
 
         private object addServerLock;
 
+        Queue<string> logCache;
+
         Setting()
         {
+            logCache = new Queue<string>();
+
             LoadServers();
             SaveServers();
 
@@ -121,8 +125,23 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public string GetLogCache()
+        {
+            return string.Join("\n", logCache);
+        }
+
         public void SendLog(string log)
         {
+            // keep 200 lines of log in cache
+            if (logCache.Count > 300)
+            {
+                for (var i = 0; i < 100; i++)
+                {
+                    logCache.Dequeue();
+                }
+            }
+            logCache.Enqueue(log);
+
             var arg = new Model.Data.StrEvent(log);
             OnLog?.Invoke(this, arg);
         }
@@ -358,6 +377,29 @@ namespace V2RayGCon.Service
                         s[1]));
             };
             return alias.AsReadOnly();
+        }
+
+        public List<Model.Data.SubscribeItem> GetSubscribeItems()
+        {
+            try
+            {
+                var items = JsonConvert.DeserializeObject<List<Model.Data.SubscribeItem>>(
+                    Properties.Settings.Default.SubscribeUrls);
+                if (items != null)
+                {
+                    return items;
+                }
+            }
+            catch { };
+            return new List<Model.Data.SubscribeItem>();
+        }
+
+        public void SaveSubscribeItems(List<Model.Data.SubscribeItem> items)
+        {
+            string json = JsonConvert.SerializeObject(items);
+            Properties.Settings.Default.SubscribeUrls = json;
+            Properties.Settings.Default.Save();
+
         }
 
         public void LoadServers()

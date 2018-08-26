@@ -30,11 +30,11 @@ namespace V2RayGCon.Test
         [DataRow(@"{'a':1,'b':2,'c':3}", @"{'a':1,'b':2}", true)]
         [DataRow(@"{'a':1,'b':2,'d':3}", @"{'a':1,'b':2,'c':3}", false)]
         [DataRow(@"{}", @"{}", true)]
-        public void ContainTest(string main, string sub, bool expect)
+        public void ContainsTest(string main, string sub, bool expect)
         {
             var m = JObject.Parse(main);
             var s = JObject.Parse(sub);
-            Assert.AreEqual<bool>(expect, Lib.Utils.Contain(m, s));
+            Assert.AreEqual<bool>(expect, Lib.Utils.Contains(m, s));
         }
 
         [DataTestMethod]

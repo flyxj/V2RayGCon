@@ -421,4 +421,10 @@ Please use [Add new server] or [Replace server].</value>
   <data name="V2rayCoreExitAbnormally" xml:space="preserve">
     <value>V2ray-core exit abnormally.</value>
   </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="NoSubsUrlAvailable" xml:space="preserve">
+    <value>No subscription links available.</value>
+  </data>
 </root>

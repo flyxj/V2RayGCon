@@ -741,11 +741,29 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 No subscription links available. 的本地化字符串。
+        /// </summary>
+        internal static string NoSubsUrlAvailable {
+            get {
+                return ResourceManager.GetString("NoSubsUrlAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Duplicate link or unable to decode 的本地化字符串。
         /// </summary>
         internal static string NotSupportLinkType {
             get {
                 return ResourceManager.GetString("NotSupportLinkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Options 的本地化字符串。
+        /// </summary>
+        internal static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
             }
         }
         

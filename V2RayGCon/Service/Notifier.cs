@@ -55,8 +55,9 @@ namespace V2RayGCon.Service
             // new Views.FormConfiger(0);
 
             // new Views.FormConfigTester();
-            Views.FormMain.GetForm();
-            Views.FormLog.GetForm();
+            Views.FormOption.GetForm();
+            // Views.FormMain.GetForm();
+            // Views.FormLog.GetForm();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();
 
@@ -106,6 +107,7 @@ namespace V2RayGCon.Service
                     new MenuItem(I18N("ConfigTester"),(s,a)=>new Views.FormConfigTester() ),
                     new MenuItem(I18N("GenQRCode"),(s,a)=>Views.FormQRCode.GetForm() ),
                     new MenuItem(I18N("Log"),(s,a)=>Views.FormLog.GetForm() ),
+                    new MenuItem(I18N("Options"),(s,a)=>Views.FormOption.GetForm() ),
                 }),
 
                 new MenuItem(I18N("ScanQRCode"),(s,a)=>{
