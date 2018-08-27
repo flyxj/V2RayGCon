@@ -32,10 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOption));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSubscribe = new System.Windows.Forms.TabPage();
-            this.btnDownload = new System.Windows.Forms.Button();
+            this.btnUpdateViaSubscription = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnAddSubUrl = new System.Windows.Forms.Button();
-            this.flySubUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
@@ -47,29 +47,32 @@
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
+            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             // 
             // tabPageSubscribe
             // 
-            this.tabPageSubscribe.Controls.Add(this.btnDownload);
+            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
+            this.tabPageSubscribe.Controls.Add(this.btnUpdateViaSubscription);
             this.tabPageSubscribe.Controls.Add(this.btnSave);
             this.tabPageSubscribe.Controls.Add(this.btnAddSubUrl);
-            this.tabPageSubscribe.Controls.Add(this.flySubUrlContainer);
-            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
+            this.tabPageSubscribe.Controls.Add(this.flySubsUrlContainer);
             this.tabPageSubscribe.Name = "tabPageSubscribe";
+            this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
             this.tabPageSubscribe.UseVisualStyleBackColor = true;
             // 
-            // btnDownload
+            // btnUpdateViaSubscription
             // 
-            resources.ApplyResources(this.btnDownload, "btnDownload");
-            this.btnDownload.Name = "btnDownload";
-            this.toolTip1.SetToolTip(this.btnDownload, resources.GetString("btnDownload.ToolTip"));
-            this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            resources.ApplyResources(this.btnUpdateViaSubscription, "btnUpdateViaSubscription");
+            this.btnUpdateViaSubscription.Name = "btnUpdateViaSubscription";
+            this.toolTip1.SetToolTip(this.btnUpdateViaSubscription, resources.GetString("btnUpdateViaSubscription.ToolTip"));
+            this.btnUpdateViaSubscription.UseVisualStyleBackColor = true;
+            this.btnUpdateViaSubscription.Click += new System.EventHandler(this.btnUpdateViaSubscription_Click);
             // 
             // btnSave
             // 
             resources.ApplyResources(this.btnSave, "btnSave");
             this.btnSave.Name = "btnSave";
+            this.toolTip1.SetToolTip(this.btnSave, resources.GetString("btnSave.ToolTip"));
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -81,14 +84,15 @@
             this.btnAddSubUrl.UseVisualStyleBackColor = true;
             this.btnAddSubUrl.Click += new System.EventHandler(this.btnAddSubUrl_Click);
             // 
-            // flySubUrlContainer
+            // flySubsUrlContainer
             // 
-            this.flySubUrlContainer.AllowDrop = true;
-            resources.ApplyResources(this.flySubUrlContainer, "flySubUrlContainer");
-            this.flySubUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flySubUrlContainer.Name = "flySubUrlContainer";
-            this.flySubUrlContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.flySubUrlContainer_DragDrop);
-            this.flySubUrlContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.flySubUrlContainer_DragEnter);
+            resources.ApplyResources(this.flySubsUrlContainer, "flySubsUrlContainer");
+            this.flySubsUrlContainer.AllowDrop = true;
+            this.flySubsUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flySubsUrlContainer.Name = "flySubsUrlContainer";
+            this.toolTip1.SetToolTip(this.flySubsUrlContainer, resources.GetString("flySubsUrlContainer.ToolTip"));
+            this.flySubsUrlContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.flySubUrlContainer_DragDrop);
+            this.flySubsUrlContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.flySubsUrlContainer_DragEnter);
             // 
             // FormOption
             // 
@@ -96,6 +100,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Name = "FormOption";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormOption_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
@@ -107,10 +112,10 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageSubscribe;
-        private System.Windows.Forms.FlowLayoutPanel flySubUrlContainer;
+        private System.Windows.Forms.FlowLayoutPanel flySubsUrlContainer;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnAddSubUrl;
-        private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.Button btnUpdateViaSubscription;
         private System.Windows.Forms.ToolTip toolTip1;
     }
 }
