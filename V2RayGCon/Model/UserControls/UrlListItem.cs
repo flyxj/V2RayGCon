@@ -39,15 +39,13 @@ namespace V2RayGCon.Model.UserControls
             var form = this.FindForm() as Views.FormOption;
             flyPanel.Controls.Remove(this);
             form.UpdateFlySubUrlItemIndex();
-
         }
-        #endregion
 
         private void UrlListItem_MouseDown(object sender, MouseEventArgs e)
         {
             DoDragDrop((UrlListItem)sender, DragDropEffects.Copy);
         }
-
+        #endregion
 
     }
 }

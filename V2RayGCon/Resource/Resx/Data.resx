@@ -160,9 +160,9 @@
   <data name="ExtJson" xml:space="preserve">
     <value>Json File|*.json|All File|*.*</value>
   </data>
-  <data name="DontUsePatternBase64" xml:space="preserve">
+  <data name="PatternBase64NonStandard" xml:space="preserve">
     <value>[A-Za-z0-9+/]+</value>
-    <comment>don't border to support non-standar things</comment>
+    <comment>Why people always do not follow the standard!</comment>
   </data>
   <data name="LatestCoreLink" xml:space="preserve">
     <value>https://github.com/v2ray/v2ray-core/releases/latest</value>

@@ -90,7 +90,11 @@ namespace V2RayGCon.Service
         {
             ni = new NotifyIcon();
             ni.Text = I18N("Description");
+#if DEBUG
+            ni.Icon = Properties.Resources.icon_light;
+#else
             ni.Icon = Properties.Resources.icon_dark;
+#endif
             ni.BalloonTipTitle = Properties.Resources.AppName;
             ni.ContextMenu = CreateMenu();
             ni.Visible = true;

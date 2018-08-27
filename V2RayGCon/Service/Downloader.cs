@@ -47,11 +47,17 @@ namespace V2RayGCon.Service
             Download();
         }
 
-        public void UnzipPackage()
+        public bool UnzipPackage()
         {
-            Lib.Utils.ZipFileDecompress(
-                GetLocalFilePath(),
-                Lib.Utils.GetAppDataFolder());
+            try
+            {
+                Lib.Utils.ZipFileDecompress(
+                    GetLocalFilePath(),
+                    Lib.Utils.GetAppDataFolder());
+                return true;
+            }
+            catch { }
+            return false;
         }
 
         public void Cancel()
@@ -71,29 +77,38 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        bool UpdateCore()
+        void NotifyDownloadResults(bool status)
         {
             try
             {
-                var isRunning = core.isRunning;
-                if (isRunning)
+                if (status)
                 {
-                    core.StopCoreThen(() =>
-                    {
-                        UnzipPackage();
-                        setting.ActivateServer();
-                    });
+                    OnDownloadCompleted?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
-                    UnzipPackage();
+                    OnDownloadFail?.Invoke(this, EventArgs.Empty);
                 }
             }
-            catch
+            catch { }
+        }
+
+
+        void UpdateCore()
+        {
+            if (!core.isRunning)
             {
-                return false;
+                NotifyDownloadResults(UnzipPackage());
+                return;
             }
-            return true;
+
+            core.StopCoreThen(() =>
+            {
+                var status = UnzipPackage();
+                setting.ActivateServer();
+                NotifyDownloadResults(status);
+            });
+
         }
 
         void DownloadCompleted(bool cancelled)
@@ -112,22 +127,8 @@ namespace V2RayGCon.Service
             }
 
             setting.SendLog(string.Format("{0}", I18N("DownloadCompleted")));
-            if (UpdateCore())
-            {
-                try
-                {
-                    OnDownloadCompleted?.Invoke(this, EventArgs.Empty);
-                }
-                catch { }
-            }
-            else
-            {
-                try
-                {
-                    OnDownloadFail?.Invoke(this, EventArgs.Empty);
-                }
-                catch { }
-            }
+
+            UpdateCore();
         }
 
         string GetLocalFilePath()

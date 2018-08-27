@@ -150,7 +150,7 @@
   <data name="DownloadCompleted" xml:space="preserve">
     <value>Download v2ray-core completed!</value>
   </data>
-  <data name="DownloadFail" xml:space="preserve">
+  <data name="TryManualDownload" xml:space="preserve">
     <value>Download fail!
 You can download manually from the link below.
 https://github.com/v2ray/v2ray-core</value>
@@ -426,5 +426,8 @@ Please use [Add new server] or [Replace server].</value>
   </data>
   <data name="NoSubsUrlAvailable" xml:space="preserve">
     <value>No subscription links available.</value>
+  </data>
+  <data name="DownloadFail" xml:space="preserve">
+    <value>Download fail!</value>
   </data>
 </root>

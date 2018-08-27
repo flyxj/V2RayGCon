@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -70,8 +71,6 @@ namespace V2RayGCon.Views
 
         }
 
-
-
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             var itemList = new List<Model.Data.SubscribeItem>();
@@ -123,8 +122,8 @@ namespace V2RayGCon.Views
 
             if (urls.Count <= 0)
             {
-                MessageBox.Show("没有可用的订阅链接");
                 btnDownload.Enabled = true;
+                MessageBox.Show(I18N("NoSubsUrlAvailable"));
                 return;
             }
 
@@ -140,12 +139,28 @@ namespace V2RayGCon.Views
 
                 var contents = Lib.Utils.ExecuteInParallel<string, string>(urls, (url) =>
                 {
-                    var result = Lib.Utils.Fetch(url, timeout * 1000);
-                    if (string.IsNullOrEmpty(result))
+                    var subsString = Lib.Utils.Fetch(url, timeout * 1000);
+                    if (string.IsNullOrEmpty(subsString))
                     {
                         setting.SendLog(I18N("DownloadFail") + "\n" + url);
+                        return string.Empty;
                     }
-                    return result;
+
+                    var matches = Regex.Matches(subsString,
+                        StrConst("PatternBase64NonStandard"));
+
+                    var links = new List<string>();
+                    foreach (Match match in matches)
+                    {
+                        var v = match.Value;
+                        try
+                        {
+                            links.Add(Lib.Utils.Base64Decode(v));
+                        }
+                        catch { }
+                    }
+
+                    return string.Join("\n", links);
                 });
 
                 setting.ImportLinks(string.Join("\n", contents));

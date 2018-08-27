@@ -69,10 +69,13 @@ namespace V2RayGCon.Resource.Resx {
         ///    &quot;settings&quot;: {},
         ///    &quot;streamSettings&quot;: {},
         ///    &quot;tag&quot;: &quot;标识&quot;,
-        ///    &quot;domainOverride&quot;: [
-        ///      &quot;http&quot;,
-        ///      &quot;tls&quot;
-        ///    ]
+        ///    &quot;sniffing&quot;: {
+        ///      &quot;enabled&quot;: false,
+        ///      &quot;destOverride&quot;: [
+        ///        &quot;http&quot;,
+        ///        &quot;tls&quot;
+        ///      ]
+        ///    }
         ///  },
         ///  &quot;inSS&quot;: {
         ///    &quot;email&quot;: &quot;love@v2ray.com&quot;,
@@ -86,9 +89,7 @@ namespace V2RayGCon.Resource.Resx {
         ///  &quot;inHTTP&quot;: {
         ///    &quot;timeout&quot;: 0,
         ///    &quot;accounts&quot;: [
-        ///      {
-        ///        &quot;user&quot;: &quot;my-username&quot;,
-        ///        &quot;pass&quot;: &quot; [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_def {
             get {
@@ -182,15 +183,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string DefCoreVersion {
             get {
                 return ResourceManager.GetString("DefCoreVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 [A-Za-z0-9+/]+ 的本地化字符串。
-        /// </summary>
-        internal static string DontUsePatternBase64 {
-            get {
-                return ResourceManager.GetString("DontUsePatternBase64", resourceCulture);
             }
         }
         
@@ -299,6 +291,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PatternBase64 {
             get {
                 return ResourceManager.GetString("PatternBase64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [A-Za-z0-9+/]+ 的本地化字符串。
+        /// </summary>
+        internal static string PatternBase64NonStandard {
+            get {
+                return ResourceManager.GetString("PatternBase64NonStandard", resourceCulture);
             }
         }
         
