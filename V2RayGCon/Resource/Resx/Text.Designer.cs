@@ -414,9 +414,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Download fail!
-        ///You can download manually from the link below.
-        ///https://github.com/v2ray/v2ray-core 的本地化字符串。
+        ///   查找类似 Download fail! 的本地化字符串。
         /// </summary>
         internal static string DownloadFail {
             get {
@@ -882,6 +880,17 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Download fail!
+        ///You can download manually from the link below.
+        ///https://github.com/v2ray/v2ray-core 的本地化字符串。
+        /// </summary>
+        internal static string TryManualDownload {
+            get {
+                return ResourceManager.GetString("TryManualDownload", resourceCulture);
             }
         }
         

@@ -150,7 +150,7 @@
     <value>6</value>
   </data>
   <data name="tboxAlias.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 3</value>
+    <value>82, 3</value>
   </data>
   <data name="tboxAlias.Size" type="System.Drawing.Size, System.Drawing">
     <value>192, 21</value>
@@ -225,7 +225,7 @@
     <value>4</value>
   </data>
   <data name="tboxUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 30</value>
+    <value>82, 30</value>
   </data>
   <data name="tboxUrl.Size" type="System.Drawing.Size, System.Drawing">
     <value>192, 21</value>
@@ -246,7 +246,7 @@
     <value>2</value>
   </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>284, 3</value>
+    <value>280, 3</value>
   </data>
   <data name="btnDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 21</value>
@@ -303,7 +303,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 56</value>
+    <value>346, 55</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>UrlListItem</value>

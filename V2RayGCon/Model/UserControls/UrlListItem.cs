@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Model.UserControls
@@ -39,15 +40,29 @@ namespace V2RayGCon.Model.UserControls
             var form = this.FindForm() as Views.FormOption;
             flyPanel.Controls.Remove(this);
             form.UpdateFlySubUrlItemIndex();
-
         }
-        #endregion
 
         private void UrlListItem_MouseDown(object sender, MouseEventArgs e)
         {
-            DoDragDrop((UrlListItem)sender, DragDropEffects.Copy);
-        }
 
+
+            Bitmap bmp = new Bitmap(this.Size.Width, this.Size.Height);
+            this.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
+            //optionally define a transparent color
+            //bmp.MakeTransparent(Color.White);
+
+            Cursor cur = new Cursor(bmp.GetHicon());
+            Cursor.Current = cur;
+
+            DoDragDrop((UrlListItem)sender, DragDropEffects.Move);
+
+
+            // DoDragDrop((UrlListItem)sender, DragDropEffects.None);
+
+            // DoDragDrop((UrlListItem)sender, DragDropEffects.Copy);
+
+        }
+        #endregion
 
     }
 }

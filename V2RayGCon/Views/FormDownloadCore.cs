@@ -109,7 +109,7 @@ namespace V2RayGCon.Views
             downloader.OnDownloadFail += (s, a) =>
             {
                 ResetUI(0);
-                MessageBox.Show(I18N("DownloadFail"));
+                MessageBox.Show(I18N("TryManualDownload"));
             };
 
             downloader.DownloadV2RayCore();

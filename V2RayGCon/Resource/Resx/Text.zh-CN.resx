@@ -147,7 +147,7 @@
   <data name="DownloadCompleted" xml:space="preserve">
     <value>下载 v2ray-core 完成！</value>
   </data>
-  <data name="DownloadFail" xml:space="preserve">
+  <data name="TryManualDownload" xml:space="preserve">
     <value>下载失败！你可以从以下网址下载：
 https://github.com/v2ray/v2ray-core</value>
   </data>
@@ -424,5 +424,8 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="NoSubsUrlAvailable" xml:space="preserve">
     <value>没有可用的订阅链接</value>
+  </data>
+  <data name="DownloadFail" xml:space="preserve">
+    <value>下载失败！</value>
   </data>
 </root>
