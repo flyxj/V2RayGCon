@@ -117,35 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="tabPageSubscribe.Text" xml:space="preserve">
+    <value>订阅</value>
+  </data>
   <data name="btnUpdateViaSubscription.Text" xml:space="preserve">
     <value>更新</value>
   </data>
   <data name="btnUpdateViaSubscription.ToolTip" xml:space="preserve">
     <value>从订阅URL下载服务器</value>
   </data>
-  <data name="btnSave.Text" xml:space="preserve">
+  <data name="btnSaveSubsUrl.Text" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="btnSave.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnAddSubUrl.Text" xml:space="preserve">
+  <data name="btnAddSubsUrl.Text" xml:space="preserve">
     <value>添加</value>
-  </data>
-  <data name="btnAddSubUrl.ToolTip" xml:space="preserve">
-    <value>添加新的订阅URL</value>
-  </data>
-  <data name="flySubsUrlContainer.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tabPageSubscribe.Text" xml:space="preserve">
-    <value>订阅</value>
-  </data>
-  <data name="tabPageSubscribe.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tabControl1.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -6322,8 +6307,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>选项</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
   </data>
 </root>

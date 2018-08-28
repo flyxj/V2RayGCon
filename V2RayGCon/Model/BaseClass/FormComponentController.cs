@@ -9,5 +9,10 @@
         {
             this.container = container;
         }
+
+        public T GetContainer<T>() where T : FormController
+        {
+            return this.container as T;
+        }
     }
 }

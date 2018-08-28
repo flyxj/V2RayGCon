@@ -7,7 +7,9 @@ namespace V2RayGCon.Model.UserControls
 {
     public partial class UrlListItem : UserControl
     {
-        public UrlListItem(Model.Data.SubscribeItem subItem)
+        Action OnDeleted;
+
+        public UrlListItem(Model.Data.SubscribeItem subItem, Action OnDeleted)
         {
             InitializeComponent();
 
@@ -15,6 +17,8 @@ namespace V2RayGCon.Model.UserControls
             tboxUrl.Text = subItem.url;
             tboxAlias.Text = subItem.alias;
             cboxInUse.Checked = subItem.inUse;
+
+            this.OnDeleted = OnDeleted;
         }
 
         public Model.Data.SubscribeItem GetValue()
@@ -34,7 +38,7 @@ namespace V2RayGCon.Model.UserControls
         }
         #endregion
 
-        #region private method
+        #region UI event
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
@@ -45,9 +49,12 @@ namespace V2RayGCon.Model.UserControls
             var flyPanel = this.Parent as FlowLayoutPanel;
             var form = this.FindForm() as Views.FormOption;
             flyPanel.Controls.Remove(this);
-            form.UpdateFlySubUrlItemIndex();
-        }
 
+            this.OnDeleted?.Invoke();
+        }
+        #endregion
+
+        #region private method
         private void UrlListItem_MouseDown(object sender, MouseEventArgs e)
         {
 
@@ -61,14 +68,7 @@ namespace V2RayGCon.Model.UserControls
             Cursor.Current = cur;
 
             DoDragDrop((UrlListItem)sender, DragDropEffects.Move);
-
-
-            // DoDragDrop((UrlListItem)sender, DragDropEffects.None);
-
-            // DoDragDrop((UrlListItem)sender, DragDropEffects.Copy);
-
         }
         #endregion
-
     }
 }

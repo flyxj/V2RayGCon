@@ -33,8 +33,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSubscribe = new System.Windows.Forms.TabPage();
             this.btnUpdateViaSubscription = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnAddSubUrl = new System.Windows.Forms.Button();
+            this.btnSaveSubsUrl = new System.Windows.Forms.Button();
+            this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
@@ -53,8 +53,8 @@
             // 
             resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Controls.Add(this.btnUpdateViaSubscription);
-            this.tabPageSubscribe.Controls.Add(this.btnSave);
-            this.tabPageSubscribe.Controls.Add(this.btnAddSubUrl);
+            this.tabPageSubscribe.Controls.Add(this.btnSaveSubsUrl);
+            this.tabPageSubscribe.Controls.Add(this.btnAddSubsUrl);
             this.tabPageSubscribe.Controls.Add(this.flySubsUrlContainer);
             this.tabPageSubscribe.Name = "tabPageSubscribe";
             this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
@@ -66,23 +66,20 @@
             this.btnUpdateViaSubscription.Name = "btnUpdateViaSubscription";
             this.toolTip1.SetToolTip(this.btnUpdateViaSubscription, resources.GetString("btnUpdateViaSubscription.ToolTip"));
             this.btnUpdateViaSubscription.UseVisualStyleBackColor = true;
-            this.btnUpdateViaSubscription.Click += new System.EventHandler(this.btnUpdateViaSubscription_Click);
             // 
-            // btnSave
+            // btnSaveSubsUrl
             // 
-            resources.ApplyResources(this.btnSave, "btnSave");
-            this.btnSave.Name = "btnSave";
-            this.toolTip1.SetToolTip(this.btnSave, resources.GetString("btnSave.ToolTip"));
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            resources.ApplyResources(this.btnSaveSubsUrl, "btnSaveSubsUrl");
+            this.btnSaveSubsUrl.Name = "btnSaveSubsUrl";
+            this.toolTip1.SetToolTip(this.btnSaveSubsUrl, resources.GetString("btnSaveSubsUrl.ToolTip"));
+            this.btnSaveSubsUrl.UseVisualStyleBackColor = true;
             // 
-            // btnAddSubUrl
+            // btnAddSubsUrl
             // 
-            resources.ApplyResources(this.btnAddSubUrl, "btnAddSubUrl");
-            this.btnAddSubUrl.Name = "btnAddSubUrl";
-            this.toolTip1.SetToolTip(this.btnAddSubUrl, resources.GetString("btnAddSubUrl.ToolTip"));
-            this.btnAddSubUrl.UseVisualStyleBackColor = true;
-            this.btnAddSubUrl.Click += new System.EventHandler(this.btnAddSubUrl_Click);
+            resources.ApplyResources(this.btnAddSubsUrl, "btnAddSubsUrl");
+            this.btnAddSubsUrl.Name = "btnAddSubsUrl";
+            this.toolTip1.SetToolTip(this.btnAddSubsUrl, resources.GetString("btnAddSubsUrl.ToolTip"));
+            this.btnAddSubsUrl.UseVisualStyleBackColor = true;
             // 
             // flySubsUrlContainer
             // 
@@ -91,8 +88,6 @@
             this.flySubsUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flySubsUrlContainer.Name = "flySubsUrlContainer";
             this.toolTip1.SetToolTip(this.flySubsUrlContainer, resources.GetString("flySubsUrlContainer.ToolTip"));
-            this.flySubsUrlContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.flySubUrlContainer_DragDrop);
-            this.flySubsUrlContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.flySubsUrlContainer_DragEnter);
             // 
             // FormOption
             // 
@@ -113,8 +108,8 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageSubscribe;
         private System.Windows.Forms.FlowLayoutPanel flySubsUrlContainer;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnAddSubUrl;
+        private System.Windows.Forms.Button btnSaveSubsUrl;
+        private System.Windows.Forms.Button btnAddSubsUrl;
         private System.Windows.Forms.Button btnUpdateViaSubscription;
         private System.Windows.Forms.ToolTip toolTip1;
     }
