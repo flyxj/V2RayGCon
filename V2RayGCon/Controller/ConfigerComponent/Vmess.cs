@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Vmess : Model.BaseClass.ConfigerComponent
+    class Vmess : ConfigerComponentController
     {
         // textbox [id, level, aid, ipaddr]
         public Vmess(

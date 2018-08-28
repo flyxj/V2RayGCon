@@ -223,6 +223,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Delete this item? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmDeleteControl {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Delete selected server? 的本地化字符串。
         /// </summary>
         internal static string ConfirmDeleteServer {

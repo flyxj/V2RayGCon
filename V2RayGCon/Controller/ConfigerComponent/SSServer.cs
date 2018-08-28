@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class SSServer : Model.BaseClass.ConfigerComponent
+    class SSServer : ConfigerComponentController
     {
         public SSServer(
             TextBox pass,

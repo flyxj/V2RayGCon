@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class VGC : Model.BaseClass.ConfigerComponent
+    class VGC : ConfigerComponentController
     {
         public VGC(TextBox alias, TextBox description, Button insert)
         {

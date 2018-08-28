@@ -217,7 +217,7 @@ namespace V2RayGCon.Views
         #region init
         void InitConfiger()
         {
-            var components = new List<Model.BaseClass.ConfigerComponent> {
+            var components = new List<Model.BaseClass.IFormComponentController> {
 
                 new Controller.ConfigerComponet.Editor(
                     panelScintilla,

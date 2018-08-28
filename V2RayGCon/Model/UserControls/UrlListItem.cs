@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.UserControls
 {
@@ -36,6 +37,11 @@ namespace V2RayGCon.Model.UserControls
         #region private method
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
+            {
+                return;
+            }
+
             var flyPanel = this.Parent as FlowLayoutPanel;
             var form = this.FindForm() as Views.FormOption;
             flyPanel.Controls.Remove(this);

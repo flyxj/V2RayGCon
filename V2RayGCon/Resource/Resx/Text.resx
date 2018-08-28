@@ -430,4 +430,7 @@ Please use [Add new server] or [Replace server].</value>
   <data name="DownloadFail" xml:space="preserve">
     <value>Download fail!</value>
   </data>
+  <data name="ConfirmDeleteControl" xml:space="preserve">
+    <value>Delete this item?</value>
+  </data>
 </root>

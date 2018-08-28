@@ -9,7 +9,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Import : Model.BaseClass.ConfigerComponent
+    class Import : ConfigerComponentController
     {
         Scintilla editor;
 

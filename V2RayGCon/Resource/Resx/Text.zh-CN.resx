@@ -428,4 +428,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="DownloadFail" xml:space="preserve">
     <value>下载失败！</value>
   </data>
+  <data name="ConfirmDeleteControl" xml:space="preserve">
+    <value>删除这个项？</value>
+  </data>
 </root>
