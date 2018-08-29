@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,20 +11,20 @@ namespace V2RayGCon.Controller.OptionComponent
     class Subscription : OptionComponentController
     {
         FlowLayoutPanel flyPanel;
-        Button btnAdd, btnSave, btnUpdate;
+        Button btnAdd, btnUpdate;
+
         Service.Setting setting;
+        string oldOptions;
 
         public Subscription(
             FlowLayoutPanel flyPanel,
             Button btnAdd,
-            Button btnSave,
             Button btnUpdate)
         {
             this.setting = Service.Setting.Instance;
 
             this.flyPanel = flyPanel;
             this.btnAdd = btnAdd;
-            this.btnSave = btnSave;
             this.btnUpdate = btnUpdate;
 
             InitPanel();
@@ -31,16 +32,55 @@ namespace V2RayGCon.Controller.OptionComponent
         }
 
         #region public method
+        public override bool SaveOptions()
+        {
+            string curOptions = GetCurOptions();
 
+            if (curOptions != oldOptions)
+            {
+                setting.SaveSubscriptionOptions(curOptions);
+                oldOptions = curOptions;
+                return true;
+            }
+            return false;
+        }
+
+        public override bool IsOptionsChanged()
+        {
+            return GetCurOptions() != oldOptions;
+        }
         #endregion
 
         #region private method
+        string GetCurOptions()
+        {
+            return JsonConvert.SerializeObject(CollectSubscriptionItems());
+        }
+
+        List<Model.Data.SubscriptionItem> CollectSubscriptionItems()
+        {
+            var itemList = new List<Model.Data.SubscriptionItem>();
+            foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
+            {
+                var v = item.GetValue();
+                if (!string.IsNullOrEmpty(v.alias)
+                    || !string.IsNullOrEmpty(v.url))
+                {
+                    itemList.Add(v);
+                }
+            }
+            return itemList;
+        }
+
         void InitPanel()
         {
             var subItemList = setting.GetSubscribeItems();
+
+            this.oldOptions = JsonConvert.SerializeObject(subItemList);
+
             if (subItemList.Count <= 0)
             {
-                subItemList.Add(new Model.Data.SubscribeItem());
+                subItemList.Add(new Model.Data.SubscriptionItem());
             }
 
             foreach (var item in subItemList)
@@ -51,29 +91,20 @@ namespace V2RayGCon.Controller.OptionComponent
             UpdatePanelItemsIndex();
         }
 
-        void BindEvent()
+        void BindEventBtnAddClick()
         {
             this.btnAdd.Click += (s, a) =>
             {
                 this.flyPanel.Controls.Add(
                     new Model.UserControls.UrlListItem(
-                        new Model.Data.SubscribeItem(),
+                        new Model.Data.SubscriptionItem(),
                         UpdatePanelItemsIndex));
                 UpdatePanelItemsIndex();
             };
+        }
 
-            this.btnSave.Click += (s, a) =>
-            {
-                var itemList = new List<Model.Data.SubscribeItem>();
-                foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
-                {
-                    itemList.Add(item.GetValue());
-                }
-                setting.SaveSubscribeItems(itemList);
-
-                MessageBox.Show(I18N("Done"));
-            };
-
+        void BindEventBtnUpdateClick()
+        {
             this.btnUpdate.Click += (s, a) =>
             {
                 this.btnUpdate.Enabled = false;
@@ -99,12 +130,10 @@ namespace V2RayGCon.Controller.OptionComponent
 
                 ImportFromSubscriptionUrls(urls);
             };
+        }
 
-            this.flyPanel.DragEnter += (s, a) =>
-            {
-                a.Effect = DragDropEffects.Move;
-            };
-
+        void BindEventFlyPanelDragDrop()
+        {
             this.flyPanel.DragDrop += (s, a) =>
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
@@ -118,6 +147,18 @@ namespace V2RayGCon.Controller.OptionComponent
                 int index = _destination.Controls.GetChildIndex(item, false);
                 _destination.Controls.SetChildIndex(data, index);
                 _destination.Invalidate();
+            };
+        }
+
+        void BindEvent()
+        {
+            BindEventBtnAddClick();
+            BindEventBtnUpdateClick();
+            BindEventFlyPanelDragDrop();
+
+            this.flyPanel.DragEnter += (s, a) =>
+            {
+                a.Effect = DragDropEffects.Move;
             };
         }
 

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
@@ -30,17 +26,30 @@ namespace V2RayGCon.Views
 
             InitializeComponent();
 
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
             this.Show();
         }
 
         private void FormOption_Shown(object sender, System.EventArgs e)
         {
             this.optionCtrl = InitOptionCtrl();
+
+            this.FormClosing += (s, a) =>
+            {
+                if (!this.optionCtrl.IsOptionsSaved())
+                {
+                    a.Cancel = !Lib.UI.Confirm(I18N("ConfirmCloseWinWithoutSave"));
+                }
+            };
+
+            // this.FormClosed += (s, a) => { };
         }
 
 
         #region public method
-       
+
         #endregion
 
         #region private method
@@ -48,15 +57,28 @@ namespace V2RayGCon.Views
         {
             var ctrl = new Controller.OptionCtrl();
 
-            ctrl.Plug(new Controller.OptionComponent.Subscription(
-                flySubsUrlContainer,
-                btnAddSubsUrl,
-                btnSaveSubsUrl,
-                btnUpdateViaSubscription));
+            ctrl.Plug(
+                new Controller.OptionComponent.Subscription(
+                    flySubsUrlContainer,
+                    btnAddSubsUrl,
+                    btnUpdateViaSubscription));
 
             return ctrl;
         }
 
+        #endregion
+
+        #region UI event
+        private void btnOptionExit_Click(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnOptionSave_Click(object sender, System.EventArgs e)
+        {
+            this.optionCtrl.SaveAllOptions();
+            MessageBox.Show(I18N("Done"));
+        }
         #endregion
     }
 }

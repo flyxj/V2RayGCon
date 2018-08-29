@@ -2,19 +2,38 @@
 
 namespace V2RayGCon.Controller.OptionComponent
 {
-    class OptionComponentController : IFormComponentController
+    abstract class OptionComponentController : IFormComponentController
     {
         private FormComponentController auxComponentController
             = new FormComponentController();
 
+        #region public method
         public void Bind(Model.BaseClass.FormController container)
         {
             auxComponentController.Bind(container);
         }
 
+
+        #endregion
+
+        #region abstract method
+        // Container closing.
+        public abstract bool IsOptionsChanged();
+
+        // User click save-button of container.
+        // true: save new options  false: options not changed
+        public abstract bool SaveOptions();
+        #endregion
+
+        #region protected method
         protected OptionCtrl GetContainer()
         {
             return auxComponentController.GetContainer<OptionCtrl>();
         }
+        #endregion
+
+        #region private method
+
+        #endregion
     }
 }

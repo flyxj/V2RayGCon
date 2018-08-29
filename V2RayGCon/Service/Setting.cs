@@ -379,11 +379,11 @@ namespace V2RayGCon.Service
             return alias.AsReadOnly();
         }
 
-        public List<Model.Data.SubscribeItem> GetSubscribeItems()
+        public List<Model.Data.SubscriptionItem> GetSubscribeItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject<List<Model.Data.SubscribeItem>>(
+                var items = JsonConvert.DeserializeObject<List<Model.Data.SubscriptionItem>>(
                     Properties.Settings.Default.SubscribeUrls);
                 if (items != null)
                 {
@@ -391,15 +391,13 @@ namespace V2RayGCon.Service
                 }
             }
             catch { };
-            return new List<Model.Data.SubscribeItem>();
+            return new List<Model.Data.SubscriptionItem>();
         }
 
-        public void SaveSubscribeItems(List<Model.Data.SubscribeItem> items)
+        public void SaveSubscriptionOptions(string options)
         {
-            string json = JsonConvert.SerializeObject(items);
-            Properties.Settings.Default.SubscribeUrls = json;
+            Properties.Settings.Default.SubscribeUrls = options;
             Properties.Settings.Default.Save();
-
         }
 
         public void LoadServers()

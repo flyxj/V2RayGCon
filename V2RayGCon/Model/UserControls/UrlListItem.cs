@@ -9,7 +9,7 @@ namespace V2RayGCon.Model.UserControls
     {
         Action OnDeleted;
 
-        public UrlListItem(Model.Data.SubscribeItem subItem, Action OnDeleted)
+        public UrlListItem(Model.Data.SubscriptionItem subItem, Action OnDeleted)
         {
             InitializeComponent();
 
@@ -21,9 +21,9 @@ namespace V2RayGCon.Model.UserControls
             this.OnDeleted = OnDeleted;
         }
 
-        public Model.Data.SubscribeItem GetValue()
+        public Model.Data.SubscriptionItem GetValue()
         {
-            return new Model.Data.SubscribeItem
+            return new Model.Data.SubscriptionItem
             {
                 inUse = cboxInUse.Checked,
                 alias = tboxAlias.Text,
