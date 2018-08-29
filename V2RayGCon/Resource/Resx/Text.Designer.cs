@@ -196,6 +196,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 All options will be replaced!
+        ///Are you sure want to continue? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmAllOptionWillBeReplaced {
+            get {
+                return ResourceManager.GetString("ConfirmAllOptionWillBeReplaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Close window? 的本地化字符串。
         /// </summary>
         internal static string ConfirmCloseWindow {
@@ -256,6 +266,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmExitApp {
             get {
                 return ResourceManager.GetString("ConfirmExitApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import server/client configs from backup file? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmImportServers {
+            get {
+                return ResourceManager.GetString("ConfirmImportServers", resourceCulture);
             }
         }
         
@@ -853,6 +872,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SaveAs {
             get {
                 return ResourceManager.GetString("SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please save the modified option first! 的本地化字符串。
+        /// </summary>
+        internal static string SaveChangeFirst {
+            get {
+                return ResourceManager.GetString("SaveChangeFirst", resourceCulture);
             }
         }
         

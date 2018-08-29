@@ -84,6 +84,16 @@ namespace V2RayGCon.Views
             this.optionCtrl.SaveAllOptions();
             MessageBox.Show(I18N("Done"));
         }
+
+        private void btnBakBackup_Click(object sender, System.EventArgs e)
+        {
+            optionCtrl.BackupOptions();
+        }
+
+        private void btnBakRestore_Click(object sender, System.EventArgs e)
+        {
+            optionCtrl.RestoreOptions();
+        }
         #endregion
     }
 }

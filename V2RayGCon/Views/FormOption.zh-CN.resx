@@ -117,17 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnImportAdd.Text" xml:space="preserve">
-    <value>添加</value>
-  </data>
-  <data name="flyImportPanel.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="tabPageImport.Text" xml:space="preserve">
     <value>全局import</value>
   </data>
-  <data name="tabPageImport.ToolTip" xml:space="preserve">
-    <value />
+  <data name="tabPageSubscribe.Text" xml:space="preserve">
+    <value>订阅</value>
+  </data>
+  <data name="btnImportAdd.Text" xml:space="preserve">
+    <value>添加</value>
   </data>
   <data name="btnUpdateViaSubscription.Text" xml:space="preserve">
     <value>更新</value>
@@ -138,26 +135,23 @@
   <data name="btnAddSubsUrl.Text" xml:space="preserve">
     <value>添加</value>
   </data>
-  <data name="flySubsUrlContainer.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnBakBackup.Text" xml:space="preserve">
+    <value>备份</value>
   </data>
-  <data name="tabPageSubscribe.Text" xml:space="preserve">
-    <value>订阅</value>
-  </data>
-  <data name="tabPageSubscribe.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tabControl1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnBakBackup.ToolTip" xml:space="preserve">
+    <value>导出所有选项到文件</value>
   </data>
   <data name="btnOptionSave.Text" xml:space="preserve">
     <value>保存</value>
   </data>
+  <data name="btnBakRestore.Text" xml:space="preserve">
+    <value>还原</value>
+  </data>
+  <data name="btnBakRestore.ToolTip" xml:space="preserve">
+    <value>从文件还原选项</value>
+  </data>
   <data name="btnOptionExit.Text" xml:space="preserve">
     <value>退出</value>
-  </data>
-  <data name="btnOptionExit.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -6334,8 +6328,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>选项</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
   </data>
 </root>

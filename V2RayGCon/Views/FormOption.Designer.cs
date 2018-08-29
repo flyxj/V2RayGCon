@@ -38,8 +38,10 @@
             this.btnUpdateViaSubscription = new System.Windows.Forms.Button();
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnOptionSave = new System.Windows.Forms.Button();
+            this.btnBakRestore = new System.Windows.Forms.Button();
             this.btnOptionExit = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageImport.SuspendLayout();
@@ -53,15 +55,13 @@
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             // 
             // tabPageImport
             // 
-            resources.ApplyResources(this.tabPageImport, "tabPageImport");
             this.tabPageImport.Controls.Add(this.btnImportAdd);
             this.tabPageImport.Controls.Add(this.flyImportPanel);
+            resources.ApplyResources(this.tabPageImport, "tabPageImport");
             this.tabPageImport.Name = "tabPageImport";
-            this.toolTip1.SetToolTip(this.tabPageImport, resources.GetString("tabPageImport.ToolTip"));
             this.tabPageImport.UseVisualStyleBackColor = true;
             // 
             // btnImportAdd
@@ -73,20 +73,18 @@
             // 
             // flyImportPanel
             // 
-            resources.ApplyResources(this.flyImportPanel, "flyImportPanel");
             this.flyImportPanel.AllowDrop = true;
+            resources.ApplyResources(this.flyImportPanel, "flyImportPanel");
             this.flyImportPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flyImportPanel.Name = "flyImportPanel";
-            this.toolTip1.SetToolTip(this.flyImportPanel, resources.GetString("flyImportPanel.ToolTip"));
             // 
             // tabPageSubscribe
             // 
-            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Controls.Add(this.btnUpdateViaSubscription);
             this.tabPageSubscribe.Controls.Add(this.btnAddSubsUrl);
             this.tabPageSubscribe.Controls.Add(this.flySubsUrlContainer);
+            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Name = "tabPageSubscribe";
-            this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
             this.tabPageSubscribe.UseVisualStyleBackColor = true;
             // 
             // btnUpdateViaSubscription
@@ -105,11 +103,18 @@
             // 
             // flySubsUrlContainer
             // 
-            resources.ApplyResources(this.flySubsUrlContainer, "flySubsUrlContainer");
             this.flySubsUrlContainer.AllowDrop = true;
+            resources.ApplyResources(this.flySubsUrlContainer, "flySubsUrlContainer");
             this.flySubsUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flySubsUrlContainer.Name = "flySubsUrlContainer";
-            this.toolTip1.SetToolTip(this.flySubsUrlContainer, resources.GetString("flySubsUrlContainer.ToolTip"));
+            // 
+            // btnBakBackup
+            // 
+            resources.ApplyResources(this.btnBakBackup, "btnBakBackup");
+            this.btnBakBackup.Name = "btnBakBackup";
+            this.toolTip1.SetToolTip(this.btnBakBackup, resources.GetString("btnBakBackup.ToolTip"));
+            this.btnBakBackup.UseVisualStyleBackColor = true;
+            this.btnBakBackup.Click += new System.EventHandler(this.btnBakBackup_Click);
             // 
             // btnOptionSave
             // 
@@ -119,11 +124,18 @@
             this.btnOptionSave.UseVisualStyleBackColor = true;
             this.btnOptionSave.Click += new System.EventHandler(this.btnOptionSave_Click);
             // 
+            // btnBakRestore
+            // 
+            resources.ApplyResources(this.btnBakRestore, "btnBakRestore");
+            this.btnBakRestore.Name = "btnBakRestore";
+            this.toolTip1.SetToolTip(this.btnBakRestore, resources.GetString("btnBakRestore.ToolTip"));
+            this.btnBakRestore.UseVisualStyleBackColor = true;
+            this.btnBakRestore.Click += new System.EventHandler(this.btnBakRestore_Click);
+            // 
             // btnOptionExit
             // 
             resources.ApplyResources(this.btnOptionExit, "btnOptionExit");
             this.btnOptionExit.Name = "btnOptionExit";
-            this.toolTip1.SetToolTip(this.btnOptionExit, resources.GetString("btnOptionExit.ToolTip"));
             this.btnOptionExit.UseVisualStyleBackColor = true;
             this.btnOptionExit.Click += new System.EventHandler(this.btnOptionExit_Click);
             // 
@@ -131,11 +143,12 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnBakRestore);
+            this.Controls.Add(this.btnBakBackup);
             this.Controls.Add(this.btnOptionExit);
             this.Controls.Add(this.btnOptionSave);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormOption";
-            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormOption_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
@@ -157,5 +170,7 @@
         private System.Windows.Forms.TabPage tabPageImport;
         private System.Windows.Forms.Button btnImportAdd;
         private System.Windows.Forms.FlowLayoutPanel flyImportPanel;
+        private System.Windows.Forms.Button btnBakBackup;
+        private System.Windows.Forms.Button btnBakRestore;
     }
 }

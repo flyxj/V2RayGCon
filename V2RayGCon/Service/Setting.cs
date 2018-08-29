@@ -45,6 +45,26 @@ namespace V2RayGCon.Service
 
         public bool isSysProxyHasSet;
 
+        public bool isDisableGlobalImports
+        {
+            get
+            {
+                try
+                {
+                    return Properties.Settings.Default.DisableGlobalImport;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                Properties.Settings.Default.DisableGlobalImport = (value == true);
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public int GetCurServIndex()
         {
             return _curServIndex;

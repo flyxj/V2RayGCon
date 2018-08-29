@@ -433,4 +433,14 @@ Please use [Add new server] or [Replace server].</value>
   <data name="ConfirmDeleteControl" xml:space="preserve">
     <value>Delete this item?</value>
   </data>
+  <data name="SaveChangeFirst" xml:space="preserve">
+    <value>Please save the modified option first!</value>
+  </data>
+  <data name="ConfirmAllOptionWillBeReplaced" xml:space="preserve">
+    <value>All options will be replaced!
+Are you sure want to continue?</value>
+  </data>
+  <data name="ConfirmImportServers" xml:space="preserve">
+    <value>Import server/client configs from backup file?</value>
+  </data>
 </root>

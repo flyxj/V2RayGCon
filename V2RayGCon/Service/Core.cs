@@ -87,8 +87,9 @@ namespace V2RayGCon.Service
 
             try
             {
-                // merge global import options first
                 config = Lib.ImportParser.ParseImport(
+                    setting.isDisableGlobalImports ?
+                    plainText :
                     Lib.Utils.InjectGlobalImport(plainText));
 
                 cache.core[b64Config] = config.ToString();

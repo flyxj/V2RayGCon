@@ -102,6 +102,10 @@ namespace V2RayGCon.Test
 
         [DataTestMethod]
         [DataRow(
+            @"{routing:{settings:{rules:[{a:[1,3]}]}}}",
+            @"{routing:{settings:{rules:[{a:[2]}]}}}",
+            @"{routing:{settings:{rules:[{a:[2]},{a:[1,3]}]}}}")]
+        [DataRow(
             @"{routing:{settings:{rules:[{b:2},{a:[1,2,3,{c:1}]}]}}}",
             @"{routing:{settings:{rules:[{a:[1,2,3,{c:1}]},{c:2}]}}}",
             @"{routing:{settings:{rules:[{a:[1,2,3,{c:1}]},{c:2},{b:2}]}}}")]

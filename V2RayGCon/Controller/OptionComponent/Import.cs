@@ -35,7 +35,8 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 setting.SaveImportUrlOptions(curOptions);
                 oldOptions = curOptions;
-                if (Service.Core.Instance.isRunning)
+                if (Service.Core.Instance.isRunning
+                    && !setting.isDisableGlobalImports)
                 {
                     setting.ActivateServer();
                 }
@@ -47,6 +48,15 @@ namespace V2RayGCon.Controller.OptionComponent
         public override bool IsOptionsChanged()
         {
             return GetCurOptions() != oldOptions;
+        }
+
+        public void Reload(string rawSetting)
+        {
+            Properties.Settings.Default.ImportUrls = rawSetting;
+            Properties.Settings.Default.Save();
+
+            Lib.UI.ClearFlowLayoutPanel(this.flyPanel);
+            InitPanel();
         }
         #endregion
 

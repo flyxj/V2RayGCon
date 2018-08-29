@@ -142,5 +142,17 @@ namespace V2RayGCon.Properties {
                 this["ImportUrls"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableGlobalImport {
+            get {
+                return ((bool)(this["DisableGlobalImport"]));
+            }
+            set {
+                this["DisableGlobalImport"] = value;
+            }
+        }
     }
 }

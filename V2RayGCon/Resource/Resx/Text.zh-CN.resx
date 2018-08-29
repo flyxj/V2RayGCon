@@ -431,4 +431,13 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="ConfirmDeleteControl" xml:space="preserve">
     <value>删除此项？</value>
   </data>
+  <data name="ConfirmAllOptionWillBeReplaced" xml:space="preserve">
+    <value>所有选项将被覆盖。确定要继续？</value>
+  </data>
+  <data name="ConfirmImportServers" xml:space="preserve">
+    <value>从备份文件中导入服务器（客户端）配置？</value>
+  </data>
+  <data name="SaveChangeFirst" xml:space="preserve">
+    <value>请先保存已更改的配置项!</value>
+  </data>
 </root>

@@ -49,6 +49,15 @@ namespace V2RayGCon.Controller.OptionComponent
         {
             return GetCurOptions() != oldOptions;
         }
+
+        public void Reload(string rawSetting)
+        {
+            Properties.Settings.Default.SubscribeUrls = rawSetting;
+            Properties.Settings.Default.Save();
+
+            Lib.UI.ClearFlowLayoutPanel(this.flyPanel);
+            InitPanel();
+        }
         #endregion
 
         #region private method
