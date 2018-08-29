@@ -226,6 +226,16 @@ namespace V2RayGCon.Lib
             });
         }
 
+        static void UnionJson(ref JObject body, JObject mixin)
+        {
+            body.Merge(mixin, new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Union,
+                MergeNullValueHandling = MergeNullValueHandling.Ignore,
+            });
+
+        }
+
         public static void CombineConfig(ref JObject body, JObject mixin)
         {
             // in(out)Dtr
@@ -257,7 +267,7 @@ namespace V2RayGCon.Lib
 
                 if (nodeBody != null)
                 {
-                    ConcatJson(ref body, nodeBody);
+                    UnionJson(ref body, nodeBody);
                 }
             }
 
