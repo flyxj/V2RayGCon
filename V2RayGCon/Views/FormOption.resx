@@ -121,10 +121,149 @@
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="&gt;&gt;btnImportAdd.Name" xml:space="preserve">
+    <value>btnImportAdd</value>
+  </data>
+  <data name="&gt;&gt;btnImportAdd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnImportAdd.Parent" xml:space="preserve">
+    <value>tabPageImport</value>
+  </data>
+  <data name="&gt;&gt;btnImportAdd.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;flyImportPanel.Name" xml:space="preserve">
+    <value>flyImportPanel</value>
+  </data>
+  <data name="&gt;&gt;flyImportPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flyImportPanel.Parent" xml:space="preserve">
+    <value>tabPageImport</value>
+  </data>
+  <data name="&gt;&gt;flyImportPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tabPageImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPageImport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tabPageImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 377</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tabPageImport.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabPageImport.Text" xml:space="preserve">
+    <value>Global import</value>
+  </data>
+  <data name="&gt;&gt;tabPageImport.Name" xml:space="preserve">
+    <value>tabPageImport</value>
+  </data>
+  <data name="&gt;&gt;tabPageImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageImport.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabPageImport.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateViaSubscription.Name" xml:space="preserve">
+    <value>btnUpdateViaSubscription</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateViaSubscription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateViaSubscription.Parent" xml:space="preserve">
+    <value>tabPageSubscribe</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateViaSubscription.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnAddSubsUrl.Name" xml:space="preserve">
+    <value>btnAddSubsUrl</value>
+  </data>
+  <data name="&gt;&gt;btnAddSubsUrl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnAddSubsUrl.Parent" xml:space="preserve">
+    <value>tabPageSubscribe</value>
+  </data>
+  <data name="&gt;&gt;btnAddSubsUrl.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;flySubsUrlContainer.Name" xml:space="preserve">
+    <value>flySubsUrlContainer</value>
+  </data>
+  <data name="&gt;&gt;flySubsUrlContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flySubsUrlContainer.Parent" xml:space="preserve">
+    <value>tabPageSubscribe</value>
+  </data>
+  <data name="&gt;&gt;flySubsUrlContainer.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabPageSubscribe.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPageSubscribe.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageSubscribe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 377</value>
+  </data>
+  <data name="tabPageSubscribe.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabPageSubscribe.Text" xml:space="preserve">
+    <value>Subscription</value>
+  </data>
+  <data name="&gt;&gt;tabPageSubscribe.Name" xml:space="preserve">
+    <value>tabPageSubscribe</value>
+  </data>
+  <data name="&gt;&gt;tabPageSubscribe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageSubscribe.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabPageSubscribe.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>484, 403</value>
+  </data>
+  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="btnImportAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnImportAdd.Location" type="System.Drawing.Point, System.Drawing">
     <value>399, 6</value>
   </data>
@@ -134,16 +273,12 @@
   <data name="btnImportAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnImportAdd.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="btnImportAdd.Text" xml:space="preserve">
     <value>Add</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="btnImportAdd.ToolTip" xml:space="preserve">
     <value>Add import URL.</value>
   </data>
@@ -185,33 +320,6 @@
   </data>
   <data name="&gt;&gt;flyImportPanel.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="tabPageImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabPageImport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="tabPageImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>476, 377</value>
-  </data>
-  <data name="tabPageImport.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tabPageImport.Text" xml:space="preserve">
-    <value>Global import</value>
-  </data>
-  <data name="&gt;&gt;tabPageImport.Name" xml:space="preserve">
-    <value>tabPageImport</value>
-  </data>
-  <data name="&gt;&gt;tabPageImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPageImport.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPageImport.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="btnUpdateViaSubscription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -300,53 +408,8 @@
   <data name="&gt;&gt;flySubsUrlContainer.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tabPageSubscribe.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabPageSubscribe.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPageSubscribe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>476, 377</value>
-  </data>
-  <data name="tabPageSubscribe.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="tabPageSubscribe.Text" xml:space="preserve">
-    <value>Subscription</value>
-  </data>
-  <data name="&gt;&gt;tabPageSubscribe.Name" xml:space="preserve">
-    <value>tabPageSubscribe</value>
-  </data>
-  <data name="&gt;&gt;tabPageSubscribe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPageSubscribe.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPageSubscribe.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>484, 403</value>
-  </data>
-  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="btnBakBackup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
   <data name="btnBakBackup.Location" type="System.Drawing.Point, System.Drawing">
     <value>256, 419</value>
@@ -375,6 +438,9 @@
   <data name="&gt;&gt;btnBakBackup.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="btnOptionSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom</value>
   </data>
@@ -407,6 +473,9 @@
   </data>
   <data name="&gt;&gt;btnOptionSave.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="btnBakRestore.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom</value>
   </data>
   <data name="btnBakRestore.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
