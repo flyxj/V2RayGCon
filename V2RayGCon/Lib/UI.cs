@@ -11,6 +11,13 @@ namespace V2RayGCon.Lib
 {
     class UI
     {
+        public static Cursor CreateCursorIconFromUserControl(Control control)
+        {
+            Bitmap bmp = new Bitmap(control.Size.Width, control.Size.Height);
+            control.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
+            return new Cursor(bmp.GetHicon());
+        }
+
         public static Scintilla CreateScintilla(Panel container, bool readOnlyMode = false)
         {
             var scintilla = new Scintilla();

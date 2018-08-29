@@ -87,12 +87,15 @@ namespace V2RayGCon.Service
 
             try
             {
-                config = Lib.ImportParser.ParseImport(plainText);
+                // merge global import options first
+                config = Lib.ImportParser.ParseImport(
+                    Lib.Utils.InjectGlobalImport(plainText));
+
                 cache.core[b64Config] = config.ToString();
             }
             catch
             {
-                setting.SendLog(I18N("DecodeImportFail"));
+                setting.SendLog(I18N("DecodeFail"));
                 var cacheConfig = cache.core[b64Config];
                 if (string.IsNullOrEmpty(cacheConfig))
                 {

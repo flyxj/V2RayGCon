@@ -58,6 +58,11 @@ namespace V2RayGCon.Views
             var ctrl = new Controller.OptionCtrl();
 
             ctrl.Plug(
+                new Controller.OptionComponent.Import(
+                    flyImportPanel,
+                    btnImportAdd));
+
+            ctrl.Plug(
                 new Controller.OptionComponent.Subscription(
                     flySubsUrlContainer,
                     btnAddSubsUrl,

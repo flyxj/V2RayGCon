@@ -28,6 +28,11 @@ namespace V2RayGCon.Views
             core = Service.Core.Instance;
 
             this.FormClosed += (s, e) => downloader?.Cancel();
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
+
             this.Show();
         }
 

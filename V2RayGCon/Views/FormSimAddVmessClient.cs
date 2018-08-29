@@ -26,6 +26,10 @@ namespace V2RayGCon.Views
             InitializeComponent();
             Fill(cboxKCP, Model.Data.Table.kcpTypes);
             setting = Service.Setting.Instance;
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
             this.Show();
         }
 

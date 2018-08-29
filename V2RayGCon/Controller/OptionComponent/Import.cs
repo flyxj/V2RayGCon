@@ -1,31 +1,26 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
-    class Subscription : OptionComponentController
+    class Import : OptionComponentController
     {
         FlowLayoutPanel flyPanel;
-        Button btnAdd, btnUpdate;
+        Button btnAdd;
 
         Service.Setting setting;
         string oldOptions;
 
-        public Subscription(
+        public Import(
             FlowLayoutPanel flyPanel,
-            Button btnAdd,
-            Button btnUpdate)
+            Button btnAdd)
         {
             this.setting = Service.Setting.Instance;
 
             this.flyPanel = flyPanel;
             this.btnAdd = btnAdd;
-            this.btnUpdate = btnUpdate;
 
             InitPanel();
             BindEvent();
@@ -38,8 +33,12 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (curOptions != oldOptions)
             {
-                setting.SaveSubscriptionOptions(curOptions);
+                setting.SaveImportUrlOptions(curOptions);
                 oldOptions = curOptions;
+                if (Service.Core.Instance.isRunning)
+                {
+                    setting.ActivateServer();
+                }
                 return true;
             }
             return false;
@@ -54,10 +53,10 @@ namespace V2RayGCon.Controller.OptionComponent
         #region private method
         string GetCurOptions()
         {
-            return JsonConvert.SerializeObject(CollectSubscriptionItems());
+            return JsonConvert.SerializeObject(CollectImportItems());
         }
 
-        List<Model.Data.UrlItem> CollectSubscriptionItems()
+        List<Model.Data.UrlItem> CollectImportItems()
         {
             var itemList = new List<Model.Data.UrlItem>();
             foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
@@ -74,16 +73,16 @@ namespace V2RayGCon.Controller.OptionComponent
 
         void InitPanel()
         {
-            var subItemList = setting.GetSubscribeItems();
+            var importUrlItemList = setting.GetImportUrlItems();
 
-            this.oldOptions = JsonConvert.SerializeObject(subItemList);
+            this.oldOptions = JsonConvert.SerializeObject(importUrlItemList);
 
-            if (subItemList.Count <= 0)
+            if (importUrlItemList.Count <= 0)
             {
-                subItemList.Add(new Model.Data.UrlItem());
+                importUrlItemList.Add(new Model.Data.UrlItem());
             }
 
-            foreach (var item in subItemList)
+            foreach (var item in importUrlItemList)
             {
                 this.flyPanel.Controls.Add(new Model.UserControls.UrlListItem(item, UpdatePanelItemsIndex));
             }
@@ -100,35 +99,6 @@ namespace V2RayGCon.Controller.OptionComponent
                         new Model.Data.UrlItem(),
                         UpdatePanelItemsIndex));
                 UpdatePanelItemsIndex();
-            };
-        }
-
-        void BindEventBtnUpdateClick()
-        {
-            this.btnUpdate.Click += (s, a) =>
-            {
-                this.btnUpdate.Enabled = false;
-
-                var urls = new List<string>();
-                foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
-                {
-                    var value = item.GetValue();
-                    if (value.inUse
-                        && !string.IsNullOrEmpty(value.url)
-                        && !urls.Contains(value.url))
-                    {
-                        urls.Add(value.url);
-                    }
-                }
-
-                if (urls.Count <= 0)
-                {
-                    this.btnUpdate.Enabled = true;
-                    MessageBox.Show(I18N("NoSubsUrlAvailable"));
-                    return;
-                }
-
-                ImportFromSubscriptionUrls(urls);
             };
         }
 
@@ -153,7 +123,6 @@ namespace V2RayGCon.Controller.OptionComponent
         void BindEvent()
         {
             BindEventBtnAddClick();
-            BindEventBtnUpdateClick();
             BindEventFlyPanelDragDrop();
 
             this.flyPanel.DragEnter += (s, a) =>
@@ -169,49 +138,6 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 item.SetIndex(index++);
             }
-        }
-
-        private void ImportFromSubscriptionUrls(List<string> urls)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
-
-                var contents = Lib.Utils.ExecuteInParallel<string, string>(urls, (url) =>
-                {
-                    var subsString = Lib.Utils.Fetch(url, timeout * 1000);
-                    if (string.IsNullOrEmpty(subsString))
-                    {
-                        setting.SendLog(I18N("DownloadFail") + "\n" + url);
-                        return string.Empty;
-                    }
-
-                    var links = new List<string>();
-                    var matches = Regex.Matches(subsString, StrConst("PatternBase64NonStandard"));
-                    foreach (Match match in matches)
-                    {
-                        try
-                        {
-                            links.Add(Lib.Utils.Base64Decode(match.Value));
-                        }
-                        catch { }
-                    }
-
-                    return string.Join("\n", links);
-                });
-
-                setting.ImportLinks(string.Join("\n", contents));
-
-                try
-                {
-                    this.btnUpdate.Invoke((MethodInvoker)delegate
-                    {
-                        this.btnUpdate.Enabled = true;
-                    });
-                }
-                catch { }
-
-            });
         }
         #endregion
     }

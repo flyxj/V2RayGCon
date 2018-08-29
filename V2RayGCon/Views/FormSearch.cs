@@ -22,6 +22,10 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) => ClearIndicator();
 
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
+
             this.Show();
         }
 

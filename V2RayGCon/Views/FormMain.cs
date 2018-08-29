@@ -31,6 +31,10 @@ namespace V2RayGCon.Views
             core = Service.Core.Instance;
 
             InitializeComponent();
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
             this.Show();
         }
 

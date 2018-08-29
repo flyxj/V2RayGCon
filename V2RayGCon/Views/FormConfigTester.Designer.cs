@@ -36,6 +36,7 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.cboxGlobalImport = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // rtboxLog
@@ -72,10 +73,20 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
+            // cboxGlobalImport
+            // 
+            resources.ApplyResources(this.cboxGlobalImport, "cboxGlobalImport");
+            this.cboxGlobalImport.Checked = true;
+            this.cboxGlobalImport.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cboxGlobalImport.Name = "cboxGlobalImport";
+            this.toolTip1.SetToolTip(this.cboxGlobalImport, resources.GetString("cboxGlobalImport.ToolTip"));
+            this.cboxGlobalImport.UseVisualStyleBackColor = true;
+            // 
             // FormConfigTester
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cboxGlobalImport);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.cboxServList);
@@ -96,5 +107,6 @@
         private System.Windows.Forms.Button btnRestart;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox cboxGlobalImport;
     }
 }

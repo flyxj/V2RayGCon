@@ -91,6 +91,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.tabExpanseImport = new System.Windows.Forms.TabPage();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.cboxGlobalImport = new System.Windows.Forms.CheckBox();
             this.btnImportClearCache = new System.Windows.Forms.Button();
             this.btnExpandImport = new System.Windows.Forms.Button();
             this.btnCopyExpansedConfig = new System.Windows.Forms.Button();
@@ -565,12 +566,21 @@
             // groupBox9
             // 
             resources.ApplyResources(this.groupBox9, "groupBox9");
+            this.groupBox9.Controls.Add(this.cboxGlobalImport);
             this.groupBox9.Controls.Add(this.btnImportClearCache);
             this.groupBox9.Controls.Add(this.btnExpandImport);
             this.groupBox9.Controls.Add(this.btnCopyExpansedConfig);
             this.groupBox9.Controls.Add(this.panelExpandConfig);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.TabStop = false;
+            // 
+            // cboxGlobalImport
+            // 
+            resources.ApplyResources(this.cboxGlobalImport, "cboxGlobalImport");
+            this.cboxGlobalImport.Checked = true;
+            this.cboxGlobalImport.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cboxGlobalImport.Name = "cboxGlobalImport";
+            this.cboxGlobalImport.UseVisualStyleBackColor = true;
             // 
             // btnImportClearCache
             // 
@@ -810,6 +820,7 @@
             this.groupBox6.PerformLayout();
             this.tabExpanseImport.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.pnlTools.ResumeLayout(false);
@@ -916,5 +927,6 @@
         private System.Windows.Forms.Button btnImportClearCache;
         private System.Windows.Forms.ComboBox cboxStreamTLS;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox cboxGlobalImport;
     }
 }

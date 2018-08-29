@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -9,7 +8,7 @@ namespace V2RayGCon.Model.UserControls
     {
         Action OnDeleted;
 
-        public UrlListItem(Model.Data.SubscriptionItem subItem, Action OnDeleted)
+        public UrlListItem(Model.Data.UrlItem subItem, Action OnDeleted)
         {
             InitializeComponent();
 
@@ -21,9 +20,9 @@ namespace V2RayGCon.Model.UserControls
             this.OnDeleted = OnDeleted;
         }
 
-        public Model.Data.SubscriptionItem GetValue()
+        public Model.Data.UrlItem GetValue()
         {
-            return new Model.Data.SubscriptionItem
+            return new Model.Data.UrlItem
             {
                 inUse = cboxInUse.Checked,
                 alias = tboxAlias.Text,
@@ -57,16 +56,7 @@ namespace V2RayGCon.Model.UserControls
         #region private method
         private void UrlListItem_MouseDown(object sender, MouseEventArgs e)
         {
-
-
-            Bitmap bmp = new Bitmap(this.Size.Width, this.Size.Height);
-            this.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
-            //optionally define a transparent color
-            //bmp.MakeTransparent(Color.White);
-
-            Cursor cur = new Cursor(bmp.GetHicon());
-            Cursor.Current = cur;
-
+            Cursor.Current = Lib.UI.CreateCursorIconFromUserControl(this);
             DoDragDrop((UrlListItem)sender, DragDropEffects.Move);
         }
         #endregion

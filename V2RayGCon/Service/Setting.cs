@@ -379,11 +379,32 @@ namespace V2RayGCon.Service
             return alias.AsReadOnly();
         }
 
-        public List<Model.Data.SubscriptionItem> GetSubscribeItems()
+        public List<Model.Data.UrlItem> GetImportUrlItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject<List<Model.Data.SubscriptionItem>>(
+                var items = JsonConvert.DeserializeObject<List<Model.Data.UrlItem>>(
+                    Properties.Settings.Default.ImportUrls);
+                if (items != null)
+                {
+                    return items;
+                }
+            }
+            catch { };
+            return new List<Model.Data.UrlItem>();
+        }
+
+        public void SaveImportUrlOptions(string options)
+        {
+            Properties.Settings.Default.ImportUrls = options;
+            Properties.Settings.Default.Save();
+        }
+
+        public List<Model.Data.UrlItem> GetSubscribeItems()
+        {
+            try
+            {
+                var items = JsonConvert.DeserializeObject<List<Model.Data.UrlItem>>(
                     Properties.Settings.Default.SubscribeUrls);
                 if (items != null)
                 {
@@ -391,7 +412,7 @@ namespace V2RayGCon.Service
                 }
             }
             catch { };
-            return new List<Model.Data.SubscriptionItem>();
+            return new List<Model.Data.UrlItem>();
         }
 
         public void SaveSubscriptionOptions(string options)
@@ -741,7 +762,8 @@ namespace V2RayGCon.Service
                 {
                     return GetSummaryFromConfig(
                         Lib.ImportParser.ParseImport(
-                            Lib.Utils.Base64Decode(server)));
+                            Lib.Utils.InjectGlobalImport(
+                                Lib.Utils.Base64Decode(server))));
                 }
                 catch
                 {

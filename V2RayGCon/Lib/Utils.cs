@@ -267,6 +267,31 @@ namespace V2RayGCon.Lib
             ConcatJson(ref mixin, backup);
         }
 
+        public static string InjectGlobalImport(string config)
+        {
+            JObject import = ImportItemList2JObject(
+                Service.Setting.Instance.GetImportUrlItems());
+
+            MergeJson(ref import, JObject.Parse(config));
+            return import.ToString();
+        }
+
+        public static JObject ImportItemList2JObject(List<Model.Data.UrlItem> items)
+        {
+            var result = CreateJObject(@"v2raygcon.import");
+            foreach (var item in items)
+            {
+                var url = item.url;
+                if (item.inUse && !string.IsNullOrEmpty(url))
+                {
+                    var value = item.alias;
+                    result["v2raygcon"]["import"][url] =
+                        string.IsNullOrEmpty(value) ? "" : value;
+                }
+            }
+            return result;
+        }
+
         public static void MergeJson(ref JObject body, JObject mixin)
         {
             body.Merge(mixin, new JsonMergeSettings

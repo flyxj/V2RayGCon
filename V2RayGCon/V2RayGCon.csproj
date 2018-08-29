@@ -107,6 +107,7 @@
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
+    <Compile Include="Controller\OptionComponent\Import.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\OptionCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
-    <Compile Include="Model\Data\SubscribeItem.cs" />
+    <Compile Include="Model\Data\UrlItem.cs" />
     <Compile Include="Model\UserControls\UrlListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>

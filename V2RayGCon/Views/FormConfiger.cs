@@ -43,6 +43,11 @@ namespace V2RayGCon.Views
             formSearch = null;
             InitializeComponent();
             formTitle = this.Text;
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
+
             this.Show();
         }
 
@@ -266,6 +271,7 @@ namespace V2RayGCon.Views
 
                 new Controller.ConfigerComponet.Import(
                     panelExpandConfig,
+                    cboxGlobalImport,
                     btnExpandImport,
                     btnImportClearCache,
                     btnCopyExpansedConfig),

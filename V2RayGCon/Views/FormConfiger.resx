@@ -1812,11 +1812,41 @@
   <data name="groupBox9.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="cboxGlobalImport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="cboxGlobalImport.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cboxGlobalImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>47, 573</value>
+  </data>
+  <data name="cboxGlobalImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 22</value>
+  </data>
+  <data name="cboxGlobalImport.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="cboxGlobalImport.Text" xml:space="preserve">
+    <value>Global import</value>
+  </data>
+  <data name="&gt;&gt;cboxGlobalImport.Name" xml:space="preserve">
+    <value>cboxGlobalImport</value>
+  </data>
+  <data name="&gt;&gt;cboxGlobalImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cboxGlobalImport.Parent" xml:space="preserve">
+    <value>groupBox9</value>
+  </data>
+  <data name="&gt;&gt;cboxGlobalImport.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="btnImportClearCache.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom</value>
   </data>
   <data name="btnImportClearCache.Location" type="System.Drawing.Point, System.Drawing">
-    <value>333, 568</value>
+    <value>417, 568</value>
   </data>
   <data name="btnImportClearCache.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 32</value>
@@ -1837,13 +1867,13 @@
     <value>groupBox9</value>
   </data>
   <data name="&gt;&gt;btnImportClearCache.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnExpandImport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
   <data name="btnExpandImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 568</value>
+    <value>213, 568</value>
   </data>
   <data name="btnExpandImport.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 32</value>
@@ -1864,13 +1894,13 @@
     <value>groupBox9</value>
   </data>
   <data name="&gt;&gt;btnExpandImport.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnCopyExpansedConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
   <data name="btnCopyExpansedConfig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 568</value>
+    <value>315, 568</value>
   </data>
   <data name="btnCopyExpansedConfig.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 32</value>
@@ -1891,7 +1921,7 @@
     <value>groupBox9</value>
   </data>
   <data name="&gt;&gt;btnCopyExpansedConfig.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="panelExpandConfig.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1915,7 +1945,7 @@
     <value>groupBox9</value>
   </data>
   <data name="&gt;&gt;panelExpandConfig.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="groupBox9.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 10</value>
@@ -2020,31 +2050,31 @@
     <value>271, 20</value>
   </metadata>
   <data name="newWinToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>237, 30</value>
   </data>
   <data name="newWinToolStripMenuItem1.Text" xml:space="preserve">
     <value>New window</value>
   </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 6</value>
+    <value>234, 6</value>
   </data>
   <data name="loadJsonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>237, 30</value>
   </data>
   <data name="loadJsonToolStripMenuItem.Text" xml:space="preserve">
     <value>Load JSON file</value>
   </data>
   <data name="saveAsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>237, 30</value>
   </data>
   <data name="saveAsToolStripMenuItem.Text" xml:space="preserve">
     <value>Save as JSON file</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 6</value>
+    <value>234, 6</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>237, 30</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Exit</value>
