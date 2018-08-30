@@ -17,11 +17,12 @@ namespace V2RayGCon.Views
         public Rectangle editor;
         public Rectangle page;
 
-        public Model.BaseClass.CancelableTimeout timer;
+        public Model.BaseClass.CancelableTimeout timerHide, timerShow;
 
         public void Dispose()
         {
-            timer?.Dispose();
+            timerHide?.Dispose();
+            timerShow?.Dispose();
         }
     };
     #endregion
@@ -148,9 +149,6 @@ namespace V2RayGCon.Views
             {
                 cboxConfigSection.SelectedIndex = 0;
                 SetTitle(filename);
-
-                // SetTitle is enough.
-                // MessageBox.Show(I18N("Done"));
             }
             else
             {
@@ -191,10 +189,17 @@ namespace V2RayGCon.Views
                 if (tabCtrlToolPanel.GetTabRect(i).Contains(e.Location))
                 {
                     if (tabCtrlToolPanel.SelectedIndex != i)
+                    {
                         tabCtrlToolPanel.SelectTab(i);
+                    }
                     break;
                 }
             }
+        }
+
+        private void tabCtrlToolPanel_MouseLeave(object sender, EventArgs e)
+        {
+            toolsPanelHandler.timerShow.Cancel();
         }
         #endregion
 
@@ -287,6 +292,15 @@ namespace V2RayGCon.Views
             configer.Prepare();
         }
 
+        void SetToolsPanelWidth()
+        {
+            var width = toolsPanelHandler.panel.Width;
+            if (pnlTools.Width != width)
+            {
+                pnlTools.Width = width;
+            }
+        }
+
         void InitToolsPanel()
         {
             toolsPanelHandler.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
@@ -295,7 +309,8 @@ namespace V2RayGCon.Views
             toolsPanelHandler.span = (ClientRectangle.Width - toolsPanelHandler.panel.Width - toolsPanelHandler.editor.Width) / 3;
             toolsPanelHandler.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
-            toolsPanelHandler.timer = new Model.BaseClass.CancelableTimeout(ResetToolsPanelWidth, 800);
+            toolsPanelHandler.timerHide = new Model.BaseClass.CancelableTimeout(ResetToolsPanelWidth, 800);
+            toolsPanelHandler.timerShow = new Model.BaseClass.CancelableTimeout(SetToolsPanelWidth, 500);
 
             var page = tabCtrlToolPanel.TabPages[0];
             toolsPanelHandler.page = new Rectangle(
@@ -422,13 +437,8 @@ namespace V2RayGCon.Views
 
         void OnMouseEnterToolsPanel(object sender, EventArgs e)
         {
-            toolsPanelHandler.timer.Cancel();
-
-            var width = toolsPanelHandler.panel.Width;
-            if (pnlTools.Width != width)
-            {
-                pnlTools.Width = width;
-            }
+            toolsPanelHandler.timerHide.Cancel();
+            toolsPanelHandler.timerShow.Start();
         }
 
         void ResetToolsPanelWidth()
@@ -449,7 +459,8 @@ namespace V2RayGCon.Views
 
         void OnMouseLeaveToolsPanel(object sender, EventArgs e)
         {
-            toolsPanelHandler.timer.Start();
+            toolsPanelHandler.timerShow.Cancel();
+            toolsPanelHandler.timerHide.Start();
         }
 
         void ShowSearchBox()

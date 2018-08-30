@@ -163,6 +163,7 @@
             this.tabCtrlToolPanel.Multiline = true;
             this.tabCtrlToolPanel.Name = "tabCtrlToolPanel";
             this.tabCtrlToolPanel.SelectedIndex = 0;
+            this.tabCtrlToolPanel.MouseLeave += new System.EventHandler(this.tabCtrlToolPanel_MouseLeave);
             this.tabCtrlToolPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TabCtrlToolPanel_MouseMove);
             // 
             // vmess
