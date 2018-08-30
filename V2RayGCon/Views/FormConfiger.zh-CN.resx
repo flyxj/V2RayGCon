@@ -144,10 +144,6 @@
   <data name="label12.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
-  </data>
   <data name="label14.Text" xml:space="preserve">
     <value>参数</value>
   </data>
@@ -238,9 +234,6 @@
   <data name="label19.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 18</value>
-  </data>
   <data name="label18.Text" xml:space="preserve">
     <value>网络类型</value>
   </data>
@@ -261,9 +254,6 @@
   </data>
   <data name="chkSSSOTA.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
     <value>加密</value>
@@ -291,9 +281,6 @@
   </data>
   <data name="cboxSSCMethod.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>加密</value>
@@ -352,9 +339,6 @@
   <data name="tboxVGCDesc.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
-  </data>
   <data name="label16.Text" xml:space="preserve">
     <value>描述</value>
   </data>
@@ -370,9 +354,6 @@
   <data name="tboxVGCAlias.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
-  </data>
   <data name="label15.Text" xml:space="preserve">
     <value>别名</value>
   </data>
@@ -384,9 +365,6 @@
   </data>
   <data name="misc.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="cboxGlobalImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
   </data>
   <data name="cboxGlobalImport.Text" xml:space="preserve">
     <value>全局import</value>
@@ -433,38 +411,17 @@
   <data name="btnClearModify.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="newWinToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 30</value>
-  </data>
   <data name="newWinToolStripMenuItem1.Text" xml:space="preserve">
     <value>新窗口</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 6</value>
-  </data>
-  <data name="loadJsonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 30</value>
   </data>
   <data name="loadJsonToolStripMenuItem.Text" xml:space="preserve">
     <value>加载Json文件</value>
   </data>
-  <data name="saveAsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 30</value>
-  </data>
   <data name="saveAsToolStripMenuItem.Text" xml:space="preserve">
     <value>另存Json文件</value>
   </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 6</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 30</value>
-  </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>关闭</value>
-  </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 28</value>
   </data>
   <data name="fileToolStripMenuItem.Text" xml:space="preserve">
     <value>文件</value>
@@ -472,17 +429,11 @@
   <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>覆盖原服务器设置 </value>
   </data>
-  <data name="addNewServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 30</value>
-  </data>
   <data name="addNewServerToolStripMenuItem.Text" xml:space="preserve">
     <value>添加新服务器</value>
   </data>
   <data name="addNewServerToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>用当前配置创建一个新服务器。</value>
-  </data>
-  <data name="saveConfigStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 30</value>
   </data>
   <data name="saveConfigStripMenuItem.Text" xml:space="preserve">
     <value>保存当前配置</value>
@@ -490,50 +441,23 @@
   <data name="saveConfigStripMenuItem.ToolTipText" xml:space="preserve">
     <value>用当前配置替换原选中的服务器。</value>
   </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 6</value>
-  </data>
-  <data name="loadServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 30</value>
-  </data>
   <data name="loadServerToolStripMenuItem.Text" xml:space="preserve">
     <value>加载服务器</value>
-  </data>
-  <data name="replaceExistServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 30</value>
   </data>
   <data name="replaceExistServerToolStripMenuItem.Text" xml:space="preserve">
     <value>覆盖服务器</value>
   </data>
-  <data name="configToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 28</value>
-  </data>
   <data name="configToolStripMenuItem.Text" xml:space="preserve">
     <value>服务器</value>
-  </data>
-  <data name="searchBoxToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 30</value>
   </data>
   <data name="searchBoxToolStripMenuItem.Text" xml:space="preserve">
     <value>搜索</value>
   </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 6</value>
-  </data>
-  <data name="showLeftPanelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 30</value>
-  </data>
   <data name="showLeftPanelToolStripMenuItem.Text" xml:space="preserve">
     <value>显示左面板</value>
   </data>
-  <data name="hideLeftPanelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>182, 30</value>
-  </data>
   <data name="hideLeftPanelToolStripMenuItem.Text" xml:space="preserve">
     <value>隐藏左面板</value>
-  </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 28</value>
   </data>
   <data name="viewToolStripMenuItem.Text" xml:space="preserve">
     <value>视图</value>
@@ -543,12 +467,6 @@
   </data>
   <data name="pnlTools.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 8</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 18</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>分节</value>
@@ -577,6 +495,7 @@
   <data name="pnlEditor.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAAAAAAAEAIAAoIAQAZgAAABAQAAABACAAaAQAAI4gBAAwMAAAAQAgAKglAAD2JAQAICAAAAEA
