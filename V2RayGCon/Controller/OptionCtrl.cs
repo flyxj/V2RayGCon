@@ -100,10 +100,18 @@ namespace V2RayGCon.Controller
                 return;
             }
 
+            var setting = Service.Setting.Instance;
+            var core = Service.Core.Instance;
+
             if (options.ContainsKey("import"))
             {
                 GetComponent<Controller.OptionComponent.Import>()
                     .Reload(options["import"]);
+
+                if (core.isRunning)
+                {
+                    setting.ActivateServer();
+                }
             }
 
             if (options.ContainsKey("subscription"))
@@ -112,21 +120,16 @@ namespace V2RayGCon.Controller
                     .Reload(options["subscription"]);
             }
 
-            if (options.ContainsKey("servers"))
+            if (options.ContainsKey("servers")
+                && Lib.UI.Confirm(I18N("ConfirmImportServers")))
             {
-                if (Lib.UI.Confirm(I18N("ConfirmImportServers")))
-                {
-                    Service.Setting.Instance.ImportLinks(options["servers"]);
-                }
-                else
-                {
-                    MessageBox.Show(I18N("Done"));
-                }
+                setting.ImportLinks(options["servers"]);
             }
             else
             {
                 MessageBox.Show(I18N("Done"));
             }
+
         }
 
     }
