@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -435,8 +436,33 @@ namespace V2RayGCon.Views
         }
 
 
+
         #endregion
 
+        private void addNewServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            flyServerListContainer.Controls.Add(
+                new Model.UserControls.ServerListItem());
+        }
 
+        private void flyServerListContainer_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void flyServerListContainer_DragDrop(object sender, DragEventArgs e)
+        {
+            // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
+
+            var data = e.Data.GetData(typeof(Model.UserControls.ServerListItem))
+                as Model.UserControls.ServerListItem;
+
+            var _destination = sender as FlowLayoutPanel;
+            Point p = _destination.PointToClient(new Point(e.X, e.Y));
+            var item = _destination.GetChildAtPoint(p);
+            int index = _destination.Controls.GetChildIndex(item, false);
+            _destination.Controls.SetChildIndex(data, index);
+            _destination.Invalidate();
+        }
     }
 }

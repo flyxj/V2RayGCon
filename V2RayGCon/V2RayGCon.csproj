@@ -132,7 +132,14 @@
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
+    <Compile Include="Model\Data\ServerItem.cs" />
     <Compile Include="Model\Data\UrlItem.cs" />
+    <Compile Include="Model\UserControls\ServerListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Model\UserControls\ServerListItem.Designer.cs">
+      <DependentUpon>ServerListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\UserControls\UrlListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -236,6 +243,9 @@
     <Compile Include="Views\FormSimAddVmessClient.Designer.cs">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Model\UserControls\ServerListItem.resx">
+      <DependentUpon>ServerListItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\UrlListItem.resx">
       <DependentUpon>UrlListItem.cs</DependentUpon>
     </EmbeddedResource>

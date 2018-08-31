@@ -5,6 +5,12 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
+        public static Dictionary<int, string> inboundOverwriteTypes = new Dictionary<int, string> {
+            { 0,"Config"},
+            { 1,"HTTP"},
+            {2,"SOCKS" },
+        };
+
         public static Dictionary<int, string> configSections = new Dictionary<int, string>
         {
                 { 0, "config.json"},
