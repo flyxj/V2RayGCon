@@ -232,7 +232,7 @@
     <value>Update</value>
   </data>
   <data name="btnUpdateViaSubscription.ToolTip" xml:space="preserve">
-    <value>Download server via subscription.</value>
+    <value>Download servers via subscription.</value>
   </data>
   <data name="&gt;&gt;btnUpdateViaSubscription.Name" xml:space="preserve">
     <value>btnUpdateViaSubscription</value>
@@ -262,7 +262,7 @@
     <value>Add</value>
   </data>
   <data name="btnAddSubsUrl.ToolTip" xml:space="preserve">
-    <value>Add new subscribe url.</value>
+    <value>Add subscription URL.</value>
   </data>
   <data name="&gt;&gt;btnAddSubsUrl.Name" xml:space="preserve">
     <value>btnAddSubsUrl</value>
@@ -367,7 +367,7 @@
     <value>Backup</value>
   </data>
   <data name="btnBakBackup.ToolTip" xml:space="preserve">
-    <value>Export options to file.</value>
+    <value>(Experimental!) Export options to file.</value>
   </data>
   <data name="&gt;&gt;btnBakBackup.Name" xml:space="preserve">
     <value>btnBakBackup</value>
@@ -433,7 +433,7 @@
     <value>Restore</value>
   </data>
   <data name="btnBakRestore.ToolTip" xml:space="preserve">
-    <value>Restore options from file.</value>
+    <value>(Experimental!) Restore options from file.</value>
   </data>
   <data name="&gt;&gt;btnBakRestore.Name" xml:space="preserve">
     <value>btnBakRestore</value>

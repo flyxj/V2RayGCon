@@ -67,6 +67,7 @@ namespace V2RayGCon.Model.Data
             {2, "utp" },
             {3, "wechat-video" },
             {4, "dtls" },
+            {5, "wireguard" },
         };
 
         public static Dictionary<int, StreamComponent> streamSettings = new Dictionary<int, Model.Data.StreamComponent>
@@ -89,6 +90,7 @@ namespace V2RayGCon.Model.Data
                     { "utp", "kcp_utp"},
                     { "wechat-video", "kcp_wechat-video" },
                     { "dtls", "kcp_dtls"},
+                    { "wireguard", "kcp_wireguard"},
                 },
             } },
 
