@@ -199,6 +199,9 @@
   <data name="restartToolStripMenuItem.Text" xml:space="preserve">
     <value>重启</value>
   </data>
+  <data name="useGlobalImportToolStripMenuItem.Text" xml:space="preserve">
+    <value>全局import</value>
+  </data>
   <data name="sysProxyDirectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 22</value>
   </data>
@@ -223,20 +226,38 @@
   <data name="proxyToolStripMenuItem.Text" xml:space="preserve">
     <value>代理</value>
   </data>
+  <data name="configEditorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 22</value>
+  </data>
   <data name="configEditorToolStripMenuItem.Text" xml:space="preserve">
     <value>配置编辑器</value>
+  </data>
+  <data name="configTesterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 22</value>
   </data>
   <data name="configTesterToolStripMenuItem.Text" xml:space="preserve">
     <value>配置测试器</value>
   </data>
+  <data name="qRCodeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 22</value>
+  </data>
   <data name="qRCodeToolStripMenuItem.Text" xml:space="preserve">
     <value>二维码</value>
+  </data>
+  <data name="logToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 22</value>
   </data>
   <data name="logToolStripMenuItem.Text" xml:space="preserve">
     <value>日志</value>
   </data>
+  <data name="optionsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 22</value>
+  </data>
   <data name="optionsToolStripMenuItem.Text" xml:space="preserve">
     <value>选项</value>
+  </data>
+  <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>127, 6</value>
   </data>
   <data name="downloadV2rayCoreToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 22</value>
@@ -249,6 +270,9 @@
   </data>
   <data name="removeV2rayCoreToolStripMenuItem.Text" xml:space="preserve">
     <value>删除</value>
+  </data>
+  <data name="v2rayCoreToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 22</value>
   </data>
   <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 20</value>

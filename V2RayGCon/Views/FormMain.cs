@@ -31,6 +31,10 @@ namespace V2RayGCon.Views
             core = Service.Core.Instance;
 
             InitializeComponent();
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
             this.Show();
         }
 
@@ -128,6 +132,9 @@ namespace V2RayGCon.Views
 
         void UpdateUI()
         {
+            useGlobalImportToolStripMenuItem.Checked =
+                !setting.isDisableGlobalImports;
+
             // update list view
             lvServers.Items.Clear();
             var servers = setting.GetAllServersSummary();
@@ -176,6 +183,21 @@ namespace V2RayGCon.Views
         #endregion
 
         #region UI event handler
+        private void useGlobalImportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var isChecked = setting.isDisableGlobalImports;
+            setting.isDisableGlobalImports = !isChecked;
+            if (core.isRunning)
+            {
+                setting.ActivateServer();
+            }
+            else
+            {
+                useGlobalImportToolStripMenuItem.Checked =
+                    !setting.isDisableGlobalImports;
+            }
+        }
+
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Views.FormOption.GetForm();
@@ -411,6 +433,7 @@ namespace V2RayGCon.Views
                 MessageBox.Show(I18N("Done"));
             });
         }
+
 
         #endregion
 

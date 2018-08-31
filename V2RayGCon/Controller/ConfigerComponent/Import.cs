@@ -9,17 +9,20 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Import : Model.BaseClass.ConfigerComponent
+    class Import : ConfigerComponentController
     {
         Scintilla editor;
+        CheckBox cboxGlobalImport;
 
         public Import(
             Panel container,
+            CheckBox globalImport,
             Button expand,
             Button clearCache,
             Button copy)
         {
             this.editor = Lib.UI.CreateScintilla(container, true);
+            this.cboxGlobalImport = globalImport;
             DataBinding();
             AttachEvent(expand, clearCache, copy);
         }
@@ -54,9 +57,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    Service.Cache.Instance.html.Remove(
-                        Lib.ImportParser.GetImportUrls(
-                            container.config));
+                    Service.Cache.Instance.html.Clear();
                 });
             };
 
@@ -78,28 +79,31 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
         }
+
         #endregion
 
         #region public method
         public override void Update(JObject config)
         {
             content = I18N("AnalysingImport");
+            var plainText = config.ToString();
             // todo
             Task.Factory.StartNew(() =>
             {
-                var cfg = "{}";
+                var result = "{}";
                 try
                 {
-                    cfg = Lib.ImportParser.ParseImport(
-                        config.ToString())
+                    result = Lib.ImportParser.ParseImport(
+                        cboxGlobalImport.Checked ?
+                        Lib.Utils.InjectGlobalImport(plainText) :
+                        plainText)
                         .ToString();
+
                     System.GC.Collect();
                 }
                 catch (FileNotFoundException)
                 {
-                    // webclient 竟然可以读本地文件！
-
-                    cfg = string.Format(
+                    result = string.Format(
                             "{0}{1}{2}",
                             I18N("DecodeImportFail"),
                             Environment.NewLine,
@@ -107,11 +111,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 }
                 catch (FormatException)
                 {
-                    cfg = I18N("DecodeImportFail");
+                    result = I18N("DecodeImportFail");
                 }
                 catch (System.Net.WebException)
                 {
-                    cfg = string.Format(
+                    result = string.Format(
                             "{0}{1}{2}",
                             I18N("DecodeImportFail"),
                             Environment.NewLine,
@@ -119,12 +123,12 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 }
                 catch (Newtonsoft.Json.JsonReaderException)
                 {
-                    cfg = I18N("DecodeImportFail");
+                    result = I18N("DecodeImportFail");
                 }
 
                 editor.Invoke((MethodInvoker)delegate
                 {
-                    content = cfg;
+                    content = result;
                 });
             });
         }

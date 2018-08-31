@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -124,42 +123,6 @@ namespace V2RayGCon.Model.BaseClass
                     MessageBox.Show(I18N("ExeNotFound"));
                 }
             });
-        }
-
-        public virtual void RestartCore(int index)
-        {
-            if (index < 0)
-            {
-                StopCoreThen(null);
-                return;
-            }
-
-            var b64Config = setting.GetServer(index);
-
-            if (string.IsNullOrEmpty(b64Config))
-            {
-                return;
-            }
-
-
-            JObject config = null;
-
-            try
-            {
-                string plainText = Lib.Utils.Base64Decode(b64Config);
-                config = Lib.ImportParser.ParseImport(plainText);
-            }
-            catch
-            {
-                SendLog(I18N("DecodeImportFail"));
-                StopCoreThen(null);
-                return;
-            }
-
-            var s = config.ToString();
-            config = null;
-            System.GC.Collect();
-            RestartCore(s);
         }
 
         public void StopCoreThen(Action lambda)

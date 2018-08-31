@@ -7,7 +7,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Editor : Model.BaseClass.ConfigerComponent
+    class Editor : ConfigerComponentController
     {
         Service.Cache cache;
 

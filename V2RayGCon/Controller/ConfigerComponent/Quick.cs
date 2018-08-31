@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class Quick : Model.BaseClass.ConfigerComponent
+    class Quick : ConfigerComponentController
     {
         Service.Cache cache;
 

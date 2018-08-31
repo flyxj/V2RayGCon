@@ -30,6 +30,10 @@ namespace V2RayGCon.Views
             linkType = 0;
 
             InitializeComponent();
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
             this.Show();
         }
 

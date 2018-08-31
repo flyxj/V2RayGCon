@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
-    class StreamSettings : Model.BaseClass.ConfigerComponent
+    class StreamSettings : ConfigerComponentController
     {
         Service.Cache cache;
         public StreamSettings(

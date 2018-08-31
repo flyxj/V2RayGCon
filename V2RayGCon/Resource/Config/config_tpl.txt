@@ -218,6 +218,15 @@
       }
     }
   },
+  "kcp_wireguard": {
+    "network": "kcp",
+    "security": "",
+    "kcpSettings": {
+      "header": {
+        "type": "wireguard"
+      }
+    }
+  },
   "kcp_utp": {
     "network": "kcp",
     "security": "",

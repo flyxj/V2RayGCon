@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Linq;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
@@ -19,6 +21,10 @@ namespace V2RayGCon.Views
             setting = Service.Setting.Instance;
             preIndex = -1;
             maxNumberLines = setting.maxLogLines;
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
 
             this.Show();
         }
@@ -102,6 +108,65 @@ namespace V2RayGCon.Views
                 aliases.Count);
         }
 
+        void SetTitle(bool running)
+        {
+            if (running)
+            {
+                this.Text = string.Format("{0} - {1}", formTitle, cboxServList.Text);
+            }
+            else
+            {
+                this.Text = formTitle;
+            }
+        }
+
+        void OnCoreStatusChanged()
+        {
+            var isRunning = tester.isRunning;
+            btnRestart.Invoke((MethodInvoker)delegate
+            {
+                SetTitle(isRunning);
+                btnStop.Enabled = isRunning;
+            });
+        }
+
+        void SendLog(string log)
+        {
+            var arg = new Model.Data.StrEvent(log);
+            LogReceiver(this, arg);
+        }
+
+        void RestartCore(int index)
+        {
+            var b64Config = setting.GetServer(index);
+            if (string.IsNullOrEmpty(b64Config))
+            {
+                tester.StopCoreThen(null);
+                return;
+            }
+
+            JObject config = null;
+            try
+            {
+                string plainText = Lib.Utils.Base64Decode(b64Config);
+
+                config = Lib.ImportParser.ParseImport(
+                    cboxGlobalImport.Checked ?
+                    Lib.Utils.InjectGlobalImport(plainText) :
+                    plainText);
+            }
+            catch
+            {
+                SendLog(I18N("DecodeFail"));
+                tester.StopCoreThen(null);
+                return;
+            }
+
+            var s = config.ToString();
+            config = null;
+            System.GC.Collect();
+            tester.RestartCore(s, OnCoreStatusChanged);
+        }
         #endregion
 
         #region UI event
@@ -112,8 +177,7 @@ namespace V2RayGCon.Views
 
         private void btnRestart_Click(object sender, EventArgs e)
         {
-            tester.RestartCore(cboxServList.SelectedIndex);
-            this.Text = string.Format("{0} - {1}", formTitle, cboxServList.Text);
+            RestartCore(cboxServList.SelectedIndex);
         }
 
         private void rtboxLog_TextChanged(object sender, EventArgs e)

@@ -11,6 +11,29 @@ namespace V2RayGCon.Lib
 {
     class UI
     {
+        public static void ClearFlowLayoutPanel(FlowLayoutPanel panel)
+        {
+            List<Control> listControls = new List<Control>();
+
+            foreach (Control control in panel.Controls)
+            {
+                listControls.Add(control);
+            }
+
+            foreach (Control control in listControls)
+            {
+                panel.Controls.Remove(control);
+                control.Dispose();
+            }
+        }
+
+        public static Cursor CreateCursorIconFromUserControl(Control control)
+        {
+            Bitmap bmp = new Bitmap(control.Size.Width, control.Size.Height);
+            control.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
+            return new Cursor(bmp.GetHicon());
+        }
+
         public static Scintilla CreateScintilla(Panel container, bool readOnlyMode = false)
         {
             var scintilla = new Scintilla();

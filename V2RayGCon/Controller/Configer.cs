@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller
 {
-    class Configer
+    class Configer : Model.BaseClass.FormController
     {
         Service.Setting setting;
         Service.Cache cache;
@@ -15,14 +14,11 @@ namespace V2RayGCon.Controller
         string originalConfig, originalFile;
         ConfigerComponet.Editor editor;
 
-        Dictionary<Type, Model.BaseClass.ConfigerComponent> components;
-
         public Configer(int serverIndex = -1)
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
 
-            components = new Dictionary<Type, Model.BaseClass.ConfigerComponent>();
             originalFile = string.Empty;
             originalConfig = string.Empty;
 
@@ -30,17 +26,6 @@ namespace V2RayGCon.Controller
         }
 
         #region public method
-        public T GetComponent<T>() where T : Model.BaseClass.ConfigerComponent
-        {
-            var type = typeof(T);
-
-            if (!components.ContainsKey(type))
-            {
-                throw new KeyNotFoundException();
-            }
-
-            return components[type] as T;
-        }
 
         public void Prepare()
         {
@@ -73,26 +58,6 @@ namespace V2RayGCon.Controller
             return JObject.DeepEquals(orgFile, config);
         }
 
-        public void Plug(Model.BaseClass.ConfigerComponent component)
-        {
-            var type = component.GetType();
-            if (components.ContainsKey(type))
-            {
-                throw new ArgumentException("Key already existed!");
-            }
-
-            component.Bind(this);
-            components[type] = component;
-        }
-
-        public void Plug(List<Model.BaseClass.ConfigerComponent> components)
-        {
-            foreach (var component in components)
-            {
-                Plug(component);
-            }
-        }
-
         public string GetAlias()
         {
             return Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
@@ -100,9 +65,10 @@ namespace V2RayGCon.Controller
 
         public void Update()
         {
-            foreach (var component in components)
+            foreach (var component in this.GetAllComponents())
             {
-                component.Value.Update(config);
+                (component.Value as Controller.ConfigerComponet.ConfigerComponentController)
+                    .Update(config);
             }
         }
 

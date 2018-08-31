@@ -20,6 +20,10 @@ namespace V2RayGCon.Views
             InitializeComponent();
             results = importResults;
             linksCache = new List<string>();
+
+#if DEBUG
+            this.Icon = Properties.Resources.icon_light;
+#endif
             this.Show();
         }
 

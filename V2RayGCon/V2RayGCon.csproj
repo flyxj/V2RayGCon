@@ -106,6 +106,10 @@
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
+    <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
+    <Compile Include="Controller\OptionComponent\Import.cs" />
+    <Compile Include="Controller\OptionComponent\Subscription.cs" />
+    <Compile Include="Controller\OptionCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\DllLoader.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
@@ -118,15 +122,17 @@
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Model\BaseClass\CancelableTimeout.cs" />
-    <Compile Include="Model\BaseClass\ConfigerComponent.cs" />
+    <Compile Include="Model\BaseClass\IFormComponentController.cs" />
+    <Compile Include="Model\BaseClass\FormController.cs" />
+    <Compile Include="Controller\ConfigerComponent\ConfigerComponentController.cs" />
     <Compile Include="Model\BaseClass\CoreServer.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
-    <Compile Include="Model\BaseClass\IConfigerComponent.cs" />
+    <Compile Include="Model\BaseClass\FormComponentController.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
-    <Compile Include="Model\Data\SubscribeItem.cs" />
+    <Compile Include="Model\Data\UrlItem.cs" />
     <Compile Include="Model\UserControls\UrlListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>

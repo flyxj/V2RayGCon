@@ -102,6 +102,18 @@ namespace V2RayGCon.Test
 
         [DataTestMethod]
         [DataRow(
+            @"{routing:{settings:{rules:[{a:[1,3]}]}}}",
+            @"{routing:{settings:{rules:[{a:[2]}]}}}",
+            @"{routing:{settings:{rules:[{a:[2]},{a:[1,3]}]}}}")]
+        [DataRow(
+            @"{routing:{settings:{rules:[{b:2},{a:[1,2,3,{c:1}]}]}}}",
+            @"{routing:{settings:{rules:[{a:[1,2,3,{c:1}]},{c:2}]}}}",
+            @"{routing:{settings:{rules:[{a:[1,2,3,{c:1}]},{c:2},{b:2}]}}}")]
+        [DataRow(
+            @"{routing:{settings:{rules:[{b:2},{a:1}]}}}",
+            @"{routing:{settings:{rules:[{a:1}]}}}",
+            @"{routing:{settings:{rules:[{a:1},{b:2}]}}}")]
+        [DataRow(
             @"{'a':1,'arr':[1,2,3],'routing':{'a':1,'settings':{'c':1,'rules':[{'b':2}]}}}",
             @"{'a':2,'b':1,'arr':null,'routing':{'b':2,'settings':{'c':2,'rules':[{'a':1}]}}}",
             @"{'a':2,'b':1,'arr':null,'routing':{'a':1,'b':2,'settings':{'c':2,'rules':[{'a':1},{'b':2}]}}}")]
@@ -184,6 +196,16 @@ namespace V2RayGCon.Test
         }
 
         [DataTestMethod]
+
+        // deepequals regardless dictionary's keys order 
+        [DataRow(@"{a:'123',b:null,c:{b:1}}",
+            @"{a:null,c:{a:1,c:1}}",
+            @"{a:null,b:null,c:{a:1,b:1,c:1}}")]
+
+        [DataRow(@"{a:'123',b:null,c:{a:2,b:1}}",
+            @"{a:null,b:'123',c:{a:1,c:1}}",
+            @"{a:null,b:'123',c:{a:1,b:1,c:1}}")]
+
         [DataRow(@"{}", @"{}", @"{}")]
         [DataRow(@"{a:'123',b:null}", @"{a:null,b:'123'}", @"{a:null,b:'123'}")]
         [DataRow(@"{a:[1,2],b:{}}", @"{a:[3],b:{a:[1,2,3]}}", @"{a:[3,2],b:{a:[1,2,3]}}")]
@@ -194,6 +216,41 @@ namespace V2RayGCon.Test
 
             var e = JObject.Parse(expect);
             Assert.AreEqual(true, JObject.DeepEquals(body, e));
+        }
+
+        [TestMethod]
+        public void ImportItemList2JObject()
+        {
+            Model.Data.UrlItem GenItem(bool inUse, string url, string alias)
+            {
+                return new Model.Data.UrlItem
+                {
+                    inUse = inUse,
+                    url = url,
+                    alias = alias,
+                };
+            }
+            var items = new List<List<Model.Data.UrlItem>>();
+            var expects = new List<string>();
+
+            items.Add(new List<Model.Data.UrlItem> {
+                GenItem(true,"a.com","a"),
+                GenItem(false,"b.com","b"),
+                GenItem(true,"c.com",""),
+            });
+
+            expects.Add(@"{'v2raygcon':{'import':{'a.com':'a','c.com':''}}}");
+
+            items.Add(new List<Model.Data.UrlItem> { });
+            expects.Add(@"{'v2raygcon':{'import':{}}}");
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                var expect = JObject.Parse(expects[i]);
+                var json = Lib.Utils.ImportItemList2JObject(items[i]);
+                var result = JObject.DeepEquals(expect, json);
+                Assert.AreEqual(true, result);
+            }
         }
 
         [TestMethod]

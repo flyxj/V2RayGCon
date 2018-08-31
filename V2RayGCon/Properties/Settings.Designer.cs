@@ -130,5 +130,29 @@ namespace V2RayGCon.Properties {
                 this["SubscribeUrls"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImportUrls {
+            get {
+                return ((string)(this["ImportUrls"]));
+            }
+            set {
+                this["ImportUrls"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableGlobalImport {
+            get {
+                return ((bool)(this["DisableGlobalImport"]));
+            }
+            set {
+                this["DisableGlobalImport"] = value;
+            }
+        }
     }
 }
