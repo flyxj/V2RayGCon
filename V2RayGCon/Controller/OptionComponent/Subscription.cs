@@ -38,7 +38,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (curOptions != oldOptions)
             {
-                setting.SaveSubscriptionOptions(curOptions);
+                setting.SaveSubscriptionUrls(curOptions);
                 oldOptions = curOptions;
                 return true;
             }

@@ -151,6 +151,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Can find original server. Delete fail! 的本地化字符串。
+        /// </summary>
+        internal static string CantFindOrgServDelFail {
+            get {
+                return ResourceManager.GetString("CantFindOrgServDelFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Error: can not lauch v2ray-core. 的本地化字符串。
         /// </summary>
         internal static string CantLauchCore {
@@ -303,6 +312,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmSaveCurConfig {
             get {
                 return ResourceManager.GetString("ConfirmSaveCurConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
             }
         }
         
@@ -977,6 +995,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 v2ray:// ... 的本地化字符串。
+        /// </summary>
+        internal static string V2RayLink {
+            get {
+                return ResourceManager.GetString("V2RayLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Vist v-link wiki page? 的本地化字符串。
         /// </summary>
         internal static string VisitVlinkPage {
@@ -1000,6 +1027,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string VistWikiPage {
             get {
                 return ResourceManager.GetString("VistWikiPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 vmess:// ... 的本地化字符串。
+        /// </summary>
+        internal static string VmessLink {
+            get {
+                return ResourceManager.GetString("VmessLink", resourceCulture);
             }
         }
         

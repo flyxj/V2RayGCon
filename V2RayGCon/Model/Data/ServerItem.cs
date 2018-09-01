@@ -10,6 +10,8 @@ namespace V2RayGCon.Model.Data
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnPropertyChanged;
+        public event EventHandler RequireMenuUpdate;
+        public event EventHandler<Model.Data.StrEvent> RequireDelete;
 
         public string config; // plain text of config.json
         public bool isOn, isInjectEnv, isInjectImport;
@@ -38,6 +40,17 @@ namespace V2RayGCon.Model.Data
         }
 
         #region public method
+        public void Delete()
+        {
+            try
+            {
+                RequireDelete?.Invoke(
+                    this,
+                    new Model.Data.StrEvent(config));
+            }
+            catch { }
+        }
+
         public void SetInboundIP(string ip)
         {
             inboundIP = ip;
@@ -92,14 +105,16 @@ namespace V2RayGCon.Model.Data
                 }
 
                 InvokePropertyChange();
+                InvokeRequireMenuUpdate();
             });
         }
 
-        public void Cleanup()
+        public void CleanupThen(Action lambda)
         {
             this.server.StopCoreThen(() =>
             {
                 this.server.OnLog -= SendLogHandler;
+                lambda();
             });
         }
 
@@ -141,9 +156,18 @@ namespace V2RayGCon.Model.Data
             catch { }
         }
 
+        void InvokeRequireMenuUpdate()
+        {
+            try
+            {
+                RequireMenuUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         void InvokePropertyChange()
         {
-            // things happen while invoke
+            // things happen while invoking
             try
             {
                 OnPropertyChanged?.Invoke(this, EventArgs.Empty);
@@ -156,7 +180,7 @@ namespace V2RayGCon.Model.Data
             var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
             this.name = string.IsNullOrEmpty(name) ?
                 I18N("Empty") :
-                Lib.Utils.CutStr(name, 20);
+                Lib.Utils.CutStr(name, 15);
 
             var GetStr = Lib.Utils.GetStringByKeyHelper(config);
 
@@ -169,11 +193,11 @@ namespace V2RayGCon.Model.Data
             }
 
             var summary = string.Format("[{0}] {1}", this.name, protocol);
-            if (string.IsNullOrEmpty(ip))
+            if (!string.IsNullOrEmpty(ip))
             {
                 summary += "@" + ip;
             }
-            this.summary = summary;
+            this.summary = Lib.Utils.CutStr(summary, 40);
         }
 
         private int GetInboundTypeCount()

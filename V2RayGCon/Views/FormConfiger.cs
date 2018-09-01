@@ -71,14 +71,14 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnSettingChange -= OnSettingChange;
+                setting.OnRequireMenuUpdate -= MenuUpdateHandler;
                 toolsPanelHandler.Dispose();
             };
 
             var editor = configer.GetComponent<Controller.ConfigerComponet.Editor>();
             editor.GetEditor().Click += OnMouseLeaveToolsPanel;
 
-            setting.OnSettingChange += OnSettingChange;
+            setting.OnRequireMenuUpdate += MenuUpdateHandler;
         }
 
         #region UI event handler
@@ -423,7 +423,7 @@ namespace V2RayGCon.Views
             setting.isShowConfigerToolsPanel = visible;
         }
 
-        void OnSettingChange(object sender, EventArgs args)
+        void MenuUpdateHandler(object sender, EventArgs args)
         {
             try
             {

@@ -44,10 +44,10 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnSettingChange -= SettingChange;
+                setting.OnRequireMenuUpdate -= SettingChange;
             };
 
-            setting.OnSettingChange += SettingChange;
+            setting.OnRequireMenuUpdate += SettingChange;
         }
 
         #region public methods
@@ -69,19 +69,20 @@ namespace V2RayGCon.Views
 
             cboxServList.Items.Clear();
 
-            var aliases = setting.GetAllAliases();
+            var servers = setting.GetServerList();
 
-            if (aliases.Count <= 0)
+            if (servers.Count <= 0)
             {
+                cboxServList.SelectedIndex = -1;
                 return;
             }
 
-            foreach (var alias in aliases)
+            foreach (var server in servers)
             {
-                cboxServList.Items.Add(alias);
+                cboxServList.Items.Add(server.name);
             }
 
-            servIndex = Lib.Utils.Clamp(oldIndex, 0, aliases.Count);
+            servIndex = Lib.Utils.Clamp(oldIndex, 0, servers.Count);
             cboxServList.SelectedIndex = servIndex;
             UpdateLink();
         }
@@ -101,12 +102,12 @@ namespace V2RayGCon.Views
             {
                 link = Lib.Utils.Vmess2VmessLink(
                     Lib.Utils.ConfigString2Vmess(
-                        Lib.Utils.Base64Decode(server)));
+                        server));
             }
             else
             {
                 link = Lib.Utils.AddLinkPrefix(
-                    server,
+                    Lib.Utils.Base64Encode(server),
                     Model.Data.Enum.LinkTypes.v2ray);
             }
 

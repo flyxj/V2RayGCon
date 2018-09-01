@@ -452,4 +452,16 @@ Are you sure want to continue?</value>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="CantFindOrgServDelFail" xml:space="preserve">
+    <value>Can find original server. Delete fail!</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="V2RayLink" xml:space="preserve">
+    <value>v2ray:// ...</value>
+  </data>
+  <data name="VmessLink" xml:space="preserve">
+    <value>vmess:// ...</value>
+  </data>
 </root>

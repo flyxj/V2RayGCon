@@ -449,4 +449,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Stop" xml:space="preserve">
     <value>停止</value>
   </data>
+  <data name="CantFindOrgServDelFail" xml:space="preserve">
+    <value>找不到原服务器，删除失败！</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
 </root>

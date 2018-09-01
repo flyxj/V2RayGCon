@@ -106,8 +106,8 @@
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainComponent\FlyServer.cs" />
     <Compile Include="Controller\FormMainComponent\FormMainComponentController.cs" />
+    <Compile Include="Controller\FormMainComponent\Menus.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
-    <Compile Include="Controller\FormMainOldCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
@@ -177,7 +177,6 @@
     <Compile Include="Service\Cache.cs" />
     <Compile Include="Service\Caches\Template.cs" />
     <Compile Include="Service\Downloader.cs" />
-    <Compile Include="Service\Core.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Views\FormConfiger.cs">
       <SubType>Form</SubType>

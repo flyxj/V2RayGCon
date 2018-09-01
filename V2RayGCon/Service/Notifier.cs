@@ -7,18 +7,15 @@ namespace V2RayGCon.Service
     class Notifier : Model.BaseClass.SingletonService<Notifier>
     {
         NotifyIcon ni;
-        Core core;
         Setting setting;
 
         Notifier()
         {
             setting = Setting.Instance;
-            core = Core.Instance;
             CreateNotifyIcon();
 
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
-            core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if DEBUG
             This_function_do_some_tedious_stuff();
@@ -66,25 +63,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        void UpdateNotifyText()
-        {
-            var type = setting.proxyType;
-            var protocol = Model.Data.Table.proxyTypesString[type];
-
-            var proxy = string.Empty;
-            if (type == (int)Model.Data.Enum.ProxyTypes.config)
-            {
-                proxy = setting.GetInbountInfo();
-            }
-            else
-            {
-                proxy = string.Format("{0}://{1}", protocol, setting.proxyAddr);
-            }
-
-            var title = string.Format("{0} {1}", setting.GetCurAlias(), proxy);
-
-            ni.Text = core.isRunning ? title : I18N("Description");
-        }
 
         void CreateNotifyIcon()
         {
@@ -151,14 +129,14 @@ namespace V2RayGCon.Service
 
         void Cleanup()
         {
-            Debug.WriteLine("Call cleanup");
             ni.Visible = false;
             if (setting.isSysProxyHasSet)
             {
                 Lib.ProxySetter.setProxy("", false);
                 setting.isSysProxyHasSet = false;
             }
-            core.StopCoreThen(null);
+
+            setting.StopAllCoreThen();
         }
         #endregion
     }

@@ -18,14 +18,12 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Core core;
         Service.Downloader downloader;
 
         FormDownloadCore()
         {
             InitializeComponent();
             InitUI();
-            core = Service.Core.Instance;
 
             this.FormClosed += (s, e) => downloader?.Cancel();
 
@@ -51,6 +49,7 @@ namespace V2RayGCon.Views
 
             Task.Factory.StartNew(() =>
             {
+                var core = new Model.BaseClass.CoreServer();
                 var version = core.GetCoreVersion();
                 var msg = string.IsNullOrEmpty(version) ?
                     I18N("GetCoreVerFail") :

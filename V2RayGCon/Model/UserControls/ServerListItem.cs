@@ -53,6 +53,26 @@ namespace V2RayGCon.Model.UserControls
                     var config=item.config;
                     new Views.FormConfiger(this.serverItem.config);
                 }),
+                new MenuItem(I18N("Copy"),new MenuItem[]{
+                    new MenuItem(I18N("VmessLink"),(s,a)=>{
+                        MessageBox.Show(
+                            Lib.Utils.CopyToClipboard(
+                                Lib.Utils.Vmess2VmessLink(
+                                    Lib.Utils.ConfigString2Vmess(
+                                        this.serverItem.config)))?
+                                        I18N("LinksCopied") :
+                                        I18N("CopyFail"));
+                    }),
+                    new MenuItem(I18N("V2RayLink"),(s,a)=>{
+                        MessageBox.Show(
+                            Lib.Utils.CopyToClipboard(
+                                Lib.Utils.AddLinkPrefix(
+                                    Lib.Utils.Base64Encode(this.serverItem.config),
+                                    Model.Data.Enum.LinkTypes.v2ray)) ?
+                            I18N("LinksCopied") :
+                            I18N("CopyFail"));
+                    }),
+                }),
             });
         }
 
@@ -72,6 +92,7 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+
         public void SetIndex(int index)
         {
             this.lbIndex.Text = index.ToString();
@@ -139,8 +160,6 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetInboundIP(txt);
         }
 
-        #endregion
-
         private void tboxInboundPort_TextChanged(object sender, EventArgs e)
         {
             var txt = tboxInboundPort.Text;
@@ -158,9 +177,9 @@ namespace V2RayGCon.Model.UserControls
                 return;
             }
 
-            var flyPanel = this.Parent as FlowLayoutPanel;
-            flyPanel.Controls.Remove(this);
-            // todo remove serverItem from setting.serverList
+            serverItem.Delete();
         }
+
+        #endregion
     }
 }

@@ -38,12 +38,12 @@ namespace V2RayGCon.Views
             tester = new Model.BaseClass.CoreServer();
             tester.OnLog += LogReceiver;
 
-            setting.OnSettingChange += SettingChange;
+            setting.OnRequireMenuUpdate += SettingChange;
 
             this.FormClosed += (s, a) =>
             {
                 tester.OnLog -= LogReceiver;
-                setting.OnSettingChange -= SettingChange;
+                setting.OnRequireMenuUpdate -= SettingChange;
                 tester.StopCoreThen(null);
             };
 
@@ -89,23 +89,23 @@ namespace V2RayGCon.Views
         {
             cboxServList.Items.Clear();
 
-            var aliases = setting.GetAllAliases();
+            var servers = setting.GetServerList();
 
-            if (aliases.Count <= 0)
+            if (servers.Count <= 0)
             {
                 cboxServList.SelectedIndex = -1;
                 return;
             }
 
-            foreach (var alias in aliases)
+            foreach (var server in servers)
             {
-                cboxServList.Items.Add(alias);
+                cboxServList.Items.Add(server.name);
             }
 
             cboxServList.SelectedIndex = Lib.Utils.Clamp(
                 preIndex,
                 0,
-                aliases.Count);
+                servers.Count);
         }
 
         void SetTitle(bool running)

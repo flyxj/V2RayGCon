@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,14 +17,9 @@ namespace V2RayGCon.Service
 
         private Model.Data.ServerList serverList;
 
-        // summaryCache = ( writeLock, cachedData)
-        Model.BaseClass.CacheComponent<string, string[]> summaryCache;
-
         public event EventHandler OnSettingChange;
         public event EventHandler<Model.Data.StrEvent> OnLog;
-        public event EventHandler OnRequireCoreRestart;
-
-        private object addServerLock;
+        public event EventHandler OnRequireMenuUpdate;
 
         Queue<string> logCache;
 
@@ -37,13 +31,13 @@ namespace V2RayGCon.Service
             serverList.BindEvents();
 
             isSysProxyHasSet = false;
-            addServerLock = new object();
-
-            summaryCache = new Model.BaseClass.CacheComponent<string, string[]>();
 
             serverList.OnLog += (s, a) => SendLog(a.Data);
-            OnServerListChanged();
-            serverList.ListChanged += OnServerListChanged;
+
+            SaveServerList();
+
+            serverList.ListChanged += SaveServerList;
+            serverList.RequireMenuUpdate += InvokeOnRequireMenuUpdate;
         }
 
         #region Properties
@@ -150,6 +144,11 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void StopAllCoreThen(Action lambda = null)
+        {
+            serverList.StopAllCoreThen(lambda);
+        }
+
         public string GetLogCache()
         {
             return string.Join("\n", logCache);
@@ -169,18 +168,6 @@ namespace V2RayGCon.Service
 
             var arg = new Model.Data.StrEvent(log);
             OnLog?.Invoke(this, arg);
-        }
-
-        public string GetCurAlias()
-        {
-            var aliases = GetAllAliases();
-            if (aliases.Count < 1)
-            {
-                return string.Empty;
-            }
-            var index = GetCurServIndex();
-            index = Lib.Utils.Clamp(index, 0, aliases.Count);
-            return aliases[index];
         }
 
         public string GetInbountInfo()
@@ -212,130 +199,6 @@ namespace V2RayGCon.Service
         public int GetServerCount()
         {
             return serverList.Count;
-        }
-
-        public void MoveItemToTop(int index)
-        {
-            var n = Lib.Utils.Clamp(index, 0, GetServerCount());
-
-            if (_curServIndex == n)
-            {
-                _curServIndex = 0;
-            }
-            else if (_curServIndex < n)
-            {
-                _curServIndex++;
-            }
-
-            var item = servers[n];
-            servers.RemoveAtQuiet(n);
-            servers.Insert(0, item);
-            SaveServerList();
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void MoveItemUp(int index)
-        {
-            if (index < 1 || index > GetServerCount() - 1)
-            {
-                return;
-            }
-            if (_curServIndex == index)
-            {
-                _curServIndex--;
-            }
-            else if (_curServIndex == index - 1)
-            {
-                _curServIndex++;
-            }
-            var item = servers[index];
-            servers.RemoveAtQuiet(index);
-            servers.Insert(index - 1, item);
-            SaveServerList();
-
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void MoveItemDown(int index)
-        {
-            if (index < 0 || index > GetServerCount() - 2)
-            {
-                return;
-            }
-            if (_curServIndex == index)
-            {
-                _curServIndex++;
-            }
-            else if (_curServIndex == index + 1)
-            {
-                _curServIndex--;
-            }
-            var item = servers[index];
-            servers.RemoveAtQuiet(index);
-            servers.Insert(index + 1, item);
-            SaveServerList();
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void MoveItemToButtom(int index)
-        {
-            var n = Lib.Utils.Clamp(index, 0, GetServerCount());
-
-            if (_curServIndex == n)
-            {
-                _curServIndex = GetServerCount() - 1;
-            }
-            else if (_curServIndex > n)
-            {
-                _curServIndex--;
-            }
-            var item = servers[n];
-            servers.RemoveAtQuiet(n);
-            servers.Add(item);
-            SaveServerList();
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void DeleteAllServers()
-        {
-            serverList.Clear();
-            Cache.Instance.core.Clear();
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
-            OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void DeleteServer(int index)
-        {
-            Debug.WriteLine("delete server: " + index);
-
-            if (index < 0 || index >= GetServerCount())
-            {
-                Debug.WriteLine("index out of range");
-                return;
-            }
-
-            servers.RemoveAt(index);
-            SaveServerList();
-
-            if (_curServIndex >= GetServerCount())
-            {
-                // normal restart
-                _curServIndex = GetServerCount() - 1;
-                OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
-            }
-            else if (_curServIndex == index)
-            {
-                // force restart
-                OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
-            }
-            else if (_curServIndex > index)
-            {
-                // do not need restart
-                _curServIndex--;
-            }
-
-            // do not need restart
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void ImportLinks(string links)
@@ -388,20 +251,7 @@ namespace V2RayGCon.Service
             });
         }
 
-        public ReadOnlyCollection<string> GetAllAliases()
-        {
-            var alias = new List<string>();
-            var count = 1;
-            foreach (var s in GetAllServersSummary())
-            {
-                alias.Add(
-                    string.Format(
-                        "{0}.{1}",
-                        count++,
-                        s[1]));
-            };
-            return alias.AsReadOnly();
-        }
+
 
         public List<Model.Data.UrlItem> GetImportUrlItems()
         {
@@ -439,7 +289,7 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
-        public void SaveSubscriptionOptions(string options)
+        public void SaveSubscriptionUrls(string options)
         {
             Properties.Settings.Default.SubscribeUrls = options;
             Properties.Settings.Default.Save();
@@ -484,49 +334,10 @@ namespace V2RayGCon.Service
             serverList = list;
         }
 
-        public ReadOnlyCollection<string[]> GetAllServersSummary()
-        {
-            var serverList = new List<string>(servers);
-            var summarys = new List<string[]>();
-            var data = summaryCache;
-
-            for (var i = 0; i < serverList.Count; i++)
-            {
-                var key = serverList[i];
-                string[] summary = null;
-                if (!data.ContainsKey(key)
-                    || data[key] == null)
-                {
-                    summary = GetSummaryFromConfig(
-                        JObject.Parse(Lib.Utils.Base64Decode(key)));
-                }
-                else
-                {
-                    summary = data[key];
-                }
-
-                summary[0] = (i + 1).ToString();
-                summarys.Add(summary);
-            }
-
-            System.GC.Collect();
-            return summarys.AsReadOnly();
-        }
 
         public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
         {
             return serverList.OrderBy(o => o.index).ToList().AsReadOnly();
-        }
-
-        // deletemark
-        public ReadOnlyCollection<string> GetAllServers()
-        {
-            return servers.AsReadOnly();
-        }
-
-        public int GetServerIndex(string b64Server)
-        {
-            return servers.IndexOf(b64Server);
         }
 
         public string GetServer(int index)
@@ -545,31 +356,13 @@ namespace V2RayGCon.Service
         {
             var result = false;
 
-            lock (addServerLock)
-            {
-                result = serverList.AddConfig(Lib.Utils.Config2String(config));
-            }
-
+            result = serverList.AddConfig(Lib.Utils.Config2String(config));
             if (result && !quiet)
             {
-                try
-                {
-                    OnSettingChange?.Invoke(this, EventArgs.Empty);
-                }
-                catch { }
+                InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
             }
 
             return result;
-        }
-
-        public void ActivateServer(int index = -1)
-        {
-            if (index >= 0)
-            {
-                _curServIndex = index;
-            }
-            OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public int SearchServer(string configString)
@@ -584,24 +377,23 @@ namespace V2RayGCon.Service
                 return false;
             }
 
-            lock (addServerLock)
-            {
-                serverList.Replace(orgIndex, newConfig);
-            }
-
-            OnSettingChange?.Invoke(this, EventArgs.Empty);
+            serverList.Replace(orgIndex, newConfig);
             return true;
         }
 
-        public void RefreshSummaries()
-        {
-            summaryCache.Clear();
-            Cache.Instance.html.Clear();
-            UpdateSummaryCache(new List<string>(servers));
-        }
+
         #endregion
 
         #region private method
+
+        void InvokeOnRequireMenuUpdate(object sender, EventArgs args)
+        {
+            try
+            {
+                OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
 
         Tuple<bool, List<string[]>> ImportSSLinks(string text)
         {
@@ -712,129 +504,6 @@ namespace V2RayGCon.Service
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-        string GetAliasFromConfig(JObject config)
-        {
-            var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
-
-            return
-                string.IsNullOrEmpty(name) ?
-                I18N("Empty") :
-                Lib.Utils.CutStr(name, 20);
-        }
-
-        string[] GetSummaryFromConfig(JObject config)
-        {
-            var summary = new string[] {
-                string.Empty,  // reserve for no.
-                string.Empty,  // reserve for alias
-                string.Empty,
-                string.Empty,  // ip
-                string.Empty,  // port
-                string.Empty,  // reserve for activate
-                string.Empty,  // stream type
-                string.Empty,  // wspath
-                string.Empty,  // tls
-                string.Empty,  // mKCP disguise
-            };
-
-            var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
-
-            summary[1] = string.IsNullOrEmpty(name) ?
-                I18N("Empty") :
-                Lib.Utils.CutStr(name, 20);
-
-            var GetStr = Lib.Utils.GetStringByKeyHelper(config);
-
-            var protocol = GetStr("outbound.protocol");
-
-            if (string.IsNullOrEmpty(protocol))
-            {
-                return summary;
-            }
-
-            summary[2] = protocol;
-            if (protocol == "vmess" || protocol == "shadowsocks")
-            {
-                var keys = Model.Data.Table.servInfoKeys[protocol];
-                summary[3] = GetStr(keys[0]);
-                summary[4] = GetStr(keys[1]);
-                summary[6] = GetStr(keys[4]);
-                summary[7] = GetStr(keys[3]);
-                summary[8] = GetStr(keys[2]);
-                summary[9] = GetStr(keys[5]);
-            }
-
-            return summary;
-        }
-
-        List<string[]> ParseAllConfigsImport(List<string> serverList)
-        {
-            var result = Lib.Utils.ExecuteInParallel<string, string[]>(serverList, (server) =>
-            {
-                try
-                {
-                    return GetSummaryFromConfig(
-                        Lib.ImportParser.ParseImport(
-                            Lib.Utils.InjectGlobalImport(
-                                Lib.Utils.Base64Decode(server))));
-                }
-                catch
-                {
-                    return null;
-                }
-            });
-
-            System.GC.Collect();
-            return result;
-        }
-
-        List<string> FilterSummaryUpdateList(List<string> updateList)
-        {
-            var result = new List<string>();
-            foreach (var server in updateList)
-            {
-                if (!summaryCache.ContainsKey(server)
-                    || summaryCache[server] == null)
-                {
-                    result.Add(server);
-                }
-            }
-            return result;
-        }
-
-        void UpdateSummaryCache(List<string> updateList)
-        {
-            var serverList = FilterSummaryUpdateList(updateList);
-
-            if (serverList.Count <= 0)
-            {
-                return;
-            }
-
-            Task.Factory.StartNew(() =>
-            {
-                var summaryList = ParseAllConfigsImport(serverList);
-
-                lock (summaryCache.writeLock)
-                {
-                    for (var i = 0; i < serverList.Count; i++)
-                    {
-                        var key = serverList[i];
-                        summaryCache[key] = summaryList[i];
-                    }
-                }
-
-                OnSettingChange?.Invoke(this, EventArgs.Empty);
-            });
-        }
-
-        void OnServerListChanged()
-        {
-            // save to disk once list is changed
-            SaveServerList();
-
-            // UpdateSummaryCache(new List<string>(servers));
-        }
 
         void SaveServerList()
         {

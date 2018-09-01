@@ -47,9 +47,9 @@ namespace V2RayGCon.Controller
             }
 
             var serverString = string.Empty;
-            foreach (var server in Service.Setting.Instance.GetAllServers())
+            foreach (var server in Service.Setting.Instance.GetServerList())
             {
-                serverString += "v2ray://" + server + "\n";
+                serverString += "v2ray://" + Lib.Utils.Base64Encode(server.config) + "\n";
             }
 
             var data = new Dictionary<string, string> {
@@ -101,17 +101,11 @@ namespace V2RayGCon.Controller
             }
 
             var setting = Service.Setting.Instance;
-            var core = Service.Core.Instance;
 
             if (options.ContainsKey("import"))
             {
                 GetComponent<Controller.OptionComponent.Import>()
                     .Reload(options["import"]);
-
-                if (core.isRunning)
-                {
-                    setting.ActivateServer();
-                }
             }
 
             if (options.ContainsKey("subscription"))

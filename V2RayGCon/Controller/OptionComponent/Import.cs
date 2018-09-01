@@ -35,11 +35,6 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 setting.SaveImportUrlOptions(curOptions);
                 oldOptions = curOptions;
-                if (Service.Core.Instance.isRunning
-                    && !setting.isDisableGlobalImports)
-                {
-                    setting.ActivateServer();
-                }
                 return true;
             }
             return false;

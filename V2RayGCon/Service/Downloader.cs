@@ -9,7 +9,7 @@ namespace V2RayGCon.Service
     {
         public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
         public event EventHandler<Model.Data.IntEvent> OnProgress;
-        Core core;
+
         Setting setting;
         string _packageName;
         string _version;
@@ -19,7 +19,6 @@ namespace V2RayGCon.Service
         public Downloader()
         {
             setting = Setting.Instance;
-            core = Core.Instance;
 
             SetArchitecture(false);
             _version = StrConst("DefCoreVersion");
@@ -96,16 +95,10 @@ namespace V2RayGCon.Service
 
         void UpdateCore()
         {
-            if (!core.isRunning)
-            {
-                NotifyDownloadResults(UnzipPackage());
-                return;
-            }
-
-            core.StopCoreThen(() =>
+            setting.StopAllCoreThen(() =>
             {
                 var status = UnzipPackage();
-                setting.ActivateServer();
+
                 NotifyDownloadResults(status);
             });
 
