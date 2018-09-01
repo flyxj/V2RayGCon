@@ -391,6 +391,12 @@ namespace V2RayGCon.Lib
 
         #region convert
 
+        public static string Config2String(JObject config)
+        {
+            return config.ToString(Formatting.None);
+        }
+
+
         public static string Config2Base64String(JObject config)
         {
             return Base64Encode(config.ToString(Formatting.None));

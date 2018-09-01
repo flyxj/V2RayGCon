@@ -26,6 +26,11 @@ namespace V2RayGCon.Model.Data
             // notify();
         }
 
+        public List<T> GetRawList()
+        {
+            return this.list;
+        }
+
         public ReadOnlyCollection<T> AsReadOnly()
         {
             return list.AsReadOnly();

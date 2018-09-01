@@ -24,7 +24,9 @@ namespace V2RayGCon.Views
 
         Service.Setting setting;
         Service.Core core;
+        Controller.FormMainOldCtrl oldFormMainCtrl;
         Controller.FormMainCtrl formMainCtrl;
+
 
         FormMain()
         {
@@ -41,7 +43,7 @@ namespace V2RayGCon.Views
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            formMainCtrl = new Controller.FormMainCtrl();
+            oldFormMainCtrl = new Controller.FormMainOldCtrl();
 
             ListViewSupportRightClickMenu();
 
@@ -51,6 +53,7 @@ namespace V2RayGCon.Views
             {
                 setting.OnSettingChange -= SettingChangeHandler;
                 core.OnCoreStatChange -= SettingChangeHandler;
+                formMainCtrl.Cleanup();
             };
 
             Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
@@ -60,11 +63,23 @@ namespace V2RayGCon.Views
                 Properties.Resources.AppName,
                 Properties.Resources.Version);
 
+            formMainCtrl = InitFormMainCtrl();
+
             setting.OnSettingChange += SettingChangeHandler;
             core.OnCoreStatChange += SettingChangeHandler;
         }
 
         #region private method
+        private Controller.FormMainCtrl InitFormMainCtrl()
+        {
+            var ctrl = new Controller.FormMainCtrl();
+
+            ctrl.Plug(new Controller.FormMainComponent.FlyServer(
+                flyServerListContainer));
+
+            return ctrl;
+        }
+
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             setting.RefreshSummaries();
@@ -72,6 +87,8 @@ namespace V2RayGCon.Views
 
         void SettingChangeHandler(object s, EventArgs e)
         {
+            formMainCtrl.RefreshUI();
+
             try
             {
                 lvServers.Invoke((MethodInvoker)delegate
@@ -260,7 +277,7 @@ namespace V2RayGCon.Views
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new FormConfiger(GetSelectedServerIndex());
+            new FormConfiger();
         }
 
         private void activateToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -275,7 +292,7 @@ namespace V2RayGCon.Views
 
         private void ImportLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.ImportLinks();
+            oldFormMainCtrl.ImportLinks();
         }
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
@@ -285,22 +302,22 @@ namespace V2RayGCon.Views
 
         private void CopyAllVmessLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.CopyAllVmessLink();
+            oldFormMainCtrl.CopyAllVmessLink();
         }
 
         private void CopyAllV2RayLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.CopyAllV2RayLink();
+            oldFormMainCtrl.CopyAllV2RayLink();
         }
 
         private void CopyVmessLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.CopyVmessLink(GetSelectedServerIndex());
+            oldFormMainCtrl.CopyVmessLink(GetSelectedServerIndex());
         }
 
         private void CopyV2RayLinkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.CopyV2RayLink(GetSelectedServerIndex());
+            oldFormMainCtrl.CopyV2RayLink(GetSelectedServerIndex());
         }
 
         private void MoveDownToolStripMenuItem_Click(object sender, EventArgs e)
@@ -379,7 +396,7 @@ namespace V2RayGCon.Views
 
         private void checkUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(formMainCtrl.CheckUpdate);
+            Task.Factory.StartNew(oldFormMainCtrl.CheckUpdate);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -389,12 +406,12 @@ namespace V2RayGCon.Views
 
         private void exportAllServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.ExportAllServersToTextFile();
+            oldFormMainCtrl.ExportAllServersToTextFile();
         }
 
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            formMainCtrl.ImportServersFromTextFile();
+            oldFormMainCtrl.ImportServersFromTextFile();
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -441,28 +458,10 @@ namespace V2RayGCon.Views
 
         private void addNewServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            flyServerListContainer.Controls.Add(
-                new Model.UserControls.ServerListItem());
+            //flyServerListContainer.Controls.Add(
+            //    new Model.UserControls.ServerListItem());
         }
 
-        private void flyServerListContainer_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.Move;
-        }
 
-        private void flyServerListContainer_DragDrop(object sender, DragEventArgs e)
-        {
-            // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
-
-            var data = e.Data.GetData(typeof(Model.UserControls.ServerListItem))
-                as Model.UserControls.ServerListItem;
-
-            var _destination = sender as FlowLayoutPanel;
-            Point p = _destination.PointToClient(new Point(e.X, e.Y));
-            var item = _destination.GetChildAtPoint(p);
-            int index = _destination.Controls.GetChildIndex(item, false);
-            _destination.Controls.SetChildIndex(data, index);
-            _destination.Invalidate();
-        }
     }
 }

@@ -46,7 +46,6 @@ namespace V2RayGCon.Model.UserControls
             }
 
             var flyPanel = this.Parent as FlowLayoutPanel;
-            var form = this.FindForm() as Views.FormOption;
             flyPanel.Controls.Remove(this);
 
             this.OnDeleted?.Invoke();

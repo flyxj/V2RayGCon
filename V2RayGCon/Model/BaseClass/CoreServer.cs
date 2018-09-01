@@ -30,11 +30,9 @@ namespace V2RayGCon.Model.BaseClass
 
         Process v2rayCore;
         bool _isRunning;
-        Service.Setting setting;
 
         public CoreServer()
         {
-            setting = Service.Setting.Instance;
             _isRunning = false;
             v2rayCore = null;
         }

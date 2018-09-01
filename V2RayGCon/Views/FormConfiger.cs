@@ -33,17 +33,17 @@ namespace V2RayGCon.Views
         Service.Setting setting;
         FormSearch formSearch;
         ToolsPanelHandler toolsPanelHandler;
+        string originalConfigString;
 
-        int _serverIndex;
         string formTitle;
 
-        public FormConfiger(int serverIndex = -1)
+        public FormConfiger(string originalConfigString = null)
         {
             setting = Service.Setting.Instance;
-            _serverIndex = serverIndex;
             formSearch = null;
             InitializeComponent();
             formTitle = this.Text;
+            this.originalConfigString = originalConfigString;
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
@@ -170,7 +170,7 @@ namespace V2RayGCon.Views
         {
             if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
             {
-                if (configer.ReplaceOriginalServer())
+                if (configer.SaveServer())
                 {
                     SetTitle(configer.GetAlias());
                 }
@@ -287,7 +287,7 @@ namespace V2RayGCon.Views
 
             };
 
-            configer = new Controller.Configer(_serverIndex);
+            configer = new Controller.Configer(this.originalConfigString);
             configer.Plug(components);
             configer.Prepare();
         }
@@ -360,35 +360,35 @@ namespace V2RayGCon.Views
             menuReplaceServer.Clear();
             menuLoadServer.Clear();
 
-            var aliases = setting.GetAllAliases();
+            var servers = setting.GetServerList();
 
-            var enable = aliases.Count > 0;
+            var enable = servers.Count > 0;
             replaceExistServerToolStripMenuItem.Enabled = enable;
             loadServerToolStripMenuItem.Enabled = enable;
 
-            for (int i = 0; i < aliases.Count; i++)
+            for (int i = 0; i < servers.Count; i++)
             {
-                var index = i;
-                menuReplaceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                var name = string.Format("{0}.{1}", i + 1, servers[i].name);
+                var org = servers[i].config;
+                menuReplaceServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
-                        if (configer.ReplaceServer(index))
+                        if (configer.ReplaceServer(org))
                         {
                             SetTitle(configer.GetAlias());
                         }
                     }
                 }));
 
-                menuLoadServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                menuLoadServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (!configer.IsConfigSaved()
                     && !Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
                     {
                         return;
                     }
-
-                    configer.LoadServer(index);
+                    configer.LoadServer(org);
                     SetTitle(configer.GetAlias());
                 }));
             }

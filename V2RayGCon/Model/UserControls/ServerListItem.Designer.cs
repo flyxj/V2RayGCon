@@ -36,19 +36,22 @@
             this.chkImport = new System.Windows.Forms.CheckBox();
             this.chkEnv = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.tboxAddress = new System.Windows.Forms.TextBox();
+            this.tboxInboundIP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnAction = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lbRunning = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label3 = new System.Windows.Forms.Label();
+            this.tboxInboundPort = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbSummary
             // 
             this.lbSummary.AutoSize = true;
-            this.lbSummary.Location = new System.Drawing.Point(38, 11);
+            this.lbSummary.Location = new System.Drawing.Point(57, 16);
+            this.lbSummary.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbSummary.Name = "lbSummary";
-            this.lbSummary.Size = new System.Drawing.Size(149, 12);
+            this.lbSummary.Size = new System.Drawing.Size(224, 18);
             this.lbSummary.TabIndex = 0;
             this.lbSummary.Text = "[lovely] vmess@127.0.0.1";
             // 
@@ -58,18 +61,20 @@
             this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
             this.lbIndex.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold);
             this.lbIndex.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lbIndex.Location = new System.Drawing.Point(6, 7);
+            this.lbIndex.Location = new System.Drawing.Point(9, 10);
+            this.lbIndex.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbIndex.Name = "lbIndex";
-            this.lbIndex.Size = new System.Drawing.Size(26, 16);
+            this.lbIndex.Size = new System.Drawing.Size(36, 24);
             this.lbIndex.TabIndex = 1;
             this.lbIndex.Text = "78";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 60);
+            this.label1.Location = new System.Drawing.Point(57, 88);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.Size = new System.Drawing.Size(71, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "Inbound";
             // 
@@ -81,95 +86,131 @@
             "Config",
             "HTTP",
             "SOCKS"});
-            this.cboxInbound.Location = new System.Drawing.Point(91, 56);
+            this.cboxInbound.Location = new System.Drawing.Point(136, 84);
+            this.cboxInbound.Margin = new System.Windows.Forms.Padding(4);
             this.cboxInbound.Name = "cboxInbound";
-            this.cboxInbound.Size = new System.Drawing.Size(82, 20);
+            this.cboxInbound.Size = new System.Drawing.Size(121, 26);
             this.cboxInbound.TabIndex = 3;
+            this.cboxInbound.SelectedIndexChanged += new System.EventHandler(this.cboxInbound_SelectedIndexChanged);
             // 
             // chkImport
             // 
             this.chkImport.AutoSize = true;
-            this.chkImport.Location = new System.Drawing.Point(227, 58);
+            this.chkImport.Location = new System.Drawing.Point(271, 86);
+            this.chkImport.Margin = new System.Windows.Forms.Padding(4);
             this.chkImport.Name = "chkImport";
-            this.chkImport.Size = new System.Drawing.Size(60, 16);
+            this.chkImport.Size = new System.Drawing.Size(88, 22);
             this.chkImport.TabIndex = 4;
             this.chkImport.Text = "Import";
             this.chkImport.UseVisualStyleBackColor = true;
+            this.chkImport.CheckedChanged += new System.EventHandler(this.chkImport_CheckedChanged);
             // 
             // chkEnv
             // 
             this.chkEnv.AutoSize = true;
-            this.chkEnv.Location = new System.Drawing.Point(181, 58);
+            this.chkEnv.Location = new System.Drawing.Point(367, 86);
+            this.chkEnv.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnv.Name = "chkEnv";
-            this.chkEnv.Size = new System.Drawing.Size(42, 16);
+            this.chkEnv.Size = new System.Drawing.Size(61, 22);
             this.chkEnv.TabIndex = 4;
             this.chkEnv.Text = "Env";
             this.chkEnv.UseVisualStyleBackColor = true;
+            this.chkEnv.CheckedChanged += new System.EventHandler(this.chkEnv_CheckedChanged);
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(293, 29);
+            this.btnDelete.Location = new System.Drawing.Point(440, 42);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(60, 21);
+            this.btnDelete.Size = new System.Drawing.Size(90, 32);
             this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // tboxAddress
+            // tboxInboundIP
             // 
-            this.tboxAddress.Location = new System.Drawing.Point(91, 29);
-            this.tboxAddress.Name = "tboxAddress";
-            this.tboxAddress.Size = new System.Drawing.Size(196, 21);
-            this.tboxAddress.TabIndex = 6;
-            this.tboxAddress.Text = "127.0.0.1:1080";
+            this.tboxInboundIP.Location = new System.Drawing.Point(136, 44);
+            this.tboxInboundIP.Margin = new System.Windows.Forms.Padding(4);
+            this.tboxInboundIP.Name = "tboxInboundIP";
+            this.tboxInboundIP.Size = new System.Drawing.Size(160, 28);
+            this.tboxInboundIP.TabIndex = 6;
+            this.tboxInboundIP.Text = "127.0.0.1";
+            this.tboxInboundIP.TextChanged += new System.EventHandler(this.tboxInboundIP_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 33);
+            this.label2.Location = new System.Drawing.Point(57, 49);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 12);
+            this.label2.Size = new System.Drawing.Size(26, 18);
             this.label2.TabIndex = 2;
-            this.label2.Text = "IP:Port";
+            this.label2.Text = "IP";
             // 
             // btnAction
             // 
-            this.btnAction.Location = new System.Drawing.Point(293, 56);
+            this.btnAction.Location = new System.Drawing.Point(440, 81);
+            this.btnAction.Margin = new System.Windows.Forms.Padding(4);
             this.btnAction.Name = "btnAction";
-            this.btnAction.Size = new System.Drawing.Size(60, 21);
+            this.btnAction.Size = new System.Drawing.Size(90, 32);
             this.btnAction.TabIndex = 5;
             this.btnAction.Text = "Action";
             this.btnAction.UseVisualStyleBackColor = true;
+            this.btnAction.Click += new System.EventHandler(this.btnAction_Click);
             // 
-            // label4
+            // lbRunning
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label4.Location = new System.Drawing.Point(310, 11);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(26, 12);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "OFF";
+            this.lbRunning.AutoSize = true;
+            this.lbRunning.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbRunning.ForeColor = System.Drawing.Color.DarkOrange;
+            this.lbRunning.Location = new System.Drawing.Point(465, 16);
+            this.lbRunning.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbRunning.Name = "lbRunning";
+            this.lbRunning.Size = new System.Drawing.Size(38, 18);
+            this.lbRunning.TabIndex = 2;
+            this.lbRunning.Text = "OFF";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(304, 49);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 18);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Port";
+            // 
+            // tboxInboundPort
+            // 
+            this.tboxInboundPort.Location = new System.Drawing.Point(355, 44);
+            this.tboxInboundPort.Name = "tboxInboundPort";
+            this.tboxInboundPort.Size = new System.Drawing.Size(73, 28);
+            this.tboxInboundPort.TabIndex = 7;
+            this.tboxInboundPort.TextChanged += new System.EventHandler(this.tboxInboundPort_TextChanged);
             // 
             // ServerListItem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.tboxAddress);
+            this.Controls.Add(this.tboxInboundPort);
+            this.Controls.Add(this.tboxInboundIP);
             this.Controls.Add(this.btnAction);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.chkEnv);
             this.Controls.Add(this.chkImport);
             this.Controls.Add(this.cboxInbound);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lbRunning);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbIndex);
             this.Controls.Add(this.lbSummary);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ServerListItem";
-            this.Size = new System.Drawing.Size(360, 84);
+            this.Size = new System.Drawing.Size(540, 126);
+            this.Load += new System.EventHandler(this.ServerListItem_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServerListItem_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -184,10 +225,12 @@
         private System.Windows.Forms.CheckBox chkImport;
         private System.Windows.Forms.CheckBox chkEnv;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.TextBox tboxAddress;
+        private System.Windows.Forms.TextBox tboxInboundIP;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnAction;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbRunning;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tboxInboundPort;
     }
 }

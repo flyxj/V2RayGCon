@@ -76,6 +76,7 @@ namespace V2RayGCon.Views
             this.checkUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNewServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lvServers = new System.Windows.Forms.ListView();
             this.colmIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colmAlias = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -105,7 +106,6 @@ namespace V2RayGCon.Views
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.buttomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.addNewServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flyServerListContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.ctxMenuStrip.SuspendLayout();
@@ -413,6 +413,12 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
+            // addNewServerToolStripMenuItem
+            // 
+            this.addNewServerToolStripMenuItem.Name = "addNewServerToolStripMenuItem";
+            resources.ApplyResources(this.addNewServerToolStripMenuItem, "addNewServerToolStripMenuItem");
+            this.addNewServerToolStripMenuItem.Click += new System.EventHandler(this.addNewServerToolStripMenuItem_Click);
+            // 
             // lvServers
             // 
             resources.ApplyResources(this.lvServers, "lvServers");
@@ -589,12 +595,6 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.buttomToolStripMenuItem, "buttomToolStripMenuItem");
             this.buttomToolStripMenuItem.Click += new System.EventHandler(this.MoveToButtomToolStripMenuItem_Click);
             // 
-            // addNewServerToolStripMenuItem
-            // 
-            this.addNewServerToolStripMenuItem.Name = "addNewServerToolStripMenuItem";
-            resources.ApplyResources(this.addNewServerToolStripMenuItem, "addNewServerToolStripMenuItem");
-            this.addNewServerToolStripMenuItem.Click += new System.EventHandler(this.addNewServerToolStripMenuItem_Click);
-            // 
             // flyServerListContainer
             // 
             this.flyServerListContainer.AllowDrop = true;
@@ -602,8 +602,6 @@ namespace V2RayGCon.Views
             this.flyServerListContainer.BackColor = System.Drawing.Color.White;
             this.flyServerListContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flyServerListContainer.Name = "flyServerListContainer";
-            this.flyServerListContainer.DragDrop += new System.Windows.Forms.DragEventHandler(this.flyServerListContainer_DragDrop);
-            this.flyServerListContainer.DragEnter += new System.Windows.Forms.DragEventHandler(this.flyServerListContainer_DragEnter);
             // 
             // FormMain
             // 

@@ -154,5 +154,17 @@ namespace V2RayGCon.Properties {
                 this["DisableGlobalImport"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServerList {
+            get {
+                return ((string)(this["ServerList"]));
+            }
+            set {
+                this["ServerList"] = value;
+            }
+        }
     }
 }

@@ -4,15 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
-    class Setting : Model.BaseClass.SingletonService<Setting>
+    public class Setting : Model.BaseClass.SingletonService<Setting>
     {
-        private Model.Data.EventList<string> servers;
+        private Model.Data.EventList<string> servers
+            = new Model.Data.EventList<string>();
+
+        private Model.Data.ServerList serverList;
 
         // summaryCache = ( writeLock, cachedData)
         Model.BaseClass.CacheComponent<string, string[]> summaryCache;
@@ -29,16 +33,17 @@ namespace V2RayGCon.Service
         {
             logCache = new Queue<string>();
 
-            LoadServers();
-            SaveServers();
+            LoadServerList();
+            serverList.BindEvents();
 
             isSysProxyHasSet = false;
             addServerLock = new object();
 
             summaryCache = new Model.BaseClass.CacheComponent<string, string[]>();
 
+            serverList.OnLog += (s, a) => SendLog(a.Data);
             OnServerListChanged();
-            servers.ListChanged += OnServerListChanged;
+            serverList.ListChanged += OnServerListChanged;
         }
 
         #region Properties
@@ -152,7 +157,7 @@ namespace V2RayGCon.Service
 
         public void SendLog(string log)
         {
-            // keep 200 lines of log in cache
+            // cache 200 lines of log
             if (logCache.Count > 300)
             {
                 for (var i = 0; i < 100; i++)
@@ -206,7 +211,7 @@ namespace V2RayGCon.Service
 
         public int GetServerCount()
         {
-            return servers.Count;
+            return serverList.Count;
         }
 
         public void MoveItemToTop(int index)
@@ -225,7 +230,7 @@ namespace V2RayGCon.Service
             var item = servers[n];
             servers.RemoveAtQuiet(n);
             servers.Insert(0, item);
-            SaveServers();
+            SaveServerList();
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
@@ -246,7 +251,7 @@ namespace V2RayGCon.Service
             var item = servers[index];
             servers.RemoveAtQuiet(index);
             servers.Insert(index - 1, item);
-            SaveServers();
+            SaveServerList();
 
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
@@ -268,7 +273,7 @@ namespace V2RayGCon.Service
             var item = servers[index];
             servers.RemoveAtQuiet(index);
             servers.Insert(index + 1, item);
-            SaveServers();
+            SaveServerList();
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
@@ -287,14 +292,13 @@ namespace V2RayGCon.Service
             var item = servers[n];
             servers.RemoveAtQuiet(n);
             servers.Add(item);
-            SaveServers();
+            SaveServerList();
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
         public void DeleteAllServers()
         {
-            servers.Clear();
-            SaveServers();
+            serverList.Clear();
             Cache.Instance.core.Clear();
             OnSettingChange?.Invoke(this, EventArgs.Empty);
             OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
@@ -311,7 +315,7 @@ namespace V2RayGCon.Service
             }
 
             servers.RemoveAt(index);
-            SaveServers();
+            SaveServerList();
 
             if (_curServIndex >= GetServerCount())
             {
@@ -441,16 +445,17 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Save();
         }
 
-        public void LoadServers()
+        public void LoadServerList()
         {
-            servers = new Model.Data.EventList<string>();
 
-            List<string> serverList = null;
+            serverList = new Model.Data.ServerList();
+
+            Model.Data.ServerList list = null;
             try
             {
-                serverList = JsonConvert.DeserializeObject<List<string>>(
-                    Properties.Settings.Default.Servers);
-                if (serverList == null)
+                list = JsonConvert.DeserializeObject<Model.Data.ServerList>(
+                    Properties.Settings.Default.ServerList);
+                if (list == null)
                 {
                     return;
                 }
@@ -460,23 +465,23 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            // make sure every server config can be parsed
-            for (var i = serverList.Count - 1; i >= 0; i--)
+            // make sure every config of server can be parsed correctly
+            for (var i = list.Count - 1; i >= 0; i--)
             {
                 try
                 {
-                    if (JObject.Parse(Lib.Utils.Base64Decode(serverList[i])) == null)
+                    if (JObject.Parse(list[i].config) == null)
                     {
-                        serverList.RemoveAt(i);
+                        list.RemoveAtQuiet(i);
                     }
                 }
                 catch
                 {
-                    serverList.RemoveAt(i);
+                    list.RemoveAtQuiet(i);
                 }
             }
 
-            servers = new Model.Data.EventList<string>(serverList);
+            serverList = list;
         }
 
         public ReadOnlyCollection<string[]> GetAllServersSummary()
@@ -508,6 +513,12 @@ namespace V2RayGCon.Service
             return summarys.AsReadOnly();
         }
 
+        public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
+        {
+            return serverList.OrderBy(o => o.index).ToList().AsReadOnly();
+        }
+
+        // deletemark
         public ReadOnlyCollection<string> GetAllServers()
         {
             return servers.AsReadOnly();
@@ -527,29 +538,16 @@ namespace V2RayGCon.Service
                 return string.Empty;
             }
 
-            return servers[index];
+            return serverList[index].config;
         }
 
         public bool AddServer(JObject config, bool quiet = false)
         {
             var result = false;
-            var b64ConfigString = Lib.Utils.Config2Base64String(config);
 
             lock (addServerLock)
             {
-                if (GetServerIndex(b64ConfigString) < 0)
-                {
-                    result = true;
-                    if (quiet)
-                    {
-                        servers.AddQuiet(b64ConfigString);
-                    }
-                    else
-                    {
-                        servers.Add(b64ConfigString);
-                    }
-                    SaveServers();
-                }
+                result = serverList.AddConfig(Lib.Utils.Config2String(config));
             }
 
             if (result && !quiet)
@@ -574,28 +572,23 @@ namespace V2RayGCon.Service
             OnSettingChange?.Invoke(this, EventArgs.Empty);
         }
 
-        public bool ReplaceServer(JObject config, int index)
+        public int SearchServer(string configString)
         {
-            if (index < 0 || index >= GetServerCount())
-            {
-                return AddServer(config);
-            }
+            return serverList.SearchConfig(configString);
+        }
 
-            var b64ConfigString = Lib.Utils.Config2Base64String(config);
-
-            if (GetServerIndex(b64ConfigString) >= 0)
+        public bool ReplaceServer(int orgIndex, string newConfig)
+        {
+            if (orgIndex < 0)
             {
-                SendLog(I18N("DuplicateServer") + "\r\n");
                 return false;
             }
 
-            servers[index] = b64ConfigString;
-            SaveServers();
-
-            if (index == _curServIndex)
+            lock (addServerLock)
             {
-                OnRequireCoreRestart?.Invoke(this, EventArgs.Empty);
+                serverList.Replace(orgIndex, newConfig);
             }
+
             OnSettingChange?.Invoke(this, EventArgs.Empty);
             return true;
         }
@@ -837,13 +830,16 @@ namespace V2RayGCon.Service
 
         void OnServerListChanged()
         {
-            UpdateSummaryCache(new List<string>(servers));
+            // save to disk once list is changed
+            SaveServerList();
+
+            // UpdateSummaryCache(new List<string>(servers));
         }
 
-        void SaveServers()
+        void SaveServerList()
         {
-            string json = JsonConvert.SerializeObject(servers);
-            Properties.Settings.Default.Servers = json;
+            string json = JsonConvert.SerializeObject(serverList);
+            Properties.Settings.Default.ServerList = json;
             Properties.Settings.Default.Save();
         }
 

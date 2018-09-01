@@ -51,6 +51,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormMainTest.cs" />
     <Compile Include="CacheTest.cs" />
     <Compile Include="CoreServerTest.cs" />
     <Compile Include="MainTest.cs" />
