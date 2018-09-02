@@ -42,7 +42,7 @@ namespace V2RayGCon.Views
                 formMainCtrl.Cleanup();
             };
 
-            Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
+            // Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
 
             this.Text = string.Format(
                 "{0} v{1}",

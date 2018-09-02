@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -10,6 +11,7 @@ namespace V2RayGCon.Views
     {
         string formTitle;
         int preIndex, maxNumberLines;
+        static AutoResetEvent sayGoodbye = new AutoResetEvent(false);
 
         Service.Setting setting;
         Model.BaseClass.CoreServer tester;
@@ -44,7 +46,8 @@ namespace V2RayGCon.Views
             {
                 tester.OnLog -= LogReceiver;
                 setting.OnRequireMenuUpdate -= SettingChange;
-                tester.StopCoreThen(null);
+                tester.StopCoreThen(() => sayGoodbye.Set());
+                sayGoodbye.WaitOne();
             };
 
             Lib.UI.SetFormLocation<FormConfigTester>(this, Model.Data.Enum.FormLocations.BottomLeft);
@@ -162,9 +165,11 @@ namespace V2RayGCon.Views
             }
 
             var s = config.ToString();
+            var env = Lib.Utils.GetEnvVarsFromConfig(config);
+
             config = null;
             System.GC.Collect();
-            tester.RestartCore(s, OnCoreStatusChanged);
+            tester.RestartCoreThen(s, OnCoreStatusChanged, null, env);
         }
         #endregion
 

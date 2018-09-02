@@ -229,6 +229,14 @@ namespace V2RayGCon.Views
         {
             var components = new List<Model.BaseClass.IFormComponentController> {
 
+                new Controller.ConfigerComponet.EnvVar(
+                    cboxImportAlias,
+                    tboxImportURL,
+                    btnInsertImport,
+                    cboxEnvName,
+                    tboxEnvValue,
+                    btnInsertEnv),
+
                 new Controller.ConfigerComponet.Editor(
                     panelScintilla,
                     cboxConfigSection,

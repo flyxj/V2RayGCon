@@ -14,7 +14,7 @@ namespace V2RayGCon.Model.Data
         public event EventHandler<Model.Data.StrEvent> OnRequireDelete;
 
         public string config; // plain text of config.json
-        public bool isOn, isInjectEnv, isAutoRun, isInjectImport;
+        public bool isOn, isAutoRun, isInjectImport;
         public string name, summary, inboundIP;
         public int inboundOverwriteType, inboundPort, index;
 
@@ -25,7 +25,6 @@ namespace V2RayGCon.Model.Data
         {
             isOn = false;
             isAutoRun = false;
-            isInjectEnv = false;
             isInjectImport = false;
 
             name = string.Empty;
@@ -78,16 +77,6 @@ namespace V2RayGCon.Model.Data
         {
             this.isAutoRun = autorun;
             InvokeOnPropertyChange();
-        }
-
-        public void SetInjectEnv(bool env)
-        {
-            this.isInjectEnv = env;
-            InvokeOnPropertyChange();
-            if (isOn)
-            {
-                RestartCoreThen();
-            }
         }
 
         public void SetInjectImport(bool import)
@@ -172,10 +161,20 @@ namespace V2RayGCon.Model.Data
 
         public void RestartCoreThen(Action next = null)
         {
-            var c = Lib.ImportParser.ParseImport(
-                isInjectImport ?
-                Lib.Utils.InjectGlobalImport(config) :
-                config);
+            var c = new JObject();
+            try
+            {
+                c = Lib.ImportParser.ParseImport(
+                    isInjectImport ?
+                    Lib.Utils.InjectGlobalImport(config) :
+                    config);
+            }
+            catch
+            {
+                SendLog(I18N("DecodeImportFail"));
+                StopCoreThen(next);
+                return;
+            }
 
             if (!OverwriteInboundSettings(ref c))
             {
@@ -183,7 +182,12 @@ namespace V2RayGCon.Model.Data
                 return;
             }
 
-            server.RestartCoreThen(c.ToString(), OnCoreStateChanged, next);
+            var env = Lib.Utils.GetEnvVarsFromConfig(c);
+            var s = c.ToString();
+            c = null;
+            GC.Collect();
+
+            server.RestartCoreThen(s, OnCoreStateChanged, next, env);
         }
 
         public void OnCoreStateChanged()

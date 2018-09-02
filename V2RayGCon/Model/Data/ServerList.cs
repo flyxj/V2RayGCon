@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -43,6 +44,37 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region public method
+        public List<int> GetActiveServerList()
+        {
+            var list = new List<int>();
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (this[i].isOn)
+                {
+                    list.Add(i);
+                }
+            }
+            return list;
+        }
+
+        public void StartServersByList(List<int> servers, Action done = null)
+        {
+            var list = servers;
+            Action<int, Action> worker = (index, next) =>
+            {
+                try
+                {
+                    this[list[index]].RestartCoreThen(next);
+                }
+                catch
+                {
+                    next();
+                }
+            };
+
+            ChainActionHelper(list.Count, worker, done)();
+        }
+
         public void WakeupAutorunServerThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
@@ -172,6 +204,7 @@ namespace V2RayGCon.Model.Data
 
             Action finish = () =>
             {
+                System.GC.Collect();
                 InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
             };

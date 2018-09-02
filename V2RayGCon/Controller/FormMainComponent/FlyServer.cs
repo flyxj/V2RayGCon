@@ -24,10 +24,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         public override void Cleanup()
         {
             setting.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
-            foreach (Model.UserControls.ServerListItem control in flyPanel.Controls)
-            {
-                control.Cleanup();
-            }
+            RemoveAllConrols();
         }
 
         public override bool RefreshUI()

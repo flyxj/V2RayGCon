@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -108,30 +109,22 @@ namespace V2RayGCon.Model.BaseClass
             get => _isRunning;
         }
 
-        public void RestartCoreThen(string config, Action OnStateChanged = null, Action next = null)
+        public void RestartCoreThen(
+            string config,
+            Action OnStateChanged = null,
+            Action next = null,
+            Dictionary<string, string> env = null)
         {
             StopCoreThen(() =>
             {
                 if (IsExecutableExist())
                 {
-                    StartCore(config, OnStateChanged);
-                    next?.Invoke();
-                }
-                else
-                {
-                    MessageBox.Show(I18N("ExeNotFound"));
-                    next?.Invoke();
-                }
-            });
-        }
-
-        public void RestartCore(string config, Action OnStateChanged = null)
-        {
-            StopCoreThen(() =>
-            {
-                if (IsExecutableExist())
-                {
-                    StartCore(config, OnStateChanged);
+                    StartCore(config, OnStateChanged, env);
+                    try
+                    {
+                        next?.Invoke();
+                    }
+                    catch { }
                 }
                 else
                 {
@@ -185,7 +178,9 @@ namespace V2RayGCon.Model.BaseClass
         #endregion
 
         #region private method
-        void StartCore(string config, Action OnStateChanged = null)
+        void StartCore(string config,
+            Action OnStateChanged = null,
+            Dictionary<string, string> env = null)
         {
             if (_isRunning)
             {
@@ -206,6 +201,13 @@ namespace V2RayGCon.Model.BaseClass
                 }
             };
 
+            if (env != null && env.Count > 0)
+            {
+                foreach (var item in env)
+                {
+                    v2rayCore.StartInfo.EnvironmentVariables[item.Key] = item.Value;
+                }
+            }
 
             v2rayCore.EnableRaisingEvents = true;
             v2rayCore.Exited += (s, e) =>

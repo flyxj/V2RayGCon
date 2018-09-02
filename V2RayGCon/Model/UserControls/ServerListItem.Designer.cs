@@ -35,7 +35,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cboxInbound = new System.Windows.Forms.ComboBox();
             this.chkImport = new System.Windows.Forms.CheckBox();
-            this.chkEnv = new System.Windows.Forms.CheckBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.tboxInboundIP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -87,14 +86,6 @@
             this.toolTip1.SetToolTip(this.chkImport, resources.GetString("chkImport.ToolTip"));
             this.chkImport.UseVisualStyleBackColor = true;
             this.chkImport.CheckedChanged += new System.EventHandler(this.chkImport_CheckedChanged);
-            // 
-            // chkEnv
-            // 
-            resources.ApplyResources(this.chkEnv, "chkEnv");
-            this.chkEnv.Cursor = System.Windows.Forms.Cursors.Default;
-            this.chkEnv.Name = "chkEnv";
-            this.chkEnv.UseVisualStyleBackColor = true;
-            this.chkEnv.CheckedChanged += new System.EventHandler(this.chkEnv_CheckedChanged);
             // 
             // btnDelete
             // 
@@ -165,7 +156,6 @@
             this.Controls.Add(this.tboxInboundIP);
             this.Controls.Add(this.btnAction);
             this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.chkEnv);
             this.Controls.Add(this.chkImport);
             this.Controls.Add(this.cboxInbound);
             this.Controls.Add(this.label3);
@@ -189,7 +179,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboxInbound;
         private System.Windows.Forms.CheckBox chkImport;
-        private System.Windows.Forms.CheckBox chkEnv;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.TextBox tboxInboundIP;
         private System.Windows.Forms.Label label2;

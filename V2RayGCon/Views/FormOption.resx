@@ -355,7 +355,7 @@
     <value>Bottom</value>
   </data>
   <data name="btnBakBackup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 419</value>
+    <value>177, 419</value>
   </data>
   <data name="btnBakBackup.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -421,7 +421,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnBakRestore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>337, 419</value>
+    <value>258, 419</value>
   </data>
   <data name="btnBakRestore.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -454,7 +454,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnOptionExit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 419</value>
+    <value>338, 419</value>
   </data>
   <data name="btnOptionExit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>

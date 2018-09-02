@@ -118,180 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>17, 28</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="menuStrip1.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 9pt</value>
   </data>
-  <data name="toolMenuItemSimAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
-  </data>
-  <data name="toolMenuItemSimAddVmessServer.Text" xml:space="preserve">
-    <value>Add vmess client</value>
-  </data>
-  <data name="toolMenuItemImportLinkFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
-  </data>
-  <data name="toolMenuItemImportLinkFromClipboard.Text" xml:space="preserve">
-    <value>Import from clipboard</value>
-  </data>
-  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 6</value>
-  </data>
-  <data name="toolMenuItemDeleteAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
-  </data>
-  <data name="toolMenuItemDeleteAll.Text" xml:space="preserve">
-    <value>Delete all</value>
-  </data>
-  <data name="toolMenuItemExportAllServerToFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
-  </data>
-  <data name="toolMenuItemExportAllServerToFile.Text" xml:space="preserve">
-    <value>Export to file</value>
-  </data>
-  <data name="toolMenuItemImportFromFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
-  </data>
-  <data name="toolMenuItemImportFromFile.Text" xml:space="preserve">
-    <value>Import from file</value>
-  </data>
-  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 6</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>Close</value>
-  </data>
   <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 22</value>
+    <value>41, 20</value>
   </data>
   <data name="operationToolStripMenuItem.Text" xml:space="preserve">
     <value>File</value>
   </data>
-  <data name="toolStripMenuItemStopAllServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolStripMenuItemStopAllServers.Text" xml:space="preserve">
-    <value>Stop all servers</value>
-  </data>
-  <data name="toolStripMenuItemRestartAllServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolStripMenuItemRestartAllServers.Text" xml:space="preserve">
-    <value>Restart all servers</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 6</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="toolMenuItemCurrentSysProxy.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="toolMenuItemCurrentSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolMenuItemCurrentSysProxy.Text" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="toolMenuItemClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
-    <value>Clear proxy setting</value>
-  </data>
-  <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>System proxy</value>
-  </data>
   <data name="toolMenuItemServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 22</value>
+    <value>53, 20</value>
   </data>
   <data name="toolMenuItemServer.Text" xml:space="preserve">
     <value>Server</value>
   </data>
-  <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
-  </data>
-  <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
-    <value>Config editor</value>
-  </data>
-  <data name="toolMenuItemConfigTester.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
-  </data>
-  <data name="toolMenuItemConfigTester.Text" xml:space="preserve">
-    <value>Config tester</value>
-  </data>
-  <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
-  </data>
-  <data name="toolMenuItemQRCode.Text" xml:space="preserve">
-    <value>QRCode</value>
-  </data>
-  <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
-  </data>
-  <data name="toolMenuItemLog.Text" xml:space="preserve">
-    <value>Log</value>
-  </data>
-  <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
-  </data>
-  <data name="toolMenuItemOptions.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 6</value>
-  </data>
-  <data name="toolMenuItemDownloadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 30</value>
-  </data>
-  <data name="toolMenuItemDownloadV2rayCore.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="toolMenuItemRemoveV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 30</value>
-  </data>
-  <data name="toolMenuItemRemoveV2rayCore.Text" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="v2rayCoreToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
-  </data>
-  <data name="v2rayCoreToolStripMenuItem.Text" xml:space="preserve">
-    <value>v2ray-core</value>
-  </data>
   <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 22</value>
+    <value>53, 20</value>
   </data>
   <data name="windowToolStripMenuItem.Text" xml:space="preserve">
     <value>Window</value>
   </data>
-  <data name="toolMenuItemCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
-  </data>
-  <data name="toolMenuItemCheckUpdate.Text" xml:space="preserve">
-    <value>Check update</value>
-  </data>
-  <data name="toolMenuItemAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
-  </data>
-  <data name="toolMenuItemAbout.Text" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="toolMenuItemHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
-  </data>
-  <data name="toolMenuItemHelp.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
   <data name="aboutToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 22</value>
+    <value>47, 20</value>
   </data>
   <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
     <value>About</value>
@@ -299,13 +151,10 @@
   <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="menuStrip1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>9, 3, 0, 3</value>
-  </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 28</value>
+    <value>404, 24</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -324,9 +173,157 @@
   <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="toolMenuItemSimAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="toolMenuItemSimAddVmessServer.Text" xml:space="preserve">
+    <value>Add vmess client</value>
+  </data>
+  <data name="toolMenuItemImportLinkFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="toolMenuItemImportLinkFromClipboard.Text" xml:space="preserve">
+    <value>Import from clipboard</value>
+  </data>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 6</value>
+  </data>
+  <data name="toolMenuItemDeleteAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="toolMenuItemDeleteAll.Text" xml:space="preserve">
+    <value>Delete all</value>
+  </data>
+  <data name="toolMenuItemExportAllServerToFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="toolMenuItemExportAllServerToFile.Text" xml:space="preserve">
+    <value>Export to file</value>
+  </data>
+  <data name="toolMenuItemImportFromFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="toolMenuItemImportFromFile.Text" xml:space="preserve">
+    <value>Import from file</value>
+  </data>
+  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 6</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="toolStripMenuItemStopAllServers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="toolStripMenuItemStopAllServers.Text" xml:space="preserve">
+    <value>Stop all servers</value>
+  </data>
+  <data name="toolStripMenuItemRestartAllServers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="toolStripMenuItemRestartAllServers.Text" xml:space="preserve">
+    <value>Restart all servers</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 6</value>
+  </data>
+  <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
+    <value>System proxy</value>
+  </data>
+  <data name="toolMenuItemCurrentSysProxy.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="toolMenuItemCurrentSysProxy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="toolMenuItemCurrentSysProxy.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="toolMenuItemClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 22</value>
+  </data>
+  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
+    <value>Clear proxy setting</value>
+  </data>
+  <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
+    <value>Config editor</value>
+  </data>
+  <data name="toolMenuItemConfigTester.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="toolMenuItemConfigTester.Text" xml:space="preserve">
+    <value>Config tester</value>
+  </data>
+  <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="toolMenuItemQRCode.Text" xml:space="preserve">
+    <value>QRCode</value>
+  </data>
+  <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="toolMenuItemLog.Text" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="toolMenuItemOptions.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 6</value>
+  </data>
+  <data name="v2rayCoreToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="v2rayCoreToolStripMenuItem.Text" xml:space="preserve">
+    <value>v2ray-core</value>
+  </data>
+  <data name="toolMenuItemDownloadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="toolMenuItemDownloadV2rayCore.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="toolMenuItemRemoveV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="toolMenuItemRemoveV2rayCore.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="toolMenuItemCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 22</value>
+  </data>
+  <data name="toolMenuItemCheckUpdate.Text" xml:space="preserve">
+    <value>Check update</value>
+  </data>
+  <data name="toolMenuItemAbout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 22</value>
+  </data>
+  <data name="toolMenuItemAbout.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="toolMenuItemHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 22</value>
+  </data>
+  <data name="toolMenuItemHelp.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>262, 28</value>
+    <value>139, 25</value>
   </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="flyServerListContainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -334,13 +331,10 @@
     <value>True</value>
   </data>
   <data name="flyServerListContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 38</value>
-  </data>
-  <data name="flyServerListContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>0, 25</value>
   </data>
   <data name="flyServerListContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>751, 479</value>
+    <value>403, 196</value>
   </data>
   <data name="flyServerListContainer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -361,10 +355,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>9, 18</value>
+    <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>753, 521</value>
+    <value>404, 223</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6537,9 +6531,6 @@
         AAgAAAAP8AAACAAAAA/wAAAIAAAAD/AAAAgAAAAP8AAACAAAAA/wAAAIAAAAD///////////////////
         //////////////////////////////////////////////////////////////////8=
 </value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

@@ -71,6 +71,16 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public List<int> GetActiveServerList()
+        {
+            return serverList.GetActiveServerList();
+        }
+
+        public void StartServersByList(List<int> servers)
+        {
+            serverList.StartServersByList(servers);
+        }
+
         public void WakeupAutorunServer()
         {
             serverList.WakeupAutorunServerThen();

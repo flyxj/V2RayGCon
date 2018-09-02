@@ -5,6 +5,13 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
+        public static string[] EnviromentVariablesName = new string[] {
+            "V2RAY_RAY_BUFFER_SIZE",
+            "V2RAY_LOCATION_ASSET",
+            "V2RAY_LOCATION_CONFIG",
+            "V2RAY_BUF_READV",
+        };
+
         public static Dictionary<int, string> configSections = new Dictionary<int, string>
         {
                 { 0, "config.json"},

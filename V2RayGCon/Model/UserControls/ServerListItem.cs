@@ -9,20 +9,18 @@ namespace V2RayGCon.Model.UserControls
     {
         Model.Data.ServerItem serverItem;
         ContextMenu menu;
-        int preIndex;
 
         public ServerListItem(int index, Model.Data.ServerItem serverItem)
         {
             menu = CreateMenu();
-            InitializeComponent();
             this.serverItem = serverItem;
             SetIndex(index);
+            InitializeComponent();
         }
 
-        private void ServerListItem_Load(object sender, System.EventArgs e)
+        private void ServerListItem_Load(object sender, EventArgs e)
         {
             RefreshUI(this, EventArgs.Empty);
-            preIndex = cboxInbound.SelectedIndex;
             this.serverItem.OnPropertyChanged += RefreshUI;
         }
 
@@ -31,13 +29,12 @@ namespace V2RayGCon.Model.UserControls
         {
             lbSummary.Invoke((MethodInvoker)delegate
             {
+                cboxInbound.SelectedIndex = serverItem.inboundOverwriteType;
                 lbIndex.Text = serverItem.index.ToString();
                 lbSummary.Text = serverItem.summary;
                 SetRunning(serverItem.server.isRunning);
                 tboxInboundIP.Text = serverItem.inboundIP;
                 tboxInboundPort.Text = serverItem.inboundPort.ToString();
-                cboxInbound.SelectedIndex = serverItem.inboundOverwriteType;
-                chkEnv.Checked = serverItem.isInjectEnv;
                 chkAutoRun.Checked = serverItem.isAutoRun;
                 chkImport.Checked = serverItem.isInjectImport;
             });
@@ -109,7 +106,6 @@ namespace V2RayGCon.Model.UserControls
 
         public void SetIndex(int index)
         {
-            // this.lbIndex.Text = index.ToString();
             this.serverItem.SetIndex(index);
         }
 
@@ -136,24 +132,11 @@ namespace V2RayGCon.Model.UserControls
 
         private void cboxInbound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (preIndex == cboxInbound.SelectedIndex)
+            if (serverItem.inboundOverwriteType == cboxInbound.SelectedIndex)
             {
                 return;
             }
-
-            var index = cboxInbound.SelectedIndex;
-            preIndex = index;
-            serverItem.SetInboundType(index);
-
-        }
-
-        private void chkEnv_CheckedChanged(object sender, EventArgs e)
-        {
-            var check = chkEnv.Checked;
-            if (serverItem.isInjectEnv != check)
-            {
-                serverItem.SetInjectEnv(check);
-            }
+            serverItem.SetInboundType(cboxInbound.SelectedIndex);
         }
 
         private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
@@ -207,6 +190,7 @@ namespace V2RayGCon.Model.UserControls
 
             serverItem.Delete();
         }
+
 
 
         #endregion

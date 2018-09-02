@@ -26,6 +26,7 @@ namespace V2RayGCon.Service
         }
 
         #region public method
+
         public void SetArchitecture(bool win64 = false)
         {
             _packageName = win64 ? StrConst("PkgWin64") : StrConst("PkgWin32");
@@ -95,10 +96,16 @@ namespace V2RayGCon.Service
 
         void UpdateCore()
         {
+            var servers = setting.GetActiveServerList();
+
             setting.StopAllServersThen(() =>
             {
                 var status = UnzipPackage();
                 NotifyDownloadResults(status);
+                if (servers.Count > 0)
+                {
+                    setting.StartServersByList(servers);
+                }
             });
         }
 

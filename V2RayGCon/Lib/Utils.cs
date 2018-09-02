@@ -21,6 +21,26 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region Json
+        public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
+        {
+            var empty = new Dictionary<string, string>();
+
+            var env = GetKey(config, "v2raygcon.env");
+            if (env == null)
+            {
+                return empty;
+            }
+
+            try
+            {
+                return env.ToObject<Dictionary<string, string>>();
+            }
+            catch (JsonSerializationException)
+            {
+                return empty;
+            }
+        }
+
         public static string GetAliasFromConfig(JObject config)
         {
             var name = GetValue<string>(config, "v2raygcon.alias");

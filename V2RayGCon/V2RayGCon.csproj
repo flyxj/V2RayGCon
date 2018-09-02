@@ -99,6 +99,7 @@
     <Compile Include="Controller\Configer.cs" />
     <Compile Include="Controller\ConfigerComponent\Editor.cs" />
     <Compile Include="Controller\ConfigerComponent\Import.cs" />
+    <Compile Include="Controller\ConfigerComponent\EnvVar.cs" />
     <Compile Include="Controller\ConfigerComponent\VGC.cs" />
     <Compile Include="Controller\ConfigerComponent\SSClient.cs" />
     <Compile Include="Controller\ConfigerComponent\SSServer.cs" />

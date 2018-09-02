@@ -191,19 +191,19 @@ namespace V2RayGCon.Controller.FormMainComponent
                 return;
             }
 
-            //core.StopCoreThen(() =>
-            //{
-            //    try
-            //    {
-            //        Lib.Utils.DeleteAppDataFolder();
-            //    }
-            //    catch (System.IO.IOException)
-            //    {
-            //        MessageBox.Show(I18N("FileInUse"));
-            //        return;
-            //    }
-            //    MessageBox.Show(I18N("Done"));
-            //});
+            setting.StopAllServersThen(() =>
+            {
+                try
+                {
+                    Lib.Utils.DeleteAppDataFolder();
+                }
+                catch (System.IO.IOException)
+                {
+                    MessageBox.Show(I18N("FileInUse"));
+                    return;
+                }
+                MessageBox.Show(I18N("Done"));
+            });
         }
 
         private void CheckUpdate()
