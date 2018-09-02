@@ -10,11 +10,11 @@ namespace V2RayGCon.Model.Data
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnPropertyChanged;
-        public event EventHandler RequireMenuUpdate;
-        public event EventHandler<Model.Data.StrEvent> RequireDelete;
+        public event EventHandler OnRequireMenuUpdate;
+        public event EventHandler<Model.Data.StrEvent> OnRequireDelete;
 
         public string config; // plain text of config.json
-        public bool isOn, isInjectEnv, isInjectImport;
+        public bool isOn, isInjectEnv, isAutoRun, isInjectImport;
         public string name, summary, inboundIP;
         public int inboundOverwriteType, inboundPort, index;
 
@@ -24,6 +24,7 @@ namespace V2RayGCon.Model.Data
         public ServerItem()
         {
             isOn = false;
+            isAutoRun = false;
             isInjectEnv = false;
             isInjectImport = false;
 
@@ -36,58 +37,89 @@ namespace V2RayGCon.Model.Data
 
             server = new BaseClass.CoreServer();
             server.OnLog += SendLogHandler;
-            UpdateProperties();
         }
 
         #region public method
         public void Delete()
         {
-            try
+            CleanupThen(() =>
             {
-                RequireDelete?.Invoke(
-                    this,
-                    new Model.Data.StrEvent(config));
-            }
-            catch { }
+                OnRequireDelete?.Invoke(this, new StrEvent(config));
+            });
         }
 
         public void SetInboundIP(string ip)
         {
             inboundIP = ip;
-            InvokePropertyChange();
+            InvokeOnPropertyChange();
+            if (isOn)
+            {
+                RestartCoreThen();
+            }
         }
 
         public void SetInboundPort(string port)
         {
             inboundPort = Lib.Utils.Str2Int(port);
-            InvokePropertyChange();
+            InvokeOnPropertyChange();
+            if (isOn)
+            {
+                RestartCoreThen();
+            }
         }
 
         public void SetIndex(int index)
         {
             this.index = index;
-            InvokePropertyChange();
+            InvokeOnPropertyChange();
+        }
+
+        public void SetAutoRun(bool autorun)
+        {
+            this.isAutoRun = autorun;
+            InvokeOnPropertyChange();
         }
 
         public void SetInjectEnv(bool env)
         {
             this.isInjectEnv = env;
-            InvokePropertyChange();
+            InvokeOnPropertyChange();
+            if (isOn)
+            {
+                RestartCoreThen();
+            }
         }
 
         public void SetInjectImport(bool import)
         {
+            var changed = this.isInjectImport != import;
             this.isInjectImport = import;
-            InvokePropertyChange();
+            if (changed)
+            {
+                UpdateSummaryThen(
+                    () => InvokeOnRequireMenuUpdate());
+            }
+            else
+            {
+                InvokeOnPropertyChange();
+            }
+            if (isOn)
+            {
+                RestartCoreThen();
+            }
         }
 
         public void SetInboundType(int type)
         {
             this.inboundOverwriteType = Lib.Utils.Clamp(type, 0, GetInboundTypeCount());
-            InvokePropertyChange();
+            InvokeOnPropertyChange();
+            if (isOn)
+            {
+                RestartCoreThen();
+            }
         }
 
-        public void UpdateProperties()
+        public void UpdateSummaryThen(Action lambda = null)
         {
             Task.Factory.StartNew(() =>
             {
@@ -96,16 +128,16 @@ namespace V2RayGCon.Model.Data
                     config;
                 try
                 {
-                    SetPropertiesByConfig(
+                    UpdateSummary(
                         Lib.ImportParser.ParseImport(configString));
                 }
                 catch
                 {
-                    SetPropertiesByConfig(JObject.Parse(configString));
+                    UpdateSummary(JObject.Parse(configString));
                 }
 
-                InvokePropertyChange();
-                InvokeRequireMenuUpdate();
+                InvokeOnPropertyChange();
+                lambda?.Invoke();
             });
         }
 
@@ -121,29 +153,94 @@ namespace V2RayGCon.Model.Data
         public void ChangeConfig(string config)
         {
             this.config = config;
+            InvokeOnPropertyChange();
+            UpdateSummaryThen(() =>
+            {
+                InvokeOnRequireMenuUpdate();
+            });
 
             if (server.isRunning)
             {
-                server.RestartCore(config, InvokePropertyChange);
-            }
-            else
-            {
-                UpdateProperties();
+                RestartCoreThen();
             }
         }
 
-        public string GetInboundOverwriteTypeNameByIndex(int index)
+        public void StopCoreThen(Action lambda = null)
         {
-            var types = Model.Data.Table.inboundOverwriteTypes;
-            if (index > 0 && index < 3)
+            server.StopCoreThen(lambda);
+        }
+
+        public void RestartCoreThen(Action next = null)
+        {
+            var c = Lib.ImportParser.ParseImport(
+                isInjectImport ?
+                Lib.Utils.InjectGlobalImport(config) :
+                config);
+
+            if (!OverwriteInboundSettings(ref c))
             {
-                return types[index];
+                StopCoreThen(next);
+                return;
             }
-            return types[0];
+
+            server.RestartCoreThen(c.ToString(), OnCoreStateChanged, next);
+        }
+
+        public void OnCoreStateChanged()
+        {
+            isOn = server.isRunning;
+            InvokeOnPropertyChange();
         }
         #endregion
 
         #region private method
+        bool OverwriteInboundSettings(ref JObject config)
+        {
+            var type = inboundOverwriteType;
+
+            if (!(type == (int)Model.Data.Enum.ProxyTypes.HTTP
+                || type == (int)Model.Data.Enum.ProxyTypes.SOCKS))
+            {
+                return true;
+            }
+
+            var protocol = Model.Data.Table.inboundOverwriteTypesName[type];
+
+            var part = protocol + "In";
+            try
+            {
+                config["inbound"]["protocol"] = protocol;
+                config["inbound"]["listen"] = this.inboundIP;
+                config["inbound"]["port"] = this.inboundPort;
+                config["inbound"]["settings"] =
+                    Service.Cache.Instance.tpl.LoadTemplate(part);
+
+                if (type == (int)Model.Data.Enum.ProxyTypes.SOCKS)
+                {
+                    config["inbound"]["settings"]["ip"] = this.inboundIP;
+                }
+
+                return true;
+            }
+            catch
+            {
+                SendLog(I18N("CoreCantSetLocalAddr"));
+            }
+            return false;
+        }
+
+        void SendLog(string message)
+        {
+            var log = new Model.Data.StrEvent(
+                string.Format("[{0}] {1}", this.name, message));
+
+            try
+            {
+                OnLog?.Invoke(this, log);
+            }
+            catch { }
+        }
+
         void SendLogHandler(object sender, Model.Data.StrEvent arg)
         {
             var log = new Model.Data.StrEvent(
@@ -156,16 +253,12 @@ namespace V2RayGCon.Model.Data
             catch { }
         }
 
-        void InvokeRequireMenuUpdate()
+        void InvokeOnRequireMenuUpdate()
         {
-            try
-            {
-                RequireMenuUpdate?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
+            OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        void InvokePropertyChange()
+        void InvokeOnPropertyChange()
         {
             // things happen while invoking
             try
@@ -175,34 +268,18 @@ namespace V2RayGCon.Model.Data
             catch { }
         }
 
-        void SetPropertiesByConfig(JObject config)
+        void UpdateSummary(JObject config)
         {
-            var name = Lib.Utils.GetValue<string>(config, "v2raygcon.alias");
-            this.name = string.IsNullOrEmpty(name) ?
-                I18N("Empty") :
-                Lib.Utils.CutStr(name, 15);
+            var name = Lib.Utils.GetAliasFromConfig(config);
+            var summary = string.Format("[{0}] {1}", name, Lib.Utils.GetSummaryFromConfig(config));
 
-            var GetStr = Lib.Utils.GetStringByKeyHelper(config);
-
-            var protocol = GetStr("outbound.protocol");
-            var ip = string.Empty;
-            if (protocol == "vmess" || protocol == "shadowsocks")
-            {
-                var keys = Table.servInfoKeys[protocol];
-                ip = GetStr(keys[0]); // ip
-            }
-
-            var summary = string.Format("[{0}] {1}", this.name, protocol);
-            if (!string.IsNullOrEmpty(ip))
-            {
-                summary += "@" + ip;
-            }
-            this.summary = Lib.Utils.CutStr(summary, 40);
+            this.name = name;
+            this.summary = Lib.Utils.CutStr(summary, 35);
         }
 
         private int GetInboundTypeCount()
         {
-            return Model.Data.Table.inboundOverwriteTypes.Count;
+            return Model.Data.Table.inboundOverwriteTypesName.Length;
         }
         #endregion
     }

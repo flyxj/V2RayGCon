@@ -26,18 +26,19 @@ namespace V2RayGCon.Model.UserControls
             this.serverItem.OnPropertyChanged += RefreshUI;
         }
 
-
         #region private method
         void RefreshUI(object sender, EventArgs arg)
         {
             lbSummary.Invoke((MethodInvoker)delegate
             {
+                lbIndex.Text = serverItem.index.ToString();
                 lbSummary.Text = serverItem.summary;
                 SetRunning(serverItem.server.isRunning);
                 tboxInboundIP.Text = serverItem.inboundIP;
                 tboxInboundPort.Text = serverItem.inboundPort.ToString();
                 cboxInbound.SelectedIndex = serverItem.inboundOverwriteType;
                 chkEnv.Checked = serverItem.isInjectEnv;
+                chkAutoRun.Checked = serverItem.isAutoRun;
                 chkImport.Checked = serverItem.isInjectImport;
             });
         }
@@ -45,8 +46,8 @@ namespace V2RayGCon.Model.UserControls
         ContextMenu CreateMenu()
         {
             return new ContextMenu(new MenuItem[] {
-                new MenuItem(I18N("Start"),(s,a)=>MessageBox.Show("hello")),
-                new MenuItem(I18N("Stop"),(s,a)=>MessageBox.Show("hello")),
+                new MenuItem(I18N("Start"),(s,a)=>serverItem.RestartCoreThen()),
+                new MenuItem(I18N("Stop"),(s,a)=>serverItem.StopCoreThen()),
                 new MenuItem("-"),
                 new MenuItem(I18N("Edit"),(s,a)=>{
                     var item=this.serverItem;
@@ -73,6 +74,19 @@ namespace V2RayGCon.Model.UserControls
                             I18N("CopyFail"));
                     }),
                 }),
+                new MenuItem("-"),
+                new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
+                    if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
+                    {
+                        MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                        return;
+                    }
+
+                    Service.Setting.Instance.SetSysProxy(
+                        string.Format("{0}:{1}",
+                        this.tboxInboundIP.Text,
+                        this.tboxInboundPort.Text));
+                }),
             });
         }
 
@@ -80,12 +94,12 @@ namespace V2RayGCon.Model.UserControls
         {
             if (isRunning)
             {
-                lbRunning.ForeColor = Color.Green;
+                lbRunning.ForeColor = Color.DarkOrange;
                 lbRunning.Text = "ON";
             }
             else
             {
-                lbRunning.ForeColor = Color.DarkOrange;
+                lbRunning.ForeColor = Color.Green;
                 lbRunning.Text = "OFF";
             }
         }
@@ -95,14 +109,14 @@ namespace V2RayGCon.Model.UserControls
 
         public void SetIndex(int index)
         {
-            this.lbIndex.Text = index.ToString();
+            // this.lbIndex.Text = index.ToString();
             this.serverItem.SetIndex(index);
         }
 
         public void Cleanup()
         {
             this.serverItem.OnPropertyChanged -= RefreshUI;
-            this.serverItem = null;
+            // this.serverItem = null;
         }
         #endregion
 
@@ -128,8 +142,9 @@ namespace V2RayGCon.Model.UserControls
             }
 
             var index = cboxInbound.SelectedIndex;
-            serverItem.SetInboundType(index);
             preIndex = index;
+            serverItem.SetInboundType(index);
+
         }
 
         private void chkEnv_CheckedChanged(object sender, EventArgs e)
@@ -141,6 +156,16 @@ namespace V2RayGCon.Model.UserControls
             }
         }
 
+        private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
+        {
+            var check = chkAutoRun.Checked;
+            if (serverItem.isAutoRun != check)
+            {
+                serverItem.SetAutoRun(check);
+            }
+
+        }
+
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
             var check = chkImport.Checked;
@@ -148,6 +173,7 @@ namespace V2RayGCon.Model.UserControls
             {
                 serverItem.SetInjectImport(check);
             }
+
         }
 
         private void tboxInboundIP_TextChanged(object sender, EventArgs e)
@@ -177,9 +203,14 @@ namespace V2RayGCon.Model.UserControls
                 return;
             }
 
+            Cleanup();
+
             serverItem.Delete();
         }
 
+
         #endregion
+
+
     }
 }

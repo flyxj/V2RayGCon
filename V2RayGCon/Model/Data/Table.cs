@@ -5,12 +5,6 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
-        public static Dictionary<int, string> inboundOverwriteTypes = new Dictionary<int, string> {
-            { 0,"Config"},
-            { 1,"HTTP"},
-            {2,"SOCKS" },
-        };
-
         public static Dictionary<int, string> configSections = new Dictionary<int, string>
         {
                 { 0, "config.json"},
@@ -32,7 +26,12 @@ namespace V2RayGCon.Model.Data
         public const int sectionSeparator = 11;
         public const int inboundIndex = 7;
         public const int outboundIndex = 8;
-        public static string[] proxyTypesString = new string[] { "config", "http", "socks" };
+
+        public static string[] inboundOverwriteTypesName = new string[] {
+            "config",
+            "http",
+            "socks"
+        };
 
 
         public static Dictionary<int, string> linkPrefix = new Dictionary<int, string>

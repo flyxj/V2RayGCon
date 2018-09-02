@@ -97,9 +97,9 @@ namespace V2RayGCon.Views
                 return;
             }
 
-            foreach (var server in servers)
+            for (int i = 0; i < servers.Count; i++)
             {
-                cboxServList.Items.Add(server.name);
+                cboxServList.Items.Add(servers[i].name);
             }
 
             cboxServList.SelectedIndex = Lib.Utils.Clamp(
@@ -138,8 +138,9 @@ namespace V2RayGCon.Views
 
         void RestartCore(int index)
         {
-            var b64Config = setting.GetServer(index);
-            if (string.IsNullOrEmpty(b64Config))
+            var configString = setting.GetServerByIndex(index);
+
+            if (string.IsNullOrEmpty(configString))
             {
                 tester.StopCoreThen(null);
                 return;
@@ -148,12 +149,10 @@ namespace V2RayGCon.Views
             JObject config = null;
             try
             {
-                string plainText = Lib.Utils.Base64Decode(b64Config);
-
                 config = Lib.ImportParser.ParseImport(
                     cboxGlobalImport.Checked ?
-                    Lib.Utils.InjectGlobalImport(plainText) :
-                    plainText);
+                    Lib.Utils.InjectGlobalImport(configString) :
+                    configString);
             }
             catch
             {

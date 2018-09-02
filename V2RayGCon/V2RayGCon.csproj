@@ -106,7 +106,7 @@
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainComponent\FlyServer.cs" />
     <Compile Include="Controller\FormMainComponent\FormMainComponentController.cs" />
-    <Compile Include="Controller\FormMainComponent\Menus.cs" />
+    <Compile Include="Controller\FormMainComponent\MenuItems.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
@@ -247,6 +247,9 @@
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Model\UserControls\ServerListItem.resx">
+      <DependentUpon>ServerListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\UserControls\ServerListItem.zh-CN.resx">
       <DependentUpon>ServerListItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\UrlListItem.resx">

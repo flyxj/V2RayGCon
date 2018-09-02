@@ -95,13 +95,11 @@ namespace V2RayGCon.Service
 
         void UpdateCore()
         {
-            setting.StopAllCoreThen(() =>
+            setting.StopAllServersThen(() =>
             {
                 var status = UnzipPackage();
-
                 NotifyDownloadResults(status);
             });
-
         }
 
         void DownloadCompleted(bool cancelled)

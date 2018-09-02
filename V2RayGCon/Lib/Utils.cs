@@ -21,6 +21,29 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region Json
+        public static string GetAliasFromConfig(JObject config)
+        {
+            var name = GetValue<string>(config, "v2raygcon.alias");
+            return string.IsNullOrEmpty(name) ? I18N("Empty") : CutStr(name, 12);
+        }
+
+        public static string GetSummaryFromConfig(JObject config)
+        {
+            var protocol = GetValue<string>(config, "outbound.protocol");
+            var ip = string.Empty;
+            if (protocol == "vmess" || protocol == "shadowsocks")
+            {
+                var keys = Model.Data.Table.servInfoKeys[protocol];
+                ip = GetValue<string>(config, keys[0]); // ip
+            }
+
+            var summary = protocol;
+            if (!string.IsNullOrEmpty(ip))
+            {
+                summary += "@" + ip;
+            }
+            return summary;
+        }
 
         static bool Contains(JProperty main, JProperty sub)
         {

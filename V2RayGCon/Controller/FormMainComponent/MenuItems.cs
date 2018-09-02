@@ -6,11 +6,11 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
-    class Menus : FormMainComponentController
+    class MenuItems : FormMainComponentController
     {
         Service.Setting setting;
 
-        public Menus(
+        public MenuItems(
             ToolStripMenuItem simVmessServer,
             ToolStripMenuItem importLinkFromClipboard,
             ToolStripMenuItem exportAllServer,
@@ -24,7 +24,11 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem log,
             ToolStripMenuItem options,
             ToolStripMenuItem downloadV2rayCore,
-            ToolStripMenuItem removeV2rayCore)
+            ToolStripMenuItem removeV2rayCore,
+            ToolStripMenuItem deleteAllItems,
+            ToolStripMenuItem stopAllServers,
+            ToolStripMenuItem restartAllServers,
+            ToolStripMenuItem clearSysProxy)
         {
             setting = Service.Setting.Instance;
             simVmessServer.Click +=
@@ -37,21 +41,42 @@ namespace V2RayGCon.Controller.FormMainComponent
             };
 
             exportAllServer.Click += (s, a) => ExportAllServersToTextFile();
+
             importFromFile.Click += (s, a) => ImportServersFromTextFile();
+
             checkUpdate.Click += (s, a) => CheckVGCUpdate();
+
             toolMenuItemAbout.Click += (s, a) =>
                 Lib.UI.VisitUrl(I18N("VistPorjectPage"), Properties.Resources.ProjectLink);
+
             toolMenuItemHelp.Click += (s, a) =>
                 Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
+
             configEditor.Click += (s, a) => new Views.FormConfiger();
+
             configTester.Click += (s, a) => new Views.FormConfigTester();
+
             QRCode.Click += (s, a) => Views.FormQRCode.GetForm();
+
             log.Click += (s, a) => Views.FormLog.GetForm();
+
             options.Click += (s, a) => Views.FormOption.GetForm();
+
             downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
+
             removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
 
+            deleteAllItems.Click += (s, a) =>
+            {
+                if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
+                    setting.DeleteAllServer();
+            };
 
+            stopAllServers.Click += (s, a) => setting.StopAllServersThen();
+
+            restartAllServers.Click += (s, a) => setting.RestartAllServers();
+
+            clearSysProxy.Click += (s, a) => setting.ClearSysProxy();
         }
 
 
@@ -123,8 +148,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(CheckUpdate);
         }
 
-
-
         public void CopyAllVmessLink()
         {
             var servers = setting.GetServerList();
@@ -148,10 +171,13 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         public override bool RefreshUI() { return false; }
-        public override void Cleanup() { }
+        public override void Cleanup()
+        {
+        }
         #endregion
 
         #region private method
+
         private void RemoveV2RayCore()
         {
             if (!Lib.UI.Confirm(I18N("ConfirmRemoveV2RayCore")))

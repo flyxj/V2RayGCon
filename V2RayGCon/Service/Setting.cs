@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -12,14 +11,11 @@ namespace V2RayGCon.Service
 {
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
-        private Model.Data.EventList<string> servers
-            = new Model.Data.EventList<string>();
-
         private Model.Data.ServerList serverList;
-
-        public event EventHandler OnSettingChange;
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnRequireMenuUpdate;
+        public event EventHandler OnRequireFlyPanelUpdate;
+        public event EventHandler OnSysProxyChanged;
 
         Queue<string> logCache;
 
@@ -30,59 +26,19 @@ namespace V2RayGCon.Service
             LoadServerList();
             serverList.BindEvents();
 
-            isSysProxyHasSet = false;
+            curSysProxy = string.Empty;
 
             serverList.OnLog += (s, a) => SendLog(a.Data);
 
             SaveServerList();
 
             serverList.ListChanged += SaveServerList;
-            serverList.RequireMenuUpdate += InvokeOnRequireMenuUpdate;
+            serverList.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
+            serverList.OnRequireFlyPanelUpdate += InvokeOnRequireFlyPanelUpdate;
         }
 
         #region Properties
-
-        public bool isSysProxyHasSet;
-
-        public bool isDisableGlobalImports
-        {
-            get
-            {
-                try
-                {
-                    return Properties.Settings.Default.DisableGlobalImport;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            set
-            {
-                Properties.Settings.Default.DisableGlobalImport = (value == true);
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        public int GetCurServIndex()
-        {
-            return _curServIndex;
-        }
-
-        int _curServIndex
-        {
-            get
-            {
-                // bug: return Lib.Utils.Clamp(n, 0, ServNum);
-                return Math.Max(0, Properties.Settings.Default.CurServ);
-            }
-            set
-            {
-                int n = Lib.Utils.Clamp(value, 0, GetServerCount());
-                Properties.Settings.Default.CurServ = n;
-                Properties.Settings.Default.Save();
-            }
-        }
+        public string curSysProxy;
 
         public bool isShowConfigerToolsPanel
         {
@@ -112,41 +68,41 @@ namespace V2RayGCon.Service
             }
         }
 
-        public string proxyAddr
-        {
-            get
-            {
-                string addr = Properties.Settings.Default.ProxyAddr;
-                Lib.Utils.TryParseIPAddr(addr, out string ip, out int port);
-                return string.Join(":", ip, port);
-            }
-            set
-            {
-                Properties.Settings.Default.ProxyAddr = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        public int proxyType
-        {
-            get
-            {
-                var type = Properties.Settings.Default.ProxyType;
-                return Lib.Utils.Clamp(type, 0, 3);
-            }
-            set
-            {
-                Properties.Settings.Default.ProxyType = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-
         #endregion
 
         #region public methods
-        public void StopAllCoreThen(Action lambda = null)
+        public void WakeupAutorunServer()
         {
-            serverList.StopAllCoreThen(lambda);
+            serverList.WakeupAutorunServerThen();
+        }
+
+        public void SetSysProxy(string link)
+        {
+            if (string.IsNullOrEmpty(link))
+            {
+                return;
+            }
+
+            Lib.ProxySetter.setProxy(link, true);
+            curSysProxy = link;
+            InvokeOnSysProxyChanged();
+        }
+
+        public void ClearSysProxy()
+        {
+            Lib.ProxySetter.setProxy("", false);
+            curSysProxy = string.Empty;
+            InvokeOnSysProxyChanged();
+        }
+
+        public void StopAllServersThen(Action lambda = null)
+        {
+            serverList.StopAllServersThen(lambda);
+        }
+
+        public void RestartAllServers()
+        {
+            serverList.RestartAllServersThen();
         }
 
         public string GetLogCache()
@@ -167,33 +123,12 @@ namespace V2RayGCon.Service
             logCache.Enqueue(log);
 
             var arg = new Model.Data.StrEvent(log);
-            OnLog?.Invoke(this, arg);
-        }
-
-        public string GetInbountInfo()
-        {
-            var b64 = GetServer(GetCurServIndex());
-
-            if (string.IsNullOrEmpty(b64))
-            {
-                return string.Empty;
-            }
-
-            var config = JObject.Parse(Lib.Utils.Base64Decode(b64));
 
             try
             {
-                var proxy = string.Format(
-                    "{0}://{1}:{2}",
-                    config["inbound"]["protocol"],
-                    config["inbound"]["listen"],
-                    config["inbound"]["port"]);
-
-                return proxy;
+                OnLog?.Invoke(this, arg);
             }
             catch { }
-
-            return string.Empty;
         }
 
         public int GetServerCount()
@@ -235,8 +170,7 @@ namespace V2RayGCon.Service
                 // show results
                 if (isAddNewServer)
                 {
-                    servers.Notify();
-                    OnSettingChange?.Invoke(that, EventArgs.Empty);
+                    serverList.UpdateAllSummary();
                 }
 
                 if (allResults.Count > 0)
@@ -250,8 +184,6 @@ namespace V2RayGCon.Service
                 }
             });
         }
-
-
 
         public List<Model.Data.UrlItem> GetImportUrlItems()
         {
@@ -268,13 +200,14 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
-        public void SaveImportUrlOptions(string options)
+        public void SaveImportUrlItems(string options)
         {
             Properties.Settings.Default.ImportUrls = options;
             Properties.Settings.Default.Save();
+            RestartAllServers();
         }
 
-        public List<Model.Data.UrlItem> GetSubscribeItems()
+        public List<Model.Data.UrlItem> GetSubscriptionUrls()
         {
             try
             {
@@ -297,7 +230,6 @@ namespace V2RayGCon.Service
 
         public void LoadServerList()
         {
-
             serverList = new Model.Data.ServerList();
 
             Model.Data.ServerList list = null;
@@ -334,13 +266,12 @@ namespace V2RayGCon.Service
             serverList = list;
         }
 
-
         public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
         {
-            return serverList.OrderBy(o => o.index).ToList().AsReadOnly();
+            return serverList.AsReadOnly();
         }
 
-        public string GetServer(int index)
+        public string GetServerByIndex(int index)
         {
             if (GetServerCount() == 0
                 || index < 0
@@ -352,17 +283,14 @@ namespace V2RayGCon.Service
             return serverList[index].config;
         }
 
+        public void DeleteAllServer()
+        {
+            serverList.DeleteAllItems();
+        }
+
         public bool AddServer(JObject config, bool quiet = false)
         {
-            var result = false;
-
-            result = serverList.AddConfig(Lib.Utils.Config2String(config));
-            if (result && !quiet)
-            {
-                InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
-            }
-
-            return result;
+            return serverList.AddConfig(Lib.Utils.Config2String(config), quiet);
         }
 
         public int SearchServer(string configString)
@@ -372,25 +300,36 @@ namespace V2RayGCon.Service
 
         public bool ReplaceServer(int orgIndex, string newConfig)
         {
-            if (orgIndex < 0)
-            {
-                return false;
-            }
-
-            serverList.Replace(orgIndex, newConfig);
-            return true;
+            return serverList.Replace(orgIndex, newConfig);
         }
 
 
         #endregion
 
         #region private method
+        void InvokeOnSysProxyChanged()
+        {
+            try
+            {
+                OnSysProxyChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
 
         void InvokeOnRequireMenuUpdate(object sender, EventArgs args)
         {
             try
             {
                 OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
+        void InvokeOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        {
+            try
+            {
+                OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
             }
             catch { }
         }

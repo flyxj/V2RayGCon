@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -8,6 +9,7 @@ namespace V2RayGCon.Service
     {
         NotifyIcon ni;
         Setting setting;
+        static AutoResetEvent sayGoodbye = new AutoResetEvent(false);
 
         Notifier()
         {
@@ -30,7 +32,7 @@ namespace V2RayGCon.Service
 
             if (setting.GetServerCount() > 0)
             {
-                setting.ActivateServer();
+                setting.WakeupAutorunServer();
             }
             else
             {
@@ -130,13 +132,13 @@ namespace V2RayGCon.Service
         void Cleanup()
         {
             ni.Visible = false;
-            if (setting.isSysProxyHasSet)
+            if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
-                Lib.ProxySetter.setProxy("", false);
-                setting.isSysProxyHasSet = false;
+                setting.ClearSysProxy();
             }
 
-            setting.StopAllCoreThen();
+            setting.StopAllServersThen(() => sayGoodbye.Set());
+            sayGoodbye.WaitOne();
         }
         #endregion
     }

@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.FormMainComponent
@@ -14,11 +17,13 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.flyPanel = panel;
             BindEvent();
             LoadData();
+            setting.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
 
         #region public method
         public override void Cleanup()
         {
+            setting.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
             foreach (Model.UserControls.ServerListItem control in flyPanel.Controls)
             {
                 control.Cleanup();
@@ -29,8 +34,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             flyPanel.Invoke((MethodInvoker)delegate
             {
-                Cleanup();
-                flyPanel.Controls.Clear();
+                RemoveAllConrols();
                 LoadData();
             });
             return false;
@@ -38,9 +42,35 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+
+        void RemoveAllConrols()
+        {
+            List<Control> listControls = new List<Control>();
+
+            foreach (Model.UserControls.ServerListItem control in flyPanel.Controls)
+            {
+                control.Cleanup();
+                listControls.Add(control);
+            }
+
+            foreach (Control control in listControls)
+            {
+                flyPanel.Controls.Remove(control);
+                control.Dispose();
+            }
+        }
+
+        void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)
+        {
+            RefreshUI();
+        }
+
         private void LoadData()
         {
-            var serverList = setting.GetServerList();
+            var serverList =
+                setting.GetServerList()
+                .OrderBy(o => o.index)
+                .ToList();
 
             for (int i = 0; i < serverList.Count; i++)
             {

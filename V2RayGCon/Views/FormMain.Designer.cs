@@ -37,10 +37,18 @@ namespace V2RayGCon.Views
             this.toolMenuItemSimAddVmessServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemImportLinkFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolMenuItemDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemExportAllServerToFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemImportFromFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolMenuItemServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemStopAllServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRestartAllServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolMenuItemCurrentSysProxy = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemConfigEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemConfigTester = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +74,7 @@ namespace V2RayGCon.Views
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.operationToolStripMenuItem,
+            this.toolMenuItemServer,
             this.windowToolStripMenuItem,
             this.aboutToolStripMenuItem1});
             this.menuStrip1.Name = "menuStrip1";
@@ -76,6 +85,7 @@ namespace V2RayGCon.Views
             this.toolMenuItemSimAddVmessServer,
             this.toolMenuItemImportLinkFromClipboard,
             this.toolStripSeparator5,
+            this.toolMenuItemDeleteAll,
             this.toolMenuItemExportAllServerToFile,
             this.toolMenuItemImportFromFile,
             this.toolStripSeparator8,
@@ -98,15 +108,20 @@ namespace V2RayGCon.Views
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
             // 
-            // exportAllServerToolStripMenuItem
+            // toolMenuItemDeleteAll
             // 
-            this.toolMenuItemExportAllServerToFile.Name = "exportAllServerToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemExportAllServerToFile, "exportAllServerToolStripMenuItem");
+            this.toolMenuItemDeleteAll.Name = "toolMenuItemDeleteAll";
+            resources.ApplyResources(this.toolMenuItemDeleteAll, "toolMenuItemDeleteAll");
             // 
-            // importToolStripMenuItem
+            // toolMenuItemExportAllServerToFile
             // 
-            this.toolMenuItemImportFromFile.Name = "importToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemImportFromFile, "importToolStripMenuItem");
+            this.toolMenuItemExportAllServerToFile.Name = "toolMenuItemExportAllServerToFile";
+            resources.ApplyResources(this.toolMenuItemExportAllServerToFile, "toolMenuItemExportAllServerToFile");
+            // 
+            // toolMenuItemImportFromFile
+            // 
+            this.toolMenuItemImportFromFile.Name = "toolMenuItemImportFromFile";
+            resources.ApplyResources(this.toolMenuItemImportFromFile, "toolMenuItemImportFromFile");
             // 
             // toolStripSeparator8
             // 
@@ -118,6 +133,49 @@ namespace V2RayGCon.Views
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // toolMenuItemServer
+            // 
+            this.toolMenuItemServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemStopAllServers,
+            this.toolStripMenuItemRestartAllServers,
+            this.toolStripSeparator1,
+            this.systemProxyToolStripMenuItem});
+            this.toolMenuItemServer.Name = "toolMenuItemServer";
+            resources.ApplyResources(this.toolMenuItemServer, "toolMenuItemServer");
+            // 
+            // toolStripMenuItemStopAllServers
+            // 
+            this.toolStripMenuItemStopAllServers.Name = "toolStripMenuItemStopAllServers";
+            resources.ApplyResources(this.toolStripMenuItemStopAllServers, "toolStripMenuItemStopAllServers");
+            // 
+            // toolStripMenuItemRestartAllServers
+            // 
+            this.toolStripMenuItemRestartAllServers.Name = "toolStripMenuItemRestartAllServers";
+            resources.ApplyResources(this.toolStripMenuItemRestartAllServers, "toolStripMenuItemRestartAllServers");
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
+            // systemProxyToolStripMenuItem
+            // 
+            this.systemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolMenuItemCurrentSysProxy,
+            this.toolMenuItemClearSysProxy});
+            this.systemProxyToolStripMenuItem.Name = "systemProxyToolStripMenuItem";
+            resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
+            // 
+            // toolMenuItemCurrentSysProxy
+            // 
+            resources.ApplyResources(this.toolMenuItemCurrentSysProxy, "toolMenuItemCurrentSysProxy");
+            this.toolMenuItemCurrentSysProxy.Name = "toolMenuItemCurrentSysProxy";
+            // 
+            // toolMenuItemClearSysProxy
+            // 
+            this.toolMenuItemClearSysProxy.Name = "toolMenuItemClearSysProxy";
+            resources.ApplyResources(this.toolMenuItemClearSysProxy, "toolMenuItemClearSysProxy");
             // 
             // windowToolStripMenuItem
             // 
@@ -132,31 +190,30 @@ namespace V2RayGCon.Views
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             resources.ApplyResources(this.windowToolStripMenuItem, "windowToolStripMenuItem");
             // 
-            // configEditorToolStripMenuItem
+            // toolMenuItemConfigEditor
             // 
-            this.toolMenuItemConfigEditor.Name = "configEditorToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemConfigEditor, "configEditorToolStripMenuItem");
-
+            this.toolMenuItemConfigEditor.Name = "toolMenuItemConfigEditor";
+            resources.ApplyResources(this.toolMenuItemConfigEditor, "toolMenuItemConfigEditor");
             // 
-            // configTesterToolStripMenuItem
+            // toolMenuItemConfigTester
             // 
-            this.toolMenuItemConfigTester.Name = "configTesterToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemConfigTester, "configTesterToolStripMenuItem");
+            this.toolMenuItemConfigTester.Name = "toolMenuItemConfigTester";
+            resources.ApplyResources(this.toolMenuItemConfigTester, "toolMenuItemConfigTester");
             // 
-            // qRCodeToolStripMenuItem
+            // toolMenuItemQRCode
             // 
-            this.toolMenuItemQRCode.Name = "qRCodeToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemQRCode, "qRCodeToolStripMenuItem");
+            this.toolMenuItemQRCode.Name = "toolMenuItemQRCode";
+            resources.ApplyResources(this.toolMenuItemQRCode, "toolMenuItemQRCode");
             // 
-            // logToolStripMenuItem
+            // toolMenuItemLog
             // 
-            this.toolMenuItemLog.Name = "logToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemLog, "logToolStripMenuItem");
+            this.toolMenuItemLog.Name = "toolMenuItemLog";
+            resources.ApplyResources(this.toolMenuItemLog, "toolMenuItemLog");
             // 
-            // optionsToolStripMenuItem
+            // toolMenuItemOptions
             // 
-            this.toolMenuItemOptions.Name = "optionsToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemOptions, "optionsToolStripMenuItem");
+            this.toolMenuItemOptions.Name = "toolMenuItemOptions";
+            resources.ApplyResources(this.toolMenuItemOptions, "toolMenuItemOptions");
             // 
             // toolStripSeparator10
             // 
@@ -171,15 +228,15 @@ namespace V2RayGCon.Views
             this.v2rayCoreToolStripMenuItem.Name = "v2rayCoreToolStripMenuItem";
             resources.ApplyResources(this.v2rayCoreToolStripMenuItem, "v2rayCoreToolStripMenuItem");
             // 
-            // downloadV2rayCoreToolStripMenuItem
+            // toolMenuItemDownloadV2rayCore
             // 
-            this.toolMenuItemDownloadV2rayCore.Name = "downloadV2rayCoreToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemDownloadV2rayCore, "downloadV2rayCoreToolStripMenuItem");
+            this.toolMenuItemDownloadV2rayCore.Name = "toolMenuItemDownloadV2rayCore";
+            resources.ApplyResources(this.toolMenuItemDownloadV2rayCore, "toolMenuItemDownloadV2rayCore");
             // 
-            // removeV2rayCoreToolStripMenuItem
+            // toolMenuItemRemoveV2rayCore
             // 
-            this.toolMenuItemRemoveV2rayCore.Name = "removeV2rayCoreToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemRemoveV2rayCore, "removeV2rayCoreToolStripMenuItem");
+            this.toolMenuItemRemoveV2rayCore.Name = "toolMenuItemRemoveV2rayCore";
+            resources.ApplyResources(this.toolMenuItemRemoveV2rayCore, "toolMenuItemRemoveV2rayCore");
             // 
             // aboutToolStripMenuItem1
             // 
@@ -190,20 +247,20 @@ namespace V2RayGCon.Views
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
             resources.ApplyResources(this.aboutToolStripMenuItem1, "aboutToolStripMenuItem1");
             // 
-            // checkUpdateToolStripMenuItem
+            // toolMenuItemCheckUpdate
             // 
-            this.toolMenuItemCheckUpdate.Name = "checkUpdateToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemCheckUpdate, "checkUpdateToolStripMenuItem");
+            this.toolMenuItemCheckUpdate.Name = "toolMenuItemCheckUpdate";
+            resources.ApplyResources(this.toolMenuItemCheckUpdate, "toolMenuItemCheckUpdate");
             // 
-            // aboutToolStripMenuItem
+            // toolMenuItemAbout
             // 
-            this.toolMenuItemAbout.Name = "aboutToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemAbout, "aboutToolStripMenuItem");
+            this.toolMenuItemAbout.Name = "toolMenuItemAbout";
+            resources.ApplyResources(this.toolMenuItemAbout, "toolMenuItemAbout");
             // 
-            // helpToolStripMenuItem
+            // toolMenuItemHelp
             // 
-            this.toolMenuItemHelp.Name = "helpToolStripMenuItem";
-            resources.ApplyResources(this.toolMenuItemHelp, "helpToolStripMenuItem");
+            this.toolMenuItemHelp.Name = "toolMenuItemHelp";
+            resources.ApplyResources(this.toolMenuItemHelp, "toolMenuItemHelp");
             // 
             // flyServerListContainer
             // 
@@ -256,5 +313,13 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem toolMenuItemRemoveV2rayCore;
         private ToolStripMenuItem toolMenuItemOptions;
         private FlowLayoutPanel flyServerListContainer;
+        private ToolStripMenuItem toolMenuItemDeleteAll;
+        private ToolStripMenuItem toolMenuItemServer;
+        private ToolStripMenuItem toolStripMenuItemStopAllServers;
+        private ToolStripMenuItem toolStripMenuItemRestartAllServers;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem systemProxyToolStripMenuItem;
+        private ToolStripMenuItem toolMenuItemCurrentSysProxy;
+        private ToolStripMenuItem toolMenuItemClearSysProxy;
     }
 }

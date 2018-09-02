@@ -370,6 +370,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 SysProxy 的本地化字符串。
+        /// </summary>
+        internal static string CurSysProxy {
+            get {
+                return ResourceManager.GetString("CurSysProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Data too big. Please trim down the config file. 的本地化字符串。
         /// </summary>
         internal static string DataTooBig {
@@ -415,7 +424,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2Ray GUI Configer 的本地化字符串。
+        ///   查找类似 Graphics configuration editor for v2ray-core. 的本地化字符串。
         /// </summary>
         internal static string Description {
             get {
@@ -803,6 +812,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 not set 的本地化字符串。
+        /// </summary>
+        internal static string NotSet {
+            get {
+                return ResourceManager.GetString("NotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Duplicate link or unable to decode 的本地化字符串。
         /// </summary>
         internal static string NotSupportLinkType {
@@ -930,6 +948,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Set as system proxy 的本地化字符串。
+        /// </summary>
+        internal static string SetAsSysProxy {
+            get {
+                return ResourceManager.GetString("SetAsSysProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set proxy mode 的本地化字符串。
         /// </summary>
         internal static string SetProxyMode {
@@ -962,6 +989,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 System proxy must be a HTTP server. 的本地化字符串。
+        /// </summary>
+        internal static string SysProxyRequireHTTPServer {
+            get {
+                return ResourceManager.GetString("SysProxyRequireHTTPServer", resourceCulture);
             }
         }
         

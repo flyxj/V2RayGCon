@@ -41,8 +41,6 @@ namespace V2RayGCon.Views
 
         #region private method
 
-
-
         void RefreshCurrentCoreVersion()
         {
             var el = labelCoreVersion;

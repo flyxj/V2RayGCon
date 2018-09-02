@@ -33,7 +33,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (curOptions != oldOptions)
             {
-                setting.SaveImportUrlOptions(curOptions);
+                setting.SaveImportUrlItems(curOptions);
                 oldOptions = curOptions;
                 return true;
             }

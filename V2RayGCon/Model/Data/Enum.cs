@@ -11,9 +11,9 @@
 
         public enum ProxyTypes
         {
-            config = 0,
-            http = 1,
-            socks = 2,
+            Config = 0,
+            HTTP = 1,
+            SOCKS = 2,
         }
 
         public enum FormLocations

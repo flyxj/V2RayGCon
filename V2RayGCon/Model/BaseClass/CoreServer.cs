@@ -108,6 +108,23 @@ namespace V2RayGCon.Model.BaseClass
             get => _isRunning;
         }
 
+        public void RestartCoreThen(string config, Action OnStateChanged = null, Action next = null)
+        {
+            StopCoreThen(() =>
+            {
+                if (IsExecutableExist())
+                {
+                    StartCore(config, OnStateChanged);
+                    next?.Invoke();
+                }
+                else
+                {
+                    MessageBox.Show(I18N("ExeNotFound"));
+                    next?.Invoke();
+                }
+            });
+        }
+
         public void RestartCore(string config, Action OnStateChanged = null)
         {
             StopCoreThen(() =>
@@ -207,7 +224,11 @@ namespace V2RayGCon.Model.BaseClass
 
                 // SendLog("Exit code: " + err);
                 _isRunning = false;
-                OnStateChanged?.Invoke();
+                try
+                {
+                    OnStateChanged?.Invoke();
+                }
+                catch { }
             };
 
             v2rayCore.ErrorDataReceived += (s, e) => SendLog(e.Data);
@@ -224,7 +245,11 @@ namespace V2RayGCon.Model.BaseClass
             v2rayCore.BeginOutputReadLine();
 
             _isRunning = true;
-            OnStateChanged?.Invoke();
+            try
+            {
+                OnStateChanged?.Invoke();
+            }
+            catch { }
         }
 
         void SendLog(string log)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
@@ -17,8 +18,8 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Setting setting;
         Controller.FormMainCtrl formMainCtrl;
+        Service.Setting setting;
 
         FormMain()
         {
@@ -37,7 +38,7 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnRequireMenuUpdate -= UpdateMenuHandler;
+                setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
             };
 
@@ -50,7 +51,8 @@ namespace V2RayGCon.Views
 
             formMainCtrl = InitFormMainCtrl();
 
-            setting.OnRequireMenuUpdate += UpdateMenuHandler;
+            toolMenuItemCurrentSysProxy.Text = GetCurrentSysProxySetting();
+            setting.OnSysProxyChanged += OnSysProxyChangedHandler;
         }
 
         #region private method
@@ -61,7 +63,7 @@ namespace V2RayGCon.Views
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer));
 
-            ctrl.Plug(new Controller.FormMainComponent.Menus(
+            ctrl.Plug(new Controller.FormMainComponent.MenuItems(
                 toolMenuItemSimAddVmessServer,
                 toolMenuItemImportLinkFromClipboard,
                 toolMenuItemExportAllServerToFile,
@@ -75,32 +77,43 @@ namespace V2RayGCon.Views
                 toolMenuItemLog,
                 toolMenuItemOptions,
                 toolMenuItemDownloadV2rayCore,
-                toolMenuItemRemoveV2rayCore
-                ));
+                toolMenuItemRemoveV2rayCore,
+                toolMenuItemDeleteAll,
+                toolStripMenuItemStopAllServers,
+                toolStripMenuItemRestartAllServers,
+                toolMenuItemClearSysProxy));
 
             return ctrl;
         }
 
-        void UpdateMenuHandler(object s, EventArgs e)
+        void OnSysProxyChangedHandler(object sender, EventArgs args)
         {
-            formMainCtrl.RefreshUI();
+            menuStrip1.Invoke((MethodInvoker)delegate
+            {
+                toolMenuItemCurrentSysProxy.Text = GetCurrentSysProxySetting();
+            });
         }
 
-
-
+        string GetCurrentSysProxySetting()
+        {
+            var s = I18N("CurSysProxy");
+            if (string.IsNullOrEmpty(setting.curSysProxy))
+            {
+                s = string.Format("{0}:{1}", s, I18N("NotSet"));
+            }
+            else
+            {
+                s = string.Format("{0} http://{1}", s, setting.curSysProxy);
+            }
+            return s;
+        }
         #endregion
 
         #region UI event handler
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-
-
-
-
         #endregion
     }
 }

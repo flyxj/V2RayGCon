@@ -89,7 +89,7 @@ namespace V2RayGCon.Views
 
         void UpdateLink()
         {
-            var server = setting.GetServer(servIndex);
+            var server = setting.GetServerByIndex(servIndex);
 
             if (string.IsNullOrEmpty(server))
             {
