@@ -31,6 +31,11 @@ namespace V2RayGCon.Views
             this.Icon = Properties.Resources.icon_light;
 #endif
             this.Show();
+
+            this.FormClosed += (s, a) =>
+            {
+                setting.LazyGC();
+            };
         }
 
         void Fill(ComboBox cbox, Dictionary<int, string> table)

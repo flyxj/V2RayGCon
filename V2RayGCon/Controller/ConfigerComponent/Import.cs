@@ -99,7 +99,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                         plainText)
                         .ToString();
 
-                    System.GC.Collect();
+                    Service.Setting.Instance.LazyGC();
                 }
                 catch (FileNotFoundException)
                 {

@@ -28,7 +28,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem deleteAllItems,
             ToolStripMenuItem stopAllServers,
             ToolStripMenuItem restartAllServers,
-            ToolStripMenuItem clearSysProxy)
+            ToolStripMenuItem clearSysProxy,
+            ToolStripMenuItem refreshSummary)
         {
             setting = Service.Setting.Instance;
             simVmessServer.Click +=
@@ -77,6 +78,12 @@ namespace V2RayGCon.Controller.FormMainComponent
             restartAllServers.Click += (s, a) => setting.RestartAllServers();
 
             clearSysProxy.Click += (s, a) => setting.ClearSysProxy();
+
+            refreshSummary.Click += (s, a) =>
+            {
+                Service.Cache.Instance.html.Clear();
+                Service.Setting.Instance.UpdateAllSummary();
+            };
         }
 
 

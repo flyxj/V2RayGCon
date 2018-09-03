@@ -41,6 +41,7 @@ namespace V2RayGCon.Views
             this.FormClosing += (s, a) =>
             {
                 setting.SaveFormPosition(this, nameof(FormMain));
+                setting.LazyGC();
             };
 
             this.FormClosed += (s, a) =>
@@ -88,7 +89,8 @@ namespace V2RayGCon.Views
                 toolMenuItemDeleteAll,
                 toolStripMenuItemStopAllServers,
                 toolStripMenuItemRestartAllServers,
-                toolMenuItemClearSysProxy));
+                toolMenuItemClearSysProxy,
+                toolMenuItemRefreshSummary));
 
             return ctrl;
         }

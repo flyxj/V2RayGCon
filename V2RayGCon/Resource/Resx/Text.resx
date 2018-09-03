@@ -465,7 +465,7 @@ Are you sure want to continue?</value>
     <value>vmess:// ...</value>
   </data>
   <data name="CurSysProxy" xml:space="preserve">
-    <value>SysProxy</value>
+    <value>Current</value>
   </data>
   <data name="NotSet" xml:space="preserve">
     <value>not set</value>

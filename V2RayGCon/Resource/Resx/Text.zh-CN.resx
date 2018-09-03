@@ -456,7 +456,7 @@ https://github.com/v2ray/v2ray-core</value>
     <value>复制</value>
   </data>
   <data name="CurSysProxy" xml:space="preserve">
-    <value>系统代理</value>
+    <value>当前</value>
   </data>
   <data name="NotSet" xml:space="preserve">
     <value>未设置</value>

@@ -19,6 +19,9 @@ namespace V2RayGCon.Service
         public event EventHandler OnSysProxyChanged;
 
         Queue<string> logCache;
+        Model.BaseClass.CancelableTimeout
+            lazyGCTimer = null,
+            lazySaveServerListTimer = null;
 
         Setting()
         {
@@ -31,9 +34,9 @@ namespace V2RayGCon.Service
 
             serverList.OnLog += (s, a) => SendLog(a.Data);
 
-            SaveServerList();
+            LazySaveServerList();
 
-            serverList.ListChanged += SaveServerList;
+            serverList.ListChanged += LazySaveServerList;
             serverList.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
             serverList.OnRequireFlyPanelUpdate += InvokeOnRequireFlyPanelUpdate;
         }
@@ -62,24 +65,39 @@ namespace V2RayGCon.Service
                 int n = Properties.Settings.Default.MaxLogLine;
                 return Lib.Utils.Clamp(n, 10, 1000);
             }
-            set
-            {
-                int n = Lib.Utils.Clamp(value, 10, 1000);
-                Properties.Settings.Default.MaxLogLine = n;
-                Properties.Settings.Default.Save();
-            }
+            private set { }
         }
 
         #endregion
 
         #region private Properties
         private Dictionary<string, Rectangle> _winFormPosList = null; // cache
-
-
         #endregion
 
 
         #region public methods
+        public void DisposeLazyTimers()
+        {
+            lazyGCTimer?.Release();
+            lazySaveServerListTimer?.Release();
+        }
+
+        public void LazyGC()
+        {
+            // create in need
+            if (lazyGCTimer == null)
+            {
+                var delay = Lib.Utils.Str2Int(StrConst("LazyGCDelay"));
+
+                lazyGCTimer = new Model.BaseClass.CancelableTimeout(
+                    () =>
+                    {
+                        System.GC.Collect();
+                    }, delay * 1000);
+            }
+
+            lazyGCTimer.Start();
+        }
 
         public void SaveFormPosition(Form form, string key)
         {
@@ -152,6 +170,11 @@ namespace V2RayGCon.Service
         public string GetLogCache()
         {
             return string.Join("\n", logCache);
+        }
+
+        public void UpdateAllSummary()
+        {
+            serverList.UpdateAllSummary();
         }
 
         public void SendLog(string log)
@@ -329,7 +352,8 @@ namespace V2RayGCon.Service
 
         public void DeleteAllServer()
         {
-            serverList.DeleteAllItems();
+            serverList.DeleteAllItemsThen(
+                () => Service.Cache.Instance.core.Clear());
         }
 
         public bool AddServer(JObject config, bool quiet = false)
@@ -405,6 +429,7 @@ namespace V2RayGCon.Service
                 OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
             }
             catch { }
+            LazyGC();
         }
 
         void InvokeOnRequireFlyPanelUpdate(object sender, EventArgs args)
@@ -414,6 +439,7 @@ namespace V2RayGCon.Service
                 OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
             }
             catch { }
+            LazyGC();
         }
 
         Tuple<bool, List<string[]>> ImportSSLinks(string text)
@@ -526,11 +552,23 @@ namespace V2RayGCon.Service
         }
 
 
-        void SaveServerList()
+        void LazySaveServerList()
         {
-            string json = JsonConvert.SerializeObject(serverList);
-            Properties.Settings.Default.ServerList = json;
-            Properties.Settings.Default.Save();
+            // create in need
+            if (lazySaveServerListTimer == null)
+            {
+                var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
+
+                lazySaveServerListTimer =
+                    new Model.BaseClass.CancelableTimeout(() =>
+                    {
+                        string json = JsonConvert.SerializeObject(serverList);
+                        Properties.Settings.Default.ServerList = json;
+                        Properties.Settings.Default.Save();
+                    }, delay * 1000);
+            }
+
+            lazySaveServerListTimer.Start();
         }
 
         #endregion

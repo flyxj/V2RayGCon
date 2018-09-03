@@ -123,10 +123,6 @@
   <data name="rbtnStreamInbound.Text" xml:space="preserve">
     <value>Inbound(服务器)</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
   <data name="label14.Text" xml:space="preserve">
     <value>参数</value>
   </data>
@@ -154,9 +150,6 @@
   <data name="label4.Text" xml:space="preserve">
     <value>IP:端口</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>服务器</value>
-  </data>
   <data name="btnSSInsertServer.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
@@ -166,29 +159,20 @@
   <data name="label19.Text" xml:space="preserve">
     <value>密码</value>
   </data>
-  <data name="label18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
-  </data>
   <data name="label18.Text" xml:space="preserve">
     <value>网络类型</value>
   </data>
   <data name="label17.Text" xml:space="preserve">
     <value>端口</value>
   </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
   <data name="label10.Text" xml:space="preserve">
     <value>加密</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>客户端</value>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>服务器</value>
   </data>
   <data name="btnSSRInsertClient.Text" xml:space="preserve">
     <value>插入→</value>
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>加密</value>
@@ -202,14 +186,11 @@
   <data name="label6.Text" xml:space="preserve">
     <value>IP:端口</value>
   </data>
-  <data name="groupBox8.Text" xml:space="preserve">
-    <value>环境变量</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>客户端</value>
   </data>
   <data name="btnInsertEnv.Text" xml:space="preserve">
     <value>插入→</value>
-  </data>
-  <data name="label22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
   </data>
   <data name="label22.Text" xml:space="preserve">
     <value>数值</value>
@@ -217,17 +198,14 @@
   <data name="label21.Text" xml:space="preserve">
     <value>名称</value>
   </data>
+  <data name="groupBox8.Text" xml:space="preserve">
+    <value>环境变量</value>
+  </data>
   <data name="btnInsertImport.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
-  <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
   <data name="label13.Text" xml:space="preserve">
     <value>别名</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>快速配置</value>
   </data>
   <data name="btnQConSkipCN.Text" xml:space="preserve">
     <value>跳过CN网站</value>
@@ -235,8 +213,8 @@
   <data name="btnQConSkipCN.ToolTip" xml:space="preserve">
     <value>CN网站不走代理</value>
   </data>
-  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>快速配置</value>
   </data>
   <data name="label16.Text" xml:space="preserve">
     <value>描述</value>
@@ -244,20 +222,14 @@
   <data name="btnInsertVGC.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
   <data name="label15.Text" xml:space="preserve">
     <value>别名</value>
   </data>
-  <data name="groupBox9.Text" xml:space="preserve">
-    <value>展开import</value>
-  </data>
-  <data name="cboxGlobalImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 16</value>
-  </data>
   <data name="cboxGlobalImport.Text" xml:space="preserve">
     <value>全局import</value>
+  </data>
+  <data name="cboxGlobalImport.ToolTip" xml:space="preserve">
+    <value>注入全局import</value>
   </data>
   <data name="btnImportClearCache.Text" xml:space="preserve">
     <value>清理缓存</value>
@@ -268,11 +240,23 @@
   <data name="btnCopyExpansedConfig.Text" xml:space="preserve">
     <value>复制</value>
   </data>
+  <data name="groupBox9.Text" xml:space="preserve">
+    <value>展开import</value>
+  </data>
   <data name="btnClearModify.Text" xml:space="preserve">
     <value>取消更改</value>
   </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+  <data name="newWinToolStripMenuItem1.Text" xml:space="preserve">
+    <value>新窗口</value>
+  </data>
+  <data name="loadJsonToolStripMenuItem.Text" xml:space="preserve">
+    <value>加载Json文件</value>
+  </data>
+  <data name="saveAsToolStripMenuItem.Text" xml:space="preserve">
+    <value>另存Json文件</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>关闭</value>
   </data>
   <data name="fileToolStripMenuItem.Text" xml:space="preserve">
     <value>文件</value>
@@ -280,53 +264,11 @@
   <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>覆盖原服务器设置 </value>
   </data>
-  <data name="newWinToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="newWinToolStripMenuItem1.Text" xml:space="preserve">
-    <value>新窗口</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 6</value>
-  </data>
-  <data name="loadJsonToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="loadJsonToolStripMenuItem.Text" xml:space="preserve">
-    <value>加载Json文件</value>
-  </data>
-  <data name="saveAsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="saveAsToolStripMenuItem.Text" xml:space="preserve">
-    <value>另存Json文件</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 6</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>关闭</value>
-  </data>
-  <data name="configToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
-  </data>
-  <data name="configToolStripMenuItem.Text" xml:space="preserve">
-    <value>服务器</value>
-  </data>
-  <data name="addNewServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
   <data name="addNewServerToolStripMenuItem.Text" xml:space="preserve">
     <value>添加新服务器</value>
   </data>
   <data name="addNewServerToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>用当前配置创建一个新服务器。</value>
-  </data>
-  <data name="saveConfigStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
   </data>
   <data name="saveConfigStripMenuItem.Text" xml:space="preserve">
     <value>保存当前配置</value>
@@ -334,50 +276,26 @@
   <data name="saveConfigStripMenuItem.ToolTipText" xml:space="preserve">
     <value>用当前配置替换原选中的服务器。</value>
   </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 6</value>
-  </data>
-  <data name="loadServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
   <data name="loadServerToolStripMenuItem.Text" xml:space="preserve">
     <value>加载服务器</value>
-  </data>
-  <data name="replaceExistServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
   </data>
   <data name="replaceExistServerToolStripMenuItem.Text" xml:space="preserve">
     <value>覆盖服务器</value>
   </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
-  </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>视图</value>
-  </data>
-  <data name="searchBoxToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+  <data name="configToolStripMenuItem.Text" xml:space="preserve">
+    <value>服务器</value>
   </data>
   <data name="searchBoxToolStripMenuItem.Text" xml:space="preserve">
     <value>搜索</value>
   </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 6</value>
-  </data>
-  <data name="showLeftPanelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
-  </data>
   <data name="showLeftPanelToolStripMenuItem.Text" xml:space="preserve">
     <value>显示左面板</value>
-  </data>
-  <data name="hideLeftPanelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
   </data>
   <data name="hideLeftPanelToolStripMenuItem.Text" xml:space="preserve">
     <value>隐藏左面板</value>
   </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>视图</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>分节</value>
@@ -385,6 +303,7 @@
   <data name="btnFormat.Text" xml:space="preserve">
     <value>格式化</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAAAAAAAEAIAAoIAQAZgAAABAQAAABACAAaAQAAI4gBAAwMAAAAQAgAKglAAD2JAQAICAAAAEA

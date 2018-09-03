@@ -132,9 +132,6 @@
   <data name="chkImport.ToolTip" xml:space="preserve">
     <value>注入全局import</value>
   </data>
-  <data name="chkEnv.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="btnDelete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
@@ -172,6 +169,6 @@
     <value />
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
-    <value />
+    <value>拖放可调整顺序</value>
   </data>
 </root>

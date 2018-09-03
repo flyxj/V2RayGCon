@@ -44,7 +44,10 @@ namespace V2RayGCon.Views
                 }
             };
 
-            // this.FormClosed += (s, a) => { };
+            this.FormClosed += (s, a) =>
+            {
+                setting.LazyGC();
+            };
         }
 
 

@@ -121,7 +121,7 @@
             // 
             resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lbRunning.ForeColor = System.Drawing.Color.DarkOrange;
+            this.lbRunning.ForeColor = System.Drawing.Color.Green;
             this.lbRunning.Name = "lbRunning";
             // 
             // tboxInboundPort
@@ -166,6 +166,7 @@
             this.Controls.Add(this.lbSummary);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.Name = "ServerListItem";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Load += new System.EventHandler(this.ServerListItem_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServerListItem_MouseDown);
             this.ResumeLayout(false);

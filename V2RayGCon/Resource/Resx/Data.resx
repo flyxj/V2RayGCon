@@ -206,4 +206,12 @@
   <data name="DecodeCacheSize" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="LazyGCDelay" xml:space="preserve">
+    <value>180</value>
+    <comment>seconds</comment>
+  </data>
+  <data name="LazySaveServerListDelay" xml:space="preserve">
+    <value>30</value>
+    <comment>seconds</comment>
+  </data>
 </root>

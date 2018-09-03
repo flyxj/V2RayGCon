@@ -46,6 +46,7 @@ namespace V2RayGCon.Views
             {
                 tester.OnLog -= LogReceiver;
                 setting.OnRequireMenuUpdate -= SettingChange;
+                setting.LazyGC();
                 tester.StopCoreThen(() => sayGoodbye.Set());
                 sayGoodbye.WaitOne();
             };
@@ -168,7 +169,7 @@ namespace V2RayGCon.Views
             var env = Lib.Utils.GetEnvVarsFromConfig(config);
 
             config = null;
-            System.GC.Collect();
+            setting.LazyGC();
             tester.RestartCoreThen(s, OnCoreStatusChanged, null, env);
         }
         #endregion

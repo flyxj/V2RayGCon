@@ -259,6 +259,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 180 的本地化字符串。
+        /// </summary>
+        internal static string LazyGCDelay {
+            get {
+                return ResourceManager.GetString("LazyGCDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 30 的本地化字符串。
+        /// </summary>
+        internal static string LazySaveServerListDelay {
+            get {
+                return ResourceManager.GetString("LazySaveServerListDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 5 的本地化字符串。
         /// </summary>
         internal static string ParseImportDepth {

@@ -45,6 +45,7 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, a) =>
             {
                 setting.OnRequireMenuUpdate -= SettingChange;
+                setting.LazyGC();
             };
 
             setting.OnRequireMenuUpdate += SettingChange;

@@ -852,12 +852,20 @@ namespace V2RayGCon.Lib
 
         public static string CutStr(string s, int len)
         {
-            if (len >= s.Length || len < 1)
+
+            if (len >= s.Length)
             {
                 return s;
             }
 
-            return s.Substring(0, len) + " ...";
+            var ellipsis = "...";
+
+            if (len <= 3)
+            {
+                return ellipsis;
+            }
+
+            return s.Substring(0, len - 3) + ellipsis;
         }
 
         public static int Str2Int(string value)

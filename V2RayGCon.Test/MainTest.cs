@@ -12,6 +12,17 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow("aaaaaa", 0, "...")]
+        [DataRow("aaaaaaaaa", 5, "aa...")]
+        [DataRow("aaaaaa", 3, "...")]
+        [DataRow("aaaaaa", -1, "...")]
+        [DataRow("", 100, "")]
+        public void CutStrTest(string org, int len, string expect)
+        {
+            var cut = Lib.Utils.CutStr(org, len);
+            Assert.AreEqual(expect, cut);
+        }
 
         [DataTestMethod]
         [DataRow(@"{}", "")]

@@ -167,7 +167,7 @@ namespace V2RayGCon.Model.Data
             };
         }
 
-        public void DeleteAllItems()
+        public void DeleteAllItemsThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
             {
@@ -180,6 +180,8 @@ namespace V2RayGCon.Model.Data
 
             Action finish = () =>
             {
+                done?.Invoke();
+                SaveChanges(this, EventArgs.Empty);
                 InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
             };
@@ -204,7 +206,6 @@ namespace V2RayGCon.Model.Data
 
             Action finish = () =>
             {
-                System.GC.Collect();
                 InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
             };

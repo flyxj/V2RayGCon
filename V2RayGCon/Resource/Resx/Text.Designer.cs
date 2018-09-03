@@ -370,7 +370,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 SysProxy 的本地化字符串。
+        ///   查找类似 Current 的本地化字符串。
         /// </summary>
         internal static string CurSysProxy {
             get {

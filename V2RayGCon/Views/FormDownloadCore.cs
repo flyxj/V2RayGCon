@@ -25,7 +25,11 @@ namespace V2RayGCon.Views
             InitializeComponent();
             InitUI();
 
-            this.FormClosed += (s, e) => downloader?.Cancel();
+            this.FormClosed += (s, e) =>
+            {
+                downloader?.Cancel();
+                Service.Setting.Instance.LazyGC();
+            };
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;

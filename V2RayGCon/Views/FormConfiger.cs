@@ -21,8 +21,8 @@ namespace V2RayGCon.Views
 
         public void Dispose()
         {
-            timerHide?.Dispose();
-            timerShow?.Dispose();
+            timerHide?.Release();
+            timerShow?.Release();
         }
     };
     #endregion
@@ -71,6 +71,7 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
+                setting.LazyGC();
                 setting.OnRequireMenuUpdate -= MenuUpdateHandler;
                 toolsPanelHandler.Dispose();
             };
@@ -300,12 +301,15 @@ namespace V2RayGCon.Views
             configer.Prepare();
         }
 
-        void SetToolsPanelWidth()
+        void ExpanseToolsPanel()
         {
             var width = toolsPanelHandler.panel.Width;
             if (pnlTools.Width != width)
             {
-                pnlTools.Width = width;
+                pnlTools.Invoke((MethodInvoker)delegate
+                {
+                    pnlTools.Width = width;
+                });
             }
         }
 
@@ -317,8 +321,8 @@ namespace V2RayGCon.Views
             toolsPanelHandler.span = (ClientRectangle.Width - toolsPanelHandler.panel.Width - toolsPanelHandler.editor.Width) / 3;
             toolsPanelHandler.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
-            toolsPanelHandler.timerHide = new Model.BaseClass.CancelableTimeout(ResetToolsPanelWidth, 800);
-            toolsPanelHandler.timerShow = new Model.BaseClass.CancelableTimeout(SetToolsPanelWidth, 500);
+            toolsPanelHandler.timerHide = new Model.BaseClass.CancelableTimeout(FoldToolsPanel, 800);
+            toolsPanelHandler.timerShow = new Model.BaseClass.CancelableTimeout(ExpanseToolsPanel, 500);
 
             var page = tabCtrlToolPanel.TabPages[0];
             toolsPanelHandler.page = new Rectangle(
@@ -449,7 +453,7 @@ namespace V2RayGCon.Views
             toolsPanelHandler.timerShow.Start();
         }
 
-        void ResetToolsPanelWidth()
+        void FoldToolsPanel()
         {
             var visible = setting.isShowConfigerToolsPanel;
             var width = toolsPanelHandler.panel.Width;
@@ -461,7 +465,10 @@ namespace V2RayGCon.Views
 
             if (pnlTools.Width != width)
             {
-                pnlTools.Width = width;
+                pnlTools.Invoke((MethodInvoker)delegate
+                {
+                    pnlTools.Width = width;
+                });
             }
         }
 

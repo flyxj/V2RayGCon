@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static V2RayGCon.Lib.StringResource;
 
@@ -157,35 +158,53 @@ namespace V2RayGCon.Model.Data
         public void StopCoreThen(Action lambda = null)
         {
             server.StopCoreThen(lambda);
+            var a = Properties.Settings.Default.DecodeCache;
         }
 
         public void RestartCoreThen(Action next = null)
         {
-            var c = new JObject();
+            JObject cfg = null;
             try
             {
-                c = Lib.ImportParser.ParseImport(
+                cfg = Lib.ImportParser.ParseImport(
                     isInjectImport ?
                     Lib.Utils.InjectGlobalImport(config) :
                     config);
+
+                // cache successful decode result
+                Service.Cache.Instance.core[config] =
+                    cfg.ToString(Formatting.None);
+
             }
-            catch
+            catch { }
+
+            if (cfg == null)
             {
                 SendLog(I18N("DecodeImportFail"));
-                StopCoreThen(next);
-                return;
+
+                try
+                {
+                    cfg = JObject.Parse(
+                        Service.Cache.Instance.core[config]);
+                }
+                catch (KeyNotFoundException)
+                {
+                    StopCoreThen(next);
+                    return;
+                }
+
+                SendLog(I18N("UsingDecodeCache"));
             }
 
-            if (!OverwriteInboundSettings(ref c))
+            if (!OverwriteInboundSettings(ref cfg))
             {
                 StopCoreThen(next);
                 return;
             }
 
-            var env = Lib.Utils.GetEnvVarsFromConfig(c);
-            var s = c.ToString();
-            c = null;
-            GC.Collect();
+            var env = Lib.Utils.GetEnvVarsFromConfig(cfg);
+            var s = cfg.ToString();
+            cfg = null;
 
             server.RestartCoreThen(s, OnCoreStateChanged, next, env);
         }
@@ -278,7 +297,7 @@ namespace V2RayGCon.Model.Data
             var summary = string.Format("[{0}] {1}", name, Lib.Utils.GetSummaryFromConfig(config));
 
             this.name = name;
-            this.summary = Lib.Utils.CutStr(summary, 35);
+            this.summary = Lib.Utils.CutStr(summary, 39);
         }
 
         private int GetInboundTypeCount()

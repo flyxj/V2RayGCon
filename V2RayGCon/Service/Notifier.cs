@@ -133,6 +133,7 @@ namespace V2RayGCon.Service
         void Cleanup()
         {
             ni.Visible = false;
+            setting.DisposeLazyTimers();
             if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
                 setting.ClearSysProxy();

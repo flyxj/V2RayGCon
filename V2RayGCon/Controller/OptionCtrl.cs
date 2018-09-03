@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -11,7 +12,8 @@ namespace V2RayGCon.Controller
         {
             foreach (var component in GetAllComponents())
             {
-                if ((component.Value as Controller.OptionComponent.OptionComponentController)
+                if ((component.Value
+                    as OptionComponent.OptionComponentController)
                     .IsOptionsChanged())
                 {
                     return false;
@@ -27,7 +29,8 @@ namespace V2RayGCon.Controller
 
             foreach (var kvPair in GetAllComponents())
             {
-                var component = kvPair.Value as Controller.OptionComponent.OptionComponentController;
+                var component = kvPair.Value
+                    as OptionComponent.OptionComponentController;
 
                 if (component.SaveOptions())
                 {
@@ -49,7 +52,10 @@ namespace V2RayGCon.Controller
             var serverString = string.Empty;
             foreach (var server in Service.Setting.Instance.GetServerList())
             {
-                serverString += "v2ray://" + Lib.Utils.Base64Encode(server.config) + "\n";
+                // insert a space in the front for regex matching
+                serverString += " v2ray://"
+                    + Lib.Utils.Base64Encode(server.config)
+                    + Environment.NewLine;
             }
 
             var data = new Dictionary<string, string> {
