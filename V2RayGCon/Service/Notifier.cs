@@ -134,6 +134,8 @@ namespace V2RayGCon.Service
         {
             ni.Visible = false;
             setting.DisposeLazyTimers();
+            setting.SaveServerList();
+
             if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
                 setting.ClearSysProxy();

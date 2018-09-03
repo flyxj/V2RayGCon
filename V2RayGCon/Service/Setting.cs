@@ -18,10 +18,13 @@ namespace V2RayGCon.Service
         public event EventHandler OnRequireFlyPanelUpdate;
         public event EventHandler OnSysProxyChanged;
 
+        Dictionary<string, Rectangle> _winFormPosList = null; // cache
         Queue<string> logCache;
+
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
             lazySaveServerListTimer = null;
+
 
         Setting()
         {
@@ -70,12 +73,14 @@ namespace V2RayGCon.Service
 
         #endregion
 
-        #region private Properties
-        private Dictionary<string, Rectangle> _winFormPosList = null; // cache
-        #endregion
-
-
         #region public methods
+        public void SaveServerList()
+        {
+            string json = JsonConvert.SerializeObject(serverList);
+            Properties.Settings.Default.ServerList = json;
+            Properties.Settings.Default.Save();
+        }
+
         public void DisposeLazyTimers()
         {
             lazyGCTimer?.Release();
@@ -551,7 +556,6 @@ namespace V2RayGCon.Service
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-
         void LazySaveServerList()
         {
             // create in need
@@ -560,12 +564,7 @@ namespace V2RayGCon.Service
                 var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
 
                 lazySaveServerListTimer =
-                    new Model.BaseClass.CancelableTimeout(() =>
-                    {
-                        string json = JsonConvert.SerializeObject(serverList);
-                        Properties.Settings.Default.ServerList = json;
-                        Properties.Settings.Default.Save();
-                    }, delay * 1000);
+                    new Model.BaseClass.CancelableTimeout(SaveServerList, delay * 1000);
             }
 
             lazySaveServerListTimer.Start();
