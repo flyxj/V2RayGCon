@@ -9,7 +9,7 @@ namespace V2RayGCon.Service
     {
         public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
         public event EventHandler<Model.Data.IntEvent> OnProgress;
-        Core core;
+
         Setting setting;
         string _packageName;
         string _version;
@@ -19,7 +19,6 @@ namespace V2RayGCon.Service
         public Downloader()
         {
             setting = Setting.Instance;
-            core = Core.Instance;
 
             SetArchitecture(false);
             _version = StrConst("DefCoreVersion");
@@ -27,6 +26,7 @@ namespace V2RayGCon.Service
         }
 
         #region public method
+
         public void SetArchitecture(bool win64 = false)
         {
             _packageName = win64 ? StrConst("PkgWin64") : StrConst("PkgWin32");
@@ -96,19 +96,17 @@ namespace V2RayGCon.Service
 
         void UpdateCore()
         {
-            if (!core.isRunning)
-            {
-                NotifyDownloadResults(UnzipPackage());
-                return;
-            }
+            var servers = setting.GetActiveServerList();
 
-            core.StopCoreThen(() =>
+            setting.StopAllServersThen(() =>
             {
                 var status = UnzipPackage();
-                setting.ActivateServer();
                 NotifyDownloadResults(status);
+                if (servers.Count > 0)
+                {
+                    setting.StartServersByList(servers);
+                }
             });
-
         }
 
         void DownloadCompleted(bool cancelled)

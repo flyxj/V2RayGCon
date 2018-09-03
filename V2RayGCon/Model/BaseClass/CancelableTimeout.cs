@@ -1,63 +1,52 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Timers;
 
 namespace V2RayGCon.Model.BaseClass
 {
     class CancelableTimeout
     {
         Timer timer;
-        EventHandler OnTick;
+        int TIMEOUT;
+        Action worker;
 
-        public CancelableTimeout(Action OnTick, int timeout)
+        public CancelableTimeout(Action worker, int timeout)
         {
-            if (timeout <= 0 || OnTick == null)
+            if (timeout <= 0 || worker == null)
             {
                 throw new ArgumentException();
             }
 
+            this.TIMEOUT = timeout;
+            this.worker = worker;
+
             timer = new Timer();
-            timer.Interval = timeout;
+            timer.Enabled = false;
+            timer.AutoReset = false;
+            timer.Elapsed += OnTimeout;
+        }
 
-            this.OnTick = (s, a) =>
-            {
-                OnTick();
-                Cancel();
-            };
-
-            timer.Tick += this.OnTick;
+        private void OnTimeout(object sender, EventArgs e)
+        {
+            this.worker();
         }
 
         public void Start()
         {
-            if (timer.Enabled)
-            {
-                return;
-            }
-
-            timer.Start();
+            timer.Interval = this.TIMEOUT;
+            timer.Enabled = true;
         }
 
         public void Cancel()
         {
-            if (!timer.Enabled)
-            {
-                return;
-            }
-
-            timer.Stop();
+            timer.Enabled = false;
         }
 
-        public void Dispose()
+        public void Release()
         {
             Cancel();
-
-            if (OnTick == null)
-            {
-                return;
-            }
-
-            timer.Tick -= OnTick;
-            OnTick = null;
+            timer.Elapsed -= OnTimeout;
+            this.worker = null;
+            timer.Close();
         }
     }
 }

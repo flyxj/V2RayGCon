@@ -27,7 +27,11 @@ namespace V2RayGCon.Views
 
             InitializeComponent();
 
-            this.FormClosed += (s, e) => setting.OnLog -= LogReceiver;
+            this.FormClosed += (s, e) =>
+            {
+                setting.LazyGC();
+                setting.OnLog -= LogReceiver;
+            };
 
             Lib.UI.SetFormLocation<FormLog>(this, Model.Data.Enum.FormLocations.BottomLeft);
 

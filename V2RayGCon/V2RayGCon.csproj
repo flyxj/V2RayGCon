@@ -99,11 +99,15 @@
     <Compile Include="Controller\Configer.cs" />
     <Compile Include="Controller\ConfigerComponent\Editor.cs" />
     <Compile Include="Controller\ConfigerComponent\Import.cs" />
+    <Compile Include="Controller\ConfigerComponent\EnvVar.cs" />
     <Compile Include="Controller\ConfigerComponent\VGC.cs" />
     <Compile Include="Controller\ConfigerComponent\SSClient.cs" />
     <Compile Include="Controller\ConfigerComponent\SSServer.cs" />
     <Compile Include="Controller\ConfigerComponent\StreamSettings.cs" />
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
+    <Compile Include="Controller\FormMainComponent\FlyServer.cs" />
+    <Compile Include="Controller\FormMainComponent\FormMainComponentController.cs" />
+    <Compile Include="Controller\FormMainComponent\MenuItems.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
@@ -130,9 +134,17 @@
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
+    <Compile Include="Model\Data\ServerList.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
+    <Compile Include="Model\Data\ServerItem.cs" />
     <Compile Include="Model\Data\UrlItem.cs" />
+    <Compile Include="Model\UserControls\ServerListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Model\UserControls\ServerListItem.Designer.cs">
+      <DependentUpon>ServerListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\UserControls\UrlListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,7 +178,6 @@
     <Compile Include="Service\Cache.cs" />
     <Compile Include="Service\Caches\Template.cs" />
     <Compile Include="Service\Downloader.cs" />
-    <Compile Include="Service\Core.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Views\FormConfiger.cs">
       <SubType>Form</SubType>
@@ -236,6 +247,12 @@
     <Compile Include="Views\FormSimAddVmessClient.Designer.cs">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Model\UserControls\ServerListItem.resx">
+      <DependentUpon>ServerListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\UserControls\ServerListItem.zh-CN.resx">
+      <DependentUpon>ServerListItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\UrlListItem.resx">
       <DependentUpon>UrlListItem.cs</DependentUpon>
     </EmbeddedResource>

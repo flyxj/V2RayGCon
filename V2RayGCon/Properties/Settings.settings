@@ -2,23 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="V2RayGCon.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Servers" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ServNum" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="CurServ" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="MaxLogLine" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="ProxyAddr" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.0.0.1:1080</Value>
-    </Setting>
-    <Setting Name="ProxyType" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="CfgShowToolPanel" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -32,8 +17,11 @@
     <Setting Name="ImportUrls" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DisableGlobalImport" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="ServerList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WinFormPosList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

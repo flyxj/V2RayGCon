@@ -25,42 +25,6 @@ namespace V2RayGCon.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Servers {
-            get {
-                return ((string)(this["Servers"]));
-            }
-            set {
-                this["Servers"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ServNum {
-            get {
-                return ((int)(this["ServNum"]));
-            }
-            set {
-                this["ServNum"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int CurServ {
-            get {
-                return ((int)(this["CurServ"]));
-            }
-            set {
-                this["CurServ"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int MaxLogLine {
             get {
@@ -68,30 +32,6 @@ namespace V2RayGCon.Properties {
             }
             set {
                 this["MaxLogLine"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1:1080")]
-        public string ProxyAddr {
-            get {
-                return ((string)(this["ProxyAddr"]));
-            }
-            set {
-                this["ProxyAddr"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int ProxyType {
-            get {
-                return ((int)(this["ProxyType"]));
-            }
-            set {
-                this["ProxyType"] = value;
             }
         }
         
@@ -145,13 +85,25 @@ namespace V2RayGCon.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisableGlobalImport {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServerList {
             get {
-                return ((bool)(this["DisableGlobalImport"]));
+                return ((string)(this["ServerList"]));
             }
             set {
-                this["DisableGlobalImport"] = value;
+                this["ServerList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WinFormPosList {
+            get {
+                return ((string)(this["WinFormPosList"]));
+            }
+            set {
+                this["WinFormPosList"] = value;
             }
         }
     }

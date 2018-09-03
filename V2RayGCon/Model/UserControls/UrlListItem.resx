@@ -154,7 +154,7 @@
     <value>6</value>
   </data>
   <data name="tboxAlias.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 6</value>
+    <value>119, 10</value>
   </data>
   <data name="tboxAlias.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -181,7 +181,7 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>62, 11</value>
+    <value>58, 15</value>
   </data>
   <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -211,7 +211,7 @@
     <value>True</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>62, 51</value>
+    <value>58, 52</value>
   </data>
   <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -238,7 +238,7 @@
     <value>4</value>
   </data>
   <data name="tboxUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 45</value>
+    <value>119, 47</value>
   </data>
   <data name="tboxUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -261,8 +261,11 @@
   <data name="&gt;&gt;tboxUrl.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="btnDelete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>417, 4</value>
+    <value>413, 8</value>
   </data>
   <data name="btnDelete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -292,7 +295,7 @@
     <value>True</value>
   </data>
   <data name="cboxInUse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>426, 48</value>
+    <value>428, 50</value>
   </data>
   <data name="cboxInUse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -318,6 +321,9 @@
   <data name="&gt;&gt;cboxInUse.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -328,7 +334,16 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>514, 82</value>
+    <value>511, 86</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value>Drag and drop to adjust order.</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>UrlListItem</value>

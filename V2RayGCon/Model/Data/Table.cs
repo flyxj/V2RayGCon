@@ -5,6 +5,13 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
+        public static string[] EnviromentVariablesName = new string[] {
+            "V2RAY_RAY_BUFFER_SIZE",
+            "V2RAY_LOCATION_ASSET",
+            "V2RAY_LOCATION_CONFIG",
+            "V2RAY_BUF_READV",
+        };
+
         public static Dictionary<int, string> configSections = new Dictionary<int, string>
         {
                 { 0, "config.json"},
@@ -26,7 +33,12 @@ namespace V2RayGCon.Model.Data
         public const int sectionSeparator = 11;
         public const int inboundIndex = 7;
         public const int outboundIndex = 8;
-        public static string[] proxyTypesString = new string[] { "config", "http", "socks" };
+
+        public static string[] inboundOverwriteTypesName = new string[] {
+            "config",
+            "http",
+            "socks"
+        };
 
 
         public static Dictionary<int, string> linkPrefix = new Dictionary<int, string>

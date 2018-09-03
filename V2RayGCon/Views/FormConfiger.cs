@@ -21,8 +21,8 @@ namespace V2RayGCon.Views
 
         public void Dispose()
         {
-            timerHide?.Dispose();
-            timerShow?.Dispose();
+            timerHide?.Release();
+            timerShow?.Release();
         }
     };
     #endregion
@@ -33,17 +33,17 @@ namespace V2RayGCon.Views
         Service.Setting setting;
         FormSearch formSearch;
         ToolsPanelHandler toolsPanelHandler;
+        string originalConfigString;
 
-        int _serverIndex;
         string formTitle;
 
-        public FormConfiger(int serverIndex = -1)
+        public FormConfiger(string originalConfigString = null)
         {
             setting = Service.Setting.Instance;
-            _serverIndex = serverIndex;
             formSearch = null;
             InitializeComponent();
             formTitle = this.Text;
+            this.originalConfigString = originalConfigString;
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
@@ -71,14 +71,15 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnSettingChange -= OnSettingChange;
+                setting.LazyGC();
+                setting.OnRequireMenuUpdate -= MenuUpdateHandler;
                 toolsPanelHandler.Dispose();
             };
 
             var editor = configer.GetComponent<Controller.ConfigerComponet.Editor>();
             editor.GetEditor().Click += OnMouseLeaveToolsPanel;
 
-            setting.OnSettingChange += OnSettingChange;
+            setting.OnRequireMenuUpdate += MenuUpdateHandler;
         }
 
         #region UI event handler
@@ -170,7 +171,7 @@ namespace V2RayGCon.Views
         {
             if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
             {
-                if (configer.ReplaceOriginalServer())
+                if (configer.SaveServer())
                 {
                     SetTitle(configer.GetAlias());
                 }
@@ -228,6 +229,14 @@ namespace V2RayGCon.Views
         void InitConfiger()
         {
             var components = new List<Model.BaseClass.IFormComponentController> {
+
+                new Controller.ConfigerComponet.EnvVar(
+                    cboxImportAlias,
+                    tboxImportURL,
+                    btnInsertImport,
+                    cboxEnvName,
+                    tboxEnvValue,
+                    btnInsertEnv),
 
                 new Controller.ConfigerComponet.Editor(
                     panelScintilla,
@@ -287,17 +296,20 @@ namespace V2RayGCon.Views
 
             };
 
-            configer = new Controller.Configer(_serverIndex);
+            configer = new Controller.Configer(this.originalConfigString);
             configer.Plug(components);
             configer.Prepare();
         }
 
-        void SetToolsPanelWidth()
+        void ExpanseToolsPanel()
         {
             var width = toolsPanelHandler.panel.Width;
             if (pnlTools.Width != width)
             {
-                pnlTools.Width = width;
+                pnlTools.Invoke((MethodInvoker)delegate
+                {
+                    pnlTools.Width = width;
+                });
             }
         }
 
@@ -309,8 +321,8 @@ namespace V2RayGCon.Views
             toolsPanelHandler.span = (ClientRectangle.Width - toolsPanelHandler.panel.Width - toolsPanelHandler.editor.Width) / 3;
             toolsPanelHandler.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
-            toolsPanelHandler.timerHide = new Model.BaseClass.CancelableTimeout(ResetToolsPanelWidth, 800);
-            toolsPanelHandler.timerShow = new Model.BaseClass.CancelableTimeout(SetToolsPanelWidth, 500);
+            toolsPanelHandler.timerHide = new Model.BaseClass.CancelableTimeout(FoldToolsPanel, 800);
+            toolsPanelHandler.timerShow = new Model.BaseClass.CancelableTimeout(ExpanseToolsPanel, 500);
 
             var page = tabCtrlToolPanel.TabPages[0];
             toolsPanelHandler.page = new Rectangle(
@@ -360,35 +372,35 @@ namespace V2RayGCon.Views
             menuReplaceServer.Clear();
             menuLoadServer.Clear();
 
-            var aliases = setting.GetAllAliases();
+            var servers = setting.GetServerList();
 
-            var enable = aliases.Count > 0;
+            var enable = servers.Count > 0;
             replaceExistServerToolStripMenuItem.Enabled = enable;
             loadServerToolStripMenuItem.Enabled = enable;
 
-            for (int i = 0; i < aliases.Count; i++)
+            for (int i = 0; i < servers.Count; i++)
             {
-                var index = i;
-                menuReplaceServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                var name = string.Format("{0}.{1}", i + 1, servers[i].name);
+                var org = servers[i].config;
+                menuReplaceServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
                     {
-                        if (configer.ReplaceServer(index))
+                        if (configer.ReplaceServer(org))
                         {
                             SetTitle(configer.GetAlias());
                         }
                     }
                 }));
 
-                menuLoadServer.Add(new ToolStripMenuItem(aliases[i], null, (s, a) =>
+                menuLoadServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (!configer.IsConfigSaved()
                     && !Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
                     {
                         return;
                     }
-
-                    configer.LoadServer(index);
+                    configer.LoadServer(org);
                     SetTitle(configer.GetAlias());
                 }));
             }
@@ -423,7 +435,7 @@ namespace V2RayGCon.Views
             setting.isShowConfigerToolsPanel = visible;
         }
 
-        void OnSettingChange(object sender, EventArgs args)
+        void MenuUpdateHandler(object sender, EventArgs args)
         {
             try
             {
@@ -441,7 +453,7 @@ namespace V2RayGCon.Views
             toolsPanelHandler.timerShow.Start();
         }
 
-        void ResetToolsPanelWidth()
+        void FoldToolsPanel()
         {
             var visible = setting.isShowConfigerToolsPanel;
             var width = toolsPanelHandler.panel.Width;
@@ -453,7 +465,10 @@ namespace V2RayGCon.Views
 
             if (pnlTools.Width != width)
             {
-                pnlTools.Width = width;
+                pnlTools.Invoke((MethodInvoker)delegate
+                {
+                    pnlTools.Width = width;
+                });
             }
         }
 

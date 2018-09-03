@@ -151,6 +151,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Can find original server. Delete fail! 的本地化字符串。
+        /// </summary>
+        internal static string CantFindOrgServDelFail {
+            get {
+                return ResourceManager.GetString("CantFindOrgServDelFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Error: can not lauch v2ray-core. 的本地化字符串。
         /// </summary>
         internal static string CantLauchCore {
@@ -307,6 +316,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Copy fail! 的本地化字符串。
         /// </summary>
         internal static string CopyFail {
@@ -348,6 +366,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string CurrentCoreVerIs {
             get {
                 return ResourceManager.GetString("CurrentCoreVerIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Current 的本地化字符串。
+        /// </summary>
+        internal static string CurSysProxy {
+            get {
+                return ResourceManager.GetString("CurSysProxy", resourceCulture);
             }
         }
         
@@ -397,7 +424,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2Ray GUI Configer 的本地化字符串。
+        ///   查找类似 Graphics configuration editor for v2ray-core. 的本地化字符串。
         /// </summary>
         internal static string Description {
             get {
@@ -483,6 +510,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string DuplicateServer {
             get {
                 return ResourceManager.GetString("DuplicateServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit 的本地化字符串。
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -776,6 +812,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 not set 的本地化字符串。
+        /// </summary>
+        internal static string NotSet {
+            get {
+                return ResourceManager.GetString("NotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Duplicate link or unable to decode 的本地化字符串。
         /// </summary>
         internal static string NotSupportLinkType {
@@ -903,6 +948,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Set as system proxy 的本地化字符串。
+        /// </summary>
+        internal static string SetAsSysProxy {
+            get {
+                return ResourceManager.GetString("SetAsSysProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set proxy mode 的本地化字符串。
         /// </summary>
         internal static string SetProxyMode {
@@ -912,11 +966,38 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Start 的本地化字符串。
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stop 的本地化字符串。
+        /// </summary>
+        internal static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Success. 的本地化字符串。
         /// </summary>
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 System proxy must be a HTTP server. 的本地化字符串。
+        /// </summary>
+        internal static string SysProxyRequireHTTPServer {
+            get {
+                return ResourceManager.GetString("SysProxyRequireHTTPServer", resourceCulture);
             }
         }
         
@@ -950,6 +1031,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 v2ray:// ... 的本地化字符串。
+        /// </summary>
+        internal static string V2RayLink {
+            get {
+                return ResourceManager.GetString("V2RayLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Vist v-link wiki page? 的本地化字符串。
         /// </summary>
         internal static string VisitVlinkPage {
@@ -973,6 +1063,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string VistWikiPage {
             get {
                 return ResourceManager.GetString("VistWikiPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 vmess:// ... 的本地化字符串。
+        /// </summary>
+        internal static string VmessLink {
+            get {
+                return ResourceManager.GetString("VmessLink", resourceCulture);
             }
         }
         

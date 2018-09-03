@@ -21,6 +21,49 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region Json
+        public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
+        {
+            var empty = new Dictionary<string, string>();
+
+            var env = GetKey(config, "v2raygcon.env");
+            if (env == null)
+            {
+                return empty;
+            }
+
+            try
+            {
+                return env.ToObject<Dictionary<string, string>>();
+            }
+            catch (JsonSerializationException)
+            {
+                return empty;
+            }
+        }
+
+        public static string GetAliasFromConfig(JObject config)
+        {
+            var name = GetValue<string>(config, "v2raygcon.alias");
+            return string.IsNullOrEmpty(name) ? I18N("Empty") : CutStr(name, 12);
+        }
+
+        public static string GetSummaryFromConfig(JObject config)
+        {
+            var protocol = GetValue<string>(config, "outbound.protocol");
+            var ip = string.Empty;
+            if (protocol == "vmess" || protocol == "shadowsocks")
+            {
+                var keys = Model.Data.Table.servInfoKeys[protocol];
+                ip = GetValue<string>(config, keys[0]); // ip
+            }
+
+            var summary = protocol;
+            if (!string.IsNullOrEmpty(ip))
+            {
+                summary += "@" + ip;
+            }
+            return summary;
+        }
 
         static bool Contains(JProperty main, JProperty sub)
         {
@@ -390,6 +433,12 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region convert
+
+        public static string Config2String(JObject config)
+        {
+            return config.ToString(Formatting.None);
+        }
+
 
         public static string Config2Base64String(JObject config)
         {
@@ -803,12 +852,20 @@ namespace V2RayGCon.Lib
 
         public static string CutStr(string s, int len)
         {
-            if (len >= s.Length || len < 1)
+
+            if (len >= s.Length)
             {
                 return s;
             }
 
-            return s.Substring(0, len) + " ...";
+            var ellipsis = "...";
+
+            if (len <= 3)
+            {
+                return ellipsis;
+            }
+
+            return s.Substring(0, len - 3) + ellipsis;
         }
 
         public static int Str2Int(string value)

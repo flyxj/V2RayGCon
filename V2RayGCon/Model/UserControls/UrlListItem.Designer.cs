@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UrlListItem));
             this.lbIndex = new System.Windows.Forms.Label();
             this.tboxAlias = new System.Windows.Forms.TextBox();
@@ -36,6 +37,7 @@
             this.tboxUrl = new System.Windows.Forms.TextBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.cboxInUse = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lbIndex
@@ -95,6 +97,8 @@
             this.Controls.Add(this.lbIndex);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.Name = "UrlListItem";
+            this.Tag = "";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UrlListItem_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -110,5 +114,6 @@
         private System.Windows.Forms.TextBox tboxUrl;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.CheckBox cboxInUse;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

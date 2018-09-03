@@ -126,4 +126,7 @@
   <data name="cboxInUse.Text" xml:space="preserve">
     <value>选用</value>
   </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value>拖放可以调整顺序</value>
+  </data>
 </root>

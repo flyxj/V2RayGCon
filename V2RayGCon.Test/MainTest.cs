@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using static V2RayGCon.Lib.StringResource;
 using static V2RayGCon.Lib.Utils;
 using static V2RayGCon.Test.Resource.StringResource;
@@ -11,6 +12,34 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow("aaaaaa", 0, "...")]
+        [DataRow("aaaaaaaaa", 5, "aa...")]
+        [DataRow("aaaaaa", 3, "...")]
+        [DataRow("aaaaaa", -1, "...")]
+        [DataRow("", 100, "")]
+        public void CutStrTest(string org, int len, string expect)
+        {
+            var cut = Lib.Utils.CutStr(org, len);
+            Assert.AreEqual(expect, cut);
+        }
+
+        [DataTestMethod]
+        [DataRow(@"{}", "")]
+        [DataRow(@"{v2raygcon:{env:['1','2']}}", "")]
+        [DataRow(@"{v2raygcon:{env:{a:'1',b:2}}}", "a:1,b:2")]
+        [DataRow(@"{v2raygcon:{env:{a:'1',b:'2'}}}", "a:1,b:2")]
+        public void GetEnvVarsFromConfigTest(string json, string expect)
+        {
+            var j = JObject.Parse(json);
+            var env = Lib.Utils.GetEnvVarsFromConfig(j);
+            var strs = env.OrderBy(p => p.Key).Select(p => p.Key + ":" + p.Value);
+            var r = string.Join(",", strs);
+
+            Assert.AreEqual(expect, r);
+        }
+
+
         [TestMethod]
         public void CreateDeleteAppFolderTest()
         {
@@ -106,10 +135,10 @@ namespace V2RayGCon.Test
         public void GetLocalCoreVersion()
         {
 
-            var core = Service.Core.Instance;
+            var core = new Model.BaseClass.CoreServer();
             var version = core.GetCoreVersion();
 
-            if (core.IsCoreExist())
+            if (core.IsExecutableExist())
             {
                 Assert.AreNotEqual(string.Empty, version);
             }

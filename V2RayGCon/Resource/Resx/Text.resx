@@ -145,7 +145,7 @@
     <value>V2ray-core has stopped!</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>V2Ray GUI Configer</value>
+    <value>Graphics configuration editor for v2ray-core.</value>
   </data>
   <data name="DownloadCompleted" xml:space="preserve">
     <value>Download v2ray-core completed!</value>
@@ -442,5 +442,38 @@ Are you sure want to continue?</value>
   </data>
   <data name="ConfirmImportServers" xml:space="preserve">
     <value>Import server/client configs from backup file?</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="CantFindOrgServDelFail" xml:space="preserve">
+    <value>Can find original server. Delete fail!</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="V2RayLink" xml:space="preserve">
+    <value>v2ray:// ...</value>
+  </data>
+  <data name="VmessLink" xml:space="preserve">
+    <value>vmess:// ...</value>
+  </data>
+  <data name="CurSysProxy" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="NotSet" xml:space="preserve">
+    <value>not set</value>
+  </data>
+  <data name="SetAsSysProxy" xml:space="preserve">
+    <value>Set as system proxy</value>
+  </data>
+  <data name="SysProxyRequireHTTPServer" xml:space="preserve">
+    <value>System proxy must be a HTTP server.</value>
   </data>
 </root>

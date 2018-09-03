@@ -80,6 +80,18 @@
             this.tboxSSCAddr = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.misc = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.tboxEnvValue = new System.Windows.Forms.TextBox();
+            this.btnInsertEnv = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
+            this.cboxEnvName = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tboxImportURL = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.btnInsertImport = new System.Windows.Forms.Button();
+            this.cboxImportAlias = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnQConMTProto = new System.Windows.Forms.Button();
             this.btnQConSkipCN = new System.Windows.Forms.Button();
@@ -133,6 +145,8 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.misc.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.tabExpanseImport.SuspendLayout();
@@ -493,11 +507,89 @@
             // 
             // misc
             // 
+            this.misc.Controls.Add(this.groupBox8);
+            this.misc.Controls.Add(this.groupBox7);
             this.misc.Controls.Add(this.groupBox5);
             this.misc.Controls.Add(this.groupBox6);
             resources.ApplyResources(this.misc, "misc");
             this.misc.Name = "misc";
             this.misc.UseVisualStyleBackColor = true;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.tboxEnvValue);
+            this.groupBox8.Controls.Add(this.btnInsertEnv);
+            this.groupBox8.Controls.Add(this.label22);
+            this.groupBox8.Controls.Add(this.cboxEnvName);
+            this.groupBox8.Controls.Add(this.label21);
+            resources.ApplyResources(this.groupBox8, "groupBox8");
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.TabStop = false;
+            // 
+            // tboxEnvValue
+            // 
+            resources.ApplyResources(this.tboxEnvValue, "tboxEnvValue");
+            this.tboxEnvValue.Name = "tboxEnvValue";
+            // 
+            // btnInsertEnv
+            // 
+            resources.ApplyResources(this.btnInsertEnv, "btnInsertEnv");
+            this.btnInsertEnv.Name = "btnInsertEnv";
+            this.btnInsertEnv.UseVisualStyleBackColor = true;
+            // 
+            // label22
+            // 
+            resources.ApplyResources(this.label22, "label22");
+            this.label22.Name = "label22";
+            // 
+            // cboxEnvName
+            // 
+            this.cboxEnvName.FormattingEnabled = true;
+            resources.ApplyResources(this.cboxEnvName, "cboxEnvName");
+            this.cboxEnvName.Name = "cboxEnvName";
+            // 
+            // label21
+            // 
+            resources.ApplyResources(this.label21, "label21");
+            this.label21.Name = "label21";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.tboxImportURL);
+            this.groupBox7.Controls.Add(this.label20);
+            this.groupBox7.Controls.Add(this.btnInsertImport);
+            this.groupBox7.Controls.Add(this.cboxImportAlias);
+            this.groupBox7.Controls.Add(this.label13);
+            resources.ApplyResources(this.groupBox7, "groupBox7");
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.TabStop = false;
+            // 
+            // tboxImportURL
+            // 
+            resources.ApplyResources(this.tboxImportURL, "tboxImportURL");
+            this.tboxImportURL.Name = "tboxImportURL";
+            // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // btnInsertImport
+            // 
+            resources.ApplyResources(this.btnInsertImport, "btnInsertImport");
+            this.btnInsertImport.Name = "btnInsertImport";
+            this.btnInsertImport.UseVisualStyleBackColor = true;
+            // 
+            // cboxImportAlias
+            // 
+            this.cboxImportAlias.FormattingEnabled = true;
+            resources.ApplyResources(this.cboxImportAlias, "cboxImportAlias");
+            this.cboxImportAlias.Name = "cboxImportAlias";
+            // 
+            // label13
+            // 
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
             // 
             // groupBox5
             // 
@@ -581,6 +673,7 @@
             this.cboxGlobalImport.Checked = true;
             this.cboxGlobalImport.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cboxGlobalImport.Name = "cboxGlobalImport";
+            this.toolTip1.SetToolTip(this.cboxGlobalImport, resources.GetString("cboxGlobalImport.ToolTip"));
             this.cboxGlobalImport.UseVisualStyleBackColor = true;
             // 
             // btnImportClearCache
@@ -614,12 +707,12 @@
             // 
             // mainMenu
             // 
+            resources.ApplyResources(this.mainMenu, "mainMenu");
             this.mainMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.configToolStripMenuItem,
             this.viewToolStripMenuItem});
-            resources.ApplyResources(this.mainMenu, "mainMenu");
             this.mainMenu.Name = "mainMenu";
             // 
             // fileToolStripMenuItem
@@ -816,6 +909,10 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.misc.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -929,5 +1026,17 @@
         private System.Windows.Forms.ComboBox cboxStreamTLS;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox cboxGlobalImport;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TextBox tboxEnvValue;
+        private System.Windows.Forms.Button btnInsertEnv;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.ComboBox cboxEnvName;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TextBox tboxImportURL;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button btnInsertImport;
+        private System.Windows.Forms.ComboBox cboxImportAlias;
+        private System.Windows.Forms.Label label13;
     }
 }

@@ -1,9 +1,8 @@
 ﻿using V2RayGCon.Model.BaseClass;
 
-namespace V2RayGCon.Controller.OptionComponent
+namespace V2RayGCon.Controller.FormMainComponent
 {
-    abstract class OptionComponentController :
-        IFormComponentController
+    abstract class FormMainComponentController : IFormComponentController
     {
         private FormComponentController auxComponentController
             = new FormComponentController();
@@ -16,12 +15,8 @@ namespace V2RayGCon.Controller.OptionComponent
         #endregion
 
         #region abstract method
-        // Container closing.
-        public abstract bool IsOptionsChanged();
-
-        // User click save-button of container.
-        // true: save new options  false: options not changed
-        public abstract bool SaveOptions();
+        public abstract bool RefreshUI();
+        public abstract void Cleanup();
 
         #endregion
 
@@ -33,7 +28,6 @@ namespace V2RayGCon.Controller.OptionComponent
         #endregion
 
         #region private method
-
         #endregion
     }
 }

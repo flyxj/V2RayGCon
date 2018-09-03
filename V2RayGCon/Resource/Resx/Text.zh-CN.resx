@@ -142,7 +142,7 @@
     <value>v2ray-core 已关闭!</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>V2Ray图形界面配置工具</value>
+    <value>v2ray-core图形配置编辑工具</value>
   </data>
   <data name="DownloadCompleted" xml:space="preserve">
     <value>下载 v2ray-core 完成！</value>
@@ -439,5 +439,32 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="SaveChangeFirst" xml:space="preserve">
     <value>请先保存已更改的配置项!</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="CantFindOrgServDelFail" xml:space="preserve">
+    <value>找不到原服务器，删除失败！</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="CurSysProxy" xml:space="preserve">
+    <value>当前</value>
+  </data>
+  <data name="NotSet" xml:space="preserve">
+    <value>未设置</value>
+  </data>
+  <data name="SetAsSysProxy" xml:space="preserve">
+    <value>设为系统代理</value>
+  </data>
+  <data name="SysProxyRequireHTTPServer" xml:space="preserve">
+    <value>只有HTTP服务器才能设为系统代理</value>
   </data>
 </root>

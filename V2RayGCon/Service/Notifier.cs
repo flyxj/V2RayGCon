@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -7,18 +8,16 @@ namespace V2RayGCon.Service
     class Notifier : Model.BaseClass.SingletonService<Notifier>
     {
         NotifyIcon ni;
-        Core core;
         Setting setting;
+        static AutoResetEvent sayGoodbye = new AutoResetEvent(false);
 
         Notifier()
         {
             setting = Setting.Instance;
-            core = Core.Instance;
             CreateNotifyIcon();
 
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
-            core.OnCoreStatChange += (s, a) => UpdateNotifyText();
 
 #if DEBUG
             This_function_do_some_tedious_stuff();
@@ -33,7 +32,7 @@ namespace V2RayGCon.Service
 
             if (setting.GetServerCount() > 0)
             {
-                setting.ActivateServer();
+                setting.WakeupAutorunServer();
             }
             else
             {
@@ -52,12 +51,13 @@ namespace V2RayGCon.Service
             };
 
 
-            new Views.FormConfiger(0);
+            // new Views.FormConfiger(0);
 
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
-            // Views.FormMain.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormMain.GetForm();
+            Views.FormLog.GetForm();
+            // setting.WakeupAutorunServer();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();
 
@@ -66,25 +66,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        void UpdateNotifyText()
-        {
-            var type = setting.proxyType;
-            var protocol = Model.Data.Table.proxyTypesString[type];
-
-            var proxy = string.Empty;
-            if (type == (int)Model.Data.Enum.ProxyTypes.config)
-            {
-                proxy = setting.GetInbountInfo();
-            }
-            else
-            {
-                proxy = string.Format("{0}://{1}", protocol, setting.proxyAddr);
-            }
-
-            var title = string.Format("{0} {1}", setting.GetCurAlias(), proxy);
-
-            ni.Text = core.isRunning ? title : I18N("Description");
-        }
 
         void CreateNotifyIcon()
         {
@@ -151,14 +132,17 @@ namespace V2RayGCon.Service
 
         void Cleanup()
         {
-            Debug.WriteLine("Call cleanup");
             ni.Visible = false;
-            if (setting.isSysProxyHasSet)
+            setting.DisposeLazyTimers();
+            setting.SaveServerList();
+
+            if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
-                Lib.ProxySetter.setProxy("", false);
-                setting.isSysProxyHasSet = false;
+                setting.ClearSysProxy();
             }
-            core.StopCoreThen(null);
+
+            setting.StopAllServersThen(() => sayGoodbye.Set());
+            sayGoodbye.WaitOne();
         }
         #endregion
     }

@@ -18,16 +18,18 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Core core;
         Service.Downloader downloader;
 
         FormDownloadCore()
         {
             InitializeComponent();
             InitUI();
-            core = Service.Core.Instance;
 
-            this.FormClosed += (s, e) => downloader?.Cancel();
+            this.FormClosed += (s, e) =>
+            {
+                downloader?.Cancel();
+                Service.Setting.Instance.LazyGC();
+            };
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
@@ -43,14 +45,13 @@ namespace V2RayGCon.Views
 
         #region private method
 
-
-
         void RefreshCurrentCoreVersion()
         {
             var el = labelCoreVersion;
 
             Task.Factory.StartNew(() =>
             {
+                var core = new Model.BaseClass.CoreServer();
                 var version = core.GetCoreVersion();
                 var msg = string.IsNullOrEmpty(version) ?
                     I18N("GetCoreVerFail") :

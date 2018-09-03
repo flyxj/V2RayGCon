@@ -14,15 +14,15 @@ namespace V2RayGCon.Controller
         string originalConfig, originalFile;
         ConfigerComponet.Editor editor;
 
-        public Configer(int serverIndex = -1)
+        public Configer(string originalConfig)
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
 
-            originalFile = string.Empty;
-            originalConfig = string.Empty;
+            this.originalFile = string.Empty;
+            this.originalConfig = string.Empty;
 
-            LoadConfig(serverIndex);
+            LoadConfig(originalConfig);
         }
 
         #region public method
@@ -49,8 +49,7 @@ namespace V2RayGCon.Controller
 
             if (string.IsNullOrEmpty(originalFile))
             {
-                JObject orgConfig = JObject.Parse(
-                Lib.Utils.Base64Decode(originalConfig));
+                JObject orgConfig = JObject.Parse(originalConfig);
                 return JObject.DeepEquals(orgConfig, config);
             }
 
@@ -72,39 +71,37 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public bool ReplaceOriginalServer()
+        public bool SaveServer()
         {
-            var index = setting.GetServerIndex(originalConfig);
-            if (string.IsNullOrEmpty(originalConfig) || index < 0)
+            return ReplaceServer(originalConfig);
+        }
+
+        public bool ReplaceServer(string originalConfig)
+        {
+            var index = setting.SearchServer(originalConfig);
+            if (index < 0)
             {
                 MessageBox.Show(I18N("OrgServNotFound"));
                 return false;
             }
-            else
-            {
-                return ReplaceServer(index);
-            }
-        }
 
-        public bool ReplaceServer(int serverIndex)
-        {
             if (!editor.Flush())
             {
                 return false;
             }
 
-            Update();
+            var newConfig = Lib.Utils.Config2String(config);
 
-            if (setting.ReplaceServer(config, serverIndex))
-            {
-                MarkOriginalConfig();
-                return true;
-            }
-            else
+            if (originalConfig == newConfig)
             {
                 MessageBox.Show(I18N("DuplicateServer"));
                 return false;
             }
+
+            Update();
+            setting.ReplaceServer(index, newConfig);
+            MarkOriginalConfig();
+            return true;
         }
 
         public void AddNewServer()
@@ -129,7 +126,7 @@ namespace V2RayGCon.Controller
         public void MarkOriginalConfig()
         {
             originalFile = string.Empty;
-            originalConfig = Lib.Utils.Config2Base64String(config);
+            originalConfig = Lib.Utils.Config2String(config);
         }
 
         public void MarkOriginalFile()
@@ -167,11 +164,11 @@ namespace V2RayGCon.Controller
             return false;
         }
 
-        public void LoadServer(int index)
+        public void LoadServer(string configString)
         {
             editor.DiscardChanges();
             editor.SelectSection(0);
-            LoadConfig(index);
+            LoadConfig(configString);
             Update();
             editor.ShowSection();
         }
@@ -192,16 +189,13 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
-        void LoadConfig(int index = -1)
+        void LoadConfig(string originalConfig)
         {
-            var serverIndex = index < 0 ? 0 : index;
-
             JObject o = null;
-            string b64Config = setting.GetServer(serverIndex);
 
-            if (!string.IsNullOrEmpty(b64Config))
+            if (!string.IsNullOrEmpty(originalConfig))
             {
-                o = JObject.Parse(Lib.Utils.Base64Decode(b64Config));
+                o = JObject.Parse(originalConfig);
             }
 
             if (o == null)
