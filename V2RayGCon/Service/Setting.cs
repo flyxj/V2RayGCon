@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -38,6 +39,7 @@ namespace V2RayGCon.Service
         }
 
         #region Properties
+
         public string curSysProxy;
 
         public bool isShowConfigerToolsPanel
@@ -70,7 +72,39 @@ namespace V2RayGCon.Service
 
         #endregion
 
+        #region private Properties
+        private Dictionary<string, Rectangle> _winFormPosList = null; // cache
+
+
+        #endregion
+
+
         #region public methods
+
+        public void SaveFormPosition(Form form, string key)
+        {
+            var rect = new Rectangle(form.Left, form.Top, form.Width, form.Height);
+            SetWinFormPosition(key, rect);
+        }
+
+        public void RestoreFormPosition(Form form, string key)
+        {
+            var rect = GetWinFormPosition(key);
+            var screen = Screen.PrimaryScreen.WorkingArea;
+            if (rect.Left < 0 || rect.Top < 0
+                || rect.Width < 300 || rect.Height < 200
+                || rect.Right > screen.Right
+                || rect.Bottom > screen.Bottom)
+            {
+                return;
+            }
+
+            form.Left = rect.Left;
+            form.Top = rect.Top;
+            form.Width = rect.Width;
+            form.Height = rect.Height;
+        }
+
         public List<int> GetActiveServerList()
         {
             return serverList.GetActiveServerList();
@@ -317,6 +351,44 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        Rectangle GetWinFormPosition(string name)
+        {
+            // init _winFormPostList
+            if (_winFormPosList == null)
+            {
+                try
+                {
+                    _winFormPosList = JsonConvert.DeserializeObject<
+                        Dictionary<string, Rectangle>>(
+                        Properties.Settings.Default.WinFormPosList);
+                }
+                catch { }
+            }
+
+            if (_winFormPosList == null)
+            {
+                _winFormPosList = new Dictionary<string, Rectangle>();
+            }
+
+            if (_winFormPosList.ContainsKey(name))
+            {
+                return _winFormPosList[name];
+            }
+
+            return new Rectangle(-1, -1, -1, -1);
+        }
+
+        void SetWinFormPosition(string name, Rectangle rect)
+        {
+            if (_winFormPosList == null)
+            {
+                _winFormPosList = new Dictionary<string, Rectangle>();
+            }
+            _winFormPosList[name] = rect;
+            Properties.Settings.Default.WinFormPosList = JsonConvert.SerializeObject(_winFormPosList);
+            Properties.Settings.Default.Save();
+        }
+
         void InvokeOnSysProxyChanged()
         {
             try

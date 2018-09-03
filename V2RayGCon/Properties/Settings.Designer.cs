@@ -94,5 +94,17 @@ namespace V2RayGCon.Properties {
                 this["ServerList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WinFormPosList {
+            get {
+                return ((string)(this["WinFormPosList"]));
+            }
+            set {
+                this["WinFormPosList"] = value;
+            }
+        }
     }
 }

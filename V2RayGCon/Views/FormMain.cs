@@ -35,6 +35,13 @@ namespace V2RayGCon.Views
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            // magic string
+            setting.RestoreFormPosition(this, nameof(FormMain));
+
+            this.FormClosing += (s, a) =>
+            {
+                setting.SaveFormPosition(this, nameof(FormMain));
+            };
 
             this.FormClosed += (s, a) =>
             {
