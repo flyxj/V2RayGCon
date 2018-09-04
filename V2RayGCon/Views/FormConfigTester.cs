@@ -142,7 +142,7 @@ namespace V2RayGCon.Views
 
         void RestartCore(int index)
         {
-            var configString = setting.GetServerByIndex(index);
+            var configString = setting.GetServerConfigByIndex(index);
 
             if (string.IsNullOrEmpty(configString))
             {

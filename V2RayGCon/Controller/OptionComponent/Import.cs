@@ -33,7 +33,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (curOptions != oldOptions)
             {
-                setting.SaveImportUrlItems(curOptions);
+                setting.SaveGlobalImportItems(curOptions);
                 oldOptions = curOptions;
                 return true;
             }
@@ -78,7 +78,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
         void InitPanel()
         {
-            var importUrlItemList = setting.GetImportUrlItems();
+            var importUrlItemList = setting.GetGlobalImportItems();
 
             this.oldOptions = JsonConvert.SerializeObject(importUrlItemList);
 

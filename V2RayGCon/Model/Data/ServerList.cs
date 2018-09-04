@@ -75,7 +75,7 @@ namespace V2RayGCon.Model.Data
             ChainActionHelper(list.Count, worker, done)();
         }
 
-        public void WakeupAutorunServerThen(Action done = null)
+        public void WakeupAutorunServersThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
             {
@@ -151,19 +151,19 @@ namespace V2RayGCon.Model.Data
          * 
          * ChainActionHelper(10, worker, finished)();
          */
-        Action ChainActionHelper(int count, Action<int, Action> worker, Action finished)
+        Action ChainActionHelper(int countdown, Action<int, Action> worker, Action done)
         {
-            int _index = count - 1;
+            int _index = countdown - 1;
 
             return () =>
             {
                 if (_index < 0)
                 {
-                    finished?.Invoke();
+                    done?.Invoke();
                     return;
                 }
 
-                worker(_index, ChainActionHelper(_index, worker, finished));
+                worker(_index, ChainActionHelper(_index, worker, done));
             };
         }
 
@@ -189,13 +189,13 @@ namespace V2RayGCon.Model.Data
             ChainActionHelper(this.Count, worker, finish)();
         }
 
-        public void UpdateAllSummary()
+        public void UpdateAllServersSummary()
         {
-            Action<int, Action> worker = (idx, next) =>
+            Action<int, Action> worker = (index, next) =>
             {
                 try
                 {
-                    this[idx].UpdateSummaryThen(next);
+                    this[index].UpdateSummaryThen(next);
                 }
                 catch
                 {
@@ -204,13 +204,13 @@ namespace V2RayGCon.Model.Data
                 }
             };
 
-            Action finish = () =>
+            Action done = () =>
             {
                 InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
             };
 
-            ChainActionHelper(this.Count, worker, finish)();
+            ChainActionHelper(this.Count, worker, done)();
         }
 
         public void BindEvents()
@@ -312,7 +312,7 @@ namespace V2RayGCon.Model.Data
             return true;
         }
 
-        public int SearchConfig(string config)
+        public int GetServerIndexByConfig(string config)
         {
             for (int i = 0; i < this.Count; i++)
             {
@@ -324,7 +324,7 @@ namespace V2RayGCon.Model.Data
             return -1;
         }
 
-        public bool Replace(int index, string config)
+        public bool ReplaceServerConfigByIndex(int index, string config)
         {
             if (index < 0 || index > this.Count)
             {

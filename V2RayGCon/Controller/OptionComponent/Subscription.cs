@@ -38,7 +38,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (curOptions != oldOptions)
             {
-                setting.SaveSubscriptionUrls(curOptions);
+                setting.SaveSubscriptionItems(curOptions);
                 oldOptions = curOptions;
                 return true;
             }
@@ -83,7 +83,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
         void InitPanel()
         {
-            var subItemList = setting.GetSubscriptionUrls();
+            var subItemList = setting.GetSubscriptionItems();
 
             this.oldOptions = JsonConvert.SerializeObject(subItemList);
 

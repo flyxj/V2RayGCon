@@ -27,50 +27,32 @@ namespace V2RayGCon.Model.UserControls
         }
 
         #region private method
-        void RefreshComboBox(ComboBox comboBox, int index)
-        {
-            if (comboBox.SelectedIndex != index)
-            {
-                comboBox.SelectedIndex = index;
-            }
-        }
-
-        void RefreshTextBox(TextBox textBox, string text)
-        {
-            if (textBox.Text != text)
-            {
-                textBox.Text = text;
-            }
-        }
-
-        void RefreshLabel(Label label, string text)
-        {
-            if (label.Text != text)
-            {
-                label.Text = text;
-            }
-        }
-
-        void RefreshCheckBox(CheckBox checkBox, bool check)
-        {
-            if (checkBox.Checked != check)
-            {
-                checkBox.Checked = check;
-            }
-        }
-
         void RefreshUI(object sender, EventArgs arg)
         {
             lbSummary.Invoke((MethodInvoker)delegate
             {
-                RefreshComboBox(cboxInbound, serverItem.inboundOverwriteType);
-                RefreshLabel(lbIndex, serverItem.index.ToString());
-                RefreshLabel(lbSummary, serverItem.summary);
+                Lib.UI.UpdateControlOnDemand<ComboBox, int>(
+                    cboxInbound, serverItem.inboundOverwriteType);
+
+                Lib.UI.UpdateControlOnDemand<Label, string>(
+                    lbIndex, serverItem.index.ToString());
+
+                Lib.UI.UpdateControlOnDemand<Label, string>(
+                    lbSummary, serverItem.summary);
+
+                Lib.UI.UpdateControlOnDemand<TextBox, string>(
+                    tboxInboundIP, serverItem.inboundIP);
+
+                Lib.UI.UpdateControlOnDemand<TextBox, string>(
+                    tboxInboundPort, serverItem.inboundPort.ToString());
+
+                Lib.UI.UpdateControlOnDemand<CheckBox, bool>(
+                    chkAutoRun, serverItem.isAutoRun);
+
+                Lib.UI.UpdateControlOnDemand<CheckBox, bool>(
+                    chkImport, serverItem.isInjectImport);
+
                 SetRunning(serverItem.server.isRunning);
-                RefreshTextBox(tboxInboundIP, serverItem.inboundIP);
-                RefreshTextBox(tboxInboundPort, serverItem.inboundPort.ToString());
-                RefreshCheckBox(chkAutoRun, serverItem.isAutoRun);
-                RefreshCheckBox(chkImport, serverItem.isInjectImport);
             });
         }
 
@@ -113,7 +95,7 @@ namespace V2RayGCon.Model.UserControls
                         return;
                     }
 
-                    Service.Setting.Instance.SetSysProxy(
+                    Service.Setting.Instance.SetSystemProxy(
                         string.Format("{0}:{1}",
                         this.tboxInboundIP.Text,
                         this.tboxInboundPort.Text));

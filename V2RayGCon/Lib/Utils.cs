@@ -323,7 +323,7 @@ namespace V2RayGCon.Lib
         public static string InjectGlobalImport(string config)
         {
             JObject import = ImportItemList2JObject(
-                Service.Setting.Instance.GetImportUrlItems());
+                Service.Setting.Instance.GetGlobalImportItems());
 
             MergeJson(ref import, JObject.Parse(config));
             return import.ToString();

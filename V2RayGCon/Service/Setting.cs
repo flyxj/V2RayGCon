@@ -27,8 +27,8 @@ namespace V2RayGCon.Service
             serverList.BindEvents();
             serverList.OnLog += (s, a) => SendLog(a.Data);
             serverList.ListChanged += LazySaveServerList;
-            serverList.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
-            serverList.OnRequireFlyPanelUpdate += InvokeOnRequireFlyPanelUpdate;
+            serverList.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
+            serverList.OnRequireFlyPanelUpdate += InvokeEventOnRequireFlyPanelUpdate;
             LazySaveServerList();
         }
 
@@ -149,12 +149,12 @@ namespace V2RayGCon.Service
             serverList.StartServersByList(servers);
         }
 
-        public void WakeupAutorunServer()
+        public void WakeupAutorunServers()
         {
-            serverList.WakeupAutorunServerThen();
+            serverList.WakeupAutorunServersThen();
         }
 
-        public void SetSysProxy(string link)
+        public void SetSystemProxy(string link)
         {
             if (string.IsNullOrEmpty(link))
             {
@@ -163,14 +163,14 @@ namespace V2RayGCon.Service
 
             Lib.ProxySetter.setProxy(link, true);
             curSysProxy = link;
-            InvokeOnSysProxyChanged();
+            InvokeEventOnSysProxyChanged();
         }
 
-        public void ClearSysProxy()
+        public void ClearSystemProxy()
         {
             Lib.ProxySetter.setProxy("", false);
             curSysProxy = string.Empty;
-            InvokeOnSysProxyChanged();
+            InvokeEventOnSysProxyChanged();
         }
 
         public void StopAllServersThen(Action lambda = null)
@@ -183,54 +183,49 @@ namespace V2RayGCon.Service
             serverList.RestartAllServersThen();
         }
 
-        public void UpdateAllSummary()
+        public void UpdateAllServersSummary()
         {
-            serverList.UpdateAllSummary();
+            serverList.UpdateAllServersSummary();
         }
 
         public void SendLog(string log)
         {
-
             logCache = log;
-
-            var arg = new Model.Data.StrEvent(log);
-
             try
             {
-                OnLog?.Invoke(this, arg);
+                OnLog?.Invoke(this, new Model.Data.StrEvent(log));
             }
             catch { }
         }
 
-        public int GetServerCount()
+        public int GetServerListCount()
         {
             return serverList.Count;
         }
 
         public void ImportLinks(string links)
         {
-            var that = this;
-
             var tasks = new Task<Tuple<bool, List<string[]>>>[] {
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportVmessLinks(links)),
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportV2RayLinks(links)),
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportSSLinks(links)),
+                new Task<Tuple<bool, List<string[]>>>(
+                    ()=>ImportVmessLinks(links)),
+
+                new Task<Tuple<bool, List<string[]>>>(
+                    ()=>ImportV2RayLinks(links)),
+
+                new Task<Tuple<bool, List<string[]>>>(
+                    ()=>ImportSSLinks(links)),
             };
 
             Task.Factory.StartNew(() =>
             {
-                // import all links
                 foreach (var task in tasks)
                 {
                     task.Start();
                 }
-
                 Task.WaitAll(tasks);
 
-                // get results
-                var allResults = new List<string[]>();
-                var isAddNewServer = false;
-
+                var allResults = new List<string[]>();  // all server including duplicate
+                var isAddNewServer = false;  // add new server
                 foreach (var task in tasks)
                 {
                     isAddNewServer = isAddNewServer || task.Result.Item1;
@@ -241,7 +236,7 @@ namespace V2RayGCon.Service
                 // show results
                 if (isAddNewServer)
                 {
-                    serverList.UpdateAllSummary();
+                    serverList.UpdateAllServersSummary();
                 }
 
                 if (allResults.Count > 0)
@@ -256,12 +251,14 @@ namespace V2RayGCon.Service
             });
         }
 
-        public List<Model.Data.UrlItem> GetImportUrlItems()
+        public List<Model.Data.UrlItem> GetGlobalImportItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject<List<Model.Data.UrlItem>>(
+                var items = JsonConvert.DeserializeObject
+                    <List<Model.Data.UrlItem>>(
                     Properties.Settings.Default.ImportUrls);
+
                 if (items != null)
                 {
                     return items;
@@ -271,19 +268,21 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
-        public void SaveImportUrlItems(string options)
+        public void SaveGlobalImportItems(string options)
         {
             Properties.Settings.Default.ImportUrls = options;
             Properties.Settings.Default.Save();
             RestartAllServers();
         }
 
-        public List<Model.Data.UrlItem> GetSubscriptionUrls()
+        public List<Model.Data.UrlItem> GetSubscriptionItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject<List<Model.Data.UrlItem>>(
+                var items = JsonConvert.DeserializeObject
+                    <List<Model.Data.UrlItem>>(
                     Properties.Settings.Default.SubscribeUrls);
+
                 if (items != null)
                 {
                     return items;
@@ -293,7 +292,7 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
-        public void SaveSubscriptionUrls(string options)
+        public void SaveSubscriptionItems(string options)
         {
             Properties.Settings.Default.SubscribeUrls = options;
             Properties.Settings.Default.Save();
@@ -306,8 +305,10 @@ namespace V2RayGCon.Service
             Model.Data.ServerList list = null;
             try
             {
-                list = JsonConvert.DeserializeObject<Model.Data.ServerList>(
+                list = JsonConvert.DeserializeObject
+                    <Model.Data.ServerList>(
                     Properties.Settings.Default.ServerList);
+
                 if (list == null)
                 {
                     return;
@@ -342,11 +343,11 @@ namespace V2RayGCon.Service
             return serverList.AsReadOnly();
         }
 
-        public string GetServerByIndex(int index)
+        public string GetServerConfigByIndex(int index)
         {
-            if (GetServerCount() == 0
+            if (GetServerListCount() == 0
                 || index < 0
-                || index >= GetServerCount())
+                || index >= GetServerListCount())
             {
                 return string.Empty;
             }
@@ -362,19 +363,20 @@ namespace V2RayGCon.Service
 
         public bool AddServer(JObject config, bool quiet = false)
         {
-            return serverList.AddConfig(Lib.Utils.Config2String(config), quiet);
+            return serverList.AddConfig(
+                Lib.Utils.Config2String(config),
+                quiet);
         }
 
-        public int SearchServer(string configString)
+        public int GetServerIndexByConfig(string configString)
         {
-            return serverList.SearchConfig(configString);
+            return serverList.GetServerIndexByConfig(configString);
         }
 
-        public bool ReplaceServer(int orgIndex, string newConfig)
+        public bool ReplaceServerConfigByIndex(int orgIndex, string newConfig)
         {
-            return serverList.Replace(orgIndex, newConfig);
+            return serverList.ReplaceServerConfigByIndex(orgIndex, newConfig);
         }
-
 
         #endregion
 
@@ -403,7 +405,7 @@ namespace V2RayGCon.Service
             return winFormRectListCache;
         }
 
-        void InvokeOnSysProxyChanged()
+        void InvokeEventOnSysProxyChanged()
         {
             try
             {
@@ -412,7 +414,7 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        void InvokeOnRequireMenuUpdate(object sender, EventArgs args)
+        void InvokeEventOnRequireMenuUpdate(object sender, EventArgs args)
         {
             try
             {
@@ -422,7 +424,7 @@ namespace V2RayGCon.Service
             LazyGC();
         }
 
-        void InvokeOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
         {
             try
             {
@@ -543,7 +545,7 @@ namespace V2RayGCon.Service
 
         void LazySaveServerList()
         {
-            // create in need
+            // create on demand
             if (lazySaveServerListTimer == null)
             {
                 var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));

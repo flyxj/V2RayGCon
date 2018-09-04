@@ -77,12 +77,12 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             restartAllServers.Click += (s, a) => setting.RestartAllServers();
 
-            clearSysProxy.Click += (s, a) => setting.ClearSysProxy();
+            clearSysProxy.Click += (s, a) => setting.ClearSystemProxy();
 
             refreshSummary.Click += (s, a) =>
             {
                 Service.Cache.Instance.html.Clear();
-                Service.Setting.Instance.UpdateAllSummary();
+                Service.Setting.Instance.UpdateAllServersSummary();
             };
         }
 
@@ -119,7 +119,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public void ExportAllServersToTextFile()
         {
-            if (setting.GetServerCount() <= 0)
+            if (setting.GetServerListCount() <= 0)
             {
                 MessageBox.Show(I18N("ServerListIsEmpty"));
                 return;

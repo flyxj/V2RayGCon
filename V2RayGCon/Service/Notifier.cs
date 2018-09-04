@@ -135,7 +135,7 @@ namespace V2RayGCon.Service
 
             if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
-                setting.ClearSysProxy();
+                setting.ClearSystemProxy();
             }
 
             setting.StopAllServersThen(() => sayGoodbye.Set());

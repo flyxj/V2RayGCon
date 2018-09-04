@@ -79,7 +79,7 @@ namespace V2RayGCon.Controller
 
         public bool ReplaceServer(string originalConfig)
         {
-            var index = setting.SearchServer(originalConfig);
+            var index = setting.GetServerIndexByConfig(originalConfig);
             if (index < 0)
             {
                 MessageBox.Show(I18N("OrgServNotFound"));
@@ -100,7 +100,7 @@ namespace V2RayGCon.Controller
             }
 
             Update();
-            setting.ReplaceServer(index, newConfig);
+            setting.ReplaceServerConfigByIndex(index, newConfig);
             MarkOriginalConfig();
             return true;
         }
