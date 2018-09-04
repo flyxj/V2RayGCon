@@ -476,4 +476,7 @@ Are you sure want to continue?</value>
   <data name="SysProxyRequireHTTPServer" xml:space="preserve">
     <value>System proxy must be a HTTP server.</value>
   </data>
+  <data name="StopServerFirst" xml:space="preserve">
+    <value>Stop server first, please!</value>
+  </data>
 </root>

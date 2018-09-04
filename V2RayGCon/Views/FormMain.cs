@@ -101,16 +101,16 @@ namespace V2RayGCon.Views
 
         string GetCurrentSysProxySetting()
         {
-            var s = I18N("CurSysProxy");
+            var str = I18N("CurSysProxy");
             if (string.IsNullOrEmpty(setting.curSysProxy))
             {
-                s = string.Format("{0}:{1}", s, I18N("NotSet"));
+                str = string.Format("{0}:{1}", str, I18N("NotSet"));
             }
             else
             {
-                s = string.Format("{0} http://{1}", s, setting.curSysProxy);
+                str = string.Format("{0} http://{1}", str, setting.curSysProxy);
             }
-            return s;
+            return str;
         }
         #endregion
 

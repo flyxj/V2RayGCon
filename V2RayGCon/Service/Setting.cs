@@ -13,30 +13,23 @@ namespace V2RayGCon.Service
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
         private Model.Data.ServerList serverList;
+
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate, OnSysProxyChanged;
-
-
-
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
             lazySaveServerListTimer = null;
 
-
         Setting()
         {
             LoadServerList();
             serverList.BindEvents();
-
-            curSysProxy = string.Empty;
-
             serverList.OnLog += (s, a) => SendLog(a.Data);
-
-            LazySaveServerList();
             serverList.ListChanged += LazySaveServerList;
             serverList.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
             serverList.OnRequireFlyPanelUpdate += InvokeOnRequireFlyPanelUpdate;
+            LazySaveServerList();
         }
 
         #region Properties
@@ -62,7 +55,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        public string curSysProxy;
+        public string curSysProxy = null;
 
         public bool isShowConfigerToolsPanel
         {
@@ -90,11 +83,9 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
-        public void SaveServerList()
+        public void SaveServerListImmediately()
         {
-            string json = JsonConvert.SerializeObject(serverList);
-            Properties.Settings.Default.ServerList = json;
-            Properties.Settings.Default.Save();
+            lazySaveServerListTimer.Timeout();
         }
 
         public void DisposeLazyTimers()
@@ -558,7 +549,14 @@ namespace V2RayGCon.Service
                 var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
 
                 lazySaveServerListTimer =
-                    new Model.BaseClass.CancelableTimeout(SaveServerList, delay * 1000);
+                    new Model.BaseClass.CancelableTimeout(
+                        () =>
+                        {
+                            string json = JsonConvert.SerializeObject(serverList);
+                            Properties.Settings.Default.ServerList = json;
+                            Properties.Settings.Default.Save();
+                        },
+                        delay * 1000);
             }
 
             lazySaveServerListTimer.Start();

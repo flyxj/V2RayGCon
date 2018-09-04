@@ -984,6 +984,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Stop server first, please! 的本地化字符串。
+        /// </summary>
+        internal static string StopServerFirst {
+            get {
+                return ResourceManager.GetString("StopServerFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Success. 的本地化字符串。
         /// </summary>
         internal static string Success {

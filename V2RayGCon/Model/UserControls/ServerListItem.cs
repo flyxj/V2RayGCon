@@ -21,7 +21,7 @@ namespace V2RayGCon.Model.UserControls
 
         private void ServerListItem_Load(object sender, EventArgs e)
         {
-            isRunning = !serverItem.isOn;
+            isRunning = !serverItem.isServerOn;
             RefreshUI(this, EventArgs.Empty);
             this.serverItem.OnPropertyChanged += RefreshUI;
         }
@@ -121,15 +121,16 @@ namespace V2RayGCon.Model.UserControls
             });
         }
 
-        private void SetRunning(bool isOn)
+        private void SetRunning(bool isServerOn)
         {
-            if (this.isRunning == isOn)
+            if (this.isRunning == isServerOn)
             {
                 return;
             }
-            this.isRunning = isOn;
 
-            if (isOn)
+            this.isRunning = isServerOn;
+
+            if (isServerOn)
             {
                 lbRunning.ForeColor = Color.DarkOrange;
                 lbRunning.Text = "ON";

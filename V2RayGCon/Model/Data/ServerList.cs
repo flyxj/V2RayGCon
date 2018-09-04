@@ -49,7 +49,7 @@ namespace V2RayGCon.Model.Data
             var list = new List<int>();
             for (int i = 0; i < this.Count; i++)
             {
-                if (this[i].isOn)
+                if (this[i].isServerOn)
                 {
                     list.Add(i);
                 }
@@ -96,7 +96,7 @@ namespace V2RayGCon.Model.Data
         {
             Action<int, Action> worker = (index, next) =>
             {
-                if (this[index].isOn)
+                if (this[index].isServerOn)
                 {
                     this[index].RestartCoreThen(next);
                 }

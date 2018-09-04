@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.Data
@@ -15,16 +16,19 @@ namespace V2RayGCon.Model.Data
         public event EventHandler<Model.Data.StrEvent> OnRequireDelete;
 
         public string config; // plain text of config.json
-        public bool isOn, isAutoRun, isInjectImport;
+        public bool isAutoRun, isInjectImport;
         public string name, summary, inboundIP;
         public int inboundOverwriteType, inboundPort, index;
+
+        [JsonIgnore]
+        public bool isServerOn;
 
         [JsonIgnore]
         public Model.BaseClass.CoreServer server;
 
         public ServerItem()
         {
-            isOn = false;
+            isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
 
@@ -50,22 +54,20 @@ namespace V2RayGCon.Model.Data
 
         public void SetInboundIP(string ip)
         {
-            inboundIP = ip;
-            InvokeOnPropertyChange();
-            if (isOn)
+            if (!NeedStopCoreFirst())
             {
-                RestartCoreThen();
+                inboundIP = ip;
             }
+            InvokeOnPropertyChange();
         }
 
         public void SetInboundPort(string port)
         {
-            inboundPort = Lib.Utils.Str2Int(port);
-            InvokeOnPropertyChange();
-            if (isOn)
+            if (!NeedStopCoreFirst())
             {
-                RestartCoreThen();
+                inboundPort = Lib.Utils.Str2Int(port);
             }
+            InvokeOnPropertyChange();
         }
 
         public void SetIndex(int index)
@@ -84,6 +86,7 @@ namespace V2RayGCon.Model.Data
         {
             var changed = this.isInjectImport != import;
             this.isInjectImport = import;
+
             if (changed)
             {
                 UpdateSummaryThen(
@@ -93,7 +96,8 @@ namespace V2RayGCon.Model.Data
             {
                 InvokeOnPropertyChange();
             }
-            if (isOn)
+
+            if (isServerOn)
             {
                 RestartCoreThen();
             }
@@ -103,7 +107,7 @@ namespace V2RayGCon.Model.Data
         {
             this.inboundOverwriteType = Lib.Utils.Clamp(type, 0, GetInboundTypeCount());
             InvokeOnPropertyChange();
-            if (isOn)
+            if (isServerOn)
             {
                 RestartCoreThen();
             }
@@ -211,12 +215,30 @@ namespace V2RayGCon.Model.Data
 
         public void OnCoreStateChanged()
         {
-            isOn = server.isRunning;
+            isServerOn = server.isRunning;
             InvokeOnPropertyChange();
         }
         #endregion
 
         #region private method
+        bool NeedStopCoreFirst()
+        {
+            if (!isServerOn)
+            {
+                return false;
+            }
+
+            if (inboundOverwriteType == (int)Model.Data.Enum.ProxyTypes.HTTP
+                || inboundOverwriteType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
+            {
+                Task.Factory.StartNew(
+                    () => MessageBox.Show(I18N("StopServerFirst")));
+                return true;
+            }
+
+            return false;
+        }
+
         bool OverwriteInboundSettings(ref JObject config)
         {
             var type = inboundOverwriteType;

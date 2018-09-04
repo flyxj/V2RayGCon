@@ -30,6 +30,12 @@ namespace V2RayGCon.Model.BaseClass
             this.worker();
         }
 
+        public void Timeout()
+        {
+            Cancel();
+            this.worker();
+        }
+
         public void Start()
         {
             timer.Interval = this.TIMEOUT;

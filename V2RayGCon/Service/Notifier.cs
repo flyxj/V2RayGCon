@@ -13,9 +13,8 @@ namespace V2RayGCon.Service
 
         Notifier()
         {
-            setting = Setting.Instance;
             CreateNotifyIcon();
-
+            setting = Setting.Instance;
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
 
@@ -130,8 +129,9 @@ namespace V2RayGCon.Service
         void Cleanup()
         {
             ni.Visible = false;
+
+            setting.SaveServerListImmediately();
             setting.DisposeLazyTimers();
-            setting.SaveServerList();
 
             if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
