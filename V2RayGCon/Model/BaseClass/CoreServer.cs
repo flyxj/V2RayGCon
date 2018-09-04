@@ -29,6 +29,7 @@ namespace V2RayGCon.Model.BaseClass
 
         public event EventHandler<Model.Data.StrEvent> OnLog;
 
+        Action StatusChangedCallback;
         Process v2rayCore;
         bool _isRunning;
 
@@ -36,6 +37,7 @@ namespace V2RayGCon.Model.BaseClass
         {
             _isRunning = false;
             v2rayCore = null;
+            StatusChangedCallback = null;
         }
 
         #region public method
@@ -117,27 +119,32 @@ namespace V2RayGCon.Model.BaseClass
         {
             StopCoreThen(() =>
             {
-                if (IsExecutableExist())
+                if (!IsExecutableExist())
                 {
-                    StartCore(config, OnStateChanged, env);
-                    try
-                    {
-                        next?.Invoke();
-                    }
-                    catch { }
+                    Task.Factory.StartNew(() => MessageBox.Show(I18N("ExeNotFound")));
+                    InvokeActionIgnoreError(next);
+                    return;
                 }
-                else
-                {
-                    MessageBox.Show(I18N("ExeNotFound"));
-                }
+
+                StartCore(config, OnStateChanged, env);
+                InvokeActionIgnoreError(next);
             });
         }
 
-        public void StopCoreThen(Action lambda)
+        void InvokeActionIgnoreError(Action lambda)
+        {
+            try
+            {
+                lambda?.Invoke();
+            }
+            catch { }
+        }
+
+        public void StopCoreThen(Action next = null)
         {
             if (!_isRunning || v2rayCore == null)
             {
-                lambda?.Invoke();
+                InvokeActionIgnoreError(next);
                 return;
             }
 
@@ -150,7 +157,7 @@ namespace V2RayGCon.Model.BaseClass
                         FreeConsole();
                         SetConsoleCtrlHandler(null, false);
                         v2rayCore.Close();
-                        lambda?.Invoke();
+                        InvokeActionIgnoreError(next);
                     };
 
                     SetConsoleCtrlHandler(null, true);
@@ -165,7 +172,7 @@ namespace V2RayGCon.Model.BaseClass
             // kill if not able to attach to process
             v2rayCore.Exited += (s, a) =>
             {
-                lambda?.Invoke();
+                InvokeActionIgnoreError(next);
             };
 
             try
@@ -178,16 +185,9 @@ namespace V2RayGCon.Model.BaseClass
         #endregion
 
         #region private method
-        void StartCore(string config,
-            Action OnStateChanged = null,
-            Dictionary<string, string> env = null)
+        Process CreateProcess()
         {
-            if (_isRunning)
-            {
-                return;
-            }
-
-            v2rayCore = new Process
+            var p = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -200,43 +200,75 @@ namespace V2RayGCon.Model.BaseClass
                     RedirectStandardInput = true,
                 }
             };
+            p.EnableRaisingEvents = true;
+            return p;
+        }
 
-            if (env != null && env.Count > 0)
+        void InjectEnv(Process proc, Dictionary<string, string> envs)
+        {
+            if (envs == null || envs.Count <= 0)
             {
-                foreach (var item in env)
-                {
-                    v2rayCore.StartInfo.EnvironmentVariables[item.Key] = item.Value;
-                }
+                return;
             }
 
-            v2rayCore.EnableRaisingEvents = true;
-            v2rayCore.Exited += (s, e) =>
+            var procEnv = proc.StartInfo.EnvironmentVariables;
+            foreach (var env in envs)
             {
-                SendLog(I18N("CoreExit"));
+                procEnv[env.Key] = env.Value;
+            }
 
-                var err = v2rayCore.ExitCode;
-                if (err != 0)
+        }
+
+        void OnCoreExisted(object sender, EventArgs args)
+        {
+            SendLog(I18N("CoreExit"));
+            ReleaseEvents(v2rayCore);
+
+            var err = v2rayCore.ExitCode;
+            if (err != 0)
+            {
+                v2rayCore.Close();
+                Task.Factory.StartNew(() =>
                 {
-                    v2rayCore.Close();
-                    Task.Factory.StartNew(() =>
-                    {
-                        MessageBox.Show(I18N("V2rayCoreExitAbnormally"));
-                    });
-                }
+                    MessageBox.Show(I18N("V2rayCoreExitAbnormally"));
+                });
+            }
 
-                // SendLog("Exit code: " + err);
-                _isRunning = false;
-                try
-                {
-                    OnStateChanged?.Invoke();
-                }
-                catch { }
-            };
+            // SendLog("Exit code: " + err);
+            _isRunning = false;
+            InvokeActionIgnoreError(this.StatusChangedCallback);
+        }
 
-            v2rayCore.ErrorDataReceived += (s, e) => SendLog(e.Data);
-            v2rayCore.OutputDataReceived += (s, e) => SendLog(e.Data);
+        void BindEvents(Process proc)
+        {
+            proc.Exited += OnCoreExisted;
+            proc.ErrorDataReceived += SendLogHandler;
+            proc.OutputDataReceived += SendLogHandler;
+        }
 
+        void ReleaseEvents(Process proc)
+        {
+            proc.Exited -= OnCoreExisted;
+            proc.ErrorDataReceived -= SendLogHandler;
+            proc.OutputDataReceived -= SendLogHandler;
+        }
+
+        void StartCore(string config,
+            Action OnStatusChanged = null,
+            Dictionary<string, string> envs = null)
+        {
+            if (_isRunning)
+            {
+                return;
+            }
+
+            this.StatusChangedCallback = OnStatusChanged;
+
+            v2rayCore = CreateProcess();
+            InjectEnv(v2rayCore, envs);
+            BindEvents(v2rayCore);
             v2rayCore.Start();
+
             // Add to JOB object support win8+ 
             Lib.ChildProcessTracker.AddProcess(v2rayCore);
 
@@ -247,11 +279,12 @@ namespace V2RayGCon.Model.BaseClass
             v2rayCore.BeginOutputReadLine();
 
             _isRunning = true;
-            try
-            {
-                OnStateChanged?.Invoke();
-            }
-            catch { }
+            InvokeActionIgnoreError(this.StatusChangedCallback);
+        }
+
+        void SendLogHandler(object sender, DataReceivedEventArgs args)
+        {
+            SendLog(args.Data);
         }
 
         void SendLog(string log)

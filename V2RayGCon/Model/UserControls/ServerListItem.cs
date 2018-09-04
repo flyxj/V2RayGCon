@@ -31,28 +31,28 @@ namespace V2RayGCon.Model.UserControls
         {
             lbSummary.Invoke((MethodInvoker)delegate
             {
-                Lib.UI.UpdateControlOnDemand<ComboBox, int>(
-                    cboxInbound, serverItem.inboundOverwriteType);
+                Lib.UI.UpdateControlOnDemand(
+                    cboxInbound, serverItem.overwriteInboundType);
 
-                Lib.UI.UpdateControlOnDemand<Label, string>(
+                Lib.UI.UpdateControlOnDemand(
                     lbIndex, serverItem.index.ToString());
 
-                Lib.UI.UpdateControlOnDemand<Label, string>(
+                Lib.UI.UpdateControlOnDemand(
                     lbSummary, serverItem.summary);
 
-                Lib.UI.UpdateControlOnDemand<TextBox, string>(
+                Lib.UI.UpdateControlOnDemand(
                     tboxInboundIP, serverItem.inboundIP);
 
-                Lib.UI.UpdateControlOnDemand<TextBox, string>(
+                Lib.UI.UpdateControlOnDemand(
                     tboxInboundPort, serverItem.inboundPort.ToString());
 
-                Lib.UI.UpdateControlOnDemand<CheckBox, bool>(
+                Lib.UI.UpdateControlOnDemand(
                     chkAutoRun, serverItem.isAutoRun);
 
-                Lib.UI.UpdateControlOnDemand<CheckBox, bool>(
+                Lib.UI.UpdateControlOnDemand(
                     chkImport, serverItem.isInjectImport);
 
-                SetRunning(serverItem.server.isRunning);
+                ShowOnOffStatus(serverItem.server.isRunning);
             });
         }
 
@@ -74,8 +74,8 @@ namespace V2RayGCon.Model.UserControls
                                 Lib.Utils.Vmess2VmessLink(
                                     Lib.Utils.ConfigString2Vmess(
                                         this.serverItem.config)))?
-                                        I18N("LinksCopied") :
-                                        I18N("CopyFail"));
+                            I18N("LinksCopied") :
+                            I18N("CopyFail"));
                     }),
                     new MenuItem(I18N("V2RayLink"),(s,a)=>{
                         MessageBox.Show(
@@ -103,7 +103,7 @@ namespace V2RayGCon.Model.UserControls
             });
         }
 
-        private void SetRunning(bool isServerOn)
+        private void ShowOnOffStatus(bool isServerOn)
         {
             if (this.isRunning == isServerOn)
             {
@@ -135,7 +135,6 @@ namespace V2RayGCon.Model.UserControls
         public void Cleanup()
         {
             this.serverItem.OnPropertyChanged -= RefreshUI;
-            // this.serverItem = null;
         }
         #endregion
 
@@ -155,51 +154,27 @@ namespace V2RayGCon.Model.UserControls
 
         private void cboxInbound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (serverItem.inboundOverwriteType == cboxInbound.SelectedIndex)
-            {
-                return;
-            }
-            serverItem.SetInboundType(cboxInbound.SelectedIndex);
+            serverItem.SetOverwriteInboundType(cboxInbound.SelectedIndex);
         }
 
         private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
         {
-            var check = chkAutoRun.Checked;
-            if (serverItem.isAutoRun != check)
-            {
-                serverItem.SetAutoRun(check);
-            }
-
+            serverItem.SetAutoRun(chkAutoRun.Checked);
         }
 
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
-            var check = chkImport.Checked;
-            if (serverItem.isInjectImport != check)
-            {
-                serverItem.SetInjectImport(check);
-            }
-
+            serverItem.SetInjectImport(chkImport.Checked);
         }
 
         private void tboxInboundIP_TextChanged(object sender, EventArgs e)
         {
-            var txt = tboxInboundIP.Text;
-            if (txt == serverItem.inboundIP)
-            {
-                return;
-            }
-            serverItem.SetInboundIP(txt);
+            serverItem.SetInboundIP(tboxInboundIP.Text);
         }
 
         private void tboxInboundPort_TextChanged(object sender, EventArgs e)
         {
-            var txt = tboxInboundPort.Text;
-            if (txt == serverItem.inboundPort.ToString())
-            {
-                return;
-            }
-            serverItem.SetInboundPort(txt);
+            serverItem.SetInboundPort(tboxInboundPort.Text);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -210,8 +185,7 @@ namespace V2RayGCon.Model.UserControls
             }
 
             Cleanup();
-
-            serverItem.Delete();
+            serverItem.DeleteSelf();
         }
 
 

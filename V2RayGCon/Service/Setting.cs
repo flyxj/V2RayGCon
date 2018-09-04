@@ -24,7 +24,7 @@ namespace V2RayGCon.Service
         Setting()
         {
             LoadServerList();
-            serverList.BindEvents();
+            serverList.BindEventsToAllServers();
             serverList.OnLog += (s, a) => SendLog(a.Data);
             serverList.ListChanged += LazySaveServerList;
             serverList.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
@@ -141,7 +141,7 @@ namespace V2RayGCon.Service
 
         public List<int> GetActiveServerList()
         {
-            return serverList.GetActiveServerList();
+            return serverList.GetActiveServersList();
         }
 
         public void StartServersByList(List<int> servers)
@@ -357,13 +357,13 @@ namespace V2RayGCon.Service
 
         public void DeleteAllServer()
         {
-            serverList.DeleteAllItemsThen(
+            serverList.DeleteAllServersThen(
                 () => Service.Cache.Instance.core.Clear());
         }
 
         public bool AddServer(JObject config, bool quiet = false)
         {
-            return serverList.AddConfig(
+            return serverList.AddServer(
                 Lib.Utils.Config2String(config),
                 quiet);
         }

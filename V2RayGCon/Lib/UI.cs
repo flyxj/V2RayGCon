@@ -13,101 +13,60 @@ namespace V2RayGCon.Lib
     public class UI
     {
         #region private method
-        static bool SetComboBoxOnDemand(ComboBox comboBox, int index)
-        {
-            if (comboBox.SelectedIndex != index)
-            {
-                comboBox.SelectedIndex = index;
-                return true;
-            }
-            return false;
-        }
 
-        static bool SetTextBoxOnDemand(TextBox textBox, string text)
-        {
-            if (textBox.Text != text)
-            {
-                textBox.Text = text;
-                return true;
-            }
-            return false;
-        }
-
-        static bool SetLabelOnDemand(Label label, string text)
-        {
-            if (label.Text != text)
-            {
-                label.Text = text;
-                return true;
-            }
-            return false;
-        }
-
-        static bool SetCheckBoxOnDemand(CheckBox checkBox, bool check)
-        {
-            if (checkBox.Checked != check)
-            {
-                checkBox.Checked = check;
-                return true;
-            }
-            return false;
-        }
         #endregion
 
         #region public method
-
-        public static bool CheckControlValueTypeMatch(string controlName, Type type)
+        public static bool UpdateControlOnDemand(Control control, int value)
         {
-            var validations = new Dictionary<string, Type>
+            if (control.GetType().Name != nameof(ComboBox))
             {
-                {nameof(ComboBox) ,typeof(int)},
-                {nameof(TextBox) ,typeof(string)},
-                {nameof(Label) ,typeof(string)},
-                {nameof(CheckBox) ,typeof(bool)},
-            };
-
-            if (!validations.ContainsKey(controlName))
-            {
-                throw new ArgumentException("unsupported control type");
+                throw new ArgumentException("Unsupported control type");
             }
 
-            if (validations[controlName] != type)
+            var c = control as ComboBox;
+            if (c.SelectedIndex == value)
             {
-                throw new ArgumentException("control and value type not match");
+                return false;
             }
 
+            c.SelectedIndex = value;
             return true;
         }
 
-        // throw ArgumentException if some thing goes wrong
-        public static bool UpdateControlOnDemand<TCtrl, TVal>(TCtrl control, TVal value)
-            where TCtrl : Control
+        public static bool UpdateControlOnDemand(Control control, bool value)
         {
-            var ctrlName = control.GetType().Name;
-
-            // throw exception if not match
-            CheckControlValueTypeMatch(ctrlName, typeof(TVal));
-
-            switch (ctrlName)
+            if (control.GetType().Name != nameof(CheckBox))
             {
-                case nameof(Label):
-                    return SetLabelOnDemand(
-                        control as Label, value as string);
-                case nameof(TextBox):
-                    return SetTextBoxOnDemand(
-                        control as TextBox, value as string);
-                case nameof(ComboBox):
-                    return SetComboBoxOnDemand(
-                        control as ComboBox, (int)(value as object));
-                case nameof(CheckBox):
-                    return SetCheckBoxOnDemand(
-                        control as CheckBox, (bool)(value as object));
+                throw new ArgumentException("Unsupported control type");
             }
 
-            // Dealing with compiler complaints.
-            return false;
+            var c = control as CheckBox;
+            if (c.Checked == value)
+            {
+                return false;
+            }
+
+            c.Checked = value;
+            return true;
         }
 
+        public static bool UpdateControlOnDemand(Control control, string value)
+        {
+            var ctrlName = control.GetType().Name;
+            if (ctrlName != nameof(Label) && ctrlName != nameof(TextBox))
+            {
+                throw new ArgumentException("Unsupported control type");
+            }
+
+            if (control.Text == value)
+            {
+                return false;
+            }
+
+            control.Text = value;
+            return true;
+        }
 
         public static void ResetComboBoxDropdownMenuWidth(ComboBox cbox)
         {

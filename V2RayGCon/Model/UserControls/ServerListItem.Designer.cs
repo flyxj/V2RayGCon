@@ -135,6 +135,7 @@
             // chkAutoRun
             // 
             resources.ApplyResources(this.chkAutoRun, "chkAutoRun");
+            this.chkAutoRun.Cursor = System.Windows.Forms.Cursors.Default;
             this.chkAutoRun.Name = "chkAutoRun";
             this.toolTip1.SetToolTip(this.chkAutoRun, resources.GetString("chkAutoRun.ToolTip"));
             this.chkAutoRun.UseVisualStyleBackColor = true;

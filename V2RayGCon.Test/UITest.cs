@@ -19,28 +19,20 @@ namespace V2RayGCon.Test
         {
             TextBox box = new TextBox();
             box.Text = "abc";
-            UpdateControlOnDemand<TextBox, string>(box, "def");
+            var result = UpdateControlOnDemand(box, "def");
             Assert.AreEqual("def", box.Text);
+            Assert.AreEqual(true, result);
+
+            CheckBox cbox = new CheckBox();
+            cbox.Checked = true;
+            result = UpdateControlOnDemand(cbox, false);
+            Assert.AreEqual(false, cbox.Checked);
+            Assert.AreEqual(true, result);
 
             Assert.ThrowsException<ArgumentException>(() =>
             {
-                UpdateControlOnDemand<TextBox, int>(box, 123);
+                UpdateControlOnDemand(box, 123);
             });
-        }
-
-        [TestMethod]
-        public void CheckControlValueTypeMatchTest()
-        {
-            Assert.ThrowsException<ArgumentException>(
-                () => CheckControlValueTypeMatch(
-                    nameof(TextBox), typeof(int)));
-
-            Assert.ThrowsException<ArgumentException>(
-                () => CheckControlValueTypeMatch(
-                    nameof(Panel), typeof(int)));
-
-            Assert.AreEqual(true, CheckControlValueTypeMatch(
-                nameof(TextBox), typeof(string)));
         }
     }
 }
