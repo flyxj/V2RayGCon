@@ -14,12 +14,10 @@ namespace V2RayGCon.Service
     {
         private Model.Data.ServerList serverList;
         public event EventHandler<Model.Data.StrEvent> OnLog;
-        public event EventHandler OnRequireMenuUpdate;
-        public event EventHandler OnRequireFlyPanelUpdate;
-        public event EventHandler OnSysProxyChanged;
+        public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate, OnSysProxyChanged;
 
-        Dictionary<string, Rectangle> _winFormPosList = null; // cache
-        Queue<string> logCache;
+
+
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
@@ -28,8 +26,6 @@ namespace V2RayGCon.Service
 
         Setting()
         {
-            logCache = new Queue<string>();
-
             LoadServerList();
             serverList.BindEvents();
 
@@ -38,13 +34,33 @@ namespace V2RayGCon.Service
             serverList.OnLog += (s, a) => SendLog(a.Data);
 
             LazySaveServerList();
-
             serverList.ListChanged += LazySaveServerList;
             serverList.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
             serverList.OnRequireFlyPanelUpdate += InvokeOnRequireFlyPanelUpdate;
         }
 
         #region Properties
+
+        Queue<string> _logCache = new Queue<string>();
+        public string logCache
+        {
+            get
+            {
+                return string.Join(Environment.NewLine, _logCache);
+            }
+            private set
+            {
+                // keep 200 lines of log
+                if (_logCache.Count > 300)
+                {
+                    for (var i = 0; i < 100; i++)
+                    {
+                        _logCache.Dequeue();
+                    }
+                }
+                _logCache.Enqueue(value);
+            }
+        }
 
         public string curSysProxy;
 
@@ -104,28 +120,32 @@ namespace V2RayGCon.Service
             lazyGCTimer.Start();
         }
 
-        public void SaveFormPosition(Form form, string key)
+        public void SaveFormRect(Form form, string key)
         {
-            var rect = new Rectangle(form.Left, form.Top, form.Width, form.Height);
-            SetWinFormPosition(key, rect);
+            var list = GetWinFormRectList();
+            list[key] = new Rectangle(
+                form.Left, form.Top, form.Width, form.Height);
+            Properties.Settings.Default.WinFormPosList =
+                JsonConvert.SerializeObject(list);
+            Properties.Settings.Default.Save();
         }
 
-        public void RestoreFormPosition(Form form, string key)
+        public void RestoreFormRect(Form form, string key)
         {
-            var rect = GetWinFormPosition(key);
-            var screen = Screen.PrimaryScreen.WorkingArea;
-            if (rect.Left < 0 || rect.Top < 0
-                || rect.Width < 300 || rect.Height < 200
-                || rect.Right > screen.Right
-                || rect.Bottom > screen.Bottom)
+            var list = GetWinFormRectList();
+
+            if (!list.ContainsKey(key))
             {
                 return;
             }
 
-            form.Left = rect.Left;
-            form.Top = rect.Top;
-            form.Width = rect.Width;
-            form.Height = rect.Height;
+            var rect = list[key];
+            var screen = Screen.PrimaryScreen.WorkingArea;
+
+            form.Width = Math.Max(rect.Width, 300);
+            form.Height = Math.Max(rect.Height, 200);
+            form.Left = Lib.Utils.Clamp(rect.Left, 0, screen.Right - form.Width);
+            form.Top = Lib.Utils.Clamp(rect.Top, 0, screen.Bottom - form.Height);
         }
 
         public List<int> GetActiveServerList()
@@ -172,11 +192,6 @@ namespace V2RayGCon.Service
             serverList.RestartAllServersThen();
         }
 
-        public string GetLogCache()
-        {
-            return string.Join("\n", logCache);
-        }
-
         public void UpdateAllSummary()
         {
             serverList.UpdateAllSummary();
@@ -184,15 +199,8 @@ namespace V2RayGCon.Service
 
         public void SendLog(string log)
         {
-            // cache 200 lines of log
-            if (logCache.Count > 300)
-            {
-                for (var i = 0; i < 100; i++)
-                {
-                    logCache.Dequeue();
-                }
-            }
-            logCache.Enqueue(log);
+
+            logCache = log;
 
             var arg = new Model.Data.StrEvent(log);
 
@@ -380,42 +388,28 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        Rectangle GetWinFormPosition(string name)
+        Dictionary<string, Rectangle> winFormRectListCache = null;
+        Dictionary<string, Rectangle> GetWinFormRectList()
         {
-            // init _winFormPostList
-            if (_winFormPosList == null)
+            if (winFormRectListCache != null)
             {
-                try
-                {
-                    _winFormPosList = JsonConvert.DeserializeObject<
-                        Dictionary<string, Rectangle>>(
-                        Properties.Settings.Default.WinFormPosList);
-                }
-                catch { }
+                return winFormRectListCache;
             }
 
-            if (_winFormPosList == null)
+            try
             {
-                _winFormPosList = new Dictionary<string, Rectangle>();
+                winFormRectListCache = JsonConvert.DeserializeObject<
+                    Dictionary<string, Rectangle>>(
+                    Properties.Settings.Default.WinFormPosList);
+            }
+            catch { }
+
+            if (winFormRectListCache == null)
+            {
+                winFormRectListCache = new Dictionary<string, Rectangle>();
             }
 
-            if (_winFormPosList.ContainsKey(name))
-            {
-                return _winFormPosList[name];
-            }
-
-            return new Rectangle(-1, -1, -1, -1);
-        }
-
-        void SetWinFormPosition(string name, Rectangle rect)
-        {
-            if (_winFormPosList == null)
-            {
-                _winFormPosList = new Dictionary<string, Rectangle>();
-            }
-            _winFormPosList[name] = rect;
-            Properties.Settings.Default.WinFormPosList = JsonConvert.SerializeObject(_winFormPosList);
-            Properties.Settings.Default.Save();
+            return winFormRectListCache;
         }
 
         void InvokeOnSysProxyChanged()

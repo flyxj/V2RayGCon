@@ -19,9 +19,6 @@ namespace V2RayGCon.Service
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
 
-#if DEBUG
-            This_function_do_some_tedious_stuff();
-#else
             ni.MouseClick += (s, a) =>
             {
                 if (a.Button == MouseButtons.Left)
@@ -30,6 +27,9 @@ namespace V2RayGCon.Service
                 }
             };
 
+#if DEBUG
+            This_function_do_some_tedious_stuff();
+#else
             if (setting.GetServerCount() > 0)
             {
                 setting.WakeupAutorunServer();
@@ -50,17 +50,14 @@ namespace V2RayGCon.Service
                 Debug.WriteLine("Some test code:");
             };
 
-
             // new Views.FormConfiger(0);
-
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
-            Views.FormMain.GetForm();
-            Views.FormLog.GetForm();
+            // Views.FormMain.GetForm();
+            // Views.FormLog.GetForm();
             // setting.WakeupAutorunServer();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();
-
         }
 #endif
         #endregion

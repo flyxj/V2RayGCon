@@ -30,24 +30,20 @@ namespace V2RayGCon.Views
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
 #endif
+
             this.Show();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            // magic string
-            setting.RestoreFormPosition(this, nameof(FormMain));
-
-            this.FormClosing += (s, a) =>
-            {
-                setting.SaveFormPosition(this, nameof(FormMain));
-                setting.LazyGC();
-            };
+            setting.RestoreFormRect(this, nameof(FormMain));
 
             this.FormClosed += (s, a) =>
             {
+                setting.SaveFormRect(this, nameof(FormMain));
                 setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
+                setting.LazyGC();
             };
 
             // Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);

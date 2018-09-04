@@ -275,6 +275,7 @@ namespace V2RayGCon.Model.Data
             server.OnLog -= SendLog;
             server.OnPropertyChanged -= SaveChanges;
             server.OnRequireMenuUpdate -= InvokeOnRequireMenuUpdate;
+            server.OnRequireDelete -= DeleteItem;
         }
 
         public bool AddConfig(string config, bool quiet = false)
