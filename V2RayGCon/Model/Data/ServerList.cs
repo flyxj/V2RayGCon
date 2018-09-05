@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -65,7 +64,7 @@ namespace V2RayGCon.Model.Data
                 this[list[index]].RestartCoreThen(next);
             };
 
-            ChainActionHelper(list.Count, worker, done);
+            Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
         }
 
         public void WakeupAutorunServersThen(Action done = null)
@@ -82,7 +81,7 @@ namespace V2RayGCon.Model.Data
                 }
             };
 
-            ChainActionHelper(this.Count, worker, done);
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
         public void RestartAllServersThen(Action done = null)
@@ -100,7 +99,7 @@ namespace V2RayGCon.Model.Data
             };
 
 
-            ChainActionHelper(this.Count, worker, done);
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
         public void StopAllServersThen(Action lambda = null)
@@ -112,56 +111,9 @@ namespace V2RayGCon.Model.Data
                 this[index].server.StopCoreThen(next);
             };
 
-            ChainActionHelper(this.Count, worker, lambda);
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, lambda);
         }
 
-        /*
-         * ChainActionWorker loop from count-1 to 0
-         * These values will pass into worker through the first parameter,
-         * which is index in this example.
-         * 
-         * Action<int,Action> worker = (index, next)=>{
-         * 
-         *   // do something accroding to index
-         *   console.log(index); 
-         *   
-         *   // call next when done
-         *   next(); 
-         * }
-         * 
-         * Action done = ()=>{
-         *   // do something when all done
-         *   // or simply set to null
-         * }
-         * 
-         * Finally call this function like this.
-         * ChainActionWorker(10, worker, done)();
-         * 
-         */
-
-        void ChainActionHelper(int countdown, Action<int, Action> worker, Action done = null)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                ChainActionWorker(countdown, worker, done)();
-            });
-        }
-
-        Action ChainActionWorker(int countdown, Action<int, Action> worker, Action done = null)
-        {
-            int _index = countdown - 1;
-
-            return () =>
-            {
-                if (_index < 0)
-                {
-                    done?.Invoke();
-                    return;
-                }
-
-                worker(_index, ChainActionWorker(_index, worker, done));
-            };
-        }
 
         public void DeleteAllServersThen(Action done = null)
         {
@@ -182,7 +134,7 @@ namespace V2RayGCon.Model.Data
                 done?.Invoke();
             };
 
-            ChainActionHelper(this.Count, worker, finish);
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, finish);
         }
 
         public void UpdateAllServersSummary()
@@ -206,7 +158,7 @@ namespace V2RayGCon.Model.Data
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
             };
 
-            ChainActionHelper(this.Count, worker, done);
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
         public void BindEventsToAllServers()

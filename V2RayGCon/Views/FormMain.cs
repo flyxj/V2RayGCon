@@ -82,11 +82,14 @@ namespace V2RayGCon.Views
                 toolMenuItemOptions,
                 toolMenuItemDownloadV2rayCore,
                 toolMenuItemRemoveV2rayCore,
-                toolMenuItemDeleteAll,
+                toolMenuItemDeleteAll));
+
+            ctrl.Plug(new Controller.FormMainComponent.ServerMenuItems(
                 toolStripMenuItemStopAllServers,
                 toolStripMenuItemRestartAllServers,
                 toolMenuItemClearSysProxy,
-                toolMenuItemRefreshSummary));
+                toolMenuItemRefreshSummary,
+                toolMenuItemRestartAutorunServers));
 
             return ctrl;
         }

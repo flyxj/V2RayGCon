@@ -215,6 +215,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Clear system proxy setting? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmClearSysProxy {
+            get {
+                return ResourceManager.GetString("ConfirmClearSysProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Close window? 的本地化字符串。
         /// </summary>
         internal static string ConfirmCloseWindow {
@@ -307,11 +316,38 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Restart all autorun servers? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmRestartAllAutorunServer {
+            get {
+                return ResourceManager.GetString("ConfirmRestartAllAutorunServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restart all running servers? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmRestartAllServer {
+            get {
+                return ResourceManager.GetString("ConfirmRestartAllServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Save current config? 的本地化字符串。
         /// </summary>
         internal static string ConfirmSaveCurConfig {
             get {
                 return ResourceManager.GetString("ConfirmSaveCurConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stop all servers? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmStopAllServer {
+            get {
+                return ResourceManager.GetString("ConfirmStopAllServer", resourceCulture);
             }
         }
         

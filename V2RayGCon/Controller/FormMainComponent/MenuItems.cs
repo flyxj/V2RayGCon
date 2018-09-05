@@ -25,11 +25,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem options,
             ToolStripMenuItem downloadV2rayCore,
             ToolStripMenuItem removeV2rayCore,
-            ToolStripMenuItem deleteAllItems,
-            ToolStripMenuItem stopAllServers,
-            ToolStripMenuItem restartAllServers,
-            ToolStripMenuItem clearSysProxy,
-            ToolStripMenuItem refreshSummary)
+            ToolStripMenuItem deleteAllItems)
         {
             setting = Service.Setting.Instance;
             simVmessServer.Click +=
@@ -71,18 +67,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
                     setting.DeleteAllServer();
-            };
-
-            stopAllServers.Click += (s, a) => setting.StopAllServersThen();
-
-            restartAllServers.Click += (s, a) => setting.RestartAllServers();
-
-            clearSysProxy.Click += (s, a) => setting.ClearSystemProxy();
-
-            refreshSummary.Click += (s, a) =>
-            {
-                Service.Cache.Instance.html.Clear();
-                Service.Setting.Instance.UpdateAllServersSummary();
             };
         }
 

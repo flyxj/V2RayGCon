@@ -32,10 +32,12 @@ namespace V2RayGCon.Model.BaseClass
         Action StatusChangedCallback;
         Process v2rayCore;
         bool _isRunning;
+        object coreLock;
 
         public CoreServer()
         {
-            _isRunning = false;
+            coreLock = new object();
+            isRunning = false;
             v2rayCore = null;
             StatusChangedCallback = null;
         }
@@ -109,6 +111,7 @@ namespace V2RayGCon.Model.BaseClass
         public bool isRunning
         {
             get => _isRunning;
+            private set => _isRunning = value;
         }
 
         public void RestartCoreThen(
@@ -131,23 +134,33 @@ namespace V2RayGCon.Model.BaseClass
             });
         }
 
-        void InvokeActionIgnoreError(Action lambda)
-        {
-            try
-            {
-                lambda?.Invoke();
-            }
-            catch { }
-        }
-
         public void StopCoreThen(Action next = null)
         {
-            if (!_isRunning || v2rayCore == null)
+            var isInvokeNext = false;
+
+            lock (coreLock)
             {
-                InvokeActionIgnoreError(next);
-                return;
+                if (!isRunning || v2rayCore == null)
+                {
+                    isInvokeNext = true;
+                }
+                else
+                {
+                    TryToStopCore(next);
+                }
             }
 
+            if (isInvokeNext)
+            {
+                InvokeActionIgnoreError(next);
+            }
+
+        }
+        #endregion
+
+        #region private method
+        void TryToStopCore(Action next)
+        {
             try
             {
                 if (AttachConsole((uint)v2rayCore.Id))
@@ -167,9 +180,14 @@ namespace V2RayGCon.Model.BaseClass
             }
             catch { }
 
+            // kill if not able to attach to process
+            KillCore(next);
+        }
+
+        void KillCore(Action next)
+        {
             SendLog(I18N("AttachToV2rayCoreProcessFail"));
 
-            // kill if not able to attach to process
             v2rayCore.Exited += (s, a) =>
             {
                 InvokeActionIgnoreError(next);
@@ -180,11 +198,17 @@ namespace V2RayGCon.Model.BaseClass
                 Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
             }
             catch { }
-
         }
-        #endregion
 
-        #region private method
+        void InvokeActionIgnoreError(Action lambda)
+        {
+            try
+            {
+                lambda?.Invoke();
+            }
+            catch { }
+        }
+
         Process CreateProcess()
         {
             var p = new Process
@@ -221,21 +245,24 @@ namespace V2RayGCon.Model.BaseClass
 
         void OnCoreExisted(object sender, EventArgs args)
         {
-            SendLog(I18N("CoreExit"));
-            ReleaseEvents(v2rayCore);
-
-            var err = v2rayCore.ExitCode;
-            if (err != 0)
+            lock (coreLock)
             {
-                v2rayCore.Close();
-                Task.Factory.StartNew(() =>
-                {
-                    MessageBox.Show(I18N("V2rayCoreExitAbnormally"));
-                });
-            }
+                SendLog(I18N("CoreExit"));
+                ReleaseEvents(v2rayCore);
 
-            // SendLog("Exit code: " + err);
-            _isRunning = false;
+                var err = v2rayCore.ExitCode;
+                if (err != 0)
+                {
+                    v2rayCore.Close();
+                    Task.Factory.StartNew(() =>
+                    {
+                        MessageBox.Show(I18N("V2rayCoreExitAbnormally"));
+                    });
+                }
+
+                // SendLog("Exit code: " + err);
+                isRunning = false;
+            }
             InvokeActionIgnoreError(this.StatusChangedCallback);
         }
 
@@ -257,28 +284,32 @@ namespace V2RayGCon.Model.BaseClass
             Action OnStatusChanged = null,
             Dictionary<string, string> envs = null)
         {
-            if (_isRunning)
+            lock (coreLock)
             {
-                return;
+                if (isRunning)
+                {
+                    return;
+                }
+
+                this.StatusChangedCallback = OnStatusChanged;
+
+                v2rayCore = CreateProcess();
+                InjectEnv(v2rayCore, envs);
+                BindEvents(v2rayCore);
+                v2rayCore.Start();
+
+                // Add to JOB object support win8+ 
+                Lib.ChildProcessTracker.AddProcess(v2rayCore);
+
+                v2rayCore.StandardInput.WriteLine(config);
+                v2rayCore.StandardInput.Close();
+
+                v2rayCore.BeginErrorReadLine();
+                v2rayCore.BeginOutputReadLine();
+
+                isRunning = true;
             }
 
-            this.StatusChangedCallback = OnStatusChanged;
-
-            v2rayCore = CreateProcess();
-            InjectEnv(v2rayCore, envs);
-            BindEvents(v2rayCore);
-            v2rayCore.Start();
-
-            // Add to JOB object support win8+ 
-            Lib.ChildProcessTracker.AddProcess(v2rayCore);
-
-            v2rayCore.StandardInput.WriteLine(config);
-            v2rayCore.StandardInput.Close();
-
-            v2rayCore.BeginErrorReadLine();
-            v2rayCore.BeginOutputReadLine();
-
-            _isRunning = true;
             InvokeActionIgnoreError(this.StatusChangedCallback);
         }
 

@@ -45,6 +45,7 @@ namespace V2RayGCon.Views
             this.toolMenuItemServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemStopAllServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRestartAllServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolMenuItemRestartAutorunServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemRefreshSummary = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -142,6 +143,7 @@ namespace V2RayGCon.Views
             this.toolMenuItemServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemStopAllServers,
             this.toolStripMenuItemRestartAllServers,
+            this.toolMenuItemRestartAutorunServers,
             this.toolMenuItemRefreshSummary,
             this.toolStripSeparator1,
             this.systemProxyToolStripMenuItem});
@@ -156,6 +158,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemRestartAllServers, "toolStripMenuItemRestartAllServers");
             this.toolStripMenuItemRestartAllServers.Name = "toolStripMenuItemRestartAllServers";
+            // 
+            // toolMenuItemRestartAutorunServers
+            // 
+            resources.ApplyResources(this.toolMenuItemRestartAutorunServers, "toolMenuItemRestartAutorunServers");
+            this.toolMenuItemRestartAutorunServers.Name = "toolMenuItemRestartAutorunServers";
             // 
             // toolMenuItemRefreshSummary
             // 
@@ -332,5 +339,6 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem toolMenuItemCurrentSysProxy;
         private ToolStripMenuItem toolMenuItemClearSysProxy;
         private ToolStripMenuItem toolMenuItemRefreshSummary;
+        private ToolStripMenuItem toolMenuItemRestartAutorunServers;
     }
 }

@@ -977,7 +977,65 @@ namespace V2RayGCon.Lib
         }
         #endregion
 
-        #region process
+        #region task and process
+
+        /*
+         * ChainActionHelper loops from [count - 1] to [0]
+         * 
+         * These integers will pass into function worker 
+         * through the first parameter,
+         * which is index in this example one by one.
+         * 
+         * The second parameter (next) of function worker
+         * is generated automatically for chaining up these actions.
+         * 
+         * Action<int,Action> worker = (index, next)=>{
+         * 
+         *   // do something accroding to index
+         *   Debug.WriteLine(index); 
+         *   
+         *   // call next when done
+         *   next(); 
+         * }
+         * 
+         * Action done = ()=>{
+         *   // do something when all done
+         *   // or simply set to null
+         * }
+         * 
+         * Finally call this function like this.
+         * ChainActionHelper(10, worker, done);
+         */
+
+        public static void ChainActionHelperAsync(int countdown, Action<int, Action> worker, Action done = null)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                ChainActionHelperWorker(countdown, worker, done)();
+            });
+        }
+
+        // wrapper
+        public static void ChainActionHelper(int countdown, Action<int, Action> worker, Action done = null)
+        {
+            ChainActionHelperWorker(countdown, worker, done)();
+        }
+
+        static Action ChainActionHelperWorker(int countdown, Action<int, Action> worker, Action done = null)
+        {
+            int _index = countdown - 1;
+
+            return () =>
+            {
+                if (_index < 0)
+                {
+                    done?.Invoke();
+                    return;
+                }
+
+                worker(_index, ChainActionHelperWorker(_index, worker, done));
+            };
+        }
 
         public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lamda)
         {

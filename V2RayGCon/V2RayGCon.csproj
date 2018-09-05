@@ -107,6 +107,7 @@
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainComponent\FlyServer.cs" />
     <Compile Include="Controller\FormMainComponent\FormMainComponentController.cs" />
+    <Compile Include="Controller\FormMainComponent\ServerMenuItems.cs" />
     <Compile Include="Controller\FormMainComponent\MenuItems.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
