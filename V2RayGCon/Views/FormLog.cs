@@ -41,7 +41,7 @@ namespace V2RayGCon.Views
 
             this.Show();
 
-            rtBoxLogger.Text = setting.GetLogCache();
+            rtBoxLogger.Text = setting.logCache;
 
             setting.OnLog += LogReceiver;
         }

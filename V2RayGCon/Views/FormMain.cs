@@ -30,24 +30,20 @@ namespace V2RayGCon.Views
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
 #endif
+
             this.Show();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            // magic string
-            setting.RestoreFormPosition(this, nameof(FormMain));
-
-            this.FormClosing += (s, a) =>
-            {
-                setting.SaveFormPosition(this, nameof(FormMain));
-                setting.LazyGC();
-            };
+            setting.RestoreFormRect(this, nameof(FormMain));
 
             this.FormClosed += (s, a) =>
             {
+                setting.SaveFormRect(this, nameof(FormMain));
                 setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
+                setting.LazyGC();
             };
 
             // Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
@@ -86,11 +82,14 @@ namespace V2RayGCon.Views
                 toolMenuItemOptions,
                 toolMenuItemDownloadV2rayCore,
                 toolMenuItemRemoveV2rayCore,
-                toolMenuItemDeleteAll,
+                toolMenuItemDeleteAll));
+
+            ctrl.Plug(new Controller.FormMainComponent.ServerMenuItems(
                 toolStripMenuItemStopAllServers,
                 toolStripMenuItemRestartAllServers,
                 toolMenuItemClearSysProxy,
-                toolMenuItemRefreshSummary));
+                toolMenuItemRefreshSummary,
+                toolMenuItemRestartAutorunServers));
 
             return ctrl;
         }
@@ -105,16 +104,16 @@ namespace V2RayGCon.Views
 
         string GetCurrentSysProxySetting()
         {
-            var s = I18N("CurSysProxy");
+            var str = I18N("CurSysProxy");
             if (string.IsNullOrEmpty(setting.curSysProxy))
             {
-                s = string.Format("{0}:{1}", s, I18N("NotSet"));
+                str = string.Format("{0}:{1}", str, I18N("NotSet"));
             }
             else
             {
-                s = string.Format("{0} http://{1}", s, setting.curSysProxy);
+                str = string.Format("{0} http://{1}", str, setting.curSysProxy);
             }
-            return s;
+            return str;
         }
         #endregion
 

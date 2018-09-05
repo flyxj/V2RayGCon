@@ -476,4 +476,25 @@ Are you sure want to continue?</value>
   <data name="SysProxyRequireHTTPServer" xml:space="preserve">
     <value>System proxy must be a HTTP server.</value>
   </data>
+  <data name="StopServerFirst" xml:space="preserve">
+    <value>Stop server first, please!</value>
+  </data>
+  <data name="ConfirmClearSysProxy" xml:space="preserve">
+    <value>Clear system proxy setting?</value>
+  </data>
+  <data name="ConfirmRestartAllAutorunServer" xml:space="preserve">
+    <value>Restart all autorun servers?</value>
+  </data>
+  <data name="ConfirmRestartAllServer" xml:space="preserve">
+    <value>Restart all running servers?</value>
+  </data>
+  <data name="ConfirmStopAllServer" xml:space="preserve">
+    <value>Stop all servers?</value>
+  </data>
+  <data name="VisitV2rayCoreReleasePage" xml:space="preserve">
+    <value>Vist v2ray-core release page?</value>
+  </data>
+  <data name="VisitVGCIssuePage" xml:space="preserve">
+    <value>Vist V2RayGCon issue page?</value>
+  </data>
 </root>

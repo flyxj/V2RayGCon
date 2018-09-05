@@ -467,4 +467,25 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="SysProxyRequireHTTPServer" xml:space="preserve">
     <value>只有HTTP服务器才能设为系统代理</value>
   </data>
+  <data name="StopServerFirst" xml:space="preserve">
+    <value>请先停止服务器再修改</value>
+  </data>
+  <data name="ConfirmClearSysProxy" xml:space="preserve">
+    <value>清除系统代理设定？</value>
+  </data>
+  <data name="ConfirmRestartAllAutorunServer" xml:space="preserve">
+    <value>重启所有自启动服务器？</value>
+  </data>
+  <data name="ConfirmRestartAllServer" xml:space="preserve">
+    <value>重启全部正在运行的服务器？</value>
+  </data>
+  <data name="ConfirmStopAllServer" xml:space="preserve">
+    <value>停止全部服务器？</value>
+  </data>
+  <data name="VisitV2rayCoreReleasePage" xml:space="preserve">
+    <value>访问v2ray-core发布页面？</value>
+  </data>
+  <data name="VisitVGCIssuePage" xml:space="preserve">
+    <value>访问V2RayGCon的issue页面？</value>
+  </data>
 </root>

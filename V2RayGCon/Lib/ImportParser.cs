@@ -27,7 +27,7 @@ namespace V2RayGCon.Lib
          * test<System.Net.WebException> url not exist
          * test<Newtonsoft.Json.JsonReaderException> json decode fail
          */
-        public static JObject ParseImport(string configString)
+        public static JObject Parse(string configString)
         {
             var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
 

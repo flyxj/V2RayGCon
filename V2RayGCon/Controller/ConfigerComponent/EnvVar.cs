@@ -69,7 +69,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         void Init()
         {
             importTable = new Dictionary<string, string>();
-            var urlitems = Service.Setting.Instance.GetImportUrlItems();
+            var urlitems = Service.Setting.Instance.GetGlobalImportItems();
             cboxImportAlias.Items.Clear();
             foreach (var item in urlitems)
             {

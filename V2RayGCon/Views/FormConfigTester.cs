@@ -142,7 +142,7 @@ namespace V2RayGCon.Views
 
         void RestartCore(int index)
         {
-            var configString = setting.GetServerByIndex(index);
+            var configString = setting.GetServerConfigByIndex(index);
 
             if (string.IsNullOrEmpty(configString))
             {
@@ -153,7 +153,7 @@ namespace V2RayGCon.Views
             JObject config = null;
             try
             {
-                config = Lib.ImportParser.ParseImport(
+                config = Lib.ImportParser.Parse(
                     cboxGlobalImport.Checked ?
                     Lib.Utils.InjectGlobalImport(configString) :
                     configString);

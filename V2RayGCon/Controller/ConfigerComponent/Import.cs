@@ -93,7 +93,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 var result = "{}";
                 try
                 {
-                    result = Lib.ImportParser.ParseImport(
+                    result = Lib.ImportParser.Parse(
                         cboxGlobalImport.Checked ?
                         Lib.Utils.InjectGlobalImport(plainText) :
                         plainText)

@@ -13,15 +13,11 @@ namespace V2RayGCon.Service
 
         Notifier()
         {
-            setting = Setting.Instance;
             CreateNotifyIcon();
-
+            setting = Setting.Instance;
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
 
-#if DEBUG
-            This_function_do_some_tedious_stuff();
-#else
             ni.MouseClick += (s, a) =>
             {
                 if (a.Button == MouseButtons.Left)
@@ -30,9 +26,12 @@ namespace V2RayGCon.Service
                 }
             };
 
-            if (setting.GetServerCount() > 0)
+#if DEBUG
+            This_function_do_some_tedious_stuff();
+#else
+            if (setting.GetServerListCount() > 0)
             {
-                setting.WakeupAutorunServer();
+                setting.WakeupAutorunServers();
             }
             else
             {
@@ -50,17 +49,14 @@ namespace V2RayGCon.Service
                 Debug.WriteLine("Some test code:");
             };
 
-
             // new Views.FormConfiger(0);
-
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
-            Views.FormMain.GetForm();
-            Views.FormLog.GetForm();
+            // Views.FormMain.GetForm();
+            // Views.FormLog.GetForm();
             // setting.WakeupAutorunServer();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();
-
         }
 #endif
         #endregion
@@ -133,12 +129,13 @@ namespace V2RayGCon.Service
         void Cleanup()
         {
             ni.Visible = false;
+
+            setting.SaveServerListImmediately();
             setting.DisposeLazyTimers();
-            setting.SaveServerList();
 
             if (!string.IsNullOrEmpty(setting.curSysProxy))
             {
-                setting.ClearSysProxy();
+                setting.ClearSystemProxy();
             }
 
             setting.StopAllServersThen(() => sayGoodbye.Set());

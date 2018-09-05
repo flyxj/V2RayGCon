@@ -54,6 +54,8 @@ namespace V2RayGCon.Views
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
+            setting.RestoreFormRect(this, nameof(FormConfiger));
+
             InitToolsPanel();
             InitConfiger();
 
@@ -61,25 +63,30 @@ namespace V2RayGCon.Views
             SetTitle(configer.GetAlias());
             ToggleToolsPanel(setting.isShowConfigerToolsPanel);
 
+            var editor = configer
+                .GetComponent<Controller.ConfigerComponet.Editor>()
+                .GetEditor();
+
+            editor.Click += OnMouseLeaveToolsPanel;
+            setting.OnRequireMenuUpdate += MenuUpdateHandler;
+
             this.FormClosing += (s, a) =>
             {
                 if (!configer.IsConfigSaved())
                 {
-                    a.Cancel = !Lib.UI.Confirm(I18N("ConfirmCloseWinWithoutSave"));
+                    a.Cancel = !Lib.UI.Confirm(
+                        I18N("ConfirmCloseWinWithoutSave"));
                 }
             };
 
             this.FormClosed += (s, a) =>
             {
-                setting.LazyGC();
+                editor.Click -= OnMouseLeaveToolsPanel;
                 setting.OnRequireMenuUpdate -= MenuUpdateHandler;
+                setting.SaveFormRect(this, nameof(FormConfiger));
                 toolsPanelHandler.Dispose();
+                setting.LazyGC();
             };
-
-            var editor = configer.GetComponent<Controller.ConfigerComponet.Editor>();
-            editor.GetEditor().Click += OnMouseLeaveToolsPanel;
-
-            setting.OnRequireMenuUpdate += MenuUpdateHandler;
         }
 
         #region UI event handler

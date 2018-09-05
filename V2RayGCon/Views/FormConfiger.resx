@@ -2329,7 +2329,7 @@
     <value>4</value>
   </data>
   <data name="tabExpanseImport.Text" xml:space="preserve">
-    <value>Import</value>
+    <value>Expand</value>
   </data>
   <data name="&gt;&gt;tabExpanseImport.Name" xml:space="preserve">
     <value>tabExpanseImport</value>

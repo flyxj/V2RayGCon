@@ -15,19 +15,18 @@ namespace V2RayGCon.Model.Data
 
         public ServerList()
         {
-            // do not bind events here 
-            // list is empty
+            // Do not bind events here, because list is empty.
             // BindEvents();
         }
 
         #region private method
 
-        void InvokeOnRequireMenuUpdate(object sender, EventArgs args)
+        void InvokeEventOnRequireMenuUpdate(object sender, EventArgs args)
         {
             OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        void InvokeOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
         {
             OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
         }
@@ -44,12 +43,12 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region public method
-        public List<int> GetActiveServerList()
+        public List<int> GetActiveServersList()
         {
             var list = new List<int>();
             for (int i = 0; i < this.Count; i++)
             {
-                if (this[i].isOn)
+                if (this[i].isServerOn)
                 {
                     list.Add(i);
                 }
@@ -62,20 +61,13 @@ namespace V2RayGCon.Model.Data
             var list = servers;
             Action<int, Action> worker = (index, next) =>
             {
-                try
-                {
-                    this[list[index]].RestartCoreThen(next);
-                }
-                catch
-                {
-                    next();
-                }
+                this[list[index]].RestartCoreThen(next);
             };
 
-            ChainActionHelper(list.Count, worker, done)();
+            Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
         }
 
-        public void WakeupAutorunServerThen(Action done = null)
+        public void WakeupAutorunServersThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
             {
@@ -89,14 +81,14 @@ namespace V2RayGCon.Model.Data
                 }
             };
 
-            ChainActionHelper(this.Count, worker, done)();
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
         public void RestartAllServersThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
             {
-                if (this[index].isOn)
+                if (this[index].isServerOn)
                 {
                     this[index].RestartCoreThen(next);
                 }
@@ -106,68 +98,24 @@ namespace V2RayGCon.Model.Data
                 }
             };
 
-            ChainActionHelper(this.Count, worker, done)();
+
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
         public void StopAllServersThen(Action lambda = null)
         {
-            Action<int, Action> worker = (idx, next) =>
+            Action<int, Action> worker = (index, next) =>
             {
-                try
-                {
-                    this[idx].server.StopCoreThen(next);
-                }
-                catch
-                {
-                    // skip if something goes wrong
-                    next();
-                }
+                // Model.BaseClass.CoreServer take care of errors 
+                // do not need try/catch
+                this[index].server.StopCoreThen(next);
             };
 
-            ChainActionHelper(this.Count, worker, lambda)();
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, lambda);
         }
 
-        /*
-         * ChainActionHelper loop from count-1 to 0
-         * These values will pass into worker through the first parameter,
-         * which is index in this example.
-         * 
-         * Action<int,Action> worker = (index, next)=>{
-         * 
-         *   // do something accroding to index
-         *   console.log(index); 
-         *   
-         *   // call next when done
-         *   next(); 
-         * }
-         * 
-         * Action finished = ()=>{
-         *   // do something when all finished
-         *   // or simply set to null
-         * }
-         * 
-         * Finally call this function like this.
-         * Do not forget the last pair of parentheses.
-         * 
-         * ChainActionHelper(10, worker, finished)();
-         */
-        Action ChainActionHelper(int count, Action<int, Action> worker, Action finished)
-        {
-            int _index = count - 1;
 
-            return () =>
-            {
-                if (_index < 0)
-                {
-                    finished?.Invoke();
-                    return;
-                }
-
-                worker(_index, ChainActionHelper(_index, worker, finished));
-            };
-        }
-
-        public void DeleteAllItemsThen(Action done = null)
+        public void DeleteAllServersThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
             {
@@ -180,22 +128,22 @@ namespace V2RayGCon.Model.Data
 
             Action finish = () =>
             {
-                done?.Invoke();
                 SaveChanges(this, EventArgs.Empty);
-                InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
-                InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
+                done?.Invoke();
             };
 
-            ChainActionHelper(this.Count, worker, finish)();
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, finish);
         }
 
-        public void UpdateAllSummary()
+        public void UpdateAllServersSummary()
         {
-            Action<int, Action> worker = (idx, next) =>
+            Action<int, Action> worker = (index, next) =>
             {
                 try
                 {
-                    this[idx].UpdateSummaryThen(next);
+                    this[index].UpdateSummaryThen(next);
                 }
                 catch
                 {
@@ -204,114 +152,102 @@ namespace V2RayGCon.Model.Data
                 }
             };
 
-            Action finish = () =>
+            Action done = () =>
             {
-                InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
-                InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
             };
 
-            ChainActionHelper(this.Count, worker, finish)();
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
-        public void BindEvents()
+        public void BindEventsToAllServers()
         {
             foreach (var server in this)
             {
-                BindEvent(server);
+                BindEventTo(server);
             }
         }
 
-        public void ReleaseEvents()
+        public void ReleaseEventsFromAllServers()
         {
             foreach (var server in this)
             {
-                ReleaseEvent(server);
+                ReleaseEventFrom(server);
             }
         }
 
-        private void DeleteItem(object sender, Model.Data.StrEvent args)
+        private void DeleteServerHandler(object sender, Model.Data.StrEvent args)
         {
-            var index = GetItemIndexByConfig(args.Data);
+            var index = GetServerIndexByConfig(args.Data);
             if (index < 0)
             {
                 MessageBox.Show(I18N("CantFindOrgServDelFail"));
                 return;
             }
 
-            var item = this[index];
-
             lock (writeLock)
             {
-                ReleaseEvent(this[index]);
+                ReleaseEventFrom(this[index]);
                 this.RemoveAt(index);
             }
 
-            InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
-            InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+            InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
+            InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
         }
 
-        private int GetItemIndexByConfig(string config)
-        {
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (this[i].config == config)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public void BindEvent(Model.Data.ServerItem server)
+        public void BindEventTo(Model.Data.ServerItem server)
         {
             server.OnLog += SendLog;
             server.OnPropertyChanged += SaveChanges;
-            server.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
-            server.OnRequireDelete += DeleteItem;
+            server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
+            server.OnRequireDeleteServer += DeleteServerHandler;
         }
 
-        public void ReleaseEvent(Model.Data.ServerItem server)
+        public void ReleaseEventFrom(Model.Data.ServerItem server)
         {
             server.OnLog -= SendLog;
             server.OnPropertyChanged -= SaveChanges;
-            server.OnRequireMenuUpdate -= InvokeOnRequireMenuUpdate;
+            server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
+            server.OnRequireDeleteServer -= DeleteServerHandler;
         }
 
-        public bool AddConfig(string config, bool quiet = false)
+        public bool AddServer(string config, bool quiet = false)
         {
-            foreach (var item in this)
-            {
-                if (item.config == config)
-                {
-                    // duplicate
-                    return false;
-                }
-            }
-
-            var server = new Model.Data.ServerItem()
+            var newServer = new Model.Data.ServerItem()
             {
                 config = config,
             };
 
             lock (writeLock)
             {
-                BindEvent(server);
-                this.Add(server);
+                foreach (var server in this)
+                {
+                    if (server.config == config)
+                    {
+                        // duplicate
+                        return false;
+                    }
+                }
+
+                this.Add(newServer);
             }
+
+            BindEventTo(newServer);
 
             if (!quiet)
             {
-                server.UpdateSummaryThen(() =>
+                newServer.UpdateSummaryThen(() =>
                 {
-                    InvokeOnRequireMenuUpdate(this, EventArgs.Empty);
-                    InvokeOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                    InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
+                    InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 });
             }
 
             return true;
         }
 
-        public int SearchConfig(string config)
+        public int GetServerIndexByConfig(string config)
         {
             for (int i = 0; i < this.Count; i++)
             {
@@ -323,7 +259,7 @@ namespace V2RayGCon.Model.Data
             return -1;
         }
 
-        public bool Replace(int index, string config)
+        public bool ReplaceServerConfigByIndex(int index, string config)
         {
             if (index < 0 || index > this.Count)
             {

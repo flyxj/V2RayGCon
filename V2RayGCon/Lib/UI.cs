@@ -10,8 +10,64 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Lib
 {
-    class UI
+    public class UI
     {
+        #region private method
+
+        #endregion
+
+        #region public method
+        public static bool UpdateControlOnDemand(Control control, int value)
+        {
+            if (control.GetType().Name != nameof(ComboBox))
+            {
+                throw new ArgumentException("Unsupported control type");
+            }
+
+            var c = control as ComboBox;
+            if (c.SelectedIndex == value)
+            {
+                return false;
+            }
+
+            c.SelectedIndex = value;
+            return true;
+        }
+
+        public static bool UpdateControlOnDemand(Control control, bool value)
+        {
+            if (control.GetType().Name != nameof(CheckBox))
+            {
+                throw new ArgumentException("Unsupported control type");
+            }
+
+            var c = control as CheckBox;
+            if (c.Checked == value)
+            {
+                return false;
+            }
+
+            c.Checked = value;
+            return true;
+        }
+
+        public static bool UpdateControlOnDemand(Control control, string value)
+        {
+            var ctrlName = control.GetType().Name;
+            if (ctrlName != nameof(Label) && ctrlName != nameof(TextBox))
+            {
+                throw new ArgumentException("Unsupported control type");
+            }
+
+            if (control.Text == value)
+            {
+                return false;
+            }
+
+            control.Text = value;
+            return true;
+        }
+
         public static void ResetComboBoxDropdownMenuWidth(ComboBox cbox)
         {
             int maxWidth = 0, tempWidth = 0;
@@ -242,6 +298,9 @@ namespace V2RayGCon.Lib
             }
             element.SelectedIndex = 0;
         }
+        #endregion
+
+        #region DEBUG
 
         [Conditional("DEBUG")]
         public static void SetFormLocation<T>(T form, Model.Data.Enum.FormLocations location) where T : Form
@@ -268,5 +327,7 @@ namespace V2RayGCon.Lib
                     break;
             }
         }
+
+        #endregion
     }
 }

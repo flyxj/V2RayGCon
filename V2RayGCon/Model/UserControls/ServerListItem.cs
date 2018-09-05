@@ -5,7 +5,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.UserControls
 {
-    public partial class ServerListItem : UserControl
+    public partial class ServerListItem : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Model.Data.ServerItem serverItem;
         ContextMenu menu;
@@ -21,56 +21,38 @@ namespace V2RayGCon.Model.UserControls
 
         private void ServerListItem_Load(object sender, EventArgs e)
         {
-            isRunning = !serverItem.isOn;
+            isRunning = !serverItem.isServerOn;
             RefreshUI(this, EventArgs.Empty);
             this.serverItem.OnPropertyChanged += RefreshUI;
         }
 
         #region private method
-        void RefreshComboBox(ComboBox comboBox, int index)
-        {
-            if (comboBox.SelectedIndex != index)
-            {
-                comboBox.SelectedIndex = index;
-            }
-        }
-
-        void RefreshTextBox(TextBox textBox, string text)
-        {
-            if (textBox.Text != text)
-            {
-                textBox.Text = text;
-            }
-        }
-
-        void RefreshLabel(Label label, string text)
-        {
-            if (label.Text != text)
-            {
-                label.Text = text;
-            }
-        }
-
-        void RefreshCheckBox(CheckBox checkBox, bool check)
-        {
-            if (checkBox.Checked != check)
-            {
-                checkBox.Checked = check;
-            }
-        }
-
         void RefreshUI(object sender, EventArgs arg)
         {
             lbSummary.Invoke((MethodInvoker)delegate
             {
-                RefreshComboBox(cboxInbound, serverItem.inboundOverwriteType);
-                RefreshLabel(lbIndex, serverItem.index.ToString());
-                RefreshLabel(lbSummary, serverItem.summary);
-                SetRunning(serverItem.server.isRunning);
-                RefreshTextBox(tboxInboundIP, serverItem.inboundIP);
-                RefreshTextBox(tboxInboundPort, serverItem.inboundPort.ToString());
-                RefreshCheckBox(chkAutoRun, serverItem.isAutoRun);
-                RefreshCheckBox(chkImport, serverItem.isInjectImport);
+                Lib.UI.UpdateControlOnDemand(
+                    cboxInbound, serverItem.overwriteInboundType);
+
+                Lib.UI.UpdateControlOnDemand(
+                    lbIndex, serverItem.index.ToString());
+
+                Lib.UI.UpdateControlOnDemand(
+                    lbSummary, serverItem.summary);
+
+                Lib.UI.UpdateControlOnDemand(
+                    tboxInboundIP, serverItem.inboundIP);
+
+                Lib.UI.UpdateControlOnDemand(
+                    tboxInboundPort, serverItem.inboundPort.ToString());
+
+                Lib.UI.UpdateControlOnDemand(
+                    chkAutoRun, serverItem.isAutoRun);
+
+                Lib.UI.UpdateControlOnDemand(
+                    chkImport, serverItem.isInjectImport);
+
+                ShowOnOffStatus(serverItem.server.isRunning);
             });
         }
 
@@ -92,8 +74,8 @@ namespace V2RayGCon.Model.UserControls
                                 Lib.Utils.Vmess2VmessLink(
                                     Lib.Utils.ConfigString2Vmess(
                                         this.serverItem.config)))?
-                                        I18N("LinksCopied") :
-                                        I18N("CopyFail"));
+                            I18N("LinksCopied") :
+                            I18N("CopyFail"));
                     }),
                     new MenuItem(I18N("V2RayLink"),(s,a)=>{
                         MessageBox.Show(
@@ -113,7 +95,7 @@ namespace V2RayGCon.Model.UserControls
                         return;
                     }
 
-                    Service.Setting.Instance.SetSysProxy(
+                    Service.Setting.Instance.SetSystemProxy(
                         string.Format("{0}:{1}",
                         this.tboxInboundIP.Text,
                         this.tboxInboundPort.Text));
@@ -121,15 +103,16 @@ namespace V2RayGCon.Model.UserControls
             });
         }
 
-        private void SetRunning(bool isOn)
+        private void ShowOnOffStatus(bool isServerOn)
         {
-            if (this.isRunning == isOn)
+            if (this.isRunning == isServerOn)
             {
                 return;
             }
-            this.isRunning = isOn;
 
-            if (isOn)
+            this.isRunning = isServerOn;
+
+            if (isServerOn)
             {
                 lbRunning.ForeColor = Color.DarkOrange;
                 lbRunning.Text = "ON";
@@ -152,7 +135,6 @@ namespace V2RayGCon.Model.UserControls
         public void Cleanup()
         {
             this.serverItem.OnPropertyChanged -= RefreshUI;
-            // this.serverItem = null;
         }
         #endregion
 
@@ -172,51 +154,27 @@ namespace V2RayGCon.Model.UserControls
 
         private void cboxInbound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (serverItem.inboundOverwriteType == cboxInbound.SelectedIndex)
-            {
-                return;
-            }
-            serverItem.SetInboundType(cboxInbound.SelectedIndex);
+            serverItem.SetOverwriteInboundType(cboxInbound.SelectedIndex);
         }
 
         private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
         {
-            var check = chkAutoRun.Checked;
-            if (serverItem.isAutoRun != check)
-            {
-                serverItem.SetAutoRun(check);
-            }
-
+            serverItem.SetAutoRun(chkAutoRun.Checked);
         }
 
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
-            var check = chkImport.Checked;
-            if (serverItem.isInjectImport != check)
-            {
-                serverItem.SetInjectImport(check);
-            }
-
+            serverItem.SetInjectImport(chkImport.Checked);
         }
 
         private void tboxInboundIP_TextChanged(object sender, EventArgs e)
         {
-            var txt = tboxInboundIP.Text;
-            if (txt == serverItem.inboundIP)
-            {
-                return;
-            }
-            serverItem.SetInboundIP(txt);
+            serverItem.SetInboundIP(tboxInboundIP.Text);
         }
 
         private void tboxInboundPort_TextChanged(object sender, EventArgs e)
         {
-            var txt = tboxInboundPort.Text;
-            if (txt == serverItem.inboundPort.ToString())
-            {
-                return;
-            }
-            serverItem.SetInboundPort(txt);
+            serverItem.SetInboundPort(tboxInboundPort.Text);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -227,8 +185,7 @@ namespace V2RayGCon.Model.UserControls
             }
 
             Cleanup();
-
-            serverItem.Delete();
+            serverItem.DeleteSelf();
         }
 
 

@@ -13,40 +13,49 @@ namespace V2RayGCon.Service
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
         private Model.Data.ServerList serverList;
-        public event EventHandler<Model.Data.StrEvent> OnLog;
-        public event EventHandler OnRequireMenuUpdate;
-        public event EventHandler OnRequireFlyPanelUpdate;
-        public event EventHandler OnSysProxyChanged;
 
-        Dictionary<string, Rectangle> _winFormPosList = null; // cache
-        Queue<string> logCache;
+        public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate, OnSysProxyChanged;
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
             lazySaveServerListTimer = null;
 
-
         Setting()
         {
-            logCache = new Queue<string>();
-
             LoadServerList();
-            serverList.BindEvents();
-
-            curSysProxy = string.Empty;
-
+            serverList.BindEventsToAllServers();
             serverList.OnLog += (s, a) => SendLog(a.Data);
-
-            LazySaveServerList();
-
             serverList.ListChanged += LazySaveServerList;
-            serverList.OnRequireMenuUpdate += InvokeOnRequireMenuUpdate;
-            serverList.OnRequireFlyPanelUpdate += InvokeOnRequireFlyPanelUpdate;
+            serverList.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
+            serverList.OnRequireFlyPanelUpdate += InvokeEventOnRequireFlyPanelUpdate;
+            LazySaveServerList();
         }
 
         #region Properties
 
-        public string curSysProxy;
+        Queue<string> _logCache = new Queue<string>();
+        public string logCache
+        {
+            get
+            {
+                return string.Join(Environment.NewLine, _logCache);
+            }
+            private set
+            {
+                // keep 200 lines of log
+                if (_logCache.Count > 300)
+                {
+                    for (var i = 0; i < 100; i++)
+                    {
+                        _logCache.Dequeue();
+                    }
+                }
+                _logCache.Enqueue(value);
+            }
+        }
+
+        public string curSysProxy = null;
 
         public bool isShowConfigerToolsPanel
         {
@@ -74,11 +83,9 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
-        public void SaveServerList()
+        public void SaveServerListImmediately()
         {
-            string json = JsonConvert.SerializeObject(serverList);
-            Properties.Settings.Default.ServerList = json;
-            Properties.Settings.Default.Save();
+            lazySaveServerListTimer.Timeout();
         }
 
         public void DisposeLazyTimers()
@@ -104,33 +111,37 @@ namespace V2RayGCon.Service
             lazyGCTimer.Start();
         }
 
-        public void SaveFormPosition(Form form, string key)
+        public void SaveFormRect(Form form, string key)
         {
-            var rect = new Rectangle(form.Left, form.Top, form.Width, form.Height);
-            SetWinFormPosition(key, rect);
+            var list = GetWinFormRectList();
+            list[key] = new Rectangle(
+                form.Left, form.Top, form.Width, form.Height);
+            Properties.Settings.Default.WinFormPosList =
+                JsonConvert.SerializeObject(list);
+            Properties.Settings.Default.Save();
         }
 
-        public void RestoreFormPosition(Form form, string key)
+        public void RestoreFormRect(Form form, string key)
         {
-            var rect = GetWinFormPosition(key);
-            var screen = Screen.PrimaryScreen.WorkingArea;
-            if (rect.Left < 0 || rect.Top < 0
-                || rect.Width < 300 || rect.Height < 200
-                || rect.Right > screen.Right
-                || rect.Bottom > screen.Bottom)
+            var list = GetWinFormRectList();
+
+            if (!list.ContainsKey(key))
             {
                 return;
             }
 
-            form.Left = rect.Left;
-            form.Top = rect.Top;
-            form.Width = rect.Width;
-            form.Height = rect.Height;
+            var rect = list[key];
+            var screen = Screen.PrimaryScreen.WorkingArea;
+
+            form.Width = Math.Max(rect.Width, 300);
+            form.Height = Math.Max(rect.Height, 200);
+            form.Left = Lib.Utils.Clamp(rect.Left, 0, screen.Right - form.Width);
+            form.Top = Lib.Utils.Clamp(rect.Top, 0, screen.Bottom - form.Height);
         }
 
         public List<int> GetActiveServerList()
         {
-            return serverList.GetActiveServerList();
+            return serverList.GetActiveServersList();
         }
 
         public void StartServersByList(List<int> servers)
@@ -138,12 +149,12 @@ namespace V2RayGCon.Service
             serverList.StartServersByList(servers);
         }
 
-        public void WakeupAutorunServer()
+        public void WakeupAutorunServers()
         {
-            serverList.WakeupAutorunServerThen();
+            serverList.WakeupAutorunServersThen();
         }
 
-        public void SetSysProxy(string link)
+        public void SetSystemProxy(string link)
         {
             if (string.IsNullOrEmpty(link))
             {
@@ -152,14 +163,14 @@ namespace V2RayGCon.Service
 
             Lib.ProxySetter.setProxy(link, true);
             curSysProxy = link;
-            InvokeOnSysProxyChanged();
+            InvokeEventOnSysProxyChanged();
         }
 
-        public void ClearSysProxy()
+        public void ClearSystemProxy()
         {
             Lib.ProxySetter.setProxy("", false);
             curSysProxy = string.Empty;
-            InvokeOnSysProxyChanged();
+            InvokeEventOnSysProxyChanged();
         }
 
         public void StopAllServersThen(Action lambda = null)
@@ -172,66 +183,49 @@ namespace V2RayGCon.Service
             serverList.RestartAllServersThen();
         }
 
-        public string GetLogCache()
+        public void UpdateAllServersSummary()
         {
-            return string.Join("\n", logCache);
-        }
-
-        public void UpdateAllSummary()
-        {
-            serverList.UpdateAllSummary();
+            serverList.UpdateAllServersSummary();
         }
 
         public void SendLog(string log)
         {
-            // cache 200 lines of log
-            if (logCache.Count > 300)
-            {
-                for (var i = 0; i < 100; i++)
-                {
-                    logCache.Dequeue();
-                }
-            }
-            logCache.Enqueue(log);
-
-            var arg = new Model.Data.StrEvent(log);
-
+            logCache = log;
             try
             {
-                OnLog?.Invoke(this, arg);
+                OnLog?.Invoke(this, new Model.Data.StrEvent(log));
             }
             catch { }
         }
 
-        public int GetServerCount()
+        public int GetServerListCount()
         {
             return serverList.Count;
         }
 
         public void ImportLinks(string links)
         {
-            var that = this;
-
             var tasks = new Task<Tuple<bool, List<string[]>>>[] {
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportVmessLinks(links)),
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportV2RayLinks(links)),
-                new Task<Tuple<bool, List<string[]>>>(()=>ImportSSLinks(links)),
+                new Task<Tuple<bool, List<string[]>>>(
+                    ()=>ImportVmessLinks(links)),
+
+                new Task<Tuple<bool, List<string[]>>>(
+                    ()=>ImportV2RayLinks(links)),
+
+                new Task<Tuple<bool, List<string[]>>>(
+                    ()=>ImportSSLinks(links)),
             };
 
             Task.Factory.StartNew(() =>
             {
-                // import all links
                 foreach (var task in tasks)
                 {
                     task.Start();
                 }
-
                 Task.WaitAll(tasks);
 
-                // get results
-                var allResults = new List<string[]>();
-                var isAddNewServer = false;
-
+                var allResults = new List<string[]>();  // all server including duplicate
+                var isAddNewServer = false;  // add new server
                 foreach (var task in tasks)
                 {
                     isAddNewServer = isAddNewServer || task.Result.Item1;
@@ -242,7 +236,7 @@ namespace V2RayGCon.Service
                 // show results
                 if (isAddNewServer)
                 {
-                    serverList.UpdateAllSummary();
+                    serverList.UpdateAllServersSummary();
                 }
 
                 if (allResults.Count > 0)
@@ -257,12 +251,14 @@ namespace V2RayGCon.Service
             });
         }
 
-        public List<Model.Data.UrlItem> GetImportUrlItems()
+        public List<Model.Data.UrlItem> GetGlobalImportItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject<List<Model.Data.UrlItem>>(
+                var items = JsonConvert.DeserializeObject
+                    <List<Model.Data.UrlItem>>(
                     Properties.Settings.Default.ImportUrls);
+
                 if (items != null)
                 {
                     return items;
@@ -272,19 +268,21 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
-        public void SaveImportUrlItems(string options)
+        public void SaveGlobalImportItems(string options)
         {
             Properties.Settings.Default.ImportUrls = options;
             Properties.Settings.Default.Save();
             RestartAllServers();
         }
 
-        public List<Model.Data.UrlItem> GetSubscriptionUrls()
+        public List<Model.Data.UrlItem> GetSubscriptionItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject<List<Model.Data.UrlItem>>(
+                var items = JsonConvert.DeserializeObject
+                    <List<Model.Data.UrlItem>>(
                     Properties.Settings.Default.SubscribeUrls);
+
                 if (items != null)
                 {
                     return items;
@@ -294,7 +292,7 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
-        public void SaveSubscriptionUrls(string options)
+        public void SaveSubscriptionItems(string options)
         {
             Properties.Settings.Default.SubscribeUrls = options;
             Properties.Settings.Default.Save();
@@ -307,8 +305,10 @@ namespace V2RayGCon.Service
             Model.Data.ServerList list = null;
             try
             {
-                list = JsonConvert.DeserializeObject<Model.Data.ServerList>(
+                list = JsonConvert.DeserializeObject
+                    <Model.Data.ServerList>(
                     Properties.Settings.Default.ServerList);
+
                 if (list == null)
                 {
                     return;
@@ -343,11 +343,11 @@ namespace V2RayGCon.Service
             return serverList.AsReadOnly();
         }
 
-        public string GetServerByIndex(int index)
+        public string GetServerConfigByIndex(int index)
         {
-            if (GetServerCount() == 0
+            if (GetServerListCount() == 0
                 || index < 0
-                || index >= GetServerCount())
+                || index >= GetServerListCount())
             {
                 return string.Empty;
             }
@@ -357,68 +357,55 @@ namespace V2RayGCon.Service
 
         public void DeleteAllServer()
         {
-            serverList.DeleteAllItemsThen(
+            serverList.DeleteAllServersThen(
                 () => Service.Cache.Instance.core.Clear());
         }
 
         public bool AddServer(JObject config, bool quiet = false)
         {
-            return serverList.AddConfig(Lib.Utils.Config2String(config), quiet);
+            return serverList.AddServer(
+                Lib.Utils.Config2String(config),
+                quiet);
         }
 
-        public int SearchServer(string configString)
+        public int GetServerIndexByConfig(string configString)
         {
-            return serverList.SearchConfig(configString);
+            return serverList.GetServerIndexByConfig(configString);
         }
 
-        public bool ReplaceServer(int orgIndex, string newConfig)
+        public bool ReplaceServerConfigByIndex(int orgIndex, string newConfig)
         {
-            return serverList.Replace(orgIndex, newConfig);
+            return serverList.ReplaceServerConfigByIndex(orgIndex, newConfig);
         }
-
 
         #endregion
 
         #region private method
-        Rectangle GetWinFormPosition(string name)
+        Dictionary<string, Rectangle> winFormRectListCache = null;
+        Dictionary<string, Rectangle> GetWinFormRectList()
         {
-            // init _winFormPostList
-            if (_winFormPosList == null)
+            if (winFormRectListCache != null)
             {
-                try
-                {
-                    _winFormPosList = JsonConvert.DeserializeObject<
-                        Dictionary<string, Rectangle>>(
-                        Properties.Settings.Default.WinFormPosList);
-                }
-                catch { }
+                return winFormRectListCache;
             }
 
-            if (_winFormPosList == null)
+            try
             {
-                _winFormPosList = new Dictionary<string, Rectangle>();
+                winFormRectListCache = JsonConvert.DeserializeObject<
+                    Dictionary<string, Rectangle>>(
+                    Properties.Settings.Default.WinFormPosList);
+            }
+            catch { }
+
+            if (winFormRectListCache == null)
+            {
+                winFormRectListCache = new Dictionary<string, Rectangle>();
             }
 
-            if (_winFormPosList.ContainsKey(name))
-            {
-                return _winFormPosList[name];
-            }
-
-            return new Rectangle(-1, -1, -1, -1);
+            return winFormRectListCache;
         }
 
-        void SetWinFormPosition(string name, Rectangle rect)
-        {
-            if (_winFormPosList == null)
-            {
-                _winFormPosList = new Dictionary<string, Rectangle>();
-            }
-            _winFormPosList[name] = rect;
-            Properties.Settings.Default.WinFormPosList = JsonConvert.SerializeObject(_winFormPosList);
-            Properties.Settings.Default.Save();
-        }
-
-        void InvokeOnSysProxyChanged()
+        void InvokeEventOnSysProxyChanged()
         {
             try
             {
@@ -427,7 +414,7 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        void InvokeOnRequireMenuUpdate(object sender, EventArgs args)
+        void InvokeEventOnRequireMenuUpdate(object sender, EventArgs args)
         {
             try
             {
@@ -437,7 +424,7 @@ namespace V2RayGCon.Service
             LazyGC();
         }
 
-        void InvokeOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
         {
             try
             {
@@ -558,13 +545,20 @@ namespace V2RayGCon.Service
 
         void LazySaveServerList()
         {
-            // create in need
+            // create on demand
             if (lazySaveServerListTimer == null)
             {
                 var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
 
                 lazySaveServerListTimer =
-                    new Model.BaseClass.CancelableTimeout(SaveServerList, delay * 1000);
+                    new Model.BaseClass.CancelableTimeout(
+                        () =>
+                        {
+                            string json = JsonConvert.SerializeObject(serverList);
+                            Properties.Settings.Default.ServerList = json;
+                            Properties.Settings.Default.Save();
+                        },
+                        delay * 1000);
             }
 
             lazySaveServerListTimer.Start();
