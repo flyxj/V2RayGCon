@@ -150,7 +150,7 @@
     <value>首次使用请先下载v2ray-core</value>
   </data>
   <data name="lbV2rayCoreGitHub.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>5, 10</value>
+    <value>16, 6</value>
   </data>
   <data name="lbV2rayCoreGitHub.Size" type="System.Drawing.Size, System.Drawing">
     <value>303, 26</value>

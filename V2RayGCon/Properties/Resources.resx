@@ -142,4 +142,7 @@
   <data name="WikiLink" xml:space="preserve">
     <value>https://github.com/nobody3u/V2RayGCon/wiki</value>
   </data>
+  <data name="IssueLink" xml:space="preserve">
+    <value>https://github.com/nobody3u/V2RayGCon/issues</value>
+  </data>
 </root>

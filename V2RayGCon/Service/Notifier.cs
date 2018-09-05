@@ -29,9 +29,9 @@ namespace V2RayGCon.Service
 #if DEBUG
             This_function_do_some_tedious_stuff();
 #else
-            if (setting.GetServerCount() > 0)
+            if (setting.GetServerListCount() > 0)
             {
-                setting.WakeupAutorunServer();
+                setting.WakeupAutorunServers();
             }
             else
             {

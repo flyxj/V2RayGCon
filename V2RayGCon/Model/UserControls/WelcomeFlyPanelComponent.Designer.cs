@@ -63,6 +63,7 @@
             this.lbDownloadV2rayCore.Name = "lbDownloadV2rayCore";
             this.lbDownloadV2rayCore.TabStop = true;
             this.lbDownloadV2rayCore.UseCompatibleTextRendering = true;
+            this.lbDownloadV2rayCore.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbDownloadV2rayCore_LinkClicked);
             // 
             // lbV2rayCoreGitHub
             // 
@@ -70,6 +71,7 @@
             this.lbV2rayCoreGitHub.Name = "lbV2rayCoreGitHub";
             this.lbV2rayCoreGitHub.TabStop = true;
             this.lbV2rayCoreGitHub.UseCompatibleTextRendering = true;
+            this.lbV2rayCoreGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbV2rayCoreGitHub_LinkClicked);
             // 
             // lbCopyFromClipboard
             // 
@@ -77,6 +79,7 @@
             this.lbCopyFromClipboard.Name = "lbCopyFromClipboard";
             this.lbCopyFromClipboard.TabStop = true;
             this.lbCopyFromClipboard.UseCompatibleTextRendering = true;
+            this.lbCopyFromClipboard.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbCopyFromClipboard_LinkClicked);
             // 
             // lbSimAddVmessWin
             // 
@@ -84,6 +87,7 @@
             this.lbSimAddVmessWin.Name = "lbSimAddVmessWin";
             this.lbSimAddVmessWin.TabStop = true;
             this.lbSimAddVmessWin.UseCompatibleTextRendering = true;
+            this.lbSimAddVmessWin.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbSimAddVmessWin_LinkClicked);
             // 
             // lbScanQRCode
             // 
@@ -91,6 +95,7 @@
             this.lbScanQRCode.Name = "lbScanQRCode";
             this.lbScanQRCode.TabStop = true;
             this.lbScanQRCode.UseCompatibleTextRendering = true;
+            this.lbScanQRCode.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbScanQRCode_LinkClicked);
             // 
             // lbConfigEditor
             // 
@@ -98,6 +103,7 @@
             this.lbConfigEditor.Name = "lbConfigEditor";
             this.lbConfigEditor.TabStop = true;
             this.lbConfigEditor.UseCompatibleTextRendering = true;
+            this.lbConfigEditor.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbConfigEditor_LinkClicked);
             // 
             // lbWiki
             // 
@@ -105,6 +111,7 @@
             this.lbWiki.Name = "lbWiki";
             this.lbWiki.TabStop = true;
             this.lbWiki.UseCompatibleTextRendering = true;
+            this.lbWiki.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbWiki_LinkClicked);
             // 
             // lbIssue
             // 
@@ -112,6 +119,7 @@
             this.lbIssue.Name = "lbIssue";
             this.lbIssue.TabStop = true;
             this.lbIssue.UseCompatibleTextRendering = true;
+            this.lbIssue.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbIssue_LinkClicked);
             // 
             // WelcomeFlyPanelComponent
             // 

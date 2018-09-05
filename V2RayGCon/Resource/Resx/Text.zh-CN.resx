@@ -482,4 +482,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="ConfirmStopAllServer" xml:space="preserve">
     <value>停止全部服务器？</value>
   </data>
+  <data name="VisitV2rayCoreReleasePage" xml:space="preserve">
+    <value>访问v2ray-core发布页面？</value>
+  </data>
+  <data name="VisitVGCIssuePage" xml:space="preserve">
+    <value>访问V2RayGCon的issue页面？</value>
+  </data>
 </root>

@@ -1085,6 +1085,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Vist v2ray-core release page? 的本地化字符串。
+        /// </summary>
+        internal static string VisitV2rayCoreReleasePage {
+            get {
+                return ResourceManager.GetString("VisitV2rayCoreReleasePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Vist V2RayGCon issue page? 的本地化字符串。
+        /// </summary>
+        internal static string VisitVGCIssuePage {
+            get {
+                return ResourceManager.GetString("VisitVGCIssuePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Vist v-link wiki page? 的本地化字符串。
         /// </summary>
         internal static string VisitVlinkPage {

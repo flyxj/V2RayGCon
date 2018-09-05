@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="groupBox8.Text" xml:space="preserve">
+    <value>环境变量</value>
+  </data>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>快速配置</value>
+  </data>
+  <data name="misc.Text" xml:space="preserve">
+    <value>杂项</value>
+  </data>
+  <data name="groupBox9.Text" xml:space="preserve">
+    <value>展开import</value>
+  </data>
+  <data name="tabExpanseImport.Text" xml:space="preserve">
+    <value>展开</value>
+  </data>
   <data name="rbtnStreamOutbound.Text" xml:space="preserve">
     <value>Outbound(客户端)</value>
   </data>
@@ -150,6 +165,9 @@
   <data name="label4.Text" xml:space="preserve">
     <value>IP:端口</value>
   </data>
+  <data name="groupBox4.Text" xml:space="preserve">
+    <value>服务器</value>
+  </data>
   <data name="btnSSInsertServer.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
@@ -168,8 +186,8 @@
   <data name="label10.Text" xml:space="preserve">
     <value>加密</value>
   </data>
-  <data name="groupBox4.Text" xml:space="preserve">
-    <value>服务器</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>客户端</value>
   </data>
   <data name="btnSSRInsertClient.Text" xml:space="preserve">
     <value>插入→</value>
@@ -186,20 +204,14 @@
   <data name="label6.Text" xml:space="preserve">
     <value>IP:端口</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>客户端</value>
-  </data>
   <data name="btnInsertEnv.Text" xml:space="preserve">
     <value>插入→</value>
   </data>
   <data name="label22.Text" xml:space="preserve">
-    <value>数值</value>
+    <value>值</value>
   </data>
   <data name="label21.Text" xml:space="preserve">
     <value>名称</value>
-  </data>
-  <data name="groupBox8.Text" xml:space="preserve">
-    <value>环境变量</value>
   </data>
   <data name="btnInsertImport.Text" xml:space="preserve">
     <value>插入→</value>
@@ -212,9 +224,6 @@
   </data>
   <data name="btnQConSkipCN.ToolTip" xml:space="preserve">
     <value>CN网站不走代理</value>
-  </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>快速配置</value>
   </data>
   <data name="label16.Text" xml:space="preserve">
     <value>描述</value>
@@ -240,11 +249,14 @@
   <data name="btnCopyExpansedConfig.Text" xml:space="preserve">
     <value>复制</value>
   </data>
-  <data name="groupBox9.Text" xml:space="preserve">
-    <value>展开import</value>
-  </data>
   <data name="btnClearModify.Text" xml:space="preserve">
     <value>取消更改</value>
+  </data>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>覆盖原服务器设置 </value>
   </data>
   <data name="newWinToolStripMenuItem1.Text" xml:space="preserve">
     <value>新窗口</value>
@@ -258,11 +270,8 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>关闭</value>
   </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>文件</value>
-  </data>
-  <data name="fileToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>覆盖原服务器设置 </value>
+  <data name="configToolStripMenuItem.Text" xml:space="preserve">
+    <value>服务器</value>
   </data>
   <data name="addNewServerToolStripMenuItem.Text" xml:space="preserve">
     <value>添加新服务器</value>
@@ -282,8 +291,8 @@
   <data name="replaceExistServerToolStripMenuItem.Text" xml:space="preserve">
     <value>覆盖服务器</value>
   </data>
-  <data name="configToolStripMenuItem.Text" xml:space="preserve">
-    <value>服务器</value>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>视图</value>
   </data>
   <data name="searchBoxToolStripMenuItem.Text" xml:space="preserve">
     <value>搜索</value>
@@ -293,9 +302,6 @@
   </data>
   <data name="hideLeftPanelToolStripMenuItem.Text" xml:space="preserve">
     <value>隐藏左面板</value>
-  </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>视图</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>分节</value>

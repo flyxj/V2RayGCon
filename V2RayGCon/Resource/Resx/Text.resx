@@ -491,4 +491,10 @@ Are you sure want to continue?</value>
   <data name="ConfirmStopAllServer" xml:space="preserve">
     <value>Stop all servers?</value>
   </data>
+  <data name="VisitV2rayCoreReleasePage" xml:space="preserve">
+    <value>Vist v2ray-core release page?</value>
+  </data>
+  <data name="VisitVGCIssuePage" xml:space="preserve">
+    <value>Vist V2RayGCon issue page?</value>
+  </data>
 </root>
