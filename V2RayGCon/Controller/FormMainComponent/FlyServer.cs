@@ -15,8 +15,8 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             this.setting = Service.Setting.Instance;
             this.flyPanel = panel;
-            BindEvent();
-            LoadData();
+            BindDragDropEvent();
+            LoadServerItems();
             setting.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
 
@@ -32,7 +32,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             flyPanel.Invoke((MethodInvoker)delegate
             {
                 RemoveAllConrols();
-                LoadData();
+                LoadServerItems();
             });
             return false;
         }
@@ -42,15 +42,22 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void RemoveAllConrols()
         {
-            List<Control> listControls = new List<Control>();
+            List<UserControl> listControls = new List<UserControl>();
 
-            foreach (Model.UserControls.ServerListItem control in flyPanel.Controls)
+            foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
             {
                 control.Cleanup();
-                listControls.Add(control);
+                if (control is Model.UserControls.ServerListItem)
+                {
+                    listControls.Add(control as Model.UserControls.ServerListItem);
+                }
+                if (control is Model.UserControls.WelcomeFlyPanelComponent)
+                {
+                    listControls.Add(control as Model.UserControls.WelcomeFlyPanelComponent);
+                }
             }
 
-            foreach (Control control in listControls)
+            foreach (UserControl control in listControls)
             {
                 flyPanel.Controls.Remove(control);
                 control.Dispose();
@@ -62,12 +69,23 @@ namespace V2RayGCon.Controller.FormMainComponent
             RefreshUI();
         }
 
-        private void LoadData()
+        private void LoadWelcomeItem()
+        {
+            flyPanel.Controls.Add(
+                new Model.UserControls.WelcomeFlyPanelComponent());
+        }
+        private void LoadServerItems()
         {
             var serverList =
                 setting.GetServerList()
                 .OrderBy(o => o.index)
                 .ToList();
+
+            if (serverList.Count <= 0)
+            {
+                LoadWelcomeItem();
+                return;
+            }
 
             for (int i = 0; i < serverList.Count; i++)
             {
@@ -87,7 +105,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
         }
 
-        private void BindEvent()
+        private void BindDragDropEvent()
         {
             flyPanel.DragEnter += (s, a) =>
             {
@@ -100,6 +118,11 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 var data = a.Data.GetData(typeof(Model.UserControls.ServerListItem))
                     as Model.UserControls.ServerListItem;
+
+                if (data == null)
+                {
+                    return;
+                }
 
                 var _destination = s as FlowLayoutPanel;
                 Point p = _destination.PointToClient(new Point(a.X, a.Y));

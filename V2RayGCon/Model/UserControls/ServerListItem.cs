@@ -5,7 +5,7 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.UserControls
 {
-    public partial class ServerListItem : UserControl
+    public partial class ServerListItem : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Model.Data.ServerItem serverItem;
         ContextMenu menu;

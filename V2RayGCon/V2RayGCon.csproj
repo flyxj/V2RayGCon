@@ -127,6 +127,7 @@
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Model\BaseClass\CancelableTimeout.cs" />
+    <Compile Include="Model\BaseClass\IFormMainFlyPanelComponent.cs" />
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
     <Compile Include="Model\BaseClass\FormController.cs" />
     <Compile Include="Controller\ConfigerComponent\ConfigerComponentController.cs" />
@@ -151,6 +152,12 @@
     </Compile>
     <Compile Include="Model\UserControls\UrlListItem.Designer.cs">
       <DependentUpon>UrlListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UserControls\WelcomeFlyPanelComponent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Model\UserControls\WelcomeFlyPanelComponent.Designer.cs">
+      <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\Caches\CoreCache.cs" />
     <Compile Include="Model\BaseClass\CacheComponent.cs" />
@@ -259,6 +266,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\UrlListItem.zh-CN.resx">
       <DependentUpon>UrlListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\UserControls\WelcomeFlyPanelComponent.resx">
+      <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\UserControls\WelcomeFlyPanelComponent.zh-CN.resx">
+      <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
