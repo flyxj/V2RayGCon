@@ -260,11 +260,11 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Delete selected server? 的本地化字符串。
+        ///   查找类似 Delete selected servers? 的本地化字符串。
         /// </summary>
-        internal static string ConfirmDeleteServer {
+        internal static string ConfirmDeleteSelectedServers {
             get {
-                return ResourceManager.GetString("ConfirmDeleteServer", resourceCulture);
+                return ResourceManager.GetString("ConfirmDeleteSelectedServers", resourceCulture);
             }
         }
         
@@ -325,6 +325,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Restart all selected servers? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmRestartAllSelectedServers {
+            get {
+                return ResourceManager.GetString("ConfirmRestartAllSelectedServers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restart all running servers? 的本地化字符串。
         /// </summary>
         internal static string ConfirmRestartAllServer {
@@ -339,6 +348,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmSaveCurConfig {
             get {
                 return ResourceManager.GetString("ConfirmSaveCurConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stop all selected servers? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmStopAllSelectedServers {
+            get {
+                return ResourceManager.GetString("ConfirmStopAllSelectedServers", resourceCulture);
             }
         }
         
@@ -456,6 +474,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Default {
             get {
                 return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete 的本地化字符串。
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -686,6 +713,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Fail to get free tcp port! 的本地化字符串。
+        /// </summary>
+        internal static string GetFreePortFail {
+            get {
+                return ResourceManager.GetString("GetFreePortFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Get latest version fail! 的本地化字符串。
         /// </summary>
         internal static string GetLatestVerFail {
@@ -754,6 +790,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ImportLinkSuccess {
             get {
                 return ResourceManager.GetString("ImportLinkSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Last test is not finished yet. Please wait till test finish. 的本地化字符串。
+        /// </summary>
+        internal static string LastTestNoFinishYet {
+            get {
+                return ResourceManager.GetString("LastTestNoFinishYet", resourceCulture);
             }
         }
         
@@ -1002,6 +1047,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Speed test 的本地化字符串。
+        /// </summary>
+        internal static string SpeedTest {
+            get {
+                return ResourceManager.GetString("SpeedTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Speed tests have finished. 的本地化字符串。
+        /// </summary>
+        internal static string SpeedTestFinished {
+            get {
+                return ResourceManager.GetString("SpeedTestFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Start 的本地化字符串。
         /// </summary>
         internal static string Start {
@@ -1043,6 +1106,34 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SysProxyRequireHTTPServer {
             get {
                 return ResourceManager.GetString("SysProxyRequireHTTPServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Testing ... 的本地化字符串。
+        /// </summary>
+        internal static string Testing {
+            get {
+                return ResourceManager.GetString("Testing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The test will take a very long time.
+        ///Are you sure you want to continue? 的本地化字符串。
+        /// </summary>
+        internal static string TestWillTakeALongTime {
+            get {
+                return ResourceManager.GetString("TestWillTakeALongTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Timeout 的本地化字符串。
+        /// </summary>
+        internal static string Timeout {
+            get {
+                return ResourceManager.GetString("Timeout", resourceCulture);
             }
         }
         
@@ -1108,6 +1199,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string VisitVlinkPage {
             get {
                 return ResourceManager.GetString("VisitVlinkPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visit web page test 的本地化字符串。
+        /// </summary>
+        internal static string VisitWebPageTest {
+            get {
+                return ResourceManager.GetString("VisitWebPageTest", resourceCulture);
             }
         }
         

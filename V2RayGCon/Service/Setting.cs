@@ -83,6 +83,22 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+
+        public void WakeupAutorunServers()
+        {
+            serverList.WakeupAutorunServersThen();
+        }
+
+        public void DeleteSelectedServers()
+        {
+            serverList.DeleteSelectedServersThen();
+        }
+
+        public bool DoSpeedTestOnSelectedServers()
+        {
+            return serverList.DoSpeedTestOnSelectedServers();
+        }
+
         public void SaveServerListImmediately()
         {
             lazySaveServerListTimer.Timeout();
@@ -149,11 +165,6 @@ namespace V2RayGCon.Service
             serverList.StartServersByList(servers);
         }
 
-        public void WakeupAutorunServers()
-        {
-            serverList.WakeupAutorunServersThen();
-        }
-
         public void SetSystemProxy(string link)
         {
             if (string.IsNullOrEmpty(link))
@@ -182,6 +193,17 @@ namespace V2RayGCon.Service
         {
             serverList.RestartAllServersThen();
         }
+
+        public void StopAllSelectedThen(Action lambda = null)
+        {
+            serverList.StopAllSelectedThen(lambda);
+        }
+
+        public void RestartAllSelected()
+        {
+            serverList.RestartAllSelectedThen();
+        }
+
 
         public void UpdateAllServersSummary()
         {

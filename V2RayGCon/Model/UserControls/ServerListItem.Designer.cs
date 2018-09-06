@@ -32,10 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerListItem));
             this.lbSummary = new System.Windows.Forms.Label();
             this.lbIndex = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbStatus = new System.Windows.Forms.Label();
             this.cboxInbound = new System.Windows.Forms.ComboBox();
             this.chkImport = new System.Windows.Forms.CheckBox();
-            this.btnDelete = new System.Windows.Forms.Button();
             this.tboxInboundIP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnAction = new System.Windows.Forms.Button();
@@ -43,6 +42,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tboxInboundPort = new System.Windows.Forms.TextBox();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
+            this.chkSelected = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -51,18 +51,19 @@
             resources.ApplyResources(this.lbSummary, "lbSummary");
             this.lbSummary.Cursor = System.Windows.Forms.Cursors.Default;
             this.lbSummary.Name = "lbSummary";
+            this.lbSummary.Click += new System.EventHandler(this.lbSummary_Click);
             // 
             // lbIndex
             // 
-            resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Name = "lbIndex";
             // 
-            // label1
+            // lbStatus
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.lbStatus, "lbStatus");
+            this.lbStatus.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lbStatus.Name = "lbStatus";
             // 
             // cboxInbound
             // 
@@ -86,14 +87,6 @@
             this.toolTip1.SetToolTip(this.chkImport, resources.GetString("chkImport.ToolTip"));
             this.chkImport.UseVisualStyleBackColor = true;
             this.chkImport.CheckedChanged += new System.EventHandler(this.chkImport_CheckedChanged);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.btnDelete, "btnDelete");
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // tboxInboundIP
             // 
@@ -119,8 +112,8 @@
             // 
             // lbRunning
             // 
-            resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.ForeColor = System.Drawing.Color.Green;
             this.lbRunning.Name = "lbRunning";
             // 
@@ -141,6 +134,15 @@
             this.chkAutoRun.UseVisualStyleBackColor = true;
             this.chkAutoRun.CheckedChanged += new System.EventHandler(this.chkAutoRun_CheckedChanged);
             // 
+            // chkSelected
+            // 
+            resources.ApplyResources(this.chkSelected, "chkSelected");
+            this.chkSelected.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkSelected.Name = "chkSelected";
+            this.toolTip1.SetToolTip(this.chkSelected, resources.GetString("chkSelected.ToolTip"));
+            this.chkSelected.UseVisualStyleBackColor = true;
+            this.chkSelected.CheckedChanged += new System.EventHandler(this.chkSelected_CheckedChanged);
+            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
@@ -152,17 +154,17 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.chkSelected);
             this.Controls.Add(this.chkAutoRun);
             this.Controls.Add(this.tboxInboundPort);
             this.Controls.Add(this.tboxInboundIP);
             this.Controls.Add(this.btnAction);
-            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.chkImport);
             this.Controls.Add(this.cboxInbound);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lbRunning);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.lbIndex);
             this.Controls.Add(this.lbSummary);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
@@ -178,10 +180,9 @@
         #endregion
         private System.Windows.Forms.Label lbSummary;
         private System.Windows.Forms.Label lbIndex;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.ComboBox cboxInbound;
         private System.Windows.Forms.CheckBox chkImport;
-        private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.TextBox tboxInboundIP;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnAction;
@@ -190,5 +191,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tboxInboundPort;
         private System.Windows.Forms.CheckBox chkAutoRun;
+        private System.Windows.Forms.CheckBox chkSelected;
     }
 }

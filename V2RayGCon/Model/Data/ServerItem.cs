@@ -14,10 +14,12 @@ namespace V2RayGCon.Model.Data
         public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport;
+        public bool isAutoRun, isInjectImport, isSelected;
         public string name, summary, inboundIP;
         public int overwriteInboundType, inboundPort, index;
 
+        [JsonIgnore]
+        public string status;
 
         [JsonIgnore]
         public bool isServerOn;
@@ -27,10 +29,15 @@ namespace V2RayGCon.Model.Data
 
         public ServerItem()
         {
+            // new ServerItem will display at the bottom
+            index = int.MaxValue;
+
+            isSelected = false;
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
 
+            status = string.Empty;
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
@@ -43,12 +50,63 @@ namespace V2RayGCon.Model.Data
         }
 
         #region public method
+        public void DoSpeedTestThen(Action next = null)
+        {
+            void error(string msg)
+            {
+                SendLog(msg);
+                SetStatus(msg);
+                next?.Invoke();
+            }
+
+            var cfg = GetDecodedConfig();
+
+            if (cfg == null)
+            {
+                error(I18N("DecodeImportFail"));
+                return;
+            }
+
+            var port = Lib.Utils.GetFreeTcpPort();
+            if (port <= 0)
+            {
+                error(I18N("GetFreePortFail"));
+                return;
+            }
+
+            if (!OverwriteInboundSettings(
+                ref cfg,
+                (int)Model.Data.Enum.ProxyTypes.HTTP,
+                "127.0.0.1",
+                port))
+            {
+                error(I18N("CoreCantSetLocalAddr"));
+                return;
+            }
+
+            SetStatus(I18N("Testing"));
+
+            var tester = new Model.BaseClass.CoreServer();
+
+            tester.RestartCoreThen(cfg.ToString(), null, () =>
+            {
+                var time = Lib.Utils.VisitWebPageSpeedTest(
+                    StrConst("SpeedTestUrl"),
+                    string.Format("127.0.0.1:{0}", port));
+
+                var msg = string.Format("{0}:{1}",
+                    I18N("VisitWebPageTest"),
+                    time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
+
+                SetStatus(msg);
+                SendLog(msg);
+                tester.StopCoreThen(next);
+            });
+        }
+
         public void DeleteSelf()
         {
-            CleanupThen(() =>
-            {
-                OnRequireDeleteServer?.Invoke(this, new StrEvent(config));
-            });
+            OnRequireDeleteServer?.Invoke(this, new StrEvent(config));
         }
 
         public void SetInboundIP(string ip)
@@ -87,6 +145,16 @@ namespace V2RayGCon.Model.Data
             InvokeEventOnPropertyChange();
         }
 
+        public void SetStatus(string status)
+        {
+            if (this.status == status)
+            {
+                return;
+            }
+            this.status = status;
+            InvokeEventOnPropertyChange();
+        }
+
         public void SetIndex(int index)
         {
             if (this.index == index)
@@ -94,6 +162,17 @@ namespace V2RayGCon.Model.Data
                 return;
             }
             this.index = index;
+            InvokeEventOnPropertyChange();
+        }
+
+        public void SetSelected(bool selected)
+        {
+            if (this.isSelected == selected)
+            {
+                return;
+            }
+
+            this.isSelected = selected;
             InvokeEventOnPropertyChange();
         }
 
@@ -213,38 +292,18 @@ namespace V2RayGCon.Model.Data
 
         public void RestartCoreWorker(Action next)
         {
-            var cache = Service.Cache.Instance.core;
-            JObject cfg = null;
-            try
-            {
-                cfg = Lib.ImportParser.Parse(
-                    isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(config) :
-                    config);
-
-                cache[config] = cfg.ToString(Formatting.None);
-
-            }
-            catch { }
-
+            JObject cfg = GetDecodedConfig(true);
             if (cfg == null)
             {
-                SendLog(I18N("DecodeImportFail"));
-
-                try
-                {
-                    cfg = JObject.Parse(cache[config]);
-                }
-                catch (KeyNotFoundException)
-                {
-                    StopCoreThen(next);
-                    return;
-                }
-
-                SendLog(I18N("UsingDecodeCache"));
+                StopCoreThen(next);
+                return;
             }
 
-            if (!OverwriteInboundSettings(ref cfg))
+            if (!OverwriteInboundSettings(
+                ref cfg,
+                overwriteInboundType,
+                this.inboundIP,
+                this.inboundPort))
             {
                 StopCoreThen(next);
                 return;
@@ -265,6 +324,40 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region private method
+        JObject GetDecodedConfig(bool isUseCache = false)
+        {
+            var cache = Service.Cache.Instance.core;
+
+            JObject cfg = null;
+            try
+            {
+                cfg = Lib.ImportParser.Parse(
+                    isInjectImport ?
+                    Lib.Utils.InjectGlobalImport(config) :
+                    config);
+
+                cache[config] = cfg.ToString(Formatting.None);
+
+            }
+            catch { }
+
+            if (cfg == null)
+            {
+                SendLog(I18N("DecodeImportFail"));
+                if (isUseCache)
+                {
+                    try
+                    {
+                        cfg = JObject.Parse(cache[config]);
+                    }
+                    catch (KeyNotFoundException) { }
+                    SendLog(I18N("UsingDecodeCache"));
+                }
+            }
+
+            return cfg;
+        }
+
         bool NeedStopCoreFirst()
         {
             if (!isServerOn)
@@ -283,31 +376,35 @@ namespace V2RayGCon.Model.Data
             return true;
         }
 
-        bool OverwriteInboundSettings(ref JObject config)
+        bool OverwriteInboundSettings(
+            ref JObject config,
+            int inboundType,
+            string ip,
+            int port)
         {
-            var type = overwriteInboundType;
+            var type = (Model.Data.Enum.ProxyTypes)inboundType;
 
-            if (type != (int)Model.Data.Enum.ProxyTypes.HTTP
-                && type != (int)Model.Data.Enum.ProxyTypes.SOCKS)
+            if (type != Model.Data.Enum.ProxyTypes.HTTP
+                && type != Model.Data.Enum.ProxyTypes.SOCKS)
             {
                 return true;
             }
 
-            var protocol = Model.Data.Table.inboundOverwriteTypesName[type];
+            var protocol = Model.Data.Table.inboundOverwriteTypesName[(int)type];
 
             var part = protocol + "In";
             try
             {
                 var o = Lib.Utils.CreateJObject("inbound");
                 o["inbound"]["protocol"] = protocol;
-                o["inbound"]["listen"] = this.inboundIP;
-                o["inbound"]["port"] = this.inboundPort;
+                o["inbound"]["listen"] = ip;
+                o["inbound"]["port"] = port;
                 o["inbound"]["settings"] =
                     Service.Cache.Instance.tpl.LoadTemplate(part);
 
-                if (type == (int)Model.Data.Enum.ProxyTypes.SOCKS)
+                if (type == Model.Data.Enum.ProxyTypes.SOCKS)
                 {
-                    o["inbound"]["settings"]["ip"] = this.inboundIP;
+                    o["inbound"]["settings"]["ip"] = ip;
                 }
 
                 Lib.Utils.MergeJson(ref config, o);

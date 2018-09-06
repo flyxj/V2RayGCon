@@ -37,17 +37,27 @@ namespace V2RayGCon.Views
             this.toolMenuItemSimAddVmessServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemImportLinkFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolMenuItemDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemExportAllServerToFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemImportFromFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemStopAllServers = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemRestartAllServers = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolMenuItemRestartAutorunServers = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolMenuItemRefreshSummary = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSelectAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSelectNone = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSelectInvert = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolMenuItemSelectAutorunServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemStopSelected = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRestartSelected = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSpeedTestOnSelected = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemDeleteServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDeleteSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolMenuItemRefreshSummary = new System.Windows.Forms.ToolStripMenuItem();
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemCurrentSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,11 +67,9 @@ namespace V2RayGCon.Views
             this.toolMenuItemQRCode = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemOptions = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.v2rayCoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolMenuItemDownloadV2rayCore = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolMenuItemRemoveV2rayCore = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDownLoadV2rayCore = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRemoveV2rayCore = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemCheckUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,106 +88,169 @@ namespace V2RayGCon.Views
             this.windowToolStripMenuItem,
             this.aboutToolStripMenuItem1});
             this.menuStrip1.Name = "menuStrip1";
+            this.toolTip1.SetToolTip(this.menuStrip1, resources.GetString("menuStrip1.ToolTip"));
             // 
             // operationToolStripMenuItem
             // 
+            resources.ApplyResources(this.operationToolStripMenuItem, "operationToolStripMenuItem");
             this.operationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolMenuItemSimAddVmessServer,
             this.toolMenuItemImportLinkFromClipboard,
             this.toolStripSeparator5,
-            this.toolMenuItemDeleteAll,
             this.toolMenuItemExportAllServerToFile,
             this.toolMenuItemImportFromFile,
             this.toolStripSeparator8,
             this.exitToolStripMenuItem});
             this.operationToolStripMenuItem.Name = "operationToolStripMenuItem";
-            resources.ApplyResources(this.operationToolStripMenuItem, "operationToolStripMenuItem");
             // 
             // toolMenuItemSimAddVmessServer
             // 
-            this.toolMenuItemSimAddVmessServer.Name = "toolMenuItemSimAddVmessServer";
             resources.ApplyResources(this.toolMenuItemSimAddVmessServer, "toolMenuItemSimAddVmessServer");
+            this.toolMenuItemSimAddVmessServer.Name = "toolMenuItemSimAddVmessServer";
             // 
             // toolMenuItemImportLinkFromClipboard
             // 
-            this.toolMenuItemImportLinkFromClipboard.Name = "toolMenuItemImportLinkFromClipboard";
             resources.ApplyResources(this.toolMenuItemImportLinkFromClipboard, "toolMenuItemImportLinkFromClipboard");
+            this.toolMenuItemImportLinkFromClipboard.Name = "toolMenuItemImportLinkFromClipboard";
             // 
             // toolStripSeparator5
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
             resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
-            // 
-            // toolMenuItemDeleteAll
-            // 
-            this.toolMenuItemDeleteAll.Name = "toolMenuItemDeleteAll";
-            resources.ApplyResources(this.toolMenuItemDeleteAll, "toolMenuItemDeleteAll");
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
             // 
             // toolMenuItemExportAllServerToFile
             // 
-            this.toolMenuItemExportAllServerToFile.Name = "toolMenuItemExportAllServerToFile";
             resources.ApplyResources(this.toolMenuItemExportAllServerToFile, "toolMenuItemExportAllServerToFile");
+            this.toolMenuItemExportAllServerToFile.Name = "toolMenuItemExportAllServerToFile";
             // 
             // toolMenuItemImportFromFile
             // 
-            this.toolMenuItemImportFromFile.Name = "toolMenuItemImportFromFile";
             resources.ApplyResources(this.toolMenuItemImportFromFile, "toolMenuItemImportFromFile");
+            this.toolMenuItemImportFromFile.Name = "toolMenuItemImportFromFile";
             // 
             // toolStripSeparator8
             // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
             resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
             // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // toolMenuItemServer
             // 
+            resources.ApplyResources(this.toolMenuItemServer, "toolMenuItemServer");
             this.toolMenuItemServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemStopAllServers,
-            this.toolStripMenuItemRestartAllServers,
-            this.toolMenuItemRestartAutorunServers,
-            this.toolMenuItemRefreshSummary,
+            this.toolStripMenuItemSelectAll,
+            this.toolStripMenuItemSelectNone,
+            this.toolStripMenuItemSelectInvert,
+            this.toolMenuItemSelectAutorunServers,
+            this.toolStripSeparator2,
+            this.toolStripMenuItemStopSelected,
+            this.toolStripMenuItemRestartSelected,
+            this.toolStripMenuItemSpeedTestOnSelected,
+            this.toolStripMenuItem1,
             this.toolStripSeparator1,
+            this.toolStripMenuItemDeleteServers,
+            this.toolMenuItemRefreshSummary,
             this.systemProxyToolStripMenuItem});
             this.toolMenuItemServer.Name = "toolMenuItemServer";
-            resources.ApplyResources(this.toolMenuItemServer, "toolMenuItemServer");
             // 
-            // toolStripMenuItemStopAllServers
+            // toolStripMenuItemSelectAll
             // 
-            this.toolStripMenuItemStopAllServers.Name = "toolStripMenuItemStopAllServers";
-            resources.ApplyResources(this.toolStripMenuItemStopAllServers, "toolStripMenuItemStopAllServers");
+            resources.ApplyResources(this.toolStripMenuItemSelectAll, "toolStripMenuItemSelectAll");
+            this.toolStripMenuItemSelectAll.Name = "toolStripMenuItemSelectAll";
             // 
-            // toolStripMenuItemRestartAllServers
+            // toolStripMenuItemSelectNone
             // 
-            this.toolStripMenuItemRestartAllServers.Name = "toolStripMenuItemRestartAllServers";
-            resources.ApplyResources(this.toolStripMenuItemRestartAllServers, "toolStripMenuItemRestartAllServers");
+            resources.ApplyResources(this.toolStripMenuItemSelectNone, "toolStripMenuItemSelectNone");
+            this.toolStripMenuItemSelectNone.Name = "toolStripMenuItemSelectNone";
             // 
-            // toolMenuItemRestartAutorunServers
+            // toolStripMenuItemSelectInvert
             // 
-            this.toolMenuItemRestartAutorunServers.Name = "toolMenuItemRestartAutorunServers";
-            resources.ApplyResources(this.toolMenuItemRestartAutorunServers, "toolMenuItemRestartAutorunServers");
+            resources.ApplyResources(this.toolStripMenuItemSelectInvert, "toolStripMenuItemSelectInvert");
+            this.toolStripMenuItemSelectInvert.Name = "toolStripMenuItemSelectInvert";
             // 
-            // toolMenuItemRefreshSummary
+            // toolMenuItemSelectAutorunServers
             // 
-            this.toolMenuItemRefreshSummary.Name = "toolMenuItemRefreshSummary";
-            resources.ApplyResources(this.toolMenuItemRefreshSummary, "toolMenuItemRefreshSummary");
+            resources.ApplyResources(this.toolMenuItemSelectAutorunServers, "toolMenuItemSelectAutorunServers");
+            this.toolMenuItemSelectAutorunServers.Name = "toolMenuItemSelectAutorunServers";
+            // 
+            // toolStripSeparator2
+            // 
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            // 
+            // toolStripMenuItemStopSelected
+            // 
+            resources.ApplyResources(this.toolStripMenuItemStopSelected, "toolStripMenuItemStopSelected");
+            this.toolStripMenuItemStopSelected.Name = "toolStripMenuItemStopSelected";
+            // 
+            // toolStripMenuItemRestartSelected
+            // 
+            resources.ApplyResources(this.toolStripMenuItemRestartSelected, "toolStripMenuItemRestartSelected");
+            this.toolStripMenuItemRestartSelected.Name = "toolStripMenuItemRestartSelected";
+            // 
+            // toolStripMenuItemSpeedTestOnSelected
+            // 
+            resources.ApplyResources(this.toolStripMenuItemSpeedTestOnSelected, "toolStripMenuItemSpeedTestOnSelected");
+            this.toolStripMenuItemSpeedTestOnSelected.Name = "toolStripMenuItemSpeedTestOnSelected";
+            // 
+            // toolStripMenuItem1
+            // 
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemCopyAsV2rayLink,
+            this.toolStripMenuItemCopyAsVmessLink});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            // 
+            // toolStripMenuItemCopyAsV2rayLink
+            // 
+            resources.ApplyResources(this.toolStripMenuItemCopyAsV2rayLink, "toolStripMenuItemCopyAsV2rayLink");
+            this.toolStripMenuItemCopyAsV2rayLink.Name = "toolStripMenuItemCopyAsV2rayLink";
+            // 
+            // toolStripMenuItemCopyAsVmessLink
+            // 
+            resources.ApplyResources(this.toolStripMenuItemCopyAsVmessLink, "toolStripMenuItemCopyAsVmessLink");
+            this.toolStripMenuItemCopyAsVmessLink.Name = "toolStripMenuItemCopyAsVmessLink";
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
             resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            // 
+            // toolStripMenuItemDeleteServers
+            // 
+            resources.ApplyResources(this.toolStripMenuItemDeleteServers, "toolStripMenuItemDeleteServers");
+            this.toolStripMenuItemDeleteServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDeleteAllServer,
+            this.toolStripMenuItemDeleteSelectedServers});
+            this.toolStripMenuItemDeleteServers.Name = "toolStripMenuItemDeleteServers";
+            // 
+            // toolStripMenuItemDeleteAllServer
+            // 
+            resources.ApplyResources(this.toolStripMenuItemDeleteAllServer, "toolStripMenuItemDeleteAllServer");
+            this.toolStripMenuItemDeleteAllServer.Name = "toolStripMenuItemDeleteAllServer";
+            // 
+            // toolStripMenuItemDeleteSelectedServers
+            // 
+            resources.ApplyResources(this.toolStripMenuItemDeleteSelectedServers, "toolStripMenuItemDeleteSelectedServers");
+            this.toolStripMenuItemDeleteSelectedServers.Name = "toolStripMenuItemDeleteSelectedServers";
+            // 
+            // toolMenuItemRefreshSummary
+            // 
+            resources.ApplyResources(this.toolMenuItemRefreshSummary, "toolMenuItemRefreshSummary");
+            this.toolMenuItemRefreshSummary.Name = "toolMenuItemRefreshSummary";
             // 
             // systemProxyToolStripMenuItem
             // 
+            resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
             this.systemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolMenuItemCurrentSysProxy,
             this.toolMenuItemClearSysProxy});
             this.systemProxyToolStripMenuItem.Name = "systemProxyToolStripMenuItem";
-            resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
             // 
             // toolMenuItemCurrentSysProxy
             // 
@@ -188,101 +259,89 @@ namespace V2RayGCon.Views
             // 
             // toolMenuItemClearSysProxy
             // 
-            this.toolMenuItemClearSysProxy.Name = "toolMenuItemClearSysProxy";
             resources.ApplyResources(this.toolMenuItemClearSysProxy, "toolMenuItemClearSysProxy");
+            this.toolMenuItemClearSysProxy.Name = "toolMenuItemClearSysProxy";
             // 
             // windowToolStripMenuItem
             // 
+            resources.ApplyResources(this.windowToolStripMenuItem, "windowToolStripMenuItem");
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolMenuItemConfigEditor,
             this.toolMenuItemConfigTester,
             this.toolMenuItemQRCode,
             this.toolMenuItemLog,
-            this.toolMenuItemOptions,
-            this.toolStripSeparator10,
-            this.v2rayCoreToolStripMenuItem});
+            this.toolMenuItemOptions});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
-            resources.ApplyResources(this.windowToolStripMenuItem, "windowToolStripMenuItem");
             // 
             // toolMenuItemConfigEditor
             // 
-            this.toolMenuItemConfigEditor.Name = "toolMenuItemConfigEditor";
             resources.ApplyResources(this.toolMenuItemConfigEditor, "toolMenuItemConfigEditor");
+            this.toolMenuItemConfigEditor.Name = "toolMenuItemConfigEditor";
             // 
             // toolMenuItemConfigTester
             // 
-            this.toolMenuItemConfigTester.Name = "toolMenuItemConfigTester";
             resources.ApplyResources(this.toolMenuItemConfigTester, "toolMenuItemConfigTester");
+            this.toolMenuItemConfigTester.Name = "toolMenuItemConfigTester";
             // 
             // toolMenuItemQRCode
             // 
-            this.toolMenuItemQRCode.Name = "toolMenuItemQRCode";
             resources.ApplyResources(this.toolMenuItemQRCode, "toolMenuItemQRCode");
+            this.toolMenuItemQRCode.Name = "toolMenuItemQRCode";
             // 
             // toolMenuItemLog
             // 
-            this.toolMenuItemLog.Name = "toolMenuItemLog";
             resources.ApplyResources(this.toolMenuItemLog, "toolMenuItemLog");
+            this.toolMenuItemLog.Name = "toolMenuItemLog";
             // 
             // toolMenuItemOptions
             // 
-            this.toolMenuItemOptions.Name = "toolMenuItemOptions";
             resources.ApplyResources(this.toolMenuItemOptions, "toolMenuItemOptions");
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            resources.ApplyResources(this.toolStripSeparator10, "toolStripSeparator10");
-            // 
-            // v2rayCoreToolStripMenuItem
-            // 
-            this.v2rayCoreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolMenuItemDownloadV2rayCore,
-            this.toolMenuItemRemoveV2rayCore});
-            this.v2rayCoreToolStripMenuItem.Name = "v2rayCoreToolStripMenuItem";
-            resources.ApplyResources(this.v2rayCoreToolStripMenuItem, "v2rayCoreToolStripMenuItem");
-            // 
-            // toolMenuItemDownloadV2rayCore
-            // 
-            this.toolMenuItemDownloadV2rayCore.Name = "toolMenuItemDownloadV2rayCore";
-            resources.ApplyResources(this.toolMenuItemDownloadV2rayCore, "toolMenuItemDownloadV2rayCore");
-            // 
-            // toolMenuItemRemoveV2rayCore
-            // 
-            this.toolMenuItemRemoveV2rayCore.Name = "toolMenuItemRemoveV2rayCore";
-            resources.ApplyResources(this.toolMenuItemRemoveV2rayCore, "toolMenuItemRemoveV2rayCore");
+            this.toolMenuItemOptions.Name = "toolMenuItemOptions";
             // 
             // aboutToolStripMenuItem1
             // 
+            resources.ApplyResources(this.aboutToolStripMenuItem1, "aboutToolStripMenuItem1");
             this.aboutToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDownLoadV2rayCore,
+            this.toolStripMenuItemRemoveV2rayCore,
             this.toolMenuItemCheckUpdate,
             this.toolMenuItemAbout,
             this.toolMenuItemHelp});
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            resources.ApplyResources(this.aboutToolStripMenuItem1, "aboutToolStripMenuItem1");
+            // 
+            // toolStripMenuItemDownLoadV2rayCore
+            // 
+            resources.ApplyResources(this.toolStripMenuItemDownLoadV2rayCore, "toolStripMenuItemDownLoadV2rayCore");
+            this.toolStripMenuItemDownLoadV2rayCore.Name = "toolStripMenuItemDownLoadV2rayCore";
+            // 
+            // toolStripMenuItemRemoveV2rayCore
+            // 
+            resources.ApplyResources(this.toolStripMenuItemRemoveV2rayCore, "toolStripMenuItemRemoveV2rayCore");
+            this.toolStripMenuItemRemoveV2rayCore.Name = "toolStripMenuItemRemoveV2rayCore";
             // 
             // toolMenuItemCheckUpdate
             // 
-            this.toolMenuItemCheckUpdate.Name = "toolMenuItemCheckUpdate";
             resources.ApplyResources(this.toolMenuItemCheckUpdate, "toolMenuItemCheckUpdate");
+            this.toolMenuItemCheckUpdate.Name = "toolMenuItemCheckUpdate";
             // 
             // toolMenuItemAbout
             // 
-            this.toolMenuItemAbout.Name = "toolMenuItemAbout";
             resources.ApplyResources(this.toolMenuItemAbout, "toolMenuItemAbout");
+            this.toolMenuItemAbout.Name = "toolMenuItemAbout";
             // 
             // toolMenuItemHelp
             // 
-            this.toolMenuItemHelp.Name = "toolMenuItemHelp";
             resources.ApplyResources(this.toolMenuItemHelp, "toolMenuItemHelp");
+            this.toolMenuItemHelp.Name = "toolMenuItemHelp";
             // 
             // flyServerListContainer
             // 
-            this.flyServerListContainer.AllowDrop = true;
             resources.ApplyResources(this.flyServerListContainer, "flyServerListContainer");
+            this.flyServerListContainer.AllowDrop = true;
             this.flyServerListContainer.BackColor = System.Drawing.Color.White;
             this.flyServerListContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flyServerListContainer.Name = "flyServerListContainer";
+            this.toolTip1.SetToolTip(this.flyServerListContainer, resources.GetString("flyServerListContainer.ToolTip"));
             // 
             // FormMain
             // 
@@ -322,21 +381,29 @@ namespace V2RayGCon.Views
         private System.Windows.Forms.ToolStripMenuItem toolMenuItemImportFromFile;
         private ToolStripMenuItem toolMenuItemHelp;
         private ToolStripMenuItem toolMenuItemConfigTester;
-        private ToolStripMenuItem v2rayCoreToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator10;
-        private ToolStripMenuItem toolMenuItemDownloadV2rayCore;
-        private ToolStripMenuItem toolMenuItemRemoveV2rayCore;
         private ToolStripMenuItem toolMenuItemOptions;
         private FlowLayoutPanel flyServerListContainer;
-        private ToolStripMenuItem toolMenuItemDeleteAll;
         private ToolStripMenuItem toolMenuItemServer;
-        private ToolStripMenuItem toolStripMenuItemStopAllServers;
-        private ToolStripMenuItem toolStripMenuItemRestartAllServers;
+        private ToolStripMenuItem toolStripMenuItemStopSelected;
+        private ToolStripMenuItem toolStripMenuItemRestartSelected;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem systemProxyToolStripMenuItem;
         private ToolStripMenuItem toolMenuItemCurrentSysProxy;
         private ToolStripMenuItem toolMenuItemClearSysProxy;
         private ToolStripMenuItem toolMenuItemRefreshSummary;
-        private ToolStripMenuItem toolMenuItemRestartAutorunServers;
+        private ToolStripMenuItem toolMenuItemSelectAutorunServers;
+        private ToolStripMenuItem toolStripMenuItemSelectAll;
+        private ToolStripMenuItem toolStripMenuItemSelectNone;
+        private ToolStripMenuItem toolStripMenuItemSelectInvert;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem toolStripMenuItemSpeedTestOnSelected;
+        private ToolStripMenuItem toolStripMenuItemDeleteServers;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem toolStripMenuItemCopyAsV2rayLink;
+        private ToolStripMenuItem toolStripMenuItemCopyAsVmessLink;
+        private ToolStripMenuItem toolStripMenuItemDeleteAllServer;
+        private ToolStripMenuItem toolStripMenuItemDeleteSelectedServers;
+        private ToolStripMenuItem toolStripMenuItemDownLoadV2rayCore;
+        private ToolStripMenuItem toolStripMenuItemRemoveV2rayCore;
     }
 }

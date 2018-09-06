@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -8,16 +10,44 @@ namespace V2RayGCon.Model.Data
     public class ServerList : EventList<ServerItem>
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
-        public event EventHandler OnRequireMenuUpdate;
-        public event EventHandler OnRequireFlyPanelUpdate;
+        public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate;
 
-        private object writeLock = new object();
+        [JsonIgnore]
+        object writeLock = new object();
+
+        [JsonIgnore]
+        object testingLock = new object();
 
         public ServerList()
         {
             // Do not bind events here, because list is empty.
             // BindEvents();
+            isTesting = false;
         }
+
+        #region property
+        [JsonIgnore]
+        bool _isTesting;
+
+        [JsonIgnore]
+        bool isTesting
+        {
+            get
+            {
+                lock (testingLock)
+                {
+                    return _isTesting;
+                }
+            }
+            set
+            {
+                lock (testingLock)
+                {
+                    _isTesting = value;
+                }
+            }
+        }
+        #endregion
 
         #region private method
 
@@ -43,6 +73,39 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region public method
+        public bool DoSpeedTestOnSelectedServers()
+        {
+            if (isTesting)
+            {
+                return false;
+            }
+            isTesting = true;
+
+            var list= this.OrderBy(o => o.index)
+                .Where(o=>o.isSelected)
+                .ToList();
+
+            Action done = () =>
+            {
+                this.isTesting = false;
+                SendLog(this, new StrEvent(I18N("SpeedTestFinished")));
+            };
+
+            var count = list.Count;
+
+            Action<int, Action> worker = (index, next) =>
+            {
+                // idx = 0 to count - 1
+                var idx = count - 1 - index;
+                list[idx].DoSpeedTestThen(next);
+                
+            };
+
+            Lib.Utils.ChainActionHelperAsync(count, worker, done);
+            return true;
+        }
+
+
         public List<int> GetActiveServersList()
         {
             var list = new List<int>();
@@ -84,6 +147,24 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
+        public void RestartAllSelectedThen(Action done = null)
+        {
+            Action<int, Action> worker = (index, next) =>
+            {
+                if (this[index].isSelected)
+                {
+                    this[index].RestartCoreThen(next);
+                }
+                else
+                {
+                    next();
+                }
+            };
+
+
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
+        }
+
         public void RestartAllServersThen(Action done = null)
         {
             Action<int, Action> worker = (index, next) =>
@@ -102,6 +183,23 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
+        public void StopAllSelectedThen(Action lambda = null)
+        {
+            Action<int, Action> worker = (index, next) =>
+            {
+                if (this[index].isSelected)
+                {
+                    this[index].server.StopCoreThen(next);
+                }
+                else
+                {
+                    next();
+                }
+            };
+
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, lambda);
+        }
+
         public void StopAllServersThen(Action lambda = null)
         {
             Action<int, Action> worker = (index, next) =>
@@ -114,9 +212,50 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, lambda);
         }
 
+        public void DeleteSelectedServersThen(Action done = null)
+        {
+            if (isTesting)
+            {
+                MessageBox.Show(I18N("LastTestNoFinishYet"));
+                return;
+            }
+
+            Action<int, Action> worker = (index, next) =>
+            {
+                if (!this[index].isSelected)
+                {
+                    next();
+                    return;
+                }
+
+                this[index].CleanupThen(() =>
+                {
+                    this.RemoveAt(index);
+                    next();
+                });
+            };
+
+            Action finish = () =>
+            {
+                SaveChanges(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
+                done?.Invoke();
+            };
+
+            Lib.Utils.ChainActionHelperAsync(this.Count, worker, finish);
+        }
+
+
 
         public void DeleteAllServersThen(Action done = null)
         {
+            if (isTesting)
+            {
+                MessageBox.Show(I18N("LastTestNoFinishYet"));
+                return;
+            }
+
             Action<int, Action> worker = (index, next) =>
             {
                 this[index].CleanupThen(() =>
@@ -179,6 +318,12 @@ namespace V2RayGCon.Model.Data
 
         private void DeleteServerHandler(object sender, Model.Data.StrEvent args)
         {
+            if (isTesting)
+            {
+                MessageBox.Show(I18N("LastTestNoFinishYet"));
+                return;
+            }
+
             var index = GetServerIndexByConfig(args.Data);
             if (index < 0)
             {
@@ -186,14 +331,20 @@ namespace V2RayGCon.Model.Data
                 return;
             }
 
-            lock (writeLock)
-            {
-                ReleaseEventFrom(this[index]);
-                this.RemoveAt(index);
-            }
+            var server = this[index];
 
-            InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
-            InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+            Action removeServer = () =>
+            {
+                lock (writeLock)
+                {
+                    ReleaseEventFrom(server);
+                    this.RemoveAt(index);
+                }
+                InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+            };
+
+            server.CleanupThen(removeServer);
         }
 
         public void BindEventTo(Model.Data.ServerItem server)

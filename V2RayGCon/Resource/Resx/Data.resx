@@ -214,4 +214,11 @@
     <value>30</value>
     <comment>seconds</comment>
   </data>
+  <data name="SpeedTestTimeout" xml:space="preserve">
+    <value>12</value>
+    <comment>seconds</comment>
+  </data>
+  <data name="SpeedTestUrl" xml:space="preserve">
+    <value>https://www.google.com</value>
+  </data>
 </root>

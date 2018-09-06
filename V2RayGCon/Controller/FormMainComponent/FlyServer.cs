@@ -10,8 +10,8 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         FlowLayoutPanel flyPanel;
         Service.Setting setting;
-        public FlyServer(
-            FlowLayoutPanel panel)
+
+        public FlyServer(FlowLayoutPanel panel)
         {
             this.setting = Service.Setting.Instance;
             this.flyPanel = panel;
@@ -21,6 +21,26 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         #region public method
+        public void SelectAutorun()
+        {
+            LoopThroughAllServer((s) => s.SetSelected(s.GetAutorunStatus()));
+        }
+
+        public void SelectAll()
+        {
+            LoopThroughAllServer((s) => s.SetSelected(true));
+        }
+
+        public void SelectNone()
+        {
+            LoopThroughAllServer((s) => s.SetSelected(false));
+        }
+
+        public void SelectInvert()
+        {
+            LoopThroughAllServer((s) => s.SetSelected(!s.GetSelectStatus()));
+        }
+
         public override void Cleanup()
         {
             setting.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
@@ -39,6 +59,17 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+        void LoopThroughAllServer(Action<Model.UserControls.ServerListItem> worker)
+        {
+            foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
+            {
+                if (!(control is Model.UserControls.ServerListItem))
+                {
+                    continue;
+                }
+                worker(control as Model.UserControls.ServerListItem);
+            }
+        }
 
         void RemoveAllConrols()
         {
@@ -76,18 +107,16 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
         private void LoadServerItems()
         {
-            var serverList =
-                setting.GetServerList()
-                .OrderBy(o => o.index)
-                .ToList();
+            var serverList = setting.GetServerList().OrderBy(o => o.index).ToList();
 
-            if (serverList.Count <= 0)
+            var count = serverList.Count;
+            if (count <= 0)
             {
                 LoadWelcomeItem();
                 return;
             }
 
-            for (int i = 0; i < serverList.Count; i++)
+            for (int i = 0; i < count; i++)
             {
                 flyPanel.Controls.Add(
                     new Model.UserControls.ServerListItem(
