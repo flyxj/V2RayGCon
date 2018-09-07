@@ -211,6 +211,12 @@
     <Compile Include="Views\FormImportLinksResult.Designer.cs">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\FormSingleServerLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormSingleServerLog.Designer.cs">
+      <DependentUpon>FormSingleServerLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\FormLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,6 +322,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormImportLinksResult.zh-CN.resx">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSingleServerLog.resx">
+      <DependentUpon>FormSingleServerLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSingleServerLog.zh-CN.resx">
+      <DependentUpon>FormSingleServerLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormLog.resx">
       <DependentUpon>FormLog.cs</DependentUpon>

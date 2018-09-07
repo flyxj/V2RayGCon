@@ -20,6 +20,25 @@ namespace V2RayGCon.Model.Data
         public int overwriteInboundType, inboundPort, index;
 
         [JsonIgnore]
+        Views.FormSingleServerLog logForm = null;
+
+        public bool ShowLogForm()
+        {
+            if (logForm != null)
+            {
+                return false;
+            }
+            logForm = new Views.FormSingleServerLog(this);
+
+            logForm.FormClosed += (s, a) =>
+            {
+                logForm.Dispose();
+                logForm = null;
+            };
+            return true;
+        }
+
+        [JsonIgnore]
         public string status;
 
         [JsonIgnore]
@@ -27,6 +46,29 @@ namespace V2RayGCon.Model.Data
 
         [JsonIgnore]
         public Model.BaseClass.CoreServer server;
+
+        [JsonIgnore]
+        Queue<string> _logCache = new Queue<string>();
+        [JsonIgnore]
+        public string logCache
+        {
+            get
+            {
+                return string.Join(Environment.NewLine, _logCache);
+            }
+            private set
+            {
+                // keep 200 lines of log
+                if (_logCache.Count > 300)
+                {
+                    for (var i = 0; i < 100; i++)
+                    {
+                        _logCache.Dequeue();
+                    }
+                }
+                _logCache.Enqueue(value);
+            }
+        }
 
         public ServerItem()
         {
@@ -462,20 +504,16 @@ namespace V2RayGCon.Model.Data
 
         void SendLog(string message)
         {
-            var log = new Model.Data.StrEvent(
-                string.Format("[{0}] {1}", this.name, message));
-
-            try
-            {
-                OnLog?.Invoke(this, log);
-            }
-            catch { }
+            SendLogHandler(this, new Model.Data.StrEvent(message));
         }
 
         void SendLogHandler(object sender, Model.Data.StrEvent arg)
         {
+            var msg = arg.Data;
+            logCache = msg;
+
             var log = new Model.Data.StrEvent(
-                string.Format("[{0}] {1}", this.name, arg.Data));
+                string.Format("[{0}] {1}", this.name, msg));
 
             try
             {

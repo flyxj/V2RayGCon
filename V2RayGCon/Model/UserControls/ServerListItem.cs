@@ -69,6 +69,7 @@ namespace V2RayGCon.Model.UserControls
             return new ContextMenu(new MenuItem[] {
                 new MenuItem(I18N("Start"),(s,a)=>serverItem.RestartCoreThen()),
                 new MenuItem(I18N("Stop"),(s,a)=>serverItem.StopCoreThen()),
+                new MenuItem(I18N("Log"),(s,a)=>serverItem.ShowLogForm()),
                 new MenuItem("-"),
                 new MenuItem(I18N("Edit"),(s,a)=>{
                     var item=this.serverItem;
