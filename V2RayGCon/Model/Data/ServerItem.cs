@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -52,25 +53,32 @@ namespace V2RayGCon.Model.Data
         #region public method
         public void DoSpeedTestThen(Action next = null)
         {
-            void error(string msg)
+            void log(string msg)
             {
                 SendLog(msg);
                 SetStatus(msg);
-                next?.Invoke();
             }
 
-            var cfg = GetDecodedConfig();
-
-            if (cfg == null)
+            void error(string msg)
             {
-                error(I18N("DecodeImportFail"));
-                return;
+                log(msg);
+                next?.Invoke();
             }
 
             var port = Lib.Utils.GetFreeTcpPort();
             if (port <= 0)
             {
                 error(I18N("GetFreePortFail"));
+                return;
+            }
+
+            Thread.Sleep(100);
+
+            var cfg = GetDecodedConfig(true);
+
+            if (cfg == null)
+            {
+                error(I18N("DecodeImportFail"));
                 return;
             }
 
@@ -84,23 +92,29 @@ namespace V2RayGCon.Model.Data
                 return;
             }
 
-            SetStatus(I18N("Testing"));
+            var url = StrConst("SpeedTestUrl");
+            log(I18N("Testing") + url);
 
-            var tester = new Model.BaseClass.CoreServer();
+            var speedTester = new Model.BaseClass.CoreServer();
+            speedTester.OnLog += SendLogHandler;
 
-            tester.RestartCoreThen(cfg.ToString(), null, () =>
+            speedTester.RestartCoreThen(cfg.ToString(), null, () =>
             {
-                var time = Lib.Utils.VisitWebPageSpeedTest(
-                    StrConst("SpeedTestUrl"),
-                    string.Format("127.0.0.1:{0}", port));
+                // v2ray-core need a little time to get ready.
+                Thread.Sleep(1000);
+
+                var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
 
                 var msg = string.Format("{0}:{1}",
                     I18N("VisitWebPageTest"),
                     time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
 
-                SetStatus(msg);
-                SendLog(msg);
-                tester.StopCoreThen(next);
+                log(msg);
+                speedTester.StopCoreThen(() =>
+                {
+                    speedTester.OnLog -= SendLogHandler;
+                    next?.Invoke();
+                });
             });
         }
 
@@ -320,6 +334,34 @@ namespace V2RayGCon.Model.Data
         {
             isServerOn = server.isRunning;
             InvokeEventOnPropertyChange();
+        }
+
+        public void GetProxyAddrThen(Action<string> next)
+        {
+            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP)
+            {
+                next("http://" + inboundIP + ":" + inboundPort);
+                return;
+            }
+            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
+            {
+                next("socks5://" + inboundIP + ":" + inboundPort);
+                return;
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                var cfg = GetDecodedConfig(true);
+                var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
+                var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
+                var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
+                if (string.IsNullOrEmpty(listen))
+                {
+                    next(protocol);
+                    return;
+                }
+                next(protocol + "://" + listen + ":" + port);
+            });
         }
         #endregion
 

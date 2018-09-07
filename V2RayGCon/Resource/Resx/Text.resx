@@ -522,7 +522,7 @@ Are you sure want to continue?</value>
     <value>Last test is not finished yet. Please wait till test finish.</value>
   </data>
   <data name="Testing" xml:space="preserve">
-    <value>Testing ...</value>
+    <value>Testing </value>
   </data>
   <data name="TestWillTakeALongTime" xml:space="preserve">
     <value>The test will take a very long time.
@@ -530,5 +530,8 @@ Are you sure you want to continue?</value>
   </data>
   <data name="SpeedTestFinished" xml:space="preserve">
     <value>Speed tests have finished.</value>
+  </data>
+  <data name="ServersAreRunning" xml:space="preserve">
+    <value>servers are running.</value>
   </data>
 </root>

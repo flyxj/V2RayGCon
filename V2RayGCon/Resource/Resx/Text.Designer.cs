@@ -1029,6 +1029,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 servers are running. 的本地化字符串。
+        /// </summary>
+        internal static string ServersAreRunning {
+            get {
+                return ResourceManager.GetString("ServersAreRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set as system proxy 的本地化字符串。
         /// </summary>
         internal static string SetAsSysProxy {
@@ -1110,7 +1119,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Testing ... 的本地化字符串。
+        ///   查找类似 Testing  的本地化字符串。
         /// </summary>
         internal static string Testing {
             get {

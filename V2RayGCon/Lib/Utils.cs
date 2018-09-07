@@ -726,7 +726,7 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region net
-        public static long VisitWebPageSpeedTest(string url = "https://www.youtube.com", string proxy = null)
+        public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
             var timeout = Str2Int(StrConst("SpeedTestTimeout"));
 
@@ -737,18 +737,17 @@ namespace V2RayGCon.Lib
                 Timeout = timeout * 1000,
             };
 
-            if (!string.IsNullOrEmpty(proxy))
-            {
-                wc.Proxy = new WebProxy(proxy);
-            }
-
             long elasped = 0;
             try
             {
+                if (port > 0)
+                {
+                    wc.Proxy = new WebProxy("127.0.0.1", port);
+                }
                 Stopwatch sw = new Stopwatch();
                 sw.Reset();
                 sw.Start();
-                var blackhole = wc.DownloadData(url);
+                wc.DownloadString(url);
                 sw.Stop();
                 elasped = sw.ElapsedMilliseconds;
             }
@@ -761,10 +760,15 @@ namespace V2RayGCon.Lib
         public static int GetFreeTcpPort()
         {
             // https://stackoverflow.com/questions/138043/find-the-next-tcp-port-in-net
-            TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-            l.Start();
-            int port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
+            int port = -1;
+            try
+            {
+                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+            }
+            catch { }
             return port;
         }
 

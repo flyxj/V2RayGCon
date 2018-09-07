@@ -14,7 +14,13 @@ namespace V2RayGCon.Service
         Notifier()
         {
             CreateNotifyIcon();
+
             setting = Setting.Instance;
+            setting.OnUpdateNotifierText += (s, a) =>
+            {
+                ni.Text = a.Data;
+            };
+
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
 
