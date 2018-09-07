@@ -19,7 +19,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem toolMenuItemAbout,
             ToolStripMenuItem toolMenuItemHelp,
             ToolStripMenuItem configEditor,
-            ToolStripMenuItem configTester,
             ToolStripMenuItem QRCode,
             ToolStripMenuItem log,
             ToolStripMenuItem options,
@@ -54,8 +53,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
 
             configEditor.Click += (s, a) => new Views.FormConfiger();
-
-            configTester.Click += (s, a) => new Views.FormConfigTester();
 
             QRCode.Click += (s, a) => Views.FormQRCode.GetForm();
 

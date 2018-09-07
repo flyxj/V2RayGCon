@@ -91,7 +91,6 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("OtherWin"),new MenuItem[]{
                     new MenuItem(I18N("ConfigEditor"),(s,a)=>new Views.FormConfiger() ),
-                    new MenuItem(I18N("ConfigTester"),(s,a)=>new Views.FormConfigTester() ),
                     new MenuItem(I18N("GenQRCode"),(s,a)=>Views.FormQRCode.GetForm() ),
                     new MenuItem(I18N("Log"),(s,a)=>Views.FormLog.GetForm() ),
                     new MenuItem(I18N("Options"),(s,a)=>Views.FormOption.GetForm() ),

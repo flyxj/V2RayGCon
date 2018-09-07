@@ -51,6 +51,7 @@
             resources.ApplyResources(this.lbSummary, "lbSummary");
             this.lbSummary.Cursor = System.Windows.Forms.Cursors.Default;
             this.lbSummary.Name = "lbSummary";
+            this.toolTip1.SetToolTip(this.lbSummary, resources.GetString("lbSummary.ToolTip"));
             this.lbSummary.Click += new System.EventHandler(this.lbSummary_Click);
             // 
             // lbIndex

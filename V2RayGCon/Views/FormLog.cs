@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Views
@@ -48,20 +49,22 @@ namespace V2RayGCon.Views
 
         void LogReceiver(object sender, Model.Data.StrEvent e)
         {
-            var content = e.Data;
-            try
+            Task.Factory.StartNew(() =>
             {
-                rtBoxLogger.Invoke((MethodInvoker)delegate
+                var content = e.Data;
+                try
                 {
-                    if (rtBoxLogger.Lines.Length >= maxNumberLines - 1)
+                    rtBoxLogger.Invoke((MethodInvoker)delegate
                     {
-                        rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
-                    }
-                    rtBoxLogger.AppendText(content + "\r\n");
-                });
-            }
-            catch { }
-
+                        if (rtBoxLogger.Lines.Length >= maxNumberLines - 1)
+                        {
+                            rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
+                        }
+                        rtBoxLogger.AppendText(content + "\r\n");
+                    });
+                }
+                catch { }
+            });
         }
 
         private void rtBoxLogger_TextChanged(object sender, System.EventArgs e)

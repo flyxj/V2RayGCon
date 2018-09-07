@@ -63,7 +63,6 @@ namespace V2RayGCon.Views
             this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemConfigEditor = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolMenuItemConfigTester = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemQRCode = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemLog = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemOptions = new System.Windows.Forms.ToolStripMenuItem();
@@ -267,7 +266,6 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.windowToolStripMenuItem, "windowToolStripMenuItem");
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolMenuItemConfigEditor,
-            this.toolMenuItemConfigTester,
             this.toolMenuItemQRCode,
             this.toolMenuItemLog,
             this.toolMenuItemOptions});
@@ -277,11 +275,6 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolMenuItemConfigEditor, "toolMenuItemConfigEditor");
             this.toolMenuItemConfigEditor.Name = "toolMenuItemConfigEditor";
-            // 
-            // toolMenuItemConfigTester
-            // 
-            resources.ApplyResources(this.toolMenuItemConfigTester, "toolMenuItemConfigTester");
-            this.toolMenuItemConfigTester.Name = "toolMenuItemConfigTester";
             // 
             // toolMenuItemQRCode
             // 
@@ -380,7 +373,6 @@ namespace V2RayGCon.Views
         private System.Windows.Forms.ToolStripMenuItem toolMenuItemExportAllServerToFile;
         private System.Windows.Forms.ToolStripMenuItem toolMenuItemImportFromFile;
         private ToolStripMenuItem toolMenuItemHelp;
-        private ToolStripMenuItem toolMenuItemConfigTester;
         private ToolStripMenuItem toolMenuItemOptions;
         private FlowLayoutPanel flyServerListContainer;
         private ToolStripMenuItem toolMenuItemServer;

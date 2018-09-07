@@ -89,7 +89,7 @@ namespace V2RayGCon.Model.Data
             inboundPort = 1080;
 
             server = new BaseClass.CoreServer();
-            server.OnLog += SendLogHandler;
+            server.OnLog += OnLogHandler;
         }
 
         #region public method
@@ -138,7 +138,7 @@ namespace V2RayGCon.Model.Data
             log(I18N("Testing") + url);
 
             var speedTester = new Model.BaseClass.CoreServer();
-            speedTester.OnLog += SendLogHandler;
+            speedTester.OnLog += OnLogHandler;
 
             speedTester.RestartCoreThen(cfg.ToString(), null, () =>
             {
@@ -154,7 +154,7 @@ namespace V2RayGCon.Model.Data
                 log(msg);
                 speedTester.StopCoreThen(() =>
                 {
-                    speedTester.OnLog -= SendLogHandler;
+                    speedTester.OnLog -= OnLogHandler;
                     next?.Invoke();
                 });
             });
@@ -308,7 +308,7 @@ namespace V2RayGCon.Model.Data
         {
             this.server.StopCoreThen(() =>
             {
-                this.server.OnLog -= SendLogHandler;
+                this.server.OnLog -= OnLogHandler;
                 Task.Factory.StartNew(() =>
                 {
                     next?.Invoke();
@@ -504,20 +504,17 @@ namespace V2RayGCon.Model.Data
 
         void SendLog(string message)
         {
-            SendLogHandler(this, new Model.Data.StrEvent(message));
+            OnLogHandler(this, new Model.Data.StrEvent(message));
         }
 
-        void SendLogHandler(object sender, Model.Data.StrEvent arg)
+        void OnLogHandler(object sender, Model.Data.StrEvent arg)
         {
-            var msg = arg.Data;
+            var msg = string.Format("[{0}] {1}", this.name, arg.Data);
+
             logCache = msg;
-
-            var log = new Model.Data.StrEvent(
-                string.Format("[{0}] {1}", this.name, msg));
-
             try
             {
-                OnLog?.Invoke(this, log);
+                OnLog?.Invoke(this, new Model.Data.StrEvent(msg));
             }
             catch { }
         }

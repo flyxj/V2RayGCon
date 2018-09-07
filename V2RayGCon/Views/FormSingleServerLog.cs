@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -39,10 +40,19 @@ namespace V2RayGCon.Views
         {
             Task.Factory.StartNew(() =>
             {
-                rtBoxLogger.Invoke((MethodInvoker)delegate
+                var content = args.Data;
+                try
                 {
-                    rtBoxLogger.Text = serverItem.logCache;
-                });
+                    rtBoxLogger.Invoke((MethodInvoker)delegate
+                    {
+                        if (rtBoxLogger.Lines.Length >= maxNumberLines - 1)
+                        {
+                            rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
+                        }
+                        rtBoxLogger.AppendText(content + System.Environment.NewLine);
+                    });
+                }
+                catch { }
             });
         }
 

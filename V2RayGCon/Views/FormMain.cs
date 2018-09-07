@@ -76,7 +76,6 @@ namespace V2RayGCon.Views
                 toolMenuItemAbout,
                 toolMenuItemHelp,
                 toolMenuItemConfigEditor,
-                toolMenuItemConfigTester,
                 toolMenuItemQRCode,
                 toolMenuItemLog,
                 toolMenuItemOptions,
