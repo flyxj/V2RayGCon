@@ -376,6 +376,24 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 12 的本地化字符串。
+        /// </summary>
+        internal static string SpeedTestTimeout {
+            get {
+                return ResourceManager.GetString("SpeedTestTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://www.google.com 的本地化字符串。
+        /// </summary>
+        internal static string SpeedTestUrl {
+            get {
+                return ResourceManager.GetString("SpeedTestUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 https://github.com/nobody3u/V2RayGCon/releases/tag/{0} 的本地化字符串。
         /// </summary>
         internal static string TplUrlVGCRelease {

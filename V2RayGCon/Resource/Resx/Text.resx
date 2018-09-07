@@ -129,8 +129,8 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="ConfirmDeleteServer" xml:space="preserve">
-    <value>Delete selected server?</value>
+  <data name="ConfirmDeleteSelectedServers" xml:space="preserve">
+    <value>Delete selected servers?</value>
   </data>
   <data name="ConfirmExitApp" xml:space="preserve">
     <value>Exit program?</value>
@@ -496,5 +496,42 @@ Are you sure want to continue?</value>
   </data>
   <data name="VisitVGCIssuePage" xml:space="preserve">
     <value>Vist V2RayGCon issue page?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ConfirmRestartAllSelectedServers" xml:space="preserve">
+    <value>Restart all selected servers?</value>
+  </data>
+  <data name="ConfirmStopAllSelectedServers" xml:space="preserve">
+    <value>Stop all selected servers?</value>
+  </data>
+  <data name="GetFreePortFail" xml:space="preserve">
+    <value>Fail to get free tcp port!</value>
+  </data>
+  <data name="SpeedTest" xml:space="preserve">
+    <value>Speed test</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
+  <data name="VisitWebPageTest" xml:space="preserve">
+    <value>Visit web page test</value>
+  </data>
+  <data name="LastTestNoFinishYet" xml:space="preserve">
+    <value>Last test is not finished yet. Please wait till test finish.</value>
+  </data>
+  <data name="Testing" xml:space="preserve">
+    <value>Testing </value>
+  </data>
+  <data name="TestWillTakeALongTime" xml:space="preserve">
+    <value>The test will take a very long time.
+Are you sure you want to continue?</value>
+  </data>
+  <data name="SpeedTestFinished" xml:space="preserve">
+    <value>Speed tests have finished.</value>
+  </data>
+  <data name="ServersAreRunning" xml:space="preserve">
+    <value>servers are running.</value>
   </data>
 </root>

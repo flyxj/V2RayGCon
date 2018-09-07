@@ -12,6 +12,21 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [TestMethod]
+        public void GetFreePortTest()
+        {
+            int port = Lib.Utils.GetFreeTcpPort();
+            Assert.AreEqual(true, port > 0);
+        }
+
+        [DataTestMethod]
+        [DataRow("https://www.baidu.com")]
+        public void VisitWebPageSpeedTestTest(string url)
+        {
+            var time = Lib.Utils.VisitWebPageSpeedTest(url);
+            Assert.AreEqual(true, time > 0);
+        }
+
         [DataTestMethod]
         [DataRow("aaaaaa", 0, "...")]
         [DataRow("aaaaaaaaa", 5, "aa...")]

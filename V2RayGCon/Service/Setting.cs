@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -14,12 +15,16 @@ namespace V2RayGCon.Service
     {
         private Model.Data.ServerList serverList;
 
-        public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
         public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate, OnSysProxyChanged;
+
+
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
             lazySaveServerListTimer = null;
+
+        int preRunningServerCount = 0;
 
         Setting()
         {
@@ -83,6 +88,21 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void WakeupAutorunServers()
+        {
+            serverList.WakeupAutorunServersThen();
+        }
+
+        public void DeleteSelectedServers()
+        {
+            serverList.DeleteSelectedServersThen();
+        }
+
+        public bool DoSpeedTestOnSelectedServers()
+        {
+            return serverList.DoSpeedTestOnSelectedServers();
+        }
+
         public void SaveServerListImmediately()
         {
             lazySaveServerListTimer.Timeout();
@@ -149,11 +169,6 @@ namespace V2RayGCon.Service
             serverList.StartServersByList(servers);
         }
 
-        public void WakeupAutorunServers()
-        {
-            serverList.WakeupAutorunServersThen();
-        }
-
         public void SetSystemProxy(string link)
         {
             if (string.IsNullOrEmpty(link))
@@ -182,6 +197,17 @@ namespace V2RayGCon.Service
         {
             serverList.RestartAllServersThen();
         }
+
+        public void StopAllSelectedThen(Action lambda = null)
+        {
+            serverList.StopAllSelectedThen(lambda);
+        }
+
+        public void RestartAllSelected()
+        {
+            serverList.RestartAllSelectedThen();
+        }
+
 
         public void UpdateAllServersSummary()
         {
@@ -562,6 +588,49 @@ namespace V2RayGCon.Service
             }
 
             lazySaveServerListTimer.Start();
+
+            Task.Factory.StartNew(() => CheckRunningServersCount());
+        }
+
+        void CheckRunningServersCount()
+        {
+            var count = serverList.Where(s => s.isServerOn).ToList().Count;
+            if (count == preRunningServerCount)
+            {
+                return;
+            }
+            preRunningServerCount = count;
+
+            if (count <= 0)
+            {
+                UpdateNotifierText();
+                return;
+            }
+
+            if (count == 1)
+            {
+                var first = serverList.FirstOrDefault(s => s.isServerOn);
+                if (first == null)
+                {
+                    UpdateNotifierText();
+                    return;
+                }
+                first.GetProxyAddrThen((str) => UpdateNotifierText(str));
+                return;
+            }
+
+            UpdateNotifierText(count.ToString() + I18N("ServersAreRunning"));
+
+        }
+
+        void UpdateNotifierText(string title = null)
+        {
+            var text = string.IsNullOrEmpty(title) ? I18N("Description") : title;
+            try
+            {
+                OnUpdateNotifierText?.Invoke(this, new Model.Data.StrEvent(text));
+            }
+            catch { }
         }
 
         #endregion

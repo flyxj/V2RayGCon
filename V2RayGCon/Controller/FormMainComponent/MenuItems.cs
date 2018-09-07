@@ -19,15 +19,18 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem toolMenuItemAbout,
             ToolStripMenuItem toolMenuItemHelp,
             ToolStripMenuItem configEditor,
-            ToolStripMenuItem configTester,
             ToolStripMenuItem QRCode,
             ToolStripMenuItem log,
             ToolStripMenuItem options,
             ToolStripMenuItem downloadV2rayCore,
-            ToolStripMenuItem removeV2rayCore,
-            ToolStripMenuItem deleteAllItems)
+            ToolStripMenuItem removeV2rayCore)
         {
             setting = Service.Setting.Instance;
+
+            downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
+
+            removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
+
             simVmessServer.Click +=
                 (s, a) => Views.FormSimAddVmessClient.GetForm();
 
@@ -51,44 +54,15 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             configEditor.Click += (s, a) => new Views.FormConfiger();
 
-            configTester.Click += (s, a) => new Views.FormConfigTester();
-
             QRCode.Click += (s, a) => Views.FormQRCode.GetForm();
 
             log.Click += (s, a) => Views.FormLog.GetForm();
 
             options.Click += (s, a) => Views.FormOption.GetForm();
-
-            downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
-
-            removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
-
-            deleteAllItems.Click += (s, a) =>
-            {
-                if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
-                    setting.DeleteAllServer();
-            };
         }
 
 
         #region public method
-
-        public void CopyAllV2RayLink()
-        {
-            var servers = setting.GetServerList();
-            string s = string.Empty;
-
-            foreach (var server in servers)
-            {
-                s += "v2ray://" + Lib.Utils.Base64Encode(server.config) + "\r\n";
-            }
-
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(s) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
-        }
-
         public void ImportServersFromTextFile()
         {
             string v2rayLinks = Lib.UI.ShowReadFileDialog(StrConst("ExtText"), out string filename);
@@ -137,28 +111,6 @@ namespace V2RayGCon.Controller.FormMainComponent
         public void CheckVGCUpdate()
         {
             Task.Factory.StartNew(CheckUpdate);
-        }
-
-        public void CopyAllVmessLink()
-        {
-            var servers = setting.GetServerList();
-            string s = string.Empty;
-
-            foreach (var server in servers)
-            {
-                var vmess = Lib.Utils.ConfigString2Vmess(server.config);
-                var vmessLink = Lib.Utils.Vmess2VmessLink(vmess);
-
-                if (!string.IsNullOrEmpty(vmessLink))
-                {
-                    s += vmessLink + "\r\n";
-                }
-            }
-
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(s) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
         }
 
         public override bool RefreshUI() { return false; }

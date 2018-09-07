@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -22,6 +23,7 @@ namespace V2RayGCon.Model.UserControls
         private void ServerListItem_Load(object sender, EventArgs e)
         {
             isRunning = !serverItem.isServerOn;
+            SetStatusThen(string.Empty);
             RefreshUI(this, EventArgs.Empty);
             this.serverItem.OnPropertyChanged += RefreshUI;
         }
@@ -50,6 +52,12 @@ namespace V2RayGCon.Model.UserControls
                     chkAutoRun, serverItem.isAutoRun);
 
                 Lib.UI.UpdateControlOnDemand(
+                    lbStatus, serverItem.status);
+
+                Lib.UI.UpdateControlOnDemand(
+                    chkSelected, serverItem.isSelected);
+
+                Lib.UI.UpdateControlOnDemand(
                     chkImport, serverItem.isInjectImport);
 
                 ShowOnOffStatus(serverItem.server.isRunning);
@@ -61,11 +69,20 @@ namespace V2RayGCon.Model.UserControls
             return new ContextMenu(new MenuItem[] {
                 new MenuItem(I18N("Start"),(s,a)=>serverItem.RestartCoreThen()),
                 new MenuItem(I18N("Stop"),(s,a)=>serverItem.StopCoreThen()),
+                new MenuItem(I18N("Log"),(s,a)=>serverItem.ShowLogForm()),
                 new MenuItem("-"),
                 new MenuItem(I18N("Edit"),(s,a)=>{
                     var item=this.serverItem;
                     var config=item.config;
                     new Views.FormConfiger(this.serverItem.config);
+                }),
+                 new MenuItem(I18N("Delete"),(s,a)=>{
+                    if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
+                    {
+                        return;
+                    }
+                    Cleanup();
+                    serverItem.DeleteSelf();
                 }),
                 new MenuItem(I18N("Copy"),new MenuItem[]{
                     new MenuItem(I18N("VmessLink"),(s,a)=>{
@@ -88,6 +105,10 @@ namespace V2RayGCon.Model.UserControls
                     }),
                 }),
                 new MenuItem("-"),
+                new MenuItem(I18N("SpeedTest"),(s,a)=>{
+                    Task.Factory.StartNew(
+                        () => serverItem.DoSpeedTestThen());
+                }),
                 new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
                     if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
                     {
@@ -126,6 +147,39 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public bool GetAutorunStatus()
+        {
+            return serverItem.isAutoRun;
+        }
+
+        public bool GetSelectStatus()
+        {
+            return chkSelected.Checked;
+        }
+
+        public void SetStatusThen(string status, Action next = null)
+        {
+            if (lbStatus.IsDisposed)
+            {
+                next?.Invoke();
+                return;
+            }
+
+            try
+            {
+                lbStatus?.Invoke((MethodInvoker)delegate
+                {
+                    Lib.UI.UpdateControlOnDemand(lbStatus, status);
+                });
+            }
+            catch { }
+            next?.Invoke();
+        }
+
+        public void SetSelected(bool selected)
+        {
+            this.serverItem.SetSelected(selected);
+        }
 
         public void SetIndex(int index)
         {
@@ -162,6 +216,11 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetAutoRun(chkAutoRun.Checked);
         }
 
+        private void chkSelected_CheckedChanged(object sender, EventArgs e)
+        {
+            serverItem.SetSelected(chkSelected.Checked);
+        }
+
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
             serverItem.SetInjectImport(chkImport.Checked);
@@ -177,21 +236,11 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetInboundPort(tboxInboundPort.Text);
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void lbSummary_Click(object sender, EventArgs e)
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
-            {
-                return;
-            }
-
-            Cleanup();
-            serverItem.DeleteSelf();
+            chkSelected.Checked = !chkSelected.Checked;
         }
 
-
-
         #endregion
-
-
     }
 }

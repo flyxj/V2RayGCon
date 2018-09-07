@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -725,6 +726,52 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region net
+        public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
+        {
+            var timeout = Str2Int(StrConst("SpeedTestTimeout"));
+
+            Lib.Utils.SupportProtocolTLS12();
+            WebClient wc = new TimedWebClient
+            {
+                Encoding = System.Text.Encoding.UTF8,
+                Timeout = timeout * 1000,
+            };
+
+            long elasped = 0;
+            try
+            {
+                if (port > 0)
+                {
+                    wc.Proxy = new WebProxy("127.0.0.1", port);
+                }
+                Stopwatch sw = new Stopwatch();
+                sw.Reset();
+                sw.Start();
+                wc.DownloadString(url);
+                sw.Stop();
+                elasped = sw.ElapsedMilliseconds;
+            }
+            catch { }
+            wc.Dispose();
+
+            return elasped;
+        }
+
+        public static int GetFreeTcpPort()
+        {
+            // https://stackoverflow.com/questions/138043/find-the-next-tcp-port-in-net
+            int port = -1;
+            try
+            {
+                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+            }
+            catch { }
+            return port;
+        }
+
         public static string Fetch(string url, int timeout = -1)
         {
             var html = string.Empty;

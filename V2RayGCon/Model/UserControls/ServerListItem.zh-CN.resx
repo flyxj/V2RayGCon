@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lbSummary.ToolTip" xml:space="preserve">
-    <value />
+    <value>选中此服务器</value>
   </data>
   <data name="lbIndex.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label1.ToolTip" xml:space="preserve">
+  <data name="lbStatus.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="cboxInbound.ToolTip" xml:space="preserve">
@@ -131,12 +131,6 @@
   </data>
   <data name="chkImport.ToolTip" xml:space="preserve">
     <value>注入全局import</value>
-  </data>
-  <data name="btnDelete.Text" xml:space="preserve">
-    <value>删除</value>
-  </data>
-  <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="tboxInboundIP.ToolTip" xml:space="preserve">
     <value>只对HTTP/SOCKS两种模式有效</value>
@@ -161,6 +155,9 @@
   </data>
   <data name="chkAutoRun.ToolTip" xml:space="preserve">
     <value>程序运行后启动此服务器</value>
+  </data>
+  <data name="chkSelected.ToolTip" xml:space="preserve">
+    <value>选中此服务器</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>端口</value>

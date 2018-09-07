@@ -123,9 +123,6 @@
   <data name="toolMenuItemImportLinkFromClipboard.Text" xml:space="preserve">
     <value>从剪切板导入</value>
   </data>
-  <data name="toolMenuItemDeleteAll.Text" xml:space="preserve">
-    <value>删除全部服务器</value>
-  </data>
   <data name="toolMenuItemExportAllServerToFile.Text" xml:space="preserve">
     <value>导出到文件</value>
   </data>
@@ -138,17 +135,62 @@
   <data name="operationToolStripMenuItem.Text" xml:space="preserve">
     <value>文件</value>
   </data>
-  <data name="toolStripMenuItemStopAllServers.Text" xml:space="preserve">
-    <value>全部停止</value>
+  <data name="toolStripMenuItemSelectAll.Text" xml:space="preserve">
+    <value>全选</value>
   </data>
-  <data name="toolStripMenuItemRestartAllServers.Text" xml:space="preserve">
-    <value>全部重启</value>
+  <data name="toolStripMenuItemSelectNone.Text" xml:space="preserve">
+    <value>清空选择</value>
   </data>
-  <data name="toolMenuItemRestartAutorunServers.Text" xml:space="preserve">
-    <value>重启自启动</value>
+  <data name="toolStripMenuItemSelectInvert.Text" xml:space="preserve">
+    <value>反选</value>
   </data>
-  <data name="toolMenuItemRestartAutorunServers.ToolTipText" xml:space="preserve">
-    <value>重启全部自启动服务器</value>
+  <data name="toolMenuItemSelectAutorunServers.Text" xml:space="preserve">
+    <value>选中自启</value>
+  </data>
+  <data name="toolMenuItemSelectAutorunServers.ToolTipText" xml:space="preserve">
+    <value>选中勾了[自启]的服务器</value>
+  </data>
+  <data name="toolStripMenuItemStopSelected.Text" xml:space="preserve">
+    <value>停止选中</value>
+  </data>
+  <data name="toolStripMenuItemStopSelected.ToolTipText" xml:space="preserve">
+    <value>停止选中的服务器</value>
+  </data>
+  <data name="toolStripMenuItemRestartSelected.Text" xml:space="preserve">
+    <value>重启选中</value>
+  </data>
+  <data name="toolStripMenuItemRestartSelected.ToolTipText" xml:space="preserve">
+    <value>重启选中的服务器</value>
+  </data>
+  <data name="toolStripMenuItemSpeedTestOnSelected.Text" xml:space="preserve">
+    <value>速度测试</value>
+  </data>
+  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
+    <value>对选中的服务运行速度测试</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsV2rayLink.ToolTipText" xml:space="preserve">
+    <value>包含全部配置信息</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsVmessLink.ToolTipText" xml:space="preserve">
+    <value>包含主要配置信息</value>
+  </data>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>复制选中</value>
+  </data>
+  <data name="toolStripMenuItemDeleteAllServer.Text" xml:space="preserve">
+    <value>删除全部</value>
+  </data>
+  <data name="toolStripMenuItemDeleteAllServer.ToolTipText" xml:space="preserve">
+    <value>删除全部服务器</value>
+  </data>
+  <data name="toolStripMenuItemDeleteSelectedServers.Text" xml:space="preserve">
+    <value>删除选中</value>
+  </data>
+  <data name="toolStripMenuItemDeleteSelectedServers.ToolTipText" xml:space="preserve">
+    <value>删除选中的服务器</value>
+  </data>
+  <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
+    <value>删除服务器</value>
   </data>
   <data name="toolMenuItemRefreshSummary.Text" xml:space="preserve">
     <value>刷新摘要</value>
@@ -157,7 +199,7 @@
     <value>刷新下面服务器的名字/IP/协议信息</value>
   </data>
   <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
-    <value>清空代理设置</value>
+    <value>清除代理设置</value>
   </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>系统代理</value>
@@ -168,9 +210,6 @@
   <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
     <value>配置编辑器</value>
   </data>
-  <data name="toolMenuItemConfigTester.Text" xml:space="preserve">
-    <value>配置测试器</value>
-  </data>
   <data name="toolMenuItemQRCode.Text" xml:space="preserve">
     <value>二维码</value>
   </data>
@@ -180,17 +219,20 @@
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>选项</value>
   </data>
-  <data name="toolMenuItemDownloadV2rayCore.Text" xml:space="preserve">
-    <value>下载</value>
-  </data>
-  <data name="toolMenuItemRemoveV2rayCore.Text" xml:space="preserve">
-    <value>清除</value>
-  </data>
   <data name="windowToolStripMenuItem.Text" xml:space="preserve">
     <value>窗口</value>
   </data>
+  <data name="toolStripMenuItemDownLoadV2rayCore.Text" xml:space="preserve">
+    <value>下载v2ray-core</value>
+  </data>
+  <data name="toolStripMenuItemRemoveV2rayCore.Text" xml:space="preserve">
+    <value>删除v2ray-core</value>
+  </data>
+  <data name="toolStripMenuItemRemoveV2rayCore.ToolTipText" xml:space="preserve">
+    <value>删除%ProgramData%中的V2RayGCon文件夹</value>
+  </data>
   <data name="toolMenuItemCheckUpdate.Text" xml:space="preserve">
-    <value>检查更新</value>
+    <value>检查V2RayGCon更新</value>
   </data>
   <data name="toolMenuItemAbout.Text" xml:space="preserve">
     <value>关于</value>

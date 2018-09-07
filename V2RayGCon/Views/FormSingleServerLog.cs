@@ -1,40 +1,29 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views
 {
-    public partial class FormLog : Form
+    public partial class FormSingleServerLog : Form
     {
-        #region Sigleton
-        static FormLog _instant;
-        public static FormLog GetForm()
-        {
-            if (_instant == null || _instant.IsDisposed)
-            {
-                _instant = new FormLog();
-            }
-            return _instant;
-        }
-        #endregion
-
         Service.Setting setting;
         int maxNumberLines;
+        Model.Data.ServerItem serverItem;
 
-        FormLog()
+        public FormSingleServerLog(Model.Data.ServerItem serverItem)
         {
             setting = Service.Setting.Instance;
             maxNumberLines = setting.maxLogLines;
+
+            this.serverItem = serverItem;
 
             InitializeComponent();
 
             this.FormClosed += (s, e) =>
             {
-                setting.LazyGC();
-                setting.OnLog -= LogReceiver;
+                serverItem.OnLog -= OnLogHandler;
             };
-
-            Lib.UI.SetFormLocation<FormLog>(this, Model.Data.Enum.FormLocations.BottomLeft);
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
@@ -42,16 +31,16 @@ namespace V2RayGCon.Views
 
             this.Show();
 
-            rtBoxLogger.Text = setting.logCache;
-
-            setting.OnLog += LogReceiver;
+            this.Text = I18N("Log") + " - " + serverItem.summary;
+            rtBoxLogger.Text = serverItem.logCache;
+            serverItem.OnLog += OnLogHandler;
         }
 
-        void LogReceiver(object sender, Model.Data.StrEvent e)
+        private void OnLogHandler(object sender, Model.Data.StrEvent args)
         {
             Task.Factory.StartNew(() =>
             {
-                var content = e.Data;
+                var content = args.Data;
                 try
                 {
                     rtBoxLogger.Invoke((MethodInvoker)delegate
@@ -60,7 +49,7 @@ namespace V2RayGCon.Views
                         {
                             rtBoxLogger.Lines = rtBoxLogger.Lines.Skip(rtBoxLogger.Lines.Length - maxNumberLines).ToArray();
                         }
-                        rtBoxLogger.AppendText(content + "\r\n");
+                        rtBoxLogger.AppendText(content + System.Environment.NewLine);
                     });
                 }
                 catch { }

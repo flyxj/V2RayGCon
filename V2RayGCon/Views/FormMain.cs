@@ -76,20 +76,26 @@ namespace V2RayGCon.Views
                 toolMenuItemAbout,
                 toolMenuItemHelp,
                 toolMenuItemConfigEditor,
-                toolMenuItemConfigTester,
                 toolMenuItemQRCode,
                 toolMenuItemLog,
                 toolMenuItemOptions,
-                toolMenuItemDownloadV2rayCore,
-                toolMenuItemRemoveV2rayCore,
-                toolMenuItemDeleteAll));
+                toolStripMenuItemDownLoadV2rayCore,
+                toolStripMenuItemRemoveV2rayCore));
 
             ctrl.Plug(new Controller.FormMainComponent.ServerMenuItems(
-                toolStripMenuItemStopAllServers,
-                toolStripMenuItemRestartAllServers,
+                toolStripMenuItemStopSelected,
+                toolStripMenuItemRestartSelected,
                 toolMenuItemClearSysProxy,
                 toolMenuItemRefreshSummary,
-                toolMenuItemRestartAutorunServers));
+                toolMenuItemSelectAutorunServers,
+                toolStripMenuItemSelectAll,
+                toolStripMenuItemSelectNone,
+                toolStripMenuItemSelectInvert,
+                toolStripMenuItemSpeedTestOnSelected,
+                toolStripMenuItemDeleteSelectedServers,
+                toolStripMenuItemCopyAsV2rayLink,
+                toolStripMenuItemCopyAsVmessLink,
+                toolStripMenuItemDeleteAllServer));
 
             return ctrl;
         }

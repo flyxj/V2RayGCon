@@ -126,7 +126,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>确认</value>
   </data>
-  <data name="ConfirmDeleteServer" xml:space="preserve">
+  <data name="ConfirmDeleteSelectedServers" xml:space="preserve">
     <value>删除选中的服务器？</value>
   </data>
   <data name="ConfirmExitApp" xml:space="preserve">
@@ -487,5 +487,41 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="VisitVGCIssuePage" xml:space="preserve">
     <value>访问V2RayGCon的issue页面？</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="ConfirmRestartAllSelectedServers" xml:space="preserve">
+    <value>重启所有选中服务器？</value>
+  </data>
+  <data name="ConfirmStopAllSelectedServers" xml:space="preserve">
+    <value>停止所有选中服务器？</value>
+  </data>
+  <data name="GetFreePortFail" xml:space="preserve">
+    <value>无法获取空闲端口！</value>
+  </data>
+  <data name="SpeedTest" xml:space="preserve">
+    <value>速度测试</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>超时</value>
+  </data>
+  <data name="VisitWebPageTest" xml:space="preserve">
+    <value>访问网页测试</value>
+  </data>
+  <data name="LastTestNoFinishYet" xml:space="preserve">
+    <value>上次测试未完成，请等测试完成。</value>
+  </data>
+  <data name="Testing" xml:space="preserve">
+    <value>正在测试</value>
+  </data>
+  <data name="TestWillTakeALongTime" xml:space="preserve">
+    <value>测试需要很长时间，真的要测试？</value>
+  </data>
+  <data name="SpeedTestFinished" xml:space="preserve">
+    <value>已完成速度测试。</value>
+  </data>
+  <data name="ServersAreRunning" xml:space="preserve">
+    <value>个服务器正在运行</value>
   </data>
 </root>

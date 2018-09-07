@@ -9,44 +9,100 @@ namespace V2RayGCon.Controller.FormMainComponent
         Service.Cache cache;
 
         public ServerMenuItems(
-            ToolStripMenuItem stopAllServers,
-            ToolStripMenuItem restartAllServers,
+            ToolStripMenuItem stopSelected,
+            ToolStripMenuItem restartSelected,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem refreshSummary,
-            ToolStripMenuItem restartAllAutorun)
+            ToolStripMenuItem selectAllAutorun,
+            ToolStripMenuItem selectAll,
+            ToolStripMenuItem selectNone,
+            ToolStripMenuItem selectInvert,
+            ToolStripMenuItem speedTestOnSelected,
+            ToolStripMenuItem deleteSelected,
+            ToolStripMenuItem copyAsV2rayLinks,
+            ToolStripMenuItem copyAsVmessLinks,
+            ToolStripMenuItem deleteAllItems)
         {
             setting = Service.Setting.Instance;
             cache = Service.Cache.Instance;
 
-            stopAllServers.Click += (s, a) =>
+            deleteAllItems.Click += (s, a) =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmStopAllServer")))
+                if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
+                    setting.DeleteAllServer();
+            };
+
+            copyAsV2rayLinks.Click += (s, a) => CopySelectedAsV2RayLinks();
+            copyAsVmessLinks.Click += (s, a) => CopySelectedAsVmessLinks();
+
+            deleteSelected.Click += (s, a) =>
+            {
+                if (!Lib.UI.Confirm(I18N("ConfirmDeleteSelectedServers")))
                 {
-                    setting.StopAllServersThen();
+                    return;
+                }
+                setting.DeleteSelectedServers();
+            };
+
+            speedTestOnSelected.Click += (s, a) =>
+            {
+                if (!Lib.UI.Confirm(I18N("TestWillTakeALongTime")))
+                {
+                    return;
+                }
+
+                if (!setting.DoSpeedTestOnSelectedServers())
+                {
+                    MessageBox.Show(I18N("LastTestNoFinishYet"));
                 }
             };
 
-            restartAllServers.Click += (s, a) =>
+            stopSelected.Click += (s, a) =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmRestartAllServer")))
+                if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
                 {
-                    setting.RestartAllServers();
+                    setting.StopAllSelectedThen();
                 }
             };
+
+            restartSelected.Click += (s, a) =>
+            {
+                if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
+                {
+                    setting.RestartAllSelected();
+                }
+            };
+
+            selectAllAutorun.Click += (s, a) =>
+            {
+                var panel = GetFlyPanel();
+                panel.SelectAutorun();
+            };
+
+            selectAll.Click += (s, a) =>
+            {
+                var panel = GetFlyPanel();
+                panel.SelectAll();
+            };
+
+            selectNone.Click += (s, a) =>
+            {
+                var panel = GetFlyPanel();
+                panel.SelectNone();
+            };
+
+            selectInvert.Click += (s, a) =>
+            {
+                var panel = GetFlyPanel();
+                panel.SelectInvert();
+            };
+
 
             clearSysProxy.Click += (s, a) =>
             {
                 if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
                 {
                     setting.ClearSystemProxy();
-                }
-            };
-
-            restartAllAutorun.Click += (s, a) =>
-            {
-                if (Lib.UI.Confirm(I18N("ConfirmRestartAllAutorunServer")))
-                {
-                    setting.WakeupAutorunServers();
                 }
             };
 
@@ -71,6 +127,57 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         #region private method
 
+        void CopySelectedAsV2RayLinks()
+        {
+            var servers = setting.GetServerList();
+            string s = string.Empty;
+
+            foreach (var server in servers)
+            {
+                if (server.isSelected)
+                {
+                    s += "v2ray://" + Lib.Utils.Base64Encode(server.config) + "\r\n";
+                }
+            }
+
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(s) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
+
+        void CopySelectedAsVmessLinks()
+        {
+            var servers = setting.GetServerList();
+            string s = string.Empty;
+
+            foreach (var server in servers)
+            {
+                if (!server.isSelected)
+                {
+                    continue;
+                }
+                var vmess = Lib.Utils.ConfigString2Vmess(server.config);
+                var vmessLink = Lib.Utils.Vmess2VmessLink(vmess);
+
+                if (!string.IsNullOrEmpty(vmessLink))
+                {
+                    s += vmessLink + "\r\n";
+                }
+            }
+
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(s) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
+
+
+        Controller.FormMainComponent.FlyServer GetFlyPanel()
+        {
+            return this.GetContainer()
+                .GetComponent<Controller.FormMainComponent.FlyServer>();
+        }
         #endregion
     }
 }

@@ -193,12 +193,6 @@
     <Compile Include="Views\FormConfiger.Designer.cs">
       <DependentUpon>FormConfiger.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormConfigTester.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormConfigTester.Designer.cs">
-      <DependentUpon>FormConfigTester.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\FormDownloadCore.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -210,6 +204,12 @@
     </Compile>
     <Compile Include="Views\FormImportLinksResult.Designer.cs">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FormSingleServerLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormSingleServerLog.Designer.cs">
+      <DependentUpon>FormSingleServerLog.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\FormLog.cs">
       <SubType>Form</SubType>
@@ -302,12 +302,6 @@
     <EmbeddedResource Include="Views\FormConfiger.zh-CN.resx">
       <DependentUpon>FormConfiger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormConfigTester.resx">
-      <DependentUpon>FormConfigTester.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormConfigTester.zh-CN.resx">
-      <DependentUpon>FormConfigTester.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\FormDownloadCore.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
     </EmbeddedResource>
@@ -316,6 +310,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormImportLinksResult.zh-CN.resx">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSingleServerLog.resx">
+      <DependentUpon>FormSingleServerLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormSingleServerLog.zh-CN.resx">
+      <DependentUpon>FormSingleServerLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormLog.resx">
       <DependentUpon>FormLog.cs</DependentUpon>
