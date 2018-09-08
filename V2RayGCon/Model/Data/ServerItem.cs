@@ -135,7 +135,9 @@ namespace V2RayGCon.Model.Data
             }
 
             var url = StrConst("SpeedTestUrl");
-            log(I18N("Testing") + url);
+            var text = I18N("Testing") + " ...";
+            log(text);
+            SendLog(url);
 
             var speedTester = new Model.BaseClass.CoreServer();
             speedTester.OnLog += OnLogHandler;
@@ -147,11 +149,11 @@ namespace V2RayGCon.Model.Data
 
                 var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
 
-                var msg = string.Format("{0}:{1}",
+                text = string.Format("{0}:{1}",
                     I18N("VisitWebPageTest"),
                     time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
 
-                log(msg);
+                log(text);
                 speedTester.StopCoreThen(() =>
                 {
                     speedTester.OnLog -= OnLogHandler;
@@ -380,29 +382,33 @@ namespace V2RayGCon.Model.Data
 
         public void GetProxyAddrThen(Action<string> next)
         {
-            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP)
+            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
+                || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
             {
-                next("http://" + inboundIP + ":" + inboundPort);
-                return;
-            }
-            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
-            {
-                next("socks5://" + inboundIP + ":" + inboundPort);
+                next(string.Format(
+                    "[{0}] {1}://{2}:{3}",
+                    this.name,
+                    Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType],
+                    this.inboundIP,
+                    this.inboundPort));
                 return;
             }
 
+            var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
                 var cfg = GetDecodedConfig(true);
                 var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
                 var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
                 var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
+
                 if (string.IsNullOrEmpty(listen))
                 {
-                    next(protocol);
+                    next(string.Format("[{0}] {1}", serverName, protocol));
                     return;
                 }
-                next(protocol + "://" + listen + ":" + port);
+
+                next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
             });
         }
         #endregion

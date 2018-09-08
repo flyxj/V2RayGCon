@@ -67,16 +67,13 @@ namespace V2RayGCon.Model.UserControls
         ContextMenu CreateMenu()
         {
             return new ContextMenu(new MenuItem[] {
-                new MenuItem(I18N("Start"),(s,a)=>serverItem.RestartCoreThen()),
-                new MenuItem(I18N("Stop"),(s,a)=>serverItem.StopCoreThen()),
                 new MenuItem(I18N("Log"),(s,a)=>serverItem.ShowLogForm()),
-                new MenuItem("-"),
                 new MenuItem(I18N("Edit"),(s,a)=>{
                     var item=this.serverItem;
                     var config=item.config;
                     new Views.FormConfiger(this.serverItem.config);
                 }),
-                 new MenuItem(I18N("Delete"),(s,a)=>{
+                new MenuItem(I18N("Delete"),(s,a)=>{
                     if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
                     {
                         return;
@@ -84,6 +81,7 @@ namespace V2RayGCon.Model.UserControls
                     Cleanup();
                     serverItem.DeleteSelf();
                 }),
+                new MenuItem("-"),
                 new MenuItem(I18N("Copy"),new MenuItem[]{
                     new MenuItem(I18N("VmessLink"),(s,a)=>{
                         MessageBox.Show(
@@ -104,7 +102,6 @@ namespace V2RayGCon.Model.UserControls
                             I18N("CopyFail"));
                     }),
                 }),
-                new MenuItem("-"),
                 new MenuItem(I18N("SpeedTest"),(s,a)=>{
                     Task.Factory.StartNew(
                         () => serverItem.DoSpeedTestThen());
@@ -241,6 +238,15 @@ namespace V2RayGCon.Model.UserControls
             chkSelected.Checked = !chkSelected.Checked;
         }
 
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            serverItem.RestartCoreThen();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            serverItem.StopCoreThen();
+        }
         #endregion
     }
 }
