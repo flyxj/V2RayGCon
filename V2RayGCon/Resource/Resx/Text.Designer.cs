@@ -848,6 +848,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Looks like you found a bug.
+        ///Please send the following file to the author. 的本地化字符串。
+        /// </summary>
+        internal static string LooksLikeABug {
+            get {
+                return ResourceManager.GetString("LooksLikeABug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Main Window 的本地化字符串。
         /// </summary>
         internal static string MainWin {

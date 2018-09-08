@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,7 +49,8 @@ namespace V2RayGCon.Model.Data
         public Model.BaseClass.CoreServer server;
 
         [JsonIgnore]
-        Queue<string> _logCache = new Queue<string>();
+        ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
+
         [JsonIgnore]
         public string logCache
         {
@@ -61,9 +63,10 @@ namespace V2RayGCon.Model.Data
                 // keep 200 lines of log
                 if (_logCache.Count > 300)
                 {
+                    var blackHole = "";
                     for (var i = 0; i < 100; i++)
                     {
-                        _logCache.Dequeue();
+                        _logCache.TryDequeue(out blackHole);
                     }
                 }
                 _logCache.Enqueue(value);

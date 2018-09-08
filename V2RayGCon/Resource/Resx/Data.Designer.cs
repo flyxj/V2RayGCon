@@ -61,6 +61,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 bug.txt 的本地化字符串。
+        /// </summary>
+        internal static string BugFileName {
+            get {
+                return ResourceManager.GetString("BugFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {
         ///  &quot;inTpl&quot;: {
         ///    &quot;port&quot;: 1080,

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -17,8 +18,6 @@ namespace V2RayGCon.Service
 
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
         public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate, OnSysProxyChanged;
-
-
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
@@ -39,7 +38,7 @@ namespace V2RayGCon.Service
 
         #region Properties
 
-        Queue<string> _logCache = new Queue<string>();
+        ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
         public string logCache
         {
             get
@@ -51,9 +50,10 @@ namespace V2RayGCon.Service
                 // keep 200 lines of log
                 if (_logCache.Count > 300)
                 {
+                    var blackHole = "";
                     for (var i = 0; i < 100; i++)
                     {
-                        _logCache.Dequeue();
+                        _logCache.TryDequeue(out blackHole);
                     }
                 }
                 _logCache.Enqueue(value);
@@ -164,14 +164,14 @@ namespace V2RayGCon.Service
             form.Top = Lib.Utils.Clamp(rect.Top, 0, screen.Bottom - form.Height);
         }
 
-        public List<int> GetActiveServerList()
+        public List<Model.Data.ServerItem> GetActiveServerList()
         {
             return serverList.GetActiveServersList();
         }
 
-        public void StartServersByList(List<int> servers)
+        public void RestartServersByList(List<Model.Data.ServerItem> servers)
         {
-            serverList.StartServersByList(servers);
+            serverList.RetartServersByList(servers);
         }
 
         public void SetSystemProxy(string link)
@@ -212,7 +212,6 @@ namespace V2RayGCon.Service
         {
             serverList.RestartAllSelectedThen();
         }
-
 
         public void UpdateAllServersSummary()
         {
@@ -303,7 +302,13 @@ namespace V2RayGCon.Service
         {
             Properties.Settings.Default.ImportUrls = options;
             Properties.Settings.Default.Save();
-            RestartAllServers();
+
+            var list = serverList
+                .Where(s => s.isInjectImport && s.isServerOn)
+                .OrderBy(s => s.index)
+                .ToList();
+
+            RestartServersByList(list);
         }
 
         public List<Model.Data.UrlItem> GetSubscriptionItems()
@@ -371,7 +376,7 @@ namespace V2RayGCon.Service
 
         public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
         {
-            return serverList.AsReadOnly();
+            return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
         }
 
         public string GetServerConfigByIndex(int index)

@@ -14,7 +14,7 @@ namespace V2RayGCon.Model.UserControls
 
         public ServerListItem(int index, Model.Data.ServerItem serverItem)
         {
-            menu = CreateMenu();
+            this.menu = CreateMenu();
             this.serverItem = serverItem;
             SetIndex(index);
             InitializeComponent();

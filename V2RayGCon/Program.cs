@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -65,11 +66,19 @@ namespace V2RayGCon
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
-                // Application.Run(Form winForm)
-                // So do not pass this as parameter to that function.
-                Service.Notifier noty = Service.Notifier.Instance;
-
-                Application.Run();
+                try
+                {
+                    Service.Notifier noty = Service.Notifier.Instance;
+                    Application.Run();
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    MessageBox.Show(ex.ToString());
+#else
+                    SaveUnhandledException(ex.ToString());
+#endif
+                }
                 mutex.ReleaseMutex();
             }
             else
@@ -78,6 +87,24 @@ namespace V2RayGCon
             }
 
             Lib.DllLoader.FreeLibrary(pDll);
+        }
+
+        static string GetBugFileName()
+        {
+            var appData = Lib.Utils.GetAppDataFolder();
+            return Path.Combine(appData, StrConst("BugFileName"));
+        }
+
+        static void SaveUnhandledException(string content)
+        {
+            try
+            {
+                var bugFileName = GetBugFileName();
+                Lib.Utils.CreateAppDataFolder();
+                File.WriteAllText(bugFileName, content);
+                MessageBox.Show(I18N("LooksLikeABug") + System.Environment.NewLine + bugFileName);
+            }
+            catch { }
         }
     }
 }

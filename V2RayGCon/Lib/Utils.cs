@@ -434,7 +434,6 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region convert
-
         public static string Config2String(JObject config)
         {
             return config.ToString(Formatting.None);
