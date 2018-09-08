@@ -95,6 +95,7 @@ namespace V2RayGCon.Views
                 toolStripMenuItemDeleteSelectedServers,
                 toolStripMenuItemCopyAsV2rayLink,
                 toolStripMenuItemCopyAsVmessLink,
+                toolStripMenuItemCopyAsSubscription,
                 toolStripMenuItemDeleteAllServer));
 
             return ctrl;

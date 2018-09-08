@@ -22,6 +22,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem deleteSelected,
             ToolStripMenuItem copyAsV2rayLinks,
             ToolStripMenuItem copyAsVmessLinks,
+            ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems)
         {
             setting = Service.Setting.Instance;
@@ -31,6 +32,15 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
                     setting.DeleteAllServer();
+            };
+
+            copyAsSubscriptions.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+                CopySelectedAsSubscription();
             };
 
             copyAsV2rayLinks.Click += (s, a) =>
@@ -153,6 +163,8 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
 
+
+
         #region public method
         public override bool RefreshUI()
         {
@@ -165,6 +177,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+
         bool CheckSelectedServerCount()
         {
             var count = setting.GetSelectedServersCount();
@@ -195,10 +208,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 I18N("CopyFail"));
         }
 
-        void CopySelectedAsVmessLinks()
+        string EncodeAllServersIntoVmessLinks()
         {
             var servers = setting.GetServerList();
-            string s = string.Empty;
+            string result = string.Empty;
 
             foreach (var server in servers)
             {
@@ -211,16 +224,31 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (!string.IsNullOrEmpty(vmessLink))
                 {
-                    s += vmessLink + "\r\n";
+                    result += vmessLink + System.Environment.NewLine;
                 }
             }
 
+            return result;
+        }
+
+        void CopySelectedAsSubscription()
+        {
             MessageBox.Show(
-                Lib.Utils.CopyToClipboard(s) ?
+                Lib.Utils.CopyToClipboard(
+                    Lib.Utils.Base64Encode(
+                        EncodeAllServersIntoVmessLinks())) ?
                 I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
 
+        void CopySelectedAsVmessLinks()
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(
+                    EncodeAllServersIntoVmessLinks()) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
 
         Controller.FormMainComponent.FlyServer GetFlyPanel()
         {
