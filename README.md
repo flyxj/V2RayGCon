@@ -11,15 +11,17 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 （详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)）  
   
 下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGCon.zip到任意目录  
-用本软件的下载窗口或手动下载v2ray-core  
+然后通过本软件的下载窗口下载v2ray-core  
+或手动下载然后解压到本软件目录内    
   
-按需选用以下列方式添加配置：  
+按需选用下列方式添加配置：  
 1. 托盘菜单->`扫描二维码`  
 2. 托盘菜单->`剪切板导入`  
 3. 托盘菜单->`主窗口`->`文件`->`添加vmess服务器`  
 4. 托盘菜单->`主窗口`->`窗口`->`配置编辑器`  
     
 然后可在主窗口中启用相应配置  
+  
 首次使用请打开日志窗口，查看输出信息排查错误  
   
 ### 设计目标
