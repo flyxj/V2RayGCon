@@ -88,6 +88,11 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public int GetSelectedServersCount()
+        {
+            return serverList.Where(s => s.isSelected).ToList().Count;
+        }
+
         public void WakeupAutorunServers()
         {
             serverList.WakeupAutorunServersThen();

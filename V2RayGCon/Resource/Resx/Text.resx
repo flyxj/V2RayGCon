@@ -537,4 +537,7 @@ Are you sure you want to continue?</value>
   <data name="ExitOtherVGCFirst" xml:space="preserve">
     <value>Another V2RayGCon is running, please exit first.</value>
   </data>
+  <data name="SelectServerFirst" xml:space="preserve">
+    <value>Please select ther servers first.</value>
+  </data>
 </root>

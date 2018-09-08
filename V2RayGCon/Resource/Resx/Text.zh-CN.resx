@@ -527,4 +527,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="ExitOtherVGCFirst" xml:space="preserve">
     <value>另一个V2RayGCon正在运行，请先退出。</value>
   </data>
+  <data name="SelectServerFirst" xml:space="preserve">
+    <value>请先选择要进行此操作的服务器</value>
+  </data>
 </root>

@@ -117,6 +117,8 @@ namespace V2RayGCon.Model.UserControls
                         string.Format("{0}:{1}",
                         this.tboxInboundIP.Text,
                         this.tboxInboundPort.Text));
+
+                    MessageBox.Show(I18N("Done"));
                 }),
             });
         }
