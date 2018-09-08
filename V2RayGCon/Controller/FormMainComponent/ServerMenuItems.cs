@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Threading.Tasks;
+using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.FormMainComponent
@@ -21,6 +22,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem deleteSelected,
             ToolStripMenuItem copyAsV2rayLinks,
             ToolStripMenuItem copyAsVmessLinks,
+            ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems)
         {
             setting = Service.Setting.Instance;
@@ -32,11 +34,43 @@ namespace V2RayGCon.Controller.FormMainComponent
                     setting.DeleteAllServer();
             };
 
-            copyAsV2rayLinks.Click += (s, a) => CopySelectedAsV2RayLinks();
-            copyAsVmessLinks.Click += (s, a) => CopySelectedAsVmessLinks();
+            copyAsSubscriptions.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+                CopySelectedAsSubscription();
+            };
+
+            copyAsV2rayLinks.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                CopySelectedAsV2RayLinks();
+            };
+
+            copyAsVmessLinks.Click += (s, a) =>
+            {
+
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                CopySelectedAsVmessLinks();
+            };
 
             deleteSelected.Click += (s, a) =>
             {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
                 if (!Lib.UI.Confirm(I18N("ConfirmDeleteSelectedServers")))
                 {
                     return;
@@ -46,6 +80,11 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             speedTestOnSelected.Click += (s, a) =>
             {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
                 if (!Lib.UI.Confirm(I18N("TestWillTakeALongTime")))
                 {
                     return;
@@ -59,6 +98,11 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             stopSelected.Click += (s, a) =>
             {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
                 if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
                 {
                     setting.StopAllSelectedThen();
@@ -67,6 +111,11 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             restartSelected.Click += (s, a) =>
             {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
                 if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
                 {
                     setting.RestartAllSelected();
@@ -114,6 +163,8 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
 
+
+
         #region public method
         public override bool RefreshUI()
         {
@@ -126,6 +177,17 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+
+        bool CheckSelectedServerCount()
+        {
+            var count = setting.GetSelectedServersCount();
+            if (count <= 0)
+            {
+                Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));
+                return false;
+            }
+            return true;
+        }
 
         void CopySelectedAsV2RayLinks()
         {
@@ -146,10 +208,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 I18N("CopyFail"));
         }
 
-        void CopySelectedAsVmessLinks()
+        string EncodeAllServersIntoVmessLinks()
         {
             var servers = setting.GetServerList();
-            string s = string.Empty;
+            string result = string.Empty;
 
             foreach (var server in servers)
             {
@@ -162,16 +224,31 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (!string.IsNullOrEmpty(vmessLink))
                 {
-                    s += vmessLink + "\r\n";
+                    result += vmessLink + System.Environment.NewLine;
                 }
             }
 
+            return result;
+        }
+
+        void CopySelectedAsSubscription()
+        {
             MessageBox.Show(
-                Lib.Utils.CopyToClipboard(s) ?
+                Lib.Utils.CopyToClipboard(
+                    Lib.Utils.Base64Encode(
+                        EncodeAllServersIntoVmessLinks())) ?
                 I18N("LinksCopied") :
                 I18N("CopyFail"));
         }
 
+        void CopySelectedAsVmessLinks()
+        {
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(
+                    EncodeAllServersIntoVmessLinks()) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
 
         Controller.FormMainComponent.FlyServer GetFlyPanel()
         {

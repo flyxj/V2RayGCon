@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsSubscription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;toolMenuItemCurrentSysProxy.Name" xml:space="preserve">
     <value>toolMenuItemCurrentSysProxy</value>
   </data>
@@ -129,12 +132,9 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="toolStripMenuItemDownLoadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 22</value>
+    <value>286, 30</value>
   </data>
   <data name="&gt;&gt;toolMenuItemImportFromFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItemSpeedTestOnSelected.Text" xml:space="preserve">
@@ -158,6 +158,10 @@
   <data name="&gt;&gt;toolMenuItemRefreshSummary.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
   <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
@@ -171,13 +175,13 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 20</value>
+    <value>56, 22</value>
   </data>
   <data name="toolStripMenuItemRemoveV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 22</value>
+    <value>286, 30</value>
   </data>
   <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>205, 30</value>
   </data>
   <data name="toolMenuItemAbout.Text" xml:space="preserve">
     <value>About</value>
@@ -186,7 +190,7 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>399, 24</value>
+    <value>598, 28</value>
   </data>
   <data name="&gt;&gt;windowToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -206,14 +210,17 @@
   <data name="toolMenuItemQRCode.Text" xml:space="preserve">
     <value>QRCode</value>
   </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>598, 444</value>
+  </data>
   <data name="toolMenuItemImportLinkFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 22</value>
+    <value>277, 30</value>
   </data>
   <data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">
     <value>windowToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;menuStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripMenuItemCopyAsSubscription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
   <data name="toolMenuItemCurrentSysProxy.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -222,7 +229,7 @@
     <value>Main</value>
   </data>
   <data name="toolStripMenuItemStopSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="&gt;&gt;toolMenuItemCurrentSysProxy.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -233,14 +240,11 @@
   <data name="&gt;&gt;toolStripMenuItemDeleteServers.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItemDeleteServers.ToolTipText" xml:space="preserve">
-    <value>Delete selected servers.</value>
-  </data>
   <data name="&gt;&gt;toolMenuItemServer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="&gt;&gt;menuStrip1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -249,22 +253,25 @@
     <value>Restart selected</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 6</value>
+    <value>256, 6</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemRestartSelected.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+    <value>9, 18</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 6</value>
+    <value>256, 6</value>
   </data>
   <data name="toolMenuItemHelp.Text" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="toolStripMenuItemDeleteSelectedServers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 30</value>
+  </data>
   <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 20</value>
+    <value>74, 22</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemDeleteAllServer.Name" xml:space="preserve">
     <value>toolStripMenuItemDeleteAllServer</value>
@@ -289,6 +296,12 @@
   </data>
   <data name="toolStripMenuItemRemoveV2rayCore.Text" xml:space="preserve">
     <value>Remove v2ray-core</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsSubscription.Text" xml:space="preserve">
+    <value>subscription</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsSubscription.Name" xml:space="preserve">
+    <value>toolStripMenuItemCopyAsSubscription</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemDeleteSelectedServers.Name" xml:space="preserve">
     <value>toolStripMenuItemDeleteSelectedServers</value>
@@ -342,7 +355,7 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItemSelectNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FormMain</value>
@@ -354,13 +367,16 @@
     <value>toolStripSeparator2</value>
   </data>
   <data name="flyServerListContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
+    <value>0, 38</value>
   </data>
   <data name="toolMenuItemCurrentSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="toolStripMenuItemSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
+    <value>Encode selected servers as subscription content. </value>
   </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>System proxy</value>
@@ -374,7 +390,6 @@
   <data name="&gt;&gt;toolMenuItemConfigEditor.Name" xml:space="preserve">
     <value>toolMenuItemConfigEditor</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
   </data>
@@ -382,7 +397,7 @@
     <value>systemProxyToolStripMenuItem</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemStopSelected.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -406,10 +421,10 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItemDeleteServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="toolMenuItemRefreshSummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="toolStripMenuItemDeleteSelectedServers.Text" xml:space="preserve">
     <value>Delete selected servers.</value>
@@ -417,23 +432,26 @@
   <data name="menuStrip1.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="&gt;&gt;toolStripMenuItemRestartSelected.Name" xml:space="preserve">
+    <value>toolStripMenuItemRestartSelected</value>
+  </data>
   <data name="toolStripMenuItemSpeedTestOnSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>205, 30</value>
   </data>
   <data name="&gt;&gt;systemProxyToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItemDeleteSelectedServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 22</value>
+  <data name="flyServerListContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="&gt;&gt;toolMenuItemServer.Name" xml:space="preserve">
     <value>toolMenuItemServer</value>
   </data>
   <data name="toolMenuItemCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 22</value>
+    <value>286, 30</value>
   </data>
   <data name="&gt;&gt;toolMenuItemImportLinkFromClipboard.Name" xml:space="preserve">
     <value>toolMenuItemImportLinkFromClipboard</value>
@@ -454,16 +472,19 @@
     <value />
   </data>
   <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>205, 30</value>
   </data>
   <data name="&gt;&gt;toolMenuItemRefreshSummary.Name" xml:space="preserve">
     <value>toolMenuItemRefreshSummary</value>
   </data>
   <data name="flyServerListContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>398, 269</value>
+    <value>596, 402</value>
   </data>
   <data name="toolMenuItemImportFromFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 22</value>
+    <value>277, 30</value>
+  </data>
+  <data name="menuStrip1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>9, 3, 0, 3</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Close</value>
@@ -475,7 +496,7 @@
     <value>toolTip1</value>
   </data>
   <data name="toolMenuItemAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 22</value>
+    <value>286, 30</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemSelectNone.Name" xml:space="preserve">
     <value>toolStripMenuItemSelectNone</value>
@@ -484,13 +505,13 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+    <value>252, 30</value>
   </data>
   <data name="&gt;&gt;toolMenuItemAbout.Name" xml:space="preserve">
     <value>toolMenuItemAbout</value>
   </data>
   <data name="toolStripMenuItemDeleteAllServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>214, 22</value>
+    <value>304, 30</value>
   </data>
   <data name="toolMenuItemSelectAutorunServers.ToolTipText" xml:space="preserve">
     <value>Select all autorun servers.</value>
@@ -504,14 +525,14 @@
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemRestartSelected.Name" xml:space="preserve">
-    <value>toolStripMenuItemRestartSelected</value>
+  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
+    <value>Run speed test on selected servers.</value>
   </data>
   <data name="&gt;&gt;toolMenuItemExportAllServerToFile.Name" xml:space="preserve">
     <value>toolMenuItemExportAllServerToFile</value>
   </data>
   <data name="toolMenuItemSelectAutorunServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -529,10 +550,10 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>205, 30</value>
   </data>
   <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.ToolTipText" xml:space="preserve">
     <value>Restart all selected servers.</value>
@@ -6722,7 +6743,7 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="aboutToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 20</value>
+    <value>65, 22</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Refresh server name/ip/protocol information below.</value>
@@ -6733,9 +6754,6 @@
   <data name="flyServerListContainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
-    <value>Run speed test on selected servers.</value>
-  </data>
   <data name="windowToolStripMenuItem.Text" xml:space="preserve">
     <value>Window</value>
   </data>
@@ -6743,7 +6761,7 @@
     <value>toolMenuItemOptions</value>
   </data>
   <data name="toolMenuItemServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 20</value>
+    <value>74, 22</value>
   </data>
   <data name="&gt;&gt;toolMenuItemClearSysProxy.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -6764,10 +6782,10 @@
     <value>Delete V2RayGCon folder in %ProgramData%.</value>
   </data>
   <data name="toolMenuItemHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 22</value>
+    <value>286, 30</value>
   </data>
   <data name="toolMenuItemClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="toolStripMenuItemStopSelected.ToolTipText" xml:space="preserve">
     <value>Stop all selected servers.</value>
@@ -6778,14 +6796,14 @@
   <data name="&gt;&gt;aboutToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>399, 296</value>
+  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemSelectAll.Name" xml:space="preserve">
     <value>toolStripMenuItemSelectAll</value>
   </data>
   <data name="toolStripMenuItemSelectInvert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 22</value>
+    <value>259, 30</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator8.Name" xml:space="preserve">
     <value>toolStripSeparator8</value>
@@ -6806,7 +6824,7 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 22</value>
+    <value>277, 30</value>
   </data>
   <data name="toolStripMenuItemStopSelected.Text" xml:space="preserve">
     <value>Stop selected</value>
@@ -6815,7 +6833,7 @@
     <value>Select autorun</value>
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 6</value>
+    <value>274, 6</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemDeleteSelectedServers.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -6833,13 +6851,13 @@
     <value>aboutToolStripMenuItem1</value>
   </data>
   <data name="toolMenuItemSimAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 22</value>
+    <value>277, 30</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemDeleteServers.Name" xml:space="preserve">
     <value>toolStripMenuItemDeleteServers</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.ToolTipText" xml:space="preserve">
     <value>Contain all config information.</value>
@@ -6854,13 +6872,16 @@
     <value>Select all</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 6</value>
+    <value>274, 6</value>
   </data>
   <data name="menuStrip1.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 9pt</value>
   </data>
   <data name="toolMenuItemExportAllServerToFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 22</value>
+    <value>277, 30</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 28</value>

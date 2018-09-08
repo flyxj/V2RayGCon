@@ -81,8 +81,8 @@ namespace V2RayGCon.Model.Data
             }
             isTesting = true;
 
-            var list= this.OrderBy(o => o.index)
-                .Where(o=>o.isSelected)
+            var list = this.OrderBy(o => o.index)
+                .Where(o => o.isSelected)
                 .ToList();
 
             Action done = () =>
@@ -98,33 +98,24 @@ namespace V2RayGCon.Model.Data
                 // idx = 0 to count - 1
                 var idx = count - 1 - index;
                 list[idx].DoSpeedTestThen(next);
-                
+
             };
 
             Lib.Utils.ChainActionHelperAsync(count, worker, done);
             return true;
         }
 
-
-        public List<int> GetActiveServersList()
+        public List<Model.Data.ServerItem> GetActiveServersList()
         {
-            var list = new List<int>();
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (this[i].isServerOn)
-                {
-                    list.Add(i);
-                }
-            }
-            return list;
+            return this.Where(s => s.isServerOn).ToList();
         }
 
-        public void StartServersByList(List<int> servers, Action done = null)
+        public void RetartServersByList(List<Model.Data.ServerItem> servers, Action done = null)
         {
             var list = servers;
             Action<int, Action> worker = (index, next) =>
             {
-                this[list[index]].RestartCoreThen(next);
+                list[index].RestartCoreThen(next);
             };
 
             Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
@@ -161,7 +152,6 @@ namespace V2RayGCon.Model.Data
                 }
             };
 
-
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
@@ -178,7 +168,6 @@ namespace V2RayGCon.Model.Data
                     next();
                 }
             };
-
 
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }

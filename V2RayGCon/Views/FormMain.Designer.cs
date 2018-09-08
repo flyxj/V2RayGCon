@@ -53,6 +53,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyAsSubscription = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemDeleteServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -202,7 +203,8 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemCopyAsV2rayLink,
-            this.toolStripMenuItemCopyAsVmessLink});
+            this.toolStripMenuItemCopyAsVmessLink,
+            this.toolStripMenuItemCopyAsSubscription});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             // 
             // toolStripMenuItemCopyAsV2rayLink
@@ -214,6 +216,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemCopyAsVmessLink, "toolStripMenuItemCopyAsVmessLink");
             this.toolStripMenuItemCopyAsVmessLink.Name = "toolStripMenuItemCopyAsVmessLink";
+            // 
+            // toolStripMenuItemCopyAsSubscription
+            // 
+            resources.ApplyResources(this.toolStripMenuItemCopyAsSubscription, "toolStripMenuItemCopyAsSubscription");
+            this.toolStripMenuItemCopyAsSubscription.Name = "toolStripMenuItemCopyAsSubscription";
             // 
             // toolStripSeparator1
             // 
@@ -397,5 +404,6 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem toolStripMenuItemDeleteSelectedServers;
         private ToolStripMenuItem toolStripMenuItemDownLoadV2rayCore;
         private ToolStripMenuItem toolStripMenuItemRemoveV2rayCore;
+        private ToolStripMenuItem toolStripMenuItemCopyAsSubscription;
     }
 }

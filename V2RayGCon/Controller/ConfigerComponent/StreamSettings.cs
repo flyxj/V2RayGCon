@@ -11,13 +11,14 @@ namespace V2RayGCon.Controller.ConfigerComponet
             ComboBox type,
             ComboBox param,
             ComboBox tls,
+            TextBox socksMark,
             RadioButton inbound,
             Button insert)
         {
             cache = Service.Cache.Instance;
             _isServer = false;
 
-            DataBinding(type, param, tls);
+            DataBinding(type, param, tls, socksMark);
             Connect(type, param);
             AttachEvent(inbound, insert);
             InitComboBox(tls, type);
@@ -45,12 +46,20 @@ namespace V2RayGCon.Controller.ConfigerComponet
             set { SetField(ref _tls, value); }
         }
 
+        private string _socksMark;
+        public string socksMark
+        {
+            get { return _socksMark; }
+            set { SetField(ref _socksMark, value); }
+        }
+
         private bool _isServer;
         public bool isServer
         {
             get { return _isServer; }
             set { _isServer = value; }
         }
+
         #endregion
 
         #region public method
@@ -69,6 +78,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
                     prefix,
                     Model.Data.Table.streamSettings[index].optionPath);
 
+            socksMark = GetStr(prefix, "sockopt.mark");
             tls = GetStr(prefix, "security") == "tls" ? 1 : 0;
         }
         #endregion
@@ -134,10 +144,21 @@ namespace V2RayGCon.Controller.ConfigerComponet
             };
         }
 
-        void DataBinding(ComboBox type, ComboBox param, ComboBox tls)
+        void DataBinding(
+            ComboBox type,
+            ComboBox param,
+            ComboBox tls,
+            TextBox socksMark)
         {
             var bs = new BindingSource();
             bs.DataSource = this;
+
+            socksMark.DataBindings.Add(
+                nameof(TextBox.Text),
+                bs,
+                nameof(this.socksMark),
+                true,
+                DataSourceUpdateMode.OnValidation);
 
             type.DataBindings.Add(
                 nameof(ComboBox.SelectedIndex),
@@ -198,6 +219,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
 
             InsertTLSSettings(tpl);
+            InsertSocksMark(tpl);
             return tpl;
         }
 
@@ -219,12 +241,22 @@ namespace V2RayGCon.Controller.ConfigerComponet
             return -1;
         }
 
+        void InsertSocksMark(JToken streamSettings)
+        {
+            var mark = Lib.Utils.Str2Int(this.socksMark);
+            if (mark <= 0)
+            {
+                return;
+            }
+            streamSettings["sockopt"] = JToken.Parse(@"{mark:" + mark.ToString() + @"}");
+        }
+
         void InsertTLSSettings(JToken streamSettings)
         {
             var tlsTpl = cache.tpl.LoadTemplate("tls");
             if (tls <= 0)
             {
-                streamSettings["security"] = string.Empty;
+                streamSettings["security"] = "none";
             }
             else
             {

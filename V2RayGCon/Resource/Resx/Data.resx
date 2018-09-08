@@ -221,4 +221,7 @@
   <data name="SpeedTestUrl" xml:space="preserve">
     <value>https://www.google.com</value>
   </data>
+  <data name="BugFileName" xml:space="preserve">
+    <value>bug.txt</value>
+  </data>
 </root>

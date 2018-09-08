@@ -174,6 +174,12 @@
   <data name="toolStripMenuItemCopyAsVmessLink.ToolTipText" xml:space="preserve">
     <value>包含主要配置信息</value>
   </data>
+  <data name="toolStripMenuItemCopyAsSubscription.Text" xml:space="preserve">
+    <value>订阅内容</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
+    <value>将选中服务器编码为订阅内容</value>
+  </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>复制选中</value>
   </data>

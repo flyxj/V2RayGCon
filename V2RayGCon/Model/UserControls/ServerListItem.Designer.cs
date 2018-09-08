@@ -37,19 +37,22 @@
             this.chkImport = new System.Windows.Forms.CheckBox();
             this.tboxInboundIP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnAction = new System.Windows.Forms.Button();
+            this.btnMore = new System.Windows.Forms.Button();
             this.lbRunning = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tboxInboundPort = new System.Windows.Forms.TextBox();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
             this.chkSelected = new System.Windows.Forms.CheckBox();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbSummary
             // 
-            resources.ApplyResources(this.lbSummary, "lbSummary");
+            this.lbSummary.AutoEllipsis = true;
             this.lbSummary.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbSummary, "lbSummary");
             this.lbSummary.Name = "lbSummary";
             this.toolTip1.SetToolTip(this.lbSummary, resources.GetString("lbSummary.ToolTip"));
             this.lbSummary.Click += new System.EventHandler(this.lbSummary_Click);
@@ -103,13 +106,13 @@
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Name = "label2";
             // 
-            // btnAction
+            // btnMore
             // 
-            this.btnAction.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.btnAction, "btnAction");
-            this.btnAction.Name = "btnAction";
-            this.btnAction.UseVisualStyleBackColor = true;
-            this.btnAction.Click += new System.EventHandler(this.btnAction_Click);
+            this.btnMore.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnMore, "btnMore");
+            this.btnMore.Name = "btnMore";
+            this.btnMore.UseVisualStyleBackColor = true;
+            this.btnMore.Click += new System.EventHandler(this.btnAction_Click);
             // 
             // lbRunning
             // 
@@ -144,6 +147,24 @@
             this.chkSelected.UseVisualStyleBackColor = true;
             this.chkSelected.CheckedChanged += new System.EventHandler(this.chkSelected_CheckedChanged);
             // 
+            // btnStop
+            // 
+            this.btnStop.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnStop, "btnStop");
+            this.btnStop.Name = "btnStop";
+            this.toolTip1.SetToolTip(this.btnStop, resources.GetString("btnStop.ToolTip"));
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnStart
+            // 
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnStart, "btnStart");
+            this.btnStart.Name = "btnStart";
+            this.toolTip1.SetToolTip(this.btnStart, resources.GetString("btnStart.ToolTip"));
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
@@ -155,11 +176,13 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.btnStart);
+            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.chkSelected);
             this.Controls.Add(this.chkAutoRun);
             this.Controls.Add(this.tboxInboundPort);
             this.Controls.Add(this.tboxInboundIP);
-            this.Controls.Add(this.btnAction);
+            this.Controls.Add(this.btnMore);
             this.Controls.Add(this.chkImport);
             this.Controls.Add(this.cboxInbound);
             this.Controls.Add(this.label3);
@@ -186,12 +209,14 @@
         private System.Windows.Forms.CheckBox chkImport;
         private System.Windows.Forms.TextBox tboxInboundIP;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnAction;
+        private System.Windows.Forms.Button btnMore;
         private System.Windows.Forms.Label lbRunning;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tboxInboundPort;
         private System.Windows.Forms.CheckBox chkAutoRun;
         private System.Windows.Forms.CheckBox chkSelected;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnStart;
     }
 }

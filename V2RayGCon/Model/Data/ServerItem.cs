@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,7 +49,8 @@ namespace V2RayGCon.Model.Data
         public Model.BaseClass.CoreServer server;
 
         [JsonIgnore]
-        Queue<string> _logCache = new Queue<string>();
+        ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
+
         [JsonIgnore]
         public string logCache
         {
@@ -61,9 +63,10 @@ namespace V2RayGCon.Model.Data
                 // keep 200 lines of log
                 if (_logCache.Count > 300)
                 {
+                    var blackHole = "";
                     for (var i = 0; i < 100; i++)
                     {
-                        _logCache.Dequeue();
+                        _logCache.TryDequeue(out blackHole);
                     }
                 }
                 _logCache.Enqueue(value);
@@ -135,7 +138,9 @@ namespace V2RayGCon.Model.Data
             }
 
             var url = StrConst("SpeedTestUrl");
-            log(I18N("Testing") + url);
+            var text = I18N("Testing") + " ...";
+            log(text);
+            SendLog(url);
 
             var speedTester = new Model.BaseClass.CoreServer();
             speedTester.OnLog += OnLogHandler;
@@ -147,11 +152,11 @@ namespace V2RayGCon.Model.Data
 
                 var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
 
-                var msg = string.Format("{0}:{1}",
+                text = string.Format("{0}:{1}",
                     I18N("VisitWebPageTest"),
                     time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
 
-                log(msg);
+                log(text);
                 speedTester.StopCoreThen(() =>
                 {
                     speedTester.OnLog -= OnLogHandler;
@@ -299,6 +304,7 @@ namespace V2RayGCon.Model.Data
                     UpdateSummary(JObject.Parse(configString));
                 }
 
+                this.status = string.Empty;
                 InvokeEventOnPropertyChange();
                 lambda?.Invoke();
             });
@@ -380,29 +386,33 @@ namespace V2RayGCon.Model.Data
 
         public void GetProxyAddrThen(Action<string> next)
         {
-            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP)
+            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
+                || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
             {
-                next("http://" + inboundIP + ":" + inboundPort);
-                return;
-            }
-            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
-            {
-                next("socks5://" + inboundIP + ":" + inboundPort);
+                next(string.Format(
+                    "[{0}] {1}://{2}:{3}",
+                    this.name,
+                    Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType],
+                    this.inboundIP,
+                    this.inboundPort));
                 return;
             }
 
+            var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
                 var cfg = GetDecodedConfig(true);
                 var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
                 var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
                 var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
+
                 if (string.IsNullOrEmpty(listen))
                 {
-                    next(protocol);
+                    next(string.Format("[{0}] {1}", serverName, protocol));
                     return;
                 }
-                next(protocol + "://" + listen + ":" + port);
+
+                next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
             });
         }
         #endregion
@@ -540,7 +550,7 @@ namespace V2RayGCon.Model.Data
             var summary = string.Format("[{0}] {1}", name, Lib.Utils.GetSummaryFromConfig(config));
 
             this.name = name;
-            this.summary = Lib.Utils.CutStr(summary, 39);
+            this.summary = Lib.Utils.CutStr(summary, 50);
         }
 
 

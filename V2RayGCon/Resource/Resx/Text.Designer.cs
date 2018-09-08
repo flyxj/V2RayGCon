@@ -668,6 +668,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Another V2RayGCon is running, please exit first. 的本地化字符串。
+        /// </summary>
+        internal static string ExitOtherVGCFirst {
+            get {
+                return ResourceManager.GetString("ExitOtherVGCFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The file is in use. Please close v2ray-core first. 的本地化字符串。
         /// </summary>
         internal static string FileInUse {
@@ -835,6 +844,16 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Log {
             get {
                 return ResourceManager.GetString("Log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Looks like you found a bug.
+        ///Please send the following file to the author. 的本地化字符串。
+        /// </summary>
+        internal static string LooksLikeABug {
+            get {
+                return ResourceManager.GetString("LooksLikeABug", resourceCulture);
             }
         }
         
@@ -1016,6 +1035,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ScanQRCode {
             get {
                 return ResourceManager.GetString("ScanQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please select ther servers first. 的本地化字符串。
+        /// </summary>
+        internal static string SelectServerFirst {
+            get {
+                return ResourceManager.GetString("SelectServerFirst", resourceCulture);
             }
         }
         

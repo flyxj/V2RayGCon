@@ -15,7 +15,6 @@ namespace V2RayGCon.Service
         string _version;
         WebClient client;
 
-
         public Downloader()
         {
             setting = Setting.Instance;
@@ -93,7 +92,6 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-
         void UpdateCore()
         {
             var servers = setting.GetActiveServerList();
@@ -104,7 +102,7 @@ namespace V2RayGCon.Service
                 NotifyDownloadResults(status);
                 if (servers.Count > 0)
                 {
-                    setting.StartServersByList(servers);
+                    setting.RestartServersByList(servers);
                 }
             });
         }

@@ -270,6 +270,7 @@ namespace V2RayGCon.Views
                     cboxStreamType,
                     cboxStreamParam,
                     cboxStreamTLS,
+                    tboxStreamSocksMark,
                     rbtnStreamInbound,
                     btnInsertStream),
 
