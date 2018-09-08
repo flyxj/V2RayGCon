@@ -34,6 +34,8 @@
             this.tabCtrlToolPanel = new System.Windows.Forms.TabControl();
             this.vmess = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tboxStreamSocksMark = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.cboxStreamTLS = new System.Windows.Forms.ComboBox();
             this.rbtnStreamOutbound = new System.Windows.Forms.RadioButton();
             this.rbtnStreamInbound = new System.Windows.Forms.RadioButton();
@@ -190,6 +192,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.tboxStreamSocksMark);
+            this.groupBox2.Controls.Add(this.label23);
             this.groupBox2.Controls.Add(this.cboxStreamTLS);
             this.groupBox2.Controls.Add(this.rbtnStreamOutbound);
             this.groupBox2.Controls.Add(this.rbtnStreamInbound);
@@ -202,6 +206,17 @@
             resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // tboxStreamSocksMark
+            // 
+            resources.ApplyResources(this.tboxStreamSocksMark, "tboxStreamSocksMark");
+            this.tboxStreamSocksMark.Name = "tboxStreamSocksMark";
+            this.toolTip1.SetToolTip(this.tboxStreamSocksMark, resources.GetString("tboxStreamSocksMark.ToolTip"));
+            // 
+            // label23
+            // 
+            resources.ApplyResources(this.label23, "label23");
+            this.label23.Name = "label23";
             // 
             // cboxStreamTLS
             // 
@@ -1038,5 +1053,7 @@
         private System.Windows.Forms.Button btnInsertImport;
         private System.Windows.Forms.ComboBox cboxImportAlias;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox tboxStreamSocksMark;
+        private System.Windows.Forms.Label label23;
     }
 }
