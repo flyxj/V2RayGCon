@@ -534,4 +534,7 @@ Are you sure you want to continue?</value>
   <data name="ServersAreRunning" xml:space="preserve">
     <value>servers are running.</value>
   </data>
+  <data name="ExitOtherVGCFirst" xml:space="preserve">
+    <value>Another V2RayGCon is running, please exit first.</value>
+  </data>
 </root>

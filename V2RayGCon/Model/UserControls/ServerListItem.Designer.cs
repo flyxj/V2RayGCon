@@ -50,8 +50,9 @@
             // 
             // lbSummary
             // 
-            resources.ApplyResources(this.lbSummary, "lbSummary");
+            this.lbSummary.AutoEllipsis = true;
             this.lbSummary.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbSummary, "lbSummary");
             this.lbSummary.Name = "lbSummary";
             this.toolTip1.SetToolTip(this.lbSummary, resources.GetString("lbSummary.ToolTip"));
             this.lbSummary.Click += new System.EventHandler(this.lbSummary_Click);
@@ -148,6 +149,7 @@
             // 
             // btnStop
             // 
+            this.btnStop.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnStop, "btnStop");
             this.btnStop.Name = "btnStop";
             this.toolTip1.SetToolTip(this.btnStop, resources.GetString("btnStop.ToolTip"));
@@ -156,6 +158,7 @@
             // 
             // btnStart
             // 
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnStart, "btnStart");
             this.btnStart.Name = "btnStart";
             this.toolTip1.SetToolTip(this.btnStart, resources.GetString("btnStart.ToolTip"));

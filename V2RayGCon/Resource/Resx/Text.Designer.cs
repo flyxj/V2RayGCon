@@ -668,6 +668,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Another V2RayGCon is running, please exit first. 的本地化字符串。
+        /// </summary>
+        internal static string ExitOtherVGCFirst {
+            get {
+                return ResourceManager.GetString("ExitOtherVGCFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The file is in use. Please close v2ray-core first. 的本地化字符串。
         /// </summary>
         internal static string FileInUse {

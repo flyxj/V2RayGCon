@@ -301,6 +301,7 @@ namespace V2RayGCon.Model.Data
                     UpdateSummary(JObject.Parse(configString));
                 }
 
+                this.status = string.Empty;
                 InvokeEventOnPropertyChange();
                 lambda?.Invoke();
             });
@@ -546,7 +547,7 @@ namespace V2RayGCon.Model.Data
             var summary = string.Format("[{0}] {1}", name, Lib.Utils.GetSummaryFromConfig(config));
 
             this.name = name;
-            this.summary = Lib.Utils.CutStr(summary, 39);
+            this.summary = Lib.Utils.CutStr(summary, 50);
         }
 
 
