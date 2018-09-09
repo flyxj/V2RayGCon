@@ -67,6 +67,13 @@ namespace V2RayGCon.Service
 #endif
         #endregion
 
+        #region public method
+        public string GetLogCache()
+        {
+            return setting.logCache;
+        }
+        #endregion
+
         #region private method
 
         void CreateNotifyIcon()
