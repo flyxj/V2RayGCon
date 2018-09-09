@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace V2RayGCon.Model.Data
             OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        private void SendLog(object sender, Model.Data.StrEvent arg)
+        private void OnSendLogHandler(object sender, Model.Data.StrEvent arg)
         {
             OnLog?.Invoke(this, arg);
         }
@@ -70,9 +71,81 @@ namespace V2RayGCon.Model.Data
         {
             Notify();
         }
+
+        JObject Config2Package(string configString, string id, int portBase, int index, string tagPrefix)
+        {
+            var cache = Service.Cache.Instance;
+            var pkg = cache.tpl.LoadPackage("package");
+            var config = Lib.ImportParser.Parse(configString);
+
+            var tagin = tagPrefix + "in" + index.ToString();
+            var tagout = tagPrefix + "out" + index.ToString();
+            var port = portBase + index;
+
+            pkg["routing"]["settings"]["rules"][0]["inboundTag"][0] = tagin;
+            pkg["routing"]["settings"]["rules"][0]["outboundTag"] = tagout;
+
+            pkg["inboundDetour"][0]["port"] = port;
+            pkg["inboundDetour"][0]["tag"] = tagin;
+            pkg["inboundDetour"][0]["settings"]["port"] = port;
+            pkg["inboundDetour"][0]["settings"]["clients"][0]["id"] = id;
+
+            pkg["outboundDetour"][0]["protocol"] = config["outbound"]["protocol"];
+            pkg["outboundDetour"][0]["tag"] = tagout;
+            pkg["outboundDetour"][0]["settings"] = config["outbound"]["settings"];
+            pkg["outboundDetour"][0]["streamSettings"] = config["outbound"]["streamSettings"];
+
+            return pkg;
+        }
+
+        JObject CreateVnext(int index, int port, string id)
+        {
+            var vnext = Service.Cache.Instance.tpl.LoadPackage("vnext");
+            vnext["outbound"]["settings"]["vnext"][0]["port"] = port + index;
+            vnext["outbound"]["settings"]["vnext"][0]["users"][0]["id"] = id;
+            return vnext;
+        }
         #endregion
 
         #region public method
+        public void PackSelectedServers()
+        {
+            var cache = Service.Cache.Instance;
+            var list = this.Where(s => s.isSelected).OrderByDescending(s => s.index).ToList();
+            var container = JObject.Parse(@"{}");
+            var id = Guid.NewGuid().ToString();
+            var port = Lib.Utils.Str2Int(StrConst("PacmanInitPort"));
+            var tagPrefix = StrConst("PacmanTagPrefix");
+
+            Action done = () =>
+            {
+                var config = cache.tpl.LoadPackage("main");
+                Lib.Utils.UnionJson(ref config, container);
+                OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageDone")));
+                AddServer(config.ToString(Formatting.None));
+            };
+
+            Action<int, Action> worker = (index, next) =>
+            {
+                var server = list[index];
+                try
+                {
+                    var pack = Config2Package(server.config, id, port, index, tagPrefix);
+                    Lib.Utils.UnionJson(ref container, pack);
+                    var vnext = CreateVnext(index, port, id);
+                    Lib.Utils.UnionJson(ref container, vnext);
+                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageSuccess") + ": " + server.name));
+                }
+                catch
+                {
+                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageFail") + ": " + server.name));
+                }
+                next();
+            };
+
+            Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
+        }
+
         public bool DoSpeedTestOnSelectedServers()
         {
             if (isTesting)
@@ -88,7 +161,7 @@ namespace V2RayGCon.Model.Data
             Action done = () =>
             {
                 this.isTesting = false;
-                SendLog(this, new StrEvent(I18N("SpeedTestFinished")));
+                OnSendLogHandler(this, new StrEvent(I18N("SpeedTestFinished")));
             };
 
             var count = list.Count;
@@ -338,7 +411,7 @@ namespace V2RayGCon.Model.Data
 
         public void BindEventTo(Model.Data.ServerItem server)
         {
-            server.OnLog += SendLog;
+            server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += SaveChanges;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
             server.OnRequireDeleteServer += DeleteServerHandler;
@@ -346,7 +419,7 @@ namespace V2RayGCon.Model.Data
 
         public void ReleaseEventFrom(Model.Data.ServerItem server)
         {
-            server.OnLog -= SendLog;
+            server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= SaveChanges;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
             server.OnRequireDeleteServer -= DeleteServerHandler;

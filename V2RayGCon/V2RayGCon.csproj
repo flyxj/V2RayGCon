@@ -378,6 +378,7 @@
   <ItemGroup>
     <Content Include="icon_dark.ico" />
     <None Include="Resource\Config\config_def.txt" />
+    <Content Include="Resource\Config\config_pkg.txt" />
     <Content Include="Resource\Config\config_tpl.txt" />
     <None Include="Resource\Config\config_min.txt" />
   </ItemGroup>

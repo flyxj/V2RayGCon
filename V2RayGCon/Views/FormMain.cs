@@ -96,7 +96,8 @@ namespace V2RayGCon.Views
                 toolStripMenuItemCopyAsV2rayLink,
                 toolStripMenuItemCopyAsVmessLink,
                 toolStripMenuItemCopyAsSubscription,
-                toolStripMenuItemDeleteAllServer));
+                toolStripMenuItemDeleteAllServer,
+                toolStripMenuItemPackSelectedServers));
 
             return ctrl;
         }

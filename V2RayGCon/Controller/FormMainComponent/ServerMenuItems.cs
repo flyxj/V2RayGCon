@@ -23,10 +23,16 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem copyAsV2rayLinks,
             ToolStripMenuItem copyAsVmessLinks,
             ToolStripMenuItem copyAsSubscriptions,
-            ToolStripMenuItem deleteAllItems)
+            ToolStripMenuItem deleteAllItems,
+            ToolStripMenuItem packSelected)
         {
             setting = Service.Setting.Instance;
             cache = Service.Cache.Instance;
+
+            packSelected.Click += (s, a) =>
+            {
+                setting.PackSelectedServers();
+            };
 
             deleteAllItems.Click += (s, a) =>
             {
@@ -161,9 +167,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 setting.UpdateAllServersSummary();
             };
         }
-
-
-
 
         #region public method
         public override bool RefreshUI()

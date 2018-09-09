@@ -270,7 +270,7 @@ namespace V2RayGCon.Lib
             });
         }
 
-        static void UnionJson(ref JObject body, JObject mixin)
+        public static void UnionJson(ref JObject body, JObject mixin)
         {
             body.Merge(mixin, new JsonMergeSettings
             {

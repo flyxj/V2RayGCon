@@ -183,6 +183,12 @@
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>复制选中</value>
   </data>
+  <data name="toolStripMenuItemPackSelectedServers.Text" xml:space="preserve">
+    <value>打包选中</value>
+  </data>
+  <data name="toolStripMenuItemPackSelectedServers.ToolTipText" xml:space="preserve">
+    <value>将选中服务器打包成一个服务器</value>
+  </data>
   <data name="toolStripMenuItemDeleteAllServer.Text" xml:space="preserve">
     <value>删除全部</value>
   </data>

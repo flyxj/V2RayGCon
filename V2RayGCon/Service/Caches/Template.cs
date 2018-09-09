@@ -6,15 +6,22 @@ namespace V2RayGCon.Service.Caches
 {
     public class Template
     {
-        JObject template, example;
+        JObject template, example, package;
 
         public Template()
         {
             template = JObject.Parse(StrConst("config_tpl"));
             example = JObject.Parse(StrConst("config_def"));
+            package = JObject.Parse(StrConst("config_pkg"));
         }
 
         #region public method
+        public JObject LoadPackage(string key)
+        {
+            var node = LoadJObjectPart(package, key);
+            return JObject.Parse(node.ToString());
+        }
+
         public JToken LoadTemplate(string key)
         {
             var node = LoadJObjectPart(template, key);
