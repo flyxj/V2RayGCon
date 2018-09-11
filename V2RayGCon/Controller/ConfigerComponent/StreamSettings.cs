@@ -17,9 +17,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             cache = Service.Cache.Instance;
             isServer = false;
-            isUseTls = false;
-            isUseSockopt = false;
-
             DataBinding(type, param, tls, sockopt);
             Connect(type, param);
             AttachEvent(inbound, insert);
@@ -242,15 +239,10 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             if (isUseSockopt)
             {
-                streamSettings["sockopt"] = JToken.Parse(@"{mark:0,tcpFastOpen:false}");
+                streamSettings["sockopt"] =
+                    JToken.Parse(@"{mark:0,tcpFastOpen:true}");
                 return;
             }
-
-            try
-            {
-                Lib.Utils.RemoveKeyFromJObject(streamSettings as JObject, "sockopt");
-            }
-            catch { }
         }
 
         void InsertTLSSettings(JToken streamSettings)
