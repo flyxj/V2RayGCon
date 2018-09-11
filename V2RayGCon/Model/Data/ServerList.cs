@@ -3,6 +3,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -164,23 +166,20 @@ namespace V2RayGCon.Model.Data
                 .Where(o => o.isSelected)
                 .ToList();
 
-            Action done = () =>
+            Task.Factory.StartNew(() =>
             {
-                this.isTesting = false;
+                Lib.Utils.ExecuteInParallel<ServerItem, bool>(list, (server) =>
+                {
+                    AutoResetEvent finished = new AutoResetEvent(false);
+                    server.DoSpeedTestThen(() => finished.Set());
+                    finished.WaitOne(30000);
+                    return true;
+                });
+
+                isTesting = false;
                 OnSendLogHandler(this, new StrEvent(I18N("SpeedTestFinished")));
-            };
+            });
 
-            var count = list.Count;
-
-            Action<int, Action> worker = (index, next) =>
-            {
-                // idx = 0 to count - 1
-                var idx = count - 1 - index;
-                list[idx].DoSpeedTestThen(next);
-
-            };
-
-            Lib.Utils.ChainActionHelperAsync(count, worker, done);
             return true;
         }
 
