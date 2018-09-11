@@ -146,6 +146,11 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public string GetConfig()
+        {
+            return serverItem.config;
+        }
+
         public bool GetAutorunStatus()
         {
             return serverItem.isAutoRun;
