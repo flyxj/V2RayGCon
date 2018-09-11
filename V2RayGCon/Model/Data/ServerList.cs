@@ -112,7 +112,10 @@ namespace V2RayGCon.Model.Data
         {
             var cache = Service.Cache.Instance;
             var list = this.Where(s => s.isSelected).OrderByDescending(s => s.index).ToList();
-            var container = JObject.Parse(@"{}");
+
+            var package = JObject.Parse(@"{}");
+            var serverNameList = new List<string>();
+
             var id = Guid.NewGuid().ToString();
             var port = Lib.Utils.Str2Int(StrConst("PacmanInitPort"));
             var tagPrefix = StrConst("PacmanTagPrefix");
@@ -120,7 +123,9 @@ namespace V2RayGCon.Model.Data
             Action done = () =>
             {
                 var config = cache.tpl.LoadPackage("main");
-                Lib.Utils.UnionJson(ref config, container);
+                config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
+
+                Lib.Utils.UnionJson(ref config, package);
                 OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageDone")));
                 AddServer(config.ToString(Formatting.None));
             };
@@ -131,9 +136,10 @@ namespace V2RayGCon.Model.Data
                 try
                 {
                     var pack = Config2Package(server.config, id, port, index, tagPrefix);
-                    Lib.Utils.UnionJson(ref container, pack);
+                    Lib.Utils.UnionJson(ref package, pack);
                     var vnext = CreateVnext(index, port, id);
-                    Lib.Utils.UnionJson(ref container, vnext);
+                    Lib.Utils.UnionJson(ref package, vnext);
+                    serverNameList.Add(server.name);
                     OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageSuccess") + ": " + server.name));
                 }
                 catch
