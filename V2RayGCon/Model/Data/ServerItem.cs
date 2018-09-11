@@ -101,7 +101,7 @@ namespace V2RayGCon.Model.Data
             void log(string msg)
             {
                 SendLog(msg);
-                SetStatus(msg);
+                SetPropertyOnDemand(ref status, msg);
             }
 
             void error(string msg)
@@ -170,82 +170,19 @@ namespace V2RayGCon.Model.Data
             OnRequireDeleteServer?.Invoke(this, new StrEvent(config));
         }
 
-        public void SetInboundIP(string ip)
+        public void SetPropertyOnDemand(ref string property, string value, bool isNeedCoreStopped = false)
         {
-            // prevent infinite prompt
-            if (this.inboundIP == ip)
-            {
-                return;
-            }
-
-            if (NeedStopCoreFirst())
-            {
-                InvokeEventOnPropertyChange(); // refresh ui
-                return;
-            }
-
-            inboundIP = ip;
-            InvokeEventOnPropertyChange();
+            SetPropertyOnDemand<string>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetInboundPort(string port)
+        public void SetPropertyOnDemand(ref int property, int value, bool isNeedCoreStopped = false)
         {
-            var p = Lib.Utils.Str2Int(port);
-            if (inboundPort == p)
-            {
-                return;
-            }
-
-            if (NeedStopCoreFirst())
-            {
-                InvokeEventOnPropertyChange();
-                return;
-            }
-
-            inboundPort = p;
-            InvokeEventOnPropertyChange();
+            SetPropertyOnDemand<int>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetStatus(string status)
+        public void SetPropertyOnDemand(ref bool property, bool value, bool isNeedCoreStopped = false)
         {
-            if (this.status == status)
-            {
-                return;
-            }
-            this.status = status;
-            InvokeEventOnPropertyChange();
-        }
-
-        public void SetIndex(int index)
-        {
-            if (this.index == index)
-            {
-                return;
-            }
-            this.index = index;
-            InvokeEventOnPropertyChange();
-        }
-
-        public void SetSelected(bool selected)
-        {
-            if (this.isSelected == selected)
-            {
-                return;
-            }
-
-            this.isSelected = selected;
-            InvokeEventOnPropertyChange();
-        }
-
-        public void SetAutoRun(bool autorun)
-        {
-            if (this.isAutoRun == autorun)
-            {
-                return;
-            }
-
-            this.isAutoRun = autorun;
-            InvokeEventOnPropertyChange();
+            SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
         public void SetInjectImport(bool import)
@@ -418,6 +355,29 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region private method
+        void SetPropertyOnDemand<T>(
+            ref T property,
+            T value,
+            bool isNeedCoreStopped)
+        {
+            if (EqualityComparer<T>.Default.Equals(property, value))
+            {
+                return;
+            }
+
+            if (isNeedCoreStopped)
+            {
+                if (NeedStopCoreFirst())
+                {
+                    InvokeEventOnPropertyChange(); // refresh ui
+                    return;
+                }
+            }
+
+            property = value;
+            InvokeEventOnPropertyChange();
+        }
+
         JObject GetDecodedConfig(bool isUseCache = false)
         {
             var cache = Service.Cache.Instance.core;

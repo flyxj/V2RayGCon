@@ -19,42 +19,38 @@ namespace V2RayGCon.Lib
         #region public method
         public static bool UpdateControlOnDemand(Control control, int value)
         {
-            if (control.GetType().Name != nameof(ComboBox))
+            switch (control)
             {
-                throw new ArgumentException("Unsupported control type");
+                case ComboBox cbox:
+                    if (cbox.SelectedIndex == value)
+                    {
+                        return false;
+                    }
+                    cbox.SelectedIndex = value;
+                    return true;
             }
 
-            var c = control as ComboBox;
-            if (c.SelectedIndex == value)
-            {
-                return false;
-            }
-
-            c.SelectedIndex = value;
-            return true;
+            throw new ArgumentException("Unsupported control type");
         }
 
         public static bool UpdateControlOnDemand(Control control, bool value)
         {
-            if (control.GetType().Name != nameof(CheckBox))
+            switch (control)
             {
-                throw new ArgumentException("Unsupported control type");
+                case CheckBox chk:
+                    if (chk.Checked == value)
+                    {
+                        return false;
+                    }
+                    chk.Checked = value;
+                    return true;
             }
-
-            var c = control as CheckBox;
-            if (c.Checked == value)
-            {
-                return false;
-            }
-
-            c.Checked = value;
-            return true;
+            throw new ArgumentException("Unsupported control type");
         }
 
         public static bool UpdateControlOnDemand(Control control, string value)
         {
-            var ctrlName = control.GetType().Name;
-            if (ctrlName != nameof(Label) && ctrlName != nameof(TextBox))
+            if (!(control is TextBox) && !(control is Label))
             {
                 throw new ArgumentException("Unsupported control type");
             }
