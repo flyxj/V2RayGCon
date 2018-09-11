@@ -59,6 +59,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 }
                 else
                 {
+                    RemoveAllConrols();
                     LoadWelcomeItem();
                     return;
                 }
@@ -93,6 +94,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     control.Cleanup();
                     flyPanel.Controls.Remove(control);
+                    control.Dispose();
                 }
                 serverList.RemoveAll(s => s.config == config);
             }
