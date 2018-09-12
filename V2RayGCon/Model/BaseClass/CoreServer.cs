@@ -29,18 +29,32 @@ namespace V2RayGCon.Model.BaseClass
         #endregion
 
         public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler OnCoreStatusChanged;
+        event EventHandler OnCoreReady;
 
-        Action StatusChangedCallback;
         Process v2rayCore;
-        bool _isRunning;
         static object coreLock = new object();
 
         public CoreServer()
         {
             isRunning = false;
+            isCheckCoreReady = false;
             v2rayCore = null;
-            StatusChangedCallback = null;
         }
+
+        #region property
+        public bool isRunning
+        {
+            get;
+            private set;
+        }
+
+        bool isCheckCoreReady
+        {
+            get;
+            set;
+        }
+        #endregion
 
         #region public method
         public string GetCoreVersion()
@@ -108,15 +122,8 @@ namespace V2RayGCon.Model.BaseClass
             return string.Empty;
         }
 
-        public bool isRunning
-        {
-            get => _isRunning;
-            private set => _isRunning = value;
-        }
-
         public void RestartCoreThen(
             string config,
-            Action OnStatusChanged = null,
             Action next = null,
             Dictionary<string, string> env = null)
         {
@@ -127,7 +134,6 @@ namespace V2RayGCon.Model.BaseClass
                     StopCore();
                 }
 
-                this.StatusChangedCallback = OnStatusChanged;
                 if (IsExecutableExist())
                 {
                     StartCore(config, env);
@@ -137,7 +143,7 @@ namespace V2RayGCon.Model.BaseClass
                     Task.Factory.StartNew(() => MessageBox.Show(I18N("ExeNotFound")));
                 }
             }
-            InvokeActionIgnoreError(OnStatusChanged);
+            InvokeEventOnCoreStatusChanged();
             InvokeActionIgnoreError(next);
         }
 
@@ -145,45 +151,83 @@ namespace V2RayGCon.Model.BaseClass
         {
             lock (coreLock)
             {
-                if (v2rayCore != null && isRunning)
-                {
-                    StopCore();
-                }
+                StopCore();
             }
-
             InvokeActionIgnoreError(next);
         }
         #endregion
 
         #region private method
+
+        void InvokeEventOnCoreReady()
+        {
+            try
+            {
+                OnCoreReady?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
+        void InvokeEventOnCoreStatusChanged()
+        {
+            try
+            {
+                OnCoreStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         void StopCore()
         {
+            try
+            {
+                if (v2rayCore == null || v2rayCore.HasExited)
+                {
+                    isRunning = false;
+                    return;
+                }
+            }
+            catch
+            {
+                // if core closed, calling HasExited will throw exception
+                isRunning = false;
+                return;
+            }
+
             var kill = true;
 
-            if (AttachConsole((uint)v2rayCore.Id))
+            try
             {
-                AutoResetEvent finished = new AutoResetEvent(false);
-                v2rayCore.Exited += (s, a) =>
+                if (AttachConsole((uint)v2rayCore.Id))
                 {
-                    v2rayCore.Close();
-                    finished.Set();
-                };
-                SetConsoleCtrlHandler(null, true);
-                GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+                    AutoResetEvent finished = new AutoResetEvent(false);
+                    v2rayCore.Exited += (s, a) =>
+                    {
+                        v2rayCore.Close();
+                        finished.Set();
+                    };
+                    SetConsoleCtrlHandler(null, true);
+                    GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
 
-                if (finished.WaitOne(3000))
-                {
-                    kill = false;
+                    if (finished.WaitOne(3000))
+                    {
+                        kill = false;
+                    }
+                    FreeConsole();
+                    SetConsoleCtrlHandler(null, false);
                 }
-                FreeConsole();
-                SetConsoleCtrlHandler(null, false);
             }
+            catch { }
 
 
             if (kill)
             {
-                // kill if not able to attach to process
-                KillCore();
+                try
+                {
+                    // kill if not able to attach to process
+                    KillCore();
+                }
+                catch { }
             }
             isRunning = false;
         }
@@ -199,11 +243,7 @@ namespace V2RayGCon.Model.BaseClass
                 finished.Set();
             };
 
-            try
-            {
-                Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
-            }
-            catch { }
+            Lib.Utils.KillProcessAndChildrens(v2rayCore.Id);
             finished.WaitOne(2000);
         }
 
@@ -247,7 +287,6 @@ namespace V2RayGCon.Model.BaseClass
             {
                 procEnv[env.Key] = env.Value;
             }
-
         }
 
         void OnCoreExisted(object sender, EventArgs args)
@@ -267,8 +306,7 @@ namespace V2RayGCon.Model.BaseClass
 
             // SendLog("Exit code: " + err);
             isRunning = false;
-
-            InvokeActionIgnoreError(this.StatusChangedCallback);
+            InvokeEventOnCoreStatusChanged();
         }
 
         void BindEvents(Process proc)
@@ -291,29 +329,57 @@ namespace V2RayGCon.Model.BaseClass
             v2rayCore = CreateProcess();
             InjectEnv(v2rayCore, envs);
             BindEvents(v2rayCore);
+
+            AutoResetEvent ready = new AutoResetEvent(false);
+            EventHandler onCoreReady = (s, a) => ready.Set();
+            isCheckCoreReady = true;
+            OnCoreReady += onCoreReady;
+
+            isRunning = true;
             v2rayCore.Start();
 
-            // Add to JOB object support win8+ 
+            // Add to JOB object require win8+.
             Lib.ChildProcessTracker.AddProcess(v2rayCore);
 
             v2rayCore.StandardInput.WriteLine(config);
             v2rayCore.StandardInput.Close();
-
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
 
-            isRunning = true;
+            // Assume core ready after 2 seconds, in case log set to none.
+            ready.WaitOne(2000);
+            OnCoreReady -= onCoreReady;
+            isCheckCoreReady = false;
         }
 
         void SendLogHandler(object sender, DataReceivedEventArgs args)
         {
-            SendLog(args.Data);
+            var msg = args.Data;
+
+            if (msg == null)
+            {
+                return;
+            }
+
+            if (isCheckCoreReady
+                && msg.Contains("started")
+                && msg.Contains("Core")
+                && msg.Contains("V2Ray"))
+            {
+                InvokeEventOnCoreReady();
+            }
+
+            SendLog(msg);
         }
 
         void SendLog(string log)
         {
             var arg = new Model.Data.StrEvent(log);
-            OnLog?.Invoke(this, arg);
+            try
+            {
+                OnLog?.Invoke(this, arg);
+            }
+            catch { }
         }
 
         #endregion

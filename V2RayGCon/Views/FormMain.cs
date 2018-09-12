@@ -14,6 +14,7 @@ namespace V2RayGCon.Views
             {
                 _instant = new FormMain();
             }
+            _instant.Activate();
             return _instant;
         }
         #endregion

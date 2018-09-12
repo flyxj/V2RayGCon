@@ -93,6 +93,7 @@ namespace V2RayGCon.Model.Data
 
             server = new BaseClass.CoreServer();
             server.OnLog += OnLogHandler;
+            server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
 
         #region public method
@@ -111,13 +112,12 @@ namespace V2RayGCon.Model.Data
             }
 
             var port = Lib.Utils.GetFreeTcpPort();
+            Thread.Sleep(100); // release port
             if (port <= 0)
             {
                 error(I18N("GetFreePortFail"));
                 return;
             }
-
-            Thread.Sleep(100);
 
             var cfg = GetDecodedConfig(true);
 
@@ -145,11 +145,8 @@ namespace V2RayGCon.Model.Data
             var speedTester = new Model.BaseClass.CoreServer();
             speedTester.OnLog += OnLogHandler;
 
-            speedTester.RestartCoreThen(cfg.ToString(), null, () =>
+            speedTester.RestartCoreThen(cfg.ToString(), () =>
             {
-                // v2ray-core need a little time to get ready.
-                Thread.Sleep(1000);
-
                 var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
 
                 text = string.Format("{0}:{1}",
@@ -252,6 +249,7 @@ namespace V2RayGCon.Model.Data
             this.server.StopCoreThen(() =>
             {
                 this.server.OnLog -= OnLogHandler;
+                this.server.OnCoreStatusChanged -= OnCoreStateChangedHandler;
                 Task.Factory.StartNew(() =>
                 {
                     next?.Invoke();
@@ -310,16 +308,11 @@ namespace V2RayGCon.Model.Data
 
             server.RestartCoreThen(
                 cfg.ToString(),
-                OnCoreStateChanged,
                 next,
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
         }
 
-        public void OnCoreStateChanged()
-        {
-            isServerOn = server.isRunning;
-            InvokeEventOnPropertyChange();
-        }
+
 
         public void GetProxyAddrThen(Action<string> next)
         {
@@ -513,6 +506,11 @@ namespace V2RayGCon.Model.Data
             this.summary = Lib.Utils.CutStr(summary, 50);
         }
 
+        void OnCoreStateChangedHandler(object sender, EventArgs args)
+        {
+            isServerOn = server.isRunning;
+            InvokeEventOnPropertyChange();
+        }
 
         #endregion
     }
