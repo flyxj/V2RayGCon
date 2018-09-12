@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -22,9 +23,11 @@ namespace V2RayGCon.Views
 
         Service.Setting setting;
         int servIndex, linkType;
+        Dictionary<string, string> serverList;
 
         FormQRCode()
         {
+
             setting = Service.Setting.Instance;
             servIndex = 0;
             linkType = 0;
@@ -39,7 +42,8 @@ namespace V2RayGCon.Views
 
         private void FormQRCode_Shown(object sender, EventArgs e)
         {
-            UpdateServerList();
+            serverList = new Dictionary<string, string>();
+            UpdateCboxServerNameList();
             cboxLinkType.SelectedIndex = linkType;
 
             this.FormClosed += (s, a) =>
@@ -58,13 +62,13 @@ namespace V2RayGCon.Views
             {
                 cboxServList.Invoke((MethodInvoker)delegate
                 {
-                    UpdateServerList();
+                    UpdateCboxServerNameList();
                 });
             }
             catch { }
         }
 
-        void UpdateServerList(int index = -1)
+        void UpdateCboxServerNameList(int index = -1)
         {
             var oldIndex = index < 0 ? cboxServList.SelectedIndex : index;
 
@@ -78,9 +82,11 @@ namespace V2RayGCon.Views
                 return;
             }
 
+            serverList = new Dictionary<string, string>();
             foreach (var server in servers)
             {
                 cboxServList.Items.Add(server.name);
+                serverList[server.name] = server.config;
             }
 
             servIndex = Lib.Utils.Clamp(oldIndex, 0, servers.Count);
@@ -90,11 +96,17 @@ namespace V2RayGCon.Views
 
         void UpdateLink()
         {
-            var server = setting.GetServerConfigByIndex(servIndex);
+            var key = cboxServList.Text;
+            var config = string.Empty;
+            if (serverList.ContainsKey(key))
+            {
+                config = serverList[key];
+            }
 
-            if (string.IsNullOrEmpty(server))
+            if (string.IsNullOrEmpty(config))
             {
                 tboxLink.Text = string.Empty;
+                return;
             }
 
             string link = string.Empty;
@@ -103,12 +115,12 @@ namespace V2RayGCon.Views
             {
                 link = Lib.Utils.Vmess2VmessLink(
                     Lib.Utils.ConfigString2Vmess(
-                        server));
+                        config));
             }
             else
             {
                 link = Lib.Utils.AddLinkPrefix(
-                    Lib.Utils.Base64Encode(server),
+                    Lib.Utils.Base64Encode(config),
                     Model.Data.Enum.LinkTypes.v2ray);
             }
 
