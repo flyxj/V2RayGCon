@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -170,14 +169,12 @@ namespace V2RayGCon.Model.Data
             {
                 Lib.Utils.ExecuteInParallel<ServerItem, bool>(list, (server) =>
                 {
-                    AutoResetEvent finished = new AutoResetEvent(false);
-                    server.DoSpeedTestThen(() => finished.Set());
-                    finished.WaitOne(30000);
+                    server.DoSpeedTest();
                     return true;
                 });
 
                 isTesting = false;
-                OnSendLogHandler(this, new StrEvent(I18N("SpeedTestFinished")));
+                MessageBox.Show(I18N("SpeedTestFinished"));
             });
 
             return true;
@@ -271,7 +268,7 @@ namespace V2RayGCon.Model.Data
         {
             Action<int, Action> worker = (index, next) =>
             {
-                // Model.BaseClass.CoreServer take care of errors 
+                // Model.BaseClass.CoreServer ignore errors 
                 // do not need try/catch
                 this[index].server.StopCoreThen(next);
             };

@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -20,24 +19,32 @@ namespace V2RayGCon.Model.Data
         public string name, summary, inboundIP;
         public int overwriteInboundType, inboundPort, index;
 
+        public ServerItem()
+        {
+            // new ServerItem will display at the bottom
+            index = int.MaxValue;
+
+            isSelected = false;
+            isServerOn = false;
+            isAutoRun = false;
+            isInjectImport = false;
+
+            status = string.Empty;
+            name = string.Empty;
+            summary = string.Empty;
+            config = string.Empty;
+            overwriteInboundType = 0;
+            inboundIP = "127.0.0.1";
+            inboundPort = 1080;
+
+            server = new BaseClass.CoreServer();
+            server.OnLog += OnLogHandler;
+            server.OnCoreStatusChanged += OnCoreStateChangedHandler;
+        }
+
+        #region non-serialize properties
         [JsonIgnore]
         Views.FormSingleServerLog logForm = null;
-
-        public bool ShowLogForm()
-        {
-            if (logForm != null)
-            {
-                return false;
-            }
-            logForm = new Views.FormSingleServerLog(this);
-
-            logForm.FormClosed += (s, a) =>
-            {
-                logForm.Dispose();
-                logForm = null;
-            };
-            return true;
-        }
 
         [JsonIgnore]
         public string status;
@@ -72,32 +79,53 @@ namespace V2RayGCon.Model.Data
                 _logCache.Enqueue(value);
             }
         }
-
-        public ServerItem()
-        {
-            // new ServerItem will display at the bottom
-            index = int.MaxValue;
-
-            isSelected = false;
-            isServerOn = false;
-            isAutoRun = false;
-            isInjectImport = false;
-
-            status = string.Empty;
-            name = string.Empty;
-            summary = string.Empty;
-            config = string.Empty;
-            overwriteInboundType = 0;
-            inboundIP = "127.0.0.1";
-            inboundPort = 1080;
-
-            server = new BaseClass.CoreServer();
-            server.OnLog += OnLogHandler;
-            server.OnCoreStatusChanged += OnCoreStateChangedHandler;
-        }
+        #endregion
 
         #region public method
-        public void DoSpeedTestThen(Action next = null)
+        public bool ShowLogForm()
+        {
+            if (logForm != null)
+            {
+                return false;
+            }
+            logForm = new Views.FormSingleServerLog(this);
+
+            logForm.FormClosed += (s, a) =>
+            {
+                logForm.Dispose();
+                logForm = null;
+            };
+            return true;
+        }
+
+        string PrepareSpeedTestConfig(int port)
+        {
+            var empty = string.Empty;
+            if (port <= 0)
+            {
+                return empty;
+            }
+
+            var config = GetDecodedConfig(true);
+
+            if (config == null)
+            {
+                return empty;
+            }
+
+            if (!OverwriteInboundSettings(
+                ref config,
+                (int)Model.Data.Enum.ProxyTypes.HTTP,
+                "127.0.0.1",
+                port))
+            {
+                return empty;
+            }
+
+            return config.ToString(Formatting.None);
+        }
+
+        public void DoSpeedTest()
         {
             void log(string msg)
             {
@@ -105,35 +133,12 @@ namespace V2RayGCon.Model.Data
                 SetPropertyOnDemand(ref status, msg);
             }
 
-            void error(string msg)
-            {
-                log(msg);
-                next?.Invoke();
-            }
-
             var port = Lib.Utils.GetFreeTcpPort();
-            Thread.Sleep(100); // release port
-            if (port <= 0)
-            {
-                error(I18N("GetFreePortFail"));
-                return;
-            }
+            var config = PrepareSpeedTestConfig(port);
 
-            var cfg = GetDecodedConfig(true);
-
-            if (cfg == null)
+            if (string.IsNullOrEmpty(config))
             {
-                error(I18N("DecodeImportFail"));
-                return;
-            }
-
-            if (!OverwriteInboundSettings(
-                ref cfg,
-                (int)Model.Data.Enum.ProxyTypes.HTTP,
-                "127.0.0.1",
-                port))
-            {
-                error(I18N("CoreCantSetLocalAddr"));
+                log(I18N("DecodeImportFail"));
                 return;
             }
 
@@ -144,22 +149,15 @@ namespace V2RayGCon.Model.Data
 
             var speedTester = new Model.BaseClass.CoreServer();
             speedTester.OnLog += OnLogHandler;
+            speedTester.RestartCore(config);
 
-            speedTester.RestartCoreThen(cfg.ToString(), () =>
-            {
-                var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
-
-                text = string.Format("{0}:{1}",
-                    I18N("VisitWebPageTest"),
-                    time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
-
-                log(text);
-                speedTester.StopCoreThen(() =>
-                {
-                    speedTester.OnLog -= OnLogHandler;
-                    next?.Invoke();
-                });
-            });
+            var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
+            text = string.Format("{0}:{1}",
+                I18N("VisitWebPageTest"),
+                time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
+            log(text);
+            speedTester.StopCore();
+            speedTester.OnLog -= OnLogHandler;
         }
 
         public void DeleteSelf()
@@ -311,8 +309,6 @@ namespace V2RayGCon.Model.Data
                 next,
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
         }
-
-
 
         public void GetProxyAddrThen(Action<string> next)
         {

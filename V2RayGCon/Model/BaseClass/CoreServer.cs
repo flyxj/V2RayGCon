@@ -75,7 +75,6 @@ namespace V2RayGCon.Model.BaseClass
                     RedirectStandardOutput = true,
                     CreateNoWindow = true,
                 }
-
             };
 
             Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
@@ -122,16 +121,14 @@ namespace V2RayGCon.Model.BaseClass
             return string.Empty;
         }
 
-        public void RestartCoreThen(
-            string config,
-            Action next = null,
-            Dictionary<string, string> env = null)
+        // block
+        public void RestartCore(string config, Dictionary<string, string> env = null)
         {
             lock (coreLock)
             {
                 if (isRunning)
                 {
-                    StopCore();
+                    StopCoreWorker();
                 }
 
                 if (IsExecutableExist())
@@ -140,20 +137,43 @@ namespace V2RayGCon.Model.BaseClass
                 }
                 else
                 {
-                    Task.Factory.StartNew(() => MessageBox.Show(I18N("ExeNotFound")));
+                    Task.Factory.StartNew(
+                        () => MessageBox.Show(I18N("ExeNotFound")));
                 }
             }
-            InvokeEventOnCoreStatusChanged();
-            InvokeActionIgnoreError(next);
+            Task.Factory.StartNew(() => InvokeEventOnCoreStatusChanged());
         }
 
-        public void StopCoreThen(Action next = null)
+        // non-block 
+        public void RestartCoreThen(
+            string config,
+            Action next = null,
+            Dictionary<string, string> env = null)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                RestartCore(config, env);
+                InvokeActionIgnoreError(next);
+            });
+        }
+
+        // block
+        public void StopCore()
         {
             lock (coreLock)
             {
-                StopCore();
+                StopCoreWorker();
             }
-            InvokeActionIgnoreError(next);
+        }
+
+        // non-block
+        public void StopCoreThen(Action next = null)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                StopCore();
+                InvokeActionIgnoreError(next);
+            });
         }
         #endregion
 
@@ -177,7 +197,7 @@ namespace V2RayGCon.Model.BaseClass
             catch { }
         }
 
-        void StopCore()
+        void StopCoreWorker()
         {
             try
             {
@@ -298,15 +318,13 @@ namespace V2RayGCon.Model.BaseClass
             if (err != 0)
             {
                 v2rayCore.Close();
-                Task.Factory.StartNew(() =>
-                {
-                    MessageBox.Show(I18N("V2rayCoreExitAbnormally"));
-                });
+                Task.Factory.StartNew(
+                    () => MessageBox.Show(I18N("V2rayCoreExitAbnormally")));
             }
 
             // SendLog("Exit code: " + err);
             isRunning = false;
-            InvokeEventOnCoreStatusChanged();
+            Task.Factory.StartNew(() => InvokeEventOnCoreStatusChanged());
         }
 
         void BindEvents(Process proc)

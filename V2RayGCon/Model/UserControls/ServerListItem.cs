@@ -104,7 +104,7 @@ namespace V2RayGCon.Model.UserControls
                 }),
                 new MenuItem(I18N("SpeedTest"),(s,a)=>{
                     Task.Factory.StartNew(
-                        () => serverItem.DoSpeedTestThen());
+                        () => serverItem.DoSpeedTest());
                 }),
                 new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
                     if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
