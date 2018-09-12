@@ -385,18 +385,6 @@ namespace V2RayGCon.Service
             return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
         }
 
-        public string GetServerConfigByIndex(int index)
-        {
-            if (GetServerListCount() == 0
-                || index < 0
-                || index >= GetServerListCount())
-            {
-                return string.Empty;
-            }
-
-            return serverList[index].config;
-        }
-
         public void DeleteAllServer()
         {
             serverList.DeleteAllServersThen(
