@@ -9,7 +9,6 @@ namespace V2RayGCon.Service
     {
         NotifyIcon ni;
         Setting setting;
-        static AutoResetEvent sayGoodbye = new AutoResetEvent(false);
 
         Notifier()
         {
@@ -155,6 +154,7 @@ namespace V2RayGCon.Service
                 setting.ClearSystemProxy();
             }
 
+            AutoResetEvent sayGoodbye = new AutoResetEvent(false);
             setting.StopAllServersThen(() => sayGoodbye.Set());
             sayGoodbye.WaitOne();
         }
