@@ -51,12 +51,12 @@ namespace V2RayGCon.Service
         {
             ni.DoubleClick += (s, a) =>
             {
-                Debug.WriteLine("Some test code:");
-                ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
-                ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
-                {
-                    System.GC.Collect();
-                }));
+                // Some test code
+                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
+                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
+                // {
+                //     System.GC.Collect();
+                // }));
             };
 
             // new Views.FormConfiger(0);

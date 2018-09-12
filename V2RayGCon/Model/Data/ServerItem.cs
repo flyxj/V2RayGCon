@@ -63,7 +63,8 @@ namespace V2RayGCon.Model.Data
         {
             get
             {
-                return string.Join(Environment.NewLine, _logCache);
+                return string.Join(Environment.NewLine, _logCache)
+                    + System.Environment.NewLine;
             }
             private set
             {
