@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -19,59 +18,6 @@ namespace V2RayGCon.Model.Data
         public bool isAutoRun, isInjectImport, isSelected;
         public string name, summary, inboundIP;
         public int overwriteInboundType, inboundPort, index;
-
-        [JsonIgnore]
-        Views.FormSingleServerLog logForm = null;
-
-        public bool ShowLogForm()
-        {
-            if (logForm != null)
-            {
-                return false;
-            }
-            logForm = new Views.FormSingleServerLog(this);
-
-            logForm.FormClosed += (s, a) =>
-            {
-                logForm.Dispose();
-                logForm = null;
-            };
-            return true;
-        }
-
-        [JsonIgnore]
-        public string status;
-
-        [JsonIgnore]
-        public bool isServerOn;
-
-        [JsonIgnore]
-        public Model.BaseClass.CoreServer server;
-
-        [JsonIgnore]
-        ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
-
-        [JsonIgnore]
-        public string logCache
-        {
-            get
-            {
-                return string.Join(Environment.NewLine, _logCache);
-            }
-            private set
-            {
-                // keep 200 lines of log
-                if (_logCache.Count > 300)
-                {
-                    var blackHole = "";
-                    for (var i = 0; i < 100; i++)
-                    {
-                        _logCache.TryDequeue(out blackHole);
-                    }
-                }
-                _logCache.Enqueue(value);
-            }
-        }
 
         public ServerItem()
         {
@@ -93,47 +39,107 @@ namespace V2RayGCon.Model.Data
 
             server = new BaseClass.CoreServer();
             server.OnLog += OnLogHandler;
+            server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
 
-        #region public method
-        public void DoSpeedTestThen(Action next = null)
+        #region non-serialize properties
+        [JsonIgnore]
+        Views.FormSingleServerLog logForm = null;
+
+        [JsonIgnore]
+        public string status;
+
+        [JsonIgnore]
+        public bool isServerOn;
+
+        [JsonIgnore]
+        public Model.BaseClass.CoreServer server;
+
+        [JsonIgnore]
+        ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
+
+        [JsonIgnore]
+        public string logCache
         {
-            void log(string msg)
+            get
             {
-                SendLog(msg);
-                SetStatus(msg);
+                return string.Join(Environment.NewLine, _logCache)
+                    + System.Environment.NewLine;
             }
-
-            void error(string msg)
+            private set
             {
-                log(msg);
-                next?.Invoke();
+                // keep 200 lines of log
+                if (_logCache.Count > 300)
+                {
+                    var blackHole = "";
+                    for (var i = 0; i < 100; i++)
+                    {
+                        _logCache.TryDequeue(out blackHole);
+                    }
+                }
+                _logCache.Enqueue(value);
             }
+        }
+        #endregion
 
-            var port = Lib.Utils.GetFreeTcpPort();
+        #region public method
+        public bool ShowLogForm()
+        {
+            if (logForm != null)
+            {
+                return false;
+            }
+            logForm = new Views.FormSingleServerLog(this);
+
+            logForm.FormClosed += (s, a) =>
+            {
+                logForm.Dispose();
+                logForm = null;
+            };
+            return true;
+        }
+
+        string PrepareSpeedTestConfig(int port)
+        {
+            var empty = string.Empty;
             if (port <= 0)
             {
-                error(I18N("GetFreePortFail"));
-                return;
+                return empty;
             }
 
-            Thread.Sleep(100);
+            var config = GetDecodedConfig(true);
 
-            var cfg = GetDecodedConfig(true);
-
-            if (cfg == null)
+            if (config == null)
             {
-                error(I18N("DecodeImportFail"));
-                return;
+                return empty;
             }
 
             if (!OverwriteInboundSettings(
-                ref cfg,
+                ref config,
                 (int)Model.Data.Enum.ProxyTypes.HTTP,
                 "127.0.0.1",
                 port))
             {
-                error(I18N("CoreCantSetLocalAddr"));
+                return empty;
+            }
+
+            return config.ToString(Formatting.None);
+        }
+
+        public void DoSpeedTest()
+        {
+            void log(string msg)
+            {
+                SendLog(msg);
+                SetPropertyOnDemand(ref status, msg);
+            }
+
+            var port = Lib.Utils.GetFreeTcpPort();
+            var config = PrepareSpeedTestConfig(port);
+
+            if (string.IsNullOrEmpty(config))
+            {
+                log(I18N("DecodeImportFail"));
                 return;
             }
 
@@ -144,25 +150,15 @@ namespace V2RayGCon.Model.Data
 
             var speedTester = new Model.BaseClass.CoreServer();
             speedTester.OnLog += OnLogHandler;
+            speedTester.RestartCore(config);
 
-            speedTester.RestartCoreThen(cfg.ToString(), null, () =>
-            {
-                // v2ray-core need a little time to get ready.
-                Thread.Sleep(1000);
-
-                var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
-
-                text = string.Format("{0}:{1}",
-                    I18N("VisitWebPageTest"),
-                    time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
-
-                log(text);
-                speedTester.StopCoreThen(() =>
-                {
-                    speedTester.OnLog -= OnLogHandler;
-                    next?.Invoke();
-                });
-            });
+            var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
+            text = string.Format("{0}:{1}",
+                I18N("VisitWebPageTest"),
+                time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
+            log(text);
+            speedTester.StopCore();
+            speedTester.OnLog -= OnLogHandler;
         }
 
         public void DeleteSelf()
@@ -170,82 +166,19 @@ namespace V2RayGCon.Model.Data
             OnRequireDeleteServer?.Invoke(this, new StrEvent(config));
         }
 
-        public void SetInboundIP(string ip)
+        public void SetPropertyOnDemand(ref string property, string value, bool isNeedCoreStopped = false)
         {
-            // prevent infinite prompt
-            if (this.inboundIP == ip)
-            {
-                return;
-            }
-
-            if (NeedStopCoreFirst())
-            {
-                InvokeEventOnPropertyChange(); // refresh ui
-                return;
-            }
-
-            inboundIP = ip;
-            InvokeEventOnPropertyChange();
+            SetPropertyOnDemand<string>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetInboundPort(string port)
+        public void SetPropertyOnDemand(ref int property, int value, bool isNeedCoreStopped = false)
         {
-            var p = Lib.Utils.Str2Int(port);
-            if (inboundPort == p)
-            {
-                return;
-            }
-
-            if (NeedStopCoreFirst())
-            {
-                InvokeEventOnPropertyChange();
-                return;
-            }
-
-            inboundPort = p;
-            InvokeEventOnPropertyChange();
+            SetPropertyOnDemand<int>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetStatus(string status)
+        public void SetPropertyOnDemand(ref bool property, bool value, bool isNeedCoreStopped = false)
         {
-            if (this.status == status)
-            {
-                return;
-            }
-            this.status = status;
-            InvokeEventOnPropertyChange();
-        }
-
-        public void SetIndex(int index)
-        {
-            if (this.index == index)
-            {
-                return;
-            }
-            this.index = index;
-            InvokeEventOnPropertyChange();
-        }
-
-        public void SetSelected(bool selected)
-        {
-            if (this.isSelected == selected)
-            {
-                return;
-            }
-
-            this.isSelected = selected;
-            InvokeEventOnPropertyChange();
-        }
-
-        public void SetAutoRun(bool autorun)
-        {
-            if (this.isAutoRun == autorun)
-            {
-                return;
-            }
-
-            this.isAutoRun = autorun;
-            InvokeEventOnPropertyChange();
+            SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
         public void SetInjectImport(bool import)
@@ -315,6 +248,7 @@ namespace V2RayGCon.Model.Data
             this.server.StopCoreThen(() =>
             {
                 this.server.OnLog -= OnLogHandler;
+                this.server.OnCoreStatusChanged -= OnCoreStateChangedHandler;
                 Task.Factory.StartNew(() =>
                 {
                     next?.Invoke();
@@ -373,15 +307,8 @@ namespace V2RayGCon.Model.Data
 
             server.RestartCoreThen(
                 cfg.ToString(),
-                OnCoreStateChanged,
                 next,
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
-        }
-
-        public void OnCoreStateChanged()
-        {
-            isServerOn = server.isRunning;
-            InvokeEventOnPropertyChange();
         }
 
         public void GetProxyAddrThen(Action<string> next)
@@ -418,6 +345,29 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region private method
+        void SetPropertyOnDemand<T>(
+            ref T property,
+            T value,
+            bool isNeedCoreStopped)
+        {
+            if (EqualityComparer<T>.Default.Equals(property, value))
+            {
+                return;
+            }
+
+            if (isNeedCoreStopped)
+            {
+                if (NeedStopCoreFirst())
+                {
+                    InvokeEventOnPropertyChange(); // refresh ui
+                    return;
+                }
+            }
+
+            property = value;
+            InvokeEventOnPropertyChange();
+        }
+
         JObject GetDecodedConfig(bool isUseCache = false)
         {
             var cache = Service.Cache.Instance.core;
@@ -553,6 +503,11 @@ namespace V2RayGCon.Model.Data
             this.summary = Lib.Utils.CutStr(summary, 50);
         }
 
+        void OnCoreStateChangedHandler(object sender, EventArgs args)
+        {
+            isServerOn = server.isRunning;
+            InvokeEventOnPropertyChange();
+        }
 
         #endregion
     }

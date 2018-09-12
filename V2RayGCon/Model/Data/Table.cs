@@ -60,12 +60,6 @@ namespace V2RayGCon.Model.Data
             { 7,"chacha20-ietf-poly1305"},
         };
 
-        public static Dictionary<int, string> streamTLS = new Dictionary<int, string>
-        {
-            { 0, "none" },
-            { 1, "tls" },
-        };
-
         public static Dictionary<int, string> ssNetworks = new Dictionary<int, string>
         {
             { 0, "tcp" },

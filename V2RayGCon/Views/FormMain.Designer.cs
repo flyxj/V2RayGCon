@@ -54,6 +54,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsSubscription = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemPackSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemDeleteServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -152,6 +153,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemRestartSelected,
             this.toolStripMenuItemSpeedTestOnSelected,
             this.toolStripMenuItem1,
+            this.toolStripMenuItemPackSelectedServers,
             this.toolStripSeparator1,
             this.toolStripMenuItemDeleteServers,
             this.toolMenuItemRefreshSummary,
@@ -221,6 +223,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemCopyAsSubscription, "toolStripMenuItemCopyAsSubscription");
             this.toolStripMenuItemCopyAsSubscription.Name = "toolStripMenuItemCopyAsSubscription";
+            // 
+            // toolStripMenuItemPackSelectedServers
+            // 
+            resources.ApplyResources(this.toolStripMenuItemPackSelectedServers, "toolStripMenuItemPackSelectedServers");
+            this.toolStripMenuItemPackSelectedServers.Name = "toolStripMenuItemPackSelectedServers";
             // 
             // toolStripSeparator1
             // 
@@ -405,5 +412,6 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem toolStripMenuItemDownLoadV2rayCore;
         private ToolStripMenuItem toolStripMenuItemRemoveV2rayCore;
         private ToolStripMenuItem toolStripMenuItemCopyAsSubscription;
+        private ToolStripMenuItem toolStripMenuItemPackSelectedServers;
     }
 }

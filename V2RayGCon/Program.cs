@@ -52,32 +52,23 @@ namespace V2RayGCon
         [STAThread]
         static void Main()
         {
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // load Shcore.dll and get high resolution support
-            IntPtr pDll = Lib.DllLoader.LoadLibrary(@"Shcore.DLL");
-            Lib.DllLoader.CallMethod(
-                pDll,
-                @"SetProcessDpiAwareness",
-                typeof(SetProcessDpiAwareness),
-                (method) => ((SetProcessDpiAwareness)method).Invoke(2));
+            IntPtr pShcoreDll = HiResSupport();
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
+                Service.Notifier noty = null;
                 try
                 {
-                    Service.Notifier noty = Service.Notifier.Instance;
+                    noty = Service.Notifier.Instance;
                     Application.Run();
                 }
                 catch (Exception ex)
                 {
-#if DEBUG
-                    MessageBox.Show(ex.ToString());
-#else
-                    SaveUnhandledException(ex.ToString());
-#endif
+                    SaveException(ex, noty);
+                    ShowMessage();
                 }
                 mutex.ReleaseMutex();
             }
@@ -86,23 +77,61 @@ namespace V2RayGCon
                 MessageBox.Show(I18N("ExitOtherVGCFirst"));
             }
 
-            Lib.DllLoader.FreeLibrary(pDll);
+            Lib.DllLoader.FreeLibrary(pShcoreDll);
         }
 
-        static string GetBugFileName()
+        private static IntPtr HiResSupport()
+        {
+            // load Shcore.dll and get high resolution support
+            IntPtr pDll = Lib.DllLoader.LoadLibrary(@"Shcore.DLL");
+            Lib.DllLoader.CallMethod(
+                pDll,
+                @"SetProcessDpiAwareness",
+                typeof(SetProcessDpiAwareness),
+                (method) => ((SetProcessDpiAwareness)method).Invoke(2));
+            return pDll;
+        }
+
+        private static void ShowMessage()
+        {
+            System.Diagnostics.Process.Start(GetBugLogFileName());
+#if DEBUG
+#else
+            MessageBox.Show(I18N("LooksLikeABug")
+                + System.Environment.NewLine
+                + GetBugLogFileName());
+#endif
+        }
+
+        static void SaveException(Exception ex, Service.Notifier noty)
+        {
+            var log = ex.ToString();
+            try
+            {
+                if (noty != null)
+                {
+                    log += Environment.NewLine
+                        + Environment.NewLine
+                        + noty.GetLogCache();
+                }
+            }
+            catch { }
+            SaveBugLog(log);
+        }
+
+        static string GetBugLogFileName()
         {
             var appData = Lib.Utils.GetAppDataFolder();
             return Path.Combine(appData, StrConst("BugFileName"));
         }
 
-        static void SaveUnhandledException(string content)
+        static void SaveBugLog(string content)
         {
             try
             {
-                var bugFileName = GetBugFileName();
+                var bugFileName = GetBugLogFileName();
                 Lib.Utils.CreateAppDataFolder();
                 File.WriteAllText(bugFileName, content);
-                MessageBox.Show(I18N("LooksLikeABug") + System.Environment.NewLine + bugFileName);
             }
             catch { }
         }

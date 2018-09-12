@@ -958,6 +958,33 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Package done. 的本地化字符串。
+        /// </summary>
+        internal static string PackageDone {
+            get {
+                return ResourceManager.GetString("PackageDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Package failed 的本地化字符串。
+        /// </summary>
+        internal static string PackageFail {
+            get {
+                return ResourceManager.GetString("PackageFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Package success 的本地化字符串。
+        /// </summary>
+        internal static string PackageSuccess {
+            get {
+                return ResourceManager.GetString("PackageSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Can not parse json! Please check current config. 的本地化字符串。
         /// </summary>
         internal static string PleaseCheckConfig {

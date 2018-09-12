@@ -9,7 +9,6 @@ namespace V2RayGCon.Service
     {
         NotifyIcon ni;
         Setting setting;
-        static AutoResetEvent sayGoodbye = new AutoResetEvent(false);
 
         Notifier()
         {
@@ -52,7 +51,12 @@ namespace V2RayGCon.Service
         {
             ni.DoubleClick += (s, a) =>
             {
-                Debug.WriteLine("Some test code:");
+                // Some test code
+                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
+                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
+                // {
+                //     System.GC.Collect();
+                // }));
             };
 
             // new Views.FormConfiger(0);
@@ -65,6 +69,13 @@ namespace V2RayGCon.Service
             // Views.FormDownloadCore.GetForm();
         }
 #endif
+        #endregion
+
+        #region public method
+        public string GetLogCache()
+        {
+            return setting.logCache;
+        }
         #endregion
 
         #region private method
@@ -143,6 +154,7 @@ namespace V2RayGCon.Service
                 setting.ClearSystemProxy();
             }
 
+            AutoResetEvent sayGoodbye = new AutoResetEvent(false);
             setting.StopAllServersThen(() => sayGoodbye.Set());
             sayGoodbye.WaitOne();
         }

@@ -142,6 +142,41 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
+        ///  &quot;main&quot;: {
+        ///    &quot;v2raygcon&quot;: {
+        ///      &quot;alias&quot;: &quot;Package&quot;,
+        ///      &quot;description&quot;: &quot;&quot;
+        ///    },
+        ///    &quot;log&quot;: {
+        ///      &quot;loglevel&quot;: &quot;warning&quot;
+        ///    },
+        ///    &quot;inbound&quot;: {
+        ///      &quot;port&quot;: 1080,
+        ///      &quot;listen&quot;: &quot;127.0.0.1&quot;,
+        ///      &quot;protocol&quot;: &quot;socks&quot;,
+        ///      &quot;settings&quot;: {
+        ///        &quot;auth&quot;: &quot;noauth&quot;,
+        ///        &quot;udp&quot;: false,
+        ///        &quot;ip&quot;: &quot;127.0.0.1&quot;
+        ///      }
+        ///    },
+        ///    &quot;outbound&quot;: {
+        ///      &quot;mux&quot;: {
+        ///        &quot;enabled&quot;: true,
+        ///        &quot;concurrency&quot;: 24
+        ///      },
+        ///      &quot;protocol&quot;: &quot;vmess&quot;,
+        ///      &quot;tag&quot;: &quot;agentout&quot;
+        ///   [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string config_pkg {
+            get {
+                return ResourceManager.GetString("config_pkg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {
         ///  &quot;emptyInOut&quot;: {
         ///    &quot;inbound&quot;: {},
         ///    &quot;outbound&quot;: {}
@@ -282,6 +317,24 @@ namespace V2RayGCon.Resource.Resx {
         internal static string LazySaveServerListDelay {
             get {
                 return ResourceManager.GetString("LazySaveServerListDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 10800 的本地化字符串。
+        /// </summary>
+        internal static string PacmanInitPort {
+            get {
+                return ResourceManager.GetString("PacmanInitPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 tag 的本地化字符串。
+        /// </summary>
+        internal static string PacmanTagPrefix {
+            get {
+                return ResourceManager.GetString("PacmanTagPrefix", resourceCulture);
             }
         }
         

@@ -213,6 +213,9 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>598, 444</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItemDeleteServers.Name" xml:space="preserve">
+    <value>toolStripMenuItemDeleteServers</value>
+  </data>
   <data name="toolMenuItemImportLinkFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 30</value>
   </data>
@@ -360,6 +363,9 @@
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>FormMain</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItemPackSelectedServers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;toolMenuItemLog.Name" xml:space="preserve">
     <value>toolMenuItemLog</value>
   </data>
@@ -368,6 +374,9 @@
   </data>
   <data name="flyServerListContainer.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 38</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemPackSelectedServers.Name" xml:space="preserve">
+    <value>toolStripMenuItemPackSelectedServers</value>
   </data>
   <data name="toolMenuItemCurrentSysProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
@@ -432,8 +441,8 @@
   <data name="menuStrip1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;toolStripMenuItemRestartSelected.Name" xml:space="preserve">
-    <value>toolStripMenuItemRestartSelected</value>
+  <data name="toolStripMenuItemPackSelectedServers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
   </data>
   <data name="toolStripMenuItemSpeedTestOnSelected.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
@@ -471,8 +480,8 @@
   <data name="flyServerListContainer.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
+    <value>Run speed test on selected servers.</value>
   </data>
   <data name="&gt;&gt;toolMenuItemRefreshSummary.Name" xml:space="preserve">
     <value>toolMenuItemRefreshSummary</value>
@@ -489,6 +498,9 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="toolStripMenuItemPackSelectedServers.ToolTipText" xml:space="preserve">
+    <value>Pack selected servers into one server.</value>
+  </data>
   <data name="&gt;&gt;toolMenuItemCheckUpdate.Name" xml:space="preserve">
     <value>toolMenuItemCheckUpdate</value>
   </data>
@@ -503,6 +515,9 @@
   </data>
   <data name="&gt;&gt;toolMenuItemAbout.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItemPackSelectedServers.Text" xml:space="preserve">
+    <value>Pack selected</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Size" type="System.Drawing.Size, System.Drawing">
     <value>252, 30</value>
@@ -525,8 +540,8 @@
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
-    <value>Run speed test on selected servers.</value>
+  <data name="&gt;&gt;toolStripMenuItemRestartSelected.Name" xml:space="preserve">
+    <value>toolStripMenuItemRestartSelected</value>
   </data>
   <data name="&gt;&gt;toolMenuItemExportAllServerToFile.Name" xml:space="preserve">
     <value>toolMenuItemExportAllServerToFile</value>
@@ -6853,8 +6868,8 @@
   <data name="toolMenuItemSimAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 30</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemDeleteServers.Name" xml:space="preserve">
-    <value>toolStripMenuItemDeleteServers</value>
+  <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>205, 30</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Size" type="System.Drawing.Size, System.Drawing">
     <value>252, 30</value>

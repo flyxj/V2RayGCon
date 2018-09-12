@@ -14,6 +14,7 @@ namespace V2RayGCon.Views
             {
                 _instant = new FormMain();
             }
+            _instant.Activate();
             return _instant;
         }
         #endregion
@@ -96,7 +97,8 @@ namespace V2RayGCon.Views
                 toolStripMenuItemCopyAsV2rayLink,
                 toolStripMenuItemCopyAsVmessLink,
                 toolStripMenuItemCopyAsSubscription,
-                toolStripMenuItemDeleteAllServer));
+                toolStripMenuItemDeleteAllServer,
+                toolStripMenuItemPackSelectedServers));
 
             return ctrl;
         }

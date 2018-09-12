@@ -104,7 +104,7 @@ namespace V2RayGCon.Model.UserControls
                 }),
                 new MenuItem(I18N("SpeedTest"),(s,a)=>{
                     Task.Factory.StartNew(
-                        () => serverItem.DoSpeedTestThen());
+                        () => serverItem.DoSpeedTest());
                 }),
                 new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
                     if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
@@ -146,6 +146,11 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public string GetConfig()
+        {
+            return serverItem.config;
+        }
+
         public bool GetAutorunStatus()
         {
             return serverItem.isAutoRun;
@@ -177,12 +182,16 @@ namespace V2RayGCon.Model.UserControls
 
         public void SetSelected(bool selected)
         {
-            this.serverItem.SetSelected(selected);
+            serverItem.SetPropertyOnDemand(
+               ref serverItem.isSelected,
+               selected);
         }
 
         public void SetIndex(int index)
         {
-            this.serverItem.SetIndex(index);
+            serverItem.SetPropertyOnDemand(
+              ref serverItem.index,
+              index);
         }
 
         public void Cleanup()
@@ -210,29 +219,39 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetOverwriteInboundType(cboxInbound.SelectedIndex);
         }
 
-        private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
-        {
-            serverItem.SetAutoRun(chkAutoRun.Checked);
-        }
-
-        private void chkSelected_CheckedChanged(object sender, EventArgs e)
-        {
-            serverItem.SetSelected(chkSelected.Checked);
-        }
-
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
             serverItem.SetInjectImport(chkImport.Checked);
         }
 
+        private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
+        {
+            serverItem.SetPropertyOnDemand(
+              ref serverItem.isAutoRun,
+              chkAutoRun.Checked);
+        }
+
+        private void chkSelected_CheckedChanged(object sender, EventArgs e)
+        {
+            serverItem.SetPropertyOnDemand(
+               ref serverItem.isSelected,
+               chkSelected.Checked);
+        }
+
         private void tboxInboundIP_TextChanged(object sender, EventArgs e)
         {
-            serverItem.SetInboundIP(tboxInboundIP.Text);
+            serverItem.SetPropertyOnDemand(
+                ref serverItem.inboundIP,
+                tboxInboundIP.Text,
+                true);
         }
 
         private void tboxInboundPort_TextChanged(object sender, EventArgs e)
         {
-            serverItem.SetInboundPort(tboxInboundPort.Text);
+            serverItem.SetPropertyOnDemand(
+                ref serverItem.inboundPort,
+                Lib.Utils.Str2Int(tboxInboundPort.Text),
+                true);
         }
 
         private void lbSummary_Click(object sender, EventArgs e)

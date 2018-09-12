@@ -544,4 +544,13 @@ Are you sure you want to continue?</value>
     <value>Looks like you found a bug.
 Please send the following file to the author.</value>
   </data>
+  <data name="PackageFail" xml:space="preserve">
+    <value>Package failed</value>
+  </data>
+  <data name="PackageSuccess" xml:space="preserve">
+    <value>Package success</value>
+  </data>
+  <data name="PackageDone" xml:space="preserve">
+    <value>Package done.</value>
+  </data>
 </root>

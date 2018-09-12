@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,6 +24,9 @@ namespace V2RayGCon.Views
 
         FormLog()
         {
+            // for debug debug
+            // throw new System.ArgumentException("hello");
+
             setting = Service.Setting.Instance;
             maxNumberLines = setting.maxLogLines;
 

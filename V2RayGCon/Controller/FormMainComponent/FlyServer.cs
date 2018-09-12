@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.FormMainComponent
@@ -15,7 +16,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.setting = Service.Setting.Instance;
             this.flyPanel = panel;
             BindDragDropEvent();
-            LoadServerItems();
+            RefreshUI();
             setting.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
 
@@ -50,14 +51,69 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             flyPanel.Invoke((MethodInvoker)delegate
             {
-                RemoveAllConrols();
-                LoadServerItems();
+                var serverList = setting.GetServerList().ToList();
+
+                if (serverList.Count > 0)
+                {
+                    RemoveWelcomeItem();
+                }
+                else
+                {
+                    RemoveAllConrols();
+                    LoadWelcomeItem();
+                    return;
+                }
+
+                RemoveDeletedServerItems(ref serverList);
+                AddNewServerItems(serverList);
+                ResetIndex();
             });
-            return false;
+            return true;
         }
         #endregion
 
         #region private method
+        void AddNewServerItems(List<Model.Data.ServerItem> serverList)
+        {
+            foreach (var server in serverList)
+            {
+                flyPanel.Controls.Add(
+                    new Model.UserControls.ServerListItem(
+                        int.MaxValue, server));
+            }
+        }
+
+        void RemoveDeletedServerItems(ref List<Model.Data.ServerItem> serverList)
+        {
+            var controlList = GetAllControls();
+            foreach (Model.UserControls.ServerListItem control in controlList)
+            {
+                var config = control.GetConfig();
+                if (serverList.Where(s => s.config == config)
+                    .FirstOrDefault() == null)
+                {
+                    control.Cleanup();
+                    flyPanel.Controls.Remove(control);
+                    control.Dispose();
+                }
+                serverList.RemoveAll(s => s.config == config);
+            }
+        }
+
+        void RemoveWelcomeItem()
+        {
+            var welcome = GetAllControls()
+                .Where(c => c is Model.UserControls.WelcomeFlyPanelComponent)
+                .FirstOrDefault();
+
+            if (welcome == null)
+            {
+                return;
+            }
+
+            flyPanel.Controls.Remove(welcome);
+        }
+
         void LoopThroughAllServer(Action<Model.UserControls.ServerListItem> worker)
         {
             foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
@@ -70,25 +126,38 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
         }
 
-        void RemoveAllConrols()
+        List<UserControl> GetAllControls()
         {
-            List<UserControl> listControls = new List<UserControl>();
-
+            List<UserControl> controlList = new List<UserControl>();
             foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
             {
-                control.Cleanup();
-                if (control is Model.UserControls.ServerListItem)
+                switch (control)
                 {
-                    listControls.Add(control as Model.UserControls.ServerListItem);
-                }
-                if (control is Model.UserControls.WelcomeFlyPanelComponent)
-                {
-                    listControls.Add(control as Model.UserControls.WelcomeFlyPanelComponent);
+                    case Model.UserControls.ServerListItem serv:
+                        controlList.Add(serv);
+                        break;
+                    case Model.UserControls.WelcomeFlyPanelComponent welcome:
+                        controlList.Add(welcome);
+                        break;
                 }
             }
+            return controlList;
+        }
 
+        void RemoveAllConrols()
+        {
+            var listControls = GetAllControls();
             foreach (UserControl control in listControls)
             {
+                switch (control)
+                {
+                    case Model.UserControls.ServerListItem serv:
+                        serv.Cleanup();
+                        break;
+                    case Model.UserControls.WelcomeFlyPanelComponent welcome:
+                        welcome.Cleanup();
+                        break;
+                }
                 flyPanel.Controls.Remove(control);
                 control.Dispose();
             }
@@ -104,24 +173,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             flyPanel.Controls.Add(
                 new Model.UserControls.WelcomeFlyPanelComponent());
         }
-        private void LoadServerItems()
-        {
-            var serverList = setting.GetServerList();
 
-            var count = serverList.Count;
-            if (count <= 0)
-            {
-                LoadWelcomeItem();
-                return;
-            }
-
-            for (int i = 0; i < count; i++)
-            {
-                flyPanel.Controls.Add(
-                    new Model.UserControls.ServerListItem(
-                        i + 1, serverList[i]));
-            }
-        }
 
         private void ResetIndex()
         {

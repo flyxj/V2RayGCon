@@ -269,10 +269,10 @@ namespace V2RayGCon.Views
                 new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
-                    cboxStreamTLS,
-                    tboxStreamSocksMark,
                     rbtnStreamInbound,
-                    btnInsertStream),
+                    btnInsertStream,
+                    chkStreamUseTls,
+                    chkStreamUseSockopt),
 
                 new Controller.ConfigerComponet.SSClient(
                     tboxSSCAddr,

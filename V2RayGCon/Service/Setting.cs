@@ -43,7 +43,8 @@ namespace V2RayGCon.Service
         {
             get
             {
-                return string.Join(Environment.NewLine, _logCache);
+                return string.Join(Environment.NewLine, _logCache)
+                    + System.Environment.NewLine;
             }
             private set
             {
@@ -88,6 +89,11 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void PackSelectedServers()
+        {
+            serverList.PackSelectedServers();
+        }
+
         public int GetSelectedServersCount()
         {
             return serverList.Where(s => s.isSelected).ToList().Count;

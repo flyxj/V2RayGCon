@@ -10,18 +10,17 @@ namespace V2RayGCon.Controller.ConfigerComponet
         public StreamSettings(
             ComboBox type,
             ComboBox param,
-            ComboBox tls,
-            TextBox socksMark,
             RadioButton inbound,
-            Button insert)
+            Button insert,
+            CheckBox tls,
+            CheckBox sockopt)
         {
             cache = Service.Cache.Instance;
-            _isServer = false;
-
-            DataBinding(type, param, tls, socksMark);
+            isServer = false;
+            DataBinding(type, param, tls, sockopt);
             Connect(type, param);
             AttachEvent(inbound, insert);
-            InitComboBox(tls, type);
+            InitComboBox(type);
         }
 
         #region properties
@@ -39,25 +38,20 @@ namespace V2RayGCon.Controller.ConfigerComponet
             set { SetField(ref _streamParamText, value); }
         }
 
-        private int _tls;
-        public int tls
+        bool isServer { get; set; }
+
+        bool _isUseTls;
+        public bool isUseTls
         {
-            get { return _tls; }
-            set { SetField(ref _tls, value); }
+            get { return _isUseTls; }
+            set { SetField(ref _isUseTls, value); }
         }
 
-        private string _socksMark;
-        public string socksMark
+        bool _isUseSockopt;
+        public bool isUseSockopt
         {
-            get { return _socksMark; }
-            set { SetField(ref _socksMark, value); }
-        }
-
-        private bool _isServer;
-        public bool isServer
-        {
-            get { return _isServer; }
-            set { _isServer = value; }
+            get { return _isUseSockopt; }
+            set { SetField(ref _isUseSockopt, value); }
         }
 
         #endregion
@@ -78,16 +72,14 @@ namespace V2RayGCon.Controller.ConfigerComponet
                     prefix,
                     Model.Data.Table.streamSettings[index].optionPath);
 
-            socksMark = GetStr(prefix, "sockopt.mark");
-            tls = GetStr(prefix, "security") == "tls" ? 1 : 0;
+            isUseSockopt = Lib.Utils.GetKey(config, prefix + ".sockopt") != null;
+            isUseTls = GetStr(prefix, "security") == "tls";
         }
         #endregion
 
         #region private method
-        void InitComboBox(ComboBox tls, ComboBox cboxType)
+        void InitComboBox(ComboBox cboxType)
         {
-            Lib.UI.FillComboBox(tls, Model.Data.Table.streamTLS);
-
             var streamType = new Dictionary<int, string>();
             foreach (var type in Model.Data.Table.streamSettings)
             {
@@ -127,7 +119,9 @@ namespace V2RayGCon.Controller.ConfigerComponet
             };
         }
 
-        void AttachEvent(RadioButton inbound, Button insert)
+        void AttachEvent(
+            RadioButton inbound,
+            Button insert)
         {
             inbound.CheckedChanged += (s, a) =>
             {
@@ -147,18 +141,25 @@ namespace V2RayGCon.Controller.ConfigerComponet
         void DataBinding(
             ComboBox type,
             ComboBox param,
-            ComboBox tls,
-            TextBox socksMark)
+            CheckBox tls,
+            CheckBox sockopt)
         {
             var bs = new BindingSource();
             bs.DataSource = this;
 
-            socksMark.DataBindings.Add(
-                nameof(TextBox.Text),
+            tls.DataBindings.Add(
+                nameof(CheckBox.Checked),
                 bs,
-                nameof(this.socksMark),
+                nameof(this.isUseTls),
                 true,
-                DataSourceUpdateMode.OnValidation);
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            sockopt.DataBindings.Add(
+               nameof(CheckBox.Checked),
+               bs,
+               nameof(this.isUseSockopt),
+               true,
+               DataSourceUpdateMode.OnPropertyChanged);
 
             type.DataBindings.Add(
                 nameof(ComboBox.SelectedIndex),
@@ -171,13 +172,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 nameof(ComboBox.Text),
                 bs,
                 nameof(this.streamParamText),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            tls.DataBindings.Add(
-                nameof(ComboBox.SelectedIndex),
-                bs,
-                nameof(this.tls),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
         }
@@ -243,26 +237,25 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         void InsertSocksMark(JToken streamSettings)
         {
-            var mark = Lib.Utils.Str2Int(this.socksMark);
-            if (mark <= 0)
+            if (isUseSockopt)
             {
+                streamSettings["sockopt"] =
+                    JToken.Parse(@"{mark:0,tcpFastOpen:true}");
                 return;
             }
-            streamSettings["sockopt"] = JToken.Parse(@"{mark:" + mark.ToString() + @"}");
         }
 
         void InsertTLSSettings(JToken streamSettings)
         {
             var tlsTpl = cache.tpl.LoadTemplate("tls");
-            if (tls <= 0)
+            if (isUseTls)
             {
-                streamSettings["security"] = "none";
+                streamSettings["security"] = "tls";
+                streamSettings["tlsSettings"] = tlsTpl;
             }
             else
             {
-                var streamSecurity = Model.Data.Table.streamTLS;
-                streamSettings["security"] = streamSecurity[tls];
-                streamSettings["tlsSettings"] = tlsTpl;
+                streamSettings["security"] = "none";
             }
         }
         #endregion

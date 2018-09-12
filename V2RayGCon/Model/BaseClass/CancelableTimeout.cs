@@ -8,7 +8,6 @@ namespace V2RayGCon.Model.BaseClass
         Timer timer;
         int TIMEOUT;
         Action worker;
-        object timerLock;
 
         public CancelableTimeout(Action worker, int timeout)
         {
@@ -19,7 +18,6 @@ namespace V2RayGCon.Model.BaseClass
 
             this.TIMEOUT = timeout;
             this.worker = worker;
-            this.timerLock = new object();
 
             timer = new Timer();
             timer.Enabled = false;
@@ -29,10 +27,7 @@ namespace V2RayGCon.Model.BaseClass
 
         private void OnTimeout(object sender, EventArgs e)
         {
-            lock (timerLock)
-            {
-                this.worker();
-            }
+            this.worker();
         }
 
         public void Timeout()
@@ -43,19 +38,13 @@ namespace V2RayGCon.Model.BaseClass
 
         public void Start()
         {
-            lock (timerLock)
-            {
-                timer.Interval = this.TIMEOUT;
-                timer.Enabled = true;
-            }
+            timer.Interval = this.TIMEOUT;
+            timer.Enabled = true;
         }
 
         public void Cancel()
         {
-            lock (timerLock)
-            {
-                timer.Enabled = false;
-            }
+            timer.Enabled = false;
         }
 
         public void Release()
