@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -15,6 +14,9 @@ namespace V2RayGCon.Service
             CreateNotifyIcon();
 
             setting = Setting.Instance;
+            setting.SaveOrgSysProxyInfo();
+            setting.LoadSysProxy();
+
             setting.OnUpdateNotifierText += (s, a) =>
             {
                 ni.Text = a.Data;
@@ -148,11 +150,7 @@ namespace V2RayGCon.Service
 
             setting.SaveServerListImmediately();
             setting.DisposeLazyTimers();
-
-            if (!string.IsNullOrEmpty(setting.curSysProxy))
-            {
-                setting.ClearSystemProxy();
-            }
+            setting.RestoreOrgSysProxyInfo();
 
             AutoResetEvent sayGoodbye = new AutoResetEvent(false);
             setting.StopAllServersThen(() => sayGoodbye.Set());

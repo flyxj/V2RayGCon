@@ -29,6 +29,11 @@ namespace V2RayGCon.Lib
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
         }
 
+        public static string getProxyUrl()
+        {
+            return Registry.GetValue(keyName, "ProxyServer", "").ToString();
+        }
+
         public static bool getProxyState()
         {
             var state = Registry.GetValue(keyName, "ProxyEnable", 0);

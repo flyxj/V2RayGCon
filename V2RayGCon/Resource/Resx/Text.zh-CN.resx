@@ -544,6 +544,6 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="SetSysProxyDone" xml:space="preserve">
     <value>系统代理设置完成。
-此设定会在软件退出时自动清除。</value>
+此设定会在软件退出时恢复原状。</value>
   </data>
 </root>

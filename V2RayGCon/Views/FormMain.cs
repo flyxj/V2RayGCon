@@ -47,8 +47,6 @@ namespace V2RayGCon.Views
                 setting.LazyGC();
             };
 
-            // Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
-
             this.Text = string.Format(
                 "{0} v{1}",
                 Properties.Resources.AppName,
@@ -114,13 +112,20 @@ namespace V2RayGCon.Views
         string GetCurrentSysProxySetting()
         {
             var str = I18N("CurSysProxy");
-            if (string.IsNullOrEmpty(setting.curSysProxy))
+            var proxy = string.Empty;
+
+            if (Lib.ProxySetter.getProxyState())
+            {
+                proxy = Lib.ProxySetter.getProxyUrl();
+            }
+
+            if (string.IsNullOrEmpty(proxy))
             {
                 str = string.Format("{0}:{1}", str, I18N("NotSet"));
             }
             else
             {
-                str = string.Format("{0} http://{1}", str, setting.curSysProxy);
+                str = string.Format("{0} http://{1}", str, proxy);
             }
             return str;
         }

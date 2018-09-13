@@ -1112,7 +1112,7 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 Set system proxy complete.
-        ///This setting will be cleared when this software exits. 的本地化字符串。
+        ///This setting will be restored when software exits. 的本地化字符串。
         /// </summary>
         internal static string SetSysProxyDone {
             get {

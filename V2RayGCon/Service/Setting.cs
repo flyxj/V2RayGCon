@@ -61,7 +61,20 @@ namespace V2RayGCon.Service
             }
         }
 
-        public string curSysProxy = null;
+        public string curSysProxyUrl
+        {
+            get
+            {
+                return Properties.Settings.Default.SysProxyUrl;
+            }
+            set
+            {
+                Properties.Settings.Default.SysProxyUrl = value.ToString();
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public Tuple<bool, string> orgSysProxyInfo = null;
 
         public bool isShowConfigerToolsPanel
         {
@@ -89,6 +102,47 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void SetSystemProxy(string link)
+        {
+            if (string.IsNullOrEmpty(link))
+            {
+                return;
+            }
+
+            Lib.ProxySetter.setProxy(link, true);
+            curSysProxyUrl = link;
+            InvokeEventOnSysProxyChanged();
+        }
+
+        public void ClearSystemProxy()
+        {
+            curSysProxyUrl = string.Empty;
+            Lib.ProxySetter.setProxy(curSysProxyUrl, false);
+            InvokeEventOnSysProxyChanged();
+        }
+
+        public void LoadSysProxy()
+        {
+            if (!string.IsNullOrEmpty(curSysProxyUrl))
+            {
+                Lib.ProxySetter.setProxy(curSysProxyUrl, true);
+            }
+        }
+
+        public void SaveOrgSysProxyInfo()
+        {
+            orgSysProxyInfo = new Tuple<bool, string>(
+                Lib.ProxySetter.getProxyState(),
+                Lib.ProxySetter.getProxyUrl());
+        }
+
+        public void RestoreOrgSysProxyInfo()
+        {
+            Lib.ProxySetter.setProxy(
+                orgSysProxyInfo.Item2,
+                orgSysProxyInfo.Item1);
+        }
+
         public void PackSelectedServers()
         {
             serverList.PackSelectedServers();
@@ -178,25 +232,6 @@ namespace V2RayGCon.Service
         public void RestartServersByList(List<Model.Data.ServerItem> servers)
         {
             serverList.RetartServersByList(servers);
-        }
-
-        public void SetSystemProxy(string link)
-        {
-            if (string.IsNullOrEmpty(link))
-            {
-                return;
-            }
-
-            Lib.ProxySetter.setProxy(link, true);
-            curSysProxy = link;
-            InvokeEventOnSysProxyChanged();
-        }
-
-        public void ClearSystemProxy()
-        {
-            Lib.ProxySetter.setProxy("", false);
-            curSysProxy = string.Empty;
-            InvokeEventOnSysProxyChanged();
         }
 
         public void StopAllServersThen(Action lambda = null)
