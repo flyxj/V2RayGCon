@@ -542,4 +542,8 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="PackageDone" xml:space="preserve">
     <value>打包完成。</value>
   </data>
+  <data name="SetSysProxyDone" xml:space="preserve">
+    <value>系统代理设置完成。
+此设定会在软件退出时自动清除。</value>
+  </data>
 </root>
