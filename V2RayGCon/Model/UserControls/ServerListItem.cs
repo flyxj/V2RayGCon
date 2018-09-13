@@ -118,7 +118,8 @@ namespace V2RayGCon.Model.UserControls
                         this.tboxInboundIP.Text,
                         this.tboxInboundPort.Text));
 
-                    MessageBox.Show(I18N("Done"));
+                    // issue #9
+                    MessageBox.Show(I18N("SetSysProxyDone"));
                 }),
             });
         }
