@@ -37,11 +37,11 @@ namespace V2RayGCon.Views
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            setting.RestoreFormRect(this, nameof(FormMain));
+            setting.RestoreFormRect(this);
 
             this.FormClosed += (s, a) =>
             {
-                setting.SaveFormRect(this, nameof(FormMain));
+                setting.SaveFormRect(this);
                 setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
                 setting.LazyGC();

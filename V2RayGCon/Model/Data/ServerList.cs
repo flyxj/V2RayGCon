@@ -73,6 +73,17 @@ namespace V2RayGCon.Model.Data
             Notify();
         }
 
+        private void RemoveServerFromList(int index)
+        {
+            var server = this[index];
+            lock (writeLock)
+            {
+                ReleaseEventFrom(server);
+                server.parent = null;
+                this.RemoveAt(index);
+            }
+        }
+
         JObject Config2Package(string configString, string id, int portBase, int index, string tagPrefix)
         {
             var cache = Service.Cache.Instance;
@@ -109,12 +120,17 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region public method
+        public int GetSelectedServersCount()
+        {
+            return this.Where(s => s.isSelected).ToList().Count;
+        }
+
         public void PackSelectedServers()
         {
             var cache = Service.Cache.Instance;
             var list = this.Where(s => s.isSelected).OrderByDescending(s => s.index).ToList();
 
-            var package = JObject.Parse(@"{}");
+            var packages = JObject.Parse(@"{}");
             var serverNameList = new List<string>();
 
             var id = Guid.NewGuid().ToString();
@@ -125,8 +141,7 @@ namespace V2RayGCon.Model.Data
             {
                 var config = cache.tpl.LoadPackage("main");
                 config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
-
-                Lib.Utils.UnionJson(ref config, package);
+                Lib.Utils.UnionJson(ref config, packages);
                 OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageDone")));
                 AddServer(config.ToString(Formatting.None));
             };
@@ -136,10 +151,10 @@ namespace V2RayGCon.Model.Data
                 var server = list[index];
                 try
                 {
-                    var pack = Config2Package(server.config, id, port, index, tagPrefix);
-                    Lib.Utils.UnionJson(ref package, pack);
+                    var package = Config2Package(server.config, id, port, index, tagPrefix);
+                    Lib.Utils.UnionJson(ref packages, package);
                     var vnext = CreateVnext(index, port, id);
-                    Lib.Utils.UnionJson(ref package, vnext);
+                    Lib.Utils.UnionJson(ref packages, vnext);
                     serverNameList.Add(server.name);
                     OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageSuccess") + ": " + server.name));
                 }
@@ -153,7 +168,7 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
         }
 
-        public bool DoSpeedTestOnSelectedServers()
+        public bool RunSpeedTestOnSelectedServers()
         {
             if (isTesting)
             {
@@ -169,7 +184,7 @@ namespace V2RayGCon.Model.Data
             {
                 Lib.Utils.ExecuteInParallel<ServerItem, bool>(list, (server) =>
                 {
-                    server.DoSpeedTest();
+                    server.RunSpeedTest();
                     return true;
                 });
 
@@ -185,7 +200,7 @@ namespace V2RayGCon.Model.Data
             return this.Where(s => s.isServerOn).ToList();
         }
 
-        public void RetartServersByList(List<Model.Data.ServerItem> servers, Action done = null)
+        public void RestartServersByList(List<Model.Data.ServerItem> servers, Action done = null)
         {
             var list = servers;
             Action<int, Action> worker = (index, next) =>
@@ -230,23 +245,6 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
-        public void RestartAllServersThen(Action done = null)
-        {
-            Action<int, Action> worker = (index, next) =>
-            {
-                if (this[index].isServerOn)
-                {
-                    this[index].RestartCoreThen(next);
-                }
-                else
-                {
-                    next();
-                }
-            };
-
-            Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
-        }
-
         public void StopAllSelectedThen(Action lambda = null)
         {
             Action<int, Action> worker = (index, next) =>
@@ -268,8 +266,6 @@ namespace V2RayGCon.Model.Data
         {
             Action<int, Action> worker = (index, next) =>
             {
-                // Model.BaseClass.CoreServer ignore errors 
-                // do not need try/catch
                 this[index].server.StopCoreThen(next);
             };
 
@@ -294,7 +290,7 @@ namespace V2RayGCon.Model.Data
 
                 this[index].CleanupThen(() =>
                 {
-                    this.RemoveAt(index);
+                    RemoveServerFromList(index);
                     next();
                 });
             };
@@ -310,8 +306,6 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, finish);
         }
 
-
-
         public void DeleteAllServersThen(Action done = null)
         {
             if (isTesting)
@@ -324,7 +318,7 @@ namespace V2RayGCon.Model.Data
             {
                 this[index].CleanupThen(() =>
                 {
-                    this.RemoveAt(index);
+                    RemoveServerFromList(index);
                     next();
                 });
             };
@@ -364,23 +358,16 @@ namespace V2RayGCon.Model.Data
             Lib.Utils.ChainActionHelperAsync(this.Count, worker, done);
         }
 
-        public void BindEventsToAllServers()
+        public void Prepare()
         {
             foreach (var server in this)
             {
+                server.parent = this;
                 BindEventTo(server);
             }
         }
 
-        public void ReleaseEventsFromAllServers()
-        {
-            foreach (var server in this)
-            {
-                ReleaseEventFrom(server);
-            }
-        }
-
-        private void DeleteServerHandler(object sender, Model.Data.StrEvent args)
+        public void DeleteServerByConfig(string config)
         {
             if (isTesting)
             {
@@ -388,7 +375,7 @@ namespace V2RayGCon.Model.Data
                 return;
             }
 
-            var index = GetServerIndexByConfig(args.Data);
+            var index = GetServerIndexByConfig(config);
             if (index < 0)
             {
                 MessageBox.Show(I18N("CantFindOrgServDelFail"));
@@ -399,11 +386,7 @@ namespace V2RayGCon.Model.Data
 
             Action removeServer = () =>
             {
-                lock (writeLock)
-                {
-                    ReleaseEventFrom(server);
-                    this.RemoveAt(index);
-                }
+                RemoveServerFromList(index);
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
             };
@@ -416,7 +399,18 @@ namespace V2RayGCon.Model.Data
             server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += SaveChanges;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
-            server.OnRequireDeleteServer += DeleteServerHandler;
+        }
+
+        public int GetServerIndexByConfig(string config)
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (this[i].config == config)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         public void ReleaseEventFrom(Model.Data.ServerItem server)
@@ -424,7 +418,6 @@ namespace V2RayGCon.Model.Data
             server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= SaveChanges;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
-            server.OnRequireDeleteServer -= DeleteServerHandler;
         }
 
         public bool AddServer(string config, bool quiet = false)
@@ -448,6 +441,7 @@ namespace V2RayGCon.Model.Data
                 this.Add(newServer);
             }
 
+            newServer.parent = this;
             BindEventTo(newServer);
 
             if (!quiet)
@@ -462,26 +456,15 @@ namespace V2RayGCon.Model.Data
             return true;
         }
 
-        public int GetServerIndexByConfig(string config)
+        public bool ReplaceServerConfig(string orgConfig, string newConfig)
         {
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (this[i].config == config)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public bool ReplaceServerConfigByIndex(int index, string config)
-        {
+            var index = GetServerIndexByConfig(orgConfig);
             if (index < 0 || index > this.Count)
             {
                 return false;
             }
 
-            this[index].ChangeConfig(config);
+            this[index].ChangeConfig(newConfig);
             return true;
         }
 

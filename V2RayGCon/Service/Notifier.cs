@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -14,8 +15,8 @@ namespace V2RayGCon.Service
             CreateNotifyIcon();
 
             setting = Setting.Instance;
-            setting.SaveOrgSysProxyInfo();
-            setting.LoadSysProxy();
+            setting.SaveOriginalSystemProxyInfo();
+            setting.LoadSystemProxy();
 
             setting.OnUpdateNotifierText += (s, a) =>
             {
@@ -36,7 +37,7 @@ namespace V2RayGCon.Service
 #if DEBUG
             This_function_do_some_tedious_stuff();
 #else
-            if (setting.GetServerListCount() > 0)
+            if (setting.GetServerListInstance().Any())
             {
                 setting.WakeupAutorunServers();
             }
@@ -150,10 +151,10 @@ namespace V2RayGCon.Service
 
             setting.SaveServerListImmediately();
             setting.DisposeLazyTimers();
-            setting.RestoreOrgSysProxyInfo();
+            setting.RestoreOriginalSystemProxyInfo();
 
             AutoResetEvent sayGoodbye = new AutoResetEvent(false);
-            setting.StopAllServersThen(() => sayGoodbye.Set());
+            setting.GetServerListInstance().StopAllServersThen(() => sayGoodbye.Set());
             sayGoodbye.WaitOne();
         }
         #endregion

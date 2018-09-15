@@ -31,7 +31,11 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             packSelected.Click += (s, a) =>
             {
-                setting.PackSelectedServers();
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+                setting.GetServerListInstance().PackSelectedServers();
             };
 
             deleteAllItems.Click += (s, a) =>
@@ -81,7 +85,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     return;
                 }
-                setting.DeleteSelectedServers();
+
+                setting.GetServerListInstance().DeleteSelectedServersThen();
             };
 
             speedTestOnSelected.Click += (s, a) =>
@@ -96,7 +101,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     return;
                 }
 
-                if (!setting.DoSpeedTestOnSelectedServers())
+                if (!setting.GetServerListInstance().RunSpeedTestOnSelectedServers())
                 {
                     MessageBox.Show(I18N("LastTestNoFinishYet"));
                 }
@@ -111,7 +116,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
                 {
-                    setting.StopAllSelectedThen();
+                    setting.GetServerListInstance().StopAllSelectedThen();
                 }
             };
 
@@ -124,7 +129,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
                 {
-                    setting.RestartAllSelected();
+                    setting.GetServerListInstance().RestartAllSelectedThen();
                 }
             };
 
@@ -164,7 +169,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             refreshSummary.Click += (s, a) =>
             {
                 cache.html.Clear();
-                setting.UpdateAllServersSummary();
+                setting.GetServerListInstance().UpdateAllServersSummary();
             };
         }
 
@@ -183,7 +188,8 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         bool CheckSelectedServerCount()
         {
-            var count = setting.GetSelectedServersCount();
+            var serverList = setting.GetServerListInstance();
+            var count = serverList.GetSelectedServersCount();
             if (count <= 0)
             {
                 Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));

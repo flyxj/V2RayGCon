@@ -54,7 +54,7 @@ namespace V2RayGCon.Views
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
-            setting.RestoreFormRect(this, nameof(FormConfiger));
+            setting.RestoreFormRect(this);
 
             InitToolsPanel();
             InitConfiger();
@@ -83,7 +83,7 @@ namespace V2RayGCon.Views
             {
                 editor.Click -= OnMouseLeaveToolsPanel;
                 setting.OnRequireMenuUpdate -= MenuUpdateHandler;
-                setting.SaveFormRect(this, nameof(FormConfiger));
+                setting.SaveFormRect(this);
                 toolsPanelHandler.Dispose();
                 setting.LazyGC();
             };

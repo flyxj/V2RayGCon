@@ -79,7 +79,7 @@ namespace V2RayGCon.Model.UserControls
                         return;
                     }
                     Cleanup();
-                    serverItem.DeleteSelf();
+                    serverItem.parent.DeleteServerByConfig(serverItem.config);
                 }),
                 new MenuItem("-"),
                 new MenuItem(I18N("Copy"),new MenuItem[]{
@@ -104,7 +104,7 @@ namespace V2RayGCon.Model.UserControls
                 }),
                 new MenuItem(I18N("SpeedTest"),(s,a)=>{
                     Task.Factory.StartNew(
-                        () => serverItem.DoSpeedTest());
+                        () => serverItem.RunSpeedTest());
                 }),
                 new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
                     if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
@@ -222,7 +222,7 @@ namespace V2RayGCon.Model.UserControls
 
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
-            serverItem.SetInjectImport(chkImport.Checked);
+            serverItem.SetIsInjectImport(chkImport.Checked);
         }
 
         private void chkAutoRun_CheckedChanged(object sender, EventArgs e)

@@ -28,7 +28,7 @@ namespace V2RayGCon.Service
         Setting()
         {
             LoadServerList();
-            serverList.BindEventsToAllServers();
+            serverList.Prepare();
             serverList.OnLog += (s, a) => SendLog(a.Data);
             serverList.ListChanged += LazySaveServerList;
             serverList.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
@@ -121,7 +121,7 @@ namespace V2RayGCon.Service
             InvokeEventOnSysProxyChanged();
         }
 
-        public void LoadSysProxy()
+        public void LoadSystemProxy()
         {
             if (!string.IsNullOrEmpty(curSysProxyUrl))
             {
@@ -129,43 +129,28 @@ namespace V2RayGCon.Service
             }
         }
 
-        public void SaveOrgSysProxyInfo()
+        public void SaveOriginalSystemProxyInfo()
         {
             orgSysProxyInfo = new Tuple<bool, string>(
                 Lib.ProxySetter.getProxyState(),
                 Lib.ProxySetter.getProxyUrl());
         }
 
-        public void RestoreOrgSysProxyInfo()
+        public void RestoreOriginalSystemProxyInfo()
         {
             Lib.ProxySetter.setProxy(
                 orgSysProxyInfo.Item2,
                 orgSysProxyInfo.Item1);
         }
 
-        public void PackSelectedServers()
+        public Model.Data.ServerList GetServerListInstance()
         {
-            serverList.PackSelectedServers();
-        }
-
-        public int GetSelectedServersCount()
-        {
-            return serverList.Where(s => s.isSelected).ToList().Count;
+            return serverList;
         }
 
         public void WakeupAutorunServers()
         {
             serverList.WakeupAutorunServersThen();
-        }
-
-        public void DeleteSelectedServers()
-        {
-            serverList.DeleteSelectedServersThen();
-        }
-
-        public bool DoSpeedTestOnSelectedServers()
-        {
-            return serverList.DoSpeedTestOnSelectedServers();
         }
 
         public void SaveServerListImmediately()
@@ -196,8 +181,10 @@ namespace V2RayGCon.Service
             lazyGCTimer.Start();
         }
 
-        public void SaveFormRect(Form form, string key)
+        public void SaveFormRect(Form form)
         {
+            var key = form.GetType().Name;
+
             var list = GetWinFormRectList();
             list[key] = new Rectangle(
                 form.Left, form.Top, form.Width, form.Height);
@@ -206,8 +193,10 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Save();
         }
 
-        public void RestoreFormRect(Form form, string key)
+        public void RestoreFormRect(Form form)
         {
+            var key = form.GetType().Name;
+
             var list = GetWinFormRectList();
 
             if (!list.ContainsKey(key))
@@ -224,41 +213,6 @@ namespace V2RayGCon.Service
             form.Top = Lib.Utils.Clamp(rect.Top, 0, screen.Bottom - form.Height);
         }
 
-        public List<Model.Data.ServerItem> GetActiveServerList()
-        {
-            return serverList.GetActiveServersList();
-        }
-
-        public void RestartServersByList(List<Model.Data.ServerItem> servers)
-        {
-            serverList.RetartServersByList(servers);
-        }
-
-        public void StopAllServersThen(Action lambda = null)
-        {
-            serverList.StopAllServersThen(lambda);
-        }
-
-        public void RestartAllServers()
-        {
-            serverList.RestartAllServersThen();
-        }
-
-        public void StopAllSelectedThen(Action lambda = null)
-        {
-            serverList.StopAllSelectedThen(lambda);
-        }
-
-        public void RestartAllSelected()
-        {
-            serverList.RestartAllSelectedThen();
-        }
-
-        public void UpdateAllServersSummary()
-        {
-            serverList.UpdateAllServersSummary();
-        }
-
         public void SendLog(string log)
         {
             logCache = log;
@@ -267,11 +221,6 @@ namespace V2RayGCon.Service
                 OnLog?.Invoke(this, new Model.Data.StrEvent(log));
             }
             catch { }
-        }
-
-        public int GetServerListCount()
-        {
-            return serverList.Count;
         }
 
         public void ImportLinks(string links)
@@ -349,7 +298,7 @@ namespace V2RayGCon.Service
                 .OrderBy(s => s.index)
                 .ToList();
 
-            RestartServersByList(list);
+            serverList.RestartServersByList(list);
         }
 
         public List<Model.Data.UrlItem> GetSubscriptionItems()
@@ -375,7 +324,27 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Save();
         }
 
-        public void LoadServerList()
+        public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
+        {
+            return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
+        }
+
+        public void DeleteAllServer()
+        {
+            serverList.DeleteAllServersThen(
+                () => Service.Cache.Instance.core.Clear());
+        }
+
+        public bool AddServer(JObject config, bool quiet = false)
+        {
+            return serverList.AddServer(
+                Lib.Utils.Config2String(config),
+                quiet);
+        }
+        #endregion
+
+        #region private method
+        void LoadServerList()
         {
             serverList = new Model.Data.ServerList();
 
@@ -415,37 +384,6 @@ namespace V2RayGCon.Service
             serverList = list;
         }
 
-        public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
-        {
-            return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
-        }
-
-        public void DeleteAllServer()
-        {
-            serverList.DeleteAllServersThen(
-                () => Service.Cache.Instance.core.Clear());
-        }
-
-        public bool AddServer(JObject config, bool quiet = false)
-        {
-            return serverList.AddServer(
-                Lib.Utils.Config2String(config),
-                quiet);
-        }
-
-        public int GetServerIndexByConfig(string configString)
-        {
-            return serverList.GetServerIndexByConfig(configString);
-        }
-
-        public bool ReplaceServerConfigByIndex(int orgIndex, string newConfig)
-        {
-            return serverList.ReplaceServerConfigByIndex(orgIndex, newConfig);
-        }
-
-        #endregion
-
-        #region private method
         Dictionary<string, Rectangle> winFormRectListCache = null;
         Dictionary<string, Rectangle> GetWinFormRectList()
         {
@@ -659,7 +597,6 @@ namespace V2RayGCon.Service
             }
 
             UpdateNotifierText(count.ToString() + I18N("ServersAreRunning"));
-
         }
 
         void UpdateNotifierText(string title = null)

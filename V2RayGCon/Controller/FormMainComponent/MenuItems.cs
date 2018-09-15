@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -77,7 +78,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public void ExportAllServersToTextFile()
         {
-            if (setting.GetServerListCount() <= 0)
+            if (!setting.GetServerListInstance().Any())
             {
                 MessageBox.Show(I18N("ServerListIsEmpty"));
                 return;
@@ -134,7 +135,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 return;
             }
 
-            setting.StopAllServersThen(() =>
+            setting.GetServerListInstance().StopAllServersThen(() =>
             {
                 try
                 {
