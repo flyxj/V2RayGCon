@@ -8,9 +8,13 @@ namespace V2RayGCon.Model.UserControls
         Model.BaseClass.IFormMainFlyPanelComponent
     {
         Service.Setting setting;
+        Service.Servers servers;
+
         public WelcomeFlyPanelComponent()
         {
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
+
             InitializeComponent();
         }
 
@@ -47,7 +51,7 @@ namespace V2RayGCon.Model.UserControls
         private void lbCopyFromClipboard_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string links = Lib.Utils.GetClipboardText();
-            setting.ImportLinks(links);
+            servers.ImportLinks(links);
         }
 
         private void lbScanQRCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -56,7 +60,7 @@ namespace V2RayGCon.Model.UserControls
             {
                 var msg = Lib.Utils.CutStr(link, 90);
                 setting.SendLog($"QRCode: {msg}");
-                setting.ImportLinks(link);
+                servers.ImportLinks(link);
             }
 
             void Fail()

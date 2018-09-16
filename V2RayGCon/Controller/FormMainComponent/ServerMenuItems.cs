@@ -8,6 +8,7 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Setting setting;
         Service.Cache cache;
+        Service.Servers servers;
 
         public ServerMenuItems(
             ToolStripMenuItem stopSelected,
@@ -28,6 +29,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             setting = Service.Setting.Instance;
             cache = Service.Cache.Instance;
+            servers = Service.Servers.Instance;
 
             packSelected.Click += (s, a) =>
             {
@@ -35,13 +37,17 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     return;
                 }
-                setting.GetServerListInstance().PackSelectedServers();
+                servers.PackSelectedServers();
             };
 
             deleteAllItems.Click += (s, a) =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
-                    setting.DeleteAllServer();
+                if (!Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
+                {
+                    return;
+                }
+                Service.Servers.Instance.DeleteAllServersThen();
+                Service.Cache.Instance.core.Clear();
             };
 
             copyAsSubscriptions.Click += (s, a) =>
@@ -86,7 +92,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     return;
                 }
 
-                setting.GetServerListInstance().DeleteSelectedServersThen();
+                servers.DeleteSelectedServersThen();
             };
 
             speedTestOnSelected.Click += (s, a) =>
@@ -101,7 +107,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     return;
                 }
 
-                if (!setting.GetServerListInstance().RunSpeedTestOnSelectedServers())
+                if (!servers.RunSpeedTestOnSelectedServers())
                 {
                     MessageBox.Show(I18N("LastTestNoFinishYet"));
                 }
@@ -116,7 +122,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
                 {
-                    setting.GetServerListInstance().StopAllSelectedThen();
+                    servers.StopAllSelectedThen();
                 }
             };
 
@@ -129,7 +135,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
                 {
-                    setting.GetServerListInstance().RestartAllSelectedThen();
+                    servers.RestartAllSelectedServersThen();
                 }
             };
 
@@ -169,7 +175,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             refreshSummary.Click += (s, a) =>
             {
                 cache.html.Clear();
-                setting.GetServerListInstance().UpdateAllServersSummary();
+                servers.UpdateAllServersSummary();
             };
         }
 
@@ -188,9 +194,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         bool CheckSelectedServerCount()
         {
-            var serverList = setting.GetServerListInstance();
-            var count = serverList.GetSelectedServersCount();
-            if (count <= 0)
+            if (!servers.IsSelecteAnyServer())
             {
                 Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));
                 return false;
@@ -200,10 +204,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void CopySelectedAsV2RayLinks()
         {
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
             string s = string.Empty;
 
-            foreach (var server in servers)
+            foreach (var server in serverList)
             {
                 if (server.isSelected)
                 {
@@ -219,10 +223,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         string EncodeAllServersIntoVmessLinks()
         {
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
             string result = string.Empty;
 
-            foreach (var server in servers)
+            foreach (var server in serverList)
             {
                 if (!server.isSelected)
                 {

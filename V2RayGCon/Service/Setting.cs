@@ -3,10 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -14,26 +11,11 @@ namespace V2RayGCon.Service
 {
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
-        private Model.Data.ServerList serverList;
-
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
-        public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate, OnSysProxyChanged;
-
-        Model.BaseClass.CancelableTimeout
-            lazyGCTimer = null,
-            lazySaveServerListTimer = null;
-
-        int preRunningServerCount = 0;
+        public event EventHandler OnSysProxyChanged;
 
         Setting()
         {
-            LoadServerList();
-            serverList.Prepare();
-            serverList.OnLog += (s, a) => SendLog(a.Data);
-            serverList.ListChanged += LazySaveServerList;
-            serverList.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
-            serverList.OnRequireFlyPanelUpdate += InvokeEventOnRequireFlyPanelUpdate;
-            LazySaveServerList();
         }
 
         #region Properties
@@ -102,6 +84,46 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public List<Model.Data.ServerItem> LoadServerList()
+        {
+            var empty = new List<Model.Data.ServerItem>();
+
+            List<Model.Data.ServerItem> list = null;
+            try
+            {
+                list = JsonConvert.DeserializeObject
+                    <List<Model.Data.ServerItem>>(
+                    Properties.Settings.Default.ServerList);
+
+                if (list == null)
+                {
+                    return empty;
+                }
+            }
+            catch
+            {
+                return empty;
+            }
+
+            // make sure every config of server can be parsed correctly
+            for (var i = list.Count - 1; i >= 0; i--)
+            {
+                try
+                {
+                    if (JObject.Parse(list[i].config) == null)
+                    {
+                        list.RemoveAt(i);
+                    }
+                }
+                catch
+                {
+                    list.RemoveAt(i);
+                }
+            }
+
+            return list;
+        }
+
         public void SetSystemProxy(string link)
         {
             if (string.IsNullOrEmpty(link))
@@ -141,44 +163,6 @@ namespace V2RayGCon.Service
             Lib.ProxySetter.setProxy(
                 orgSysProxyInfo.Item2,
                 orgSysProxyInfo.Item1);
-        }
-
-        public Model.Data.ServerList GetServerListInstance()
-        {
-            return serverList;
-        }
-
-        public void WakeupAutorunServers()
-        {
-            serverList.WakeupAutorunServersThen();
-        }
-
-        public void SaveServerListImmediately()
-        {
-            lazySaveServerListTimer.Timeout();
-        }
-
-        public void DisposeLazyTimers()
-        {
-            lazyGCTimer?.Release();
-            lazySaveServerListTimer?.Release();
-        }
-
-        public void LazyGC()
-        {
-            // create in need
-            if (lazyGCTimer == null)
-            {
-                var delay = Lib.Utils.Str2Int(StrConst("LazyGCDelay"));
-
-                lazyGCTimer = new Model.BaseClass.CancelableTimeout(
-                    () =>
-                    {
-                        System.GC.Collect();
-                    }, delay * 1000);
-            }
-
-            lazyGCTimer.Start();
         }
 
         public void SaveFormRect(Form form)
@@ -223,54 +207,6 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        public void ImportLinks(string links)
-        {
-            var tasks = new Task<Tuple<bool, List<string[]>>>[] {
-                new Task<Tuple<bool, List<string[]>>>(
-                    ()=>ImportVmessLinks(links)),
-
-                new Task<Tuple<bool, List<string[]>>>(
-                    ()=>ImportV2RayLinks(links)),
-
-                new Task<Tuple<bool, List<string[]>>>(
-                    ()=>ImportSSLinks(links)),
-            };
-
-            Task.Factory.StartNew(() =>
-            {
-                foreach (var task in tasks)
-                {
-                    task.Start();
-                }
-                Task.WaitAll(tasks);
-
-                var allResults = new List<string[]>();  // all server including duplicate
-                var isAddNewServer = false;  // add new server
-                foreach (var task in tasks)
-                {
-                    isAddNewServer = isAddNewServer || task.Result.Item1;
-                    allResults.AddRange(task.Result.Item2);
-                    task.Dispose();
-                }
-
-                // show results
-                if (isAddNewServer)
-                {
-                    serverList.UpdateAllServersSummary();
-                }
-
-                if (allResults.Count > 0)
-                {
-                    new Views.FormImportLinksResult(allResults);
-                    Application.Run();
-                }
-                else
-                {
-                    MessageBox.Show(I18N("NoLinkFound"));
-                }
-            });
-        }
-
         public List<Model.Data.UrlItem> GetGlobalImportItems()
         {
             try
@@ -292,13 +228,6 @@ namespace V2RayGCon.Service
         {
             Properties.Settings.Default.ImportUrls = options;
             Properties.Settings.Default.Save();
-
-            var list = serverList
-                .Where(s => s.isInjectImport && s.isServerOn)
-                .OrderBy(s => s.index)
-                .ToList();
-
-            serverList.RestartServersByList(list);
         }
 
         public List<Model.Data.UrlItem> GetSubscriptionItems()
@@ -318,72 +247,31 @@ namespace V2RayGCon.Service
             return new List<Model.Data.UrlItem>();
         }
 
+        public void UpdateNotifierText(string title = null)
+        {
+            var text = string.IsNullOrEmpty(title) ? I18N("Description") : title;
+            try
+            {
+                OnUpdateNotifierText?.Invoke(this, new Model.Data.StrEvent(text));
+            }
+            catch { }
+        }
+
         public void SaveSubscriptionItems(string options)
         {
             Properties.Settings.Default.SubscribeUrls = options;
             Properties.Settings.Default.Save();
         }
 
-        public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
+        public void SaveServerList(List<Model.Data.ServerItem> serverList)
         {
-            return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
-        }
-
-        public void DeleteAllServer()
-        {
-            serverList.DeleteAllServersThen(
-                () => Service.Cache.Instance.core.Clear());
-        }
-
-        public bool AddServer(JObject config, bool quiet = false)
-        {
-            return serverList.AddServer(
-                Lib.Utils.Config2String(config),
-                quiet);
+            string json = JsonConvert.SerializeObject(serverList);
+            Properties.Settings.Default.ServerList = json;
+            Properties.Settings.Default.Save();
         }
         #endregion
 
         #region private method
-        void LoadServerList()
-        {
-            serverList = new Model.Data.ServerList();
-
-            Model.Data.ServerList list = null;
-            try
-            {
-                list = JsonConvert.DeserializeObject
-                    <Model.Data.ServerList>(
-                    Properties.Settings.Default.ServerList);
-
-                if (list == null)
-                {
-                    return;
-                }
-            }
-            catch
-            {
-                return;
-            }
-
-            // make sure every config of server can be parsed correctly
-            for (var i = list.Count - 1; i >= 0; i--)
-            {
-                try
-                {
-                    if (JObject.Parse(list[i].config) == null)
-                    {
-                        list.RemoveAtQuiet(i);
-                    }
-                }
-                catch
-                {
-                    list.RemoveAtQuiet(i);
-                }
-            }
-
-            serverList = list;
-        }
-
         Dictionary<string, Rectangle> winFormRectListCache = null;
         Dictionary<string, Rectangle> GetWinFormRectList()
         {
@@ -416,199 +304,6 @@ namespace V2RayGCon.Service
             }
             catch { }
         }
-
-        void InvokeEventOnRequireMenuUpdate(object sender, EventArgs args)
-        {
-            try
-            {
-                OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
-            LazyGC();
-        }
-
-        void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
-        {
-            try
-            {
-                OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
-            LazyGC();
-        }
-
-        Tuple<bool, List<string[]>> ImportSSLinks(string text)
-        {
-            var isAddNewServer = false;
-            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.ss);
-            List<string[]> result = new List<string[]>();
-
-            foreach (var link in links)
-            {
-                var config = Lib.Utils.SSLink2Config(link);
-
-                if (config == null)
-                {
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
-                    continue;
-                }
-
-                if (AddServer(config, true))
-                {
-                    isAddNewServer = true;
-                    result.Add(GenImportResult(link, true, I18N("Success")));
-                }
-                else
-                {
-                    result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
-                }
-            }
-
-            return new Tuple<bool, List<string[]>>(isAddNewServer, result);
-        }
-
-        Tuple<bool, List<string[]>> ImportV2RayLinks(string text)
-        {
-            bool isAddNewServer = false;
-            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.v2ray);
-            List<string[]> result = new List<string[]>();
-
-            foreach (var link in links)
-            {
-                try
-                {
-                    var config = JObject.Parse(
-                        Lib.Utils.Base64Decode(
-                            Lib.Utils.GetLinkBody(link)));
-
-                    if (config != null)
-                    {
-                        if (AddServer(config, true))
-                        {
-                            isAddNewServer = true;
-                            result.Add(GenImportResult(link, true, I18N("Success")));
-                        }
-                        else
-                        {
-                            result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
-                        }
-                    }
-                }
-                catch
-                {
-                    // skip if error occured
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
-                }
-            }
-
-            return new Tuple<bool, List<string[]>>(isAddNewServer, result);
-        }
-
-        string[] GenImportResult(string link, bool success, string reason)
-        {
-            return new string[]
-            {
-                string.Empty,  // reserve for index
-                link,
-                success?"√":"×",
-                reason,
-            };
-        }
-
-        Tuple<bool, List<string[]>> ImportVmessLinks(string text)
-        {
-            var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.vmess);
-            var result = new List<string[]>();
-            var isAddNewServer = false;
-
-            foreach (var link in links)
-            {
-                var vmess = Lib.Utils.VmessLink2Vmess(link);
-                var config = Lib.Utils.Vmess2Config(vmess);
-
-                if (config == null)
-                {
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
-                    continue;
-                }
-
-                if (AddServer(config, true))
-                {
-                    result.Add(GenImportResult(link, true, I18N("Success")));
-                    isAddNewServer = true;
-                }
-                else
-                {
-                    result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
-                }
-            }
-
-            return new Tuple<bool, List<string[]>>(isAddNewServer, result);
-        }
-
-        void LazySaveServerList()
-        {
-            // create on demand
-            if (lazySaveServerListTimer == null)
-            {
-                var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
-
-                lazySaveServerListTimer =
-                    new Model.BaseClass.CancelableTimeout(
-                        () =>
-                        {
-                            string json = JsonConvert.SerializeObject(serverList);
-                            Properties.Settings.Default.ServerList = json;
-                            Properties.Settings.Default.Save();
-                        },
-                        delay * 1000);
-            }
-
-            lazySaveServerListTimer.Start();
-
-            Task.Factory.StartNew(() => CheckRunningServersCount());
-        }
-
-        void CheckRunningServersCount()
-        {
-            var count = serverList.Where(s => s.isServerOn).ToList().Count;
-            if (count == preRunningServerCount)
-            {
-                return;
-            }
-            preRunningServerCount = count;
-
-            if (count <= 0)
-            {
-                UpdateNotifierText();
-                return;
-            }
-
-            if (count == 1)
-            {
-                var first = serverList.FirstOrDefault(s => s.isServerOn);
-                if (first == null)
-                {
-                    UpdateNotifierText();
-                    return;
-                }
-                first.GetProxyAddrThen((str) => UpdateNotifierText(str));
-                return;
-            }
-
-            UpdateNotifierText(count.ToString() + I18N("ServersAreRunning"));
-        }
-
-        void UpdateNotifierText(string title = null)
-        {
-            var text = string.IsNullOrEmpty(title) ? I18N("Description") : title;
-            try
-            {
-                OnUpdateNotifierText?.Invoke(this, new Model.Data.StrEvent(text));
-            }
-            catch { }
-        }
-
         #endregion
     }
 }

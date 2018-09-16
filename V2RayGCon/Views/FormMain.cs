@@ -21,10 +21,12 @@ namespace V2RayGCon.Views
 
         Controller.FormMainCtrl formMainCtrl;
         Service.Setting setting;
+        Service.Servers servers;
 
         FormMain()
         {
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
 
             InitializeComponent();
 
@@ -44,7 +46,7 @@ namespace V2RayGCon.Views
                 setting.SaveFormRect(this);
                 setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
-                setting.LazyGC();
+                servers.LazyGC();
             };
 
             this.Text = string.Format(

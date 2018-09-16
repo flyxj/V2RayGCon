@@ -28,7 +28,7 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, e) =>
             {
                 downloader?.Cancel();
-                Service.Setting.Instance.LazyGC();
+                Service.Servers.Instance.LazyGC();
             };
 
 #if DEBUG

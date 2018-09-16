@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -9,6 +8,7 @@ namespace V2RayGCon.Service
     {
         NotifyIcon ni;
         Setting setting;
+        Servers servers;
 
         Notifier()
         {
@@ -22,6 +22,9 @@ namespace V2RayGCon.Service
             {
                 ni.Text = a.Data;
             };
+
+            servers = Servers.Instance;
+            servers.Prepare(setting);
 
             Application.ApplicationExit += (s, a) => Cleanup();
             Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
@@ -37,13 +40,13 @@ namespace V2RayGCon.Service
 #if DEBUG
             This_function_do_some_tedious_stuff();
 #else
-            if (setting.GetServerListInstance().Any())
+            if (servers.IsEmpty())
             {
-                setting.WakeupAutorunServers();
+                Views.FormMain.GetForm();
             }
             else
             {
-                Views.FormMain.GetForm();
+                servers.WakeupAutorunServersThen();
             }
 #endif
         }
@@ -115,7 +118,7 @@ namespace V2RayGCon.Service
                     {
                         var msg=Lib.Utils.CutStr(link,90);
                         setting.SendLog($"QRCode: {msg}");
-                        setting.ImportLinks(link);
+                        servers.ImportLinks(link);
                     }
 
                     void Fail()
@@ -128,7 +131,7 @@ namespace V2RayGCon.Service
 
                 new MenuItem(I18N("ImportLink"),(s,a)=>{
                     string links = Lib.Utils.GetClipboardText();
-                    setting.ImportLinks(links);
+                    servers.ImportLinks(links);
                 }),
 
                 new MenuItem(I18N("DownloadV2rayCore"),(s,a)=>Views.FormDownloadCore.GetForm()),
@@ -149,12 +152,12 @@ namespace V2RayGCon.Service
         {
             ni.Visible = false;
 
-            setting.SaveServerListImmediately();
-            setting.DisposeLazyTimers();
+            servers.SaveServerListImmediately();
+            servers.DisposeLazyTimers();
             setting.RestoreOriginalSystemProxyInfo();
 
             AutoResetEvent sayGoodbye = new AutoResetEvent(false);
-            setting.GetServerListInstance().StopAllServersThen(() => sayGoodbye.Set());
+            servers.StopAllServersThen(() => sayGoodbye.Set());
             sayGoodbye.WaitOne();
         }
         #endregion

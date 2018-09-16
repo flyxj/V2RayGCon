@@ -94,16 +94,17 @@ namespace V2RayGCon.Service
 
         void UpdateCore()
         {
-            var serverList = setting.GetServerListInstance();
-            var servers = serverList.GetActiveServersList();
+            var servers = Service.Servers.Instance;
 
-            serverList.StopAllServersThen(() =>
+            var activeServers = servers.GetActiveServersList();
+
+            servers.StopAllServersThen(() =>
             {
                 var status = UnzipPackage();
                 NotifyDownloadResults(status);
-                if (servers.Count > 0)
+                if (activeServers.Count > 0)
                 {
-                    serverList.RestartServersByList(servers);
+                    servers.RestartServersByList(activeServers);
                 }
             });
         }

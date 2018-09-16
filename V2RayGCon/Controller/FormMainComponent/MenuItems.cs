@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -10,6 +9,7 @@ namespace V2RayGCon.Controller.FormMainComponent
     class MenuItems : FormMainComponentController
     {
         Service.Setting setting;
+        Service.Servers servers;
 
         public MenuItems(
             ToolStripMenuItem simVmessServer,
@@ -27,6 +27,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem removeV2rayCore)
         {
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
 
             downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
 
@@ -38,7 +39,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             importLinkFromClipboard.Click += (s, a) =>
             {
                 string links = Lib.Utils.GetClipboardText();
-                setting.ImportLinks(links);
+                servers.ImportLinks(links);
             };
 
             exportAllServer.Click += (s, a) => ExportAllServersToTextFile();
@@ -73,21 +74,21 @@ namespace V2RayGCon.Controller.FormMainComponent
                 return;
             }
 
-            setting.ImportLinks(v2rayLinks);
+            servers.ImportLinks(v2rayLinks);
         }
 
         public void ExportAllServersToTextFile()
         {
-            if (!setting.GetServerListInstance().Any())
+            if (this.servers.IsEmpty())
             {
                 MessageBox.Show(I18N("ServerListIsEmpty"));
                 return;
             }
 
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
             string s = string.Empty;
 
-            foreach (var server in servers)
+            foreach (var server in serverList)
             {
                 s += "v2ray://" + Lib.Utils.Base64Encode(server.config) + "\r\n\r\n";
             }
@@ -135,7 +136,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 return;
             }
 
-            setting.GetServerListInstance().StopAllServersThen(() =>
+            servers.StopAllServersThen(() =>
             {
                 try
                 {

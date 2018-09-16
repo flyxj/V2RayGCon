@@ -44,7 +44,7 @@ namespace V2RayGCon.Model.Data
 
         #region non-serialize properties
         [JsonIgnore]
-        public ServerList parent = null;
+        public Service.Servers parent = null;
 
         [JsonIgnore]
         Views.FormSingleServerLog logForm = null;

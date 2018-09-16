@@ -10,6 +10,7 @@ namespace V2RayGCon.Controller
     {
         Service.Setting setting;
         Service.Cache cache;
+        Service.Servers servers;
 
         public JObject config;
         string originalConfig, originalFile;
@@ -19,6 +20,7 @@ namespace V2RayGCon.Controller
         {
             cache = Service.Cache.Instance;
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
 
             this.originalFile = string.Empty;
             this.originalConfig = string.Empty;
@@ -86,14 +88,14 @@ namespace V2RayGCon.Controller
             Update();
 
             var newConfig = Lib.Utils.Config2String(config);
-            if (setting.GetServerListInstance().GetServerIndexByConfig(newConfig) >= 0
+            if (servers.GetServerIndexByConfig(newConfig) >= 0
                 || originalConfig == newConfig)
             {
                 MessageBox.Show(I18N("DuplicateServer"));
                 return false;
             }
 
-            if (setting.GetServerListInstance().ReplaceServerConfig(originalConfig, newConfig))
+            if (servers.ReplaceServerConfig(originalConfig, newConfig))
             {
                 MarkOriginalConfig();
             }
@@ -115,7 +117,7 @@ namespace V2RayGCon.Controller
 
             Update();
 
-            if (setting.AddServer(config))
+            if (servers.AddServer(Lib.Utils.Config2String(config)))
             {
                 MarkOriginalConfig();
             }

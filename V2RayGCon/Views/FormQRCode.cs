@@ -22,6 +22,8 @@ namespace V2RayGCon.Views
         #endregion
 
         Service.Setting setting;
+        Service.Servers servers;
+
         int servIndex, linkType;
         Dictionary<string, string> serverList;
 
@@ -29,6 +31,8 @@ namespace V2RayGCon.Views
         {
 
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
+
             servIndex = 0;
             linkType = 0;
 
@@ -48,11 +52,11 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.OnRequireMenuUpdate -= SettingChange;
-                setting.LazyGC();
+                servers.OnRequireMenuUpdate -= SettingChange;
+                servers.LazyGC();
             };
 
-            setting.OnRequireMenuUpdate += SettingChange;
+            servers.OnRequireMenuUpdate += SettingChange;
         }
 
         #region public methods
@@ -74,22 +78,22 @@ namespace V2RayGCon.Views
 
             cboxServList.Items.Clear();
 
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
 
-            if (servers.Count <= 0)
+            if (serverList.Count <= 0)
             {
                 cboxServList.SelectedIndex = -1;
                 return;
             }
 
-            serverList = new Dictionary<string, string>();
-            foreach (var server in servers)
+            this.serverList = new Dictionary<string, string>();
+            foreach (var server in serverList)
             {
                 cboxServList.Items.Add(server.name);
-                serverList[server.name] = server.config;
+                this.serverList[server.name] = server.config;
             }
 
-            servIndex = Lib.Utils.Clamp(oldIndex, 0, servers.Count);
+            servIndex = Lib.Utils.Clamp(oldIndex, 0, serverList.Count);
             cboxServList.SelectedIndex = servIndex;
             UpdateLink();
         }

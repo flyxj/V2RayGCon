@@ -31,6 +31,8 @@ namespace V2RayGCon.Views
     {
         Controller.Configer configer;
         Service.Setting setting;
+        Service.Servers servers;
+
         FormSearch formSearch;
         ToolsPanelHandler toolsPanelHandler;
         string originalConfigString;
@@ -40,6 +42,8 @@ namespace V2RayGCon.Views
         public FormConfiger(string originalConfigString = null)
         {
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
+
             formSearch = null;
             InitializeComponent();
             formTitle = this.Text;
@@ -68,7 +72,7 @@ namespace V2RayGCon.Views
                 .GetEditor();
 
             editor.Click += OnMouseLeaveToolsPanel;
-            setting.OnRequireMenuUpdate += MenuUpdateHandler;
+            servers.OnRequireMenuUpdate += MenuUpdateHandler;
 
             this.FormClosing += (s, a) =>
             {
@@ -82,10 +86,10 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, a) =>
             {
                 editor.Click -= OnMouseLeaveToolsPanel;
-                setting.OnRequireMenuUpdate -= MenuUpdateHandler;
+                servers.OnRequireMenuUpdate -= MenuUpdateHandler;
                 setting.SaveFormRect(this);
                 toolsPanelHandler.Dispose();
-                setting.LazyGC();
+                servers.LazyGC();
             };
         }
 
@@ -380,16 +384,16 @@ namespace V2RayGCon.Views
             menuReplaceServer.Clear();
             menuLoadServer.Clear();
 
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
 
-            var enable = servers.Count > 0;
+            var enable = serverList.Count > 0;
             replaceExistServerToolStripMenuItem.Enabled = enable;
             loadServerToolStripMenuItem.Enabled = enable;
 
-            for (int i = 0; i < servers.Count; i++)
+            for (int i = 0; i < serverList.Count; i++)
             {
-                var name = string.Format("{0}.{1}", i + 1, servers[i].name);
-                var org = servers[i].config;
+                var name = string.Format("{0}.{1}", i + 1, serverList[i].name);
+                var org = serverList[i].config;
                 menuReplaceServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
