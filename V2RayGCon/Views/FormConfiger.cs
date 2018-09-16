@@ -36,14 +36,15 @@ namespace V2RayGCon.Views
         FormSearch formSearch;
         ToolsPanelHandler toolsPanelHandler;
         string originalConfigString;
-
         string formTitle;
+        bool isShowPanel;
 
         public FormConfiger(string originalConfigString = null)
         {
             setting = Service.Setting.Instance;
             servers = Service.Servers.Instance;
 
+            isShowPanel = setting.isShowConfigerToolsPanel;
             formSearch = null;
             InitializeComponent();
             formTitle = this.Text;
@@ -65,7 +66,7 @@ namespace V2RayGCon.Views
 
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
-            ToggleToolsPanel(setting.isShowConfigerToolsPanel);
+            ToggleToolsPanel(isShowPanel);
 
             var editor = configer
                 .GetComponent<Controller.ConfigerComponet.Editor>()
@@ -191,7 +192,7 @@ namespace V2RayGCon.Views
 
         private void TabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (setting.isShowConfigerToolsPanel)
+            if (isShowPanel)
             {
                 return;
             }
@@ -221,9 +222,7 @@ namespace V2RayGCon.Views
             switch (keyCode)
             {
                 case (Keys.Control | Keys.P):
-                    var visible = !setting.isShowConfigerToolsPanel;
-                    setting.isShowConfigerToolsPanel = visible;
-                    ToggleToolsPanel(visible);
+                    ToggleToolsPanel(!isShowPanel);
                     break;
                 case (Keys.Control | Keys.F):
                     ShowSearchBox();
@@ -444,7 +443,9 @@ namespace V2RayGCon.Views
 
             showLeftPanelToolStripMenuItem.Checked = visible;
             hideLeftPanelToolStripMenuItem.Checked = !visible;
+
             setting.isShowConfigerToolsPanel = visible;
+            isShowPanel = visible;
         }
 
         void MenuUpdateHandler(object sender, EventArgs args)
@@ -467,7 +468,7 @@ namespace V2RayGCon.Views
 
         void FoldToolsPanel()
         {
-            var visible = setting.isShowConfigerToolsPanel;
+            var visible = isShowPanel;
             var width = toolsPanelHandler.panel.Width;
 
             if (!visible)

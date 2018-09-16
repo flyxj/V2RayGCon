@@ -14,12 +14,7 @@ namespace V2RayGCon.Service
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
         public event EventHandler OnSysProxyChanged;
 
-        Setting()
-        {
-        }
-
         #region Properties
-
         ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
         public string logCache
         {

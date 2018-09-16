@@ -8,8 +8,6 @@ namespace V2RayGCon.Controller
 {
     class Configer : Model.BaseClass.FormController
     {
-        Service.Setting setting;
-        Service.Cache cache;
         Service.Servers servers;
 
         public JObject config;
@@ -18,8 +16,6 @@ namespace V2RayGCon.Controller
 
         public Configer(string originalConfig)
         {
-            cache = Service.Cache.Instance;
-            setting = Service.Setting.Instance;
             servers = Service.Servers.Instance;
 
             this.originalFile = string.Empty;
@@ -88,8 +84,8 @@ namespace V2RayGCon.Controller
             Update();
 
             var newConfig = Lib.Utils.Config2String(config);
-            if (servers.GetServerIndexByConfig(newConfig) >= 0
-                || originalConfig == newConfig)
+            if (originalConfig == newConfig
+                || servers.IsServerItemExist(newConfig))
             {
                 MessageBox.Show(I18N("DuplicateServer"));
                 return false;
@@ -204,7 +200,7 @@ namespace V2RayGCon.Controller
 
             if (o == null)
             {
-                o = cache.tpl.LoadMinConfig();
+                o = Service.Cache.Instance.tpl.LoadMinConfig();
                 Task.Factory.StartNew(
                     () => MessageBox.Show(
                         I18N("EditorCannotLoadServerConfig")));

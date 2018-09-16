@@ -20,8 +20,7 @@ namespace V2RayGCon.Service
             lazyGCTimer = null,
             lazySaveServerListTimer = null;
 
-        object writeLock = new object();
-        object testingLock = new object();
+        object serverListWriteLock = new object();
 
         int preRunningServerCount = 0;
 
@@ -30,23 +29,23 @@ namespace V2RayGCon.Service
         Servers()
         {
             isTesting = false;
-
         }
 
         #region property
         bool _isTesting;
+        object _isTestingLock = new object();
         bool isTesting
         {
             get
             {
-                lock (testingLock)
+                lock (_isTestingLock)
                 {
                     return _isTesting;
                 }
             }
             set
             {
-                lock (testingLock)
+                lock (_isTestingLock)
                 {
                     _isTesting = value;
                 }
@@ -55,6 +54,29 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        int GetServerIndexByConfig(string config)
+        {
+            for (int i = 0; i < serverList.Count; i++)
+            {
+                if (serverList[i].config == config)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        List<Model.Data.ServerItem> GetSelectedServerList(bool descending = false)
+        {
+            var list = serverList.Where(s => s.isSelected);
+            if (descending)
+            {
+                return list.OrderByDescending(s => s.index).ToList();
+            }
+
+            return list.OrderBy(s => s.index).ToList();
+        }
+
         Tuple<bool, List<string[]>> ImportSSLinks(string text)
         {
             var isAddNewServer = false;
@@ -178,7 +200,6 @@ namespace V2RayGCon.Service
             }
 
             lazySaveServerListTimer.Start();
-
             Task.Factory.StartNew(() => UpdateNotifierText());
         }
 
@@ -231,29 +252,32 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        private void OnSendLogHandler(object sender, Model.Data.StrEvent arg)
+        void OnSendLogHandler(object sender, Model.Data.StrEvent arg)
         {
             setting.SendLog(arg.Data);
         }
 
-        private void SaveChanges(object sender, EventArgs arg)
+        void ServerItemPropertyChangedHandler(object sender, EventArgs arg)
         {
             LazySaveServerList();
         }
 
-        private void RemoveServerFromList(int index)
+        void RemoveServerItemFromListThen(int index, Action next = null)
         {
             var server = serverList[index];
-            lock (writeLock)
+            server.CleanupThen(() =>
             {
-                ReleaseEventFrom(server);
-                server.parent = null;
-                serverList.RemoveAt(index);
-            }
-            LazySaveServerList();
+                lock (serverListWriteLock)
+                {
+                    ReleaseEventsFrom(server);
+                    server.parent = null;
+                    serverList.RemoveAt(index);
+                }
+                next?.Invoke();
+            });
         }
 
-        JObject Config2Package(string configString, string id, int portBase, int index, string tagPrefix)
+        JObject ExtractOutboundInfoFromConfig(string configString, string id, int portBase, int index, string tagPrefix)
         {
             var cache = Service.Cache.Instance;
             var pkg = cache.tpl.LoadPackage("package");
@@ -279,10 +303,10 @@ namespace V2RayGCon.Service
             return pkg;
         }
 
-        JObject CreateVnext(int index, int port, string id)
+        JObject GenVnextConfigPart(int index, int basePort, string id)
         {
             var vnext = Service.Cache.Instance.tpl.LoadPackage("vnext");
-            vnext["outbound"]["settings"]["vnext"][0]["port"] = port + index;
+            vnext["outbound"]["settings"]["vnext"][0]["port"] = basePort + index;
             vnext["outbound"]["settings"]["vnext"][0]["users"][0]["id"] = id;
             return vnext;
         }
@@ -296,12 +320,12 @@ namespace V2RayGCon.Service
                 .OrderBy(s => s.index)
                 .ToList();
 
-            RestartServersByList(list);
+            RestartServersByListThen(list);
         }
 
         public void LazyGC()
         {
-            // create in need
+            // Create on demand.
             if (lazyGCTimer == null)
             {
                 var delay = Lib.Utils.Str2Int(StrConst("LazyGCDelay"));
@@ -362,6 +386,7 @@ namespace V2RayGCon.Service
                     UpdateAllServersSummary();
                     LazySaveServerList();
                 }
+                LazyGC();
 
                 if (allResults.Count > 0)
                 {
@@ -388,13 +413,13 @@ namespace V2RayGCon.Service
 
         public bool IsSelecteAnyServer()
         {
-            return serverList.Where(s => s.isSelected).Any();
+            return serverList.Any(s => s.isSelected);
         }
 
         public void PackSelectedServers()
         {
             var cache = Service.Cache.Instance;
-            var list = serverList.Where(s => s.isSelected).OrderByDescending(s => s.index).ToList();
+            var list = GetSelectedServerList(true);
 
             var packages = JObject.Parse(@"{}");
             var serverNameList = new List<string>();
@@ -417,9 +442,9 @@ namespace V2RayGCon.Service
                 var server = list[index];
                 try
                 {
-                    var package = Config2Package(server.config, id, port, index, tagPrefix);
+                    var package = ExtractOutboundInfoFromConfig(server.config, id, port, index, tagPrefix);
                     Lib.Utils.UnionJson(ref packages, package);
-                    var vnext = CreateVnext(index, port, id);
+                    var vnext = GenVnextConfigPart(index, port, id);
                     Lib.Utils.UnionJson(ref packages, vnext);
                     serverNameList.Add(server.name);
                     OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageSuccess") + ": " + server.name));
@@ -442,9 +467,7 @@ namespace V2RayGCon.Service
             }
             isTesting = true;
 
-            var list = serverList.OrderBy(o => o.index)
-                .Where(o => o.isSelected)
-                .ToList();
+            var list = GetSelectedServerList(false);
 
             Task.Factory.StartNew(() =>
             {
@@ -466,7 +489,7 @@ namespace V2RayGCon.Service
             return serverList.Where(s => s.isServerOn).ToList();
         }
 
-        public void RestartServersByList(List<Model.Data.ServerItem> servers, Action done = null)
+        public void RestartServersByListThen(List<Model.Data.ServerItem> servers, Action done = null)
         {
             var list = servers;
             Action<int, Action> worker = (index, next) =>
@@ -554,11 +577,7 @@ namespace V2RayGCon.Service
                     return;
                 }
 
-                serverList[index].CleanupThen(() =>
-                {
-                    RemoveServerFromList(index);
-                    next();
-                });
+                RemoveServerItemFromListThen(index, next);
             };
 
             Action finish = () =>
@@ -580,15 +599,6 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            Action<int, Action> worker = (index, next) =>
-            {
-                serverList[index].CleanupThen(() =>
-                {
-                    RemoveServerFromList(index);
-                    next();
-                });
-            };
-
             Action finish = () =>
             {
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
@@ -596,7 +606,10 @@ namespace V2RayGCon.Service
                 done?.Invoke();
             };
 
-            Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, finish);
+            Lib.Utils.ChainActionHelperAsync(
+                serverList.Count,
+                RemoveServerItemFromListThen,
+                finish);
         }
 
         public void UpdateAllServersSummary()
@@ -616,6 +629,7 @@ namespace V2RayGCon.Service
 
             Action done = () =>
             {
+                LazyGC();
                 LazySaveServerList();
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
@@ -632,7 +646,7 @@ namespace V2RayGCon.Service
             foreach (var server in serverList)
             {
                 server.parent = this;
-                BindEventTo(server);
+                BindEventsTo(server);
             }
         }
 
@@ -651,67 +665,54 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            var server = serverList[index];
-
-            Action removeServer = () =>
-            {
-                RemoveServerFromList(index);
-                InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);
-                InvokeEventOnRequireFlyPanelUpdate(serverList, EventArgs.Empty);
-            };
-
-            server.CleanupThen(removeServer);
+            Task.Factory.StartNew(
+                () => RemoveServerItemFromListThen(index, () =>
+                {
+                    LazySaveServerList();
+                    InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);
+                    InvokeEventOnRequireFlyPanelUpdate(serverList, EventArgs.Empty);
+                }));
         }
 
-        public void BindEventTo(Model.Data.ServerItem server)
+        public void BindEventsTo(Model.Data.ServerItem server)
         {
             server.OnLog += OnSendLogHandler;
-            server.OnPropertyChanged += SaveChanges;
+            server.OnPropertyChanged += ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
         }
 
-        public int GetServerIndexByConfig(string config)
+        public bool IsServerItemExist(string config)
         {
-            for (int i = 0; i < serverList.Count; i++)
-            {
-                if (serverList[i].config == config)
-                {
-                    return i;
-                }
-            }
-            return -1;
+            return serverList.Any(s => s.config == config);
         }
 
-        public void ReleaseEventFrom(Model.Data.ServerItem server)
+        public void ReleaseEventsFrom(Model.Data.ServerItem server)
         {
             server.OnLog -= OnSendLogHandler;
-            server.OnPropertyChanged -= SaveChanges;
+            server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
         }
 
         public bool AddServer(string config, bool quiet = false)
         {
+            // duplicate
+            if (IsServerItemExist(config))
+            {
+                return false;
+            }
+
             var newServer = new Model.Data.ServerItem()
             {
                 config = config,
             };
 
-            lock (writeLock)
+            lock (serverListWriteLock)
             {
-                foreach (var server in serverList)
-                {
-                    if (server.config == config)
-                    {
-                        // duplicate
-                        return false;
-                    }
-                }
-
                 serverList.Add(newServer);
             }
 
             newServer.parent = this;
-            BindEventTo(newServer);
+            BindEventsTo(newServer);
 
             if (!quiet)
             {
@@ -723,6 +724,7 @@ namespace V2RayGCon.Service
 
             }
 
+            LazyGC();
             LazySaveServerList();
             return true;
         }
@@ -730,7 +732,8 @@ namespace V2RayGCon.Service
         public bool ReplaceServerConfig(string orgConfig, string newConfig)
         {
             var index = GetServerIndexByConfig(orgConfig);
-            if (index < 0 || index > serverList.Count)
+
+            if (index < 0)
             {
                 return false;
             }

@@ -33,7 +33,6 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, e) =>
             {
-                Service.Servers.Instance.LazyGC();
                 setting.OnLog -= LogReceiver;
             };
 

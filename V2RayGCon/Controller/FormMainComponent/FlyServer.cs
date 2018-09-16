@@ -9,12 +9,10 @@ namespace V2RayGCon.Controller.FormMainComponent
     class FlyServer : FormMainComponentController
     {
         FlowLayoutPanel flyPanel;
-        Service.Setting setting;
         Service.Servers servers;
 
         public FlyServer(FlowLayoutPanel panel)
         {
-            this.setting = Service.Setting.Instance;
             this.servers = Service.Servers.Instance;
 
             this.flyPanel = panel;

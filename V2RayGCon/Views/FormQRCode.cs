@@ -21,7 +21,6 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Setting setting;
         Service.Servers servers;
 
         int servIndex, linkType;
@@ -29,8 +28,6 @@ namespace V2RayGCon.Views
 
         FormQRCode()
         {
-
-            setting = Service.Setting.Instance;
             servers = Service.Servers.Instance;
 
             servIndex = 0;
@@ -53,7 +50,6 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, a) =>
             {
                 servers.OnRequireMenuUpdate -= SettingChange;
-                servers.LazyGC();
             };
 
             servers.OnRequireMenuUpdate += SettingChange;

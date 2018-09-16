@@ -9,7 +9,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
         ComboBox cboxImportAlias, cboxEnvName;
         TextBox tboxImportUrl, tboxEnvValue;
         Button btnInsertImport, btnInsertEnv;
-        Service.Setting setting;
 
         Dictionary<string, string> importTable;
 
@@ -22,8 +21,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
             TextBox tboxEnvValue,
             Button btnInsertEnv)
         {
-            setting = Service.Setting.Instance;
-
             this.cboxEnvName = cboxEnvName;
             this.cboxImportAlias = cboxImportAlias;
             this.tboxEnvValue = tboxEnvValue;
@@ -69,7 +66,9 @@ namespace V2RayGCon.Controller.ConfigerComponet
         void Init()
         {
             importTable = new Dictionary<string, string>();
+
             var urlitems = Service.Setting.Instance.GetGlobalImportItems();
+
             cboxImportAlias.Items.Clear();
             foreach (var item in urlitems)
             {

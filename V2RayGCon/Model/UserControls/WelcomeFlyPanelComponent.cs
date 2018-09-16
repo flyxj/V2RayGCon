@@ -7,12 +7,11 @@ namespace V2RayGCon.Model.UserControls
         UserControl,
         Model.BaseClass.IFormMainFlyPanelComponent
     {
-        Service.Setting setting;
+
         Service.Servers servers;
 
         public WelcomeFlyPanelComponent()
         {
-            setting = Service.Setting.Instance;
             servers = Service.Servers.Instance;
 
             InitializeComponent();
@@ -59,7 +58,7 @@ namespace V2RayGCon.Model.UserControls
             void Success(string link)
             {
                 var msg = Lib.Utils.CutStr(link, 90);
-                setting.SendLog($"QRCode: {msg}");
+                Service.Setting.Instance.SendLog($"QRCode: {msg}");
                 servers.ImportLinks(link);
             }
 

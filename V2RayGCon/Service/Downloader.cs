@@ -10,15 +10,12 @@ namespace V2RayGCon.Service
         public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
         public event EventHandler<Model.Data.IntEvent> OnProgress;
 
-        Setting setting;
         string _packageName;
         string _version;
         WebClient client;
 
         public Downloader()
         {
-            setting = Setting.Instance;
-
             SetArchitecture(false);
             _version = StrConst("DefCoreVersion");
             client = null;
@@ -66,6 +63,11 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        void SendLog(string message)
+        {
+            Service.Setting.Instance.SendLog(message);
+        }
+
         void SendProgress(int percentage)
         {
             try
@@ -104,7 +106,7 @@ namespace V2RayGCon.Service
                 NotifyDownloadResults(status);
                 if (activeServers.Count > 0)
                 {
-                    servers.RestartServersByList(activeServers);
+                    servers.RestartServersByListThen(activeServers);
                 }
             });
         }
@@ -124,7 +126,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            setting.SendLog(string.Format("{0}", I18N("DownloadCompleted")));
+            SendLog(string.Format("{0}", I18N("DownloadCompleted")));
 
             UpdateCore();
         }
@@ -154,7 +156,7 @@ namespace V2RayGCon.Service
             };
 
             Lib.Utils.CreateAppDataFolder();
-            setting.SendLog(string.Format("{0}:{1}", I18N("Download"), url));
+            SendLog(string.Format("{0}:{1}", I18N("Download"), url));
             client.DownloadFileAsync(new Uri(url), GetLocalFilePath());
         }
 

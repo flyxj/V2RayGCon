@@ -19,14 +19,12 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Setting setting;
         Service.Servers servers;
 
         FormSimAddVmessClient()
         {
             InitializeComponent();
             Fill(cboxKCP, Model.Data.Table.kcpTypes);
-            setting = Service.Setting.Instance;
             servers = Service.Servers.Instance;
 
 #if DEBUG

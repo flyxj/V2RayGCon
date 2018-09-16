@@ -8,7 +8,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 {
     class MenuItems : FormMainComponentController
     {
-        Service.Setting setting;
         Service.Servers servers;
 
         public MenuItems(
@@ -26,7 +25,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem downloadV2rayCore,
             ToolStripMenuItem removeV2rayCore)
         {
-            setting = Service.Setting.Instance;
             servers = Service.Servers.Instance;
 
             downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();

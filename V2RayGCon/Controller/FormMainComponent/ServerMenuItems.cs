@@ -6,7 +6,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 {
     class ServerMenuItems : FormMainComponentController
     {
-        Service.Setting setting;
         Service.Cache cache;
         Service.Servers servers;
 
@@ -27,7 +26,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem deleteAllItems,
             ToolStripMenuItem packSelected)
         {
-            setting = Service.Setting.Instance;
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
 
@@ -168,7 +166,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
                 {
-                    setting.ClearSystemProxy();
+                    Service.Setting.Instance.ClearSystemProxy();
                 }
             };
 
