@@ -133,6 +133,10 @@ namespace V2RayGCon.Model.UserControls
 
             this.isRunning = isServerOn;
 
+            tboxInboundPort.ReadOnly = this.isRunning;
+            tboxInboundIP.ReadOnly = this.isRunning;
+            btnStop.Enabled = this.isRunning;
+
             if (isServerOn)
             {
                 lbRunning.ForeColor = Color.DarkOrange;
