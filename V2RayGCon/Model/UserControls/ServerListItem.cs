@@ -61,7 +61,19 @@ namespace V2RayGCon.Model.UserControls
                     chkImport, serverItem.isInjectImport);
 
                 ShowOnOffStatus(serverItem.server.isRunning);
+
+                HighlightSelectedServerItem(chkSelected.Checked);
             });
+        }
+
+        void HighlightSelectedServerItem(bool selected)
+        {
+            var fontStyle = new Font(lbSummary.Font, selected ? FontStyle.Bold : FontStyle.Regular);
+            var colorRed = chkSelected.Checked ? Color.OrangeRed : Color.Black;
+
+            lbSummary.Font = fontStyle;
+            lbStatus.Font = fontStyle;
+            lbStatus.ForeColor = colorRed;
         }
 
         ContextMenu CreateMenu()
