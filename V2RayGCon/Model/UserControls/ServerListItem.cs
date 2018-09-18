@@ -55,22 +55,28 @@ namespace V2RayGCon.Model.UserControls
                     lbStatus, serverItem.status);
 
                 Lib.UI.UpdateControlOnDemand(
-                    chkSelected, serverItem.isSelected);
-
-                Lib.UI.UpdateControlOnDemand(
                     chkImport, serverItem.isInjectImport);
 
+                UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
-
-                HighlightSelectedServerItem(chkSelected.Checked);
             });
+        }
+
+        void UpdateChkSelected()
+        {
+            if (serverItem.isSelected == chkSelected.Checked)
+            {
+                return;
+            }
+
+            chkSelected.Checked = serverItem.isSelected;
+            HighlightSelectedServerItem(chkSelected.Checked);
         }
 
         void HighlightSelectedServerItem(bool selected)
         {
             var fontStyle = new Font(lbSummary.Font, selected ? FontStyle.Bold : FontStyle.Regular);
-            var colorRed = chkSelected.Checked ? Color.OrangeRed : Color.Black;
-
+            var colorRed = selected ? Color.OrangeRed : Color.Black;
             lbSummary.Font = fontStyle;
             lbStatus.Font = fontStyle;
             lbStatus.ForeColor = colorRed;
@@ -253,6 +259,7 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetPropertyOnDemand(
                ref serverItem.isSelected,
                chkSelected.Checked);
+            HighlightSelectedServerItem(chkSelected.Checked);
         }
 
         private void tboxInboundIP_TextChanged(object sender, EventArgs e)
