@@ -21,10 +21,12 @@ namespace V2RayGCon.Views
 
         Controller.FormMainCtrl formMainCtrl;
         Service.Setting setting;
+        Service.Servers servers;
 
         FormMain()
         {
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
 
             InitializeComponent();
 
@@ -37,17 +39,15 @@ namespace V2RayGCon.Views
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            setting.RestoreFormRect(this, nameof(FormMain));
+            setting.RestoreFormRect(this);
 
             this.FormClosed += (s, a) =>
             {
-                setting.SaveFormRect(this, nameof(FormMain));
+                setting.SaveFormRect(this);
                 setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
-                setting.LazyGC();
+                servers.LazyGC();
             };
-
-            // Lib.UI.SetFormLocation<FormMain>(this, Model.Data.Enum.FormLocations.TopLeft);
 
             this.Text = string.Format(
                 "{0} v{1}",
@@ -114,13 +114,20 @@ namespace V2RayGCon.Views
         string GetCurrentSysProxySetting()
         {
             var str = I18N("CurSysProxy");
-            if (string.IsNullOrEmpty(setting.curSysProxy))
+            var proxy = string.Empty;
+
+            if (Lib.ProxySetter.getProxyState())
+            {
+                proxy = Lib.ProxySetter.getProxyUrl();
+            }
+
+            if (string.IsNullOrEmpty(proxy))
             {
                 str = string.Format("{0}:{1}", str, I18N("NotSet"));
             }
             else
             {
-                str = string.Format("{0} http://{1}", str, setting.curSysProxy);
+                str = string.Format("{0} http://{1}", str, proxy);
             }
             return str;
         }

@@ -31,15 +31,20 @@ namespace V2RayGCon.Views
     {
         Controller.Configer configer;
         Service.Setting setting;
+        Service.Servers servers;
+
         FormSearch formSearch;
         ToolsPanelHandler toolsPanelHandler;
         string originalConfigString;
-
         string formTitle;
+        bool isShowPanel;
 
         public FormConfiger(string originalConfigString = null)
         {
             setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
+
+            isShowPanel = setting.isShowConfigerToolsPanel;
             formSearch = null;
             InitializeComponent();
             formTitle = this.Text;
@@ -54,21 +59,21 @@ namespace V2RayGCon.Views
 
         private void FormConfiger_Shown(object sender, EventArgs e)
         {
-            setting.RestoreFormRect(this, nameof(FormConfiger));
+            setting.RestoreFormRect(this);
 
             InitToolsPanel();
             InitConfiger();
 
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
-            ToggleToolsPanel(setting.isShowConfigerToolsPanel);
+            ToggleToolsPanel(isShowPanel);
 
             var editor = configer
                 .GetComponent<Controller.ConfigerComponet.Editor>()
                 .GetEditor();
 
             editor.Click += OnMouseLeaveToolsPanel;
-            setting.OnRequireMenuUpdate += MenuUpdateHandler;
+            servers.OnRequireMenuUpdate += MenuUpdateHandler;
 
             this.FormClosing += (s, a) =>
             {
@@ -82,10 +87,10 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, a) =>
             {
                 editor.Click -= OnMouseLeaveToolsPanel;
-                setting.OnRequireMenuUpdate -= MenuUpdateHandler;
-                setting.SaveFormRect(this, nameof(FormConfiger));
+                servers.OnRequireMenuUpdate -= MenuUpdateHandler;
+                setting.SaveFormRect(this);
                 toolsPanelHandler.Dispose();
-                setting.LazyGC();
+                servers.LazyGC();
             };
         }
 
@@ -187,7 +192,7 @@ namespace V2RayGCon.Views
 
         private void TabCtrlToolPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (setting.isShowConfigerToolsPanel)
+            if (isShowPanel)
             {
                 return;
             }
@@ -217,9 +222,7 @@ namespace V2RayGCon.Views
             switch (keyCode)
             {
                 case (Keys.Control | Keys.P):
-                    var visible = !setting.isShowConfigerToolsPanel;
-                    setting.isShowConfigerToolsPanel = visible;
-                    ToggleToolsPanel(visible);
+                    ToggleToolsPanel(!isShowPanel);
                     break;
                 case (Keys.Control | Keys.F):
                     ShowSearchBox();
@@ -380,16 +383,16 @@ namespace V2RayGCon.Views
             menuReplaceServer.Clear();
             menuLoadServer.Clear();
 
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
 
-            var enable = servers.Count > 0;
+            var enable = serverList.Count > 0;
             replaceExistServerToolStripMenuItem.Enabled = enable;
             loadServerToolStripMenuItem.Enabled = enable;
 
-            for (int i = 0; i < servers.Count; i++)
+            for (int i = 0; i < serverList.Count; i++)
             {
-                var name = string.Format("{0}.{1}", i + 1, servers[i].name);
-                var org = servers[i].config;
+                var name = string.Format("{0}.{1}", i + 1, serverList[i].name);
+                var org = serverList[i].config;
                 menuReplaceServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (Lib.UI.Confirm(I18N("ReplaceServer")))
@@ -440,7 +443,9 @@ namespace V2RayGCon.Views
 
             showLeftPanelToolStripMenuItem.Checked = visible;
             hideLeftPanelToolStripMenuItem.Checked = !visible;
+
             setting.isShowConfigerToolsPanel = visible;
+            isShowPanel = visible;
         }
 
         void MenuUpdateHandler(object sender, EventArgs args)
@@ -463,7 +468,7 @@ namespace V2RayGCon.Views
 
         void FoldToolsPanel()
         {
-            var visible = setting.isShowConfigerToolsPanel;
+            var visible = isShowPanel;
             var width = toolsPanelHandler.panel.Width;
 
             if (!visible)

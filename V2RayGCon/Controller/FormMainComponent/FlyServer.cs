@@ -9,15 +9,16 @@ namespace V2RayGCon.Controller.FormMainComponent
     class FlyServer : FormMainComponentController
     {
         FlowLayoutPanel flyPanel;
-        Service.Setting setting;
+        Service.Servers servers;
 
         public FlyServer(FlowLayoutPanel panel)
         {
-            this.setting = Service.Setting.Instance;
+            this.servers = Service.Servers.Instance;
+
             this.flyPanel = panel;
             BindDragDropEvent();
             RefreshUI();
-            setting.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
+            servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
 
         #region public method
@@ -43,7 +44,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
-            setting.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
+            servers.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
             RemoveAllConrols();
         }
 
@@ -51,7 +52,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             flyPanel.Invoke((MethodInvoker)delegate
             {
-                var serverList = setting.GetServerList().ToList();
+                var serverList = servers.GetServerList().ToList();
 
                 if (serverList.Count > 0)
                 {

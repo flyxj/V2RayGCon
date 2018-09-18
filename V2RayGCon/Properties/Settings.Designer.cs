@@ -106,5 +106,17 @@ namespace V2RayGCon.Properties {
                 this["WinFormPosList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SysProxyUrl {
+            get {
+                return ((string)(this["SysProxyUrl"]));
+            }
+            set {
+                this["SysProxyUrl"] = value;
+            }
+        }
     }
 }

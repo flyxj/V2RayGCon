@@ -55,13 +55,31 @@ namespace V2RayGCon.Model.UserControls
                     lbStatus, serverItem.status);
 
                 Lib.UI.UpdateControlOnDemand(
-                    chkSelected, serverItem.isSelected);
-
-                Lib.UI.UpdateControlOnDemand(
                     chkImport, serverItem.isInjectImport);
 
+                UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
             });
+        }
+
+        void UpdateChkSelected()
+        {
+            if (serverItem.isSelected == chkSelected.Checked)
+            {
+                return;
+            }
+
+            chkSelected.Checked = serverItem.isSelected;
+            HighlightSelectedServerItem(chkSelected.Checked);
+        }
+
+        void HighlightSelectedServerItem(bool selected)
+        {
+            var fontStyle = new Font(lbSummary.Font, selected ? FontStyle.Bold : FontStyle.Regular);
+            var colorRed = selected ? Color.OrangeRed : Color.Black;
+            lbSummary.Font = fontStyle;
+            lbStatus.Font = fontStyle;
+            lbStatus.ForeColor = colorRed;
         }
 
         ContextMenu CreateMenu()
@@ -79,7 +97,7 @@ namespace V2RayGCon.Model.UserControls
                         return;
                     }
                     Cleanup();
-                    serverItem.DeleteSelf();
+                    serverItem.parent.DeleteServerByConfig(serverItem.config);
                 }),
                 new MenuItem("-"),
                 new MenuItem(I18N("Copy"),new MenuItem[]{
@@ -104,7 +122,7 @@ namespace V2RayGCon.Model.UserControls
                 }),
                 new MenuItem(I18N("SpeedTest"),(s,a)=>{
                     Task.Factory.StartNew(
-                        () => serverItem.DoSpeedTest());
+                        () => serverItem.RunSpeedTest());
                 }),
                 new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
                     if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
@@ -132,6 +150,10 @@ namespace V2RayGCon.Model.UserControls
             }
 
             this.isRunning = isServerOn;
+
+            tboxInboundPort.ReadOnly = this.isRunning;
+            tboxInboundIP.ReadOnly = this.isRunning;
+            btnStop.Enabled = this.isRunning;
 
             if (isServerOn)
             {
@@ -222,7 +244,7 @@ namespace V2RayGCon.Model.UserControls
 
         private void chkImport_CheckedChanged(object sender, EventArgs e)
         {
-            serverItem.SetInjectImport(chkImport.Checked);
+            serverItem.SetIsInjectImport(chkImport.Checked);
         }
 
         private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
@@ -237,6 +259,7 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetPropertyOnDemand(
                ref serverItem.isSelected,
                chkSelected.Checked);
+            HighlightSelectedServerItem(chkSelected.Checked);
         }
 
         private void tboxInboundIP_TextChanged(object sender, EventArgs e)

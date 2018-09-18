@@ -35,6 +35,7 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 setting.SaveGlobalImportItems(curOptions);
                 oldOptions = curOptions;
+                Service.Servers.Instance.RestartInjectImportServers();
                 return true;
             }
             return false;

@@ -14,6 +14,8 @@ namespace V2RayGCon.Controller.OptionComponent
         Button btnAdd, btnUpdate;
 
         Service.Setting setting;
+        Service.Servers servers;
+
         string oldOptions;
 
         public Subscription(
@@ -22,6 +24,7 @@ namespace V2RayGCon.Controller.OptionComponent
             Button btnUpdate)
         {
             this.setting = Service.Setting.Instance;
+            this.servers = Service.Servers.Instance;
 
             this.flyPanel = flyPanel;
             this.btnAdd = btnAdd;
@@ -209,7 +212,7 @@ namespace V2RayGCon.Controller.OptionComponent
                     return string.Join("\n", links);
                 });
 
-                setting.ImportLinks(string.Join("\n", contents));
+                servers.ImportLinks(string.Join("\n", contents));
 
                 try
                 {

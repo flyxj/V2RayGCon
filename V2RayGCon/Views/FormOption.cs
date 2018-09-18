@@ -17,13 +17,10 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Setting setting;
         Controller.OptionCtrl optionCtrl;
 
         FormOption()
         {
-            this.setting = Service.Setting.Instance;
-
             InitializeComponent();
 
 #if DEBUG
@@ -46,7 +43,7 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.LazyGC();
+                Service.Servers.Instance.LazyGC();
             };
         }
 

@@ -8,8 +8,7 @@ namespace V2RayGCon.Controller
 {
     class Configer : Model.BaseClass.FormController
     {
-        Service.Setting setting;
-        Service.Cache cache;
+        Service.Servers servers;
 
         public JObject config;
         string originalConfig, originalFile;
@@ -17,8 +16,7 @@ namespace V2RayGCon.Controller
 
         public Configer(string originalConfig)
         {
-            cache = Service.Cache.Instance;
-            setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
 
             this.originalFile = string.Empty;
             this.originalConfig = string.Empty;
@@ -79,29 +77,30 @@ namespace V2RayGCon.Controller
 
         public bool ReplaceServer(string originalConfig)
         {
-            var index = setting.GetServerIndexByConfig(originalConfig);
-            if (index < 0)
-            {
-                MessageBox.Show(I18N("OrgServNotFound"));
-                return false;
-            }
-
             if (!editor.Flush())
             {
                 return false;
             }
+            Update();
 
             var newConfig = Lib.Utils.Config2String(config);
-
-            if (originalConfig == newConfig)
+            if (originalConfig == newConfig
+                || servers.IsServerItemExist(newConfig))
             {
                 MessageBox.Show(I18N("DuplicateServer"));
                 return false;
             }
 
-            Update();
-            setting.ReplaceServerConfigByIndex(index, newConfig);
-            MarkOriginalConfig();
+            if (servers.ReplaceServerConfig(originalConfig, newConfig))
+            {
+                MarkOriginalConfig();
+            }
+            else
+            {
+                MessageBox.Show(I18N("OrgServNotFound"));
+                return false;
+            }
+
             return true;
         }
 
@@ -114,7 +113,7 @@ namespace V2RayGCon.Controller
 
             Update();
 
-            if (setting.AddServer(config))
+            if (servers.AddServer(Lib.Utils.Config2String(config)))
             {
                 MarkOriginalConfig();
             }
@@ -201,7 +200,7 @@ namespace V2RayGCon.Controller
 
             if (o == null)
             {
-                o = cache.tpl.LoadMinConfig();
+                o = Service.Cache.Instance.tpl.LoadMinConfig();
                 Task.Factory.StartNew(
                     () => MessageBox.Show(
                         I18N("EditorCannotLoadServerConfig")));

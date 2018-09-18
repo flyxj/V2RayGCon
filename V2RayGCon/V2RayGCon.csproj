@@ -136,7 +136,7 @@
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
-    <Compile Include="Model\Data\ServerList.cs" />
+    <Compile Include="Service\Servers.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
     <Compile Include="Model\Data\ServerItem.cs" />

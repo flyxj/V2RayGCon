@@ -19,13 +19,13 @@ namespace V2RayGCon.Views
         }
         #endregion
 
-        Service.Setting setting;
+        Service.Servers servers;
 
         FormSimAddVmessClient()
         {
             InitializeComponent();
             Fill(cboxKCP, Model.Data.Table.kcpTypes);
-            setting = Service.Setting.Instance;
+            servers = Service.Servers.Instance;
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
@@ -34,7 +34,7 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, a) =>
             {
-                setting.LazyGC();
+                servers.LazyGC();
             };
         }
 
@@ -84,7 +84,7 @@ namespace V2RayGCon.Views
 
             var link = Lib.Utils.Vmess2VmessLink(vmess);
 
-            setting.ImportLinks(link);
+            servers.ImportLinks(link);
             this.Close();
         }
 

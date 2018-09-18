@@ -11,7 +11,7 @@ namespace V2RayGCon.Model.Data
 {
     public class ServerItem
     {
-        public event EventHandler<Model.Data.StrEvent> OnLog, OnRequireDeleteServer;
+        public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
@@ -43,6 +43,9 @@ namespace V2RayGCon.Model.Data
         }
 
         #region non-serialize properties
+        [JsonIgnore]
+        public Service.Servers parent = null;
+
         [JsonIgnore]
         Views.FormSingleServerLog logForm = null;
 
@@ -126,7 +129,7 @@ namespace V2RayGCon.Model.Data
             return config.ToString(Formatting.None);
         }
 
-        public void DoSpeedTest()
+        public void RunSpeedTest()
         {
             void log(string msg)
             {
@@ -161,11 +164,6 @@ namespace V2RayGCon.Model.Data
             speedTester.OnLog -= OnLogHandler;
         }
 
-        public void DeleteSelf()
-        {
-            OnRequireDeleteServer?.Invoke(this, new StrEvent(config));
-        }
-
         public void SetPropertyOnDemand(ref string property, string value, bool isNeedCoreStopped = false)
         {
             SetPropertyOnDemand<string>(ref property, value, isNeedCoreStopped);
@@ -181,7 +179,7 @@ namespace V2RayGCon.Model.Data
             SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetInjectImport(bool import)
+        public void SetIsInjectImport(bool import)
         {
             if (this.isInjectImport == import)
             {

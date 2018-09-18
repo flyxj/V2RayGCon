@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,7 +33,6 @@ namespace V2RayGCon.Views
 
             this.FormClosed += (s, e) =>
             {
-                setting.LazyGC();
                 setting.OnLog -= LogReceiver;
             };
 

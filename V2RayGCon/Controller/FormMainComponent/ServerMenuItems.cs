@@ -6,8 +6,8 @@ namespace V2RayGCon.Controller.FormMainComponent
 {
     class ServerMenuItems : FormMainComponentController
     {
-        Service.Setting setting;
         Service.Cache cache;
+        Service.Servers servers;
 
         public ServerMenuItems(
             ToolStripMenuItem stopSelected,
@@ -26,18 +26,26 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem deleteAllItems,
             ToolStripMenuItem packSelected)
         {
-            setting = Service.Setting.Instance;
             cache = Service.Cache.Instance;
+            servers = Service.Servers.Instance;
 
             packSelected.Click += (s, a) =>
             {
-                setting.PackSelectedServers();
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+                servers.PackSelectedServers();
             };
 
             deleteAllItems.Click += (s, a) =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
-                    setting.DeleteAllServer();
+                if (!Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
+                {
+                    return;
+                }
+                Service.Servers.Instance.DeleteAllServersThen();
+                Service.Cache.Instance.core.Clear();
             };
 
             copyAsSubscriptions.Click += (s, a) =>
@@ -81,7 +89,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     return;
                 }
-                setting.DeleteSelectedServers();
+
+                servers.DeleteSelectedServersThen();
             };
 
             speedTestOnSelected.Click += (s, a) =>
@@ -96,7 +105,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     return;
                 }
 
-                if (!setting.DoSpeedTestOnSelectedServers())
+                if (!servers.RunSpeedTestOnSelectedServers())
                 {
                     MessageBox.Show(I18N("LastTestNoFinishYet"));
                 }
@@ -111,7 +120,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
                 {
-                    setting.StopAllSelectedThen();
+                    servers.StopAllSelectedThen();
                 }
             };
 
@@ -124,7 +133,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
                 {
-                    setting.RestartAllSelected();
+                    servers.RestartAllSelectedServersThen();
                 }
             };
 
@@ -157,14 +166,14 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
                 {
-                    setting.ClearSystemProxy();
+                    Service.Setting.Instance.ClearSystemProxy();
                 }
             };
 
             refreshSummary.Click += (s, a) =>
             {
                 cache.html.Clear();
-                setting.UpdateAllServersSummary();
+                servers.UpdateAllServersSummary();
             };
         }
 
@@ -183,8 +192,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         bool CheckSelectedServerCount()
         {
-            var count = setting.GetSelectedServersCount();
-            if (count <= 0)
+            if (!servers.IsSelecteAnyServer())
             {
                 Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));
                 return false;
@@ -194,10 +202,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void CopySelectedAsV2RayLinks()
         {
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
             string s = string.Empty;
 
-            foreach (var server in servers)
+            foreach (var server in serverList)
             {
                 if (server.isSelected)
                 {
@@ -213,10 +221,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         string EncodeAllServersIntoVmessLinks()
         {
-            var servers = setting.GetServerList();
+            var serverList = servers.GetServerList();
             string result = string.Empty;
 
-            foreach (var server in servers)
+            foreach (var server in serverList)
             {
                 if (!server.isSelected)
                 {

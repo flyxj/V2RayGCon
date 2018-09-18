@@ -50,7 +50,7 @@ namespace V2RayGCon.Controller
             }
 
             var serverString = string.Empty;
-            foreach (var server in Service.Setting.Instance.GetServerList())
+            foreach (var server in Service.Servers.Instance.GetServerList())
             {
                 // insert a space in the front for regex matching
                 serverString += " v2ray://"
@@ -106,8 +106,6 @@ namespace V2RayGCon.Controller
                 return;
             }
 
-            var setting = Service.Setting.Instance;
-
             if (options.ContainsKey("import"))
             {
                 GetComponent<Controller.OptionComponent.Import>()
@@ -123,7 +121,7 @@ namespace V2RayGCon.Controller
             if (options.ContainsKey("servers")
                 && Lib.UI.Confirm(I18N("ConfirmImportServers")))
             {
-                setting.ImportLinks(options["servers"]);
+                Service.Servers.Instance.ImportLinks(options["servers"]);
             }
             else
             {

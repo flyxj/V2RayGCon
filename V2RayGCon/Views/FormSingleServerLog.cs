@@ -7,14 +7,12 @@ namespace V2RayGCon.Views
 {
     public partial class FormSingleServerLog : Form
     {
-        Service.Setting setting;
         int maxNumberLines;
         Model.Data.ServerItem serverItem;
 
         public FormSingleServerLog(Model.Data.ServerItem serverItem)
         {
-            setting = Service.Setting.Instance;
-            maxNumberLines = setting.maxLogLines;
+            maxNumberLines = Service.Setting.Instance.maxLogLines;
 
             this.serverItem = serverItem;
 

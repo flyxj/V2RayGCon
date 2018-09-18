@@ -28,7 +28,7 @@ namespace V2RayGCon.Views
             this.FormClosed += (s, e) =>
             {
                 downloader?.Cancel();
-                Service.Setting.Instance.LazyGC();
+                Service.Servers.Instance.LazyGC();
             };
 
 #if DEBUG
@@ -103,19 +103,22 @@ namespace V2RayGCon.Views
             downloader.OnDownloadCompleted += (s, a) =>
             {
                 ResetUI(100);
-                MessageBox.Show(I18N("DownloadCompleted"));
+                Task.Factory.StartNew(
+                    () => MessageBox.Show(I18N("DownloadCompleted")));
             };
 
             downloader.OnDownloadCancelled += (s, a) =>
             {
                 ResetUI(0);
-                MessageBox.Show(I18N("DownloadCancelled"));
+                Task.Factory.StartNew(
+                    () => MessageBox.Show(I18N("DownloadCancelled")));
             };
 
             downloader.OnDownloadFail += (s, a) =>
             {
                 ResetUI(0);
-                MessageBox.Show(I18N("TryManualDownload"));
+                Task.Factory.StartNew(
+                    () => MessageBox.Show(I18N("TryManualDownload")));
             };
 
             downloader.DownloadV2RayCore();
