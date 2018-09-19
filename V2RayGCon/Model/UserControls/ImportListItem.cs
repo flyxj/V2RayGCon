@@ -15,7 +15,7 @@ namespace V2RayGCon.Model.UserControls
             lbIndex.Text = "";
             tboxUrl.Text = subItem.url;
             tboxAlias.Text = subItem.alias;
-            chkMergeWhenActivate.Checked = subItem.isUseOnActivate;
+            chkMergeWhenStart.Checked = subItem.isUseOnActivate;
             chkMergeWhenSpeedTest.Checked = subItem.isUseOnSpeedTest;
 
             this.OnDeleted = OnDeleted;
@@ -25,7 +25,7 @@ namespace V2RayGCon.Model.UserControls
         {
             return new Model.Data.ImportItem
             {
-                isUseOnActivate = chkMergeWhenActivate.Checked,
+                isUseOnActivate = chkMergeWhenStart.Checked,
                 isUseOnSpeedTest = chkMergeWhenSpeedTest.Checked,
                 alias = tboxAlias.Text,
                 url = tboxUrl.Text,

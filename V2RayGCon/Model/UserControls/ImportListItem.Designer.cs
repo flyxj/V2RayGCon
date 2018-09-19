@@ -36,54 +36,60 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tboxUrl = new System.Windows.Forms.TextBox();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.chkMergeWhenActivate = new System.Windows.Forms.CheckBox();
+            this.chkMergeWhenStart = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.chkMergeWhenSpeedTest = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lbIndex
             // 
-            this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.lbIndex, "lbIndex");
+            this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
             this.lbIndex.Name = "lbIndex";
+            this.toolTip1.SetToolTip(this.lbIndex, resources.GetString("lbIndex.ToolTip"));
             // 
             // tboxAlias
             // 
             resources.ApplyResources(this.tboxAlias, "tboxAlias");
             this.tboxAlias.Name = "tboxAlias";
+            this.toolTip1.SetToolTip(this.tboxAlias, resources.GetString("tboxAlias.ToolTip"));
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Name = "label2";
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Cursor = System.Windows.Forms.Cursors.Default;
             this.label3.Name = "label3";
+            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // tboxUrl
             // 
             resources.ApplyResources(this.tboxUrl, "tboxUrl");
             this.tboxUrl.Name = "tboxUrl";
+            this.toolTip1.SetToolTip(this.tboxUrl, resources.GetString("tboxUrl.ToolTip"));
             // 
             // btnDelete
             // 
-            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnDelete, "btnDelete");
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnDelete.Name = "btnDelete";
+            this.toolTip1.SetToolTip(this.btnDelete, resources.GetString("btnDelete.ToolTip"));
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // chkMergeWhenActivate
+            // chkMergeWhenStart
             // 
-            resources.ApplyResources(this.chkMergeWhenActivate, "chkMergeWhenActivate");
-            this.chkMergeWhenActivate.Cursor = System.Windows.Forms.Cursors.Default;
-            this.chkMergeWhenActivate.Name = "chkMergeWhenActivate";
-            this.toolTip1.SetToolTip(this.chkMergeWhenActivate, resources.GetString("chkMergeWhenActivate.ToolTip"));
-            this.chkMergeWhenActivate.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.chkMergeWhenStart, "chkMergeWhenStart");
+            this.chkMergeWhenStart.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkMergeWhenStart.Name = "chkMergeWhenStart";
+            this.toolTip1.SetToolTip(this.chkMergeWhenStart, resources.GetString("chkMergeWhenStart.ToolTip"));
+            this.chkMergeWhenStart.UseVisualStyleBackColor = true;
             // 
             // chkMergeWhenSpeedTest
             // 
@@ -99,7 +105,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.chkMergeWhenSpeedTest);
-            this.Controls.Add(this.chkMergeWhenActivate);
+            this.Controls.Add(this.chkMergeWhenStart);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.tboxUrl);
             this.Controls.Add(this.tboxAlias);
@@ -124,7 +130,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tboxUrl;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.CheckBox chkMergeWhenActivate;
+        private System.Windows.Forms.CheckBox chkMergeWhenStart;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox chkMergeWhenSpeedTest;
     }
