@@ -43,43 +43,37 @@
             // 
             // lbIndex
             // 
-            resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Name = "lbIndex";
-            this.toolTip1.SetToolTip(this.lbIndex, resources.GetString("lbIndex.ToolTip"));
             // 
             // tboxAlias
             // 
             resources.ApplyResources(this.tboxAlias, "tboxAlias");
             this.tboxAlias.Name = "tboxAlias";
-            this.toolTip1.SetToolTip(this.tboxAlias, resources.GetString("tboxAlias.ToolTip"));
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Name = "label2";
-            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Cursor = System.Windows.Forms.Cursors.Default;
             this.label3.Name = "label3";
-            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // tboxUrl
             // 
             resources.ApplyResources(this.tboxUrl, "tboxUrl");
             this.tboxUrl.Name = "tboxUrl";
-            this.toolTip1.SetToolTip(this.tboxUrl, resources.GetString("tboxUrl.ToolTip"));
             // 
             // btnDelete
             // 
-            resources.ApplyResources(this.btnDelete, "btnDelete");
             this.btnDelete.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnDelete, "btnDelete");
             this.btnDelete.Name = "btnDelete";
-            this.toolTip1.SetToolTip(this.btnDelete, resources.GetString("btnDelete.ToolTip"));
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
