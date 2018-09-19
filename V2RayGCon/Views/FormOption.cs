@@ -31,6 +31,8 @@ namespace V2RayGCon.Views
 
         private void FormOption_Shown(object sender, System.EventArgs e)
         {
+            // throw new System.ArgumentException("for debug");
+
             this.optionCtrl = InitOptionCtrl();
 
             this.FormClosing += (s, a) =>
