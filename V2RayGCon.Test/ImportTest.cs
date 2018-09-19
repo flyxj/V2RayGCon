@@ -221,33 +221,34 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void ImportItemList2JObject()
         {
-            Model.Data.UrlItem GenItem(bool inUse, string url, string alias)
+            Model.Data.ImportItem GenItem(bool includeSpeedTest, bool includeActivate, string url, string alias)
             {
-                return new Model.Data.UrlItem
+                return new Model.Data.ImportItem
                 {
-                    inUse = inUse,
+                    isUseOnActivate = includeActivate,
+                    isUseOnSpeedTest = includeSpeedTest,
                     url = url,
                     alias = alias,
                 };
             }
-            var items = new List<List<Model.Data.UrlItem>>();
+            var items = new List<List<Model.Data.ImportItem>>();
             var expects = new List<string>();
 
-            items.Add(new List<Model.Data.UrlItem> {
-                GenItem(true,"a.com","a"),
-                GenItem(false,"b.com","b"),
-                GenItem(true,"c.com",""),
+            items.Add(new List<Model.Data.ImportItem> {
+                GenItem(true,true,"a.com","a"),
+                GenItem(false,true,"b.com","b"),
+                GenItem(true,false,"c.com",""),
             });
 
             expects.Add(@"{'v2raygcon':{'import':{'a.com':'a','c.com':''}}}");
 
-            items.Add(new List<Model.Data.UrlItem> { });
+            items.Add(new List<Model.Data.ImportItem> { });
             expects.Add(@"{'v2raygcon':{'import':{}}}");
 
             for (var i = 0; i < items.Count; i++)
             {
                 var expect = JObject.Parse(expects[i]);
-                var json = Lib.Utils.ImportItemList2JObject(items[i]);
+                var json = Lib.Utils.ImportItemList2JObject(items[i], true, false);
                 var result = JObject.DeepEquals(expect, json);
                 Assert.AreEqual(true, result);
             }

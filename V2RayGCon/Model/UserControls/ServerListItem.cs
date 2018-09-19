@@ -85,7 +85,12 @@ namespace V2RayGCon.Model.UserControls
         ContextMenu CreateMenu()
         {
             return new ContextMenu(new MenuItem[] {
-                new MenuItem(I18N("Log"),(s,a)=>serverItem.ShowLogForm()),
+                new MenuItem(I18N("StartThisOnly"),(s,a)=>{
+                    var server=this.serverItem;
+                    server.parent.StopAllServersThen(
+                        ()=>server.RestartCoreThen());
+                }),
+                new MenuItem(I18N("LogOfThisServer"),(s,a)=>serverItem.ShowLogForm()),
                 new MenuItem(I18N("Edit"),(s,a)=>{
                     var item=this.serverItem;
                     var config=item.config;

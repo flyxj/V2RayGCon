@@ -110,7 +110,7 @@ namespace V2RayGCon.Model.Data
                 return empty;
             }
 
-            var config = GetDecodedConfig(true);
+            var config = GetDecodedConfig(true, true, false);
 
             if (config == null)
             {
@@ -223,7 +223,7 @@ namespace V2RayGCon.Model.Data
             Task.Factory.StartNew(() =>
             {
                 var configString = isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(this.config) :
+                    Lib.Utils.InjectGlobalImport(this.config, false, true) :
                     this.config;
                 try
                 {
@@ -286,7 +286,7 @@ namespace V2RayGCon.Model.Data
 
         public void RestartCoreWorker(Action next)
         {
-            JObject cfg = GetDecodedConfig(true);
+            JObject cfg = GetDecodedConfig(true, false, true);
             if (cfg == null)
             {
                 StopCoreThen(next);
@@ -326,7 +326,7 @@ namespace V2RayGCon.Model.Data
             var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
-                var cfg = GetDecodedConfig(true);
+                var cfg = GetDecodedConfig(true, false, true);
                 var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
                 var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
                 var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
@@ -366,7 +366,7 @@ namespace V2RayGCon.Model.Data
             InvokeEventOnPropertyChange();
         }
 
-        JObject GetDecodedConfig(bool isUseCache = false)
+        JObject GetDecodedConfig(bool isUseCache, bool isIncludeSpeedTest, bool isIncludeActivate)
         {
             var cache = Service.Cache.Instance.core;
 
@@ -375,7 +375,7 @@ namespace V2RayGCon.Model.Data
             {
                 cfg = Lib.ImportParser.Parse(
                     isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(config) :
+                    Lib.Utils.InjectGlobalImport(config, isIncludeSpeedTest, isIncludeActivate) :
                     config);
 
                 cache[config] = cfg.ToString(Formatting.None);

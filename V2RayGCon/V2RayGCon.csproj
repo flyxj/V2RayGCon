@@ -136,6 +136,13 @@
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
+    <Compile Include="Model\Data\ImportItem.cs" />
+    <Compile Include="Model\UserControls\ImportListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Model\UserControls\ImportListItem.Designer.cs">
+      <DependentUpon>ImportListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Service\Servers.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
@@ -260,6 +267,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\ServerListItem.zh-CN.resx">
       <DependentUpon>ServerListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\UserControls\ImportListItem.resx">
+      <DependentUpon>ImportListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\UserControls\ImportListItem.zh-CN.resx">
+      <DependentUpon>ImportListItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\UrlListItem.resx">
       <DependentUpon>UrlListItem.cs</DependentUpon>

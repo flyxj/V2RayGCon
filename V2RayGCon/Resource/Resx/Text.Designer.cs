@@ -848,6 +848,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Log of this server 的本地化字符串。
+        /// </summary>
+        internal static string LogOfThisServer {
+            get {
+                return ResourceManager.GetString("LogOfThisServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Looks like you found a bug.
         ///Please send the following file to the author. 的本地化字符串。
         /// </summary>
@@ -1143,6 +1152,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Start this only 的本地化字符串。
+        /// </summary>
+        internal static string StartThisOnly {
+            get {
+                return ResourceManager.GetString("StartThisOnly", resourceCulture);
             }
         }
         

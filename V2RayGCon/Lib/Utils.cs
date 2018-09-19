@@ -321,26 +321,34 @@ namespace V2RayGCon.Lib
             ConcatJson(ref mixin, backup);
         }
 
-        public static string InjectGlobalImport(string config)
+        public static string InjectGlobalImport(string config, bool isIncludeSpeedTest, bool isIncludeActivate)
         {
             JObject import = ImportItemList2JObject(
-                Service.Setting.Instance.GetGlobalImportItems());
+                Service.Setting.Instance.GetGlobalImportItems(),
+                isIncludeSpeedTest,
+                isIncludeActivate);
 
             MergeJson(ref import, JObject.Parse(config));
             return import.ToString();
         }
 
-        public static JObject ImportItemList2JObject(List<Model.Data.UrlItem> items)
+        public static JObject ImportItemList2JObject(
+            List<Model.Data.ImportItem> items,
+            bool isIncludeSpeedTest,
+            bool isIncludeActivate)
         {
             var result = CreateJObject(@"v2raygcon.import");
             foreach (var item in items)
             {
                 var url = item.url;
-                if (item.inUse && !string.IsNullOrEmpty(url))
+                if (string.IsNullOrEmpty(url))
                 {
-                    var value = item.alias;
-                    result["v2raygcon"]["import"][url] =
-                        string.IsNullOrEmpty(value) ? "" : value;
+                    continue;
+                }
+                if ((isIncludeSpeedTest && item.isUseOnSpeedTest)
+                    || (isIncludeActivate && item.isUseOnActivate))
+                {
+                    result["v2raygcon"]["import"][url] = item.alias ?? string.Empty;
                 }
             }
             return result;

@@ -95,9 +95,9 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 {
                     result = Lib.ImportParser.Parse(
                         cboxGlobalImport.Checked ?
-                        Lib.Utils.InjectGlobalImport(plainText) :
-                        plainText)
-                        .ToString();
+                        Lib.Utils.InjectGlobalImport(plainText, false, true) :
+                            plainText)
+                            .ToString();
 
                     Service.Servers.Instance.LazyGC();
                 }

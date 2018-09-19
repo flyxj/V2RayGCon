@@ -545,4 +545,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="SetSysProxyDone" xml:space="preserve">
     <value>系统代理设置完成。</value>
   </data>
+  <data name="LogOfThisServer" xml:space="preserve">
+    <value>此服务器日志</value>
+  </data>
+  <data name="StartThisOnly" xml:space="preserve">
+    <value>单开</value>
+  </data>
 </root>
