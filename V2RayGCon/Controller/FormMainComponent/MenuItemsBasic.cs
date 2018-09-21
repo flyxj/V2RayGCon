@@ -6,61 +6,31 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
-    class MenuItems : FormMainComponentController
+    class MenuItemsBasic : FormMainComponentController
     {
         Service.Servers servers;
 
-        public MenuItems(
-            ToolStripMenuItem simVmessServer,
-            ToolStripMenuItem importLinkFromClipboard,
-            ToolStripMenuItem exportAllServer,
+        public MenuItemsBasic(
+            ToolStripMenuItem miSimVmessServer,
+            ToolStripMenuItem miImportLinkFromClipboard,
+            ToolStripMenuItem miExportAllServer,
             ToolStripMenuItem importFromFile,
-            ToolStripMenuItem checkUpdate,
-            ToolStripMenuItem toolMenuItemAbout,
-            ToolStripMenuItem toolMenuItemHelp,
-            ToolStripMenuItem configEditor,
-            ToolStripMenuItem QRCode,
-            ToolStripMenuItem log,
-            ToolStripMenuItem options,
-            ToolStripMenuItem downloadV2rayCore,
-            ToolStripMenuItem removeV2rayCore)
+            ToolStripMenuItem miCheckUpdate,
+            ToolStripMenuItem miAbout,
+            ToolStripMenuItem miHelp,
+            ToolStripMenuItem miFormConfigEditor,
+            ToolStripMenuItem miFormQRCode,
+            ToolStripMenuItem miFormLog,
+            ToolStripMenuItem miFormOptions,
+            ToolStripMenuItem miDownloadV2rayCore,
+            ToolStripMenuItem miRemoveV2rayCore)
         {
             servers = Service.Servers.Instance;
 
-            downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
-
-            removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
-
-            simVmessServer.Click +=
-                (s, a) => Views.FormSimAddVmessClient.GetForm();
-
-            importLinkFromClipboard.Click += (s, a) =>
-            {
-                string links = Lib.Utils.GetClipboardText();
-                servers.ImportLinks(links);
-            };
-
-            exportAllServer.Click += (s, a) => ExportAllServersToTextFile();
-
-            importFromFile.Click += (s, a) => ImportServersFromTextFile();
-
-            checkUpdate.Click += (s, a) => CheckVGCUpdate();
-
-            toolMenuItemAbout.Click += (s, a) =>
-                Lib.UI.VisitUrl(I18N("VistPorjectPage"), Properties.Resources.ProjectLink);
-
-            toolMenuItemHelp.Click += (s, a) =>
-                Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
-
-            configEditor.Click += (s, a) => new Views.FormConfiger();
-
-            QRCode.Click += (s, a) => Views.FormQRCode.GetForm();
-
-            log.Click += (s, a) => Views.FormLog.GetForm();
-
-            options.Click += (s, a) => Views.FormOption.GetForm();
+            InitMenuFile(miSimVmessServer, miImportLinkFromClipboard, miExportAllServer, importFromFile);
+            InitMenuWindows(miFormConfigEditor, miFormQRCode, miFormLog, miFormOptions);
+            InitMenuAbout(miCheckUpdate, miAbout, miHelp, miDownloadV2rayCore, miRemoveV2rayCore);
         }
-
 
         #region public method
         public void ImportServersFromTextFile()
@@ -120,6 +90,50 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+        private void InitMenuAbout(ToolStripMenuItem checkUpdate, ToolStripMenuItem about, ToolStripMenuItem help, ToolStripMenuItem downloadV2rayCore, ToolStripMenuItem removeV2rayCore)
+        {
+            // menu about
+            downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
+
+            removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
+
+            checkUpdate.Click += (s, a) => CheckVGCUpdate();
+
+            about.Click += (s, a) =>
+                Lib.UI.VisitUrl(I18N("VistPorjectPage"), Properties.Resources.ProjectLink);
+
+            help.Click += (s, a) =>
+                Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
+        }
+
+        private void InitMenuFile(ToolStripMenuItem simVmessServer, ToolStripMenuItem importLinkFromClipboard, ToolStripMenuItem exportAllServer, ToolStripMenuItem importFromFile)
+        {
+            // menu file
+            simVmessServer.Click +=
+                (s, a) => Views.FormSimAddVmessClient.GetForm();
+
+            importLinkFromClipboard.Click += (s, a) =>
+            {
+                string links = Lib.Utils.GetClipboardText();
+                servers.ImportLinks(links);
+            };
+
+            exportAllServer.Click += (s, a) => ExportAllServersToTextFile();
+
+            importFromFile.Click += (s, a) => ImportServersFromTextFile();
+        }
+
+        private static void InitMenuWindows(ToolStripMenuItem miFormConfigEditor, ToolStripMenuItem miFormQRCode, ToolStripMenuItem miFormLog, ToolStripMenuItem miFormOptions)
+        {
+            // menu window
+            miFormConfigEditor.Click += (s, a) => new Views.FormConfiger();
+
+            miFormQRCode.Click += (s, a) => Views.FormQRCode.GetForm();
+
+            miFormLog.Click += (s, a) => Views.FormLog.GetForm();
+
+            miFormOptions.Click += (s, a) => Views.FormOption.GetForm();
+        }
 
         private void RemoveV2RayCore()
         {

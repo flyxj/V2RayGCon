@@ -4,12 +4,12 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
-    class ServerMenuItems : FormMainComponentController
+    class MenuItemsServer : FormMainComponentController
     {
         Service.Cache cache;
         Service.Servers servers;
 
-        public ServerMenuItems(
+        public MenuItemsServer(
             ToolStripMenuItem stopSelected,
             ToolStripMenuItem restartSelected,
             ToolStripMenuItem clearSysProxy,
@@ -29,6 +29,26 @@ namespace V2RayGCon.Controller.FormMainComponent
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
 
+            InitBatchOperation(stopSelected, restartSelected, speedTestOnSelected, deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions, deleteAllItems, packSelected);
+            InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
+            InitMisc(clearSysProxy, refreshSummary);
+        }
+
+        #region public method
+        public override bool RefreshUI()
+        {
+            return false;
+        }
+
+        public override void Cleanup()
+        {
+        }
+        #endregion
+
+        #region private method
+        private void InitBatchOperation(ToolStripMenuItem stopSelected, ToolStripMenuItem restartSelected, ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem deleteSelected, ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks, ToolStripMenuItem copyAsSubscriptions, ToolStripMenuItem deleteAllItems, ToolStripMenuItem packSelected)
+        {
+            // batch op
             packSelected.Click += (s, a) =>
             {
                 if (!CheckSelectedServerCount())
@@ -136,6 +156,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                     servers.RestartAllSelectedServersThen();
                 }
             };
+        }
+
+        private void InitSelection(ToolStripMenuItem selectAllAutorun, ToolStripMenuItem selectAll, ToolStripMenuItem selectNone, ToolStripMenuItem selectInvert)
+        {
+            // selection
 
             selectAllAutorun.Click += (s, a) =>
             {
@@ -160,7 +185,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                 var panel = GetFlyPanel();
                 panel.SelectInvert();
             };
+        }
 
+        private void InitMisc(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)
+        {
+            // misc
 
             clearSysProxy.Click += (s, a) =>
             {
@@ -176,19 +205,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 servers.UpdateAllServersSummary();
             };
         }
-
-        #region public method
-        public override bool RefreshUI()
-        {
-            return false;
-        }
-
-        public override void Cleanup()
-        {
-        }
-        #endregion
-
-        #region private method
 
         bool CheckSelectedServerCount()
         {

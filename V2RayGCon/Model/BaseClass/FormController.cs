@@ -30,16 +30,16 @@ namespace V2RayGCon.Model.BaseClass
             return components[type] as T;
         }
 
-        public void Plug(IFormComponentController component)
+        public FormController Plug(IFormComponentController component)
         {
             var type = component.GetType();
             if (components.ContainsKey(type))
             {
                 throw new ArgumentException("Key already existed!");
             }
-
             component.Bind(this);
             components[type] = component;
+            return this;
         }
 
         public void Plug(List<IFormComponentController> components)

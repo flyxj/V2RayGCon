@@ -62,7 +62,7 @@ namespace V2RayGCon.Views
             setting.RestoreFormRect(this);
 
             InitToolsPanel();
-            InitConfiger();
+            this.configer = InitConfiger();
 
             UpdateServerMenu();
             SetTitle(configer.GetAlias());
@@ -236,80 +236,70 @@ namespace V2RayGCon.Views
         #endregion
 
         #region init
-        void InitConfiger()
+        Controller.Configer InitConfiger()
         {
-            var components = new List<Model.BaseClass.IFormComponentController> {
+            var configer = new Controller.Configer(this.originalConfigString);
 
-                new Controller.ConfigerComponet.EnvVar(
+            configer
+                .Plug(new Controller.ConfigerComponet.EnvVar(
                     cboxImportAlias,
                     tboxImportURL,
                     btnInsertImport,
                     cboxEnvName,
                     tboxEnvValue,
-                    btnInsertEnv),
-
-                new Controller.ConfigerComponet.Editor(
+                    btnInsertEnv))
+                .Plug(new Controller.ConfigerComponet.Editor(
                     panelScintilla,
                     cboxConfigSection,
                     cboxExamples,
                     btnFormat,
-                    btnClearModify),
-
-                new Controller.ConfigerComponet.Vmess(
+                    btnClearModify))
+                .Plug(new Controller.ConfigerComponet.Vmess(
                     tboxVMessID,
                     tboxVMessLevel,
                     tboxVMessAid,
                     tboxVMessIPaddr,
                     rbtnVmessIServerMode,
                     btnVMessGenUUID,
-                    btnVMessInsertClient),
-
-                new Controller.ConfigerComponet.VGC(
+                    btnVMessInsertClient))
+                .Plug(new Controller.ConfigerComponet.VGC(
                     tboxVGCAlias,
                     tboxVGCDesc,
-                    btnInsertVGC),
-
-                new Controller.ConfigerComponet.StreamSettings(
+                    btnInsertVGC))
+                .Plug(new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
                     rbtnStreamInbound,
                     btnInsertStream,
                     chkStreamUseTls,
-                    chkStreamUseSockopt),
-
-                new Controller.ConfigerComponet.SSClient(
+                    chkStreamUseSockopt))
+                .Plug(new Controller.ConfigerComponet.SSClient(
                     tboxSSCAddr,
                     tboxSSCPass,
                     cboxSSCMethod,
                     chkSSCOTA,
                     chkSSCShowPass,
-                    btnSSRInsertClient),
-
-                new Controller.ConfigerComponet.SSServer(
+                    btnSSRInsertClient))
+                .Plug(new Controller.ConfigerComponet.SSServer(
                     tboxSSSPass,
                     tboxSSSPort,
                     cboxSSSNetwork,
                     cboxSSSMethod,
                     chkSSSOTA,
                     chkSSSShowPass,
-                    btnSSInsertServer),
-
-                new Controller.ConfigerComponet.Import(
+                    btnSSInsertServer))
+                .Plug(new Controller.ConfigerComponet.Import(
                     panelExpandConfig,
                     cboxGlobalImport,
                     btnExpandImport,
                     btnImportClearCache,
-                    btnCopyExpansedConfig),
-
-                new Controller.ConfigerComponet.Quick(
+                    btnCopyExpansedConfig))
+                .Plug(new Controller.ConfigerComponet.Quick(
                     btnQConSkipCN,
-                    btnQConMTProto),
+                    btnQConMTProto));
 
-            };
-
-            configer = new Controller.Configer(this.originalConfigString);
-            configer.Plug(components);
             configer.Prepare();
+            return configer;
         }
 
         void ExpanseToolsPanel()

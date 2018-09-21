@@ -68,7 +68,7 @@ namespace V2RayGCon.Views
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer));
 
-            ctrl.Plug(new Controller.FormMainComponent.MenuItems(
+            ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
                 toolMenuItemSimAddVmessServer,
                 toolMenuItemImportLinkFromClipboard,
                 toolMenuItemExportAllServerToFile,
@@ -83,7 +83,7 @@ namespace V2RayGCon.Views
                 toolStripMenuItemDownLoadV2rayCore,
                 toolStripMenuItemRemoveV2rayCore));
 
-            ctrl.Plug(new Controller.FormMainComponent.ServerMenuItems(
+            ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,
                 toolStripMenuItemRestartSelected,
                 toolMenuItemClearSysProxy,
