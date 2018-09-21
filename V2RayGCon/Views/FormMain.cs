@@ -65,6 +65,9 @@ namespace V2RayGCon.Views
         {
             var ctrl = new Controller.FormMainCtrl();
 
+            ctrl.Plug(new Controller.FormMainComponent.MarkFilter(
+                cboxMarkFilter));
+
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer));
 

@@ -15,6 +15,7 @@ namespace V2RayGCon.Service
         public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate;
 
         List<Model.Data.ServerItem> serverList = null;
+        List<string> markList = null;
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
@@ -313,6 +314,24 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public ReadOnlyCollection<string> GetMarkList()
+        {
+            if (this.markList == null)
+            {
+                UpdateMarkList();
+            }
+            return markList.AsReadOnly();
+        }
+
+        public void UpdateMarkList()
+        {
+            markList = serverList
+                .Select(s => s.mark)
+                .Distinct()
+                .Where(s => !string.IsNullOrEmpty(s))
+                .ToList();
+        }
+
         public void RestartInjectImportServers()
         {
             var list = serverList

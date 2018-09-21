@@ -106,6 +106,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 All 的本地化字符串。
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Analysing import, please wait ... 的本地化字符串。
         /// </summary>
         internal static string AnalysingImport {
@@ -899,6 +908,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string NoLinkFound {
             get {
                 return ResourceManager.GetString("NoLinkFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No mark 的本地化字符串。
+        /// </summary>
+        internal static string NoMark {
+            get {
+                return ResourceManager.GetString("NoMark", resourceCulture);
             }
         }
         

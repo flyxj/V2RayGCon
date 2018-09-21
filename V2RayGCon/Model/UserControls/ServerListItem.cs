@@ -57,7 +57,18 @@ namespace V2RayGCon.Model.UserControls
 
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
+                UpdateServerMark();
             });
+        }
+
+        void UpdateServerMark()
+        {
+            if (cboxMark.Text == serverItem.mark)
+            {
+                return;
+            }
+
+            cboxMark.Text = serverItem.mark;
         }
 
         void UpdateChkSelected()
@@ -91,7 +102,6 @@ namespace V2RayGCon.Model.UserControls
 
             tboxInboundPort.ReadOnly = this.isRunning;
             tboxInboundIP.ReadOnly = this.isRunning;
-            btnStop.Enabled = this.isRunning;
 
             if (isServerOn)
             {
@@ -229,11 +239,6 @@ namespace V2RayGCon.Model.UserControls
                 () => server.RestartCoreThen());
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            serverItem.StopCoreThen();
-        }
-
         private void multiboxingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             serverItem.RestartCoreThen();
@@ -307,6 +312,25 @@ namespace V2RayGCon.Model.UserControls
             MessageBox.Show(I18N("SetSysProxyDone"));
         }
 
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.StopCoreThen();
+        }
+
+        private void cboxMark_TextChanged(object sender, EventArgs e)
+        {
+            this.serverItem.SetMark(cboxMark.Text);
+        }
+
+        private void cboxMark_DropDown(object sender, EventArgs e)
+        {
+            var servers = Service.Servers.Instance;
+            cboxMark.Items.Clear();
+            foreach (var item in servers.GetMarkList())
+            {
+                cboxMark.Items.Add(item);
+            }
+        }
         #endregion
     }
 }

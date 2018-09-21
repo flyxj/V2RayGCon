@@ -16,7 +16,7 @@ namespace V2RayGCon.Model.Data
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected;
-        public string name, summary, inboundIP;
+        public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort, index;
 
         public ServerItem()
@@ -29,6 +29,7 @@ namespace V2RayGCon.Model.Data
             isAutoRun = false;
             isInjectImport = false;
 
+            mark = string.Empty;
             status = string.Empty;
             name = string.Empty;
             summary = string.Empty;
@@ -340,6 +341,19 @@ namespace V2RayGCon.Model.Data
                 next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
             });
         }
+
+        public void SetMark(string mark)
+        {
+            if (this.mark == mark)
+            {
+                return;
+            }
+
+            this.mark = mark;
+            this.parent.UpdateMarkList();
+            InvokeEventOnPropertyChange();
+        }
+
         #endregion
 
         #region private method

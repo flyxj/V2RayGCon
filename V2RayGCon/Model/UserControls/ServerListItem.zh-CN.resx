@@ -159,17 +159,14 @@
   <data name="chkSelected.ToolTip" xml:space="preserve">
     <value>选中此服务器</value>
   </data>
-  <data name="btnStop.Text" xml:space="preserve">
-    <value>停止</value>
-  </data>
-  <data name="btnStop.ToolTip" xml:space="preserve">
-    <value>停止服务器</value>
-  </data>
   <data name="btnStart.Text" xml:space="preserve">
     <value>开启</value>
   </data>
   <data name="btnStart.ToolTip" xml:space="preserve">
     <value>停止其他服务器，然后开启此服务器。</value>
+  </data>
+  <data name="cboxMark.ToolTip" xml:space="preserve">
+    <value>设置标记（任意字符串）</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>端口</value>
@@ -182,6 +179,12 @@
   </data>
   <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>和其他已开启服务器并行运行（注意错开inbound端口）</value>
+  </data>
+  <data name="stopToolStripMenuItem.Text" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>停止这个服务器</value>
   </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>编辑</value>
@@ -214,6 +217,12 @@
     <value>需要将inbound选为HTTP模式</value>
   </data>
   <data name="ctxMenuStripMore.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>标记</value>
+  </data>
+  <data name="label1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="$this.ToolTip" xml:space="preserve">

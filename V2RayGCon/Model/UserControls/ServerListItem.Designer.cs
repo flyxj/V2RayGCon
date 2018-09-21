@@ -43,11 +43,12 @@
             this.tboxInboundPort = new System.Windows.Forms.TextBox();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
             this.chkSelected = new System.Windows.Forms.CheckBox();
-            this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.cboxMark = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ctxMenuStripMore = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.multiboxingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vmessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,35 +59,33 @@
             this.speedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOfThisServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsSystemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
             this.ctxMenuStripMore.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbSummary
             // 
-            resources.ApplyResources(this.lbSummary, "lbSummary");
             this.lbSummary.AutoEllipsis = true;
             this.lbSummary.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbSummary, "lbSummary");
             this.lbSummary.Name = "lbSummary";
             this.toolTip1.SetToolTip(this.lbSummary, resources.GetString("lbSummary.ToolTip"));
             this.lbSummary.Click += new System.EventHandler(this.lbSummary_Click);
             // 
             // lbIndex
             // 
-            resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Name = "lbIndex";
-            this.toolTip1.SetToolTip(this.lbIndex, resources.GetString("lbIndex.ToolTip"));
             // 
             // lbStatus
             // 
             resources.ApplyResources(this.lbStatus, "lbStatus");
             this.lbStatus.Cursor = System.Windows.Forms.Cursors.Default;
             this.lbStatus.Name = "lbStatus";
-            this.toolTip1.SetToolTip(this.lbStatus, resources.GetString("lbStatus.ToolTip"));
             // 
             // cboxInbound
             // 
-            resources.ApplyResources(this.cboxInbound, "cboxInbound");
             this.cboxInbound.Cursor = System.Windows.Forms.Cursors.Default;
             this.cboxInbound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxInbound.FormattingEnabled = true;
@@ -94,6 +93,7 @@
             resources.GetString("cboxInbound.Items"),
             resources.GetString("cboxInbound.Items1"),
             resources.GetString("cboxInbound.Items2")});
+            resources.ApplyResources(this.cboxInbound, "cboxInbound");
             this.cboxInbound.Name = "cboxInbound";
             this.toolTip1.SetToolTip(this.cboxInbound, resources.GetString("cboxInbound.ToolTip"));
             this.cboxInbound.SelectedIndexChanged += new System.EventHandler(this.cboxInbound_SelectedIndexChanged);
@@ -109,8 +109,8 @@
             // 
             // tboxInboundIP
             // 
-            resources.ApplyResources(this.tboxInboundIP, "tboxInboundIP");
             this.tboxInboundIP.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.tboxInboundIP, "tboxInboundIP");
             this.tboxInboundIP.Name = "tboxInboundIP";
             this.toolTip1.SetToolTip(this.tboxInboundIP, resources.GetString("tboxInboundIP.ToolTip"));
             this.tboxInboundIP.TextChanged += new System.EventHandler(this.tboxInboundIP_TextChanged);
@@ -120,29 +120,26 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Name = "label2";
-            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // btnMore
             // 
-            resources.ApplyResources(this.btnMore, "btnMore");
             this.btnMore.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnMore, "btnMore");
             this.btnMore.Name = "btnMore";
-            this.toolTip1.SetToolTip(this.btnMore, resources.GetString("btnMore.ToolTip"));
             this.btnMore.UseVisualStyleBackColor = true;
             this.btnMore.Click += new System.EventHandler(this.btnAction_Click);
             // 
             // lbRunning
             // 
-            resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.ForeColor = System.Drawing.Color.Green;
             this.lbRunning.Name = "lbRunning";
-            this.toolTip1.SetToolTip(this.lbRunning, resources.GetString("lbRunning.ToolTip"));
             // 
             // tboxInboundPort
             // 
-            resources.ApplyResources(this.tboxInboundPort, "tboxInboundPort");
             this.tboxInboundPort.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.tboxInboundPort, "tboxInboundPort");
             this.tboxInboundPort.Name = "tboxInboundPort";
             this.toolTip1.SetToolTip(this.tboxInboundPort, resources.GetString("tboxInboundPort.ToolTip"));
             this.tboxInboundPort.TextChanged += new System.EventHandler(this.tboxInboundPort_TextChanged);
@@ -165,37 +162,37 @@
             this.chkSelected.UseVisualStyleBackColor = true;
             this.chkSelected.CheckedChanged += new System.EventHandler(this.chkSelected_CheckedChanged);
             // 
-            // btnStop
-            // 
-            resources.ApplyResources(this.btnStop, "btnStop");
-            this.btnStop.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnStop.Name = "btnStop";
-            this.toolTip1.SetToolTip(this.btnStop, resources.GetString("btnStop.ToolTip"));
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
             // btnStart
             // 
-            resources.ApplyResources(this.btnStart, "btnStart");
             this.btnStart.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnStart, "btnStart");
             this.btnStart.Name = "btnStart";
             this.toolTip1.SetToolTip(this.btnStart, resources.GetString("btnStart.ToolTip"));
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // cboxMark
+            // 
+            this.cboxMark.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cboxMark.FormattingEnabled = true;
+            resources.ApplyResources(this.cboxMark, "cboxMark");
+            this.cboxMark.Name = "cboxMark";
+            this.toolTip1.SetToolTip(this.cboxMark, resources.GetString("cboxMark.ToolTip"));
+            this.cboxMark.DropDown += new System.EventHandler(this.cboxMark_DropDown);
+            this.cboxMark.TextChanged += new System.EventHandler(this.cboxMark_TextChanged);
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Cursor = System.Windows.Forms.Cursors.Default;
             this.label3.Name = "label3";
-            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // ctxMenuStripMore
             // 
-            resources.ApplyResources(this.ctxMenuStripMore, "ctxMenuStripMore");
             this.ctxMenuStripMore.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxMenuStripMore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.multiboxingToolStripMenuItem,
+            this.stopToolStripMenuItem,
             this.editToolStripMenuItem,
             this.copyToolStripMenuItem,
             this.toolStripMenuItem1,
@@ -205,81 +202,94 @@
             this.logOfThisServerToolStripMenuItem,
             this.setAsSystemProxyToolStripMenuItem});
             this.ctxMenuStripMore.Name = "ctxMenuStripMore";
-            this.toolTip1.SetToolTip(this.ctxMenuStripMore, resources.GetString("ctxMenuStripMore.ToolTip"));
+            resources.ApplyResources(this.ctxMenuStripMore, "ctxMenuStripMore");
             // 
             // multiboxingToolStripMenuItem
             // 
-            resources.ApplyResources(this.multiboxingToolStripMenuItem, "multiboxingToolStripMenuItem");
             this.multiboxingToolStripMenuItem.Name = "multiboxingToolStripMenuItem";
+            resources.ApplyResources(this.multiboxingToolStripMenuItem, "multiboxingToolStripMenuItem");
             this.multiboxingToolStripMenuItem.Click += new System.EventHandler(this.multiboxingToolStripMenuItem_Click);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            resources.ApplyResources(this.stopToolStripMenuItem, "stopToolStripMenuItem");
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
-            resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem
             // 
-            resources.ApplyResources(this.copyToolStripMenuItem, "copyToolStripMenuItem");
             this.copyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.vmessToolStripMenuItem,
             this.v2rayToolStripMenuItem});
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            resources.ApplyResources(this.copyToolStripMenuItem, "copyToolStripMenuItem");
             // 
             // vmessToolStripMenuItem
             // 
-            resources.ApplyResources(this.vmessToolStripMenuItem, "vmessToolStripMenuItem");
             this.vmessToolStripMenuItem.Name = "vmessToolStripMenuItem";
+            resources.ApplyResources(this.vmessToolStripMenuItem, "vmessToolStripMenuItem");
             this.vmessToolStripMenuItem.Click += new System.EventHandler(this.vmessToolStripMenuItem_Click);
             // 
             // v2rayToolStripMenuItem
             // 
-            resources.ApplyResources(this.v2rayToolStripMenuItem, "v2rayToolStripMenuItem");
             this.v2rayToolStripMenuItem.Name = "v2rayToolStripMenuItem";
+            resources.ApplyResources(this.v2rayToolStripMenuItem, "v2rayToolStripMenuItem");
             this.v2rayToolStripMenuItem.Click += new System.EventHandler(this.v2rayToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
-            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             // 
             // deleteToolStripMenuItem
             // 
-            resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
-            resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
             // 
             // speedTestToolStripMenuItem
             // 
-            resources.ApplyResources(this.speedTestToolStripMenuItem, "speedTestToolStripMenuItem");
             this.speedTestToolStripMenuItem.Name = "speedTestToolStripMenuItem";
+            resources.ApplyResources(this.speedTestToolStripMenuItem, "speedTestToolStripMenuItem");
             this.speedTestToolStripMenuItem.Click += new System.EventHandler(this.speedTestToolStripMenuItem_Click);
             // 
             // logOfThisServerToolStripMenuItem
             // 
-            resources.ApplyResources(this.logOfThisServerToolStripMenuItem, "logOfThisServerToolStripMenuItem");
             this.logOfThisServerToolStripMenuItem.Name = "logOfThisServerToolStripMenuItem";
+            resources.ApplyResources(this.logOfThisServerToolStripMenuItem, "logOfThisServerToolStripMenuItem");
             this.logOfThisServerToolStripMenuItem.Click += new System.EventHandler(this.logOfThisServerToolStripMenuItem_Click);
             // 
             // setAsSystemProxyToolStripMenuItem
             // 
-            resources.ApplyResources(this.setAsSystemProxyToolStripMenuItem, "setAsSystemProxyToolStripMenuItem");
             this.setAsSystemProxyToolStripMenuItem.Name = "setAsSystemProxyToolStripMenuItem";
+            resources.ApplyResources(this.setAsSystemProxyToolStripMenuItem, "setAsSystemProxyToolStripMenuItem");
             this.setAsSystemProxyToolStripMenuItem.Click += new System.EventHandler(this.setAsSystemProxyToolStripMenuItem_Click);
+            // 
+            // label1
+            // 
+            this.label1.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // ServerListItem
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cboxMark);
             this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.chkSelected);
             this.Controls.Add(this.chkAutoRun);
             this.Controls.Add(this.tboxInboundPort);
@@ -319,7 +329,6 @@
         private System.Windows.Forms.TextBox tboxInboundPort;
         private System.Windows.Forms.CheckBox chkAutoRun;
         private System.Windows.Forms.CheckBox chkSelected;
-        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.ContextMenuStrip ctxMenuStripMore;
         private System.Windows.Forms.ToolStripMenuItem multiboxingToolStripMenuItem;
@@ -333,5 +342,8 @@
         private System.Windows.Forms.ToolStripMenuItem speedTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logOfThisServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setAsSystemProxyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ComboBox cboxMark;
+        private System.Windows.Forms.Label label1;
     }
 }
