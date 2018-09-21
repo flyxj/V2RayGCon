@@ -555,7 +555,11 @@ namespace V2RayGCon.Service
         {
             Action<int, Action> worker = (index, next) =>
             {
-                serverList[index].server.StopCoreThen(next);
+                if (serverList[index].server.isRunning)
+                {
+                    serverList[index].server.StopCoreThen(next);
+                }
+                else { next(); }
             };
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, lambda);

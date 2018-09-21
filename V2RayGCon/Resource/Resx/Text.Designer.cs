@@ -876,6 +876,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Multiboxing 的本地化字符串。
+        /// </summary>
+        internal static string Multiboxing {
+            get {
+                return ResourceManager.GetString("Multiboxing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Network timeout 的本地化字符串。
         /// </summary>
         internal static string NetworkTimeout {
@@ -1152,15 +1161,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Start this only 的本地化字符串。
-        /// </summary>
-        internal static string StartThisOnly {
-            get {
-                return ResourceManager.GetString("StartThisOnly", resourceCulture);
             }
         }
         
