@@ -17,7 +17,8 @@ namespace V2RayGCon.Model.Data
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected;
         public string name, summary, inboundIP, mark;
-        public int overwriteInboundType, inboundPort, index;
+        public int overwriteInboundType, inboundPort;
+        public double index;
 
         public ServerItem()
         {
@@ -173,6 +174,11 @@ namespace V2RayGCon.Model.Data
         public void SetPropertyOnDemand(ref int property, int value, bool isNeedCoreStopped = false)
         {
             SetPropertyOnDemand<int>(ref property, value, isNeedCoreStopped);
+        }
+
+        public void SetPropertyOnDemand(ref double property, double value, bool isNeedCoreStopped = false)
+        {
+            SetPropertyOnDemand<double>(ref property, value, isNeedCoreStopped);
         }
 
         public void SetPropertyOnDemand(ref bool property, bool value, bool isNeedCoreStopped = false)

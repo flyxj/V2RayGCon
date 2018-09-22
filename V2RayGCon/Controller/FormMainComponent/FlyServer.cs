@@ -12,9 +12,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
         ComboBox cboxMark;
-        List<Model.Data.ServerItem> serverList = null;
         int preSelectedMarkFilterIndex;
-
 
         public FlyServer(
             FlowLayoutPanel panel,
@@ -23,12 +21,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.servers = Service.Servers.Instance;
             this.flyPanel = panel;
             this.cboxMark = cboxMarkeFilter;
-            this.serverList = servers.GetServerList().ToList();
 
             InitMarkFilter(cboxMarkeFilter);
             BindDragDropEvent();
-            ResetIndex();
-            RefreshUI();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
 
@@ -61,8 +56,12 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override bool RefreshUI()
         {
+            ResetIndex();
+            var serverList = this.GetFilteredList();
+
             flyPanel.Invoke((MethodInvoker)delegate
             {
+
                 if (serverList == null || serverList.Count > 0)
                 {
                     RemoveWelcomeItem();
@@ -112,7 +111,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             preSelectedMarkFilterIndex = index;
             SelectNone();
-            this.serverList = GetFilteredList();
             RemoveAllConrols();
             RefreshUI();
         }
@@ -240,7 +238,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)
         {
-            this.serverList = GetFilteredList();
             RefreshUI();
         }
 
@@ -253,9 +250,10 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void ResetIndex()
         {
             var list = servers.GetServerList().ToList();
+
             for (int i = 0; i < list.Count; i++)
             {
-                var index = i + 1; // closure
+                var index = i + 1.0; // closure
                 var item = list[i];
                 item.SetPropertyOnDemand(ref item.index, index);
             }
@@ -285,16 +283,27 @@ namespace V2RayGCon.Controller.FormMainComponent
                 var controlDest = panel.GetChildAtPoint(p);
                 int index = panel.Controls.GetChildIndex(controlDest, false);
                 panel.Controls.SetChildIndex(serverItemMoving, index);
-
                 var serverItemDest = controlDest as Model.UserControls.ServerListItem;
-                var indexDest = serverItemDest.GetIndex();
-                var newIndex = indexDest < serverItemMoving.GetIndex() ? indexDest - 1 : indexDest + 1;
-                serverItemMoving.SetIndex(newIndex);
-                ResetIndex();
-                this.serverList = servers.GetServerList().ToList();
-                RemoveAllConrols();
-                RefreshUI();
+                MoveServerListItem(ref serverItemMoving, ref serverItemDest);
             };
+        }
+
+        void MoveServerListItem(ref Model.UserControls.ServerListItem moving, ref Model.UserControls.ServerListItem destination)
+        {
+            var indexDest = destination.GetIndex();
+            var indexMoving = moving.GetIndex();
+
+            if (indexDest == indexMoving)
+            {
+                return;
+            }
+
+            moving.SetIndex(
+                indexDest < indexMoving ?
+                indexDest - 0.5 :
+                indexDest + 0.5);
+
+            RefreshUI();
         }
         #endregion
     }

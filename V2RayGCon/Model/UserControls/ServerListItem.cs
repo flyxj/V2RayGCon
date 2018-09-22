@@ -157,12 +157,12 @@ namespace V2RayGCon.Model.UserControls
                selected);
         }
 
-        public int GetIndex()
+        public double GetIndex()
         {
             return serverItem.index;
         }
 
-        public void SetIndex(int index)
+        public void SetIndex(double index)
         {
             serverItem.SetPropertyOnDemand(
               ref serverItem.index,
