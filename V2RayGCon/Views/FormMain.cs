@@ -100,7 +100,9 @@ namespace V2RayGCon.Views
                 toolStripMenuItemCopyAsSubscription,
                 toolStripMenuItemDeleteAllServer,
                 toolStripMenuItemModifySelected,
-                toolStripMenuItemPackSelectedServers));
+                toolStripMenuItemPackSelectedServers,
+                moveToTopToolStripMenuItem,
+                moveToBottomToolStripMenuItem));
 
             return ctrl;
         }

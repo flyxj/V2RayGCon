@@ -54,6 +54,25 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllConrols();
         }
 
+        public void RemoveAllConrols()
+        {
+            var listControls = GetAllControls();
+            foreach (UserControl control in listControls)
+            {
+                switch (control)
+                {
+                    case Model.UserControls.ServerListItem serv:
+                        serv.Cleanup();
+                        break;
+                    case Model.UserControls.WelcomeFlyPanelComponent welcome:
+                        welcome.Cleanup();
+                        break;
+                }
+                flyPanel.Controls.Remove(control);
+                control.Dispose();
+            }
+        }
+
         public override bool RefreshUI()
         {
             ResetIndex();
@@ -215,25 +234,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 }
             }
             return controlList;
-        }
-
-        void RemoveAllConrols()
-        {
-            var listControls = GetAllControls();
-            foreach (UserControl control in listControls)
-            {
-                switch (control)
-                {
-                    case Model.UserControls.ServerListItem serv:
-                        serv.Cleanup();
-                        break;
-                    case Model.UserControls.WelcomeFlyPanelComponent welcome:
-                        welcome.Cleanup();
-                        break;
-                }
-                flyPanel.Controls.Remove(control);
-                control.Dispose();
-            }
         }
 
         void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)

@@ -241,7 +241,6 @@ namespace V2RayGCon.Service
                 OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
             }
             catch { }
-
         }
 
         void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)

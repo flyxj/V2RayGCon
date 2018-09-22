@@ -79,31 +79,31 @@
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.cboxInMode);
             this.groupBox1.Controls.Add(this.chkInMode);
             this.groupBox1.Controls.Add(this.tboxInPort);
             this.groupBox1.Controls.Add(this.tboxInIP);
             this.groupBox1.Controls.Add(this.chkInPort);
             this.groupBox1.Controls.Add(this.chkInIP);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // cboxInMode
             // 
-            resources.ApplyResources(this.cboxInMode, "cboxInMode");
             this.cboxInMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxInMode.FormattingEnabled = true;
             this.cboxInMode.Items.AddRange(new object[] {
             resources.GetString("cboxInMode.Items"),
             resources.GetString("cboxInMode.Items1"),
             resources.GetString("cboxInMode.Items2")});
+            resources.ApplyResources(this.cboxInMode, "cboxInMode");
             this.cboxInMode.Name = "cboxInMode";
             // 
             // cboxMark
             // 
-            resources.ApplyResources(this.cboxMark, "cboxMark");
             this.cboxMark.FormattingEnabled = true;
+            resources.ApplyResources(this.cboxMark, "cboxMark");
             this.cboxMark.Name = "cboxMark";
             // 
             // btnModify

@@ -150,6 +150,15 @@
   <data name="toolMenuItemSelectAutorunServers.ToolTipText" xml:space="preserve">
     <value>选中勾了[自启]的服务器</value>
   </data>
+  <data name="moveToTopToolStripMenuItem.Text" xml:space="preserve">
+    <value>置顶</value>
+  </data>
+  <data name="moveToBottomToolStripMenuItem.Text" xml:space="preserve">
+    <value>置底</value>
+  </data>
+  <data name="toolStripMenuItem2.Text" xml:space="preserve">
+    <value>移动选中</value>
+  </data>
   <data name="toolStripMenuItemStopSelected.Text" xml:space="preserve">
     <value>停止选中</value>
   </data>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -25,12 +26,14 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems,
             ToolStripMenuItem modifySelected,
-            ToolStripMenuItem packSelected)
+            ToolStripMenuItem packSelected,
+            ToolStripMenuItem moveToTop,
+            ToolStripMenuItem moveToBottom)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
 
-            InitBatchOperation(stopSelected, restartSelected, speedTestOnSelected, deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions, deleteAllItems, modifySelected, packSelected);
+            InitBatchOperation(stopSelected, restartSelected, speedTestOnSelected, deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions, deleteAllItems, modifySelected, packSelected, moveToTop, moveToBottom);
             InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
             InitMisc(clearSysProxy, refreshSummary);
         }
@@ -54,8 +57,29 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems,
             ToolStripMenuItem modifySelected,
-            ToolStripMenuItem packSelected)
+            ToolStripMenuItem packSelected,
+            ToolStripMenuItem moveToTop,
+            ToolStripMenuItem moveToBottom)
         {
+            moveToTop.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                SetServerItemsIndex(0);
+            };
+
+            moveToBottom.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                SetServerItemsIndex(int.MaxValue);
+            };
 
             modifySelected.Click += (s, a) =>
             {
@@ -174,6 +198,18 @@ namespace V2RayGCon.Controller.FormMainComponent
                     servers.RestartAllSelectedServersThen();
                 }
             };
+        }
+
+        private void SetServerItemsIndex(double index)
+        {
+            foreach (var server in servers.GetServerList().Where(_s => _s.isSelected))
+            {
+                server.index = index;
+            }
+
+            var panel = GetFlyPanel();
+            panel.RemoveAllConrols();
+            panel.RefreshUI();
         }
 
         private void InitSelection(ToolStripMenuItem selectAllAutorun, ToolStripMenuItem selectAll, ToolStripMenuItem selectNone, ToolStripMenuItem selectInvert)
