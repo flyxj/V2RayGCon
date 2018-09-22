@@ -24,12 +24,13 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem copyAsVmessLinks,
             ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems,
+            ToolStripMenuItem modifySelected,
             ToolStripMenuItem packSelected)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
 
-            InitBatchOperation(stopSelected, restartSelected, speedTestOnSelected, deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions, deleteAllItems, packSelected);
+            InitBatchOperation(stopSelected, restartSelected, speedTestOnSelected, deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions, deleteAllItems, modifySelected, packSelected);
             InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
             InitMisc(clearSysProxy, refreshSummary);
         }
@@ -46,9 +47,26 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        private void InitBatchOperation(ToolStripMenuItem stopSelected, ToolStripMenuItem restartSelected, ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem deleteSelected, ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks, ToolStripMenuItem copyAsSubscriptions, ToolStripMenuItem deleteAllItems, ToolStripMenuItem packSelected)
+        private void InitBatchOperation(
+            ToolStripMenuItem stopSelected,
+            ToolStripMenuItem restartSelected,
+            ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem deleteSelected, ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks,
+            ToolStripMenuItem copyAsSubscriptions,
+            ToolStripMenuItem deleteAllItems,
+            ToolStripMenuItem modifySelected,
+            ToolStripMenuItem packSelected)
         {
-            // batch op
+
+            modifySelected.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                Views.FormBatchModifyServerSetting.GetForm();
+            };
+
             packSelected.Click += (s, a) =>
             {
                 if (!CheckSelectedServerCount())

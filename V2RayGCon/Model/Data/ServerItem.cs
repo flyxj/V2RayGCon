@@ -350,8 +350,22 @@ namespace V2RayGCon.Model.Data
             }
 
             this.mark = mark;
-            this.parent.UpdateMarkList();
+            if (!string.IsNullOrEmpty(mark)
+                && !(this.parent.GetMarkList().Contains(mark)))
+            {
+                this.parent.UpdateMarkList();
+            }
             InvokeEventOnPropertyChange();
+        }
+
+        public void InvokeEventOnPropertyChange()
+        {
+            // things happen while invoking
+            try
+            {
+                OnPropertyChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
         }
 
         #endregion
@@ -494,16 +508,6 @@ namespace V2RayGCon.Model.Data
         void InvokeEventOnRequireMenuUpdate()
         {
             OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
-        }
-
-        void InvokeEventOnPropertyChange()
-        {
-            // things happen while invoking
-            try
-            {
-                OnPropertyChanged?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
         }
 
         void UpdateSummary(JObject config)

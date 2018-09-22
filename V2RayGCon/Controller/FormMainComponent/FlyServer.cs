@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
@@ -10,13 +11,23 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
+        ComboBox cboxMark;
+        List<Model.Data.ServerItem> serverList = null;
+        int preSelectedMarkFilterIndex;
 
-        public FlyServer(FlowLayoutPanel panel)
+
+        public FlyServer(
+            FlowLayoutPanel panel,
+            ComboBox cboxMarkeFilter)
         {
             this.servers = Service.Servers.Instance;
-
             this.flyPanel = panel;
+            this.cboxMark = cboxMarkeFilter;
+            this.serverList = servers.GetServerList().ToList();
+
+            InitMarkFilter(cboxMarkeFilter);
             BindDragDropEvent();
+            ResetIndex();
             RefreshUI();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
@@ -24,22 +35,22 @@ namespace V2RayGCon.Controller.FormMainComponent
         #region public method
         public void SelectAutorun()
         {
-            LoopThroughAllServer((s) => s.SetSelected(s.GetAutorunStatus()));
+            LoopThroughAllServerItemControl((s) => s.SetSelected(s.GetAutorunStatus()));
         }
 
         public void SelectAll()
         {
-            LoopThroughAllServer((s) => s.SetSelected(true));
+            LoopThroughAllServerItemControl((s) => s.SetSelected(true));
         }
 
         public void SelectNone()
         {
-            LoopThroughAllServer((s) => s.SetSelected(false));
+            LoopThroughAllServerItemControl((s) => s.SetSelected(false));
         }
 
         public void SelectInvert()
         {
-            LoopThroughAllServer((s) => s.SetSelected(!s.GetSelectStatus()));
+            LoopThroughAllServerItemControl((s) => s.SetSelected(!s.GetSelectStatus()));
         }
 
         public override void Cleanup()
@@ -52,35 +63,98 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             flyPanel.Invoke((MethodInvoker)delegate
             {
-                var serverList = servers.GetServerList().ToList();
-
-                if (serverList.Count > 0)
+                if (serverList == null || serverList.Count > 0)
                 {
                     RemoveWelcomeItem();
                 }
                 else
                 {
                     RemoveAllConrols();
-                    LoadWelcomeItem();
+                    if (preSelectedMarkFilterIndex <= 0)
+                    {
+                        LoadWelcomeItem();
+                    }
                     return;
                 }
 
                 RemoveDeletedServerItems(ref serverList);
                 AddNewServerItems(serverList);
-                ResetIndex();
+                //  ResetIndex();
             });
             return true;
         }
         #endregion
 
         #region private method
+        private void InitMarkFilter(ComboBox cboxMarkFilter)
+        {
+            UpdateMarkFilterItemList(cboxMarkFilter);
+            cboxMarkFilter.DropDown += (s, e) =>
+            {
+                cboxMarkFilter.Invoke((MethodInvoker)delegate
+                {
+                    UpdateMarkFilterItemList(cboxMarkFilter);
+                    Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMarkFilter);
+                });
+            };
+            cboxMarkFilter.SelectedIndexChanged += MarkFilterChangeHandler;
+            preSelectedMarkFilterIndex = -1;
+            cboxMarkFilter.SelectedIndex = 0;
+        }
+
+        void MarkFilterChangeHandler(object sernder, EventArgs args)
+        {
+            var index = cboxMark.SelectedIndex;
+            if (preSelectedMarkFilterIndex == index)
+            {
+                return;
+            }
+
+            preSelectedMarkFilterIndex = index;
+            SelectNone();
+            this.serverList = GetFilteredList();
+            RemoveAllConrols();
+            RefreshUI();
+        }
+
+        List<Model.Data.ServerItem> GetFilteredList()
+        {
+            var list = servers.GetServerList();
+            if (preSelectedMarkFilterIndex < 0)
+            {
+                return list.ToList();
+            }
+            switch (preSelectedMarkFilterIndex)
+            {
+                case 0:
+                    return list.ToList();
+                case 1:
+                    return list.Where(s => string.IsNullOrEmpty(s.mark)).ToList();
+            }
+
+            var markList = servers.GetMarkList();
+            return list.Where(s => s.mark == markList[preSelectedMarkFilterIndex - 2]).ToList();
+        }
+
+        void UpdateMarkFilterItemList(ComboBox marker)
+        {
+            var itemList = servers.GetMarkList().ToList();
+            itemList.Insert(0, I18N("NoMark"));
+            itemList.Insert(0, I18N("All"));
+
+            marker.Items.Clear();
+            foreach (var item in itemList)
+            {
+                marker.Items.Add(item);
+            }
+        }
+
         void AddNewServerItems(List<Model.Data.ServerItem> serverList)
         {
             foreach (var server in serverList)
             {
                 flyPanel.Controls.Add(
-                    new Model.UserControls.ServerListItem(
-                        int.MaxValue, server));
+                    new Model.UserControls.ServerListItem(server));
             }
         }
 
@@ -115,7 +189,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             flyPanel.Controls.Remove(welcome);
         }
 
-        void LoopThroughAllServer(Action<Model.UserControls.ServerListItem> worker)
+        void LoopThroughAllServerItemControl(Action<Model.UserControls.ServerListItem> worker)
         {
             foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
             {
@@ -166,6 +240,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)
         {
+            this.serverList = GetFilteredList();
             RefreshUI();
         }
 
@@ -175,14 +250,14 @@ namespace V2RayGCon.Controller.FormMainComponent
                 new Model.UserControls.WelcomeFlyPanelComponent());
         }
 
-
         private void ResetIndex()
         {
-            var controls = flyPanel.Controls;
-            for (int i = 0; i < controls.Count; i++)
+            var list = servers.GetServerList().ToList();
+            for (int i = 0; i < list.Count; i++)
             {
-                var control = controls[i] as Model.UserControls.ServerListItem;
-                control.SetIndex(i + 1);
+                var index = i + 1; // closure
+                var item = list[i];
+                item.SetPropertyOnDemand(ref item.index, index);
             }
         }
 
@@ -197,21 +272,28 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var data = a.Data.GetData(typeof(Model.UserControls.ServerListItem))
+                var serverItemMoving = a.Data.GetData(typeof(Model.UserControls.ServerListItem))
                     as Model.UserControls.ServerListItem;
 
-                if (data == null)
+                if (serverItemMoving == null)
                 {
                     return;
                 }
 
-                var _destination = s as FlowLayoutPanel;
-                Point p = _destination.PointToClient(new Point(a.X, a.Y));
-                var item = _destination.GetChildAtPoint(p);
-                int index = _destination.Controls.GetChildIndex(item, false);
-                _destination.Controls.SetChildIndex(data, index);
-                _destination.Invalidate();
+                var panel = s as FlowLayoutPanel;
+                Point p = panel.PointToClient(new Point(a.X, a.Y));
+                var controlDest = panel.GetChildAtPoint(p);
+                int index = panel.Controls.GetChildIndex(controlDest, false);
+                panel.Controls.SetChildIndex(serverItemMoving, index);
+
+                var serverItemDest = controlDest as Model.UserControls.ServerListItem;
+                var indexDest = serverItemDest.GetIndex();
+                var newIndex = indexDest < serverItemMoving.GetIndex() ? indexDest - 1 : indexDest + 1;
+                serverItemMoving.SetIndex(newIndex);
                 ResetIndex();
+                this.serverList = servers.GetServerList().ToList();
+                RemoveAllConrols();
+                RefreshUI();
             };
         }
         #endregion

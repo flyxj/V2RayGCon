@@ -51,6 +51,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemRestartSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSpeedTestOnSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemPackSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemModifySelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
@@ -155,6 +156,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemRestartSelected,
             this.toolStripMenuItemSpeedTestOnSelected,
             this.toolStripMenuItemPackSelectedServers,
+            this.toolStripMenuItemModifySelected,
             this.toolStripMenuItem1,
             this.toolStripSeparator1,
             this.toolMenuItemRefreshSummary,
@@ -206,6 +208,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemPackSelectedServers, "toolStripMenuItemPackSelectedServers");
             this.toolStripMenuItemPackSelectedServers.Name = "toolStripMenuItemPackSelectedServers";
+            // 
+            // toolStripMenuItemModifySelected
+            // 
+            resources.ApplyResources(this.toolStripMenuItemModifySelected, "toolStripMenuItemModifySelected");
+            this.toolStripMenuItemModifySelected.Name = "toolStripMenuItemModifySelected";
             // 
             // toolStripMenuItem1
             // 
@@ -436,5 +443,6 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem toolStripMenuItemPackSelectedServers;
         private ComboBox cboxMarkFilter;
         private Label label1;
+        private ToolStripMenuItem toolStripMenuItemModifySelected;
     }
 }

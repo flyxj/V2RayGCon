@@ -107,7 +107,6 @@
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainComponent\FlyServer.cs" />
     <Compile Include="Controller\FormMainComponent\FormMainComponentController.cs" />
-    <Compile Include="Controller\FormMainComponent\MarkFilter.cs" />
     <Compile Include="Controller\FormMainComponent\MenuItemsServer.cs" />
     <Compile Include="Controller\FormMainComponent\MenuItemsBasic.cs" />
     <Compile Include="Controller\FormMainCtrl.cs" />
@@ -213,6 +212,12 @@
     <Compile Include="Views\FormImportLinksResult.Designer.cs">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\FormBatchModifyServerSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormBatchModifyServerSetting.Designer.cs">
+      <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\FormSingleServerLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -309,6 +314,12 @@
     <EmbeddedResource Include="Resource\Resx\Text.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Text.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormBatchModifyServerSetting.resx">
+      <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormBatchModifyServerSetting.zh-CN.resx">
+      <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormConfiger.resx">
       <DependentUpon>FormConfiger.cs</DependentUpon>

@@ -11,10 +11,9 @@ namespace V2RayGCon.Model.UserControls
         Model.Data.ServerItem serverItem;
         bool isRunning;
 
-        public ServerListItem(int index, Model.Data.ServerItem serverItem)
+        public ServerListItem(Model.Data.ServerItem serverItem)
         {
             this.serverItem = serverItem;
-            SetIndex(index);
             InitializeComponent();
         }
 
@@ -156,6 +155,11 @@ namespace V2RayGCon.Model.UserControls
             serverItem.SetPropertyOnDemand(
                ref serverItem.isSelected,
                selected);
+        }
+
+        public int GetIndex()
+        {
+            return serverItem.index;
         }
 
         public void SetIndex(int index)
@@ -330,7 +334,29 @@ namespace V2RayGCon.Model.UserControls
             {
                 cboxMark.Items.Add(item);
             }
+            Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMark);
+        }
+
+        private void lbStatus_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void label1_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void lbRunning_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void lbIndex_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
         }
         #endregion
+
     }
 }

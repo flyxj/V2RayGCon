@@ -77,12 +77,14 @@
             this.lbIndex.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.lbIndex, "lbIndex");
             this.lbIndex.Name = "lbIndex";
+            this.lbIndex.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbIndex_MouseDown);
             // 
             // lbStatus
             // 
             resources.ApplyResources(this.lbStatus, "lbStatus");
-            this.lbStatus.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lbStatus.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.lbStatus.Name = "lbStatus";
+            this.lbStatus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbStatus_MouseDown);
             // 
             // cboxInbound
             // 
@@ -135,6 +137,7 @@
             resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.ForeColor = System.Drawing.Color.Green;
             this.lbRunning.Name = "lbRunning";
+            this.lbRunning.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbRunning_MouseDown);
             // 
             // tboxInboundPort
             // 
@@ -278,9 +281,10 @@
             // 
             // label1
             // 
-            this.label1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label1.Cursor = System.Windows.Forms.Cursors.SizeAll;
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
             // 
             // ServerListItem
             // 

@@ -582,6 +582,15 @@
   <metadata name="ctxMenuStripMore.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
   </metadata>
+  <data name="ctxMenuStripMore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 240</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuStripMore.Name" xml:space="preserve">
+    <value>ctxMenuStripMore</value>
+  </data>
+  <data name="&gt;&gt;ctxMenuStripMore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="multiboxingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>249, 28</value>
   </data>
@@ -606,6 +615,12 @@
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 28</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="vmessToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>181, 30</value>
   </data>
@@ -623,12 +638,6 @@
   </data>
   <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Contain all config information.</value>
-  </data>
-  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 28</value>
-  </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>246, 6</value>
@@ -665,15 +674,6 @@
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Require set inbound type to HTTP.</value>
-  </data>
-  <data name="ctxMenuStripMore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 240</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuStripMore.Name" xml:space="preserve">
-    <value>ctxMenuStripMore</value>
-  </data>
-  <data name="&gt;&gt;ctxMenuStripMore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 75</value>
@@ -712,7 +712,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>545, 106</value>
+    <value>541, 102</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Drag and drop to adjust order.</value>
