@@ -116,8 +116,22 @@ namespace V2RayGCon.Controller.FormMainComponent
                 });
             };
             cboxMarkFilter.SelectedIndexChanged += MarkFilterChangeHandler;
+            cboxMarkFilter.TextChanged += MarkFilterTextChangeHandler;
             preSelectedMarkFilterIndex = -1;
             cboxMarkFilter.SelectedIndex = 0;
+        }
+
+        void MarkFilterTextChangeHandler(object sender, EventArgs args)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cboxMark.Text)
+                    && !string.IsNullOrEmpty(cboxMark.Items[preSelectedMarkFilterIndex].ToString()))
+                {
+                    cboxMark.SelectedIndex = preSelectedMarkFilterIndex;
+                }
+            }
+            catch { }
         }
 
         void MarkFilterChangeHandler(object sernder, EventArgs args)
