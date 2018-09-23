@@ -196,8 +196,59 @@
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>256, 6</value>
   </data>
+  <data name="toolStripMenuItemModifySettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
+    <value>Modify settings</value>
+  </data>
+  <data name="toolStripMenuItemModifySettings.ToolTipText" xml:space="preserve">
+    <value>Batch modify servers settings. Selected servers which are running will reboot.</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 6</value>
+  </data>
+  <data name="toolStripMenuItemMoveToTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
+    <value>Move to top</value>
+  </data>
+  <data name="toolStripMenuItemMoveToBottom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="toolStripMenuItemMoveToBottom.Text" xml:space="preserve">
+    <value>Move to bottom</value>
+  </data>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 6</value>
+  </data>
+  <data name="toolStripMenuItemCollapsePanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="toolStripMenuItemCollapsePanel.Text" xml:space="preserve">
+    <value>Collapse panel</value>
+  </data>
+  <data name="toolStripMenuItemCollapsePanel.ToolTipText" xml:space="preserve">
+    <value>Collapse server panel into a single line mode.</value>
+  </data>
+  <data name="toolStripMenuItemExpansePanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
+    <value>Expanse panel</value>
+  </data>
+  <data name="toolStripMenuItemExpansePanel.ToolTipText" xml:space="preserve">
+    <value>Full server panel</value>
+  </data>
+  <data name="toolStripMenuItemModifySelected.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
+    <value>Adjust selected</value>
+  </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Text" xml:space="preserve">
     <value>v2ray://...</value>
@@ -206,7 +257,7 @@
     <value>Contain all config information.</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Text" xml:space="preserve">
     <value>vmess://...</value>
@@ -215,7 +266,7 @@
     <value>Contain main config information.</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.Text" xml:space="preserve">
     <value>subscription</value>
@@ -228,57 +279,6 @@
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>Copy selected</value>
-  </data>
-  <data name="toolStripMenuItemModifySettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 30</value>
-  </data>
-  <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
-    <value>Modify settings</value>
-  </data>
-  <data name="toolStripMenuItemModifySettings.ToolTipText" xml:space="preserve">
-    <value>Batch modify servers settings. Selected servers which are running will reboot.</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 6</value>
-  </data>
-  <data name="toolStripMenuItemMoveToTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 30</value>
-  </data>
-  <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
-    <value>Move to top</value>
-  </data>
-  <data name="toolStripMenuItemMoveToBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 30</value>
-  </data>
-  <data name="toolStripMenuItemMoveToBottom.Text" xml:space="preserve">
-    <value>Move to bottom</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>220, 6</value>
-  </data>
-  <data name="toolStripMenuItemCollapsePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 30</value>
-  </data>
-  <data name="toolStripMenuItemCollapsePanel.Text" xml:space="preserve">
-    <value>Collapse panel</value>
-  </data>
-  <data name="toolStripMenuItemCollapsePanel.ToolTipText" xml:space="preserve">
-    <value>Collapse server panel into a single line mode.</value>
-  </data>
-  <data name="toolStripMenuItemExpansePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 30</value>
-  </data>
-  <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
-    <value>Expanse panel</value>
-  </data>
-  <data name="toolStripMenuItemExpansePanel.ToolTipText" xml:space="preserve">
-    <value>Full server panel</value>
-  </data>
-  <data name="toolStripMenuItemModifySelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
-    <value>Modify selected</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>

@@ -190,7 +190,7 @@
     <value>完整的服务器面板</value>
   </data>
   <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
-    <value>修改选中</value>
+    <value>调整选中</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Text" xml:space="preserve">
     <value>重启选中</value>
