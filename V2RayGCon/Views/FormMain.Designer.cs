@@ -51,10 +51,14 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsSubscription = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveToBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemModifySelected = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemModifySettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemCollapsePanel = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemExpansePanel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRestartSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemStopSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSpeedTestOnSelected = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,7 +158,6 @@ namespace V2RayGCon.Views
             this.toolMenuItemSelectAutorunServers,
             this.toolStripSeparator2,
             this.toolStripMenuItem1,
-            this.toolStripMenuItem2,
             this.toolStripMenuItemModifySelected,
             this.toolStripMenuItemRestartSelected,
             this.toolStripMenuItemStopSelected,
@@ -216,28 +219,53 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemCopyAsSubscription.Name = "toolStripMenuItemCopyAsSubscription";
             resources.ApplyResources(this.toolStripMenuItemCopyAsSubscription, "toolStripMenuItemCopyAsSubscription");
             // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveToTopToolStripMenuItem,
-            this.moveToBottomToolStripMenuItem});
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
-            // 
-            // moveToTopToolStripMenuItem
-            // 
-            this.moveToTopToolStripMenuItem.Name = "moveToTopToolStripMenuItem";
-            resources.ApplyResources(this.moveToTopToolStripMenuItem, "moveToTopToolStripMenuItem");
-            // 
-            // moveToBottomToolStripMenuItem
-            // 
-            this.moveToBottomToolStripMenuItem.Name = "moveToBottomToolStripMenuItem";
-            resources.ApplyResources(this.moveToBottomToolStripMenuItem, "moveToBottomToolStripMenuItem");
-            // 
             // toolStripMenuItemModifySelected
             // 
+            this.toolStripMenuItemModifySelected.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemModifySettings,
+            this.toolStripSeparator3,
+            this.toolStripMenuItemMoveToTop,
+            this.toolStripMenuItemMoveToBottom,
+            this.toolStripSeparator4,
+            this.toolStripMenuItemCollapsePanel,
+            this.toolStripMenuItemExpansePanel});
             this.toolStripMenuItemModifySelected.Name = "toolStripMenuItemModifySelected";
             resources.ApplyResources(this.toolStripMenuItemModifySelected, "toolStripMenuItemModifySelected");
+            // 
+            // toolStripMenuItemModifySettings
+            // 
+            this.toolStripMenuItemModifySettings.Name = "toolStripMenuItemModifySettings";
+            resources.ApplyResources(this.toolStripMenuItemModifySettings, "toolStripMenuItemModifySettings");
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            // 
+            // toolStripMenuItemMoveToTop
+            // 
+            this.toolStripMenuItemMoveToTop.Name = "toolStripMenuItemMoveToTop";
+            resources.ApplyResources(this.toolStripMenuItemMoveToTop, "toolStripMenuItemMoveToTop");
+            // 
+            // toolStripMenuItemMoveToBottom
+            // 
+            this.toolStripMenuItemMoveToBottom.Name = "toolStripMenuItemMoveToBottom";
+            resources.ApplyResources(this.toolStripMenuItemMoveToBottom, "toolStripMenuItemMoveToBottom");
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
+            // 
+            // toolStripMenuItemCollapsePanel
+            // 
+            this.toolStripMenuItemCollapsePanel.Name = "toolStripMenuItemCollapsePanel";
+            resources.ApplyResources(this.toolStripMenuItemCollapsePanel, "toolStripMenuItemCollapsePanel");
+            // 
+            // toolStripMenuItemExpansePanel
+            // 
+            this.toolStripMenuItemExpansePanel.Name = "toolStripMenuItemExpansePanel";
+            resources.ApplyResources(this.toolStripMenuItemExpansePanel, "toolStripMenuItemExpansePanel");
             // 
             // toolStripMenuItemRestartSelected
             // 
@@ -462,8 +490,12 @@ namespace V2RayGCon.Views
         private ComboBox cboxMarkFilter;
         private Label label1;
         private ToolStripMenuItem toolStripMenuItemModifySelected;
-        private ToolStripMenuItem toolStripMenuItem2;
-        private ToolStripMenuItem moveToTopToolStripMenuItem;
-        private ToolStripMenuItem moveToBottomToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItemModifySettings;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem toolStripMenuItemMoveToTop;
+        private ToolStripMenuItem toolStripMenuItemMoveToBottom;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripMenuItem toolStripMenuItemCollapsePanel;
+        private ToolStripMenuItem toolStripMenuItemExpansePanel;
     }
 }

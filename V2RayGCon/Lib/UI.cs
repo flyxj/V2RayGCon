@@ -33,6 +33,17 @@ namespace V2RayGCon.Lib
             throw new ArgumentException("Unsupported control type");
         }
 
+        public static bool UpdateControlOnDemand(ToolStripMenuItem menuItem, bool value)
+        {
+            if (menuItem.Checked == value)
+            {
+                return false;
+            }
+
+            menuItem.Checked = value;
+            return true;
+        }
+
         public static bool UpdateControlOnDemand(Control control, bool value)
         {
             switch (control)

@@ -150,45 +150,6 @@
   <data name="toolMenuItemSelectAutorunServers.ToolTipText" xml:space="preserve">
     <value>选中勾了[自启]的服务器</value>
   </data>
-  <data name="moveToTopToolStripMenuItem.Text" xml:space="preserve">
-    <value>置顶</value>
-  </data>
-  <data name="moveToBottomToolStripMenuItem.Text" xml:space="preserve">
-    <value>置底</value>
-  </data>
-  <data name="toolStripMenuItem2.Text" xml:space="preserve">
-    <value>移动选中</value>
-  </data>
-  <data name="toolStripMenuItemStopSelected.Text" xml:space="preserve">
-    <value>停止选中</value>
-  </data>
-  <data name="toolStripMenuItemStopSelected.ToolTipText" xml:space="preserve">
-    <value>停止选中的服务器</value>
-  </data>
-  <data name="toolStripMenuItemRestartSelected.Text" xml:space="preserve">
-    <value>重启选中</value>
-  </data>
-  <data name="toolStripMenuItemRestartSelected.ToolTipText" xml:space="preserve">
-    <value>重启选中的服务器</value>
-  </data>
-  <data name="toolStripMenuItemSpeedTestOnSelected.Text" xml:space="preserve">
-    <value>速度测试</value>
-  </data>
-  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
-    <value>对选中的服务运行速度测试</value>
-  </data>
-  <data name="toolStripMenuItemPackSelectedServers.Text" xml:space="preserve">
-    <value>打包选中</value>
-  </data>
-  <data name="toolStripMenuItemPackSelectedServers.ToolTipText" xml:space="preserve">
-    <value>将选中服务器打包成一个服务器</value>
-  </data>
-  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
-    <value>修改选中</value>
-  </data>
-  <data name="toolStripMenuItemModifySelected.ToolTipText" xml:space="preserve">
-    <value>批量修改服务器信息。运行中的服务器会重启。</value>
-  </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.ToolTipText" xml:space="preserve">
     <value>包含全部配置信息</value>
   </data>
@@ -203,6 +164,57 @@
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>复制选中</value>
+  </data>
+  <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
+    <value>修改设置</value>
+  </data>
+  <data name="toolStripMenuItemModifySettings.ToolTipText" xml:space="preserve">
+    <value>批量修改服务器信息。运行中的服务器会重启。</value>
+  </data>
+  <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
+    <value>置顶</value>
+  </data>
+  <data name="toolStripMenuItemMoveToBottom.Text" xml:space="preserve">
+    <value>置底</value>
+  </data>
+  <data name="toolStripMenuItemCollapsePanel.Text" xml:space="preserve">
+    <value>折叠面板</value>
+  </data>
+  <data name="toolStripMenuItemCollapsePanel.ToolTipText" xml:space="preserve">
+    <value>将服务器面板折叠成单行</value>
+  </data>
+  <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
+    <value>展开面板</value>
+  </data>
+  <data name="toolStripMenuItemExpansePanel.ToolTipText" xml:space="preserve">
+    <value>完整的服务器面板</value>
+  </data>
+  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
+    <value>修改选中</value>
+  </data>
+  <data name="toolStripMenuItemRestartSelected.Text" xml:space="preserve">
+    <value>重启选中</value>
+  </data>
+  <data name="toolStripMenuItemRestartSelected.ToolTipText" xml:space="preserve">
+    <value>重启选中的服务器</value>
+  </data>
+  <data name="toolStripMenuItemStopSelected.Text" xml:space="preserve">
+    <value>停止选中</value>
+  </data>
+  <data name="toolStripMenuItemStopSelected.ToolTipText" xml:space="preserve">
+    <value>停止选中的服务器</value>
+  </data>
+  <data name="toolStripMenuItemSpeedTestOnSelected.Text" xml:space="preserve">
+    <value>速度测试</value>
+  </data>
+  <data name="toolStripMenuItemSpeedTestOnSelected.ToolTipText" xml:space="preserve">
+    <value>对选中的服务运行速度测试</value>
+  </data>
+  <data name="toolStripMenuItemPackSelectedServers.Text" xml:space="preserve">
+    <value>打包选中</value>
+  </data>
+  <data name="toolStripMenuItemPackSelectedServers.ToolTipText" xml:space="preserve">
+    <value>将选中服务器打包成一个服务器</value>
   </data>
   <data name="toolMenuItemRefreshSummary.Text" xml:space="preserve">
     <value>刷新摘要</value>

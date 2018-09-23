@@ -10,11 +10,14 @@ namespace V2RayGCon.Model.UserControls
     {
         Model.Data.ServerItem serverItem;
         bool isRunning;
+        int orgHeight, minHeight;
 
         public ServerListItem(Model.Data.ServerItem serverItem)
         {
             this.serverItem = serverItem;
             InitializeComponent();
+            this.orgHeight = this.Height;
+            this.minHeight = this.cboxInbound.Top;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
@@ -26,18 +29,22 @@ namespace V2RayGCon.Model.UserControls
         }
 
         #region private method
+        void RestartServer()
+        {
+            var server = this.serverItem;
+            server.parent.StopAllServersThen(
+                () => server.RestartCoreThen());
+        }
+
         void RefreshUI(object sender, EventArgs arg)
         {
-            lbSummary.Invoke((MethodInvoker)delegate
+            lbServerTitle.Invoke((MethodInvoker)delegate
             {
                 Lib.UI.UpdateControlOnDemand(
                     cboxInbound, serverItem.overwriteInboundType);
 
                 Lib.UI.UpdateControlOnDemand(
-                    lbIndex, serverItem.index.ToString());
-
-                Lib.UI.UpdateControlOnDemand(
-                    lbSummary, serverItem.summary);
+                    lbServerTitle, serverItem.title);
 
                 Lib.UI.UpdateControlOnDemand(
                     tboxInboundIP, serverItem.inboundIP);
@@ -46,18 +53,49 @@ namespace V2RayGCon.Model.UserControls
                     tboxInboundPort, serverItem.inboundPort.ToString());
 
                 Lib.UI.UpdateControlOnDemand(
-                    chkAutoRun, serverItem.isAutoRun);
+                    toolStripMenuItemIsAutorun,
+                    serverItem.isAutoRun);
 
                 Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
 
                 Lib.UI.UpdateControlOnDemand(
-                    chkImport, serverItem.isInjectImport);
+                    toolStripMenuItemIsInjectImport,
+                    serverItem.isInjectImport);
 
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
                 UpdateServerMark();
+                SetButtonCollapseText();
             });
+        }
+
+        void SetPanelIntoCollapseMode(bool isCollapse)
+        {
+            if (isCollapse && this.Height != minHeight)
+            {
+                this.Height = minHeight;
+                return;
+            }
+
+            if (!isCollapse && this.Height != this.orgHeight)
+            {
+                this.Height = this.orgHeight;
+            }
+        }
+
+        void SetButtonCollapseText()
+        {
+            var isCollapse = serverItem.isCollapse;
+            var text = isCollapse ? "∨" : "∧";
+            SetPanelIntoCollapseMode(isCollapse);
+
+            if (btnIsCollapse.Text == text)
+            {
+                return;
+            }
+
+            btnIsCollapse.Text = text;
         }
 
         void UpdateServerMark()
@@ -83,9 +121,9 @@ namespace V2RayGCon.Model.UserControls
 
         void HighlightSelectedServerItem(bool selected)
         {
-            var fontStyle = new Font(lbSummary.Font, selected ? FontStyle.Bold : FontStyle.Regular);
+            var fontStyle = new Font(lbServerTitle.Font, selected ? FontStyle.Bold : FontStyle.Regular);
             var colorRed = selected ? Color.OrangeRed : Color.Black;
-            lbSummary.Font = fontStyle;
+            lbServerTitle.Font = fontStyle;
             lbStatus.Font = fontStyle;
             lbStatus.ForeColor = colorRed;
         }
@@ -164,9 +202,7 @@ namespace V2RayGCon.Model.UserControls
 
         public void SetIndex(double index)
         {
-            serverItem.SetPropertyOnDemand(
-              ref serverItem.index,
-              index);
+            serverItem.ChangeIndex(index);
         }
 
         public void Cleanup()
@@ -193,18 +229,6 @@ namespace V2RayGCon.Model.UserControls
         private void cboxInbound_SelectedIndexChanged(object sender, EventArgs e)
         {
             serverItem.SetOverwriteInboundType(cboxInbound.SelectedIndex);
-        }
-
-        private void chkImport_CheckedChanged(object sender, EventArgs e)
-        {
-            serverItem.SetIsInjectImport(chkImport.Checked);
-        }
-
-        private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
-        {
-            serverItem.SetPropertyOnDemand(
-              ref serverItem.isAutoRun,
-              chkAutoRun.Checked);
         }
 
         private void chkSelected_CheckedChanged(object sender, EventArgs e)
@@ -238,9 +262,7 @@ namespace V2RayGCon.Model.UserControls
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            var server = this.serverItem;
-            server.parent.StopAllServersThen(
-                () => server.RestartCoreThen());
+            RestartServer();
         }
 
         private void multiboxingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -342,6 +364,16 @@ namespace V2RayGCon.Model.UserControls
             ServerListItem_MouseDown(this, e);
         }
 
+        private void label4_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void lbServerTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
         private void label1_MouseDown(object sender, MouseEventArgs e)
         {
             ServerListItem_MouseDown(this, e);
@@ -352,11 +384,29 @@ namespace V2RayGCon.Model.UserControls
             ServerListItem_MouseDown(this, e);
         }
 
-        private void lbIndex_MouseDown(object sender, MouseEventArgs e)
+        private void toolStripMenuItemStart_Click(object sender, EventArgs e)
         {
-            ServerListItem_MouseDown(this, e);
+            RestartServer();
+        }
+
+        private void toolStripMenuItemIsAutorun_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsAutorun();
+        }
+
+        private void toolStripMenuItemIsInjectImport_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsInjectImport();
+        }
+
+
+
+        private void btnIsCollapse_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsCollapse();
         }
         #endregion
+
 
     }
 }

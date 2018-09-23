@@ -28,12 +28,18 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem modifySelected,
             ToolStripMenuItem packSelected,
             ToolStripMenuItem moveToTop,
-            ToolStripMenuItem moveToBottom)
+            ToolStripMenuItem moveToBottom,
+            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem expansePanel)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
 
-            InitBatchOperation(stopSelected, restartSelected, speedTestOnSelected, deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions, deleteAllItems, modifySelected, packSelected, moveToTop, moveToBottom);
+            InitBatchOperation(
+                stopSelected, restartSelected, speedTestOnSelected,
+                deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions,
+                deleteAllItems, modifySelected, packSelected,
+                moveToTop, moveToBottom, collapsePanel, expansePanel);
             InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
             InitMisc(clearSysProxy, refreshSummary);
         }
@@ -59,8 +65,31 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem modifySelected,
             ToolStripMenuItem packSelected,
             ToolStripMenuItem moveToTop,
-            ToolStripMenuItem moveToBottom)
+            ToolStripMenuItem moveToBottom,
+            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem expansePanel)
         {
+
+            expansePanel.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                ExpansePanel();
+            };
+
+            collapsePanel.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                CollapsePanel();
+            };
+
             moveToTop.Click += (s, a) =>
             {
                 if (!CheckSelectedServerCount())
@@ -200,16 +229,55 @@ namespace V2RayGCon.Controller.FormMainComponent
             };
         }
 
+        void UpdateServerItemPanelIsCollapse(bool isCollapse)
+        {
+            servers
+                .GetServerList()
+                .Where(s => s.isSelected)
+                .Select(s =>
+                {
+                    if (s.isCollapse != isCollapse)
+                    {
+                        s.ToggleIsCollapse();
+                    }
+                    return s;
+                })
+                .ToList(); // force linq to execute
+        }
+
+        void RefreshFlyPanel()
+        {
+            GetFlyPanel().RefreshUI();
+        }
+
+        private void CollapsePanel()
+        {
+            UpdateServerItemPanelIsCollapse(true);
+        }
+
+        private void ExpansePanel()
+        {
+            UpdateServerItemPanelIsCollapse(false);
+        }
+
+        void RemoveAllFlyPanelControls()
+        {
+            GetFlyPanel().RemoveAllConrols();
+        }
+
         private void SetServerItemsIndex(double index)
         {
-            foreach (var server in servers.GetServerList().Where(_s => _s.isSelected))
-            {
-                server.index = index;
-            }
+            servers.GetServerList()
+                .Where(s => s.isSelected)
+                .Select(s =>
+                {
+                    s.index = index;
+                    return true;
+                })
+                .ToList(); // force linq to execute
 
-            var panel = GetFlyPanel();
-            panel.RemoveAllConrols();
-            panel.RefreshUI();
+            RemoveAllFlyPanelControls();
+            RefreshFlyPanel();
         }
 
         private void InitSelection(ToolStripMenuItem selectAllAutorun, ToolStripMenuItem selectAll, ToolStripMenuItem selectNone, ToolStripMenuItem selectInvert)

@@ -15,8 +15,8 @@ namespace V2RayGCon.Model.Data
         public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected;
-        public string name, summary, inboundIP, mark;
+        public bool isAutoRun, isInjectImport, isSelected, isCollapse;
+        public string name, summary, inboundIP, mark, title;
         public int overwriteInboundType, inboundPort;
         public double index;
 
@@ -29,12 +29,15 @@ namespace V2RayGCon.Model.Data
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
+            isCollapse = false;
 
             mark = string.Empty;
             status = string.Empty;
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
+            title = GetTitle();
+
             overwriteInboundType = 0;
             inboundIP = "127.0.0.1";
             inboundPort = 1080;
@@ -186,14 +189,21 @@ namespace V2RayGCon.Model.Data
             SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetIsInjectImport(bool import)
+        public void ToggleIsCollapse()
         {
-            if (this.isInjectImport == import)
-            {
-                return;
-            }
+            this.isCollapse = !this.isCollapse;
+            InvokeEventOnPropertyChange();
+        }
 
-            this.isInjectImport = import;
+        public void ToggleIsAutorun()
+        {
+            this.isAutoRun = !this.isAutoRun;
+            InvokeEventOnPropertyChange();
+        }
+
+        public void ToggleIsInjectImport()
+        {
+            this.isInjectImport = !this.isInjectImport;
 
             // refresh UI immediately
             InvokeEventOnPropertyChange();
@@ -374,9 +384,29 @@ namespace V2RayGCon.Model.Data
             catch { }
         }
 
+        public void ChangeIndex(double index)
+        {
+            if (this.index == index)
+            {
+                return;
+            }
+            this.index = index;
+            this.title = GetTitle();
+            InvokeEventOnPropertyChange();
+        }
+
         #endregion
 
         #region private method
+        string GetTitle()
+        {
+            var result = string.Format("{0}.[{1}] {2}",
+                (int)this.index,
+                this.name,
+                this.summary);
+            return Lib.Utils.CutStr(result, 60);
+        }
+
         void SetPropertyOnDemand<T>(
             ref T property,
             T value,
@@ -518,11 +548,9 @@ namespace V2RayGCon.Model.Data
 
         void UpdateSummary(JObject config)
         {
-            var name = Lib.Utils.GetAliasFromConfig(config);
-            var summary = string.Format("[{0}] {1}", name, Lib.Utils.GetSummaryFromConfig(config));
-
-            this.name = name;
-            this.summary = Lib.Utils.CutStr(summary, 50);
+            this.name = Lib.Utils.GetAliasFromConfig(config);
+            this.summary = Lib.Utils.GetSummaryFromConfig(config);
+            this.title = GetTitle();
         }
 
         void OnCoreStateChangedHandler(object sender, EventArgs args)

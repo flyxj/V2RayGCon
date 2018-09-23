@@ -118,94 +118,61 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lbSummary.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 9</value>
+  <data name="lbServerTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>92, 9</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbSummary.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="lbServerTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
-  <data name="lbSummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 21</value>
+  <data name="lbServerTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>354, 28</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbSummary.TabIndex" type="System.Int32, mscorlib">
+  <data name="lbServerTitle.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lbSummary.Text" xml:space="preserve">
+  <data name="lbServerTitle.Text" xml:space="preserve">
     <value>[lovely] vmess@127.0.0.1</value>
+  </data>
+  <data name="lbServerTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="lbSummary.ToolTip" xml:space="preserve">
-    <value>Select this server.</value>
+  <data name="lbServerTitle.ToolTip" xml:space="preserve">
+    <value>Click to Select this server.</value>
   </data>
-  <data name="&gt;&gt;lbSummary.Name" xml:space="preserve">
-    <value>lbSummary</value>
+  <data name="&gt;&gt;lbServerTitle.Name" xml:space="preserve">
+    <value>lbServerTitle</value>
   </data>
-  <data name="&gt;&gt;lbSummary.Type" xml:space="preserve">
+  <data name="&gt;&gt;lbServerTitle.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbSummary.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lbServerTitle.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lbSummary.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="lbIndex.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt, style=Bold</value>
-  </data>
-  <data name="lbIndex.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lbIndex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 7</value>
-  </data>
-  <data name="lbIndex.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="lbIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 24</value>
-  </data>
-  <data name="lbIndex.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="lbIndex.Text" xml:space="preserve">
-    <value>78</value>
-  </data>
-  <data name="lbIndex.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lbIndex.Name" xml:space="preserve">
-    <value>lbIndex</value>
-  </data>
-  <data name="&gt;&gt;lbIndex.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbIndex.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lbIndex.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lbServerTitle.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="lbStatus.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="lbStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 75</value>
+    <value>180, 78</value>
   </data>
   <data name="lbStatus.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lbStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 18</value>
+    <value>358, 26</value>
   </data>
   <data name="lbStatus.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="lbStatus.Text" xml:space="preserve">
     <value>Testing ...</value>
+  </data>
+  <data name="lbStatus.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;lbStatus.Name" xml:space="preserve">
     <value>lbStatus</value>
@@ -229,13 +196,13 @@
     <value>SOCKS</value>
   </data>
   <data name="cboxInbound.Location" type="System.Drawing.Point, System.Drawing">
-    <value>56, 37</value>
+    <value>62, 45</value>
   </data>
   <data name="cboxInbound.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="cboxInbound.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 26</value>
+    <value>110, 26</value>
   </data>
   <data name="cboxInbound.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -253,43 +220,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cboxInbound.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="chkImport.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkImport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>442, 39</value>
-  </data>
-  <data name="chkImport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="chkImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 22</value>
-  </data>
-  <data name="chkImport.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="chkImport.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="chkImport.ToolTip" xml:space="preserve">
-    <value>Inject global import.</value>
-  </data>
-  <data name="&gt;&gt;chkImport.Name" xml:space="preserve">
-    <value>chkImport</value>
-  </data>
-  <data name="&gt;&gt;chkImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkImport.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkImport.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <data name="tboxInboundIP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>201, 36</value>
+    <value>214, 44</value>
   </data>
   <data name="tboxInboundIP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -322,7 +256,7 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 41</value>
+    <value>180, 49</value>
   </data>
   <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -349,13 +283,13 @@
     <value>12</value>
   </data>
   <data name="btnMore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>446, 70</value>
+    <value>454, 9</value>
   </data>
   <data name="btnMore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="btnMore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 28</value>
+    <value>84, 28</value>
   </data>
   <data name="btnMore.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -378,8 +312,11 @@
   <data name="lbRunning.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 9pt, style=Bold</value>
   </data>
+  <data name="lbRunning.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="lbRunning.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 41</value>
+    <value>13, 14</value>
   </data>
   <data name="lbRunning.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -409,10 +346,10 @@
     <value>13</value>
   </data>
   <data name="tboxInboundPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>374, 36</value>
+    <value>383, 44</value>
   </data>
   <data name="tboxInboundPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 28</value>
+    <value>65, 28</value>
   </data>
   <data name="tboxInboundPort.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -435,41 +372,11 @@
   <data name="&gt;&gt;tboxInboundPort.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="chkAutoRun.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkAutoRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>442, 8</value>
-  </data>
-  <data name="chkAutoRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 22</value>
-  </data>
-  <data name="chkAutoRun.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="chkAutoRun.Text" xml:space="preserve">
-    <value>AutoRun</value>
-  </data>
-  <data name="chkAutoRun.ToolTip" xml:space="preserve">
-    <value>Run when this program starts.</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.Name" xml:space="preserve">
-    <value>chkAutoRun</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkAutoRun.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="chkSelected.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="chkSelected.Location" type="System.Drawing.Point, System.Drawing">
-    <value>56, 9</value>
+    <value>62, 13</value>
   </data>
   <data name="chkSelected.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -493,16 +400,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chkSelected.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="btnStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>374, 70</value>
+    <value>454, 44</value>
   </data>
   <data name="btnStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 28</value>
+    <value>84, 28</value>
   </data>
   <data name="btnStart.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -523,13 +430,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnStart.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cboxMark.Location" type="System.Drawing.Point, System.Drawing">
-    <value>56, 71</value>
+    <value>62, 78</value>
   </data>
   <data name="cboxMark.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 26</value>
+    <value>110, 26</value>
   </data>
   <data name="cboxMark.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -547,13 +454,79 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cboxMark.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 49</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 18</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value>Inbound protocol. Config means keep original inbound config.</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="btnIsCollapse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 6.5pt</value>
+  </data>
+  <data name="btnIsCollapse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>545, 10</value>
+  </data>
+  <data name="btnIsCollapse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 26</value>
+  </data>
+  <data name="btnIsCollapse.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="btnIsCollapse.Text" xml:space="preserve">
+    <value>∧</value>
+  </data>
+  <data name="btnIsCollapse.ToolTip" xml:space="preserve">
+    <value>Collapse or expanse this panel.</value>
+  </data>
+  <data name="&gt;&gt;btnIsCollapse.Name" xml:space="preserve">
+    <value>btnIsCollapse</value>
+  </data>
+  <data name="&gt;&gt;btnIsCollapse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnIsCollapse.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnIsCollapse.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>322, 41</value>
+    <value>332, 49</value>
   </data>
   <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -577,19 +550,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <metadata name="ctxMenuStripMore.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
   </metadata>
-  <data name="multiboxingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripMenuItemStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>249, 28</value>
   </data>
-  <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
-    <value>Multiboxing</value>
+  <data name="toolStripMenuItemStart.Text" xml:space="preserve">
+    <value>Start</value>
   </data>
-  <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Start this server along with other started server. Inbound port should not duplicate.</value>
+  <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
+    <value>Stop all running servers and start this server.</value>
   </data>
   <data name="stopToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>249, 28</value>
@@ -600,11 +573,38 @@
   <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Stop this server.</value>
   </data>
-  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="multiboxingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>249, 28</value>
   </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>Edit</value>
+  <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Multiboxing</value>
+  </data>
+  <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Start this server along with other started server. Inbound port should not duplicate.</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 6</value>
+  </data>
+  <data name="toolStripMenuItemIsAutorun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 28</value>
+  </data>
+  <data name="toolStripMenuItemIsAutorun.Text" xml:space="preserve">
+    <value>Autorun</value>
+  </data>
+  <data name="toolStripMenuItemIsAutorun.ToolTipText" xml:space="preserve">
+    <value>Start this server along with this software.</value>
+  </data>
+  <data name="toolStripMenuItemIsInjectImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 28</value>
+  </data>
+  <data name="toolStripMenuItemIsInjectImport.Text" xml:space="preserve">
+    <value>Global import</value>
+  </data>
+  <data name="toolStripMenuItemIsInjectImport.ToolTipText" xml:space="preserve">
+    <value>Inject global import when this server start.</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 6</value>
   </data>
   <data name="vmessToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>181, 30</value>
@@ -630,8 +630,11 @@
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>Copy</value>
   </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 6</value>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 28</value>
+  </data>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>249, 28</value>
@@ -667,7 +670,7 @@
     <value>Require set inbound type to HTTP.</value>
   </data>
   <data name="ctxMenuStripMore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 240</value>
+    <value>250, 330</value>
   </data>
   <data name="&gt;&gt;ctxMenuStripMore.Name" xml:space="preserve">
     <value>ctxMenuStripMore</value>
@@ -676,7 +679,7 @@
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 75</value>
+    <value>10, 82</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 18</value>
@@ -700,7 +703,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -712,7 +715,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>546, 107</value>
+    <value>580, 113</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Drag and drop to adjust order.</value>
@@ -723,10 +726,10 @@
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;multiboxingToolStripMenuItem.Name" xml:space="preserve">
-    <value>multiboxingToolStripMenuItem</value>
+  <data name="&gt;&gt;toolStripMenuItemStart.Name" xml:space="preserve">
+    <value>toolStripMenuItemStart</value>
   </data>
-  <data name="&gt;&gt;multiboxingToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItemStart.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;stopToolStripMenuItem.Name" xml:space="preserve">
@@ -735,11 +738,35 @@
   <data name="&gt;&gt;stopToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
-    <value>editToolStripMenuItem</value>
+  <data name="&gt;&gt;multiboxingToolStripMenuItem.Name" xml:space="preserve">
+    <value>multiboxingToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;multiboxingToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemIsAutorun.Name" xml:space="preserve">
+    <value>toolStripMenuItemIsAutorun</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemIsAutorun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemIsInjectImport.Name" xml:space="preserve">
+    <value>toolStripMenuItemIsInjectImport</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemIsInjectImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
+    <value>toolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;copyToolStripMenuItem.Name" xml:space="preserve">
     <value>copyToolStripMenuItem</value>
@@ -759,11 +786,11 @@
   <data name="&gt;&gt;v2rayToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
-    <value>toolStripMenuItem1</value>
+  <data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
+    <value>editToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;deleteToolStripMenuItem.Name" xml:space="preserve">
     <value>deleteToolStripMenuItem</value>

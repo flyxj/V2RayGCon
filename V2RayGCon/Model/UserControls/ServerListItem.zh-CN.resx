@@ -117,44 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lbSummary.ToolTip" xml:space="preserve">
-    <value>选中此服务器</value>
-  </data>
-  <data name="lbIndex.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lbStatus.ToolTip" xml:space="preserve">
-    <value />
+  <data name="lbServerTitle.ToolTip" xml:space="preserve">
+    <value>单击选中此服务器</value>
   </data>
   <data name="cboxInbound.ToolTip" xml:space="preserve">
     <value>改写配置中的inbound</value>
   </data>
-  <data name="chkImport.ToolTip" xml:space="preserve">
-    <value>注入全局import</value>
-  </data>
   <data name="tboxInboundIP.ToolTip" xml:space="preserve">
     <value>只对HTTP/SOCKS两种模式有效</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="btnMore.Text" xml:space="preserve">
     <value>更多...</value>
   </data>
-  <data name="btnMore.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lbRunning.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="tboxInboundPort.ToolTip" xml:space="preserve">
     <value>只对HTTP/SOCKS两种模式有效</value>
-  </data>
-  <data name="chkAutoRun.Text" xml:space="preserve">
-    <value>自启</value>
-  </data>
-  <data name="chkAutoRun.ToolTip" xml:space="preserve">
-    <value>程序运行后启动此服务器</value>
   </data>
   <data name="chkSelected.ToolTip" xml:space="preserve">
     <value>选中此服务器</value>
@@ -168,17 +144,23 @@
   <data name="cboxMark.ToolTip" xml:space="preserve">
     <value>设置标记（任意字符串）</value>
   </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value>Inbound模式，Config表示保持原inbound配置</value>
+  </data>
+  <data name="btnIsCollapse.ToolTip" xml:space="preserve">
+    <value>折叠或展开面板</value>
+  </data>
   <data name="label3.Text" xml:space="preserve">
     <value>端口</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value />
+  <data name="toolStripMenuItemStart.Text" xml:space="preserve">
+    <value>开启</value>
   </data>
-  <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
-    <value>多开</value>
-  </data>
-  <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>和其他已开启服务器并行运行（注意错开inbound端口）</value>
+  <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
+    <value>关闭所有服务器，然后启动此服务器</value>
   </data>
   <data name="stopToolStripMenuItem.Text" xml:space="preserve">
     <value>停止</value>
@@ -186,17 +168,29 @@
   <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>停止这个服务器</value>
   </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>编辑</value>
+  <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
+    <value>多开</value>
   </data>
-  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含主要配置信息</value>
+  <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>和其他已开启服务器并行运行（注意错开inbound端口）</value>
   </data>
-  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含完整配置信息</value>
+  <data name="toolStripMenuItemIsAutorun.Text" xml:space="preserve">
+    <value>自启动</value>
+  </data>
+  <data name="toolStripMenuItemIsAutorun.ToolTipText" xml:space="preserve">
+    <value>此服务跟随软件启动</value>
+  </data>
+  <data name="toolStripMenuItemIsInjectImport.Text" xml:space="preserve">
+    <value>全局Import</value>
+  </data>
+  <data name="toolStripMenuItemIsInjectImport.ToolTipText" xml:space="preserve">
+    <value>服务器启动时注入全局import</value>
   </data>
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>复制</value>
+  </data>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>编辑</value>
   </data>
   <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
     <value>删除</value>
@@ -216,14 +210,14 @@
   <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>需要将inbound选为HTTP模式</value>
   </data>
-  <data name="ctxMenuStripMore.ToolTip" xml:space="preserve">
-    <value />
+  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含主要配置信息</value>
+  </data>
+  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含完整配置信息</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>标记</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>拖放可调整顺序</value>

@@ -99,10 +99,12 @@ namespace V2RayGCon.Views
                 toolStripMenuItemCopyAsVmessLink,
                 toolStripMenuItemCopyAsSubscription,
                 toolStripMenuItemDeleteAllServer,
-                toolStripMenuItemModifySelected,
+                toolStripMenuItemModifySettings,
                 toolStripMenuItemPackSelectedServers,
-                moveToTopToolStripMenuItem,
-                moveToBottomToolStripMenuItem));
+                toolStripMenuItemMoveToTop,
+                toolStripMenuItemMoveToBottom,
+                toolStripMenuItemCollapsePanel,
+                toolStripMenuItemExpansePanel));
 
             return ctrl;
         }
