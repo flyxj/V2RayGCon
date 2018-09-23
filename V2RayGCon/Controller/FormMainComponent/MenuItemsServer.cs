@@ -271,7 +271,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .Where(s => s.isSelected)
                 .Select(s =>
                 {
-                    s.index = index;
+                    s.ChangeIndex(index);
                     return true;
                 })
                 .ToList(); // force linq to execute

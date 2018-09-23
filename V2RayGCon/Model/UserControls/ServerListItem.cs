@@ -44,7 +44,7 @@ namespace V2RayGCon.Model.UserControls
                     cboxInbound, serverItem.overwriteInboundType);
 
                 Lib.UI.UpdateControlOnDemand(
-                    lbServerTitle, serverItem.title);
+                    lbServerTitle, serverItem.GetTitle());
 
                 Lib.UI.UpdateControlOnDemand(
                     tboxInboundIP, serverItem.inboundIP);
@@ -63,11 +63,40 @@ namespace V2RayGCon.Model.UserControls
                     toolStripMenuItemIsInjectImport,
                     serverItem.isInjectImport);
 
+                SetAutorunImportMarkLable();
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
                 UpdateServerMark();
                 SetButtonCollapseText();
+                SetTitleToolTip();
             });
+        }
+
+        private void SetTitleToolTip()
+        {
+            var status = serverItem.status;
+            if (string.IsNullOrEmpty(status))
+            {
+                return;
+            }
+
+            if (toolTip1.GetToolTip(lbServerTitle) == status)
+            {
+                return;
+            }
+
+            toolTip1.SetToolTip(lbServerTitle, status);
+        }
+
+        private void SetAutorunImportMarkLable()
+        {
+            var text = serverItem.isAutoRun ? "A" : "";
+            text += serverItem.isInjectImport ? "I" : "";
+
+            if (lbIsAutorun.Text != text)
+            {
+                lbIsAutorun.Text = text;
+            }
         }
 
         void SetPanelIntoCollapseMode(bool isCollapse)
@@ -365,11 +394,6 @@ namespace V2RayGCon.Model.UserControls
         }
 
         private void label4_MouseDown(object sender, MouseEventArgs e)
-        {
-            ServerListItem_MouseDown(this, e);
-        }
-
-        private void lbServerTitle_MouseDown(object sender, MouseEventArgs e)
         {
             ServerListItem_MouseDown(this, e);
         }

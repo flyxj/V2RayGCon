@@ -16,7 +16,7 @@ namespace V2RayGCon.Model.Data
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isCollapse;
-        public string name, summary, inboundIP, mark, title;
+        public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort;
         public double index;
 
@@ -36,7 +36,6 @@ namespace V2RayGCon.Model.Data
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
-            title = GetTitle();
 
             overwriteInboundType = 0;
             inboundIP = "127.0.0.1";
@@ -390,15 +389,12 @@ namespace V2RayGCon.Model.Data
             {
                 return;
             }
+
             this.index = index;
-            this.title = GetTitle();
             InvokeEventOnPropertyChange();
         }
 
-        #endregion
-
-        #region private method
-        string GetTitle()
+        public string GetTitle()
         {
             var result = string.Format("{0}.[{1}] {2}",
                 (int)this.index,
@@ -406,7 +402,9 @@ namespace V2RayGCon.Model.Data
                 this.summary);
             return Lib.Utils.CutStr(result, 60);
         }
+        #endregion
 
+        #region private method
         void SetPropertyOnDemand<T>(
             ref T property,
             T value,
@@ -550,7 +548,6 @@ namespace V2RayGCon.Model.Data
         {
             this.name = Lib.Utils.GetAliasFromConfig(config);
             this.summary = Lib.Utils.GetSummaryFromConfig(config);
-            this.title = GetTitle();
         }
 
         void OnCoreStateChangedHandler(object sender, EventArgs args)

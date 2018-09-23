@@ -35,7 +35,7 @@
             this.cboxInbound = new System.Windows.Forms.ComboBox();
             this.tboxInboundIP = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnMore = new System.Windows.Forms.Button();
+            this.btnMenu = new System.Windows.Forms.Button();
             this.lbRunning = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tboxInboundPort = new System.Windows.Forms.TextBox();
@@ -44,6 +44,7 @@
             this.cboxMark = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnIsCollapse = new System.Windows.Forms.Button();
+            this.lbIsAutorun = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.ctxMenuStripMore = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemStart = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,13 +70,12 @@
             // lbServerTitle
             // 
             this.lbServerTitle.AutoEllipsis = true;
-            this.lbServerTitle.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.lbServerTitle.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.lbServerTitle, "lbServerTitle");
             this.lbServerTitle.Name = "lbServerTitle";
             this.toolTip1.SetToolTip(this.lbServerTitle, resources.GetString("lbServerTitle.ToolTip"));
             this.lbServerTitle.UseCompatibleTextRendering = true;
             this.lbServerTitle.Click += new System.EventHandler(this.lbSummary_Click);
-            this.lbServerTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbServerTitle_MouseDown);
             // 
             // lbStatus
             // 
@@ -113,13 +113,13 @@
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Name = "label2";
             // 
-            // btnMore
+            // btnMenu
             // 
-            this.btnMore.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.btnMore, "btnMore");
-            this.btnMore.Name = "btnMore";
-            this.btnMore.UseVisualStyleBackColor = true;
-            this.btnMore.Click += new System.EventHandler(this.btnAction_Click);
+            this.btnMenu.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnMenu, "btnMenu");
+            this.btnMenu.Name = "btnMenu";
+            this.btnMenu.UseVisualStyleBackColor = true;
+            this.btnMenu.Click += new System.EventHandler(this.btnAction_Click);
             // 
             // lbRunning
             // 
@@ -181,6 +181,13 @@
             this.toolTip1.SetToolTip(this.btnIsCollapse, resources.GetString("btnIsCollapse.ToolTip"));
             this.btnIsCollapse.UseVisualStyleBackColor = true;
             this.btnIsCollapse.Click += new System.EventHandler(this.btnIsCollapse_Click);
+            // 
+            // lbIsAutorun
+            // 
+            this.lbIsAutorun.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lbIsAutorun, "lbIsAutorun");
+            this.lbIsAutorun.Name = "lbIsAutorun";
+            this.toolTip1.SetToolTip(this.lbIsAutorun, resources.GetString("lbIsAutorun.ToolTip"));
             // 
             // label3
             // 
@@ -316,6 +323,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lbIsAutorun);
             this.Controls.Add(this.btnIsCollapse);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboxMark);
@@ -323,7 +331,7 @@
             this.Controls.Add(this.chkSelected);
             this.Controls.Add(this.tboxInboundPort);
             this.Controls.Add(this.tboxInboundIP);
-            this.Controls.Add(this.btnMore);
+            this.Controls.Add(this.btnMenu);
             this.Controls.Add(this.cboxInbound);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
@@ -348,7 +356,7 @@
         private System.Windows.Forms.ComboBox cboxInbound;
         private System.Windows.Forms.TextBox tboxInboundIP;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnMore;
+        private System.Windows.Forms.Button btnMenu;
         private System.Windows.Forms.Label lbRunning;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label3;
@@ -376,5 +384,6 @@
         private System.Windows.Forms.Button btnIsCollapse;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Label lbIsAutorun;
     }
 }

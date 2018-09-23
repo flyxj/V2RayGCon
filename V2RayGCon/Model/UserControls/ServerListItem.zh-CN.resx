@@ -126,8 +126,8 @@
   <data name="tboxInboundIP.ToolTip" xml:space="preserve">
     <value>只对HTTP/SOCKS两种模式有效</value>
   </data>
-  <data name="btnMore.Text" xml:space="preserve">
-    <value>更多...</value>
+  <data name="btnMenu.Text" xml:space="preserve">
+    <value>菜单</value>
   </data>
   <data name="tboxInboundPort.ToolTip" xml:space="preserve">
     <value>只对HTTP/SOCKS两种模式有效</value>
@@ -152,6 +152,9 @@
   </data>
   <data name="btnIsCollapse.ToolTip" xml:space="preserve">
     <value>折叠或展开面板</value>
+  </data>
+  <data name="lbIsAutorun.ToolTip" xml:space="preserve">
+    <value>A表示自启动，I表示全局import</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>端口</value>
@@ -189,6 +192,12 @@
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>复制</value>
   </data>
+  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含主要配置信息</value>
+  </data>
+  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含完整配置信息</value>
+  </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>编辑</value>
   </data>
@@ -209,12 +218,6 @@
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>需要将inbound选为HTTP模式</value>
-  </data>
-  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含主要配置信息</value>
-  </data>
-  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含完整配置信息</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>标记</value>

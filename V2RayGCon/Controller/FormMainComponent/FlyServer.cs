@@ -255,7 +255,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 var index = i + 1.0; // closure
                 var item = list[i];
-                item.SetPropertyOnDemand(ref item.index, index);
+                item.ChangeIndex(index);
             }
         }
 

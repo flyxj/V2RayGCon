@@ -108,7 +108,7 @@ namespace V2RayGCon.Views
                 server.StopCoreThen(() =>
                 {
                     ModifyServerSetting(
-                        ref server, 
+                        ref server,
                         newMode, newIP, newPort,
                         newMark, newAutorun, newImport);
                     server.RestartCoreThen();
@@ -132,7 +132,7 @@ namespace V2RayGCon.Views
 
         void ModifyServerSetting(
             ref Model.Data.ServerItem server,
-            int newMode,            string newIP,            int newPort,
+            int newMode, string newIP, int newPort,
             string newMark, int newAutorun, int newImport)
         {
             if (newAutorun >= 0)
