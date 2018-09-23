@@ -121,7 +121,7 @@ namespace V2RayGCon.Model.BaseClass
             return string.Empty;
         }
 
-        // block
+        // blocking
         public void RestartCore(string config, Dictionary<string, string> env = null)
         {
             lock (coreLock)
@@ -144,7 +144,7 @@ namespace V2RayGCon.Model.BaseClass
             Task.Factory.StartNew(() => InvokeEventOnCoreStatusChanged());
         }
 
-        // non-block 
+        // non-blocking 
         public void RestartCoreThen(
             string config,
             Action next = null,
@@ -157,7 +157,7 @@ namespace V2RayGCon.Model.BaseClass
             });
         }
 
-        // block
+        // blocking
         public void StopCore()
         {
             lock (coreLock)
@@ -166,7 +166,7 @@ namespace V2RayGCon.Model.BaseClass
             }
         }
 
-        // non-block
+        // non-blocking
         public void StopCoreThen(Action next = null)
         {
             Task.Factory.StartNew(() =>

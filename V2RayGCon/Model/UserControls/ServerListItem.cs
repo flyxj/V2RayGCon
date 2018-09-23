@@ -9,15 +9,15 @@ namespace V2RayGCon.Model.UserControls
     public partial class ServerListItem : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Model.Data.ServerItem serverItem;
-        ContextMenu menu;
         bool isRunning;
+        int orgHeight, minHeight;
 
-        public ServerListItem(int index, Model.Data.ServerItem serverItem)
+        public ServerListItem(Model.Data.ServerItem serverItem)
         {
-            this.menu = CreateMenu();
             this.serverItem = serverItem;
-            SetIndex(index);
             InitializeComponent();
+            this.orgHeight = this.Height;
+            this.minHeight = this.cboxInbound.Top;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
@@ -29,18 +29,22 @@ namespace V2RayGCon.Model.UserControls
         }
 
         #region private method
+        void RestartServer()
+        {
+            var server = this.serverItem;
+            server.parent.StopAllServersThen(
+                () => server.RestartCoreThen());
+        }
+
         void RefreshUI(object sender, EventArgs arg)
         {
-            lbSummary.Invoke((MethodInvoker)delegate
+            lbServerTitle.Invoke((MethodInvoker)delegate
             {
                 Lib.UI.UpdateControlOnDemand(
                     cboxInbound, serverItem.overwriteInboundType);
 
                 Lib.UI.UpdateControlOnDemand(
-                    lbIndex, serverItem.index.ToString());
-
-                Lib.UI.UpdateControlOnDemand(
-                    lbSummary, serverItem.summary);
+                    lbServerTitle, serverItem.GetTitle());
 
                 Lib.UI.UpdateControlOnDemand(
                     tboxInboundIP, serverItem.inboundIP);
@@ -49,17 +53,88 @@ namespace V2RayGCon.Model.UserControls
                     tboxInboundPort, serverItem.inboundPort.ToString());
 
                 Lib.UI.UpdateControlOnDemand(
-                    chkAutoRun, serverItem.isAutoRun);
+                    toolStripMenuItemIsAutorun,
+                    serverItem.isAutoRun);
 
                 Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
 
                 Lib.UI.UpdateControlOnDemand(
-                    chkImport, serverItem.isInjectImport);
+                    toolStripMenuItemIsInjectImport,
+                    serverItem.isInjectImport);
 
+                SetAutorunImportMarkLable();
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
+                UpdateServerMark();
+                SetButtonCollapseText();
+                SetTitleToolTip();
             });
+        }
+
+        private void SetTitleToolTip()
+        {
+            var status = serverItem.status;
+            if (string.IsNullOrEmpty(status))
+            {
+                return;
+            }
+
+            if (toolTip1.GetToolTip(lbServerTitle) == status)
+            {
+                return;
+            }
+
+            toolTip1.SetToolTip(lbServerTitle, status);
+        }
+
+        private void SetAutorunImportMarkLable()
+        {
+            var text = serverItem.isAutoRun ? "A" : "";
+            text += serverItem.isInjectImport ? "I" : "";
+
+            if (lbIsAutorun.Text != text)
+            {
+                lbIsAutorun.Text = text;
+            }
+        }
+
+        void SetPanelIntoCollapseMode(bool isCollapse)
+        {
+            if (isCollapse && this.Height != minHeight)
+            {
+                this.Height = minHeight;
+                return;
+            }
+
+            if (!isCollapse && this.Height != this.orgHeight)
+            {
+                this.Height = this.orgHeight;
+            }
+        }
+
+        void SetButtonCollapseText()
+        {
+            var isCollapse = serverItem.isCollapse;
+            var text = isCollapse ? "∨" : "∧";
+            SetPanelIntoCollapseMode(isCollapse);
+
+            if (btnIsCollapse.Text == text)
+            {
+                return;
+            }
+
+            btnIsCollapse.Text = text;
+        }
+
+        void UpdateServerMark()
+        {
+            if (cboxMark.Text == serverItem.mark)
+            {
+                return;
+            }
+
+            cboxMark.Text = serverItem.mark;
         }
 
         void UpdateChkSelected()
@@ -75,71 +150,11 @@ namespace V2RayGCon.Model.UserControls
 
         void HighlightSelectedServerItem(bool selected)
         {
-            var fontStyle = new Font(lbSummary.Font, selected ? FontStyle.Bold : FontStyle.Regular);
+            var fontStyle = new Font(lbServerTitle.Font, selected ? FontStyle.Bold : FontStyle.Regular);
             var colorRed = selected ? Color.OrangeRed : Color.Black;
-            lbSummary.Font = fontStyle;
+            lbServerTitle.Font = fontStyle;
             lbStatus.Font = fontStyle;
             lbStatus.ForeColor = colorRed;
-        }
-
-        ContextMenu CreateMenu()
-        {
-            return new ContextMenu(new MenuItem[] {
-                new MenuItem(I18N("Log"),(s,a)=>serverItem.ShowLogForm()),
-                new MenuItem(I18N("Edit"),(s,a)=>{
-                    var item=this.serverItem;
-                    var config=item.config;
-                    new Views.FormConfiger(this.serverItem.config);
-                }),
-                new MenuItem(I18N("Delete"),(s,a)=>{
-                    if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
-                    {
-                        return;
-                    }
-                    Cleanup();
-                    serverItem.parent.DeleteServerByConfig(serverItem.config);
-                }),
-                new MenuItem("-"),
-                new MenuItem(I18N("Copy"),new MenuItem[]{
-                    new MenuItem(I18N("VmessLink"),(s,a)=>{
-                        MessageBox.Show(
-                            Lib.Utils.CopyToClipboard(
-                                Lib.Utils.Vmess2VmessLink(
-                                    Lib.Utils.ConfigString2Vmess(
-                                        this.serverItem.config)))?
-                            I18N("LinksCopied") :
-                            I18N("CopyFail"));
-                    }),
-                    new MenuItem(I18N("V2RayLink"),(s,a)=>{
-                        MessageBox.Show(
-                            Lib.Utils.CopyToClipboard(
-                                Lib.Utils.AddLinkPrefix(
-                                    Lib.Utils.Base64Encode(this.serverItem.config),
-                                    Model.Data.Enum.LinkTypes.v2ray)) ?
-                            I18N("LinksCopied") :
-                            I18N("CopyFail"));
-                    }),
-                }),
-                new MenuItem(I18N("SpeedTest"),(s,a)=>{
-                    Task.Factory.StartNew(
-                        () => serverItem.RunSpeedTest());
-                }),
-                new MenuItem(I18N("SetAsSysProxy"),(s,a)=>{
-                    if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
-                    {
-                        MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
-                        return;
-                    }
-
-                    Service.Setting.Instance.SetSystemProxy(
-                        string.Format("{0}:{1}",
-                        this.tboxInboundIP.Text,
-                        this.tboxInboundPort.Text));
-
-                    // issue #9
-                    MessageBox.Show(I18N("SetSysProxyDone"));
-                }),
-            });
         }
 
         private void ShowOnOffStatus(bool isServerOn)
@@ -153,7 +168,6 @@ namespace V2RayGCon.Model.UserControls
 
             tboxInboundPort.ReadOnly = this.isRunning;
             tboxInboundIP.ReadOnly = this.isRunning;
-            btnStop.Enabled = this.isRunning;
 
             if (isServerOn)
             {
@@ -210,11 +224,14 @@ namespace V2RayGCon.Model.UserControls
                selected);
         }
 
-        public void SetIndex(int index)
+        public double GetIndex()
         {
-            serverItem.SetPropertyOnDemand(
-              ref serverItem.index,
-              index);
+            return serverItem.index;
+        }
+
+        public void SetIndex(double index)
+        {
+            serverItem.ChangeIndex(index);
         }
 
         public void Cleanup()
@@ -234,24 +251,13 @@ namespace V2RayGCon.Model.UserControls
         {
             Button btnSender = sender as Button;
             Point pos = new Point(btnSender.Left, btnSender.Top + btnSender.Height);
-            menu.Show(this, pos);
+            ctxMenuStripMore.Show(this, pos);
+            //menu.Show(this, pos);
         }
 
         private void cboxInbound_SelectedIndexChanged(object sender, EventArgs e)
         {
             serverItem.SetOverwriteInboundType(cboxInbound.SelectedIndex);
-        }
-
-        private void chkImport_CheckedChanged(object sender, EventArgs e)
-        {
-            serverItem.SetIsInjectImport(chkImport.Checked);
-        }
-
-        private void chkAutoRun_CheckedChanged(object sender, EventArgs e)
-        {
-            serverItem.SetPropertyOnDemand(
-              ref serverItem.isAutoRun,
-              chkAutoRun.Checked);
         }
 
         private void chkSelected_CheckedChanged(object sender, EventArgs e)
@@ -285,13 +291,146 @@ namespace V2RayGCon.Model.UserControls
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            RestartServer();
+        }
+
+        private void multiboxingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             serverItem.RestartCoreThen();
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var item = this.serverItem;
+            var config = item.config;
+            new Views.FormConfiger(this.serverItem.config);
+        }
+
+        private void vmessToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                           Lib.Utils.CopyToClipboard(
+                               Lib.Utils.Vmess2VmessLink(
+                                   Lib.Utils.ConfigString2Vmess(
+                                       this.serverItem.config))) ?
+                           I18N("LinksCopied") :
+                           I18N("CopyFail"));
+        }
+
+        private void v2rayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                           Lib.Utils.CopyToClipboard(
+                               Lib.Utils.AddLinkPrefix(
+                                   Lib.Utils.Base64Encode(this.serverItem.config),
+                                   Model.Data.Enum.LinkTypes.v2ray)) ?
+                           I18N("LinksCopied") :
+                           I18N("CopyFail"));
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
+            {
+                return;
+            }
+            Cleanup();
+            serverItem.parent.DeleteServerByConfig(serverItem.config);
+
+        }
+
+        private void speedTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(
+                        () => serverItem.RunSpeedTest());
+        }
+
+        private void logOfThisServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ShowLogForm();
+        }
+
+        private void setAsSystemProxyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            Service.Setting.Instance.SetSystemProxy(
+                string.Format("{0}:{1}",
+                this.tboxInboundIP.Text,
+                this.tboxInboundPort.Text));
+
+            // issue #9
+            MessageBox.Show(I18N("SetSysProxyDone"));
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             serverItem.StopCoreThen();
         }
+
+        private void cboxMark_TextChanged(object sender, EventArgs e)
+        {
+            this.serverItem.SetMark(cboxMark.Text);
+        }
+
+        private void cboxMark_DropDown(object sender, EventArgs e)
+        {
+            var servers = Service.Servers.Instance;
+            cboxMark.Items.Clear();
+            foreach (var item in servers.GetMarkList())
+            {
+                cboxMark.Items.Add(item);
+            }
+            Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMark);
+        }
+
+        private void lbStatus_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void label4_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void label1_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void lbRunning_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void toolStripMenuItemStart_Click(object sender, EventArgs e)
+        {
+            RestartServer();
+        }
+
+        private void toolStripMenuItemIsAutorun_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsAutorun();
+        }
+
+        private void toolStripMenuItemIsInjectImport_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsInjectImport();
+        }
+
+
+
+        private void btnIsCollapse_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsCollapse();
+        }
         #endregion
+
+
     }
 }

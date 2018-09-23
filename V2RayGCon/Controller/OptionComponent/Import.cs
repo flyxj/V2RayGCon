@@ -62,10 +62,10 @@ namespace V2RayGCon.Controller.OptionComponent
             return JsonConvert.SerializeObject(CollectImportItems());
         }
 
-        List<Model.Data.UrlItem> CollectImportItems()
+        List<Model.Data.ImportItem> CollectImportItems()
         {
-            var itemList = new List<Model.Data.UrlItem>();
-            foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
+            var itemList = new List<Model.Data.ImportItem>();
+            foreach (Model.UserControls.ImportListItem item in this.flyPanel.Controls)
             {
                 var v = item.GetValue();
                 if (!string.IsNullOrEmpty(v.alias)
@@ -85,12 +85,12 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (importUrlItemList.Count <= 0)
             {
-                importUrlItemList.Add(new Model.Data.UrlItem());
+                importUrlItemList.Add(new Model.Data.ImportItem());
             }
 
             foreach (var item in importUrlItemList)
             {
-                this.flyPanel.Controls.Add(new Model.UserControls.UrlListItem(item, UpdatePanelItemsIndex));
+                this.flyPanel.Controls.Add(new Model.UserControls.ImportListItem(item, UpdatePanelItemsIndex));
             }
 
             UpdatePanelItemsIndex();
@@ -101,8 +101,8 @@ namespace V2RayGCon.Controller.OptionComponent
             this.btnAdd.Click += (s, a) =>
             {
                 this.flyPanel.Controls.Add(
-                    new Model.UserControls.UrlListItem(
-                        new Model.Data.UrlItem(),
+                    new Model.UserControls.ImportListItem(
+                        new Model.Data.ImportItem(),
                         UpdatePanelItemsIndex));
                 UpdatePanelItemsIndex();
             };
@@ -114,8 +114,8 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var data = a.Data.GetData(typeof(Model.UserControls.UrlListItem))
-                    as Model.UserControls.UrlListItem;
+                var data = a.Data.GetData(typeof(Model.UserControls.ImportListItem))
+                    as Model.UserControls.ImportListItem;
 
                 var _destination = s as FlowLayoutPanel;
                 Point p = _destination.PointToClient(new Point(a.X, a.Y));
@@ -140,7 +140,7 @@ namespace V2RayGCon.Controller.OptionComponent
         void UpdatePanelItemsIndex()
         {
             var index = 1;
-            foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
+            foreach (Model.UserControls.ImportListItem item in this.flyPanel.Controls)
             {
                 item.SetIndex(index++);
             }

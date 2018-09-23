@@ -202,12 +202,12 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        public List<Model.Data.UrlItem> GetGlobalImportItems()
+        public List<Model.Data.ImportItem> GetGlobalImportItems()
         {
             try
             {
                 var items = JsonConvert.DeserializeObject
-                    <List<Model.Data.UrlItem>>(
+                    <List<Model.Data.ImportItem>>(
                     Properties.Settings.Default.ImportUrls);
 
                 if (items != null)
@@ -216,7 +216,7 @@ namespace V2RayGCon.Service
                 }
             }
             catch { };
-            return new List<Model.Data.UrlItem>();
+            return new List<Model.Data.ImportItem>();
         }
 
         public void SaveGlobalImportItems(string options)

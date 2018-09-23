@@ -15,9 +15,10 @@ namespace V2RayGCon.Model.Data
         public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected;
-        public string name, summary, inboundIP;
-        public int overwriteInboundType, inboundPort, index;
+        public bool isAutoRun, isInjectImport, isSelected, isCollapse;
+        public string name, summary, inboundIP, mark;
+        public int overwriteInboundType, inboundPort;
+        public double index;
 
         public ServerItem()
         {
@@ -28,11 +29,14 @@ namespace V2RayGCon.Model.Data
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
+            isCollapse = false;
 
+            mark = string.Empty;
             status = string.Empty;
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
+
             overwriteInboundType = 0;
             inboundIP = "127.0.0.1";
             inboundPort = 1080;
@@ -110,7 +114,7 @@ namespace V2RayGCon.Model.Data
                 return empty;
             }
 
-            var config = GetDecodedConfig(true);
+            var config = GetDecodedConfig(true, true, false);
 
             if (config == null)
             {
@@ -174,19 +178,31 @@ namespace V2RayGCon.Model.Data
             SetPropertyOnDemand<int>(ref property, value, isNeedCoreStopped);
         }
 
+        public void SetPropertyOnDemand(ref double property, double value, bool isNeedCoreStopped = false)
+        {
+            SetPropertyOnDemand<double>(ref property, value, isNeedCoreStopped);
+        }
+
         public void SetPropertyOnDemand(ref bool property, bool value, bool isNeedCoreStopped = false)
         {
             SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
-        public void SetIsInjectImport(bool import)
+        public void ToggleIsCollapse()
         {
-            if (this.isInjectImport == import)
-            {
-                return;
-            }
+            this.isCollapse = !this.isCollapse;
+            InvokeEventOnPropertyChange();
+        }
 
-            this.isInjectImport = import;
+        public void ToggleIsAutorun()
+        {
+            this.isAutoRun = !this.isAutoRun;
+            InvokeEventOnPropertyChange();
+        }
+
+        public void ToggleIsInjectImport()
+        {
+            this.isInjectImport = !this.isInjectImport;
 
             // refresh UI immediately
             InvokeEventOnPropertyChange();
@@ -223,7 +239,7 @@ namespace V2RayGCon.Model.Data
             Task.Factory.StartNew(() =>
             {
                 var configString = isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(this.config) :
+                    Lib.Utils.InjectGlobalImport(this.config, false, true) :
                     this.config;
                 try
                 {
@@ -286,7 +302,7 @@ namespace V2RayGCon.Model.Data
 
         public void RestartCoreWorker(Action next)
         {
-            JObject cfg = GetDecodedConfig(true);
+            JObject cfg = GetDecodedConfig(true, false, true);
             if (cfg == null)
             {
                 StopCoreThen(next);
@@ -326,7 +342,7 @@ namespace V2RayGCon.Model.Data
             var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
-                var cfg = GetDecodedConfig(true);
+                var cfg = GetDecodedConfig(true, false, true);
                 var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
                 var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
                 var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
@@ -339,6 +355,52 @@ namespace V2RayGCon.Model.Data
 
                 next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
             });
+        }
+
+        public void SetMark(string mark)
+        {
+            if (this.mark == mark)
+            {
+                return;
+            }
+
+            this.mark = mark;
+            if (!string.IsNullOrEmpty(mark)
+                && !(this.parent.GetMarkList().Contains(mark)))
+            {
+                this.parent.UpdateMarkList();
+            }
+            InvokeEventOnPropertyChange();
+        }
+
+        public void InvokeEventOnPropertyChange()
+        {
+            // things happen while invoking
+            try
+            {
+                OnPropertyChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
+        public void ChangeIndex(double index)
+        {
+            if (this.index == index)
+            {
+                return;
+            }
+
+            this.index = index;
+            InvokeEventOnPropertyChange();
+        }
+
+        public string GetTitle()
+        {
+            var result = string.Format("{0}.[{1}] {2}",
+                (int)this.index,
+                this.name,
+                this.summary);
+            return Lib.Utils.CutStr(result, 60);
         }
         #endregion
 
@@ -366,7 +428,7 @@ namespace V2RayGCon.Model.Data
             InvokeEventOnPropertyChange();
         }
 
-        JObject GetDecodedConfig(bool isUseCache = false)
+        JObject GetDecodedConfig(bool isUseCache, bool isIncludeSpeedTest, bool isIncludeActivate)
         {
             var cache = Service.Cache.Instance.core;
 
@@ -375,7 +437,7 @@ namespace V2RayGCon.Model.Data
             {
                 cfg = Lib.ImportParser.Parse(
                     isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(config) :
+                    Lib.Utils.InjectGlobalImport(config, isIncludeSpeedTest, isIncludeActivate) :
                     config);
 
                 cache[config] = cfg.ToString(Formatting.None);
@@ -482,23 +544,10 @@ namespace V2RayGCon.Model.Data
             OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        void InvokeEventOnPropertyChange()
-        {
-            // things happen while invoking
-            try
-            {
-                OnPropertyChanged?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
-        }
-
         void UpdateSummary(JObject config)
         {
-            var name = Lib.Utils.GetAliasFromConfig(config);
-            var summary = string.Format("[{0}] {1}", name, Lib.Utils.GetSummaryFromConfig(config));
-
-            this.name = name;
-            this.summary = Lib.Utils.CutStr(summary, 50);
+            this.name = Lib.Utils.GetAliasFromConfig(config);
+            this.summary = Lib.Utils.GetSummaryFromConfig(config);
         }
 
         void OnCoreStateChangedHandler(object sender, EventArgs args)

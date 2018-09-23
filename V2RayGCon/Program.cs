@@ -49,27 +49,25 @@ namespace V2RayGCon
 #endif
         #endregion
 
+        static Service.Notifier noty = null;
+
         [STAThread]
         static void Main()
         {
+            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             IntPtr pShcoreDll = HiResSupport();
 
+
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
-                Service.Notifier noty = null;
-                try
-                {
-                    noty = Service.Notifier.Instance;
-                    Application.Run();
-                }
-                catch (Exception ex)
-                {
-                    SaveException(ex, noty);
-                    ShowMessage();
-                }
+                // Service.Notifier noty = null;
+                noty = Service.Notifier.Instance;
+                Application.Run();
                 mutex.ReleaseMutex();
             }
             else
@@ -78,6 +76,16 @@ namespace V2RayGCon
             }
 
             Lib.DllLoader.FreeLibrary(pShcoreDll);
+        }
+
+        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            SaveException(e.Exception.ToString());
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            SaveException((e.ExceptionObject as Exception).ToString());
         }
 
         private static IntPtr HiResSupport()
@@ -103,9 +111,9 @@ namespace V2RayGCon
 #endif
         }
 
-        static void SaveException(Exception ex, Service.Notifier noty)
+        static void SaveException(string msg)
         {
-            var log = ex.ToString();
+            var log = msg;
             try
             {
                 if (noty != null)
@@ -117,6 +125,11 @@ namespace V2RayGCon
             }
             catch { }
             SaveBugLog(log);
+            ShowMessage();
+#if DEBUG
+#else
+            Application.Exit();
+#endif
         }
 
         static string GetBugLogFileName()

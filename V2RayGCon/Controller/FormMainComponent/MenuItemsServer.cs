@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
-    class ServerMenuItems : FormMainComponentController
+    class MenuItemsServer : FormMainComponentController
     {
         Service.Cache cache;
         Service.Servers servers;
 
-        public ServerMenuItems(
+        public MenuItemsServer(
             ToolStripMenuItem stopSelected,
             ToolStripMenuItem restartSelected,
             ToolStripMenuItem clearSysProxy,
@@ -24,10 +25,100 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem copyAsVmessLinks,
             ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems,
-            ToolStripMenuItem packSelected)
+            ToolStripMenuItem modifySelected,
+            ToolStripMenuItem packSelected,
+            ToolStripMenuItem moveToTop,
+            ToolStripMenuItem moveToBottom,
+            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem expansePanel)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
+
+            InitBatchOperation(
+                stopSelected, restartSelected, speedTestOnSelected,
+                deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions,
+                deleteAllItems, modifySelected, packSelected,
+                moveToTop, moveToBottom, collapsePanel, expansePanel);
+            InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
+            InitMisc(clearSysProxy, refreshSummary);
+        }
+
+        #region public method
+        public override bool RefreshUI()
+        {
+            return false;
+        }
+
+        public override void Cleanup()
+        {
+        }
+        #endregion
+
+        #region private method
+        private void InitBatchOperation(
+            ToolStripMenuItem stopSelected,
+            ToolStripMenuItem restartSelected,
+            ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem deleteSelected, ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks,
+            ToolStripMenuItem copyAsSubscriptions,
+            ToolStripMenuItem deleteAllItems,
+            ToolStripMenuItem modifySelected,
+            ToolStripMenuItem packSelected,
+            ToolStripMenuItem moveToTop,
+            ToolStripMenuItem moveToBottom,
+            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem expansePanel)
+        {
+
+            expansePanel.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                ExpansePanel();
+            };
+
+            collapsePanel.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                CollapsePanel();
+            };
+
+            moveToTop.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                SetServerItemsIndex(0);
+            };
+
+            moveToBottom.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                SetServerItemsIndex(int.MaxValue);
+            };
+
+            modifySelected.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                Views.FormBatchModifyServerSetting.GetForm();
+            };
 
             packSelected.Click += (s, a) =>
             {
@@ -136,6 +227,62 @@ namespace V2RayGCon.Controller.FormMainComponent
                     servers.RestartAllSelectedServersThen();
                 }
             };
+        }
+
+        void UpdateServerItemPanelIsCollapse(bool isCollapse)
+        {
+            servers
+                .GetServerList()
+                .Where(s => s.isSelected)
+                .Select(s =>
+                {
+                    if (s.isCollapse != isCollapse)
+                    {
+                        s.ToggleIsCollapse();
+                    }
+                    return s;
+                })
+                .ToList(); // force linq to execute
+        }
+
+        void RefreshFlyPanel()
+        {
+            GetFlyPanel().RefreshUI();
+        }
+
+        private void CollapsePanel()
+        {
+            UpdateServerItemPanelIsCollapse(true);
+        }
+
+        private void ExpansePanel()
+        {
+            UpdateServerItemPanelIsCollapse(false);
+        }
+
+        void RemoveAllFlyPanelControls()
+        {
+            GetFlyPanel().RemoveAllConrols();
+        }
+
+        private void SetServerItemsIndex(double index)
+        {
+            servers.GetServerList()
+                .Where(s => s.isSelected)
+                .Select(s =>
+                {
+                    s.ChangeIndex(index);
+                    return true;
+                })
+                .ToList(); // force linq to execute
+
+            RemoveAllFlyPanelControls();
+            RefreshFlyPanel();
+        }
+
+        private void InitSelection(ToolStripMenuItem selectAllAutorun, ToolStripMenuItem selectAll, ToolStripMenuItem selectNone, ToolStripMenuItem selectInvert)
+        {
+            // selection
 
             selectAllAutorun.Click += (s, a) =>
             {
@@ -160,7 +307,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                 var panel = GetFlyPanel();
                 panel.SelectInvert();
             };
+        }
 
+        private void InitMisc(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)
+        {
+            // misc
 
             clearSysProxy.Click += (s, a) =>
             {
@@ -176,19 +327,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 servers.UpdateAllServersSummary();
             };
         }
-
-        #region public method
-        public override bool RefreshUI()
-        {
-            return false;
-        }
-
-        public override void Cleanup()
-        {
-        }
-        #endregion
-
-        #region private method
 
         bool CheckSelectedServerCount()
         {

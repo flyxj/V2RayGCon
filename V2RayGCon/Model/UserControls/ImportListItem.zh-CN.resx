@@ -117,112 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lbServerTitle.ToolTip" xml:space="preserve">
-    <value>单击选中此服务器</value>
+  <data name="label2.Text" xml:space="preserve">
+    <value>别名</value>
   </data>
-  <data name="cboxInbound.ToolTip" xml:space="preserve">
-    <value>改写配置中的inbound</value>
-  </data>
-  <data name="tboxInboundIP.ToolTip" xml:space="preserve">
-    <value>只对HTTP/SOCKS两种模式有效</value>
-  </data>
-  <data name="btnMenu.Text" xml:space="preserve">
-    <value>菜单</value>
-  </data>
-  <data name="tboxInboundPort.ToolTip" xml:space="preserve">
-    <value>只对HTTP/SOCKS两种模式有效</value>
-  </data>
-  <data name="chkSelected.ToolTip" xml:space="preserve">
-    <value>选中此服务器</value>
-  </data>
-  <data name="btnStart.Text" xml:space="preserve">
-    <value>开启</value>
-  </data>
-  <data name="btnStart.ToolTip" xml:space="preserve">
-    <value>停止其他服务器，然后开启此服务器。</value>
-  </data>
-  <data name="cboxMark.ToolTip" xml:space="preserve">
-    <value>设置标记（任意字符串）</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>模式</value>
-  </data>
-  <data name="label4.ToolTip" xml:space="preserve">
-    <value>Inbound模式，Config表示保持原inbound配置</value>
-  </data>
-  <data name="btnIsCollapse.ToolTip" xml:space="preserve">
-    <value>折叠或展开面板</value>
-  </data>
-  <data name="lbIsAutorun.ToolTip" xml:space="preserve">
-    <value>A表示自启动，I表示全局import</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>端口</value>
-  </data>
-  <data name="toolStripMenuItemStart.Text" xml:space="preserve">
-    <value>开启</value>
-  </data>
-  <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
-    <value>关闭所有服务器，然后启动此服务器</value>
-  </data>
-  <data name="stopToolStripMenuItem.Text" xml:space="preserve">
-    <value>停止</value>
-  </data>
-  <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>停止这个服务器</value>
-  </data>
-  <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
-    <value>多开</value>
-  </data>
-  <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>和其他已开启服务器并行运行（注意错开inbound端口）</value>
-  </data>
-  <data name="toolStripMenuItemIsAutorun.Text" xml:space="preserve">
-    <value>自启动</value>
-  </data>
-  <data name="toolStripMenuItemIsAutorun.ToolTipText" xml:space="preserve">
-    <value>此服务跟随软件启动</value>
-  </data>
-  <data name="toolStripMenuItemIsInjectImport.Text" xml:space="preserve">
-    <value>全局Import</value>
-  </data>
-  <data name="toolStripMenuItemIsInjectImport.ToolTipText" xml:space="preserve">
-    <value>服务器启动时注入全局import</value>
-  </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>复制</value>
-  </data>
-  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含主要配置信息</value>
-  </data>
-  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含完整配置信息</value>
-  </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>编辑</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+  <data name="btnDelete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
-  <data name="speedTestToolStripMenuItem.Text" xml:space="preserve">
+  <data name="chkMergeWhenStart.Text" xml:space="preserve">
+    <value>开启</value>
+  </data>
+  <data name="chkMergeWhenStart.ToolTip" xml:space="preserve">
+    <value>开启服务器时使用这个模板</value>
+  </data>
+  <data name="chkMergeWhenSpeedTest.Text" xml:space="preserve">
     <value>速度测试</value>
   </data>
-  <data name="speedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>下载网页http://www.google.com所需时间</value>
-  </data>
-  <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>此服务器日志</value>
-  </data>
-  <data name="setAsSystemProxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>设为系统代理</value>
-  </data>
-  <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>需要将inbound选为HTTP模式</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>标记</value>
+  <data name="chkMergeWhenSpeedTest.ToolTip" xml:space="preserve">
+    <value>进行速度测试时使用这个模板</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
-    <value>拖放可调整顺序</value>
+    <value>拖放可以调整顺序</value>
   </data>
 </root>

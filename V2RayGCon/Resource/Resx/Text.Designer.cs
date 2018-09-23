@@ -106,6 +106,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 All 的本地化字符串。
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Analysing import, please wait ... 的本地化字符串。
         /// </summary>
         internal static string AnalysingImport {
@@ -848,6 +857,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Log of this server 的本地化字符串。
+        /// </summary>
+        internal static string LogOfThisServer {
+            get {
+                return ResourceManager.GetString("LogOfThisServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Looks like you found a bug.
         ///Please send the following file to the author. 的本地化字符串。
         /// </summary>
@@ -867,6 +885,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Multiboxing 的本地化字符串。
+        /// </summary>
+        internal static string Multiboxing {
+            get {
+                return ResourceManager.GetString("Multiboxing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Network timeout 的本地化字符串。
         /// </summary>
         internal static string NetworkTimeout {
@@ -881,6 +908,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string NoLinkFound {
             get {
                 return ResourceManager.GetString("NoLinkFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No mark 的本地化字符串。
+        /// </summary>
+        internal static string NoMark {
+            get {
+                return ResourceManager.GetString("NoMark", resourceCulture);
             }
         }
         

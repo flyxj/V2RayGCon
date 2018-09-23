@@ -66,9 +66,10 @@ namespace V2RayGCon.Views
             var ctrl = new Controller.FormMainCtrl();
 
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
-                flyServerListContainer));
+                flyServerListContainer,
+                cboxMarkFilter));
 
-            ctrl.Plug(new Controller.FormMainComponent.MenuItems(
+            ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
                 toolMenuItemSimAddVmessServer,
                 toolMenuItemImportLinkFromClipboard,
                 toolMenuItemExportAllServerToFile,
@@ -83,7 +84,7 @@ namespace V2RayGCon.Views
                 toolStripMenuItemDownLoadV2rayCore,
                 toolStripMenuItemRemoveV2rayCore));
 
-            ctrl.Plug(new Controller.FormMainComponent.ServerMenuItems(
+            ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,
                 toolStripMenuItemRestartSelected,
                 toolMenuItemClearSysProxy,
@@ -98,7 +99,12 @@ namespace V2RayGCon.Views
                 toolStripMenuItemCopyAsVmessLink,
                 toolStripMenuItemCopyAsSubscription,
                 toolStripMenuItemDeleteAllServer,
-                toolStripMenuItemPackSelectedServers));
+                toolStripMenuItemModifySettings,
+                toolStripMenuItemPackSelectedServers,
+                toolStripMenuItemMoveToTop,
+                toolStripMenuItemMoveToBottom,
+                toolStripMenuItemCollapsePanel,
+                toolStripMenuItemExpansePanel));
 
             return ctrl;
         }
