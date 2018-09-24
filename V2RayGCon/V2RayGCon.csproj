@@ -100,9 +100,8 @@
     <Compile Include="Controller\ConfigerComponent\Editor.cs" />
     <Compile Include="Controller\ConfigerComponent\Import.cs" />
     <Compile Include="Controller\ConfigerComponent\EnvVar.cs" />
+    <Compile Include="Controller\ConfigerComponent\Shadowsocks.cs" />
     <Compile Include="Controller\ConfigerComponent\VGC.cs" />
-    <Compile Include="Controller\ConfigerComponent\SSClient.cs" />
-    <Compile Include="Controller\ConfigerComponent\SSServer.cs" />
     <Compile Include="Controller\ConfigerComponent\StreamSettings.cs" />
     <Compile Include="Controller\ConfigerComponent\Vmess.cs" />
     <Compile Include="Controller\FormMainComponent\FlyServer.cs" />
