@@ -258,7 +258,7 @@ namespace V2RayGCon.Views
                     tboxVMessLevel,
                     tboxVMessAid,
                     tboxVMessIPaddr,
-                    rbtnVmessIServerMode,
+                    rbtnIsServerMode,
                     btnVMessGenUUID,
                     btnVMessInsertClient))
                 .Plug(new Controller.ConfigerComponet.VGC(
@@ -268,12 +268,12 @@ namespace V2RayGCon.Views
                 .Plug(new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
-                    rbtnStreamInbound,
+                    rbtnIsServerMode,
                     btnInsertStream,
                     chkStreamUseTls,
                     chkStreamUseSockopt))
                 .Plug(new Controller.ConfigerComponet.Shadowsocks(
-                    rbtnSSInbound,
+                    rbtnIsServerMode,
                     tboxSSAddr,
                     tboxSSPassword,
                     chkSSIsShowPassword,

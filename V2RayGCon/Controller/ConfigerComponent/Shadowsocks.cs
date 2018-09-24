@@ -63,6 +63,18 @@ namespace V2RayGCon.Controller.ConfigerComponet
         public override void Update(JObject config)
         {
             var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
+
+            var protocal = GetStr(
+                this.isServerMode ? "inbound" : "outbound",
+                "protocol");
+
+            if (protocal.ToLower() != "shadowsocks")
+            {
+                EmptyAllControl();
+                return;
+            }
+
+
             var prefix = this.isServerMode ? "inbound.settings" : "outbound.settings.servers.0";
             this.isUseOTA = Lib.Utils.GetValue<bool>(config, prefix, "ota");
             this.password = GetStr(prefix, "password");
@@ -74,6 +86,14 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
+        private void EmptyAllControl()
+        {
+            this.address = string.Empty;
+            this.methodTypeIndex = -1;
+            this.password = string.Empty;
+            this.isUseOTA = false;
+        }
+
         void SetMethodTypeIndex(string selectedMethod)
         {
             this.methodTypeIndex = Lib.Utils.GetIndexIgnoreCase(
@@ -154,7 +174,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         JToken GetSettings()
         {
-
             var ssMethods = Model.Data.Table.ssMethods;
             var tpl = cache.tpl.LoadTemplate(isServerMode ? "ssServer" : "ssClient");
             Lib.Utils.TryParseIPAddr(this.address, out string ip, out int port);
@@ -168,7 +187,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 tpl["settings"]["method"] = methodName;
                 tpl["settings"]["password"] = this.password;
                 tpl["settings"]["ota"] = this.isUseOTA;
-                tpl["settings"]["network"] = "tcp,udp";
             }
             else
             {

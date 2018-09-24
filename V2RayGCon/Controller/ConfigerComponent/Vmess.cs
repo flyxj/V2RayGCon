@@ -46,16 +46,13 @@ namespace V2RayGCon.Controller.ConfigerComponet
             set { SetField(ref _altID, value); }
         }
 
-        private string _blackhole;
-        private string _ip;
-        private int _port;
-        public string addr
+        private string _address;
+        public string address
         {
-            get { return string.Join(":", _ip, _port); }
+            get { return _address; }
             set
             {
-                Lib.Utils.TryParseIPAddr(value, out _ip, out _port);
-                SetField(ref _blackhole, value);
+                SetField(ref _address, value);
             }
         }
         #endregion
@@ -91,7 +88,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             id.DataBindings.Add("Text", bs, nameof(this.ID));
             level.DataBindings.Add("Text", bs, nameof(this.level));
             alterID.DataBindings.Add("Text", bs, nameof(this.altID));
-            ipAddr.DataBindings.Add("Text", bs, nameof(this.addr));
+            ipAddr.DataBindings.Add("Text", bs, nameof(this.address));
         }
 
         JToken GetSettings()
@@ -100,18 +97,20 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 tpl.LoadTemplate(serverMode ?
                 "vmessServer" : "vmessClient");
 
+            Lib.Utils.TryParseIPAddr(this.address, out string ip, out int port);
+
             if (serverMode)
             {
-                vmess["port"] = _port;
-                vmess["listen"] = _ip;
+                vmess["port"] = port;
+                vmess["listen"] = ip;
                 vmess["settings"]["clients"][0]["id"] = ID;
                 vmess["settings"]["clients"][0]["level"] = Lib.Utils.Str2Int(level);
                 vmess["settings"]["clients"][0]["alterId"] = Lib.Utils.Str2Int(altID);
             }
             else
             {
-                vmess["settings"]["vnext"][0]["address"] = _ip;
-                vmess["settings"]["vnext"][0]["port"] = _port;
+                vmess["settings"]["vnext"][0]["address"] = ip;
+                vmess["settings"]["vnext"][0]["port"] = port;
                 vmess["settings"]["vnext"][0]["users"][0]["id"] = ID;
                 vmess["settings"]["vnext"][0]["users"][0]["alterId"] = Lib.Utils.Str2Int(altID);
                 vmess["settings"]["vnext"][0]["users"][0]["level"] = Lib.Utils.Str2Int(level);
@@ -134,11 +133,31 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
             Lib.Utils.CombineConfig(ref config, vmess);
         }
+
+        void EmptyAllControl()
+        {
+            this.ID = string.Empty;
+            this.level = string.Empty;
+            this.altID = string.Empty;
+            this.address = string.Empty;
+
+        }
         #endregion
 
         #region public method
         public override void Update(JObject config)
         {
+            var protocal = Lib.Utils.GetValue<string>(
+                config,
+                this.serverMode ? "inbound" : "outbound",
+                "protocol");
+
+            if (protocal.ToLower() != "vmess")
+            {
+                EmptyAllControl();
+                return;
+            }
+
             var prefix = serverMode ?
                 "inbound.settings.clients.0" :
                 "outbound.settings.vnext.0.users.0";
@@ -147,7 +166,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             level = Lib.Utils.GetValue<int>(config, prefix, "level").ToString();
             altID = Lib.Utils.GetValue<int>(config, prefix, "alterId").ToString();
 
-            addr = serverMode ?
+            address = serverMode ?
                 Lib.Utils.GetAddr(config, "inbound", "listen", "port") :
                 Lib.Utils.GetAddr(config, "outbound.settings.vnext.0", "address", "port");
         }

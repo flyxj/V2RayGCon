@@ -120,16 +120,10 @@
   <data name="cboxConfigSection.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="rbtnIDontCare2.Text" xml:space="preserve">
+  <data name="radioButton1.Text" xml:space="preserve">
     <value>Outbound(客户端)</value>
   </data>
-  <data name="rbtnIDontCare2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rbtnSSInbound.Text" xml:space="preserve">
-    <value>Inbound(服务器)</value>
-  </data>
-  <data name="rbtnSSInbound.ToolTip" xml:space="preserve">
+  <data name="radioButton1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="btnInsertSSSettings.Text" xml:space="preserve">
@@ -143,9 +137,6 @@
   </data>
   <data name="chkSSIsShowPassword.ToolTip" xml:space="preserve">
     <value>显示密码</value>
-  </data>
-  <data name="chkSSIsUseOTA.ToolTip" xml:space="preserve">
-    <value>一次认证</value>
   </data>
   <data name="cboxSSMethod.ToolTip" xml:space="preserve">
     <value />
@@ -171,6 +162,12 @@
   <data name="groupBox10.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="rbtnIsServerMode.Text" xml:space="preserve">
+    <value>Inbound(服务器)</value>
+  </data>
+  <data name="rbtnIsServerMode.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="chkStreamUseSockopt.Text" xml:space="preserve">
     <value>使用sockopt</value>
   </data>
@@ -181,18 +178,6 @@
     <value>使用TLS</value>
   </data>
   <data name="chkStreamUseTls.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rbtnStreamOutbound.Text" xml:space="preserve">
-    <value>Outbound(客户端)</value>
-  </data>
-  <data name="rbtnStreamOutbound.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rbtnStreamInbound.Text" xml:space="preserve">
-    <value>Inbound(服务器)</value>
-  </data>
-  <data name="rbtnStreamInbound.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="cboxStreamType.ToolTip" xml:space="preserve">
@@ -220,18 +205,6 @@
     <value />
   </data>
   <data name="groupBox2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="radioButton1.Text" xml:space="preserve">
-    <value>Outbound(客户端)</value>
-  </data>
-  <data name="radioButton1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rbtnVmessIServerMode.Text" xml:space="preserve">
-    <value>Inbound(服务器)</value>
-  </data>
-  <data name="rbtnVmessIServerMode.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="btnVMessInsertClient.Text" xml:space="preserve">
