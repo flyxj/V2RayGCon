@@ -125,67 +125,67 @@
     <value>宋体, 9pt</value>
   </data>
   <data name="toolMenuItemSimAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
+    <value>196, 22</value>
   </data>
   <data name="toolMenuItemSimAddVmessServer.Text" xml:space="preserve">
     <value>Add vmess client</value>
   </data>
   <data name="toolMenuItemImportLinkFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
+    <value>196, 22</value>
   </data>
   <data name="toolMenuItemImportLinkFromClipboard.Text" xml:space="preserve">
     <value>Import from clipboard</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 6</value>
+    <value>193, 6</value>
   </data>
   <data name="toolMenuItemExportAllServerToFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
+    <value>196, 22</value>
   </data>
   <data name="toolMenuItemExportAllServerToFile.Text" xml:space="preserve">
     <value>Export to file</value>
   </data>
   <data name="toolMenuItemImportFromFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
+    <value>196, 22</value>
   </data>
   <data name="toolMenuItemImportFromFile.Text" xml:space="preserve">
     <value>Import from file</value>
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 6</value>
+    <value>193, 6</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 30</value>
+    <value>196, 22</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Close</value>
   </data>
   <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 22</value>
+    <value>41, 20</value>
   </data>
   <data name="operationToolStripMenuItem.Text" xml:space="preserve">
     <value>File</value>
   </data>
   <data name="toolStripMenuItemSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemSelectAll.Text" xml:space="preserve">
     <value>Select all</value>
   </data>
   <data name="toolStripMenuItemSelectNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemSelectNone.Text" xml:space="preserve">
     <value>Select none</value>
   </data>
   <data name="toolStripMenuItemSelectInvert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemSelectInvert.Text" xml:space="preserve">
     <value>Select invert</value>
   </data>
   <data name="toolMenuItemSelectAutorunServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolMenuItemSelectAutorunServers.Text" xml:space="preserve">
     <value>Select autorun</value>
@@ -194,10 +194,10 @@
     <value>Select all autorun servers.</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 6</value>
+    <value>181, 6</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>160, 22</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
     <value>Modify settings</value>
@@ -206,25 +206,25 @@
     <value>Batch modify servers settings. Selected servers which are running will reboot.</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 6</value>
+    <value>157, 6</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>160, 22</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
     <value>Move to top</value>
   </data>
   <data name="toolStripMenuItemMoveToBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>160, 22</value>
   </data>
   <data name="toolStripMenuItemMoveToBottom.Text" xml:space="preserve">
     <value>Move to bottom</value>
   </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 6</value>
+    <value>157, 6</value>
   </data>
   <data name="toolStripMenuItemCollapsePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>160, 22</value>
   </data>
   <data name="toolStripMenuItemCollapsePanel.Text" xml:space="preserve">
     <value>Collapse panel</value>
@@ -233,7 +233,7 @@
     <value>Collapse server panel into a single line mode.</value>
   </data>
   <data name="toolStripMenuItemExpansePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>160, 22</value>
   </data>
   <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
     <value>Expanse panel</value>
@@ -242,13 +242,13 @@
     <value>Full server panel</value>
   </data>
   <data name="toolStripMenuItemModifySelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
     <value>Adjust selected</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>142, 22</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Text" xml:space="preserve">
     <value>v2ray://...</value>
@@ -257,7 +257,7 @@
     <value>Contain all config information.</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>142, 22</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Text" xml:space="preserve">
     <value>vmess://...</value>
@@ -266,7 +266,7 @@
     <value>Contain main config information.</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>142, 22</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.Text" xml:space="preserve">
     <value>subscription</value>
@@ -275,13 +275,13 @@
     <value>Encode selected servers as subscription content. </value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>Copy selected</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Text" xml:space="preserve">
     <value>Restart selected</value>
@@ -290,7 +290,7 @@
     <value>Restart all selected servers.</value>
   </data>
   <data name="toolStripMenuItemStopSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemStopSelected.Text" xml:space="preserve">
     <value>Stop selected</value>
@@ -299,7 +299,7 @@
     <value>Stop all selected servers.</value>
   </data>
   <data name="toolStripMenuItemSpeedTestOnSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemSpeedTestOnSelected.Text" xml:space="preserve">
     <value>Speed test selected</value>
@@ -308,7 +308,7 @@
     <value>Run speed test on selected servers.</value>
   </data>
   <data name="toolStripMenuItemPackSelectedServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemPackSelectedServers.Text" xml:space="preserve">
     <value>Pack selected</value>
@@ -317,28 +317,28 @@
     <value>Pack selected servers into one server.</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 6</value>
+    <value>181, 6</value>
   </data>
   <data name="toolMenuItemRefreshSummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolMenuItemRefreshSummary.Text" xml:space="preserve">
     <value>Refresh summary</value>
   </data>
   <data name="toolStripMenuItemDeleteAllServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>304, 30</value>
+    <value>214, 22</value>
   </data>
   <data name="toolStripMenuItemDeleteAllServer.Text" xml:space="preserve">
     <value>Delete all servers.</value>
   </data>
   <data name="toolStripMenuItemDeleteSelectedServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>304, 30</value>
+    <value>214, 22</value>
   </data>
   <data name="toolStripMenuItemDeleteSelectedServers.Text" xml:space="preserve">
     <value>Delete selected servers.</value>
   </data>
   <data name="toolStripMenuItemDeleteServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
     <value>Delete servers</value>
@@ -348,67 +348,67 @@
     <value>False</value>
   </data>
   <data name="toolMenuItemCurrentSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolMenuItemCurrentSysProxy.Text" xml:space="preserve">
     <value>None</value>
   </data>
   <data name="toolMenuItemClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
     <value>Clear proxy setting</value>
   </data>
   <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
+    <value>184, 22</value>
   </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>System proxy</value>
   </data>
   <data name="toolMenuItemServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 22</value>
+    <value>53, 20</value>
   </data>
   <data name="toolMenuItemServer.Text" xml:space="preserve">
     <value>Server</value>
   </data>
   <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>148, 22</value>
   </data>
   <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
     <value>Config editor</value>
   </data>
   <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>148, 22</value>
   </data>
   <data name="toolMenuItemQRCode.Text" xml:space="preserve">
     <value>QRCode</value>
   </data>
   <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>148, 22</value>
   </data>
   <data name="toolMenuItemLog.Text" xml:space="preserve">
     <value>Log</value>
   </data>
   <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>148, 22</value>
   </data>
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 22</value>
+    <value>53, 20</value>
   </data>
   <data name="windowToolStripMenuItem.Text" xml:space="preserve">
     <value>Window</value>
   </data>
   <data name="toolStripMenuItemDownLoadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 30</value>
+    <value>202, 22</value>
   </data>
   <data name="toolStripMenuItemDownLoadV2rayCore.Text" xml:space="preserve">
     <value>Download v2ray-core</value>
   </data>
   <data name="toolStripMenuItemRemoveV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 30</value>
+    <value>202, 22</value>
   </data>
   <data name="toolStripMenuItemRemoveV2rayCore.Text" xml:space="preserve">
     <value>Remove v2ray-core</value>
@@ -417,25 +417,25 @@
     <value>Delete V2RayGCon folder in %ProgramData%.</value>
   </data>
   <data name="toolMenuItemCheckUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 30</value>
+    <value>202, 22</value>
   </data>
   <data name="toolMenuItemCheckUpdate.Text" xml:space="preserve">
     <value>Check V2RayGCon update</value>
   </data>
   <data name="toolMenuItemAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 30</value>
+    <value>202, 22</value>
   </data>
   <data name="toolMenuItemAbout.Text" xml:space="preserve">
     <value>About</value>
   </data>
   <data name="toolMenuItemHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 30</value>
+    <value>202, 22</value>
   </data>
   <data name="toolMenuItemHelp.Text" xml:space="preserve">
     <value>Help</value>
   </data>
   <data name="aboutToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 22</value>
+    <value>47, 20</value>
   </data>
   <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
     <value>About</value>
@@ -443,12 +443,8 @@
   <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="menuStrip1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>9, 3, 0, 3</value>
-  </data>
   <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 28</value>
+    <value>420, 24</value>
   </data>
   <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -471,6 +467,7 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>139, 25</value>
   </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cboxMarkFilter.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -481,10 +478,13 @@
     <value>No mark</value>
   </data>
   <data name="cboxMarkFilter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>421, 2</value>
+    <value>325, 1</value>
+  </data>
+  <data name="cboxMarkFilter.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="cboxMarkFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 26</value>
+    <value>85, 20</value>
   </data>
   <data name="cboxMarkFilter.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -511,13 +511,10 @@
     <value>True</value>
   </data>
   <data name="flyServerListContainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 35</value>
-  </data>
-  <data name="flyServerListContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>0, 23</value>
   </data>
   <data name="flyServerListContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 420</value>
+    <value>415, 331</value>
   </data>
   <data name="flyServerListContainer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -538,10 +535,13 @@
     <value>Top, Right</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>353, 6</value>
+    <value>279, 4</value>
+  </data>
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 18</value>
+    <value>41, 12</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -568,10 +568,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>9, 18</value>
+    <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>558, 459</value>
+    <value>420, 357</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6745,11 +6745,8 @@
         //////////////////////////////////////////////////////////////////8=
 </value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>580, 500</value>
+    <value>392, 200</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
@@ -6841,30 +6838,6 @@
   <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
-    <value>toolStripMenuItem1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemCopyAsV2rayLink.Name" xml:space="preserve">
-    <value>toolStripMenuItemCopyAsV2rayLink</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemCopyAsV2rayLink.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemCopyAsVmessLink.Name" xml:space="preserve">
-    <value>toolStripMenuItemCopyAsVmessLink</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemCopyAsVmessLink.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemCopyAsSubscription.Name" xml:space="preserve">
-    <value>toolStripMenuItemCopyAsSubscription</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemCopyAsSubscription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;toolStripMenuItemModifySelected.Name" xml:space="preserve">
     <value>toolStripMenuItemModifySelected</value>
   </data>
@@ -6911,6 +6884,30 @@
     <value>toolStripMenuItemExpansePanel</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemExpansePanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
+    <value>toolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsV2rayLink.Name" xml:space="preserve">
+    <value>toolStripMenuItemCopyAsV2rayLink</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsV2rayLink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsVmessLink.Name" xml:space="preserve">
+    <value>toolStripMenuItemCopyAsVmessLink</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsVmessLink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsSubscription.Name" xml:space="preserve">
+    <value>toolStripMenuItemCopyAsSubscription</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemCopyAsSubscription.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemRestartSelected.Name" xml:space="preserve">

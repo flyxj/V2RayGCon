@@ -47,10 +47,6 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemSelectInvert = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemSelectAutorunServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemCopyAsSubscription = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemModifySelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemModifySettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -59,6 +55,10 @@ namespace V2RayGCon.Views
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemCollapsePanel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemExpansePanel = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyAsVmessLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCopyAsSubscription = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRestartSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemStopSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSpeedTestOnSelected = new System.Windows.Forms.ToolStripMenuItem();
@@ -195,30 +195,6 @@ namespace V2RayGCon.Views
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemCopyAsV2rayLink,
-            this.toolStripMenuItemCopyAsVmessLink,
-            this.toolStripMenuItemCopyAsSubscription});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
-            // 
-            // toolStripMenuItemCopyAsV2rayLink
-            // 
-            this.toolStripMenuItemCopyAsV2rayLink.Name = "toolStripMenuItemCopyAsV2rayLink";
-            resources.ApplyResources(this.toolStripMenuItemCopyAsV2rayLink, "toolStripMenuItemCopyAsV2rayLink");
-            // 
-            // toolStripMenuItemCopyAsVmessLink
-            // 
-            this.toolStripMenuItemCopyAsVmessLink.Name = "toolStripMenuItemCopyAsVmessLink";
-            resources.ApplyResources(this.toolStripMenuItemCopyAsVmessLink, "toolStripMenuItemCopyAsVmessLink");
-            // 
-            // toolStripMenuItemCopyAsSubscription
-            // 
-            this.toolStripMenuItemCopyAsSubscription.Name = "toolStripMenuItemCopyAsSubscription";
-            resources.ApplyResources(this.toolStripMenuItemCopyAsSubscription, "toolStripMenuItemCopyAsSubscription");
-            // 
             // toolStripMenuItemModifySelected
             // 
             this.toolStripMenuItemModifySelected.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -266,6 +242,30 @@ namespace V2RayGCon.Views
             // 
             this.toolStripMenuItemExpansePanel.Name = "toolStripMenuItemExpansePanel";
             resources.ApplyResources(this.toolStripMenuItemExpansePanel, "toolStripMenuItemExpansePanel");
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemCopyAsV2rayLink,
+            this.toolStripMenuItemCopyAsVmessLink,
+            this.toolStripMenuItemCopyAsSubscription});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            // 
+            // toolStripMenuItemCopyAsV2rayLink
+            // 
+            this.toolStripMenuItemCopyAsV2rayLink.Name = "toolStripMenuItemCopyAsV2rayLink";
+            resources.ApplyResources(this.toolStripMenuItemCopyAsV2rayLink, "toolStripMenuItemCopyAsV2rayLink");
+            // 
+            // toolStripMenuItemCopyAsVmessLink
+            // 
+            this.toolStripMenuItemCopyAsVmessLink.Name = "toolStripMenuItemCopyAsVmessLink";
+            resources.ApplyResources(this.toolStripMenuItemCopyAsVmessLink, "toolStripMenuItemCopyAsVmessLink");
+            // 
+            // toolStripMenuItemCopyAsSubscription
+            // 
+            this.toolStripMenuItemCopyAsSubscription.Name = "toolStripMenuItemCopyAsSubscription";
+            resources.ApplyResources(this.toolStripMenuItemCopyAsSubscription, "toolStripMenuItemCopyAsSubscription");
             // 
             // toolStripMenuItemRestartSelected
             // 
