@@ -17,7 +17,7 @@ namespace V2RayGCon.Model.UserControls
             this.serverItem = serverItem;
             InitializeComponent();
             this.orgHeight = this.Height;
-            this.minHeight = this.cboxInbound.Top;
+            this.minHeight = this.btnStart.Top;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
@@ -422,8 +422,6 @@ namespace V2RayGCon.Model.UserControls
         {
             serverItem.ToggleIsInjectImport();
         }
-
-
 
         private void btnIsCollapse_Click(object sender, EventArgs e)
         {
