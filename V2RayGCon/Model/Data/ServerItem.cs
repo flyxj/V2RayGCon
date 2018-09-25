@@ -15,7 +15,7 @@ namespace V2RayGCon.Model.Data
         public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected, isCollapse;
+        public bool isAutoRun, isInjectImport, isSelected, isCollapse, isInjectSkipCNSite;
         public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort;
         public double index;
@@ -188,6 +188,20 @@ namespace V2RayGCon.Model.Data
             SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
+        public void ToggleIsInjectSkipCNSite()
+        {
+            this.isInjectSkipCNSite = !this.isInjectSkipCNSite;
+
+            // refresh UI immediately
+            InvokeEventOnPropertyChange();
+
+            // time consuming things
+            if (isServerOn)
+            {
+                RestartCoreThen();
+            }
+        }
+
         public void ToggleIsCollapse()
         {
             this.isCollapse = !this.isCollapse;
@@ -300,31 +314,6 @@ namespace V2RayGCon.Model.Data
             Task.Factory.StartNew(() => RestartCoreWorker(next));
         }
 
-        public void RestartCoreWorker(Action next)
-        {
-            JObject cfg = GetDecodedConfig(true, false, true);
-            if (cfg == null)
-            {
-                StopCoreThen(next);
-                return;
-            }
-
-            if (!OverwriteInboundSettings(
-                ref cfg,
-                overwriteInboundType,
-                this.inboundIP,
-                this.inboundPort))
-            {
-                StopCoreThen(next);
-                return;
-            }
-
-            server.RestartCoreThen(
-                cfg.ToString(),
-                next,
-                Lib.Utils.GetEnvVarsFromConfig(cfg));
-        }
-
         public void GetProxyAddrThen(Action<string> next)
         {
             if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
@@ -405,6 +394,65 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region private method
+        void RestartCoreWorker(Action next)
+        {
+            JObject cfg = GetDecodedConfig(true, false, true);
+            if (cfg == null)
+            {
+                StopCoreThen(next);
+                return;
+            }
+
+            if (!OverwriteInboundSettings(
+                ref cfg,
+                overwriteInboundType,
+                this.inboundIP,
+                this.inboundPort))
+            {
+                StopCoreThen(next);
+                return;
+            }
+
+            InjectSkipCNSite(ref cfg);
+
+            server.RestartCoreThen(
+                cfg.ToString(),
+                next,
+                Lib.Utils.GetEnvVarsFromConfig(cfg));
+        }
+
+        void InjectSkipCNSite(ref JObject config)
+        {
+            if (!this.isInjectSkipCNSite)
+            {
+                return;
+            }
+
+            // copy from Controller.ConfigerComponent.Quick.cs
+            var c = JObject.Parse(@"{}");
+
+            var dict = new Dictionary<string, string> {
+                { "dns","dnsCFnGoogle" },
+                { "routing","routeCNIP" },
+                { "outboundDetour","outDtrFreedom" },
+            };
+
+            var cache = Service.Cache.Instance;
+            foreach (var item in dict)
+            {
+                var tpl = Lib.Utils.CreateJObject(item.Key);
+                var value = cache.tpl.LoadExample(item.Value);
+                tpl[item.Key] = value;
+
+                if (!Lib.Utils.Contains(config, tpl))
+                {
+                    c[item.Key] = value;
+                }
+            }
+
+            Lib.Utils.CombineConfig(ref config, c);
+        }
+
         void SetPropertyOnDemand<T>(
             ref T property,
             T value,

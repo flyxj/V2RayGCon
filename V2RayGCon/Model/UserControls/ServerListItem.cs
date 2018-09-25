@@ -53,17 +53,21 @@ namespace V2RayGCon.Model.UserControls
                     tboxInboundPort, serverItem.inboundPort.ToString());
 
                 Lib.UI.UpdateControlOnDemand(
-                    toolStripMenuItemIsAutorun,
-                    serverItem.isAutoRun);
-
-                Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
 
                 Lib.UI.UpdateControlOnDemand(
                     toolStripMenuItemIsInjectImport,
                     serverItem.isInjectImport);
 
-                SetAutorunImportMarkLable();
+                Lib.UI.UpdateControlOnDemand(
+                    toolStripMenuItemSkipCNSite,
+                    serverItem.isInjectSkipCNSite);
+
+                Lib.UI.UpdateControlOnDemand(
+                    toolStripMenuItemIsAutorun,
+                    serverItem.isAutoRun);
+
+                SetAICLable();
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
                 UpdateServerMark();
@@ -88,10 +92,11 @@ namespace V2RayGCon.Model.UserControls
             toolTip1.SetToolTip(lbServerTitle, status);
         }
 
-        private void SetAutorunImportMarkLable()
+        private void SetAICLable()
         {
             var text = serverItem.isAutoRun ? "A" : "";
             text += serverItem.isInjectImport ? "I" : "";
+            text += serverItem.isInjectSkipCNSite ? "C" : "";
 
             if (lbIsAutorun.Text != text)
             {
@@ -421,6 +426,11 @@ namespace V2RayGCon.Model.UserControls
         private void toolStripMenuItemIsInjectImport_Click(object sender, EventArgs e)
         {
             serverItem.ToggleIsInjectImport();
+        }
+
+        private void toolStripMenuItemSkipCNSite_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsInjectSkipCNSite();
         }
 
         private void btnIsCollapse_Click(object sender, EventArgs e)

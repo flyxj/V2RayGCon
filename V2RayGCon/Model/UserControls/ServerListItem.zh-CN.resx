@@ -154,7 +154,7 @@
     <value>折叠或展开面板</value>
   </data>
   <data name="lbIsAutorun.ToolTip" xml:space="preserve">
-    <value>A表示自启动，I表示全局import</value>
+    <value>A自启动，I全局import，C不代理国内网址</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>端口</value>
@@ -189,14 +189,14 @@
   <data name="toolStripMenuItemIsInjectImport.ToolTipText" xml:space="preserve">
     <value>服务器启动时注入全局import</value>
   </data>
+  <data name="toolStripMenuItemSkipCNSite.Text" xml:space="preserve">
+    <value>分流国内</value>
+  </data>
+  <data name="toolStripMenuItemSkipCNSite.ToolTipText" xml:space="preserve">
+    <value>不代理国内网址。新手专用，高级用户请直接编辑配置，避免配置冲突。</value>
+  </data>
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>复制</value>
-  </data>
-  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含主要配置信息</value>
-  </data>
-  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含完整配置信息</value>
   </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>编辑</value>
@@ -218,6 +218,12 @@
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>需要将inbound选为HTTP模式</value>
+  </data>
+  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含主要配置信息</value>
+  </data>
+  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含完整配置信息</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>标记</value>

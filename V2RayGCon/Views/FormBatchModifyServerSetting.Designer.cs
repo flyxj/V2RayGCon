@@ -42,6 +42,8 @@
             this.btnModify = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cboxIsInjectSkipCNSite = new System.Windows.Forms.ComboBox();
+            this.chkIsInjectSkipCNSite = new System.Windows.Forms.CheckBox();
             this.cboxImport = new System.Windows.Forms.ComboBox();
             this.cboxAutorun = new System.Windows.Forms.ComboBox();
             this.chkImport = new System.Windows.Forms.CheckBox();
@@ -142,6 +144,8 @@
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.cboxIsInjectSkipCNSite);
+            this.groupBox2.Controls.Add(this.chkIsInjectSkipCNSite);
             this.groupBox2.Controls.Add(this.cboxImport);
             this.groupBox2.Controls.Add(this.cboxAutorun);
             this.groupBox2.Controls.Add(this.chkImport);
@@ -151,6 +155,24 @@
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
+            // 
+            // cboxIsInjectSkipCNSite
+            // 
+            resources.ApplyResources(this.cboxIsInjectSkipCNSite, "cboxIsInjectSkipCNSite");
+            this.cboxIsInjectSkipCNSite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxIsInjectSkipCNSite.FormattingEnabled = true;
+            this.cboxIsInjectSkipCNSite.Items.AddRange(new object[] {
+            resources.GetString("cboxIsInjectSkipCNSite.Items"),
+            resources.GetString("cboxIsInjectSkipCNSite.Items1")});
+            this.cboxIsInjectSkipCNSite.Name = "cboxIsInjectSkipCNSite";
+            this.toolTip1.SetToolTip(this.cboxIsInjectSkipCNSite, resources.GetString("cboxIsInjectSkipCNSite.ToolTip"));
+            // 
+            // chkIsInjectSkipCNSite
+            // 
+            resources.ApplyResources(this.chkIsInjectSkipCNSite, "chkIsInjectSkipCNSite");
+            this.chkIsInjectSkipCNSite.Name = "chkIsInjectSkipCNSite";
+            this.toolTip1.SetToolTip(this.chkIsInjectSkipCNSite, resources.GetString("chkIsInjectSkipCNSite.ToolTip"));
+            this.chkIsInjectSkipCNSite.UseVisualStyleBackColor = true;
             // 
             // cboxImport
             // 
@@ -229,5 +251,7 @@
         private System.Windows.Forms.ComboBox cboxAutorun;
         private System.Windows.Forms.CheckBox chkImport;
         private System.Windows.Forms.CheckBox chkAutorun;
+        private System.Windows.Forms.ComboBox cboxIsInjectSkipCNSite;
+        private System.Windows.Forms.CheckBox chkIsInjectSkipCNSite;
     }
 }

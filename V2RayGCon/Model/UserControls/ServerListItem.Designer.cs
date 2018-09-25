@@ -53,6 +53,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemIsAutorun = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemIsInjectImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSkipCNSite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vmessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -205,6 +206,7 @@
             this.toolStripSeparator1,
             this.toolStripMenuItemIsAutorun,
             this.toolStripMenuItemIsInjectImport,
+            this.toolStripMenuItemSkipCNSite,
             this.toolStripMenuItem1,
             this.copyToolStripMenuItem,
             this.editToolStripMenuItem,
@@ -250,6 +252,12 @@
             this.toolStripMenuItemIsInjectImport.Name = "toolStripMenuItemIsInjectImport";
             resources.ApplyResources(this.toolStripMenuItemIsInjectImport, "toolStripMenuItemIsInjectImport");
             this.toolStripMenuItemIsInjectImport.Click += new System.EventHandler(this.toolStripMenuItemIsInjectImport_Click);
+            // 
+            // toolStripMenuItemSkipCNSite
+            // 
+            this.toolStripMenuItemSkipCNSite.Name = "toolStripMenuItemSkipCNSite";
+            resources.ApplyResources(this.toolStripMenuItemSkipCNSite, "toolStripMenuItemSkipCNSite");
+            this.toolStripMenuItemSkipCNSite.Click += new System.EventHandler(this.toolStripMenuItemSkipCNSite_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -385,5 +393,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label lbIsAutorun;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSkipCNSite;
     }
 }
