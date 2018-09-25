@@ -139,10 +139,10 @@
     <value>开启</value>
   </data>
   <data name="btnStart.ToolTip" xml:space="preserve">
-    <value>停止其他服务器，然后开启此服务器。</value>
+    <value>停止全部服务器，然后运行这个服务器</value>
   </data>
   <data name="cboxMark.ToolTip" xml:space="preserve">
-    <value>设置标记（任意字符串）</value>
+    <value>设置标记（任意文字）</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>模式</value>
@@ -163,7 +163,7 @@
     <value>开启</value>
   </data>
   <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
-    <value>关闭所有服务器，然后启动此服务器</value>
+    <value>关闭全部服务器，然后运行这个服务器</value>
   </data>
   <data name="stopToolStripMenuItem.Text" xml:space="preserve">
     <value>停止</value>
@@ -181,7 +181,7 @@
     <value>自启动</value>
   </data>
   <data name="toolStripMenuItemIsAutorun.ToolTipText" xml:space="preserve">
-    <value>此服务跟随软件启动</value>
+    <value>跟随软件启动</value>
   </data>
   <data name="toolStripMenuItemIsInjectImport.Text" xml:space="preserve">
     <value>全局Import</value>
@@ -193,7 +193,7 @@
     <value>分流国内</value>
   </data>
   <data name="toolStripMenuItemSkipCNSite.ToolTipText" xml:space="preserve">
-    <value>不代理国内网址。新手专用，高级用户请直接编辑配置，避免配置冲突。</value>
+    <value>（新手专用）不代理国内网址。高级用户请使用v2ray-core的routing</value>
   </data>
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>复制</value>
@@ -208,7 +208,7 @@
     <value>速度测试</value>
   </data>
   <data name="speedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>下载网页http://www.google.com所需时间</value>
+    <value>下载google主页所需时间</value>
   </data>
   <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
     <value>此服务器日志</value>

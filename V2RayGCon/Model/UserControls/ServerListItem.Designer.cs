@@ -128,6 +128,7 @@
             resources.ApplyResources(this.lbRunning, "lbRunning");
             this.lbRunning.ForeColor = System.Drawing.Color.Green;
             this.lbRunning.Name = "lbRunning";
+            this.toolTip1.SetToolTip(this.lbRunning, resources.GetString("lbRunning.ToolTip"));
             this.lbRunning.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbRunning_MouseDown);
             // 
             // tboxInboundPort

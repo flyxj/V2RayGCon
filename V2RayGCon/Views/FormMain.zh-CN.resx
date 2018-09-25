@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="operationToolStripMenuItem.Text" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="toolMenuItemServer.Text" xml:space="preserve">
+    <value>服务器</value>
+  </data>
+  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
+    <value>窗口</value>
+  </data>
+  <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
+    <value>关于</value>
+  </data>
   <data name="toolMenuItemSimAddVmessServer.Text" xml:space="preserve">
     <value>添加vmess客户端</value>
   </data>
@@ -131,9 +143,6 @@
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>关闭窗口</value>
-  </data>
-  <data name="operationToolStripMenuItem.Text" xml:space="preserve">
-    <value>文件</value>
   </data>
   <data name="toolStripMenuItemSelectAll.Text" xml:space="preserve">
     <value>全选</value>
@@ -150,26 +159,14 @@
   <data name="toolMenuItemSelectAutorunServers.ToolTipText" xml:space="preserve">
     <value>选中勾了[自启]的服务器</value>
   </data>
-  <data name="toolStripMenuItemCopyAsV2rayLink.ToolTipText" xml:space="preserve">
-    <value>包含全部配置信息</value>
-  </data>
-  <data name="toolStripMenuItemCopyAsVmessLink.ToolTipText" xml:space="preserve">
-    <value>包含主要配置信息</value>
-  </data>
-  <data name="toolStripMenuItemCopyAsSubscription.Text" xml:space="preserve">
-    <value>订阅内容</value>
-  </data>
-  <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
-    <value>将选中服务器编码为订阅内容</value>
-  </data>
-  <data name="toolStripMenuItem1.Text" xml:space="preserve">
-    <value>复制选中</value>
+  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
+    <value>调整选中</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
     <value>修改设置</value>
   </data>
   <data name="toolStripMenuItemModifySettings.ToolTipText" xml:space="preserve">
-    <value>批量修改服务器信息。运行中的服务器会重启。</value>
+    <value>批量修改服务器信息，运行中的服务器会重启</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
     <value>置顶</value>
@@ -189,8 +186,20 @@
   <data name="toolStripMenuItemExpansePanel.ToolTipText" xml:space="preserve">
     <value>完整的服务器面板</value>
   </data>
-  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
-    <value>调整选中</value>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>复制选中</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsV2rayLink.ToolTipText" xml:space="preserve">
+    <value>包含全部配置信息</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsVmessLink.ToolTipText" xml:space="preserve">
+    <value>包含主要配置信息</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsSubscription.Text" xml:space="preserve">
+    <value>订阅内容</value>
+  </data>
+  <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
+    <value>将选中服务器编码为订阅内容</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Text" xml:space="preserve">
     <value>重启选中</value>
@@ -222,6 +231,9 @@
   <data name="toolMenuItemRefreshSummary.ToolTipText" xml:space="preserve">
     <value>刷新下面服务器的名字/IP/协议信息</value>
   </data>
+  <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
+    <value>删除服务器</value>
+  </data>
   <data name="toolStripMenuItemDeleteAllServer.Text" xml:space="preserve">
     <value>删除全部</value>
   </data>
@@ -234,17 +246,11 @@
   <data name="toolStripMenuItemDeleteSelectedServers.ToolTipText" xml:space="preserve">
     <value>删除选中的服务器</value>
   </data>
-  <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
-    <value>删除服务器</value>
-  </data>
-  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
-    <value>清除代理设置</value>
-  </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>系统代理</value>
   </data>
-  <data name="toolMenuItemServer.Text" xml:space="preserve">
-    <value>服务器</value>
+  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
+    <value>清除代理设置</value>
   </data>
   <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
     <value>配置编辑器</value>
@@ -257,9 +263,6 @@
   </data>
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>选项</value>
-  </data>
-  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
-    <value>窗口</value>
   </data>
   <data name="toolStripMenuItemDownLoadV2rayCore.Text" xml:space="preserve">
     <value>下载v2ray-core</value>
@@ -279,23 +282,11 @@
   <data name="toolMenuItemHelp.Text" xml:space="preserve">
     <value>帮助</value>
   </data>
-  <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
-    <value>关于</value>
-  </data>
-  <data name="menuStrip1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="cboxMarkFilter.ToolTip" xml:space="preserve">
     <value> 根据服务器的标记筛选</value>
   </data>
-  <data name="flyServerListContainer.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label1.Text" xml:space="preserve">
     <value>筛选</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -6472,8 +6463,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>主窗口</value>
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
   </data>
 </root>

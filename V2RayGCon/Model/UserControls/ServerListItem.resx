@@ -342,6 +342,9 @@
   <data name="lbRunning.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
+  <data name="lbRunning.ToolTip" xml:space="preserve">
+    <value>Drag and drop to adjust order.</value>
+  </data>
   <data name="&gt;&gt;lbRunning.Name" xml:space="preserve">
     <value>lbRunning</value>
   </data>
@@ -661,7 +664,7 @@
     <value>Skip CN website</value>
   </data>
   <data name="toolStripMenuItemSkipCNSite.ToolTipText" xml:space="preserve">
-    <value>Do not proxy CN website. For beginner only. Advanced user please use config editor.</value>
+    <value>Do not proxy CN website. For beginners only. Advanced users please edit section routing.</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>246, 6</value>
@@ -712,7 +715,7 @@
     <value>Speed test</value>
   </data>
   <data name="speedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>The time it took to download webpage http://www.google.com.</value>
+    <value>The time it took to download webpage https://www.google.com.</value>
   </data>
   <data name="logOfThisServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>249, 28</value>
