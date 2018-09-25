@@ -18,11 +18,12 @@ namespace V2RayGCon.Model.UserControls
             InitializeComponent();
             this.orgHeight = this.Height;
             this.minHeight = this.btnStart.Top;
+            isRunning = !serverItem.isServerOn;
+            this.Height = this.serverItem.isCollapse ? this.minHeight : this.orgHeight;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
         {
-            isRunning = !serverItem.isServerOn;
             SetStatusThen(string.Empty);
             RefreshUI(this, EventArgs.Empty);
             this.serverItem.OnPropertyChanged += RefreshUI;
