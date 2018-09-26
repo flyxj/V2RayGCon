@@ -104,7 +104,8 @@ namespace V2RayGCon.Views
                 toolStripMenuItemMoveToTop,
                 toolStripMenuItemMoveToBottom,
                 toolStripMenuItemCollapsePanel,
-                toolStripMenuItemExpansePanel));
+                toolStripMenuItemExpansePanel,
+                toolStripMenuItemSortBySpeedTest));
 
             return ctrl;
         }

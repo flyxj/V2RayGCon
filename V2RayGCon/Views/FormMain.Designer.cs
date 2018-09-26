@@ -52,6 +52,7 @@ namespace V2RayGCon.Views
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSortBySpeedTest = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemCollapsePanel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemExpansePanel = new System.Windows.Forms.ToolStripMenuItem();
@@ -204,6 +205,7 @@ namespace V2RayGCon.Views
             this.toolStripSeparator3,
             this.toolStripMenuItemMoveToTop,
             this.toolStripMenuItemMoveToBottom,
+            this.toolStripMenuItemSortBySpeedTest,
             this.toolStripSeparator4,
             this.toolStripMenuItemCollapsePanel,
             this.toolStripMenuItemExpansePanel});
@@ -228,6 +230,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemMoveToBottom, "toolStripMenuItemMoveToBottom");
             this.toolStripMenuItemMoveToBottom.Name = "toolStripMenuItemMoveToBottom";
+            // 
+            // toolStripMenuItemSortBySpeedTest
+            // 
+            resources.ApplyResources(this.toolStripMenuItemSortBySpeedTest, "toolStripMenuItemSortBySpeedTest");
+            this.toolStripMenuItemSortBySpeedTest.Name = "toolStripMenuItemSortBySpeedTest";
             // 
             // toolStripSeparator4
             // 
@@ -501,5 +508,6 @@ namespace V2RayGCon.Views
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem toolStripMenuItemCollapsePanel;
         private ToolStripMenuItem toolStripMenuItemExpansePanel;
+        private ToolStripMenuItem toolStripMenuItemSortBySpeedTest;
     }
 }

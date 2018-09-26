@@ -36,6 +36,7 @@ namespace V2RayGCon.Model.Data
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
+            speedTestResult = long.MaxValue;
 
             overwriteInboundType = 0;
             inboundIP = "127.0.0.1";
@@ -47,6 +48,9 @@ namespace V2RayGCon.Model.Data
         }
 
         #region non-serialize properties
+        [JsonIgnore]
+        public long speedTestResult;
+
         [JsonIgnore]
         public Service.Servers parent = null;
 
@@ -159,10 +163,10 @@ namespace V2RayGCon.Model.Data
             speedTester.OnLog += OnLogHandler;
             speedTester.RestartCore(config);
 
-            var time = Lib.Utils.VisitWebPageSpeedTest(url, port);
+            this.speedTestResult = Lib.Utils.VisitWebPageSpeedTest(url, port);
             text = string.Format("{0}:{1}",
                 I18N("VisitWebPageTest"),
-                time > 0 ? time.ToString() + "ms" : I18N("Timeout"));
+                speedTestResult < long.MaxValue ? speedTestResult.ToString() + "ms" : I18N("Timeout"));
             log(text);
             speedTester.StopCore();
             speedTester.OnLog -= OnLogHandler;

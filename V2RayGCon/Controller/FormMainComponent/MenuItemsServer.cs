@@ -30,7 +30,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem collapsePanel,
-            ToolStripMenuItem expansePanel)
+            ToolStripMenuItem expansePanel,
+            ToolStripMenuItem sortBySpeed)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
@@ -39,7 +40,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 stopSelected, restartSelected, speedTestOnSelected,
                 deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions,
                 deleteAllItems, modifySelected, packSelected,
-                moveToTop, moveToBottom, collapsePanel, expansePanel);
+                moveToTop, moveToBottom, collapsePanel, expansePanel, sortBySpeed);
             InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
             InitMisc(clearSysProxy, refreshSummary);
         }
@@ -70,8 +71,18 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem collapsePanel,
-            ToolStripMenuItem expansePanel)
+            ToolStripMenuItem expansePanel,
+            ToolStripMenuItem sortBySpeed)
         {
+            sortBySpeed.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                SortServerListBySpeedTestResult();
+            };
 
             expansePanel.Click += (s, a) =>
             {
@@ -230,6 +241,26 @@ namespace V2RayGCon.Controller.FormMainComponent
                     servers.RestartAllSelectedServersThen();
                 }
             };
+        }
+
+        private void SortServerListBySpeedTestResult()
+        {
+            var list = servers.GetServerList().Where(s => s.isSelected).ToList();
+            if (list.Count < 2)
+            {
+                return;
+            }
+            list.Sort((a, b) => a.speedTestResult.CompareTo(b.speedTestResult));
+            var minIndex = list.First().index;
+            var delta = 1.0 / 2 / list.Count;
+            for (int i = 1; i < list.Count; i++)
+            {
+                list[i].index = minIndex + delta * i;
+            }
+
+            var flyPanel = GetFlyPanel();
+            flyPanel.RemoveAllConrols();
+            flyPanel.RefreshUI();
         }
 
         void UpdateServerItemPanelIsCollapse(bool isCollapse)
