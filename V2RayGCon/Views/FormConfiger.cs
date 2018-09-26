@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -259,7 +258,7 @@ namespace V2RayGCon.Views
                     tboxVMessLevel,
                     tboxVMessAid,
                     tboxVMessIPaddr,
-                    rbtnVmessIServerMode,
+                    rbtnIsServerMode,
                     btnVMessGenUUID,
                     btnVMessInsertClient))
                 .Plug(new Controller.ConfigerComponet.VGC(
@@ -269,25 +268,18 @@ namespace V2RayGCon.Views
                 .Plug(new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
-                    rbtnStreamInbound,
+                    rbtnIsServerMode,
                     btnInsertStream,
                     chkStreamUseTls,
                     chkStreamUseSockopt))
-                .Plug(new Controller.ConfigerComponet.SSClient(
-                    tboxSSCAddr,
-                    tboxSSCPass,
-                    cboxSSCMethod,
-                    chkSSCOTA,
-                    chkSSCShowPass,
-                    btnSSRInsertClient))
-                .Plug(new Controller.ConfigerComponet.SSServer(
-                    tboxSSSPass,
-                    tboxSSSPort,
-                    cboxSSSNetwork,
-                    cboxSSSMethod,
-                    chkSSSOTA,
-                    chkSSSShowPass,
-                    btnSSInsertServer))
+                .Plug(new Controller.ConfigerComponet.Shadowsocks(
+                    rbtnIsServerMode,
+                    tboxSSAddr,
+                    tboxSSPassword,
+                    chkSSIsShowPassword,
+                    cboxSSMethod,
+                    chkSSIsUseOTA,
+                    btnInsertSSSettings))
                 .Plug(new Controller.ConfigerComponet.Import(
                     panelExpandConfig,
                     cboxGlobalImport,

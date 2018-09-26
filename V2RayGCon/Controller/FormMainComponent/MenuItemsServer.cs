@@ -59,7 +59,10 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitBatchOperation(
             ToolStripMenuItem stopSelected,
             ToolStripMenuItem restartSelected,
-            ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem deleteSelected, ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks,
+            ToolStripMenuItem speedTestOnSelected,
+            ToolStripMenuItem deleteSelected,
+            ToolStripMenuItem copyAsV2rayLinks,
+            ToolStripMenuItem copyAsVmessLinks,
             ToolStripMenuItem copyAsSubscriptions,
             ToolStripMenuItem deleteAllItems,
             ToolStripMenuItem modifySelected,

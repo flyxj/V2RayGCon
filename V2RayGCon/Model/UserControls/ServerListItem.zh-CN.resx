@@ -139,10 +139,10 @@
     <value>开启</value>
   </data>
   <data name="btnStart.ToolTip" xml:space="preserve">
-    <value>停止其他服务器，然后开启此服务器。</value>
+    <value>停止全部服务器，然后运行这个服务器</value>
   </data>
   <data name="cboxMark.ToolTip" xml:space="preserve">
-    <value>设置标记（任意字符串）</value>
+    <value>设置标记（任意文字）</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>模式</value>
@@ -154,7 +154,7 @@
     <value>折叠或展开面板</value>
   </data>
   <data name="lbIsAutorun.ToolTip" xml:space="preserve">
-    <value>A表示自启动，I表示全局import</value>
+    <value>A自启动，I全局import，C不代理国内网址</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>端口</value>
@@ -163,7 +163,7 @@
     <value>开启</value>
   </data>
   <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
-    <value>关闭所有服务器，然后启动此服务器</value>
+    <value>关闭全部服务器，然后运行这个服务器</value>
   </data>
   <data name="stopToolStripMenuItem.Text" xml:space="preserve">
     <value>停止</value>
@@ -181,7 +181,7 @@
     <value>自启动</value>
   </data>
   <data name="toolStripMenuItemIsAutorun.ToolTipText" xml:space="preserve">
-    <value>此服务跟随软件启动</value>
+    <value>跟随软件启动</value>
   </data>
   <data name="toolStripMenuItemIsInjectImport.Text" xml:space="preserve">
     <value>全局Import</value>
@@ -189,14 +189,14 @@
   <data name="toolStripMenuItemIsInjectImport.ToolTipText" xml:space="preserve">
     <value>服务器启动时注入全局import</value>
   </data>
+  <data name="toolStripMenuItemSkipCNSite.Text" xml:space="preserve">
+    <value>分流国内</value>
+  </data>
+  <data name="toolStripMenuItemSkipCNSite.ToolTipText" xml:space="preserve">
+    <value>（新手专用）不代理国内网址。高级用户请使用v2ray-core的routing</value>
+  </data>
   <data name="copyToolStripMenuItem.Text" xml:space="preserve">
     <value>复制</value>
-  </data>
-  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含主要配置信息</value>
-  </data>
-  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>包含完整配置信息</value>
   </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>编辑</value>
@@ -208,7 +208,7 @@
     <value>速度测试</value>
   </data>
   <data name="speedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>下载网页http://www.google.com所需时间</value>
+    <value>下载google主页所需时间</value>
   </data>
   <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
     <value>此服务器日志</value>
@@ -218,6 +218,12 @@
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>需要将inbound选为HTTP模式</value>
+  </data>
+  <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含主要配置信息</value>
+  </data>
+  <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>包含完整配置信息</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>标记</value>

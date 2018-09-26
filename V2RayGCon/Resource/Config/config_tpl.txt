@@ -106,7 +106,7 @@
       "password": "密码",
       "level": 0,
       "ota": false,
-      "network": "tcp"
+      "network": "tcp,udp"
     }
   },
   "ssClient": {

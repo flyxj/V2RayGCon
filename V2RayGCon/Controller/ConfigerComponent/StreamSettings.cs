@@ -107,7 +107,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
                 if (!s.dropDownStyle)
                 {
-                    param.DropDownStyle = ComboBoxStyle.Simple;
+                    param.DropDownStyle = ComboBoxStyle.DropDown;
                     return;
                 }
 
@@ -240,7 +240,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             if (isUseSockopt)
             {
                 streamSettings["sockopt"] =
-                    JToken.Parse(@"{mark:0,tcpFastOpen:true}");
+                    JToken.Parse(@"{mark:0,tcpFastOpen:true,tproxy:'off'}");
                 return;
             }
         }

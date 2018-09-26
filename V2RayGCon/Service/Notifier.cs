@@ -65,7 +65,7 @@ namespace V2RayGCon.Service
                 // }));
             };
 
-            // new Views.FormConfiger(0);
+            // new Views.FormConfiger(@"{}");
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
             Views.FormMain.GetForm();

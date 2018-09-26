@@ -58,6 +58,7 @@ namespace V2RayGCon.Views
             this.cboxMark.Text = first.mark;
             this.cboxAutorun.SelectedIndex = first.isAutoRun ? 0 : 1;
             this.cboxImport.SelectedIndex = first.isInjectImport ? 0 : 1;
+            this.cboxIsInjectSkipCNSite.SelectedIndex = first.isInjectSkipCNSite ? 0 : 1;
         }
 
         #region UI event
@@ -76,11 +77,12 @@ namespace V2RayGCon.Views
             var newMark = chkMark.Checked ? cboxMark.Text : null;
             var newAutorun = chkAutorun.Checked ? cboxAutorun.SelectedIndex : -1;
             var newImport = chkImport.Checked ? cboxImport.SelectedIndex : -1;
+            var newSkipCN = chkIsInjectSkipCNSite.Checked ? cboxIsInjectSkipCNSite.SelectedIndex : -1;
 
             ModifyServersSetting(
                 list,
                 newMode, newIP, newPort,
-                newMark, newAutorun, newImport);
+                newMark, newAutorun, newImport, newSkipCN);
         }
 
         #endregion
@@ -89,7 +91,7 @@ namespace V2RayGCon.Views
         void ModifyServersSetting(
             List<Model.Data.ServerItem> list,
             int newMode, string newIP, int newPort,
-            string newMark, int newAutorun, int newImport)
+            string newMark, int newAutorun, int newImport, int newSkipCN)
         {
             Action<int, Action> worker = (index, next) =>
             {
@@ -99,7 +101,7 @@ namespace V2RayGCon.Views
                     ModifyServerSetting(
                         ref server,
                         newMode, newIP, newPort,
-                        newMark, newAutorun, newImport);
+                        newMark, newAutorun, newImport, newSkipCN);
                     server.InvokeEventOnPropertyChange();
                     next();
                     return;
@@ -110,7 +112,7 @@ namespace V2RayGCon.Views
                     ModifyServerSetting(
                         ref server,
                         newMode, newIP, newPort,
-                        newMark, newAutorun, newImport);
+                        newMark, newAutorun, newImport, newSkipCN);
                     server.RestartCoreThen();
                     next();
                 });
@@ -133,8 +135,13 @@ namespace V2RayGCon.Views
         void ModifyServerSetting(
             ref Model.Data.ServerItem server,
             int newMode, string newIP, int newPort,
-            string newMark, int newAutorun, int newImport)
+            string newMark, int newAutorun, int newImport, int newSkipCN)
         {
+            if (newSkipCN >= 0)
+            {
+                server.isInjectSkipCNSite = newSkipCN == 0;
+            }
+
             if (newAutorun >= 0)
             {
                 server.isAutoRun = newAutorun == 0;
