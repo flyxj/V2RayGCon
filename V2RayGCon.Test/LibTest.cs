@@ -24,7 +24,7 @@ namespace V2RayGCon.Test
         public void VisitWebPageSpeedTestTest(string url)
         {
             var time = Lib.Utils.VisitWebPageSpeedTest(url);
-            Assert.AreEqual(true, time > 0);
+            Assert.AreEqual(true, time < long.MaxValue);
         }
 
         [DataTestMethod]

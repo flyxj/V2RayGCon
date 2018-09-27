@@ -744,7 +744,7 @@ namespace V2RayGCon.Lib
                 Timeout = timeout * 1000,
             };
 
-            long elasped = 0;
+            long elasped = long.MaxValue;
             try
             {
                 if (port > 0)

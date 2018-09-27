@@ -556,7 +556,7 @@
     <value>AIC</value>
   </data>
   <data name="lbIsAutorun.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
+    <value>MiddleRight</value>
   </data>
   <data name="lbIsAutorun.ToolTip" xml:space="preserve">
     <value>(A)utorun / Global (I)mport / Skip (C)N website</value>
@@ -781,7 +781,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 122</value>
+    <value>580, 120</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Drag and drop to adjust order.</value>

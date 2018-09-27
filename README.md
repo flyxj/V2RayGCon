@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/wgu6ymoma/V2RayGCon/_apis/build/status/nobody3u.V2RayGCon)](https://dev.azure.com/wgu6ymoma/V2RayGCon/_build/latest?definitionId=3)  
+
 V2RayGCon是windows平台下的v2ray-core图形配置程序  
 
 ### 主要用途  

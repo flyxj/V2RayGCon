@@ -62,6 +62,19 @@ namespace V2RayGCon.Views
         }
 
         #region UI event
+        private void chkShareOverLAN_CheckedChanged(object sender, EventArgs e)
+        {
+            var isChecked = chkShareOverLAN.Checked;
+            if (isChecked)
+            {
+                tboxInIP.Text = "0.0.0.0";
+            }
+            else
+            {
+                tboxInIP.Text = "127.0.0.1";
+            }
+            tboxInIP.Enabled = !isChecked;
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -171,6 +184,7 @@ namespace V2RayGCon.Views
                 server.mark = newMark;
             }
         }
+
+        #endregion
     }
-    #endregion
 }
