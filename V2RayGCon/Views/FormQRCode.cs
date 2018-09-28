@@ -92,6 +92,7 @@ namespace V2RayGCon.Views
             servIndex = Lib.Utils.Clamp(oldIndex, 0, serverList.Count);
             cboxServList.SelectedIndex = servIndex;
             UpdateLink();
+            Lib.UI.ResetComboBoxDropdownMenuWidth(cboxServList);
         }
 
         void UpdateLink()
