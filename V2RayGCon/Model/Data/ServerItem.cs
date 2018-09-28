@@ -36,7 +36,7 @@ namespace V2RayGCon.Model.Data
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
-            speedTestResult = long.MaxValue;
+            speedTestResult = -1;
 
             overwriteInboundType = 0;
             inboundIP = "127.0.0.1";
