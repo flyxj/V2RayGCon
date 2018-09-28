@@ -84,15 +84,19 @@ namespace V2RayGCon.Views
                 toolStripMenuItemDownLoadV2rayCore,
                 toolStripMenuItemRemoveV2rayCore));
 
+            ctrl.Plug(new Controller.FormMainComponent.MenuItemsSelect(
+                selectAllToolStripMenuItem,
+                selectNoneToolStripMenuItem,
+                selectInvertToolStripMenuItem,
+                selectAutorunToolStripMenuItem,
+                selectRunningToolStripMenuItem,
+                selectTimeoutToolStripMenuItem));
+
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,
                 toolStripMenuItemRestartSelected,
                 toolMenuItemClearSysProxy,
                 toolMenuItemRefreshSummary,
-                toolMenuItemSelectAutorunServers,
-                toolStripMenuItemSelectAll,
-                toolStripMenuItemSelectNone,
-                toolStripMenuItemSelectInvert,
                 toolStripMenuItemSpeedTestOnSelected,
                 toolStripMenuItemDeleteSelectedServers,
                 toolStripMenuItemCopyAsV2rayLink,

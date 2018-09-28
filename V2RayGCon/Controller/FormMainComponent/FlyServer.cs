@@ -29,6 +29,16 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         #region public method
+        public void SelectTimeout()
+        {
+            LoopThroughAllServerItemControl((s) => s.SetSelected(s.isSpeedTestTimeout));
+        }
+
+        public void SelectRunning()
+        {
+            LoopThroughAllServerItemControl((s) => s.SetSelected(s.isRunning));
+        }
+
         public void SelectAutorun()
         {
             LoopThroughAllServerItemControl((s) => s.SetSelected(s.GetAutorunStatus()));

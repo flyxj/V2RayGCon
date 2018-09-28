@@ -9,7 +9,7 @@ namespace V2RayGCon.Model.UserControls
     public partial class ServerListItem : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Model.Data.ServerItem serverItem;
-        bool isRunning;
+        public bool isRunning;
         int orgHeight, minHeight;
 
         public ServerListItem(Model.Data.ServerItem serverItem)
@@ -189,6 +189,15 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public bool isSpeedTestTimeout
+        {
+            get
+            {
+                return this.serverItem.speedTestResult == long.MaxValue;
+            }
+            private set { }
+        }
+
         public string GetConfig()
         {
             return serverItem.config;

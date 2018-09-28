@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace V2RayGCon.Views
@@ -52,6 +49,7 @@ namespace V2RayGCon.Views
             {
                 return;
             }
+
             this.cboxInMode.SelectedIndex = first.overwriteInboundType;
             this.tboxInIP.Text = first.inboundIP;
             this.tboxInPort.Text = first.inboundPort.ToString();
@@ -91,10 +89,12 @@ namespace V2RayGCon.Views
             var newAutorun = chkAutorun.Checked ? cboxAutorun.SelectedIndex : -1;
             var newImport = chkImport.Checked ? cboxImport.SelectedIndex : -1;
             var newSkipCN = chkIsInjectSkipCNSite.Checked ? cboxIsInjectSkipCNSite.SelectedIndex : -1;
+            var isPortAutoIncrease = chkIncrement.Checked;
+
 
             ModifyServersSetting(
                 list,
-                newMode, newIP, newPort,
+                newMode, newIP, newPort, isPortAutoIncrease,
                 newMark, newAutorun, newImport, newSkipCN);
         }
 
@@ -103,17 +103,19 @@ namespace V2RayGCon.Views
         #region private method
         void ModifyServersSetting(
             List<Model.Data.ServerItem> list,
-            int newMode, string newIP, int newPort,
+            int newMode, string newIP, int newPort, bool isPortAutoIncrease,
             string newMark, int newAutorun, int newImport, int newSkipCN)
         {
             Action<int, Action> worker = (index, next) =>
             {
+                var portNumber = isPortAutoIncrease ? newPort + index : newPort;
+
                 var server = list[index];
                 if (!server.isServerOn)
                 {
                     ModifyServerSetting(
                         ref server,
-                        newMode, newIP, newPort,
+                        newMode, newIP, portNumber,
                         newMark, newAutorun, newImport, newSkipCN);
                     server.InvokeEventOnPropertyChange();
                     next();
@@ -124,7 +126,7 @@ namespace V2RayGCon.Views
                 {
                     ModifyServerSetting(
                         ref server,
-                        newMode, newIP, newPort,
+                        newMode, newIP, portNumber,
                         newMark, newAutorun, newImport, newSkipCN);
                     server.RestartCoreThen();
                     next();

@@ -206,7 +206,12 @@ namespace V2RayGCon.Service
 
         void UpdateNotifierText()
         {
-            var count = serverList.Where(s => s.isServerOn).ToList().Count;
+            var list = serverList
+                .Where(s => s.isServerOn)
+                .OrderBy(s => s.index)
+                .ToList();
+
+            var count = list.Count;
             if (count == preRunningServerCount)
             {
                 return;
@@ -219,15 +224,26 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            if (count == 1)
+            if (count < 4)
             {
-                var first = serverList.FirstOrDefault(s => s.isServerOn);
-                if (first == null)
+                var textList = new List<string>();
+
+                Action done = () =>
                 {
-                    setting.UpdateNotifierText();
-                    return;
-                }
-                first.GetProxyAddrThen((str) => setting.UpdateNotifierText(str));
+                    var text = string.Join(System.Environment.NewLine, textList);
+                    setting.UpdateNotifierText(text);
+                };
+
+                Action<int, Action> worker = (index, next) =>
+                {
+                    list[index].GetProxyAddrThen((s) =>
+                    {
+                        textList.Add(s);
+                        next();
+                    });
+                };
+
+                Lib.Utils.ChainActionHelperAsync(4, worker, done);
                 return;
             }
 
