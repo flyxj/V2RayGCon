@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -17,11 +19,7 @@ namespace V2RayGCon.Service
             setting = Setting.Instance;
             setting.SaveOriginalSystemProxyInfo();
             setting.LoadSystemProxy();
-
-            setting.OnUpdateNotifierText += (s, a) =>
-            {
-                ni.Text = a.Data;
-            };
+            setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
 
             servers = Servers.Instance;
             servers.Prepare(setting);
@@ -85,6 +83,16 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        void UpdateNotifierTextHandler(object sender, Model.Data.StrEvent args)
+        {
+            // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
+            var text = Lib.Utils.CutStr(args.Data, 127);
+            Type t = typeof(NotifyIcon);
+            BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
+            t.GetField("text", hidden).SetValue(ni, text);
+            if ((bool)t.GetField("added", hidden).GetValue(ni))
+                t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
+        }
 
         void CreateNotifyIcon()
         {
