@@ -65,10 +65,6 @@ namespace V2RayGCon.Model.UserControls
                     serverItem.isInjectSkipCNSite);
 
                 Lib.UI.UpdateControlOnDemand(
-                    toolStripMenuItemMark,
-                    serverItem.isSetMarkM);
-
-                Lib.UI.UpdateControlOnDemand(
                     toolStripMenuItemIsAutorun,
                     serverItem.isAutoRun);
 
@@ -102,7 +98,6 @@ namespace V2RayGCon.Model.UserControls
             var text = serverItem.isAutoRun ? "A" : "";
             text += serverItem.isInjectImport ? "I" : "";
             text += serverItem.isInjectSkipCNSite ? "C" : "";
-            text += serverItem.isSetMarkM ? "M" : "";
 
             if (lbIsAutorun.Text != text)
             {
@@ -155,10 +150,8 @@ namespace V2RayGCon.Model.UserControls
                 return;
             }
 
-
             chkSelected.Checked = serverItem.isSelected;
             HighlightSelectedServerItem(chkSelected.Checked);
-
         }
 
         void HighlightSelectedServerItem(bool selected)
@@ -448,11 +441,6 @@ namespace V2RayGCon.Model.UserControls
         private void toolStripMenuItemSkipCNSite_Click(object sender, EventArgs e)
         {
             serverItem.ToggleIsInjectSkipCNSite();
-        }
-
-        private void toolStripMenuItemMark_Click(object sender, EventArgs e)
-        {
-            serverItem.ToggleSetMarkM();
         }
 
         private void btnIsCollapse_Click(object sender, EventArgs e)
