@@ -15,7 +15,9 @@ namespace V2RayGCon.Model.Data
         public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected, isCollapse, isInjectSkipCNSite;
+        public bool isAutoRun, isInjectImport, isSelected, isCollapse,
+            isInjectSkipCNSite, isSetMarkM;
+
         public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort;
         public double index;
@@ -27,6 +29,7 @@ namespace V2RayGCon.Model.Data
 
             isSelected = false;
             isServerOn = false;
+            isSetMarkM = false;
             isAutoRun = false;
             isInjectImport = false;
             isCollapse = false;
@@ -190,6 +193,12 @@ namespace V2RayGCon.Model.Data
         public void SetPropertyOnDemand(ref bool property, bool value, bool isNeedCoreStopped = false)
         {
             SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
+        }
+
+        public void ToggleSetMarkM()
+        {
+            this.isSetMarkM = !this.isSetMarkM;
+            InvokeEventOnPropertyChange();
         }
 
         public void ToggleIsInjectSkipCNSite()

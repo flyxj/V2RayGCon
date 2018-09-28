@@ -54,6 +54,7 @@
             this.toolStripMenuItemIsAutorun = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemIsInjectImport = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSkipCNSite = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemMark = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vmessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -208,6 +209,7 @@
             this.toolStripMenuItemIsAutorun,
             this.toolStripMenuItemIsInjectImport,
             this.toolStripMenuItemSkipCNSite,
+            this.toolStripMenuItemMark,
             this.toolStripMenuItem1,
             this.copyToolStripMenuItem,
             this.editToolStripMenuItem,
@@ -259,6 +261,12 @@
             this.toolStripMenuItemSkipCNSite.Name = "toolStripMenuItemSkipCNSite";
             resources.ApplyResources(this.toolStripMenuItemSkipCNSite, "toolStripMenuItemSkipCNSite");
             this.toolStripMenuItemSkipCNSite.Click += new System.EventHandler(this.toolStripMenuItemSkipCNSite_Click);
+            // 
+            // toolStripMenuItemMark
+            // 
+            this.toolStripMenuItemMark.Name = "toolStripMenuItemMark";
+            resources.ApplyResources(this.toolStripMenuItemMark, "toolStripMenuItemMark");
+            this.toolStripMenuItemMark.Click += new System.EventHandler(this.toolStripMenuItemMark_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -395,5 +403,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label lbIsAutorun;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSkipCNSite;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMark;
     }
 }
