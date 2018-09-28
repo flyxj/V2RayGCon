@@ -19,7 +19,8 @@ namespace V2RayGCon.Service
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
-            lazySaveServerListTimer = null;
+            lazySaveServerListTimer = null,
+            lazyUpdateNotifyTextTimer = null;
 
         object serverListWriteLock = new object();
 
@@ -201,7 +202,21 @@ namespace V2RayGCon.Service
             }
 
             lazySaveServerListTimer.Start();
-            Task.Factory.StartNew(() => UpdateNotifierText());
+
+            LazyUpdateNotifyText();
+        }
+
+        void LazyUpdateNotifyText()
+        {
+            if (lazyUpdateNotifyTextTimer == null)
+            {
+                lazyUpdateNotifyTextTimer =
+                    new Model.BaseClass.CancelableTimeout(
+                        UpdateNotifierText,
+                        1000);
+            }
+
+            lazyUpdateNotifyTextTimer.Start();
         }
 
         void UpdateNotifierText()
@@ -226,6 +241,7 @@ namespace V2RayGCon.Service
 
             if (count < 4)
             {
+
                 var textList = new List<string>();
 
                 Action done = () =>
@@ -243,7 +259,7 @@ namespace V2RayGCon.Service
                     });
                 };
 
-                Lib.Utils.ChainActionHelperAsync(4, worker, done);
+                Lib.Utils.ChainActionHelperAsync(count, worker, done);
                 return;
             }
 
@@ -443,6 +459,7 @@ namespace V2RayGCon.Service
         {
             lazyGCTimer?.Release();
             lazySaveServerListTimer?.Release();
+            lazyUpdateNotifyTextTimer?.Release();
         }
 
         public bool IsSelecteAnyServer()
