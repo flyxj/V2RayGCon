@@ -196,6 +196,13 @@ namespace V2RayGCon.Views
             Lib.Utils.CopyToClipboardAndPrompt(tboxLink.Text);
         }
 
+        private void rbtnIsCenterImage_CheckedChanged(object sender, EventArgs e)
+        {
+            picQRCode.SizeMode = rbtnIsCenterImage.Checked ?
+                PictureBoxSizeMode.CenterImage :
+                PictureBoxSizeMode.Zoom;
+        }
+
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)
         {
             servIndex = cboxServList.SelectedIndex;
