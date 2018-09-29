@@ -53,9 +53,17 @@ namespace V2RayGCon.Views
             };
 
             servers.OnRequireMenuUpdate += SettingChange;
+            SetPicZoomMode();
         }
 
-        #region public methods
+        #region private methods
+        void SetPicZoomMode()
+        {
+            picQRCode.SizeMode = rbtnIsCenterImage.Checked ?
+                PictureBoxSizeMode.CenterImage :
+                PictureBoxSizeMode.Zoom;
+        }
+
         void SettingChange(object sender, EventArgs args)
         {
             try
@@ -199,9 +207,7 @@ namespace V2RayGCon.Views
 
         private void rbtnIsCenterImage_CheckedChanged(object sender, EventArgs e)
         {
-            picQRCode.SizeMode = rbtnIsCenterImage.Checked ?
-                PictureBoxSizeMode.CenterImage :
-                PictureBoxSizeMode.Zoom;
+            SetPicZoomMode();
         }
 
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)
