@@ -47,7 +47,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   使用此强类型资源类，为所有资源查找
+        ///   重写当前线程的 CurrentUICulture 属性
         ///   重写当前线程的 CurrentUICulture 属性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1206,6 +1206,17 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Your system does not support TLS1.2.
+        ///Please upgrade . NET to 4.5 or higher.
+        ///Otherwise operations involving the network may fail. 的本地化字符串。
+        /// </summary>
+        internal static string SysNotSupportTLS12 {
+            get {
+                return ResourceManager.GetString("SysNotSupportTLS12", resourceCulture);
             }
         }
         

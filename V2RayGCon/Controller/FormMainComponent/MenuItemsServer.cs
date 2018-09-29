@@ -15,10 +15,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem restartSelected,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem refreshSummary,
-            ToolStripMenuItem selectAllAutorun,
-            ToolStripMenuItem selectAll,
-            ToolStripMenuItem selectNone,
-            ToolStripMenuItem selectInvert,
             ToolStripMenuItem speedTestOnSelected,
             ToolStripMenuItem deleteSelected,
             ToolStripMenuItem copyAsV2rayLinks,
@@ -41,7 +37,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions,
                 deleteAllItems, modifySelected, packSelected,
                 moveToTop, moveToBottom, collapsePanel, expansePanel, sortBySpeed);
-            InitSelection(selectAllAutorun, selectAll, selectNone, selectInvert);
             InitMisc(clearSysProxy, refreshSummary);
         }
 
@@ -312,35 +307,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             RemoveAllFlyPanelControls();
             RefreshFlyPanel();
-        }
-
-        private void InitSelection(ToolStripMenuItem selectAllAutorun, ToolStripMenuItem selectAll, ToolStripMenuItem selectNone, ToolStripMenuItem selectInvert)
-        {
-            // selection
-
-            selectAllAutorun.Click += (s, a) =>
-            {
-                var panel = GetFlyPanel();
-                panel.SelectAutorun();
-            };
-
-            selectAll.Click += (s, a) =>
-            {
-                var panel = GetFlyPanel();
-                panel.SelectAll();
-            };
-
-            selectNone.Click += (s, a) =>
-            {
-                var panel = GetFlyPanel();
-                panel.SelectNone();
-            };
-
-            selectInvert.Click += (s, a) =>
-            {
-                var panel = GetFlyPanel();
-                panel.SelectInvert();
-            };
         }
 
         private void InitMisc(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)

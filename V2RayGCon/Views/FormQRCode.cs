@@ -53,9 +53,17 @@ namespace V2RayGCon.Views
             };
 
             servers.OnRequireMenuUpdate += SettingChange;
+            SetPicZoomMode();
         }
 
-        #region public methods
+        #region private methods
+        void SetPicZoomMode()
+        {
+            picQRCode.SizeMode = rbtnIsCenterImage.Checked ?
+                PictureBoxSizeMode.CenterImage :
+                PictureBoxSizeMode.Zoom;
+        }
+
         void SettingChange(object sender, EventArgs args)
         {
             try
@@ -92,6 +100,7 @@ namespace V2RayGCon.Views
             servIndex = Lib.Utils.Clamp(oldIndex, 0, serverList.Count);
             cboxServList.SelectedIndex = servIndex;
             UpdateLink();
+            Lib.UI.ResetComboBoxDropdownMenuWidth(cboxServList);
         }
 
         void UpdateLink()
@@ -194,6 +203,11 @@ namespace V2RayGCon.Views
         private void btnCopy_Click(object sender, EventArgs e)
         {
             Lib.Utils.CopyToClipboardAndPrompt(tboxLink.Text);
+        }
+
+        private void rbtnIsCenterImage_CheckedChanged(object sender, EventArgs e)
+        {
+            SetPicZoomMode();
         }
 
         private void cboxServList_SelectedIndexChanged(object sender, EventArgs e)

@@ -19,7 +19,8 @@ namespace V2RayGCon.Service
 
         Model.BaseClass.CancelableTimeout
             lazyGCTimer = null,
-            lazySaveServerListTimer = null;
+            lazySaveServerListTimer = null,
+            lazyUpdateNotifyTextTimer = null;
 
         object serverListWriteLock = new object();
 
@@ -201,12 +202,31 @@ namespace V2RayGCon.Service
             }
 
             lazySaveServerListTimer.Start();
-            Task.Factory.StartNew(() => UpdateNotifierText());
+
+            LazyUpdateNotifyText();
+        }
+
+        void LazyUpdateNotifyText()
+        {
+            if (lazyUpdateNotifyTextTimer == null)
+            {
+                lazyUpdateNotifyTextTimer =
+                    new Model.BaseClass.CancelableTimeout(
+                        UpdateNotifierText,
+                        1000);
+            }
+
+            lazyUpdateNotifyTextTimer.Start();
         }
 
         void UpdateNotifierText()
         {
-            var count = serverList.Where(s => s.isServerOn).ToList().Count;
+            var list = serverList
+                .Where(s => s.isServerOn)
+                .OrderBy(s => s.index)
+                .ToList();
+
+            var count = list.Count;
             if (count == preRunningServerCount)
             {
                 return;
@@ -219,15 +239,27 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            if (count == 1)
+            if (count < 4)
             {
-                var first = serverList.FirstOrDefault(s => s.isServerOn);
-                if (first == null)
+
+                var textList = new List<string>();
+
+                Action done = () =>
                 {
-                    setting.UpdateNotifierText();
-                    return;
-                }
-                first.GetProxyAddrThen((str) => setting.UpdateNotifierText(str));
+                    var text = string.Join(System.Environment.NewLine, textList);
+                    setting.UpdateNotifierText(text);
+                };
+
+                Action<int, Action> worker = (index, next) =>
+                {
+                    list[index].GetProxyAddrThen((s) =>
+                    {
+                        textList.Add(s);
+                        next();
+                    });
+                };
+
+                Lib.Utils.ChainActionHelperAsync(count, worker, done);
                 return;
             }
 
@@ -427,6 +459,7 @@ namespace V2RayGCon.Service
         {
             lazyGCTimer?.Release();
             lazySaveServerListTimer?.Release();
+            lazyUpdateNotifyTextTimer?.Release();
         }
 
         public bool IsSelecteAnyServer()
