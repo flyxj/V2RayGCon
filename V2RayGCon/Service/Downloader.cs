@@ -142,7 +142,6 @@ namespace V2RayGCon.Service
             string tpl = StrConst("DownloadLinkTpl");
             string url = string.Format(tpl, _version, _packageName);
 
-            Lib.Utils.SupportProtocolTLS12();
             client = new WebClient();
 
             client.DownloadProgressChanged += (s, a) =>

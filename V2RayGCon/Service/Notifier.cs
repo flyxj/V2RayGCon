@@ -16,6 +16,8 @@ namespace V2RayGCon.Service
         {
             CreateNotifyIcon();
 
+            Lib.Utils.SupportProtocolTLS12();
+
             setting = Setting.Instance;
             setting.SaveOriginalSystemProxyInfo();
             setting.LoadSystemProxy();

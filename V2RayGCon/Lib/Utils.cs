@@ -737,7 +737,6 @@ namespace V2RayGCon.Lib
         {
             var timeout = Str2Int(StrConst("SpeedTestTimeout"));
 
-            Lib.Utils.SupportProtocolTLS12();
             WebClient wc = new TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
@@ -783,7 +782,6 @@ namespace V2RayGCon.Lib
         {
             var html = string.Empty;
 
-            Lib.Utils.SupportProtocolTLS12();
             using (WebClient wc = new TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
@@ -1017,7 +1015,14 @@ namespace V2RayGCon.Lib
 
         public static void SupportProtocolTLS12()
         {
-            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+            try
+            {
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+            }
+            catch (System.NotSupportedException)
+            {
+                MessageBox.Show(I18N("SysNotSupportTLS12"));
+            }
         }
 
         public static string GetClipboardText()
