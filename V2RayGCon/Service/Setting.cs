@@ -126,7 +126,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            Lib.ProxySetter.setProxy(link, true);
+            Lib.ProxySetter.SetProxy(link);
             curSysProxyUrl = link;
             InvokeEventOnSysProxyChanged();
         }
@@ -134,7 +134,7 @@ namespace V2RayGCon.Service
         public void ClearSystemProxy()
         {
             curSysProxyUrl = string.Empty;
-            Lib.ProxySetter.setProxy(curSysProxyUrl, false);
+            Lib.ProxySetter.ClearProxy();
             InvokeEventOnSysProxyChanged();
         }
 
@@ -142,20 +142,20 @@ namespace V2RayGCon.Service
         {
             if (!string.IsNullOrEmpty(curSysProxyUrl))
             {
-                Lib.ProxySetter.setProxy(curSysProxyUrl, true);
+                Lib.ProxySetter.SetProxy(curSysProxyUrl);
             }
         }
 
         public void SaveOriginalSystemProxyInfo()
         {
             orgSysProxyInfo = new Tuple<bool, string>(
-                Lib.ProxySetter.getProxyState(),
-                Lib.ProxySetter.getProxyUrl());
+                Lib.ProxySetter.GetProxyState(),
+                Lib.ProxySetter.GetProxyUrl());
         }
 
         public void RestoreOriginalSystemProxyInfo()
         {
-            Lib.ProxySetter.setProxy(
+            Lib.ProxySetter.RestoreProxy(
                 orgSysProxyInfo.Item2,
                 orgSysProxyInfo.Item1);
         }
