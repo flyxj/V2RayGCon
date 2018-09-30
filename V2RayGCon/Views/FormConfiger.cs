@@ -11,10 +11,8 @@ namespace V2RayGCon.Views
     {
         public int span;
         public int tabWidth;
-        public int margin;
 
         public Rectangle panel;
-        public Rectangle editor;
         public Rectangle page;
 
         public Model.BaseClass.CancelableTimeout timerHide, timerShow;

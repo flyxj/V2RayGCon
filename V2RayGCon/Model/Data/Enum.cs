@@ -2,6 +2,13 @@
 {
     public class Enum
     {
+        public enum Cultures
+        {
+            auto = 0,
+            enUS = 1,
+            zhCN = 2,
+        }
+
         public enum LinkTypes
         {
             vmess = 0,

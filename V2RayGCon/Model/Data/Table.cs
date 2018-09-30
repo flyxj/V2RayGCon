@@ -5,6 +5,13 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
+        public static Dictionary<Model.Data.Enum.Cultures, string> Cultures = new Dictionary<Enum.Cultures, string>
+        {
+            { Enum.Cultures.auto,"auto" },
+            { Enum.Cultures.enUS,"en" },
+            { Enum.Cultures.zhCN,"cn" },
+        };
+
         public static string[] EnviromentVariablesName = new string[] {
             "V2RAY_RAY_BUFFER_SIZE",
             "V2RAY_LOCATION_ASSET",
