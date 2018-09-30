@@ -4,6 +4,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
@@ -15,6 +18,8 @@ namespace V2RayGCon.Service
         public event EventHandler OnSysProxyChanged;
 
         #region Properties
+        public CultureInfo orgCulture = null;
+
         ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
         public string logCache
         {
@@ -51,6 +56,36 @@ namespace V2RayGCon.Service
             }
         }
 
+        public Model.Data.Enum.Cultures culture
+        {
+            get
+            {
+                var cultures = Model.Data.Table.Cultures;
+                var c = Properties.Settings.Default.Culture;
+
+                if (!cultures.ContainsValue(c))
+                {
+                    return Model.Data.Enum.Cultures.auto;
+                }
+
+                return cultures.Where(s => s.Value == c).First().Key;
+            }
+
+            set
+            {
+                var cultures = Model.Data.Table.Cultures;
+                var c = Model.Data.Enum.Cultures.auto;
+                if (cultures.ContainsKey(value))
+                {
+                    c = value;
+                }
+                Properties.Settings.Default.Culture =
+                    Model.Data.Table.Cultures[c];
+                Properties.Settings.Default.Save();
+            }
+
+        }
+
         public Tuple<bool, string> orgSysProxyInfo = null;
 
         public bool isShowConfigerToolsPanel
@@ -79,6 +114,19 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void SwitchCulture()
+        {
+            switch (culture)
+            {
+                case Model.Data.Enum.Cultures.enUS:
+                    SetCulture("");
+                    break;
+                case Model.Data.Enum.Cultures.zhCN:
+                    SetCulture("zh-CN");
+                    break;
+            }
+        }
+
         public List<Model.Data.ServerItem> LoadServerList()
         {
             var empty = new List<Model.Data.ServerItem>();
@@ -126,7 +174,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            Lib.ProxySetter.setProxy(link, true);
+            Lib.ProxySetter.SetProxy(link);
             curSysProxyUrl = link;
             InvokeEventOnSysProxyChanged();
         }
@@ -134,7 +182,7 @@ namespace V2RayGCon.Service
         public void ClearSystemProxy()
         {
             curSysProxyUrl = string.Empty;
-            Lib.ProxySetter.setProxy(curSysProxyUrl, false);
+            Lib.ProxySetter.ClearProxy();
             InvokeEventOnSysProxyChanged();
         }
 
@@ -142,20 +190,20 @@ namespace V2RayGCon.Service
         {
             if (!string.IsNullOrEmpty(curSysProxyUrl))
             {
-                Lib.ProxySetter.setProxy(curSysProxyUrl, true);
+                Lib.ProxySetter.SetProxy(curSysProxyUrl);
             }
         }
 
         public void SaveOriginalSystemProxyInfo()
         {
             orgSysProxyInfo = new Tuple<bool, string>(
-                Lib.ProxySetter.getProxyState(),
-                Lib.ProxySetter.getProxyUrl());
+                Lib.ProxySetter.GetProxyState(),
+                Lib.ProxySetter.GetProxyUrl());
         }
 
         public void RestoreOriginalSystemProxyInfo()
         {
-            Lib.ProxySetter.setProxy(
+            Lib.ProxySetter.RestoreProxy(
                 orgSysProxyInfo.Item2,
                 orgSysProxyInfo.Item1);
         }
@@ -267,6 +315,19 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        private static void SetCulture(string cultureString)
+        {
+            var ci = new CultureInfo(cultureString);
+
+            Thread.CurrentThread.CurrentCulture.GetType()
+                .GetProperty("DefaultThreadCurrentCulture")
+                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
+
+            Thread.CurrentThread.CurrentCulture.GetType()
+                .GetProperty("DefaultThreadCurrentUICulture")
+                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
+        }
+
         Dictionary<string, Rectangle> winFormRectListCache = null;
         Dictionary<string, Rectangle> GetWinFormRectList()
         {

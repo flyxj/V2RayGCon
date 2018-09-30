@@ -127,9 +127,9 @@ namespace V2RayGCon.Views
             var str = I18N("CurSysProxy");
             var proxy = string.Empty;
 
-            if (Lib.ProxySetter.getProxyState())
+            if (Lib.ProxySetter.GetProxyState())
             {
-                proxy = Lib.ProxySetter.getProxyUrl();
+                proxy = Lib.ProxySetter.GetProxyUrl();
             }
 
             if (string.IsNullOrEmpty(proxy))

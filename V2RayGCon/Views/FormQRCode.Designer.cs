@@ -115,15 +115,15 @@
             // radioButton2
             // 
             resources.ApplyResources(this.radioButton2, "radioButton2");
+            this.radioButton2.Checked = true;
             this.radioButton2.Name = "radioButton2";
+            this.radioButton2.TabStop = true;
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // rbtnIsCenterImage
             // 
             resources.ApplyResources(this.rbtnIsCenterImage, "rbtnIsCenterImage");
-            this.rbtnIsCenterImage.Checked = true;
             this.rbtnIsCenterImage.Name = "rbtnIsCenterImage";
-            this.rbtnIsCenterImage.TabStop = true;
             this.rbtnIsCenterImage.UseVisualStyleBackColor = true;
             this.rbtnIsCenterImage.CheckedChanged += new System.EventHandler(this.rbtnIsCenterImage_CheckedChanged);
             // 

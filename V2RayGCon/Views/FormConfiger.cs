@@ -7,13 +7,12 @@ using static V2RayGCon.Lib.StringResource;
 namespace V2RayGCon.Views
 {
     #region auto hide tools panel
-    struct ToolsPanelHandler
+    struct ToolsPanelController
     {
         public int span;
         public int tabWidth;
 
         public Rectangle panel;
-        public Rectangle editor;
         public Rectangle page;
 
         public Model.BaseClass.CancelableTimeout timerHide, timerShow;
@@ -33,7 +32,7 @@ namespace V2RayGCon.Views
         Service.Servers servers;
 
         FormSearch formSearch;
-        ToolsPanelHandler toolsPanelHandler;
+        ToolsPanelController toolsPanelController;
         string originalConfigString;
         string formTitle;
         bool isShowPanel;
@@ -88,7 +87,7 @@ namespace V2RayGCon.Views
                 editor.Click -= OnMouseLeaveToolsPanel;
                 servers.OnRequireMenuUpdate -= MenuUpdateHandler;
                 setting.SaveFormRect(this);
-                toolsPanelHandler.Dispose();
+                toolsPanelController.Dispose();
                 servers.LazyGC();
             };
         }
@@ -211,7 +210,7 @@ namespace V2RayGCon.Views
 
         private void tabCtrlToolPanel_MouseLeave(object sender, EventArgs e)
         {
-            toolsPanelHandler.timerShow.Cancel();
+            toolsPanelController.timerShow.Cancel();
         }
         #endregion
 
@@ -296,7 +295,7 @@ namespace V2RayGCon.Views
 
         void ExpanseToolsPanel()
         {
-            var width = toolsPanelHandler.panel.Width;
+            var width = toolsPanelController.panel.Width;
             if (pnlTools.Width != width)
             {
                 pnlTools.Invoke((MethodInvoker)delegate
@@ -308,17 +307,16 @@ namespace V2RayGCon.Views
 
         void InitToolsPanel()
         {
-            toolsPanelHandler.editor = new Rectangle(pnlEditor.Location, pnlEditor.Size);
-            toolsPanelHandler.panel = new Rectangle(pnlTools.Location, pnlTools.Size);
+            toolsPanelController.panel = new Rectangle(pnlTools.Location, pnlTools.Size);
+            var span = pnlTools.Margin.Left;
+            toolsPanelController.span = span;
+            toolsPanelController.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
-            toolsPanelHandler.span = (ClientRectangle.Width - toolsPanelHandler.panel.Width - toolsPanelHandler.editor.Width) / 3;
-            toolsPanelHandler.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
-
-            toolsPanelHandler.timerHide = new Model.BaseClass.CancelableTimeout(FoldToolsPanel, 800);
-            toolsPanelHandler.timerShow = new Model.BaseClass.CancelableTimeout(ExpanseToolsPanel, 500);
+            toolsPanelController.timerHide = new Model.BaseClass.CancelableTimeout(FoldToolsPanel, 800);
+            toolsPanelController.timerShow = new Model.BaseClass.CancelableTimeout(ExpanseToolsPanel, 500);
 
             var page = tabCtrlToolPanel.TabPages[0];
-            toolsPanelHandler.page = new Rectangle(
+            toolsPanelController.page = new Rectangle(
                 pnlTools.Location.X + page.Left,
                 pnlTools.Location.Y + page.Top,
                 page.Width,
@@ -329,7 +327,7 @@ namespace V2RayGCon.Views
                 tabCtrlToolPanel.TabPages[i].MouseEnter += OnMouseEnterToolsPanel;
                 tabCtrlToolPanel.TabPages[i].MouseLeave += (s, e) =>
                 {
-                    var rect = toolsPanelHandler.page;
+                    var rect = toolsPanelController.page;
                     rect.Height = tabCtrlToolPanel.TabPages[0].Height;
                     if (!rect.Contains(PointToClient(Cursor.Position)))
                     {
@@ -401,24 +399,27 @@ namespace V2RayGCon.Views
 
         void ToggleToolsPanel(bool visible)
         {
+            var pnlCtrl = toolsPanelController;
             var formSize = this.ClientSize;
-            var editorSize = pnlEditor.Size;
+            if (formSize.Width < pnlCtrl.panel.Width + pnlCtrl.span * 2)
+            {
+                visible = false;
+            }
 
             pnlTools.Visible = false;
             pnlEditor.Visible = false;
 
             if (visible)
             {
-                pnlTools.Width = toolsPanelHandler.panel.Width;
-                pnlEditor.Left = pnlTools.Left + pnlTools.Width + toolsPanelHandler.span;
-                pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - toolsPanelHandler.span;
+                pnlTools.Width = pnlCtrl.panel.Width;
+                pnlEditor.Left = pnlTools.Left + pnlTools.Width + pnlCtrl.span;
             }
             else
             {
-                pnlTools.Width = toolsPanelHandler.tabWidth;
-                pnlEditor.Left = pnlTools.Left + pnlTools.Width;
-                pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - toolsPanelHandler.span;
+                pnlTools.Width = toolsPanelController.tabWidth;
+                pnlEditor.Left = pnlTools.Left + pnlTools.Width + pnlCtrl.span;
             }
+            pnlEditor.Width = this.ClientSize.Width - pnlEditor.Left - pnlCtrl.span;
 
             pnlTools.Visible = true;
             pnlEditor.Visible = true;
@@ -444,18 +445,18 @@ namespace V2RayGCon.Views
 
         void OnMouseEnterToolsPanel(object sender, EventArgs e)
         {
-            toolsPanelHandler.timerHide.Cancel();
-            toolsPanelHandler.timerShow.Start();
+            toolsPanelController.timerHide.Cancel();
+            toolsPanelController.timerShow.Start();
         }
 
         void FoldToolsPanel()
         {
             var visible = isShowPanel;
-            var width = toolsPanelHandler.panel.Width;
+            var width = toolsPanelController.panel.Width;
 
             if (!visible)
             {
-                width = toolsPanelHandler.tabWidth;
+                width = toolsPanelController.tabWidth;
             }
 
             if (pnlTools.Width != width)
@@ -469,8 +470,8 @@ namespace V2RayGCon.Views
 
         void OnMouseLeaveToolsPanel(object sender, EventArgs e)
         {
-            toolsPanelHandler.timerShow.Cancel();
-            toolsPanelHandler.timerHide.Start();
+            toolsPanelController.timerShow.Cancel();
+            toolsPanelController.timerHide.Start();
         }
 
         void ShowSearchBox()

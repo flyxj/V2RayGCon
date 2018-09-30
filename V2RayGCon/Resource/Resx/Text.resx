@@ -413,7 +413,7 @@ Please use [Add new server] or [Replace server].</value>
     <value>The file is in use. Please close v2ray-core first.</value>
   </data>
   <data name="ConfirmCloseWinWithoutSave" xml:space="preserve">
-    <value>Discard unsaved changes and close the window?</value>
+    <value>Discard unsaved changes and close this window?</value>
   </data>
   <data name="AttachToV2rayCoreProcessFail" xml:space="preserve">
     <value>Attach to v2ray-core process fail!</value>
@@ -567,5 +567,10 @@ Please send the following file to the author.</value>
   </data>
   <data name="NoMark" xml:space="preserve">
     <value>No mark</value>
+  </data>
+  <data name="SysNotSupportTLS12" xml:space="preserve">
+    <value>Your system does not support TLS1.2.
+Please upgrade . NET to 4.5 or higher.
+Otherwise operations involving the network may fail.</value>
   </data>
 </root>

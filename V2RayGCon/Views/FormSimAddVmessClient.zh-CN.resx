@@ -6343,6 +6343,6 @@
 </value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>添加vmess服务器</value>
+    <value>添加vmess客户端</value>
   </data>
 </root>

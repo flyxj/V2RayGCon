@@ -174,7 +174,7 @@
     <value>359, 26</value>
   </data>
   <data name="lbSimAddVmessWin.Text" xml:space="preserve">
-    <value>3. 通过简易添加vmess服务器窗口填写信息</value>
+    <value>3. 通过简易添加vmess客户端窗口填写信息</value>
   </data>
   <data name="lbScanQRCode.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>3, 9</value>

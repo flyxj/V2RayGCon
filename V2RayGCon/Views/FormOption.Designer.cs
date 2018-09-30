@@ -38,6 +38,10 @@
             this.btnUpdateViaSubscription = new System.Windows.Forms.Button();
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPageSetting = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cboxSettingLanguage = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnOptionSave = new System.Windows.Forms.Button();
@@ -46,6 +50,8 @@
             this.tabControl1.SuspendLayout();
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
+            this.tabPageSetting.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -53,15 +59,18 @@
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tabPageImport);
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
+            this.tabControl1.Controls.Add(this.tabPageSetting);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
+            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             // 
             // tabPageImport
             // 
+            resources.ApplyResources(this.tabPageImport, "tabPageImport");
             this.tabPageImport.Controls.Add(this.btnImportAdd);
             this.tabPageImport.Controls.Add(this.flyImportPanel);
-            resources.ApplyResources(this.tabPageImport, "tabPageImport");
             this.tabPageImport.Name = "tabPageImport";
+            this.toolTip1.SetToolTip(this.tabPageImport, resources.GetString("tabPageImport.ToolTip"));
             this.tabPageImport.UseVisualStyleBackColor = true;
             // 
             // btnImportAdd
@@ -73,18 +82,20 @@
             // 
             // flyImportPanel
             // 
-            this.flyImportPanel.AllowDrop = true;
             resources.ApplyResources(this.flyImportPanel, "flyImportPanel");
+            this.flyImportPanel.AllowDrop = true;
             this.flyImportPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flyImportPanel.Name = "flyImportPanel";
+            this.toolTip1.SetToolTip(this.flyImportPanel, resources.GetString("flyImportPanel.ToolTip"));
             // 
             // tabPageSubscribe
             // 
+            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Controls.Add(this.btnUpdateViaSubscription);
             this.tabPageSubscribe.Controls.Add(this.btnAddSubsUrl);
             this.tabPageSubscribe.Controls.Add(this.flySubsUrlContainer);
-            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Name = "tabPageSubscribe";
+            this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
             this.tabPageSubscribe.UseVisualStyleBackColor = true;
             // 
             // btnUpdateViaSubscription
@@ -103,10 +114,46 @@
             // 
             // flySubsUrlContainer
             // 
-            this.flySubsUrlContainer.AllowDrop = true;
             resources.ApplyResources(this.flySubsUrlContainer, "flySubsUrlContainer");
+            this.flySubsUrlContainer.AllowDrop = true;
             this.flySubsUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flySubsUrlContainer.Name = "flySubsUrlContainer";
+            this.toolTip1.SetToolTip(this.flySubsUrlContainer, resources.GetString("flySubsUrlContainer.ToolTip"));
+            // 
+            // tabPageSetting
+            // 
+            resources.ApplyResources(this.tabPageSetting, "tabPageSetting");
+            this.tabPageSetting.Controls.Add(this.groupBox1);
+            this.tabPageSetting.Name = "tabPageSetting";
+            this.toolTip1.SetToolTip(this.tabPageSetting, resources.GetString("tabPageSetting.ToolTip"));
+            this.tabPageSetting.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.cboxSettingLanguage);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
+            // 
+            // cboxSettingLanguage
+            // 
+            resources.ApplyResources(this.cboxSettingLanguage, "cboxSettingLanguage");
+            this.cboxSettingLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxSettingLanguage.FormattingEnabled = true;
+            this.cboxSettingLanguage.Items.AddRange(new object[] {
+            resources.GetString("cboxSettingLanguage.Items"),
+            resources.GetString("cboxSettingLanguage.Items1"),
+            resources.GetString("cboxSettingLanguage.Items2")});
+            this.cboxSettingLanguage.Name = "cboxSettingLanguage";
+            this.toolTip1.SetToolTip(this.cboxSettingLanguage, resources.GetString("cboxSettingLanguage.ToolTip"));
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // btnBakBackup
             // 
@@ -136,6 +183,7 @@
             // 
             resources.ApplyResources(this.btnOptionExit, "btnOptionExit");
             this.btnOptionExit.Name = "btnOptionExit";
+            this.toolTip1.SetToolTip(this.btnOptionExit, resources.GetString("btnOptionExit.ToolTip"));
             this.btnOptionExit.UseVisualStyleBackColor = true;
             this.btnOptionExit.Click += new System.EventHandler(this.btnOptionExit_Click);
             // 
@@ -149,10 +197,14 @@
             this.Controls.Add(this.btnOptionSave);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormOption";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormOption_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
+            this.tabPageSetting.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -172,5 +224,9 @@
         private System.Windows.Forms.FlowLayoutPanel flyImportPanel;
         private System.Windows.Forms.Button btnBakBackup;
         private System.Windows.Forms.Button btnBakRestore;
+        private System.Windows.Forms.TabPage tabPageSetting;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox cboxSettingLanguage;
+        private System.Windows.Forms.Label label1;
     }
 }

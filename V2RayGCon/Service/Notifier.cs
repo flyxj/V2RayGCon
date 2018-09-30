@@ -14,9 +14,11 @@ namespace V2RayGCon.Service
 
         Notifier()
         {
-            CreateNotifyIcon();
-
             setting = Setting.Instance;
+            setting.SwitchCulture();
+
+            CreateNotifyIcon();
+            Lib.Utils.SupportProtocolTLS12();
             setting.SaveOriginalSystemProxyInfo();
             setting.LoadSystemProxy();
             setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
@@ -48,6 +50,8 @@ namespace V2RayGCon.Service
             }
 #endif
         }
+
+
 
         #region DEBUG code TL;DR
 #if DEBUG
