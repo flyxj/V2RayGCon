@@ -12,6 +12,19 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow("EvABk文,tv字vvc", "A字", true)]
+        [DataRow("ab vvvc", "bc", true)]
+        [DataRow("abc", "ac", true)]
+        [DataRow("", "a", false)]
+        [DataRow("", "", true)]
+        public void PartialMatchTest(string source, string partial, bool expect)
+        {
+            var result = Lib.Utils.PartialMatch(source, partial);
+            Assert.AreEqual(expect, result);
+        }
+
+
         [TestMethod]
         public void GetFreePortTest()
         {

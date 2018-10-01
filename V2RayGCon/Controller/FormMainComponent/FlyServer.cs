@@ -12,18 +12,21 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
-        ComboBox cboxMark;
+        ComboBox cboxMarkFilter;
+        TextBox tboxSearch;
         int preSelectedMarkFilterIndex;
 
         public FlyServer(
             FlowLayoutPanel panel,
-            ComboBox cboxMarkeFilter)
+            ComboBox cboxMarkeFilter,
+            TextBox tboxSearch)
         {
             this.servers = Service.Servers.Instance;
             this.flyPanel = panel;
-            this.cboxMark = cboxMarkeFilter;
+            this.cboxMarkFilter = cboxMarkeFilter;
+            this.tboxSearch = tboxSearch;
 
-            InitMarkFilter(cboxMarkeFilter);
+            InitFormControls();
             BindDragDropEvent();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
         }
@@ -87,11 +90,11 @@ namespace V2RayGCon.Controller.FormMainComponent
         public override bool RefreshUI()
         {
             ResetIndex();
-            var serverList = this.GetFilteredList();
+            var list = this.GetFilteredList();
 
             flyPanel.Invoke((MethodInvoker)delegate
             {
-                if (serverList == null || serverList.Count > 0)
+                if (list == null || list.Count > 0)
                 {
                     RemoveWelcomeItem();
                 }
@@ -105,15 +108,26 @@ namespace V2RayGCon.Controller.FormMainComponent
                     return;
                 }
 
-                RemoveDeletedServerItems(ref serverList);
-                AddNewServerItems(serverList);
+                RemoveDeletedServerItems(ref list);
+                AddNewServerItems(list);
             });
             return true;
         }
         #endregion
 
         #region private method
-        private void InitMarkFilter(ComboBox cboxMarkFilter)
+        private void InitFormControls()
+        {
+            InitComboBoxMarkFilter();
+
+            this.tboxSearch.TextChanged += (s, a) =>
+            {
+                var partial = tboxSearch.Text;
+                RefreshUI();
+            };
+        }
+
+        private void InitComboBoxMarkFilter()
         {
             UpdateMarkFilterItemList(cboxMarkFilter);
             cboxMarkFilter.DropDown += (s, e) =>
@@ -134,10 +148,10 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             try
             {
-                if (string.IsNullOrEmpty(cboxMark.Text)
-                    && !string.IsNullOrEmpty(cboxMark.Items[preSelectedMarkFilterIndex].ToString()))
+                if (string.IsNullOrEmpty(cboxMarkFilter.Text)
+                    && !string.IsNullOrEmpty(cboxMarkFilter.Items[preSelectedMarkFilterIndex].ToString()))
                 {
-                    cboxMark.SelectedIndex = preSelectedMarkFilterIndex;
+                    cboxMarkFilter.SelectedIndex = preSelectedMarkFilterIndex;
                 }
             }
             catch { }
@@ -145,7 +159,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void MarkFilterChangeHandler(object sernder, EventArgs args)
         {
-            var index = cboxMark.SelectedIndex;
+            var index = cboxMarkFilter.SelectedIndex;
             if (preSelectedMarkFilterIndex == index)
             {
                 return;
@@ -159,21 +173,38 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         List<Model.Data.ServerItem> GetFilteredList()
         {
+            var list = GetFilteredListByMark();
+            var partial = tboxSearch.Text ?? "";
+            if (partial.Length < 2)
+            {
+                return list.ToList();
+            }
+
+            var result = list
+                .Where(s =>
+                    s.GetSearchTextList()
+                        .Any(e => Lib.Utils.PartialMatch(e, partial)));
+
+            return result.ToList();
+        }
+
+        private IEnumerable<Model.Data.ServerItem> GetFilteredListByMark()
+        {
             var list = servers.GetServerList();
             if (preSelectedMarkFilterIndex < 0)
             {
-                return list.ToList();
+                return list;
             }
             switch (preSelectedMarkFilterIndex)
             {
                 case 0:
-                    return list.ToList();
+                    return list;
                 case 1:
-                    return list.Where(s => string.IsNullOrEmpty(s.mark)).ToList();
+                    return list.Where(s => string.IsNullOrEmpty(s.mark));
             }
 
             var markList = servers.GetMarkList();
-            return list.Where(s => s.mark == markList[preSelectedMarkFilterIndex - 2]).ToList();
+            return list.Where(s => s.mark == markList[preSelectedMarkFilterIndex - 2]);
         }
 
         void UpdateMarkFilterItemList(ComboBox marker)

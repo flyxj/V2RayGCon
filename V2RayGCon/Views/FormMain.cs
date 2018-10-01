@@ -67,7 +67,8 @@ namespace V2RayGCon.Views
 
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer,
-                cboxMarkFilter));
+                cboxMarkFilter,
+                tboxFlySearcher));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
                 toolMenuItemSimAddVmessServer,

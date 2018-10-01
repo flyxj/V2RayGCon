@@ -868,6 +868,23 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static bool PartialMatch(string source, string partial)
+        {
+            var s = source.ToLower();
+            var p = partial.ToLower();
+
+            int idxS = 0, idxP = 0;
+            while (idxS < s.Length && idxP < p.Length)
+            {
+                if (s[idxS] == p[idxP])
+                {
+                    idxP++;
+                }
+                idxS++;
+            }
+            return idxP == p.Length;
+        }
+
         public static string RandomHex(int length)
         {
             //  https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c

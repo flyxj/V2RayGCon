@@ -24,13 +24,15 @@ namespace V2RayGCon.Controller.OptionComponent
         #region public method
         public override bool SaveOptions()
         {
-            var index = cboxLanguage.SelectedIndex;
-            if (!IsIndexValide(index))
+            if (!IsOptionsChanged())
             {
                 return false;
             }
+
+            var index = cboxLanguage.SelectedIndex;
             setting.culture = (Model.Data.Enum.Cultures)index;
-            MessageBox.Show("Changing the language does not take effect until you restart this application.");
+            MessageBox.Show("Language change has not yet taken effect.\n"
+                + "Please restart this application.");
             return true;
         }
 
