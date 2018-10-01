@@ -123,6 +123,10 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.tboxSearch.TextChanged += (s, a) =>
             {
                 var partial = tboxSearch.Text;
+
+                // 如果不RemoveAll会乱序
+                RemoveAllConrols();
+
                 RefreshUI();
             };
         }
@@ -175,7 +179,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             var list = GetFilteredListByMark();
             var partial = tboxSearch.Text ?? "";
-            if (partial.Length < 2)
+            if (partial.Length < 1)
             {
                 return list.ToList();
             }
