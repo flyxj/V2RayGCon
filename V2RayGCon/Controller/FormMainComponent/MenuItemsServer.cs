@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -27,7 +29,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem collapsePanel,
             ToolStripMenuItem expansePanel,
-            ToolStripMenuItem sortBySpeed)
+            ToolStripMenuItem sortBySpeed,
+            ToolStripMenuItem sortBySummary)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
@@ -36,7 +39,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 stopSelected, restartSelected, speedTestOnSelected,
                 deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions,
                 deleteAllItems, modifySelected, packSelected,
-                moveToTop, moveToBottom, collapsePanel, expansePanel, sortBySpeed);
+                moveToTop, moveToBottom, collapsePanel, expansePanel,
+                sortBySpeed, sortBySummary);
             InitMisc(clearSysProxy, refreshSummary);
         }
 
@@ -67,8 +71,20 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem collapsePanel,
             ToolStripMenuItem expansePanel,
-            ToolStripMenuItem sortBySpeed)
+            ToolStripMenuItem sortBySpeed,
+            ToolStripMenuItem sortBySummary)
         {
+            sortBySummary.Click += (s, a) =>
+            {
+                if (!CheckSelectedServerCount())
+                {
+                    return;
+                }
+
+                SortServerListBySummary();
+
+            };
+
             sortBySpeed.Click += (s, a) =>
             {
                 if (!CheckSelectedServerCount())
@@ -238,6 +254,31 @@ namespace V2RayGCon.Controller.FormMainComponent
             };
         }
 
+        private void SortServerListBySummary()
+        {
+            var list = servers.GetServerList().Where(s => s.isSelected).ToList();
+            if (list.Count < 2)
+            {
+                return;
+            }
+
+            SortServerItemList(ref list, (a, b) => a.summary.CompareTo(b.summary));
+            RemoveAllCtrolsAndRefreshFlyPanel();
+        }
+
+        void SortServerItemList(
+             ref List<Model.Data.ServerItem> list,
+             Comparison<Model.Data.ServerItem> comparer)
+        {
+            list.Sort(comparer);
+            var minIndex = list.First().index;
+            var delta = 1.0 / 2 / list.Count;
+            for (int i = 1; i < list.Count; i++)
+            {
+                list[i].index = minIndex + delta * i;
+            }
+        }
+
         private void SortServerListBySpeedTestResult()
         {
             var list = servers.GetServerList().Where(s => s.isSelected).ToList();
@@ -245,17 +286,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 return;
             }
-            list.Sort((a, b) => a.speedTestResult.CompareTo(b.speedTestResult));
-            var minIndex = list.First().index;
-            var delta = 1.0 / 2 / list.Count;
-            for (int i = 1; i < list.Count; i++)
-            {
-                list[i].index = minIndex + delta * i;
-            }
 
-            var flyPanel = GetFlyPanel();
-            flyPanel.RemoveAllConrols();
-            flyPanel.RefreshUI();
+            SortServerItemList(ref list, (a, b) => a.speedTestResult.CompareTo(b.speedTestResult));
+            RemoveAllCtrolsAndRefreshFlyPanel();
         }
 
         void UpdateServerItemPanelIsCollapse(bool isCollapse)
@@ -274,9 +307,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList(); // force linq to execute
         }
 
-        void RefreshFlyPanel()
+        void RemoveAllCtrolsAndRefreshFlyPanel()
         {
-            GetFlyPanel().RefreshUI();
+            var panel = GetFlyPanel();
+            panel.RemoveAllConrols();
+            panel.RefreshUI();
         }
 
         private void CollapsePanel()
@@ -287,11 +322,6 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void ExpansePanel()
         {
             UpdateServerItemPanelIsCollapse(false);
-        }
-
-        void RemoveAllFlyPanelControls()
-        {
-            GetFlyPanel().RemoveAllConrols();
         }
 
         private void SetServerItemsIndex(double index)
@@ -305,8 +335,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 })
                 .ToList(); // force linq to execute
 
-            RemoveAllFlyPanelControls();
-            RefreshFlyPanel();
+            RemoveAllCtrolsAndRefreshFlyPanel();
         }
 
         private void InitMisc(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)

@@ -177,6 +177,9 @@
   <data name="toolStripMenuItemSortBySpeedTest.Text" xml:space="preserve">
     <value>按测速排序</value>
   </data>
+  <data name="toolStripMenuItemSortBySummary.Text" xml:space="preserve">
+    <value>按摘要排序</value>
+  </data>
   <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
     <value>修改设置</value>
   </data>

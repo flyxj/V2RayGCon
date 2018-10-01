@@ -110,7 +110,8 @@ namespace V2RayGCon.Views
                 toolStripMenuItemMoveToBottom,
                 toolStripMenuItemCollapsePanel,
                 toolStripMenuItemExpansePanel,
-                toolStripMenuItemSortBySpeedTest));
+                toolStripMenuItemSortBySpeedTest,
+                toolStripMenuItemSortBySummary));
 
             return ctrl;
         }
