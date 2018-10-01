@@ -54,6 +54,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSortBySpeedTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSortBySummary = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemModifySettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -228,6 +229,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemMoveToTop,
             this.toolStripMenuItemMoveToBottom,
             this.toolStripMenuItemSortBySpeedTest,
+            this.toolStripMenuItemSortBySummary,
             this.toolStripSeparator3,
             this.toolStripMenuItemModifySettings,
             this.toolStripSeparator4,
@@ -249,6 +251,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemSortBySpeedTest, "toolStripMenuItemSortBySpeedTest");
             this.toolStripMenuItemSortBySpeedTest.Name = "toolStripMenuItemSortBySpeedTest";
+            // 
+            // toolStripMenuItemSortBySummary
+            // 
+            resources.ApplyResources(this.toolStripMenuItemSortBySummary, "toolStripMenuItemSortBySummary");
+            this.toolStripMenuItemSortBySummary.Name = "toolStripMenuItemSortBySummary";
             // 
             // toolStripSeparator3
             // 
@@ -552,5 +559,6 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem selectTimeoutToolStripMenuItem;
         private Label label2;
         private TextBox tboxFlySearcher;
+        private ToolStripMenuItem toolStripMenuItemSortBySummary;
     }
 }
