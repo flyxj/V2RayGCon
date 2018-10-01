@@ -387,6 +387,17 @@ namespace V2RayGCon.Model.Data
             InvokeEventOnPropertyChange();
         }
 
+        public List<string> GetSearchTextList()
+        {
+            return new List<string> {
+                name,
+                summary,
+                Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType],
+                inboundIP,
+                inboundPort.ToString()
+            };
+        }
+
         public string GetTitle()
         {
             var result = string.Format("{0}.[{1}] {2}",

@@ -88,8 +88,10 @@ namespace V2RayGCon.Views
             this.toolMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cboxMarkFilter = new System.Windows.Forms.ComboBox();
+            this.tboxFlySearcher = new System.Windows.Forms.TextBox();
             this.flyServerListContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -440,6 +442,12 @@ namespace V2RayGCon.Views
             this.cboxMarkFilter.Name = "cboxMarkFilter";
             this.toolTip1.SetToolTip(this.cboxMarkFilter, resources.GetString("cboxMarkFilter.ToolTip"));
             // 
+            // tboxFlySearcher
+            // 
+            resources.ApplyResources(this.tboxFlySearcher, "tboxFlySearcher");
+            this.tboxFlySearcher.Name = "tboxFlySearcher";
+            this.toolTip1.SetToolTip(this.tboxFlySearcher, resources.GetString("tboxFlySearcher.ToolTip"));
+            // 
             // flyServerListContainer
             // 
             resources.ApplyResources(this.flyServerListContainer, "flyServerListContainer");
@@ -455,10 +463,18 @@ namespace V2RayGCon.Views
             this.label1.Name = "label1";
             this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tboxFlySearcher);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboxMarkFilter);
             this.Controls.Add(this.flyServerListContainer);
@@ -534,5 +550,7 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem selectAutorunToolStripMenuItem;
         private ToolStripMenuItem selectRunningToolStripMenuItem;
         private ToolStripMenuItem selectTimeoutToolStripMenuItem;
+        private Label label2;
+        private TextBox tboxFlySearcher;
     }
 }
