@@ -310,7 +310,7 @@
     <value> 根据服务器的标记筛选</value>
   </data>
   <data name="tboxFlySearcher.ToolTip" xml:space="preserve">
-    <value>在摘要中搜索</value>
+    <value>搜索服务器名、摘要、端口等</value>
   </data>
   <data name="flyServerListContainer.ToolTip" xml:space="preserve">
     <value />
