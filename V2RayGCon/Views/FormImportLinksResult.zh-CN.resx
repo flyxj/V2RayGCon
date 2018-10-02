@@ -120,6 +120,9 @@
   <data name="Link.Text" xml:space="preserve">
     <value>链接</value>
   </data>
+  <data name="mark.Text" xml:space="preserve">
+    <value>标记</value>
+  </data>
   <data name="status.Text" xml:space="preserve">
     <value>状态</value>
   </data>

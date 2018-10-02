@@ -32,6 +32,7 @@
             this.lvResult = new System.Windows.Forms.ListView();
             this.index = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Link = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.mark = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.msg = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnClose = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             this.lvResult.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.index,
             this.Link,
+            this.mark,
             this.status,
             this.msg});
             this.lvResult.FullRowSelect = true;
@@ -62,6 +64,10 @@
             // Link
             // 
             resources.ApplyResources(this.Link, "Link");
+            // 
+            // mark
+            // 
+            resources.ApplyResources(this.mark, "mark");
             // 
             // status
             // 
@@ -116,5 +122,6 @@
         private System.Windows.Forms.ColumnHeader msg;
         private System.Windows.Forms.Button btnCopySelected;
         private System.Windows.Forms.Button btnCopyAll;
+        private System.Windows.Forms.ColumnHeader mark;
     }
 }

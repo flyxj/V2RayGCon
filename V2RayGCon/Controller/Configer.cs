@@ -113,7 +113,7 @@ namespace V2RayGCon.Controller
 
             Update();
 
-            if (servers.AddServer(Lib.Utils.Config2String(config)))
+            if (servers.AddServer(Lib.Utils.Config2String(config), ""))
             {
                 MarkOriginalConfig();
             }

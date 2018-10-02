@@ -79,7 +79,19 @@ namespace V2RayGCon.Service
             return list.OrderBy(s => s.index).ToList();
         }
 
-        Tuple<bool, List<string[]>> ImportSSLinks(string text)
+        string[] GenImportResult(string link, bool success, string reason, string mark)
+        {
+            return new string[]
+            {
+                string.Empty,  // reserve for index
+                link,
+                mark,
+                success?"√":"×",
+                reason,
+            };
+        }
+
+        Tuple<bool, List<string[]>> ImportSSLinks(string text, string mark = "")
         {
             var isAddNewServer = false;
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.ss);
@@ -91,25 +103,25 @@ namespace V2RayGCon.Service
 
                 if (config == null)
                 {
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
+                    result.Add(GenImportResult(link, false, I18N("DecodeFail"), mark));
                     continue;
                 }
 
-                if (AddServer(Lib.Utils.Config2String(config), true))
+                if (AddServer(Lib.Utils.Config2String(config), mark, true))
                 {
                     isAddNewServer = true;
-                    result.Add(GenImportResult(link, true, I18N("Success")));
+                    result.Add(GenImportResult(link, true, I18N("Success"), mark));
                 }
                 else
                 {
-                    result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
+                    result.Add(GenImportResult(link, false, I18N("DuplicateServer"), mark));
                 }
             }
 
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-        Tuple<bool, List<string[]>> ImportV2RayLinks(string text)
+        Tuple<bool, List<string[]>> ImportV2RayLinks(string text, string mark = "")
         {
             bool isAddNewServer = false;
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.v2ray);
@@ -125,39 +137,28 @@ namespace V2RayGCon.Service
 
                     if (config != null)
                     {
-                        if (AddServer(Lib.Utils.Config2String(config), true))
+                        if (AddServer(Lib.Utils.Config2String(config), mark, true))
                         {
                             isAddNewServer = true;
-                            result.Add(GenImportResult(link, true, I18N("Success")));
+                            result.Add(GenImportResult(link, true, I18N("Success"), mark));
                         }
                         else
                         {
-                            result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
+                            result.Add(GenImportResult(link, false, I18N("DuplicateServer"), mark));
                         }
                     }
                 }
                 catch
                 {
                     // skip if error occured
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
+                    result.Add(GenImportResult(link, false, I18N("DecodeFail"), mark));
                 }
             }
 
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
-        string[] GenImportResult(string link, bool success, string reason)
-        {
-            return new string[]
-            {
-                string.Empty,  // reserve for index
-                link,
-                success?"√":"×",
-                reason,
-            };
-        }
-
-        Tuple<bool, List<string[]>> ImportVmessLinks(string text)
+        Tuple<bool, List<string[]>> ImportVmessLinks(string text, string mark = "")
         {
             var links = Lib.Utils.ExtractLinks(text, Model.Data.Enum.LinkTypes.vmess);
             var result = new List<string[]>();
@@ -170,18 +171,18 @@ namespace V2RayGCon.Service
 
                 if (config == null)
                 {
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail")));
+                    result.Add(GenImportResult(link, false, I18N("DecodeFail"), mark));
                     continue;
                 }
 
-                if (AddServer(Lib.Utils.Config2String(config), true))
+                if (AddServer(Lib.Utils.Config2String(config), mark, true))
                 {
-                    result.Add(GenImportResult(link, true, I18N("Success")));
+                    result.Add(GenImportResult(link, true, I18N("Success"), mark));
                     isAddNewServer = true;
                 }
                 else
                 {
-                    result.Add(GenImportResult(link, false, I18N("DuplicateServer")));
+                    result.Add(GenImportResult(link, false, I18N("DuplicateServer"), mark));
                 }
             }
 
@@ -400,6 +401,74 @@ namespace V2RayGCon.Service
             return !(this.serverList.Any());
         }
 
+        public void ImportLinks(List<string[]> linkList)
+        {
+            // linkList:[ linksString, mark] 
+            var taskList = new List<Task<Tuple<bool, List<string[]>>>>();
+
+            foreach (var link in linkList)
+            {
+                taskList.Add(new Task<Tuple<bool, List<string[]>>>(
+                    () => ImportVmessLinks(link[0], link[1])));
+                taskList.Add(new Task<Tuple<bool, List<string[]>>>(
+                    () => ImportSSLinks(link[0], link[1])));
+                taskList.Add(new Task<Tuple<bool, List<string[]>>>(
+                    () => ImportV2RayLinks(link[0], link[1])));
+            }
+
+            var tasks = taskList.ToArray();
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var task in tasks)
+                {
+                    task.Start();
+                }
+                Task.WaitAll(tasks);
+
+                var results = GetterImportLinksResult(tasks);
+                UpdateMarkList();
+                ShowImportLinksResult(results);
+            });
+        }
+
+        private void ShowImportLinksResult(Tuple<bool, List<string[]>> results)
+        {
+            var isAddNewServer = results.Item1;
+            var allResults = results.Item2;
+
+            if (isAddNewServer)
+            {
+                UpdateAllServersSummary();
+                LazySaveServerList();
+            }
+
+            LazyGC();
+
+            if (allResults.Count > 0)
+            {
+                new Views.FormImportLinksResult(allResults);
+                Application.Run();
+            }
+            else
+            {
+                MessageBox.Show(I18N("NoLinkFound"));
+            }
+        }
+
+        private static Tuple<bool, List<string[]>> GetterImportLinksResult(Task<Tuple<bool, List<string[]>>>[] tasks)
+        {
+            var allResults = new List<string[]>();
+            var isAddNewServer = false;
+            foreach (var task in tasks)
+            {
+                isAddNewServer = isAddNewServer || task.Result.Item1;
+                allResults.AddRange(task.Result.Item2);
+                task.Dispose();
+            }
+
+            return new Tuple<bool, List<string[]>>(isAddNewServer, allResults);
+        }
+
         public void ImportLinks(string links)
         {
             var tasks = new Task<Tuple<bool, List<string[]>>>[] {
@@ -421,32 +490,8 @@ namespace V2RayGCon.Service
                 }
                 Task.WaitAll(tasks);
 
-                var allResults = new List<string[]>();  // all server including duplicate
-                var isAddNewServer = false;  // add new server
-                foreach (var task in tasks)
-                {
-                    isAddNewServer = isAddNewServer || task.Result.Item1;
-                    allResults.AddRange(task.Result.Item2);
-                    task.Dispose();
-                }
-
-                // show results
-                if (isAddNewServer)
-                {
-                    UpdateAllServersSummary();
-                    LazySaveServerList();
-                }
-                LazyGC();
-
-                if (allResults.Count > 0)
-                {
-                    new Views.FormImportLinksResult(allResults);
-                    Application.Run();
-                }
-                else
-                {
-                    MessageBox.Show(I18N("NoLinkFound"));
-                }
+                var results = GetterImportLinksResult(tasks);
+                ShowImportLinksResult(results);
             });
         }
 
@@ -485,7 +530,7 @@ namespace V2RayGCon.Service
                 config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
                 Lib.Utils.UnionJson(ref config, packages);
                 OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageDone")));
-                AddServer(config.ToString(Formatting.None));
+                AddServer(config.ToString(Formatting.None), "Package");
                 Lib.UI.ShowMessageBoxDoneAsync();
             };
 
@@ -749,7 +794,7 @@ namespace V2RayGCon.Service
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
         }
 
-        public bool AddServer(string config, bool quiet = false)
+        public bool AddServer(string config, string mark, bool quiet = false)
         {
             // duplicate
             if (IsServerItemExist(config))
@@ -760,6 +805,7 @@ namespace V2RayGCon.Service
             var newServer = new Model.Data.ServerItem()
             {
                 config = config,
+                mark = mark,
             };
 
             lock (serverListWriteLock)

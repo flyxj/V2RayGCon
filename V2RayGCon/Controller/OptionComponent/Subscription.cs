@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -69,10 +70,10 @@ namespace V2RayGCon.Controller.OptionComponent
             return JsonConvert.SerializeObject(CollectSubscriptionItems());
         }
 
-        List<Model.Data.UrlItem> CollectSubscriptionItems()
+        List<Model.Data.SubscriptionItem> CollectSubscriptionItems()
         {
-            var itemList = new List<Model.Data.UrlItem>();
-            foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
+            var itemList = new List<Model.Data.SubscriptionItem>();
+            foreach (Model.UserControls.SubscriptionListItem item in this.flyPanel.Controls)
             {
                 var v = item.GetValue();
                 if (!string.IsNullOrEmpty(v.alias)
@@ -92,12 +93,12 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (subItemList.Count <= 0)
             {
-                subItemList.Add(new Model.Data.UrlItem());
+                subItemList.Add(new Model.Data.SubscriptionItem());
             }
 
             foreach (var item in subItemList)
             {
-                this.flyPanel.Controls.Add(new Model.UserControls.UrlListItem(item, UpdatePanelItemsIndex));
+                this.flyPanel.Controls.Add(new Model.UserControls.SubscriptionListItem(item, UpdatePanelItemsIndex));
             }
 
             UpdatePanelItemsIndex();
@@ -108,8 +109,8 @@ namespace V2RayGCon.Controller.OptionComponent
             this.btnAdd.Click += (s, a) =>
             {
                 this.flyPanel.Controls.Add(
-                    new Model.UserControls.UrlListItem(
-                        new Model.Data.UrlItem(),
+                    new Model.UserControls.SubscriptionListItem(
+                        new Model.Data.SubscriptionItem(),
                         UpdatePanelItemsIndex));
                 UpdatePanelItemsIndex();
             };
@@ -121,26 +122,26 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 this.btnUpdate.Enabled = false;
 
-                var urls = new List<string>();
-                foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
+                var subs = new Dictionary<string, string>();
+                foreach (Model.UserControls.SubscriptionListItem item in this.flyPanel.Controls)
                 {
                     var value = item.GetValue();
-                    if (value.inUse
+                    if (value.isUse
                         && !string.IsNullOrEmpty(value.url)
-                        && !urls.Contains(value.url))
+                        && !subs.ContainsKey(value.url))
                     {
-                        urls.Add(value.url);
+                        subs[value.url] = value.isSetMark ? value.alias : null;
                     }
                 }
 
-                if (urls.Count <= 0)
+                if (subs.Count <= 0)
                 {
                     this.btnUpdate.Enabled = true;
                     MessageBox.Show(I18N("NoSubsUrlAvailable"));
                     return;
                 }
 
-                ImportFromSubscriptionUrls(urls);
+                ImportFromSubscriptionUrls(subs);
             };
         }
 
@@ -150,8 +151,8 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var data = a.Data.GetData(typeof(Model.UserControls.UrlListItem))
-                    as Model.UserControls.UrlListItem;
+                var data = a.Data.GetData(typeof(Model.UserControls.SubscriptionListItem))
+                    as Model.UserControls.SubscriptionListItem;
 
                 var _destination = s as FlowLayoutPanel;
                 Point p = _destination.PointToClient(new Point(a.X, a.Y));
@@ -177,42 +178,47 @@ namespace V2RayGCon.Controller.OptionComponent
         void UpdatePanelItemsIndex()
         {
             var index = 1;
-            foreach (Model.UserControls.UrlListItem item in this.flyPanel.Controls)
+            foreach (Model.UserControls.SubscriptionListItem item in this.flyPanel.Controls)
             {
                 item.SetIndex(index++);
             }
         }
 
-        private void ImportFromSubscriptionUrls(List<string> urls)
+        private void ImportFromSubscriptionUrls(Dictionary<string, string> subscriptions)
         {
             Task.Factory.StartNew(() =>
             {
+                // dict( [url]=>mark ) to list(url,mark) mark maybe null
+                var list = subscriptions.Select(s => s).ToList();
+
                 var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
+                var contents = Lib.Utils.ExecuteInParallel<
+                    KeyValuePair<string, string>,
+                    string[]>(list, (item) =>
+                 {
+                     // item[url]=mark
+                     var subsString = Lib.Utils.Fetch(item.Key, timeout * 1000);
+                     if (string.IsNullOrEmpty(subsString))
+                     {
+                         setting.SendLog(I18N("DownloadFail") + "\n" + item.Key);
+                         return new string[] { string.Empty, item.Value };
+                     }
 
-                var contents = Lib.Utils.ExecuteInParallel<string, string>(urls, (url) =>
-                {
-                    var subsString = Lib.Utils.Fetch(url, timeout * 1000);
-                    if (string.IsNullOrEmpty(subsString))
-                    {
-                        setting.SendLog(I18N("DownloadFail") + "\n" + url);
-                        return string.Empty;
-                    }
+                     var links = new List<string>();
+                     var matches = Regex.Matches(subsString, StrConst("PatternBase64NonStandard"));
+                     foreach (Match match in matches)
+                     {
+                         try
+                         {
+                             links.Add(Lib.Utils.Base64Decode(match.Value));
+                         }
+                         catch { }
+                     }
 
-                    var links = new List<string>();
-                    var matches = Regex.Matches(subsString, StrConst("PatternBase64NonStandard"));
-                    foreach (Match match in matches)
-                    {
-                        try
-                        {
-                            links.Add(Lib.Utils.Base64Decode(match.Value));
-                        }
-                        catch { }
-                    }
+                     return new string[] { string.Join("\n", links), item.Value };
+                 });
 
-                    return string.Join("\n", links);
-                });
-
-                servers.ImportLinks(string.Join("\n", contents));
+                servers.ImportLinks(contents);
 
                 try
                 {
