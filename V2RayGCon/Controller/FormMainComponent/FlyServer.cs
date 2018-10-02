@@ -101,7 +101,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 else
                 {
                     RemoveAllConrols();
-                    if (preSelectedMarkFilterIndex <= 0)
+                    if (preSelectedMarkFilterIndex <= 0 
+                    && string.IsNullOrEmpty(tboxSearch.Text))
                     {
                         LoadWelcomeItem();
                     }
