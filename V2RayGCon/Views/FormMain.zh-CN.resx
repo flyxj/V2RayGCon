@@ -165,6 +165,12 @@
   <data name="selectTimeoutToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>选中测速超时的服务器</value>
   </data>
+  <data name="selectNoSpeedTestToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中未测速</value>
+  </data>
+  <data name="selectNoSpeedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>选中未进行速度测试的服务器</value>
+  </data>
   <data name="selectToolStripMenuItem.Text" xml:space="preserve">
     <value>选择</value>
   </data>

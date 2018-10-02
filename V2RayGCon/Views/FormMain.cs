@@ -91,7 +91,8 @@ namespace V2RayGCon.Views
                 selectInvertToolStripMenuItem,
                 selectAutorunToolStripMenuItem,
                 selectRunningToolStripMenuItem,
-                selectTimeoutToolStripMenuItem));
+                selectTimeoutToolStripMenuItem,
+                selectNoSpeedTestToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,

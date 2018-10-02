@@ -531,6 +531,7 @@ namespace V2RayGCon.Service
                 Lib.Utils.UnionJson(ref config, packages);
                 OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageDone")));
                 AddServer(config.ToString(Formatting.None), "Package");
+                UpdateMarkList();
                 Lib.UI.ShowMessageBoxDoneAsync();
             };
 

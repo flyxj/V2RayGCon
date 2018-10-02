@@ -189,6 +189,15 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public bool isNotRunSpeedTestYet
+        {
+            get
+            {
+                return this.serverItem.speedTestResult < 0;
+            }
+            private set { }
+        }
+
         public bool isSpeedTestTimeout
         {
             get

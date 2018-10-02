@@ -32,6 +32,11 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         #region public method
+        public void SelectNoSpeedTest()
+        {
+            LoopThroughAllServerItemControl((s) => s.SetSelected(s.isNotRunSpeedTestYet));
+        }
+
         public void SelectTimeout()
         {
             LoopThroughAllServerItemControl((s) => s.SetSelected(s.isSpeedTestTimeout));
@@ -101,7 +106,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 else
                 {
                     RemoveAllConrols();
-                    if (preSelectedMarkFilterIndex <= 0 
+                    if (preSelectedMarkFilterIndex <= 0
                     && string.IsNullOrEmpty(tboxSearch.Text))
                     {
                         LoadWelcomeItem();
