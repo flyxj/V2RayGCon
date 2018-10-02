@@ -17,6 +17,11 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region public method
+        public static void ShowMessageBoxDoneAsync()
+        {
+            Task.Factory.StartNew(() => MessageBox.Show(I18N("Done")));
+        }
+
         public static bool UpdateControlOnDemand(Control control, int value)
         {
             switch (control)

@@ -35,13 +35,12 @@ namespace V2RayGCon.Controller.FormMainComponent
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
 
-            InitBatchOperation(
-                stopSelected, restartSelected, speedTestOnSelected,
-                deleteSelected, copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions,
-                deleteAllItems, modifySelected, packSelected,
-                moveToTop, moveToBottom, collapsePanel, expansePanel,
-                sortBySpeed, sortBySummary);
-            InitMisc(clearSysProxy, refreshSummary);
+            InitCtrlSorting(sortBySpeed, sortBySummary);
+            InitCtrlView(moveToTop, moveToBottom, collapsePanel, expansePanel);
+            InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
+            InitCtrlDelete(deleteSelected, deleteAllItems);
+            InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
+            InitCtrlSysProxy(clearSysProxy, refreshSummary);
         }
 
         #region public method
@@ -56,104 +55,60 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        private void InitBatchOperation(
-            ToolStripMenuItem stopSelected,
-            ToolStripMenuItem restartSelected,
-            ToolStripMenuItem speedTestOnSelected,
-            ToolStripMenuItem deleteSelected,
-            ToolStripMenuItem copyAsV2rayLinks,
-            ToolStripMenuItem copyAsVmessLinks,
-            ToolStripMenuItem copyAsSubscriptions,
-            ToolStripMenuItem deleteAllItems,
-            ToolStripMenuItem modifySelected,
-            ToolStripMenuItem packSelected,
-            ToolStripMenuItem moveToTop,
-            ToolStripMenuItem moveToBottom,
-            ToolStripMenuItem collapsePanel,
-            ToolStripMenuItem expansePanel,
-            ToolStripMenuItem sortBySpeed,
-            ToolStripMenuItem sortBySummary)
+        EventHandler GenSelectedServerHandler(Action lambda)
         {
-            sortBySummary.Click += (s, a) =>
+            return (s, a) =>
             {
-                if (!CheckSelectedServerCount())
+                if (!servers.IsSelecteAnyServer())
+                {
+                    Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));
+                    return;
+                }
+                lambda();
+            };
+        }
+
+        private void InitCtrlBatchOperation(ToolStripMenuItem stopSelected, ToolStripMenuItem restartSelected, ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem modifySelected, ToolStripMenuItem packSelected)
+        {
+            modifySelected.Click += GenSelectedServerHandler(
+                () => Views.FormBatchModifyServerSetting.GetForm());
+
+
+            packSelected.Click += GenSelectedServerHandler(
+                () => servers.PackSelectedServers());
+
+            speedTestOnSelected.Click += GenSelectedServerHandler(() =>
+            {
+                if (!Lib.UI.Confirm(I18N("TestWillTakeALongTime")))
                 {
                     return;
                 }
 
-                SortServerListBySummary();
-
-            };
-
-            sortBySpeed.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
+                if (!servers.RunSpeedTestOnSelectedServers())
                 {
-                    return;
+                    MessageBox.Show(I18N("LastTestNoFinishYet"));
                 }
+            });
 
-                SortServerListBySpeedTestResult();
-            };
-
-            expansePanel.Click += (s, a) =>
+            stopSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (!CheckSelectedServerCount())
+                if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
                 {
-                    return;
+                    servers.StopAllSelectedThen();
                 }
+            });
 
-                ExpansePanel();
-            };
-
-            collapsePanel.Click += (s, a) =>
+            restartSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (!CheckSelectedServerCount())
+                if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
                 {
-                    return;
+                    servers.RestartAllSelectedServersThen();
                 }
+            });
+        }
 
-                CollapsePanel();
-            };
-
-            moveToTop.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-
-                SetServerItemsIndex(0);
-            };
-
-            moveToBottom.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-
-                SetServerItemsIndex(int.MaxValue);
-            };
-
-            modifySelected.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-
-                Views.FormBatchModifyServerSetting.GetForm();
-            };
-
-            packSelected.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-                servers.PackSelectedServers();
-            };
-
+        private void InitCtrlDelete(ToolStripMenuItem deleteSelected, ToolStripMenuItem deleteAllItems)
+        {
             deleteAllItems.Click += (s, a) =>
             {
                 if (!Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
@@ -164,94 +119,84 @@ namespace V2RayGCon.Controller.FormMainComponent
                 Service.Cache.Instance.core.Clear();
             };
 
-            copyAsSubscriptions.Click += (s, a) =>
+            deleteSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-                CopySelectedAsSubscription();
-            };
-
-            copyAsV2rayLinks.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-
-                CopySelectedAsV2RayLinks();
-            };
-
-            copyAsVmessLinks.Click += (s, a) =>
-            {
-
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-
-                CopySelectedAsVmessLinks();
-            };
-
-            deleteSelected.Click += (s, a) =>
-            {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
-
                 if (!Lib.UI.Confirm(I18N("ConfirmDeleteSelectedServers")))
                 {
                     return;
                 }
-
                 servers.DeleteSelectedServersThen();
-            };
+            });
+        }
 
-            speedTestOnSelected.Click += (s, a) =>
+        private void InitCtrlCopyToClipboard(ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks, ToolStripMenuItem copyAsSubscriptions)
+        {
+            copyAsSubscriptions.Click += GenSelectedServerHandler(() =>
             {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
+                MessageBox.Show(
+                Lib.Utils.CopyToClipboard(
+                    Lib.Utils.Base64Encode(
+                        EncodeAllServersIntoVmessLinks())) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+            });
 
-                if (!Lib.UI.Confirm(I18N("TestWillTakeALongTime")))
-                {
-                    return;
-                }
-
-                if (!servers.RunSpeedTestOnSelectedServers())
-                {
-                    MessageBox.Show(I18N("LastTestNoFinishYet"));
-                }
-            };
-
-            stopSelected.Click += (s, a) =>
+            copyAsV2rayLinks.Click += GenSelectedServerHandler(() =>
             {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
+                var list = servers.GetServerList()
+                    .Where(s => s.isSelected)
+                    .Select(s => Lib.Utils.AddLinkPrefix(
+                        Lib.Utils.Base64Encode(s.config),
+                        Model.Data.Enum.LinkTypes.v2ray))
+                    .ToList();
 
-                if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
-                {
-                    servers.StopAllSelectedThen();
-                }
-            };
+                MessageBox.Show(
+                    Lib.Utils.CopyToClipboard(
+                        string.Join(Environment.NewLine, list)) ?
+                    I18N("LinksCopied") :
+                    I18N("CopyFail"));
+            });
 
-            restartSelected.Click += (s, a) =>
+            copyAsVmessLinks.Click += GenSelectedServerHandler(() =>
             {
-                if (!CheckSelectedServerCount())
-                {
-                    return;
-                }
+                MessageBox.Show(
+                   Lib.Utils.CopyToClipboard(
+                       EncodeAllServersIntoVmessLinks()) ?
+                   I18N("LinksCopied") :
+                   I18N("CopyFail"));
+            });
+        }
 
-                if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
-                {
-                    servers.RestartAllSelectedServersThen();
-                }
-            };
+        private void InitCtrlView(ToolStripMenuItem moveToTop, ToolStripMenuItem moveToBottom, ToolStripMenuItem collapsePanel, ToolStripMenuItem expansePanel)
+        {
+            expansePanel.Click += GenSelectedServerHandler(() =>
+            {
+                SetServerItemPanelIsCollapseProperty(false);
+            });
+
+            collapsePanel.Click += GenSelectedServerHandler(() =>
+            {
+                SetServerItemPanelIsCollapseProperty(true);
+            });
+
+            moveToTop.Click += GenSelectedServerHandler(() =>
+            {
+                SetServerItemsIndex(0);
+            });
+
+            moveToBottom.Click += GenSelectedServerHandler(() =>
+            {
+                SetServerItemsIndex(double.MaxValue);
+            });
+        }
+
+        private void InitCtrlSorting(ToolStripMenuItem sortBySpeed, ToolStripMenuItem sortBySummary)
+        {
+            sortBySummary.Click += GenSelectedServerHandler(
+                SortServerListBySummary);
+
+            sortBySpeed.Click += GenSelectedServerHandler(
+                SortServerListBySpeedTestResult);
         }
 
         private void SortServerListBySummary()
@@ -263,13 +208,18 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
 
             SortServerItemList(ref list, (a, b) => a.summary.CompareTo(b.summary));
-            RemoveAllCtrolsAndRefreshFlyPanel();
+            RemoveAllControlsAndRefreshFlyPanel();
         }
 
         void SortServerItemList(
              ref List<Model.Data.ServerItem> list,
              Comparison<Model.Data.ServerItem> comparer)
         {
+            if (list == null || list.Count < 2)
+            {
+                return;
+            }
+
             list.Sort(comparer);
             var minIndex = list.First().index;
             var delta = 1.0 / 2 / list.Count;
@@ -288,10 +238,10 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
 
             SortServerItemList(ref list, (a, b) => a.speedTestResult.CompareTo(b.speedTestResult));
-            RemoveAllCtrolsAndRefreshFlyPanel();
+            RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        void UpdateServerItemPanelIsCollapse(bool isCollapse)
+        void SetServerItemPanelIsCollapseProperty(bool isCollapse)
         {
             servers
                 .GetServerList()
@@ -307,21 +257,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList(); // force linq to execute
         }
 
-        void RemoveAllCtrolsAndRefreshFlyPanel()
+        void RemoveAllControlsAndRefreshFlyPanel()
         {
             var panel = GetFlyPanel();
             panel.RemoveAllConrols();
             panel.RefreshUI();
-        }
-
-        private void CollapsePanel()
-        {
-            UpdateServerItemPanelIsCollapse(true);
-        }
-
-        private void ExpansePanel()
-        {
-            UpdateServerItemPanelIsCollapse(false);
         }
 
         private void SetServerItemsIndex(double index)
@@ -335,13 +275,12 @@ namespace V2RayGCon.Controller.FormMainComponent
                 })
                 .ToList(); // force linq to execute
 
-            RemoveAllCtrolsAndRefreshFlyPanel();
+            RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        private void InitMisc(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)
+        private void InitCtrlSysProxy(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)
         {
             // misc
-
             clearSysProxy.Click += (s, a) =>
             {
                 if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
@@ -355,35 +294,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 cache.html.Clear();
                 servers.UpdateAllServersSummary();
             };
-        }
-
-        bool CheckSelectedServerCount()
-        {
-            if (!servers.IsSelecteAnyServer())
-            {
-                Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));
-                return false;
-            }
-            return true;
-        }
-
-        void CopySelectedAsV2RayLinks()
-        {
-            var serverList = servers.GetServerList();
-            string s = string.Empty;
-
-            foreach (var server in serverList)
-            {
-                if (server.isSelected)
-                {
-                    s += "v2ray://" + Lib.Utils.Base64Encode(server.config) + "\r\n";
-                }
-            }
-
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(s) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
         }
 
         string EncodeAllServersIntoVmessLinks()
@@ -407,25 +317,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
 
             return result;
-        }
-
-        void CopySelectedAsSubscription()
-        {
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(
-                    Lib.Utils.Base64Encode(
-                        EncodeAllServersIntoVmessLinks())) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
-        }
-
-        void CopySelectedAsVmessLinks()
-        {
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(
-                    EncodeAllServersIntoVmessLinks()) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
         }
 
         Controller.FormMainComponent.FlyServer GetFlyPanel()

@@ -390,11 +390,15 @@ namespace V2RayGCon.Model.Data
         public List<string> GetSearchTextList()
         {
             return new List<string> {
-                name,
-                summary,
-                Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType],
-                inboundIP,
-                inboundPort.ToString()
+                // index 0
+                name+summary,
+
+                // index 1
+                Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType]
+                +inboundIP
+                +inboundPort.ToString(),
+
+                // index 2
             };
         }
 

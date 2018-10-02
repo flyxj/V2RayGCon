@@ -13,7 +13,8 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
-        [DataRow("EvABk文,tv字vvc", "A字", true)]
+        [DataRow("EvABk文,tv字vvc", "字文", false)]
+        [DataRow("EvABk文,tv字vvc", "ab字", true)]
         [DataRow("ab vvvc", "bc", true)]
         [DataRow("abc", "ac", true)]
         [DataRow("", "a", false)]

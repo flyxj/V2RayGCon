@@ -203,7 +203,7 @@ namespace V2RayGCon.Service
 
         public void RestoreOriginalSystemProxyInfo()
         {
-            Lib.ProxySetter.RestoreProxy(
+            Lib.ProxySetter.SetProxy(
                 orgSysProxyInfo.Item2,
                 orgSysProxyInfo.Item1);
         }
