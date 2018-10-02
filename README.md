@@ -26,8 +26,9 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
   
 首次使用请打开日志窗口，查看输出信息排查错误  
 
-### 缺点
-本软件不会支持PAC，需要分流请看[实现类似PAC的分流国内外流量效果](https://github.com/nobody3u/V2RayGCon/wiki/%E5%B0%8F%E6%8A%80%E5%B7%A7#%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCpac%E7%9A%84%E5%88%86%E6%B5%81%E5%9B%BD%E5%86%85%E5%A4%96%E6%B5%81%E9%87%8F%E6%95%88%E6%9E%9C)  
+### 分流
+本软件不支持PAC，需要分流请看：  
+[实现类似PAC的分流国内外流量效果](https://github.com/nobody3u/V2RayGCon/wiki/%E5%B0%8F%E6%8A%80%E5%B7%A7#%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCpac%E7%9A%84%E5%88%86%E6%B5%81%E5%9B%BD%E5%86%85%E5%A4%96%E6%B5%81%E9%87%8F%E6%95%88%E6%9E%9C)  
   
 ### 设计目标
 1. 保留用户对v2ray-core的操控能力  
