@@ -12,14 +12,14 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
-        ComboBox cboxMarkFilter;
-        TextBox tboxSearch;
+        ToolStripComboBox cboxMarkFilter;
+        ToolStripTextBox tboxSearch;
         int preSelectedMarkFilterIndex;
 
         public FlyServer(
             FlowLayoutPanel panel,
-            ComboBox cboxMarkeFilter,
-            TextBox tboxSearch)
+            ToolStripComboBox cboxMarkeFilter,
+            ToolStripTextBox tboxSearch)
         {
             this.servers = Service.Servers.Instance;
             this.flyPanel = panel;
@@ -142,7 +142,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             UpdateMarkFilterItemList(cboxMarkFilter);
             cboxMarkFilter.DropDown += (s, e) =>
             {
-                cboxMarkFilter.Invoke((MethodInvoker)delegate
+                this.flyPanel.Invoke((MethodInvoker)delegate
                 {
                     UpdateMarkFilterItemList(cboxMarkFilter);
                     Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMarkFilter);
@@ -217,7 +217,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             return list.Where(s => s.mark == markList[preSelectedMarkFilterIndex - 2]);
         }
 
-        void UpdateMarkFilterItemList(ComboBox marker)
+        void UpdateMarkFilterItemList(ToolStripComboBox marker)
         {
             var itemList = servers.GetMarkList().ToList();
             itemList.Insert(0, I18N("NoMark"));

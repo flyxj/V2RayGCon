@@ -56,19 +56,48 @@ namespace V2RayGCon.Views
 
             formMainCtrl = InitFormMainCtrl();
 
+            BindToolStripButtonToMenuItem();
+
             toolMenuItemCurrentSysProxy.Text = GetCurrentSysProxySetting();
             setting.OnSysProxyChanged += OnSysProxyChangedHandler;
         }
 
         #region private method
+
+
+        void BindToolStripButtonToMenuItem()
+        {
+            void bind(ToolStripButton button, ToolStripMenuItem menu)
+            {
+                button.Click += (s, a) => menu.PerformClick();
+            }
+
+            bind(toolStripButtonSelectAll, selectAllToolStripMenuItem);
+            bind(toolStripButtonSelectInverse, selectInvertToolStripMenuItem);
+            bind(toolStripButtonSelectNone, selectNoneToolStripMenuItem);
+
+            bind(toolStripButtonCollapseSelected, toolStripMenuItemCollapsePanel);
+            bind(toolStripButtonExpanSelected, toolStripMenuItemExpansePanel);
+
+            bind(toolStripButtonRestartSelected, toolStripMenuItemRestartSelected);
+            bind(toolStripButtonStopSelected, toolStripMenuItemStopSelected);
+
+            bind(toolStripButtonModifySelected, toolStripMenuItemModifySettings);
+            bind(toolStripButtonSortSelectedBySummary, toolStripMenuItemSortBySummary);
+            bind(toolStripButtonSortSelectedBySpeedTestResult, toolStripMenuItemSortBySpeedTest);
+
+            bind(toolStripButtonFormOption, toolMenuItemOptions);
+            bind(toolStripButtonHelp, toolMenuItemHelp);
+        }
+
         private Controller.FormMainCtrl InitFormMainCtrl()
         {
             var ctrl = new Controller.FormMainCtrl();
 
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer,
-                cboxMarkFilter,
-                tboxFlySearcher));
+                toolStripComboBoxMarkFilter,
+                toolStripTextBoxFlySearcher));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
                 toolMenuItemSimAddVmessServer,

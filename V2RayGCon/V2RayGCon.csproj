@@ -394,7 +394,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="version.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Icon\icon_dark.ico" />
@@ -418,6 +417,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lib\WinFormControl\" />
+    <Folder Include="Resource\Icon\VS2017\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

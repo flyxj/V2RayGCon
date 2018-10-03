@@ -32,6 +32,30 @@ namespace V2RayGCon.Views
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            this.toolStripContainer2 = new System.Windows.Forms.ToolStripContainer();
+            this.flyServerListContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripComboBoxMarkFilter = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripTextBoxFlySearcher = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonSelectAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSelectInverse = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSelectNone = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonCollapseSelected = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonExpanSelected = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonRestartSelected = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonStopSelected = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonModifySelected = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSortSelectedBySummary = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSortSelectedBySpeedTestResult = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonFormOption = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonHelp = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.operationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemSimAddVmessServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,13 +113,206 @@ namespace V2RayGCon.Views
             this.toolMenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cboxMarkFilter = new System.Windows.Forms.ComboBox();
-            this.tboxFlySearcher = new System.Windows.Forms.TextBox();
-            this.flyServerListContainer = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.toolStripContainer2.ContentPanel.SuspendLayout();
+            this.toolStripContainer2.TopToolStripPanel.SuspendLayout();
+            this.toolStripContainer2.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // toolStripContainer2
+            // 
+            resources.ApplyResources(this.toolStripContainer2, "toolStripContainer2");
+            // 
+            // toolStripContainer2.BottomToolStripPanel
+            // 
+            resources.ApplyResources(this.toolStripContainer2.BottomToolStripPanel, "toolStripContainer2.BottomToolStripPanel");
+            this.toolTip1.SetToolTip(this.toolStripContainer2.BottomToolStripPanel, resources.GetString("toolStripContainer2.BottomToolStripPanel.ToolTip"));
+            this.toolStripContainer2.BottomToolStripPanelVisible = false;
+            // 
+            // toolStripContainer2.ContentPanel
+            // 
+            resources.ApplyResources(this.toolStripContainer2.ContentPanel, "toolStripContainer2.ContentPanel");
+            this.toolStripContainer2.ContentPanel.Controls.Add(this.flyServerListContainer);
+            this.toolTip1.SetToolTip(this.toolStripContainer2.ContentPanel, resources.GetString("toolStripContainer2.ContentPanel.ToolTip"));
+            // 
+            // toolStripContainer2.LeftToolStripPanel
+            // 
+            resources.ApplyResources(this.toolStripContainer2.LeftToolStripPanel, "toolStripContainer2.LeftToolStripPanel");
+            this.toolTip1.SetToolTip(this.toolStripContainer2.LeftToolStripPanel, resources.GetString("toolStripContainer2.LeftToolStripPanel.ToolTip"));
+            this.toolStripContainer2.LeftToolStripPanelVisible = false;
+            this.toolStripContainer2.Name = "toolStripContainer2";
+            // 
+            // toolStripContainer2.RightToolStripPanel
+            // 
+            resources.ApplyResources(this.toolStripContainer2.RightToolStripPanel, "toolStripContainer2.RightToolStripPanel");
+            this.toolTip1.SetToolTip(this.toolStripContainer2.RightToolStripPanel, resources.GetString("toolStripContainer2.RightToolStripPanel.ToolTip"));
+            this.toolStripContainer2.RightToolStripPanelVisible = false;
+            this.toolTip1.SetToolTip(this.toolStripContainer2, resources.GetString("toolStripContainer2.ToolTip"));
+            // 
+            // toolStripContainer2.TopToolStripPanel
+            // 
+            resources.ApplyResources(this.toolStripContainer2.TopToolStripPanel, "toolStripContainer2.TopToolStripPanel");
+            this.toolStripContainer2.TopToolStripPanel.Controls.Add(this.toolStrip1);
+            this.toolStripContainer2.TopToolStripPanel.Controls.Add(this.toolStrip2);
+            this.toolTip1.SetToolTip(this.toolStripContainer2.TopToolStripPanel, resources.GetString("toolStripContainer2.TopToolStripPanel.ToolTip"));
+            // 
+            // flyServerListContainer
+            // 
+            resources.ApplyResources(this.flyServerListContainer, "flyServerListContainer");
+            this.flyServerListContainer.AllowDrop = true;
+            this.flyServerListContainer.BackColor = System.Drawing.Color.White;
+            this.flyServerListContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flyServerListContainer.Name = "flyServerListContainer";
+            this.toolTip1.SetToolTip(this.flyServerListContainer, resources.GetString("flyServerListContainer.ToolTip"));
+            // 
+            // toolStrip2
+            // 
+            resources.ApplyResources(this.toolStrip2, "toolStrip2");
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.toolStripComboBoxMarkFilter,
+            this.toolStripLabel2,
+            this.toolStripTextBoxFlySearcher});
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolTip1.SetToolTip(this.toolStrip2, resources.GetString("toolStrip2.ToolTip"));
+            // 
+            // toolStripLabel1
+            // 
+            resources.ApplyResources(this.toolStripLabel1, "toolStripLabel1");
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            // 
+            // toolStripComboBoxMarkFilter
+            // 
+            resources.ApplyResources(this.toolStripComboBoxMarkFilter, "toolStripComboBoxMarkFilter");
+            this.toolStripComboBoxMarkFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toolStripComboBoxMarkFilter.Name = "toolStripComboBoxMarkFilter";
+            // 
+            // toolStripLabel2
+            // 
+            resources.ApplyResources(this.toolStripLabel2, "toolStripLabel2");
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            // 
+            // toolStripTextBoxFlySearcher
+            // 
+            resources.ApplyResources(this.toolStripTextBoxFlySearcher, "toolStripTextBoxFlySearcher");
+            this.toolStripTextBoxFlySearcher.Name = "toolStripTextBoxFlySearcher";
+            // 
+            // toolStrip1
+            // 
+            resources.ApplyResources(this.toolStrip1, "toolStrip1");
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonSelectAll,
+            this.toolStripButtonSelectInverse,
+            this.toolStripButtonSelectNone,
+            this.toolStripSeparator2,
+            this.toolStripButtonCollapseSelected,
+            this.toolStripButtonExpanSelected,
+            this.toolStripSeparator6,
+            this.toolStripButtonRestartSelected,
+            this.toolStripButtonStopSelected,
+            this.toolStripSeparator7,
+            this.toolStripButtonModifySelected,
+            this.toolStripButtonSortSelectedBySummary,
+            this.toolStripButtonSortSelectedBySpeedTestResult,
+            this.toolStripSeparator9,
+            this.toolStripButtonFormOption,
+            this.toolStripButtonHelp});
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolTip1.SetToolTip(this.toolStrip1, resources.GetString("toolStrip1.ToolTip"));
+            // 
+            // toolStripButtonSelectAll
+            // 
+            resources.ApplyResources(this.toolStripButtonSelectAll, "toolStripButtonSelectAll");
+            this.toolStripButtonSelectAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSelectAll.Name = "toolStripButtonSelectAll";
+            // 
+            // toolStripButtonSelectInverse
+            // 
+            resources.ApplyResources(this.toolStripButtonSelectInverse, "toolStripButtonSelectInverse");
+            this.toolStripButtonSelectInverse.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSelectInverse.Name = "toolStripButtonSelectInverse";
+            // 
+            // toolStripButtonSelectNone
+            // 
+            resources.ApplyResources(this.toolStripButtonSelectNone, "toolStripButtonSelectNone");
+            this.toolStripButtonSelectNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSelectNone.Name = "toolStripButtonSelectNone";
+            // 
+            // toolStripSeparator2
+            // 
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            // 
+            // toolStripButtonCollapseSelected
+            // 
+            resources.ApplyResources(this.toolStripButtonCollapseSelected, "toolStripButtonCollapseSelected");
+            this.toolStripButtonCollapseSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonCollapseSelected.Name = "toolStripButtonCollapseSelected";
+            // 
+            // toolStripButtonExpanSelected
+            // 
+            resources.ApplyResources(this.toolStripButtonExpanSelected, "toolStripButtonExpanSelected");
+            this.toolStripButtonExpanSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonExpanSelected.Name = "toolStripButtonExpanSelected";
+            // 
+            // toolStripSeparator6
+            // 
+            resources.ApplyResources(this.toolStripSeparator6, "toolStripSeparator6");
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            // 
+            // toolStripButtonRestartSelected
+            // 
+            resources.ApplyResources(this.toolStripButtonRestartSelected, "toolStripButtonRestartSelected");
+            this.toolStripButtonRestartSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRestartSelected.Name = "toolStripButtonRestartSelected";
+            // 
+            // toolStripButtonStopSelected
+            // 
+            resources.ApplyResources(this.toolStripButtonStopSelected, "toolStripButtonStopSelected");
+            this.toolStripButtonStopSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonStopSelected.Name = "toolStripButtonStopSelected";
+            // 
+            // toolStripSeparator7
+            // 
+            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            // 
+            // toolStripButtonModifySelected
+            // 
+            resources.ApplyResources(this.toolStripButtonModifySelected, "toolStripButtonModifySelected");
+            this.toolStripButtonModifySelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonModifySelected.Name = "toolStripButtonModifySelected";
+            // 
+            // toolStripButtonSortSelectedBySummary
+            // 
+            resources.ApplyResources(this.toolStripButtonSortSelectedBySummary, "toolStripButtonSortSelectedBySummary");
+            this.toolStripButtonSortSelectedBySummary.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSortSelectedBySummary.Name = "toolStripButtonSortSelectedBySummary";
+            // 
+            // toolStripButtonSortSelectedBySpeedTestResult
+            // 
+            resources.ApplyResources(this.toolStripButtonSortSelectedBySpeedTestResult, "toolStripButtonSortSelectedBySpeedTestResult");
+            this.toolStripButtonSortSelectedBySpeedTestResult.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSortSelectedBySpeedTestResult.Name = "toolStripButtonSortSelectedBySpeedTestResult";
+            // 
+            // toolStripSeparator9
+            // 
+            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            // 
+            // toolStripButtonFormOption
+            // 
+            resources.ApplyResources(this.toolStripButtonFormOption, "toolStripButtonFormOption");
+            this.toolStripButtonFormOption.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonFormOption.Name = "toolStripButtonFormOption";
+            // 
+            // toolStripButtonHelp
+            // 
+            resources.ApplyResources(this.toolStripButtonHelp, "toolStripButtonHelp");
+            this.toolStripButtonHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonHelp.Name = "toolStripButtonHelp";
             // 
             // menuStrip1
             // 
@@ -445,58 +662,25 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.toolMenuItemHelp, "toolMenuItemHelp");
             this.toolMenuItemHelp.Name = "toolMenuItemHelp";
             // 
-            // cboxMarkFilter
-            // 
-            resources.ApplyResources(this.cboxMarkFilter, "cboxMarkFilter");
-            this.cboxMarkFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboxMarkFilter.FormattingEnabled = true;
-            this.cboxMarkFilter.Items.AddRange(new object[] {
-            resources.GetString("cboxMarkFilter.Items"),
-            resources.GetString("cboxMarkFilter.Items1")});
-            this.cboxMarkFilter.Name = "cboxMarkFilter";
-            this.toolTip1.SetToolTip(this.cboxMarkFilter, resources.GetString("cboxMarkFilter.ToolTip"));
-            // 
-            // tboxFlySearcher
-            // 
-            resources.ApplyResources(this.tboxFlySearcher, "tboxFlySearcher");
-            this.tboxFlySearcher.Name = "tboxFlySearcher";
-            this.toolTip1.SetToolTip(this.tboxFlySearcher, resources.GetString("tboxFlySearcher.ToolTip"));
-            // 
-            // flyServerListContainer
-            // 
-            resources.ApplyResources(this.flyServerListContainer, "flyServerListContainer");
-            this.flyServerListContainer.AllowDrop = true;
-            this.flyServerListContainer.BackColor = System.Drawing.Color.White;
-            this.flyServerListContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flyServerListContainer.Name = "flyServerListContainer";
-            this.toolTip1.SetToolTip(this.flyServerListContainer, resources.GetString("flyServerListContainer.ToolTip"));
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
-            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tboxFlySearcher);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cboxMarkFilter);
-            this.Controls.Add(this.flyServerListContainer);
+            this.Controls.Add(this.toolStripContainer2);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.toolStripContainer2.ContentPanel.ResumeLayout(false);
+            this.toolStripContainer2.TopToolStripPanel.ResumeLayout(false);
+            this.toolStripContainer2.TopToolStripPanel.PerformLayout();
+            this.toolStripContainer2.ResumeLayout(false);
+            this.toolStripContainer2.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -545,8 +729,6 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem toolStripMenuItemRemoveV2rayCore;
         private ToolStripMenuItem toolStripMenuItemCopyAsSubscription;
         private ToolStripMenuItem toolStripMenuItemPackSelectedServers;
-        private ComboBox cboxMarkFilter;
-        private Label label1;
         private ToolStripMenuItem toolStripMenuItemModifySelected;
         private ToolStripMenuItem toolStripMenuItemModifySettings;
         private ToolStripSeparator toolStripSeparator3;
@@ -564,9 +746,30 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem selectAutorunToolStripMenuItem;
         private ToolStripMenuItem selectRunningToolStripMenuItem;
         private ToolStripMenuItem selectTimeoutToolStripMenuItem;
-        private Label label2;
-        private TextBox tboxFlySearcher;
         private ToolStripMenuItem toolStripMenuItemSortBySummary;
         private ToolStripMenuItem selectNoSpeedTestToolStripMenuItem;
+        private ToolStrip toolStrip2;
+        private ToolStripLabel toolStripLabel1;
+        private ToolStripComboBox toolStripComboBoxMarkFilter;
+        private ToolStripLabel toolStripLabel2;
+        private ToolStripTextBox toolStripTextBoxFlySearcher;
+        private ToolStripContainer toolStripContainer2;
+        private ToolStrip toolStrip1;
+        private ToolStripButton toolStripButtonSelectAll;
+        private ToolStripButton toolStripButtonSelectInverse;
+        private ToolStripButton toolStripButtonSelectNone;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripButton toolStripButtonCollapseSelected;
+        private ToolStripButton toolStripButtonExpanSelected;
+        private ToolStripSeparator toolStripSeparator6;
+        private ToolStripButton toolStripButtonRestartSelected;
+        private ToolStripButton toolStripButtonStopSelected;
+        private ToolStripSeparator toolStripSeparator7;
+        private ToolStripButton toolStripButtonModifySelected;
+        private ToolStripButton toolStripButtonSortSelectedBySummary;
+        private ToolStripButton toolStripButtonSortSelectedBySpeedTestResult;
+        private ToolStripSeparator toolStripSeparator9;
+        private ToolStripButton toolStripButtonFormOption;
+        private ToolStripButton toolStripButtonHelp;
     }
 }
