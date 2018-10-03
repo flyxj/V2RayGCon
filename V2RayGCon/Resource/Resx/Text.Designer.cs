@@ -1258,6 +1258,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Total 的本地化字符串。
+        /// </summary>
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Download fail!
         ///You can download manually from the link below.
         ///https://github.com/v2ray/v2ray-core 的本地化字符串。

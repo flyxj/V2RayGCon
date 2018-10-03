@@ -561,4 +561,7 @@ https://github.com/v2ray/v2ray-core</value>
     <value>你的系统不支持TLS1.2，请升级.net至4.5或更高版本。
 否则涉及网络的操作可能失败。</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>合计</value>
+  </data>
 </root>

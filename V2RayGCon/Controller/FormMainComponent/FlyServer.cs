@@ -14,17 +14,21 @@ namespace V2RayGCon.Controller.FormMainComponent
         Service.Servers servers;
         ToolStripComboBox cboxMarkFilter;
         ToolStripTextBox tboxSearch;
+        ToolStripStatusLabel tslbTotal;
+
         int preSelectedMarkFilterIndex;
 
         public FlyServer(
             FlowLayoutPanel panel,
             ToolStripComboBox cboxMarkeFilter,
-            ToolStripTextBox tboxSearch)
+            ToolStripTextBox tboxSearch,
+            ToolStripStatusLabel tslbTotal)
         {
             this.servers = Service.Servers.Instance;
             this.flyPanel = panel;
             this.cboxMarkFilter = cboxMarkeFilter;
             this.tboxSearch = tboxSearch;
+            this.tslbTotal = tslbTotal;
 
             InitFormControls();
             BindDragDropEvent();
@@ -99,6 +103,8 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             flyPanel.Invoke((MethodInvoker)delegate
             {
+                tslbTotal.Text = I18N("Total") + ": " + list.Count;
+
                 if (list == null || list.Count > 0)
                 {
                     RemoveWelcomeItem();

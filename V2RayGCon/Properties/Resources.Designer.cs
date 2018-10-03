@@ -70,11 +70,91 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap ASX_TransferDownload_blue_16x {
+            get {
+                object obj = ResourceManager.GetObject("ASX_TransferDownload_blue_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap AzureVirtualMachineExtension_16x {
+            get {
+                object obj = ResourceManager.GetObject("AzureVirtualMachineExtension_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap BorderElement_16x {
+            get {
+                object obj = ResourceManager.GetObject("BorderElement_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap CloseSolution_16x {
+            get {
+                object obj = ResourceManager.GetObject("CloseSolution_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap CopyLongTextToClipboard_16x {
+            get {
+                object obj = ResourceManager.GetObject("CopyLongTextToClipboard_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap CPPWin32Project_16x {
+            get {
+                object obj = ResourceManager.GetObject("CPPWin32Project_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 V2RayGCon.Resource.Resx.Data 的本地化字符串。
         /// </summary>
         internal static string Data {
             get {
                 return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap EditWindow_16x {
+            get {
+                object obj = ResourceManager.GetObject("EditWindow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap FSInteractiveWindow_16x {
+            get {
+                object obj = ResourceManager.GetObject("FSInteractiveWindow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -117,6 +197,26 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Settings_16x {
+            get {
+                object obj = ResourceManager.GetObject("Settings_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusHelp_16x {
+            get {
+                object obj = ResourceManager.GetObject("StatusHelp_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 V2RayGCon.Resource.Resx.Text 的本地化字符串。
         /// </summary>
         internal static string Text {
@@ -140,6 +240,16 @@ namespace V2RayGCon.Properties {
         internal static string WikiLink {
             get {
                 return ResourceManager.GetString("WikiLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap WindowsForm_16x {
+            get {
+                object obj = ResourceManager.GetObject("WindowsForm_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

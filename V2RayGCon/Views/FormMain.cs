@@ -97,7 +97,8 @@ namespace V2RayGCon.Views
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer,
                 toolStripComboBoxMarkFilter,
-                toolStripTextBoxFlySearcher));
+                toolStripTextBoxFlySearcher,
+                toolStripStatusLabelTotal));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
                 toolMenuItemSimAddVmessServer,
