@@ -217,7 +217,7 @@
     <value>订阅内容</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
-    <value>将选中服务器编码为订阅内容</value>
+    <value>将选中服务器编码为订阅内容(只支持vmess服务器)</value>
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>复制选中</value>

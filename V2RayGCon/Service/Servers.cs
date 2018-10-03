@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -845,6 +846,48 @@ namespace V2RayGCon.Service
             return true;
         }
 
+        #endregion
+
+        #region debug
+#if DEBUG
+        public void DbgFastRestartTest(int round)
+        {
+            var list = serverList.ToList();
+            var rnd = new Random();
+
+            var count = list.Count;
+            Task.Factory.StartNew(() =>
+            {
+                var taskList = new List<Task>();
+                for (int i = 0; i < round; i++)
+                {
+                    var index = rnd.Next(0, count);
+                    var isStopCore = rnd.Next(0, 2) == 0;
+                    var server = list[index];
+
+                    var task = new Task(() =>
+                    {
+                        AutoResetEvent sayGoodbye = new AutoResetEvent(false);
+                        if (isStopCore)
+                        {
+                            server.StopCoreThen(() => sayGoodbye.Set());
+                        }
+                        else
+                        {
+                            server.RestartCoreThen(() => sayGoodbye.Set());
+                        }
+                        sayGoodbye.WaitOne();
+                    });
+
+                    taskList.Add(task);
+                    task.Start();
+                }
+
+                Task.WaitAll(taskList.ToArray());
+                MessageBox.Show(I18N("Done"));
+            });
+        }
+#endif
         #endregion
     }
 }

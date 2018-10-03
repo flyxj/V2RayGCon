@@ -57,21 +57,19 @@ namespace V2RayGCon.Service
 #if DEBUG
         void This_function_do_some_tedious_stuff()
         {
-            ni.DoubleClick += (s, a) =>
+
+            // Some test code
+            ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
+            ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
             {
-                // Some test code
-                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
-                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
-                // {
-                //     System.GC.Collect();
-                // }));
-            };
+                servers.DbgFastRestartTest(100);
+            }));
 
             // new Views.FormConfiger(@"{}");
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
             Views.FormMain.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormLog.GetForm();
             // setting.WakeupAutorunServer();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();

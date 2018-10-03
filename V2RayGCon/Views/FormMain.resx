@@ -206,7 +206,7 @@
     <value>About</value>
   </data>
   <data name="selectTimeoutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
@@ -261,7 +261,7 @@
     <value>toolStripMenuItem1</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 22</value>
+    <value>180, 22</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="toolMenuItemCurrentSysProxy.Enabled" type="System.Boolean, mscorlib">
@@ -292,7 +292,7 @@
     <value>Autorun</value>
   </data>
   <data name="selectInvertToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="&gt;&gt;cboxMarkFilter.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -6506,13 +6506,13 @@
 </value>
   </data>
   <data name="selectAutorunToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="&gt;&gt;selectAllToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="selectRunningToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="&gt;&gt;toolMenuItemImportFromFile.Name" xml:space="preserve">
     <value>toolMenuItemImportFromFile</value>
@@ -6530,7 +6530,7 @@
     <value>184, 22</value>
   </data>
   <data name="selectNoSpeedTestToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemSortBySpeedTest.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -6653,7 +6653,7 @@
     <value>184, 22</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
-    <value>Encode selected servers as subscription content. </value>
+    <value>Encode selected servers as subscription content. (vmess server only)</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
     <value>Move to top</value>
@@ -6863,7 +6863,7 @@
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="selectAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemMoveToTop.Name" xml:space="preserve">
     <value>toolStripMenuItemMoveToTop</value>
@@ -6872,7 +6872,7 @@
     <value>Refresh summary</value>
   </data>
   <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 6</value>
+    <value>177, 6</value>
   </data>
   <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
     <value>Expanse panel</value>
@@ -6887,7 +6887,7 @@
     <value>Pack selected</value>
   </data>
   <data name="toolStripMenuItemCopyAsVmessLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="selectNoneToolStripMenuItem.Text" xml:space="preserve">
     <value>None</value>
@@ -7133,7 +7133,7 @@
     <value>Stop selected</value>
   </data>
   <data name="selectNoneToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 6</value>
@@ -7169,7 +7169,7 @@
     <value>toolStripMenuItemPackSelectedServers</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="&gt;&gt;menuStrip1.Name" xml:space="preserve">
     <value>menuStrip1</value>
