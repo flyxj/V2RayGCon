@@ -49,11 +49,13 @@ namespace V2RayGCon.Views
             this.selectAutorunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectRunningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectTimeoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectNoSpeedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemModifySelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSortBySpeedTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSortBySummary = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemModifySettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -88,8 +90,10 @@ namespace V2RayGCon.Views
             this.toolMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cboxMarkFilter = new System.Windows.Forms.ComboBox();
+            this.tboxFlySearcher = new System.Windows.Forms.TextBox();
             this.flyServerListContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -165,7 +169,8 @@ namespace V2RayGCon.Views
             this.toolStripMenuItem2,
             this.selectAutorunToolStripMenuItem,
             this.selectRunningToolStripMenuItem,
-            this.selectTimeoutToolStripMenuItem});
+            this.selectTimeoutToolStripMenuItem,
+            this.selectNoSpeedTestToolStripMenuItem});
             this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
             // 
             // selectAllToolStripMenuItem
@@ -203,6 +208,11 @@ namespace V2RayGCon.Views
             resources.ApplyResources(this.selectTimeoutToolStripMenuItem, "selectTimeoutToolStripMenuItem");
             this.selectTimeoutToolStripMenuItem.Name = "selectTimeoutToolStripMenuItem";
             // 
+            // selectNoSpeedTestToolStripMenuItem
+            // 
+            resources.ApplyResources(this.selectNoSpeedTestToolStripMenuItem, "selectNoSpeedTestToolStripMenuItem");
+            this.selectNoSpeedTestToolStripMenuItem.Name = "selectNoSpeedTestToolStripMenuItem";
+            // 
             // toolMenuItemServer
             // 
             resources.ApplyResources(this.toolMenuItemServer, "toolMenuItemServer");
@@ -226,6 +236,7 @@ namespace V2RayGCon.Views
             this.toolStripMenuItemMoveToTop,
             this.toolStripMenuItemMoveToBottom,
             this.toolStripMenuItemSortBySpeedTest,
+            this.toolStripMenuItemSortBySummary,
             this.toolStripSeparator3,
             this.toolStripMenuItemModifySettings,
             this.toolStripSeparator4,
@@ -247,6 +258,11 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripMenuItemSortBySpeedTest, "toolStripMenuItemSortBySpeedTest");
             this.toolStripMenuItemSortBySpeedTest.Name = "toolStripMenuItemSortBySpeedTest";
+            // 
+            // toolStripMenuItemSortBySummary
+            // 
+            resources.ApplyResources(this.toolStripMenuItemSortBySummary, "toolStripMenuItemSortBySummary");
+            this.toolStripMenuItemSortBySummary.Name = "toolStripMenuItemSortBySummary";
             // 
             // toolStripSeparator3
             // 
@@ -440,6 +456,12 @@ namespace V2RayGCon.Views
             this.cboxMarkFilter.Name = "cboxMarkFilter";
             this.toolTip1.SetToolTip(this.cboxMarkFilter, resources.GetString("cboxMarkFilter.ToolTip"));
             // 
+            // tboxFlySearcher
+            // 
+            resources.ApplyResources(this.tboxFlySearcher, "tboxFlySearcher");
+            this.tboxFlySearcher.Name = "tboxFlySearcher";
+            this.toolTip1.SetToolTip(this.tboxFlySearcher, resources.GetString("tboxFlySearcher.ToolTip"));
+            // 
             // flyServerListContainer
             // 
             resources.ApplyResources(this.flyServerListContainer, "flyServerListContainer");
@@ -455,10 +477,18 @@ namespace V2RayGCon.Views
             this.label1.Name = "label1";
             this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tboxFlySearcher);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboxMarkFilter);
             this.Controls.Add(this.flyServerListContainer);
@@ -534,5 +564,9 @@ namespace V2RayGCon.Views
         private ToolStripMenuItem selectAutorunToolStripMenuItem;
         private ToolStripMenuItem selectRunningToolStripMenuItem;
         private ToolStripMenuItem selectTimeoutToolStripMenuItem;
+        private Label label2;
+        private TextBox tboxFlySearcher;
+        private ToolStripMenuItem toolStripMenuItemSortBySummary;
+        private ToolStripMenuItem selectNoSpeedTestToolStripMenuItem;
     }
 }

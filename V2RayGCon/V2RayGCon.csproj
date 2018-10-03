@@ -113,6 +113,7 @@
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
+    <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\OptionCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
@@ -147,18 +148,18 @@
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
     <Compile Include="Model\Data\ServerItem.cs" />
-    <Compile Include="Model\Data\UrlItem.cs" />
+    <Compile Include="Model\Data\SubscriptionItem.cs" />
     <Compile Include="Model\UserControls\ServerListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Model\UserControls\ServerListItem.Designer.cs">
       <DependentUpon>ServerListItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\UserControls\UrlListItem.cs">
+    <Compile Include="Model\UserControls\SubscriptionListItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\UrlListItem.Designer.cs">
-      <DependentUpon>UrlListItem.cs</DependentUpon>
+    <Compile Include="Model\UserControls\SubscriptionListItem.Designer.cs">
+      <DependentUpon>SubscriptionListItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\UserControls\WelcomeFlyPanelComponent.cs">
       <SubType>UserControl</SubType>
@@ -280,11 +281,11 @@
     <EmbeddedResource Include="Model\UserControls\ImportListItem.zh-CN.resx">
       <DependentUpon>ImportListItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\UrlListItem.resx">
-      <DependentUpon>UrlListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\SubscriptionListItem.resx">
+      <DependentUpon>SubscriptionListItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\UrlListItem.zh-CN.resx">
-      <DependentUpon>UrlListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\SubscriptionListItem.zh-CN.resx">
+      <DependentUpon>SubscriptionListItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\UserControls\WelcomeFlyPanelComponent.resx">
       <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>

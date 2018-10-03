@@ -1,8 +1,8 @@
 ﻿namespace V2RayGCon.Model.Data
 {
-    public class UrlItem
+    public class SubscriptionItem
     {
-        public bool inUse;
+        public bool isUse, isSetMark;
         public string alias, url;
     }
 }

@@ -70,6 +70,10 @@ namespace V2RayGCon.Views
                     btnAddSubsUrl,
                     btnUpdateViaSubscription));
 
+            ctrl.Plug(
+                new Controller.OptionComponent.TabSetting(
+                    cboxSettingLanguage));
+
             return ctrl;
         }
 

@@ -199,18 +199,13 @@ namespace V2RayGCon.Model.BaseClass
 
         void StopCoreWorker()
         {
-            try
+            if (v2rayCore == null)
             {
-                if (v2rayCore == null || v2rayCore.HasExited)
-                {
-                    isRunning = false;
-                    return;
-                }
-            }
-            catch
-            {
-                // if core closed, calling HasExited will throw exception
                 isRunning = false;
+            }
+
+            if (!isRunning)
+            {
                 return;
             }
 
@@ -349,7 +344,10 @@ namespace V2RayGCon.Model.BaseClass
             BindEvents(v2rayCore);
 
             AutoResetEvent ready = new AutoResetEvent(false);
-            EventHandler onCoreReady = (s, a) => ready.Set();
+            EventHandler onCoreReady = (s, a) =>
+            {
+                try { ready.Set(); } catch { }
+            };
             isCheckCoreReady = true;
             OnCoreReady += onCoreReady;
 
@@ -364,8 +362,16 @@ namespace V2RayGCon.Model.BaseClass
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
 
-            // Assume core ready after 2 seconds, in case log set to none.
-            ready.WaitOne(2000);
+            // Assume core ready after 2.5 seconds, in case log set to none.
+            if (ready.WaitOne(2500))
+            {
+                Debug.WriteLine("Wait too long, assume core started.");
+            }
+            else
+            {
+                Debug.WriteLine("Core is started.");
+            }
+
             OnCoreReady -= onCoreReady;
             isCheckCoreReady = false;
         }

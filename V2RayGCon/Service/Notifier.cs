@@ -14,11 +14,11 @@ namespace V2RayGCon.Service
 
         Notifier()
         {
-            CreateNotifyIcon();
-
-            Lib.Utils.SupportProtocolTLS12();
-
             setting = Setting.Instance;
+            setting.SwitchCulture();
+
+            CreateNotifyIcon();
+            Lib.Utils.SupportProtocolTLS12();
             setting.SaveOriginalSystemProxyInfo();
             setting.LoadSystemProxy();
             setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
@@ -51,25 +51,25 @@ namespace V2RayGCon.Service
 #endif
         }
 
+
+
         #region DEBUG code TL;DR
 #if DEBUG
         void This_function_do_some_tedious_stuff()
         {
-            ni.DoubleClick += (s, a) =>
+
+            // Some test code
+            ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
+            ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
             {
-                // Some test code
-                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
-                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
-                // {
-                //     System.GC.Collect();
-                // }));
-            };
+                servers.DbgFastRestartTest(100);
+            }));
 
             // new Views.FormConfiger(@"{}");
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
             Views.FormMain.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormLog.GetForm();
             // setting.WakeupAutorunServer();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();

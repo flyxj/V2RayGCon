@@ -242,7 +242,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Discard unsaved changes and close the window? 的本地化字符串。
+        ///   查找类似 Discard unsaved changes and close this window? 的本地化字符串。
         /// </summary>
         internal static string ConfirmCloseWinWithoutSave {
             get {
@@ -1211,7 +1211,7 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 Your system does not support TLS1.2.
-        ///Please upgrade . NET to 4.5 or higher.
+        ///Please upgrade to .NET 4.5 or higher.
         ///Otherwise operations involving the network may fail. 的本地化字符串。
         /// </summary>
         internal static string SysNotSupportTLS12 {

@@ -12,45 +12,44 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem selectInvert,
             ToolStripMenuItem selectAutorun,
             ToolStripMenuItem selectRunning,
-            ToolStripMenuItem selectTimeout)
+            ToolStripMenuItem selectTimeout,
+            ToolStripMenuItem selectNoSpeedTest)
         {
-            
+            // fly panel may not ready while this init
+
+            selectNoSpeedTest.Click += (s, a) =>
+            {
+                GetFlyPanel().SelectNoSpeedTest();
+            };
 
             selectTimeout.Click += (s, a) =>
             {
-                // fly panel may not ready while this init
-                var panel = GetFlyPanel();
-                panel.SelectTimeout();
+                GetFlyPanel().SelectTimeout();
             };
 
             selectRunning.Click += (s, a) =>
             {
-                var panel = GetFlyPanel();
-                panel.SelectRunning();
+                GetFlyPanel().SelectRunning();
             };
 
             selectAutorun.Click += (s, a) =>
             {
-                var panel = GetFlyPanel();
-                panel.SelectAutorun();
+                GetFlyPanel().SelectAutorun();
             };
 
             selectAll.Click += (s, a) =>
             {
-                var panel = GetFlyPanel();
-                panel.SelectAll();
+                GetFlyPanel().SelectAll();
             };
 
             selectNone.Click += (s, a) =>
             {
-                var panel = GetFlyPanel();
-                panel.SelectNone();
+                GetFlyPanel().SelectNone();
             };
 
             selectInvert.Click += (s, a) =>
             {
-                var panel = GetFlyPanel();
-                panel.SelectInvert();
+                GetFlyPanel().SelectInvert();
             };
         }
 
