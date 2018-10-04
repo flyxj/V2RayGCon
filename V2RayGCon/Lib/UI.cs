@@ -14,27 +14,41 @@ namespace V2RayGCon.Lib
 {
     public class UI
     {
-        #region private method
-
+        #region DLL
+        [DllImport("User32.dll")]
+        static extern IntPtr GetDC(IntPtr hwnd);
+        [DllImport("User32.dll")]
+        static extern void ReleaseDC(IntPtr hwnd, IntPtr dc);
         #endregion
-        [DllImport("User32.dll")]
-        public static extern IntPtr GetDC(IntPtr hwnd);
-        [DllImport("User32.dll")]
-        public static extern void ReleaseDC(IntPtr hwnd, IntPtr dc);
+
+        #region private method
+        static double GetScalingFactorFromGraphic(Graphics graphic, int step)
+        {
+            var scale = Math.Max(graphic.DpiX, graphic.DpiY) / 96.0;
+            return ((int)Math.Floor(scale * 100) / step * step) / 100.0;
+        }
+        #endregion
 
         #region public method
+        public static IEnumerable<TResult> GetAllControls<TResult>(Control control) where TResult : Control
+        {
+            var controls = control.Controls.Cast<Control>();
+
+            return controls
+                .SelectMany(ctrl => GetAllControls<TResult>(ctrl))
+                .Concat(controls)
+                .Where(c => c is TResult)
+                .Select(c => c as TResult);
+        }
+
         public static double GetScreenScalingFactor()
         {
             // https://stackoverflow.com/questions/14385838/draw-on-screen-without-form
             IntPtr desktopPtr = GetDC(IntPtr.Zero);
             Graphics g = Graphics.FromHdc(desktopPtr);
-
-            var scale = Math.Max(g.DpiX, g.DpiY) / 96.0;
-            var result = ((int)Math.Floor(scale * 100) / 25 * 25) / 100.0;
-
+            var result = GetScalingFactorFromGraphic(g, 25);
             g.Dispose();
             ReleaseDC(IntPtr.Zero, desktopPtr);
-
             return result;
         }
 
@@ -43,12 +57,11 @@ namespace V2RayGCon.Lib
             // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
             using (Graphics g = form.CreateGraphics())
             {
-                var scale = Math.Max(g.DpiX, g.DpiY) / 96.0;
-                return ((int)Math.Floor(scale * 100) / 25 * 25) / 100.0;
+                return GetScalingFactorFromGraphic(g, 25);
             }
         }
 
-        public static void AutoScaleToolstripImage(Form form)
+        public static void AutoScaleToolSripControls(Form form)
         {
             // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
             var factor = GetFormScalingFactor(form);
@@ -56,17 +69,17 @@ namespace V2RayGCon.Lib
             {
                 return;
             }
-
-            var menuList = form.Controls
-                .OfType<ToolStrip>()
-                .Select(c =>
+            var menuList = GetAllControls<ToolStrip>(form);
+            foreach (var menu in menuList)
+            {
+                menu.ImageScalingSize = new Size(
+                        (int)(menu.ImageScalingSize.Width * factor),
+                        (int)(menu.ImageScalingSize.Height * factor));
+                foreach (var cbox in GetAllControls<ComboBox>(menu))
                 {
-                    c.ImageScalingSize = new Size(
-                        (int)(c.ImageScalingSize.Width * factor),
-                        (int)(c.ImageScalingSize.Height * factor));
-                    return true;
-                })
-                .ToList();
+                    cbox.Width = (int)(cbox.Width * factor);
+                }
+            }
         }
 
         public static void ShowMessageBoxDoneAsync()
