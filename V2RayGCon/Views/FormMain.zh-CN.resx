@@ -117,6 +117,175 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="toolStripContainer2.BottomToolStripPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="flyServerListContainer.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripContainer2.ContentPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripContainer2.LeftToolStripPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripContainer2.RightToolStripPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripContainer2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStripButtonSelectAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAFJJREFUOE+t0TEKACAMQ1Hv6PW8o7p0rbRDkVAQbIY3pXwEm4hohQdaH6k4SjbD
+        D6y53X3w2rkBhAHEC1RwAtnzTBwlm+EHyt9YDiAMIF7gn+gBdn3mfzow6H8AAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="toolStripButtonSelectAll.ToolTipText" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="toolStripButtonSelectInverse.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAFlJREFUOE9j+Pbt239KMNgAJycnrBiuKHgOVoxiwIf3H1EwTQyAyQ2cAegYxQBs
+        mGgDKMHUMQCb80AYpgib90CYJANwBTKKATDJgTMAHVPVAGwYbgD5+Nt/AEreDT45ac8TAAAAAElFTkSu
+        QmCC
+</value>
+  </data>
+  <data name="toolStripButtonSelectInverse.ToolTipText" xml:space="preserve">
+    <value>反选</value>
+  </data>
+  <data name="toolStripButtonSelectNone.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAFNJREFUOE/d0DEKACAIheHO5v3vUi2uhYGS8ELIpoZvevITFWYeGStARJAeoU24
+        QKvd0YNo/ymA7AHEAhlvAuh5Qo/QJlzg9EnR/lMA2QOIBe7xmB8/M+5EyWaTAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonSelectNone.ToolTipText" xml:space="preserve">
+    <value>消除选择</value>
+  </data>
+  <data name="toolStripButtonCollapseSelected.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAGhJREFUOE/NjcENgEAIBKmNFmzPHtUPX81FMBzHhvto3GQ+hJ2l1yIiZ4W+5mkP
+        zAyBAr+AKAVxzQMF7VBRCmwlY1qwb8fA9wJa1odMYGj1jhdEokArfWYEhlb6mAABixa/gNDXX4XoAjv7
+        waSlxJpQAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonCollapseSelected.ToolTipText" xml:space="preserve">
+    <value>折叠选中</value>
+  </data>
+  <data name="toolStripButtonExpanSelected.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAG1JREFUOE/NjVEKgDAMQ3u2XcHreUf1p79KsYE6GysDwcCDMZoX+Syqulf4aR47
+        aK1RqCAuMEpBvxahAvuoKAVYyXgtWJftxpBApnlcYGWQCYBXz0QBJHj3Aq9c0wsij8sIBAxaROICw09/
+        FZED7kK94lJ+OEYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="toolStripButtonExpanSelected.ToolTipText" xml:space="preserve">
+    <value>展开选中</value>
+  </data>
+  <data name="toolStripButtonRestartSelected.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAWNJREFUOE+Nk09qg1AQxr1Au217kCwKXWUhikdQewP1KoGQTUoXhVKKCxceQNzm
+        EpaKceMm0SRCF07ne6gYY6IfDLznzPu9+eOTTqcTde1wOCjH4/G9KIoI+/1+/8frH16v+ftM6gtB8/lc
+        WJZllCQJLZdLMk2TZFkWZhiG+BbHMTHks6qq+/r4OcB1XVJVtd33TVEU8n0fmW5aSBfQmG3bFAQBbbdb
+        StOUwjAkx3FaPyDIZBCwWq3OelLHmHme/6IMxCCTupzZYAaNNQCIG/kASJMJYOxfTwZAvDdRDnxoLKYj
+        ALesPivEI35ETwDAdDDi2jVNo4CyLGW+9aXeXoh9lyVAmCk730BnaoybhKOjq02EcAiz1TRNjHG32yXs
+        fGXQE2C4+eoYIQ769jxPOGGWZU3/kSAu4Y5v2QACehPYt8FfuREgnMlXFEW0WCxI13VxaPQx9cX0Zw76
+        QF94PfKcJekfaRYvLOfnQlEAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="toolStripButtonRestartSelected.ToolTipText" xml:space="preserve">
+    <value>重启选中</value>
+  </data>
+  <data name="toolStripButtonStopSelected.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAClJREFUOE9jGGbg27dv/4nBUOWYACS5UI0XLx41YGQYQAyGKh8egIEBAMuiAHSi
+        jpx4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonStopSelected.ToolTipText" xml:space="preserve">
+    <value>停止选中</value>
+  </data>
+  <data name="toolStripButtonModifySelected.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAKdJREFUOE/NkLENwjAQRTMRQ7h3RcsUTMIAWYEV6GhoGIMGKYk4uz14EWfFCCLb
+        FZaeTifffz65sxNjHODd1h2Cu8NJoVryCszBbtuboIoksDB1sz/q+XJV7706536SBAxbmE2gRJIENAwT
+        MkGJJBOMw6TykGwLk4QQ5vslXwXwKbG/EZEyASDhZQtTg+RbrAoAye0+pm2qBYCEe2gSrPGHghaSoJ2o
+        T2qH1SXwd8uCAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonModifySelected.ToolTipText" xml:space="preserve">
+    <value>修改选中</value>
+  </data>
+  <data name="toolStripButtonSortSelectedBySummary.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAMJJREFUOE+djzEOwjAUQ3O2XIGlA2NXeomizByAjZ6jE70JsAJL1yJbdfSJkpZi
+        yXJ/8v2UunEcpzW7JWHBe1/0JkDbHqfX8838CzBcBwKQKQBpzTKEAYtVVbHcHBom5hTgdmc6C+guHYsy
+        5k2A++0R/x2JeQ3AFKBk3MsWEM/sUPL+1DMtIJ7pKUtGCQUB9M07AZaeb8sW8gWQQwgs13UdF5DpC3QX
+        VSpLgvxclucVKndG4VD/bZ1dzknknOeVgpz7AJxNMf3Czy9wAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonSortSelectedBySummary.ToolTipText" xml:space="preserve">
+    <value>对选中的服务器按摘要排序</value>
+  </data>
+  <data name="toolStripButtonSortSelectedBySpeedTestResult.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAKFJREFUOE+9kUEOgyAQRTmSZ+AK3XqoHqC3YN8rqQlh2/oo0yAz0Vk0/ckPBOY9
+        jQZSSnl5WoetcBljPO1/BOuymRVB34Z+4hWE26P2Z4Kc83QQWE0p1XUUAO/rchBYT+cOySgArmcewXx/
+        KsH3zCMAAhCB7JXAKq/fw71k566/AR0lAqu/YMGUO2YAFUy8AkAFExGclRlABZNmv2wb7xLCG4MQfxN5
+        9oprAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonSortSelectedBySpeedTestResult.ToolTipText" xml:space="preserve">
+    <value>对选中的服务器按测速结果排序</value>
+  </data>
+  <data name="toolStripButtonFormOption.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAASVJREFUOE+tk8tthUAMRdmlgjSQUigAsaYIREHsQBRAB0AJrwxWID5SFjhzJnhk
+        3kdPimLJmsFzbV9fZiJrx3F8sO77/rVtm1gnZjEPNs/zpwPe1nUt3Zr1fS9xHHsfhoEi2Xl2A3um/Zom
+        13UtbdvKNE3fTdOEAuyJcQbmUgRKmqwJRVFImqbhO0kSyfM8fGuRMA7UqK6Adw6WHJ98CpZB0XbB6Yzb
+        GOzAkuOFdRvpuk6qqrqAy7Kki3f2Gmc0NEHYZVnEF9BDdQqRyBnO/p4JPo7jPxWADrSs8q9GoBDjMrYf
+        wYqIQApU8H1nhL6IiLkuf/+Nzy4SXWxnRrPsHi7Ss6vMnDaBGGea/PI9QM2tGSJpgbePSU0pncKG34ir
+        YIG2tyj6AXu0WOs6ntNtAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="toolStripButtonFormOption.ToolTipText" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="toolStrip1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripLabel1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAOdJREFUOE/tkj0OgkAUhLf2DJ7DA1DQU1pyCug5AuEWJhIu4ZoQe7WgE5tdNCFr
+        +dzZ7AoGiH+tk0yyee+b4ZcppegXmwLP876yKZBSku/7xDdbujTXtwwWGXcHq6IoKAgCOuyPo4G+wYBF
+        BlkUzLR3WZZRGIZUn86jQRg7MGCRQZZB+jBv27aO45iiKCIpmkEYM+zAgEXGhJ30YCGEuOEKaZoOCjDD
+        DgxYG3uWXiyrqjLPmK/zRxhnzLADY/FxaSDhnJu37ApwLssS4cRi0yLq/g1X4L65tqVe6F/QFfT9ccGE
+        LeHE2B1HkysoK8qfmQAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripLabel1.ToolTipText" xml:space="preserve">
+    <value>过滤服务器列表</value>
+  </data>
+  <data name="toolStrip2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="toolStripContainer2.TopToolStripPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="toolMenuItemSimAddVmessServer.Text" xml:space="preserve">
     <value>添加vmess客户端</value>
   </data>
@@ -165,6 +334,18 @@
   <data name="selectTimeoutToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>选中测速超时的服务器</value>
   </data>
+  <data name="selectNoSpeedTestToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中未测速</value>
+  </data>
+  <data name="selectNoSpeedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>选中未进行速度测试的服务器</value>
+  </data>
+  <data name="SelectNoMarkToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中未标记</value>
+  </data>
+  <data name="SelectNoMarkToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>选中未设置标记的服务器</value>
+  </data>
   <data name="selectToolStripMenuItem.Text" xml:space="preserve">
     <value>选择</value>
   </data>
@@ -211,7 +392,7 @@
     <value>订阅内容</value>
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
-    <value>将选中服务器编码为订阅内容</value>
+    <value>将选中服务器编码为订阅内容(只支持vmess服务器)</value>
   </data>
   <data name="toolStripMenuItem1.Text" xml:space="preserve">
     <value>复制选中</value>
@@ -309,28 +490,12 @@
   <data name="menuStrip1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="cboxMarkFilter.ToolTip" xml:space="preserve">
-    <value> 根据服务器的标记筛选</value>
-  </data>
-  <data name="tboxFlySearcher.ToolTip" xml:space="preserve">
-    <value>搜索服务器名、摘要、端口等</value>
-  </data>
-  <data name="flyServerListContainer.ToolTip" xml:space="preserve">
+  <data name="statusStrip1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>筛选</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
+  <data name="panel1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>搜索</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAAAAAAAEAIAAoIAQAZgAAABAQAAABACAAaAQAAI4gBAAwMAAAAQAgAKglAAD2JAQAICAAAAEA

@@ -203,7 +203,7 @@ namespace V2RayGCon.Service
 
         public void RestoreOriginalSystemProxyInfo()
         {
-            Lib.ProxySetter.RestoreProxy(
+            Lib.ProxySetter.SetProxy(
                 orgSysProxyInfo.Item2,
                 orgSysProxyInfo.Item1);
         }
@@ -273,12 +273,12 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Save();
         }
 
-        public List<Model.Data.UrlItem> GetSubscriptionItems()
+        public List<Model.Data.SubscriptionItem> GetSubscriptionItems()
         {
             try
             {
                 var items = JsonConvert.DeserializeObject
-                    <List<Model.Data.UrlItem>>(
+                    <List<Model.Data.SubscriptionItem>>(
                     Properties.Settings.Default.SubscribeUrls);
 
                 if (items != null)
@@ -287,7 +287,7 @@ namespace V2RayGCon.Service
                 }
             }
             catch { };
-            return new List<Model.Data.UrlItem>();
+            return new List<Model.Data.SubscriptionItem>();
         }
 
         public void UpdateNotifierText(string title = null)

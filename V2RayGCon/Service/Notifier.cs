@@ -57,21 +57,20 @@ namespace V2RayGCon.Service
 #if DEBUG
         void This_function_do_some_tedious_stuff()
         {
-            ni.DoubleClick += (s, a) =>
-            {
-                // Some test code
-                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("-"));
-                // ni.ContextMenu.MenuItems.Add(0, new MenuItem("Debug", (_s, _a) =>
-                // {
-                //     System.GC.Collect();
-                // }));
-            };
+
+            // Some test code
+            ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
+            ni.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(
+                "Debug", null, (_s, _a) =>
+             {
+                 servers.DbgFastRestartTest(100);
+             }));
 
             // new Views.FormConfiger(@"{}");
             // new Views.FormConfigTester();
             // Views.FormOption.GetForm();
             Views.FormMain.GetForm();
-            // Views.FormLog.GetForm();
+            Views.FormLog.GetForm();
             // setting.WakeupAutorunServer();
             // Views.FormSimAddVmessClient.GetForm();
             // Views.FormDownloadCore.GetForm();
@@ -108,56 +107,95 @@ namespace V2RayGCon.Service
             ni.Icon = Properties.Resources.icon_dark;
 #endif
             ni.BalloonTipTitle = Properties.Resources.AppName;
-            ni.ContextMenu = CreateMenu();
+
+            ni.ContextMenuStrip = CreateMenu();
             ni.Visible = true;
         }
 
-        ContextMenu CreateMenu()
+        ContextMenuStrip CreateMenu()
         {
-            return new ContextMenu(new MenuItem[] {
+            var menu = new ContextMenuStrip();
 
-                new MenuItem(I18N("MainWin"),(s,a)=>Views.FormMain.GetForm()),
+            menu.Items.AddRange(new ToolStripMenuItem[] {
+                new ToolStripMenuItem(
+                    I18N("MainWin"),
+                    Properties.Resources.WindowsForm_16x,
+                    (s,a)=>Views.FormMain.GetForm()),
 
-                new MenuItem(I18N("OtherWin"),new MenuItem[]{
-                    new MenuItem(I18N("ConfigEditor"),(s,a)=>new Views.FormConfiger() ),
-                    new MenuItem(I18N("GenQRCode"),(s,a)=>Views.FormQRCode.GetForm() ),
-                    new MenuItem(I18N("Log"),(s,a)=>Views.FormLog.GetForm() ),
-                    new MenuItem(I18N("Options"),(s,a)=>Views.FormOption.GetForm() ),
-                }),
+                new ToolStripMenuItem(
+                    I18N("OtherWin"),
+                    Properties.Resources.CPPWin32Project_16x,
+                    new ToolStripMenuItem[]{
+                        new ToolStripMenuItem(
+                            I18N("ConfigEditor"),
+                            Properties.Resources.EditWindow_16x,
+                            (s,a)=>new Views.FormConfiger() ),
+                        new ToolStripMenuItem(
+                            I18N("GenQRCode"),
+                            Properties.Resources.AzureVirtualMachineExtension_16x,
+                            (s,a)=>Views.FormQRCode.GetForm()),
+                        new ToolStripMenuItem(
+                            I18N("Log"),
+                            Properties.Resources.FSInteractiveWindow_16x,
+                            (s,a)=>Views.FormLog.GetForm() ),
+                        new ToolStripMenuItem(
+                            I18N("Options"),
+                            Properties.Resources.Settings_16x,
+                            (s,a)=>Views.FormOption.GetForm() ),
+                    }),
 
-                new MenuItem(I18N("ScanQRCode"),(s,a)=>{
-                    void Success(string link)
-                    {
-                        var msg=Lib.Utils.CutStr(link,90);
-                        setting.SendLog($"QRCode: {msg}");
-                        servers.ImportLinks(link);
-                    }
+                new ToolStripMenuItem(
+                    I18N("ScanQRCode"),
+                    Properties.Resources.ExpandScope_16x,
+                    (s,a)=>{
+                        void Success(string link)
+                        {
+                            var msg=Lib.Utils.CutStr(link,90);
+                            setting.SendLog($"QRCode: {msg}");
+                            servers.ImportLinks(link);
+                        }
 
-                    void Fail()
-                    {
-                        MessageBox.Show(I18N("NoQRCode"));
-                    }
+                        void Fail()
+                        {
+                            MessageBox.Show(I18N("NoQRCode"));
+                        }
 
-                    Lib.QRCode.QRCode.ScanQRCode(Success,Fail);
-                }),
+                        Lib.QRCode.QRCode.ScanQRCode(Success,Fail);
+                    }),
 
-                new MenuItem(I18N("ImportLink"),(s,a)=>{
-                    string links = Lib.Utils.GetClipboardText();
-                    servers.ImportLinks(links);
-                }),
+                new ToolStripMenuItem(
+                    I18N("ImportLink"),
+                    Properties.Resources.CopyLongTextToClipboard_16x,
+                    (s,a)=>{
+                        string links = Lib.Utils.GetClipboardText();
+                        servers.ImportLinks(links);
+                    }),
 
-                new MenuItem(I18N("DownloadV2rayCore"),(s,a)=>Views.FormDownloadCore.GetForm()),
-
-                new MenuItem("-"),
-
-                new MenuItem(I18N("Help"),(s,a)=>Lib.UI.VisitUrl(I18N("VistWikiPage"),Properties.Resources.WikiLink)),
-
-                new MenuItem(I18N("Exit"),(s,a)=>{
-                    if(Lib.UI.Confirm(I18N("ConfirmExitApp"))){
-                        Application.Exit();
-                    }
-                })
+                new ToolStripMenuItem(
+                    I18N("DownloadV2rayCore"),
+                    Properties.Resources.ASX_TransferDownload_blue_16x,
+                    (s,a)=>Views.FormDownloadCore.GetForm()),
             });
+
+            menu.Items.Add(new ToolStripSeparator());
+
+            menu.Items.AddRange(new ToolStripMenuItem[] {
+                new ToolStripMenuItem(
+                    I18N("Help"),
+                    Properties.Resources.StatusHelp_16x,
+                    (s,a)=>Lib.UI.VisitUrl(I18N("VistWikiPage"),Properties.Resources.WikiLink)),
+
+                new ToolStripMenuItem(
+                    I18N("Exit"),
+                    Properties.Resources.CloseSolution_16x,
+                    (s,a)=>{
+                        if (Lib.UI.Confirm(I18N("ConfirmExitApp"))){
+                            Application.Exit();
+                        }
+                    })
+            });
+
+            return menu;
         }
 
         void Cleanup()

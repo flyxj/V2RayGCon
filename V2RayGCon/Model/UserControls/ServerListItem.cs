@@ -189,6 +189,20 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public bool IsMarkEmpty()
+        {
+            return string.IsNullOrEmpty(this.serverItem.mark);
+        }
+
+        public bool isNotRunSpeedTestYet
+        {
+            get
+            {
+                return this.serverItem.speedTestResult < 0;
+            }
+            private set { }
+        }
+
         public bool isSpeedTestTimeout
         {
             get
@@ -210,7 +224,7 @@ namespace V2RayGCon.Model.UserControls
 
         public bool GetSelectStatus()
         {
-            return chkSelected.Checked;
+            return serverItem.isSelected;
         }
 
         public void SetStatusThen(string status, Action next = null)

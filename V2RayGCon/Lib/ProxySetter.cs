@@ -30,15 +30,10 @@ namespace V2RayGCon.Lib
         #region public method
         public static void ClearProxy()
         {
-            RestoreProxy("", false);
+            SetProxy("", false);
         }
 
-        public static void SetProxy(string proxyhost)
-        {
-            RestoreProxy(proxyhost, true);
-        }
-
-        public static void RestoreProxy(string proxyhost, bool proxyEnabled)
+        public static void SetProxy(string proxyhost, bool proxyEnabled = true)
         {
             using (var key = GetRegKey(true))
             {

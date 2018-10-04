@@ -17,6 +17,11 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region public method
+        public static void ShowMessageBoxDoneAsync()
+        {
+            Task.Factory.StartNew(() => MessageBox.Show(I18N("Done")));
+        }
+
         public static bool UpdateControlOnDemand(Control control, int value)
         {
             switch (control)
@@ -73,6 +78,22 @@ namespace V2RayGCon.Lib
 
             control.Text = value;
             return true;
+        }
+
+        public static void ResetComboBoxDropdownMenuWidth(ToolStripComboBox cbox)
+        {
+            int maxWidth = 0, tempWidth = 0;
+            var font = cbox.Font;
+
+            foreach (var item in cbox.Items)
+            {
+                tempWidth = TextRenderer.MeasureText(item.ToString(), font).Width;
+                if (tempWidth > maxWidth)
+                {
+                    maxWidth = tempWidth;
+                }
+            }
+            cbox.DropDownWidth = Math.Max(cbox.Width, maxWidth + SystemInformation.VerticalScrollBarWidth);
         }
 
         public static void ResetComboBoxDropdownMenuWidth(ComboBox cbox)
