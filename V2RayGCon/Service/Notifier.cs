@@ -116,6 +116,14 @@ namespace V2RayGCon.Service
         {
             var menu = new ContextMenuStrip();
 
+            var factor = Lib.UI.GetScreenScalingFactor();
+            if (factor > 1)
+            {
+                menu.ImageScalingSize = new System.Drawing.Size(
+                    (int)(menu.ImageScalingSize.Width * factor),
+                    (int)(menu.ImageScalingSize.Height * factor));
+            }
+
             menu.Items.AddRange(new ToolStripMenuItem[] {
                 new ToolStripMenuItem(
                     I18N("MainWin"),

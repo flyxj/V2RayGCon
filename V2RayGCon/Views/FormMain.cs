@@ -43,6 +43,7 @@ namespace V2RayGCon.Views
 
             // https://alexpkent.wordpress.com/2011/05/11/25/
             ToolStripManager.LoadSettings(this);
+            Lib.UI.AutoScaleToolstripImage(this);
 
             this.FormClosed += (s, a) =>
             {

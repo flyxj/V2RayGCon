@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -15,8 +17,58 @@ namespace V2RayGCon.Lib
         #region private method
 
         #endregion
+        [DllImport("User32.dll")]
+        public static extern IntPtr GetDC(IntPtr hwnd);
+        [DllImport("User32.dll")]
+        public static extern void ReleaseDC(IntPtr hwnd, IntPtr dc);
 
         #region public method
+        public static double GetScreenScalingFactor()
+        {
+            // https://stackoverflow.com/questions/14385838/draw-on-screen-without-form
+            IntPtr desktopPtr = GetDC(IntPtr.Zero);
+            Graphics g = Graphics.FromHdc(desktopPtr);
+
+            var scale = Math.Max(g.DpiX, g.DpiY) / 96.0;
+            var result = ((int)Math.Floor(scale * 100) / 25 * 25) / 100.0;
+
+            g.Dispose();
+            ReleaseDC(IntPtr.Zero, desktopPtr);
+
+            return result;
+        }
+
+        public static double GetFormScalingFactor(Form form)
+        {
+            // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
+            using (Graphics g = form.CreateGraphics())
+            {
+                var scale = Math.Max(g.DpiX, g.DpiY) / 96.0;
+                return ((int)Math.Floor(scale * 100) / 25 * 25) / 100.0;
+            }
+        }
+
+        public static void AutoScaleToolstripImage(Form form)
+        {
+            // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
+            var factor = GetFormScalingFactor(form);
+            if (factor <= 1)
+            {
+                return;
+            }
+
+            var menuList = form.Controls
+                .OfType<ToolStrip>()
+                .Select(c =>
+                {
+                    c.ImageScalingSize = new Size(
+                        (int)(c.ImageScalingSize.Width * factor),
+                        (int)(c.ImageScalingSize.Height * factor));
+                    return true;
+                })
+                .ToList();
+        }
+
         public static void ShowMessageBoxDoneAsync()
         {
             Task.Factory.StartNew(() => MessageBox.Show(I18N("Done")));
