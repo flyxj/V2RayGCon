@@ -189,6 +189,11 @@ namespace V2RayGCon.Model.UserControls
         #endregion
 
         #region public method
+        public bool IsMarkEmpty()
+        {
+            return string.IsNullOrEmpty(this.serverItem.mark);
+        }
+
         public bool isNotRunSpeedTestYet
         {
             get

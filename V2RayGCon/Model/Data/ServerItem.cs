@@ -399,6 +399,7 @@ namespace V2RayGCon.Model.Data
                 +inboundPort.ToString(),
 
                 // index 2
+                this.mark,
             };
         }
 

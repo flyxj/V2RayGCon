@@ -13,9 +13,15 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem selectAutorun,
             ToolStripMenuItem selectRunning,
             ToolStripMenuItem selectTimeout,
-            ToolStripMenuItem selectNoSpeedTest)
+            ToolStripMenuItem selectNoSpeedTest,
+            ToolStripMenuItem selectNoMark)
         {
             // fly panel may not ready while this init
+            selectNoMark.Click += (s, a) =>
+            {
+                GetFlyPanel().SelectNoMark();
+            };
+
 
             selectNoSpeedTest.Click += (s, a) =>
             {

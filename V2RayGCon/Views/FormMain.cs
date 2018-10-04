@@ -41,9 +41,13 @@ namespace V2RayGCon.Views
         {
             setting.RestoreFormRect(this);
 
+            // https://alexpkent.wordpress.com/2011/05/11/25/
+            ToolStripManager.LoadSettings(this);
+
             this.FormClosed += (s, a) =>
             {
                 setting.SaveFormRect(this);
+                ToolStripManager.SaveSettings(this);
                 setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
                 servers.LazyGC();
@@ -87,7 +91,6 @@ namespace V2RayGCon.Views
             bind(toolStripButtonSortSelectedBySpeedTestResult, toolStripMenuItemSortBySpeedTest);
 
             bind(toolStripButtonFormOption, toolMenuItemOptions);
-            bind(toolStripButtonHelp, toolMenuItemHelp);
         }
 
         private Controller.FormMainCtrl InitFormMainCtrl()
@@ -97,7 +100,6 @@ namespace V2RayGCon.Views
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer,
                 toolStripComboBoxMarkFilter,
-                toolStripTextBoxFlySearcher,
                 toolStripStatusLabelTotal));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
@@ -122,7 +124,8 @@ namespace V2RayGCon.Views
                 selectAutorunToolStripMenuItem,
                 selectRunningToolStripMenuItem,
                 selectTimeoutToolStripMenuItem,
-                selectNoSpeedTestToolStripMenuItem));
+                selectNoSpeedTestToolStripMenuItem,
+                SelectNoMarkToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,

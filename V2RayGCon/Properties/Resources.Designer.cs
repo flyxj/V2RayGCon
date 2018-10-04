@@ -92,16 +92,6 @@ namespace V2RayGCon.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap BorderElement_16x {
-            get {
-                object obj = ResourceManager.GetObject("BorderElement_16x", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
         internal static System.Drawing.Bitmap CloseSolution_16x {
             get {
                 object obj = ResourceManager.GetObject("CloseSolution_16x", resourceCulture);
@@ -144,6 +134,16 @@ namespace V2RayGCon.Properties {
         internal static System.Drawing.Bitmap EditWindow_16x {
             get {
                 object obj = ResourceManager.GetObject("EditWindow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap ExpandScope_16x {
+            get {
+                object obj = ResourceManager.GetObject("ExpandScope_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

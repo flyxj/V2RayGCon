@@ -132,7 +132,7 @@ namespace V2RayGCon.Service
                             (s,a)=>new Views.FormConfiger() ),
                         new ToolStripMenuItem(
                             I18N("GenQRCode"),
-                            Properties.Resources.BorderElement_16x,
+                            Properties.Resources.AzureVirtualMachineExtension_16x,
                             (s,a)=>Views.FormQRCode.GetForm()),
                         new ToolStripMenuItem(
                             I18N("Log"),
@@ -146,7 +146,7 @@ namespace V2RayGCon.Service
 
                 new ToolStripMenuItem(
                     I18N("ScanQRCode"),
-                    Properties.Resources.AzureVirtualMachineExtension_16x,
+                    Properties.Resources.ExpandScope_16x,
                     (s,a)=>{
                         void Success(string link)
                         {
