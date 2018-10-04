@@ -73,7 +73,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             modifySelected.Click += GenSelectedServerHandler(
                 () => Views.FormBatchModifyServerSetting.GetForm());
 
-
             packSelected.Click += GenSelectedServerHandler(
                 () => servers.PackSelectedServers());
 

@@ -34,42 +34,42 @@ namespace V2RayGCon.Controller.FormMainComponent
         #region public method
         public void SelectNoSpeedTest()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(s.isNotRunSpeedTestYet));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.isNotRunSpeedTestYet));
         }
 
         public void SelectNoMark()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(s.IsMarkEmpty()));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.IsMarkEmpty()));
         }
 
         public void SelectTimeout()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(s.isSpeedTestTimeout));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.isSpeedTestTimeout));
         }
 
         public void SelectRunning()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(s.isRunning));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.isRunning));
         }
 
         public void SelectAutorun()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(s.GetAutorunStatus()));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.GetAutorunStatus()));
         }
 
         public void SelectAll()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(true));
+            LoopThroughServerItemControls((s) => s.SetSelected(true));
         }
 
         public void SelectNone()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(false));
+            LoopThroughServerItemControls((s) => s.SetSelected(false));
         }
 
         public void SelectInvert()
         {
-            LoopThroughAllServerItemControl((s) => s.SetSelected(!s.GetSelectStatus()));
+            LoopThroughServerItemControls((s) => s.SetSelected(!s.GetSelectStatus()));
         }
 
         public override void Cleanup()
@@ -147,6 +147,12 @@ namespace V2RayGCon.Controller.FormMainComponent
                         {
                             // 如果不RemoveAll会乱序
                             RemoveAllConrols();
+
+                            // cleanup selection
+                            servers.GetServerList()
+                                .Select(s => s.isSelected = false)
+                                .ToList();
+
                             RefreshUI();
                         },
                         600);
@@ -204,22 +210,16 @@ namespace V2RayGCon.Controller.FormMainComponent
         void UpdateMarkFilterItemList(ToolStripComboBox marker)
         {
             marker.Items.Clear();
-            foreach (var item in servers.GetMarkList())
-            {
-                marker.Items.Add(item);
-            }
+            marker.Items.AddRange(
+                servers.GetMarkList().ToArray());
         }
 
         void AddNewServerItems(List<Model.Data.ServerItem> serverList)
         {
-            var controls = new List<Model.UserControls.ServerListItem>();
-
-            foreach (var server in serverList)
-            {
-                controls.Add(new Model.UserControls.ServerListItem(server));
-            }
-
-            flyPanel.Controls.AddRange(controls.ToArray());
+            flyPanel.Controls.AddRange(
+                serverList
+                    .Select(s => new Model.UserControls.ServerListItem(s))
+                    .ToArray());
         }
 
         void DisposeFlyPanelControlByList(List<UserControl> controlList)
@@ -255,6 +255,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 flyPanel.Controls.Remove(control);
             }
+
             flyPanel.ResumeLayout();
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
@@ -280,32 +281,30 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void RemoveWelcomeItem()
         {
-            var welcome = GetAllControls()
-                .Where(c => c is Model.UserControls.WelcomeFlyPanelComponent)
-                .FirstOrDefault();
-
-            if (welcome == null)
-            {
-                return;
-            }
-
-            flyPanel.Controls.Remove(welcome);
-            if (!welcome.IsDisposed)
-            {
-                welcome.Dispose();
-            }
+            var list = flyPanel.Controls
+                .OfType<Model.UserControls.WelcomeFlyPanelComponent>()
+                .Select(e =>
+                {
+                    flyPanel.Controls.Remove(e);
+                    if (!e.IsDisposed)
+                    {
+                        e.Dispose();
+                    }
+                    return true;
+                })
+                .ToList();
         }
 
-        void LoopThroughAllServerItemControl(Action<Model.UserControls.ServerListItem> worker)
+        void LoopThroughServerItemControls(Action<Model.UserControls.ServerListItem> worker)
         {
-            foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
-            {
-                if (!(control is Model.UserControls.ServerListItem))
+            var list = flyPanel.Controls
+                .OfType<Model.UserControls.ServerListItem>()
+                .Select(e =>
                 {
-                    continue;
-                }
-                worker(control as Model.UserControls.ServerListItem);
-            }
+                    worker(e);
+                    return true;
+                })
+                .ToList();
         }
 
         List<UserControl> GetAllControls()

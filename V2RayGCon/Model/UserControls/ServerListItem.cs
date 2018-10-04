@@ -224,7 +224,7 @@ namespace V2RayGCon.Model.UserControls
 
         public bool GetSelectStatus()
         {
-            return chkSelected.Checked;
+            return serverItem.isSelected;
         }
 
         public void SetStatusThen(string status, Action next = null)
