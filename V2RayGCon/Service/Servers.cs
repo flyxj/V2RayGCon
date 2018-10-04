@@ -686,6 +686,7 @@ namespace V2RayGCon.Service
             Action finish = () =>
             {
                 LazySaveServerList();
+                UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
@@ -704,6 +705,8 @@ namespace V2RayGCon.Service
 
             Action finish = () =>
             {
+                LazySaveServerList();
+                UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
@@ -772,6 +775,7 @@ namespace V2RayGCon.Service
                 () => RemoveServerItemFromListThen(index, () =>
                 {
                     LazySaveServerList();
+                    UpdateMarkList();
                     InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);
                     InvokeEventOnRequireFlyPanelUpdate(serverList, EventArgs.Empty);
                 }));

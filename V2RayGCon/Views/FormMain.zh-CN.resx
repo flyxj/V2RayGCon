@@ -192,13 +192,13 @@
   <data name="toolStripButtonRestartSelected.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAWNJREFUOE+Nk09qg1AQxr1Au217kCwKXWUhikdQewP1KoGQTUoXhVKKCxceQNzm
-        EpaKceMm0SRCF07ne6gYY6IfDLznzPu9+eOTTqcTde1wOCjH4/G9KIoI+/1+/8frH16v+ftM6gtB8/lc
-        WJZllCQJLZdLMk2TZFkWZhiG+BbHMTHks6qq+/r4OcB1XVJVtd33TVEU8n0fmW5aSBfQmG3bFAQBbbdb
-        StOUwjAkx3FaPyDIZBCwWq3OelLHmHme/6IMxCCTupzZYAaNNQCIG/kASJMJYOxfTwZAvDdRDnxoLKYj
-        ALesPivEI35ETwDAdDDi2jVNo4CyLGW+9aXeXoh9lyVAmCk730BnaoybhKOjq02EcAiz1TRNjHG32yXs
-        fGXQE2C4+eoYIQ769jxPOGGWZU3/kSAu4Y5v2QACehPYt8FfuREgnMlXFEW0WCxI13VxaPQx9cX0Zw76
-        QF94PfKcJekfaRYvLOfnQlEAAAAASUVORK5CYII=
+        wwAADsMBx2+oZAAAAWVJREFUOE+Nk09qg1AQxr1Au217kCwKXbkQJUdQewP1KoK4SemiUEpxkUUOINnm
+        EpaKZuMi0UQDXTid76HBGJP4wcB7zrzfmz8+qaoq6tp+v1fLsnzf7XYR9pvN5o/XP7ye8feJ1BeCZFkW
+        lmUZJUlCnueRaZqkKIowwzDEtziOiSGfdV3fN8dPAUEQkKZpx33fVFWlxWKBTFdHSBfQmm3bFIYhpWlK
+        6/WalsslOY5z9AOCTAYBvu+f9KSJMYui+EUZiEEmTTmTwQxaawEQN/IBkDYTwNg/Gw2AeG+iHPjQWExH
+        AK5Zc1aIR/yIngCA6WDEjWucbgIOh4PCt7402zOx77wECDNl5xvoeZ7HuEk4OrrYRAiHMNvpdCrGuN1u
+        E3a+MugJMNx8cYwQB33P53PhhFmWNf5HgriEO75lBQjobWDfBn/lVoBwJl9RFJHruqTrujh08zH1xfRn
+        DvpAX3h94zlL0j85yi8UFXZ0LgAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="toolStripButtonRestartSelected.ToolTipText" xml:space="preserve">
@@ -253,12 +253,12 @@
   <data name="toolStripButtonFormOption.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAASVJREFUOE+tk8tthUAMRdmlgjSQUigAsaYIREHsQBRAB0AJrwxWID5SFjhzJnhk
-        3kdPimLJmsFzbV9fZiJrx3F8sO77/rVtm1gnZjEPNs/zpwPe1nUt3Zr1fS9xHHsfhoEi2Xl2A3um/Zom
-        13UtbdvKNE3fTdOEAuyJcQbmUgRKmqwJRVFImqbhO0kSyfM8fGuRMA7UqK6Adw6WHJ98CpZB0XbB6Yzb
-        GOzAkuOFdRvpuk6qqrqAy7Kki3f2Gmc0NEHYZVnEF9BDdQqRyBnO/p4JPo7jPxWADrSs8q9GoBDjMrYf
-        wYqIQApU8H1nhL6IiLkuf/+Nzy4SXWxnRrPsHi7Ss6vMnDaBGGea/PI9QM2tGSJpgbePSU0pncKG34ir
-        YIG2tyj6AXu0WOs6ntNtAAAAAElFTkSuQmCC
+        wwAADsMBx2+oZAAAASZJREFUOE+tk8tthUAMRdmlgjSQUigAsaYIREHsQBRAB0AJrwwWSIiPlAXOnAke
+        mffRk6JYsmbwXNvXl5nI2nEcH6z7vn9t2ybWiVnMg83z/OmAt3VdS7dmfd9LHMfeh2GgSHae3cCeab+m
+        yXVdS9u2Mk3Td9M0oQB7YpyBuRSBkiZrQlEUkqZp+E6SRPI8D99aJIwDNaor4J2DJccnn4JlULRdcDrj
+        NgY7sOR4Yd1Guq6Tqqou4LIs6eKdvcYZDU0QdlkW8QX0UJ1CJHKGs79ngo/j+E8FoAMtq/yrESjEuIzt
+        R7AiIpACFXzfGaEvImKuy99/47OLRBfbmdEsu4eL9OwqM6dNIMaZJr98D1Bza4ZIWuDtY1JTSqew4Tfi
+        Klig7S2KfgAaHFi7AGomMAAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="toolStripButtonFormOption.ToolTipText" xml:space="preserve">
@@ -313,7 +313,13 @@
   <data name="selectNoneToolStripMenuItem.Text" xml:space="preserve">
     <value>取消选择</value>
   </data>
+  <data name="selectNoneToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>清空选择</value>
+  </data>
   <data name="selectInvertToolStripMenuItem.Text" xml:space="preserve">
+    <value>反选</value>
+  </data>
+  <data name="selectInvertToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>反选</value>
   </data>
   <data name="selectAutorunToolStripMenuItem.Text" xml:space="preserve">

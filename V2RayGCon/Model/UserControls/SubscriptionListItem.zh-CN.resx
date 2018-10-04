@@ -117,32 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lbIndex.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxAlias.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label2.Text" xml:space="preserve">
     <value>别名</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tboxUrl.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
-  <data name="btnDelete.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="chkIsUse.Text" xml:space="preserve">
     <value>启用</value>
+  </data>
+  <data name="chkIsUse.ToolTip" xml:space="preserve">
+    <value>点更新时，只有勾了启用的才有效</value>
   </data>
   <data name="chkIsSetMark.Text" xml:space="preserve">
     <value>标记</value>
