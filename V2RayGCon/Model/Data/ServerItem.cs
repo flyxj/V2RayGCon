@@ -12,13 +12,18 @@ namespace V2RayGCon.Model.Data
     public class ServerItem
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
-        public event EventHandler OnPropertyChanged, OnRequireMenuUpdate;
+        public event EventHandler
+            OnPropertyChanged,
+            OnRequireStatusBarUpdate,
+            OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isCollapse, isInjectSkipCNSite;
         public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort;
         public double index;
+
+
 
         public ServerItem()
         {
@@ -94,6 +99,17 @@ namespace V2RayGCon.Model.Data
         #endregion
 
         #region public method
+        public void SetIsSelected(bool selected)
+        {
+            if (selected == isSelected)
+            {
+                return;
+            }
+            this.isSelected = selected;
+            InvokeEventOnRequireStatusBarUpdate();
+            InvokeEventOnPropertyChange();
+        }
+
         public bool ShowLogForm()
         {
             if (logForm != null)
@@ -605,6 +621,11 @@ namespace V2RayGCon.Model.Data
                 OnLog?.Invoke(this, new Model.Data.StrEvent(msg));
             }
             catch { }
+        }
+
+        void InvokeEventOnRequireStatusBarUpdate()
+        {
+            OnRequireStatusBarUpdate?.Invoke(this, EventArgs.Empty);
         }
 
         void InvokeEventOnRequireMenuUpdate()

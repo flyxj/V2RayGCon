@@ -1102,6 +1102,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Selected 的本地化字符串。
+        /// </summary>
+        internal static string Selected {
+            get {
+                return ResourceManager.GetString("Selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please select ther servers first. 的本地化字符串。
         /// </summary>
         internal static string SelectServerFirst {

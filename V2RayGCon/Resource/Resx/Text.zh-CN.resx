@@ -564,4 +564,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Total" xml:space="preserve">
     <value>合计</value>
   </data>
+  <data name="Selected" xml:space="preserve">
+    <value>选中</value>
+  </data>
 </root>

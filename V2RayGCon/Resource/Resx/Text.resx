@@ -576,4 +576,7 @@ Otherwise operations involving the network may fail.</value>
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
 </root>

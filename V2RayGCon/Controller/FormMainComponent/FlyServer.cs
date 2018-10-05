@@ -14,6 +14,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         Service.Servers servers;
         ToolStripComboBox cboxMarkFilter;
         ToolStripStatusLabel tslbTotal;
+        Model.BaseClass.CancelableTimeout lazyStatusBarUpdateTimer = null;
 
         public FlyServer(
             FlowLayoutPanel panel,
@@ -29,7 +30,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             BindDragDropEvent();
             RefreshUI();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
+            servers.OnRequireStatusBarUpdate += OnRequireStatusBarUpdateHandler;
         }
+
 
         #region public method
         public void SelectNoSpeedTest()
@@ -39,7 +42,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public void SelectNoMark()
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.IsMarkEmpty()));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.isMarkEmpty));
         }
 
         public void SelectTimeout()
@@ -54,7 +57,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public void SelectAutorun()
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.GetAutorunStatus()));
+            LoopThroughServerItemControls((s) => s.SetSelected(s.isAutoRun));
         }
 
         public void SelectAll()
@@ -69,12 +72,14 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public void SelectInvert()
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(!s.GetSelectStatus()));
+            LoopThroughServerItemControls((s) => s.SetSelected(!s.isSelected));
         }
 
         public override void Cleanup()
         {
             servers.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
+            servers.OnRequireStatusBarUpdate -= OnRequireStatusBarUpdateHandler;
+            lazyStatusBarUpdateTimer?.Release();
             RemoveAllConrols(true);
         }
 
@@ -101,15 +106,26 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
         }
 
+        public void LazyStatusBarUpdater()
+        {
+            // create on demand
+            if (lazyStatusBarUpdateTimer == null)
+            {
+                lazyStatusBarUpdateTimer =
+                    new Model.BaseClass.CancelableTimeout(
+                        UpdateStatusBar,
+                        300);
+            }
+
+            lazyStatusBarUpdateTimer.Start();
+        }
+
         public override bool RefreshUI()
         {
             ResetIndex();
             var list = this.GetFilteredList();
-
-            flyPanel.Invoke((MethodInvoker)delegate
+            flyPanel?.Invoke((MethodInvoker)delegate
             {
-                tslbTotal.Text = I18N("Total") + ": " + list.Count;
-
                 if (list == null || list.Count > 0)
                 {
                     RemoveWelcomeItem();
@@ -127,11 +143,41 @@ namespace V2RayGCon.Controller.FormMainComponent
                 RemoveDeletedServerItems(ref list);
                 AddNewServerItems(list);
             });
+            LazyStatusBarUpdater();
             return true;
         }
         #endregion
 
         #region private method
+        void OnRequireStatusBarUpdateHandler(object sender, EventArgs args)
+        {
+            LazyStatusBarUpdater();
+        }
+
+        void UpdateStatusBar()
+        {
+            var list = flyPanel.Controls
+                .OfType<Model.UserControls.ServerListItem>();
+
+            var total = list.Count();
+            var selected = list.Where(c => c.isSelected).Count();
+
+            var text = string.Format(
+                "{0}: {1} {2}: {3}",
+                I18N("Selected"),
+                selected,
+                I18N("Total"),
+                total);
+
+            flyPanel?.Invoke((MethodInvoker)delegate
+            {
+                if (text != tslbTotal.Text)
+                {
+                    tslbTotal.Text = text;
+                }
+            });
+        }
+
         string searchKeywords = "";
         Model.BaseClass.CancelableTimeout lazyShowSearchResultTimer = null;
         void LazyShowSearchResult()

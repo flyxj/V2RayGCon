@@ -188,10 +188,14 @@ namespace V2RayGCon.Model.UserControls
         }
         #endregion
 
-        #region public method
-        public bool IsMarkEmpty()
+        #region properties
+        public bool isSelected
         {
-            return string.IsNullOrEmpty(this.serverItem.mark);
+            get
+            {
+                return serverItem.isSelected;
+            }
+            private set { }
         }
 
         public bool isNotRunSpeedTestYet
@@ -212,19 +216,29 @@ namespace V2RayGCon.Model.UserControls
             private set { }
         }
 
+        public bool isMarkEmpty
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.serverItem.mark);
+            }
+            private set { }
+        }
+
+        public bool isAutoRun
+        {
+            get
+            {
+                return serverItem.isAutoRun;
+            }
+            private set { }
+        }
+        #endregion
+
+        #region public method
         public string GetConfig()
         {
             return serverItem.config;
-        }
-
-        public bool GetAutorunStatus()
-        {
-            return serverItem.isAutoRun;
-        }
-
-        public bool GetSelectStatus()
-        {
-            return serverItem.isSelected;
         }
 
         public void SetStatusThen(string status, Action next = null)
@@ -248,9 +262,7 @@ namespace V2RayGCon.Model.UserControls
 
         public void SetSelected(bool selected)
         {
-            serverItem.SetPropertyOnDemand(
-               ref serverItem.isSelected,
-               selected);
+            serverItem.SetIsSelected(selected);
         }
 
         public double GetIndex()
@@ -291,9 +303,12 @@ namespace V2RayGCon.Model.UserControls
 
         private void chkSelected_CheckedChanged(object sender, EventArgs e)
         {
-            serverItem.SetPropertyOnDemand(
-               ref serverItem.isSelected,
-               chkSelected.Checked);
+            var selected = chkSelected.Checked;
+            if (selected == serverItem.isSelected)
+            {
+                return;
+            }
+            serverItem.SetIsSelected(selected);
             HighlightSelectedServerItem(chkSelected.Checked);
         }
 
