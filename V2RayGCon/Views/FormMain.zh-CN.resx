@@ -193,12 +193,12 @@
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         wwAADsMBx2+oZAAAAWVJREFUOE+Nk09qg1AQxr1Au217kCwKXbkQJUdQewP1KoK4SemiUEpxkUUOINnm
-        EpaKZuMi0UQDXTid76HBGJP4wcB7zrzfmz8+qaoq6tp+v1fLsnzf7XYR9pvN5o/XP7ye8feJ1BeCZFkW
-        lmUZJUlCnueRaZqkKIowwzDEtziOiSGfdV3fN8dPAUEQkKZpx33fVFWlxWKBTFdHSBfQmm3bFIYhpWlK
-        6/WalsslOY5z9AOCTAYBvu+f9KSJMYui+EUZiEEmTTmTwQxaawEQN/IBkDYTwNg/Gw2AeG+iHPjQWExH
-        AK5Zc1aIR/yIngCA6WDEjWucbgIOh4PCt7402zOx77wECDNl5xvoeZ7HuEk4OrrYRAiHMNvpdCrGuN1u
-        E3a+MugJMNx8cYwQB33P53PhhFmWNf5HgriEO75lBQjobWDfBn/lVoBwJl9RFJHruqTrujh08zH1xfRn
-        DvpAX3h94zlL0j85yi8UFXZ0LgAAAABJRU5ErkJggg==
+        EpaKZiOBaKKBLpzO99BgjEn8YOA9Z97vzR+fVFUVdW2/36tlWb7vdrsI+81m88frH17P+PtE6gtBsiwL
+        y7KMkiQhz/PINE1SFEWYYRjiWxzHxJDPuq7vm+OngCAISNO0475vqqrSYrFApqsjpAtozbZtCsOQ0jSl
+        9XpNy+WSHMc5+gFBJoMA3/dPetLEmEVR/KIMxCCTppzJYAattQCIG/kASJsJYOyfjQZAvDdRDnxoLKYj
+        ANesOSvEI35ETwDAdDDixjVONwGHw0HhW1+a7ZnYd14ChJmy8w30PM9j3CQcHV1sIoRDmO10OhVj3G63
+        CTtfGfQEGG6+OEaIg77n87lwwizLGv8jQVzCHd+yAgT0NrBvg79yK0A4k68oish1XdJ1XRy6+Zj6Yvoz
+        B32gL7y+8Zwl6R8Kfi789OP0GAAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="toolStripButtonRestartSelected.ToolTipText" xml:space="preserve">
@@ -253,21 +253,18 @@
   <data name="toolStripButtonFormOption.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAASZJREFUOE+tk8tthUAMRdmlgjSQUigAsaYIREHsQBRAB0AJrwwWSIiPlAXOnAke
-        mffRk6JYsmbwXNvXl5nI2nEcH6z7vn9t2ybWiVnMg83z/OmAt3VdS7dmfd9LHMfeh2GgSHae3cCeab+m
-        yXVdS9u2Mk3Td9M0oQB7YpyBuRSBkiZrQlEUkqZp+E6SRPI8D99aJIwDNaor4J2DJccnn4JlULRdcDrj
-        NgY7sOR4Yd1Guq6Tqqou4LIs6eKdvcYZDU0QdlkW8QX0UJ1CJHKGs79ngo/j+E8FoAMtq/yrESjEuIzt
-        R7AiIpACFXzfGaEvImKuy99/47OLRBfbmdEsu4eL9OwqM6dNIMaZJr98D1Bza4ZIWuDtY1JTSqew4Tfi
-        Klig7S2KfgAaHFi7AGomMAAAAABJRU5ErkJggg==
+        wwAADsMBx2+oZAAAASVJREFUOE+tk8tthUAMRdmlgjSQUigAsaYIREHsQBRAB0AJrwzEBvGRssCZM8Ej
+        8z56UhRL1gyea/v6MhNZO47jg3Xf969t28Q6MYt5sHmePx3wtq5r6das73uJ49j7MAwUyc6zG9gz7dc0
+        ua5radtWpmn6bpomFGBPjDMwlyJQ0mRNKIpC0jQN30mSSJ7n4VuLhHGgRnUFvHOw5PjkU7AMirYLTmfc
+        xmAHlhwvrNtI13VSVdUFXJYlXbyz1zijoQnCLssivoAeqlOIRM5w9vdM8HEc/6kAdKBllX81AoUYl7H9
+        CFZEBFKggu87I/RFRMx1+ftvfHaR6GI7M5pl93CRnl1l5rQJxDjT5JfvAWpuzRBJC7x9TGpK6RQ2/EZc
+        BQu0vUXRD7h1WIs6be/aAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="toolStripButtonFormOption.ToolTipText" xml:space="preserve">
     <value>选项</value>
   </data>
-  <data name="toolStrip1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="toolStripLabel1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="toolStripLabel2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         xAAADsQBlSsOGwAAAOdJREFUOE/tkj0OgkAUhLf2DJ7DA1DQU1pyCug5AuEWJhIu4ZoQe7WgE5tdNCFr
@@ -277,10 +274,10 @@
         LeHE2B1HkysoK8qfmQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="toolStripLabel1.ToolTipText" xml:space="preserve">
+  <data name="toolStripLabel2.ToolTipText" xml:space="preserve">
     <value>过滤服务器列表</value>
   </data>
-  <data name="toolStrip2.ToolTip" xml:space="preserve">
+  <data name="toolStrip1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="toolStripContainer2.TopToolStripPanel.ToolTip" xml:space="preserve">
