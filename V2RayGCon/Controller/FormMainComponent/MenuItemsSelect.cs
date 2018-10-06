@@ -4,8 +4,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 {
     class MenuItemsSelect : FormMainComponentController
     {
-
-
         public MenuItemsSelect(
             ToolStripMenuItem selectAll,
             ToolStripMenuItem selectNone,
@@ -14,9 +12,21 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem selectRunning,
             ToolStripMenuItem selectTimeout,
             ToolStripMenuItem selectNoSpeedTest,
-            ToolStripMenuItem selectNoMark)
+            ToolStripMenuItem selectNoMark,
+            ToolStripMenuItem clearAllSelection,
+            ToolStripMenuItem selectAllIgnorePage)
         {
             // fly panel may not ready while this init
+            selectAllIgnorePage.Click += (s, a) =>
+            {
+                Service.Servers.Instance.SetAllServerIsSelected(true);
+            };
+
+            clearAllSelection.Click += (s, a) =>
+            {
+                Service.Servers.Instance.SetAllServerIsSelected(false);
+            };
+
             selectNoMark.Click += (s, a) =>
             {
                 GetFlyPanel().SelectNoMark();

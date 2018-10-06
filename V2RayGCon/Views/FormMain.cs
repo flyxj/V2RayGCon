@@ -100,7 +100,10 @@ namespace V2RayGCon.Views
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer,
                 toolStripComboBoxMarkFilter,
-                toolStripStatusLabelTotal));
+                toolStripStatusLabelTotal,
+                toolStripDropDownButtonPager,
+                toolStripStatusLabelPrePage,
+                toolStripStatusLabelNextPage));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsBasic(
                 toolMenuItemSimAddVmessServer,
@@ -125,7 +128,9 @@ namespace V2RayGCon.Views
                 selectRunningToolStripMenuItem,
                 selectTimeoutToolStripMenuItem,
                 selectNoSpeedTestToolStripMenuItem,
-                SelectNoMarkToolStripMenuItem));
+                SelectNoMarkToolStripMenuItem,
+                clearAllSelectionToolStripMenuItem,
+                selectAllServersToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,

@@ -12,20 +12,31 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
+        Service.Setting setting;
         ToolStripComboBox cboxMarkFilter;
-        ToolStripStatusLabel tslbTotal;
+        ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
+        ToolStripDropDownButton tsdbtnPager;
         Model.BaseClass.CancelableTimeout lazyStatusBarUpdateTimer = null;
         Model.UserControls.WelcomeFlyPanelComponent welcomeItem = null;
+        int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
         public FlyServer(
             FlowLayoutPanel panel,
             ToolStripComboBox cboxMarkeFilter,
-            ToolStripStatusLabel tslbTotal)
+            ToolStripStatusLabel tslbTotal,
+            ToolStripDropDownButton tsdbtnPager,
+            ToolStripStatusLabel tslbPrePage,
+            ToolStripStatusLabel tslbNextPage)
         {
             this.servers = Service.Servers.Instance;
+            this.setting = Service.Setting.Instance;
+
             this.flyPanel = panel;
             this.cboxMarkFilter = cboxMarkeFilter;
+            this.tsdbtnPager = tsdbtnPager;
             this.tslbTotal = tslbTotal;
+            this.tslbPrePage = tslbPrePage;
+            this.tslbNextPage = tslbNextPage;
             this.welcomeItem = new Model.UserControls.WelcomeFlyPanelComponent();
 
             InitFormControls();
@@ -126,9 +137,11 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             ResetIndex();
             var list = this.GetFilteredList();
+            var pagedList = GenPagedServerList(list);
+
             flyPanel?.Invoke((MethodInvoker)delegate
             {
-                if (list.Count > 0)
+                if (pagedList.Count > 0)
                 {
                     RemoveWelcomeItem();
                 }
@@ -142,8 +155,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                     return;
                 }
 
-                RemoveDeletedServerItems(ref list);
-                AddNewServerItems(list);
+                RemoveDeletedServerItems(ref pagedList);
+                AddNewServerItems(pagedList);
             });
             LazyStatusBarUpdater();
             return true;
@@ -151,6 +164,23 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+        List<Model.Data.ServerItem> GenPagedServerList(List<Model.Data.ServerItem> serverList)
+        {
+            var count = serverList.Count;
+            var pageSize = setting.serverPanelPageSize;
+            paging[1] = (int)Math.Ceiling(1.0 * count / pageSize);
+            paging[0] = Lib.Utils.Clamp(paging[0], 0, paging[1]);
+
+            if (serverList.Count <= 0)
+            {
+                return serverList;
+            }
+
+            var begin = paging[0] * pageSize;
+            var num = Math.Min(pageSize, count - begin);
+            return serverList.GetRange(begin, num);
+        }
+
         void OnRequireStatusBarUpdateHandler(object sender, EventArgs args)
         {
             LazyStatusBarUpdater();
@@ -158,26 +188,75 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         void UpdateStatusBar()
         {
-            var list = flyPanel.Controls
-                .OfType<Model.UserControls.ServerListItem>();
-
-            var total = list.Count();
-            var selected = list.Where(c => c.isSelected).Count();
-
             var text = string.Format(
-                "{0}: {1} {2}: {3}",
-                I18N("Selected"),
-                selected,
-                I18N("Total"),
-                total);
+                I18N("StatusBarServerCountTpl"),
+                    servers.GetTotalServerCount())
+                + " "
+                + string.Format(
+                    I18N("StatusBarTplSelectedItem"),
+                    servers.GetTotalSelectedServerCount(),
+                    GetAllServersControl().Count());
+
+            var showPager = paging[1] > 1;
 
             flyPanel?.Invoke((MethodInvoker)delegate
             {
+                if (showPager)
+                {
+                    if (paging[1] != tsdbtnPager.DropDownItems.Count)
+                    {
+                        UpdateStatusBarPagerMenu();
+                    }
+
+                    UpdateStatusBarPagerCheckStatus();
+
+                    tsdbtnPager.Text = string.Format(
+                        I18N("StatusBarPagerInfoTpl"), 
+                        paging[0] + 1,
+                        paging[1]);
+                }
+
+                tsdbtnPager.Visible = showPager;
+                tslbNextPage.Visible = showPager;
+                tslbPrePage.Visible = showPager;
+
                 if (text != tslbTotal.Text)
                 {
                     tslbTotal.Text = text;
                 }
             });
+        }
+
+        private void UpdateStatusBarPagerCheckStatus()
+        {
+            for (int i = 0; i < tsdbtnPager.DropDownItems.Count; i++)
+            {
+                (tsdbtnPager.DropDownItems[i] as ToolStripMenuItem)
+                    .Checked = paging[0] == i;
+            }
+        }
+
+        private void UpdateStatusBarPagerMenu()
+        {
+            tsdbtnPager.DropDownItems.Clear();
+            for (int i = 0; i < paging[1]; i++)
+            {
+                var index = i;
+                var item = new ToolStripMenuItem(
+                    string.Format(I18N("StatusBarPagerMenuTpl"), (index + 1)),
+                    null,
+                    (s, a) =>
+                    {
+                        paging[0] = index;
+
+                        // 切换分页的时候应保留原选定状态
+                        // 否则无法批量对大量服务进行测速排序
+                        // servers.ClearSelection();
+
+                        RefreshUI();
+                    });
+                tsdbtnPager.DropDownItems.Add(item);
+            }
         }
 
         string searchKeywords = "";
@@ -197,9 +276,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                             RemoveAllServersConrol();
 
                             // cleanup selection
-                            servers.GetServerList()
-                                .Select(s => s.isSelected = false)
-                                .ToList();
+                            servers.SetAllServerIsSelected(false);
 
                             RefreshUI();
                         },
@@ -212,6 +289,17 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitFormControls()
         {
             InitComboBoxMarkFilter();
+            tslbPrePage.Click += (s, a) =>
+            {
+                paging[0]--;
+                RefreshUI();
+            };
+
+            tslbNextPage.Click += (s, a) =>
+            {
+                paging[0]++;
+                RefreshUI();
+            };
         }
 
         private void InitComboBoxMarkFilter()

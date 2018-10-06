@@ -289,15 +289,6 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
-        {
-            try
-            {
-                OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
-        }
-
         void OnSendLogHandler(object sender, Model.Data.StrEvent arg)
         {
             setting.SendLog(arg.Data);
@@ -359,6 +350,25 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public int GetTotalSelectedServerCount()
+        {
+            return serverList.Count(s => s.isSelected);
+        }
+
+        public int GetTotalServerCount()
+        {
+            return serverList.Count;
+        }
+
+        public void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        {
+            try
+            {
+                OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         public ReadOnlyCollection<string> GetMarkList()
         {
             if (this.markList == null)
@@ -366,6 +376,17 @@ namespace V2RayGCon.Service
                 UpdateMarkList();
             }
             return markList.AsReadOnly();
+        }
+
+        public void SetAllServerIsSelected(bool isSelected)
+        {
+            serverList
+                .Select(s =>
+                {
+                    s.SetIsSelected(isSelected);
+                    return true;
+                })
+                .ToList();
         }
 
         public void UpdateMarkList()

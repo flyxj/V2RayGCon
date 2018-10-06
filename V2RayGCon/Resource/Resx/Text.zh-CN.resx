@@ -564,7 +564,16 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Total" xml:space="preserve">
     <value>合计</value>
   </data>
-  <data name="Selected" xml:space="preserve">
-    <value>选中</value>
+  <data name="StatusBarTplSelectedItem" xml:space="preserve">
+    <value>选中{0}/{1}项</value>
+  </data>
+  <data name="StatusBarPagerMenuTpl" xml:space="preserve">
+    <value>第 {0} 页</value>
+  </data>
+  <data name="StatusBarPagerInfoTpl" xml:space="preserve">
+    <value>第{0}/{1}页</value>
+  </data>
+  <data name="StatusBarServerCountTpl" xml:space="preserve">
+    <value>共有{0}个服务器</value>
   </data>
 </root>

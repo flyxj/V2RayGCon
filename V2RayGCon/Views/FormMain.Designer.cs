@@ -72,6 +72,9 @@ namespace V2RayGCon.Views
             this.selectTimeoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectNoSpeedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectNoMarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.clearAllSelectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAllServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemModifySelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,6 +116,9 @@ namespace V2RayGCon.Views
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelTotal = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripDropDownButtonPager = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripStatusLabelPrePage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelNextPage = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.toolStripContainer2.ContentPanel.SuspendLayout();
             this.toolStripContainer2.TopToolStripPanel.SuspendLayout();
@@ -368,7 +374,10 @@ namespace V2RayGCon.Views
             this.selectRunningToolStripMenuItem,
             this.selectTimeoutToolStripMenuItem,
             this.selectNoSpeedTestToolStripMenuItem,
-            this.SelectNoMarkToolStripMenuItem});
+            this.SelectNoMarkToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.clearAllSelectionToolStripMenuItem,
+            this.selectAllServersToolStripMenuItem});
             this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
             // 
             // selectAllToolStripMenuItem
@@ -415,6 +424,21 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.SelectNoMarkToolStripMenuItem, "SelectNoMarkToolStripMenuItem");
             this.SelectNoMarkToolStripMenuItem.Name = "SelectNoMarkToolStripMenuItem";
+            // 
+            // toolStripMenuItem3
+            // 
+            resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            // 
+            // clearAllSelectionToolStripMenuItem
+            // 
+            resources.ApplyResources(this.clearAllSelectionToolStripMenuItem, "clearAllSelectionToolStripMenuItem");
+            this.clearAllSelectionToolStripMenuItem.Name = "clearAllSelectionToolStripMenuItem";
+            // 
+            // selectAllServersToolStripMenuItem
+            // 
+            resources.ApplyResources(this.selectAllServersToolStripMenuItem, "selectAllServersToolStripMenuItem");
+            this.selectAllServersToolStripMenuItem.Name = "selectAllServersToolStripMenuItem";
             // 
             // toolMenuItemServer
             // 
@@ -652,7 +676,10 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.statusStrip1, "statusStrip1");
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelTotal});
+            this.toolStripStatusLabelTotal,
+            this.toolStripDropDownButtonPager,
+            this.toolStripStatusLabelPrePage,
+            this.toolStripStatusLabelNextPage});
             this.statusStrip1.Name = "statusStrip1";
             this.toolTip1.SetToolTip(this.statusStrip1, resources.GetString("statusStrip1.ToolTip"));
             // 
@@ -660,6 +687,21 @@ namespace V2RayGCon.Views
             // 
             resources.ApplyResources(this.toolStripStatusLabelTotal, "toolStripStatusLabelTotal");
             this.toolStripStatusLabelTotal.Name = "toolStripStatusLabelTotal";
+            // 
+            // toolStripDropDownButtonPager
+            // 
+            resources.ApplyResources(this.toolStripDropDownButtonPager, "toolStripDropDownButtonPager");
+            this.toolStripDropDownButtonPager.Name = "toolStripDropDownButtonPager";
+            // 
+            // toolStripStatusLabelPrePage
+            // 
+            resources.ApplyResources(this.toolStripStatusLabelPrePage, "toolStripStatusLabelPrePage");
+            this.toolStripStatusLabelPrePage.Name = "toolStripStatusLabelPrePage";
+            // 
+            // toolStripStatusLabelNextPage
+            // 
+            resources.ApplyResources(this.toolStripStatusLabelNextPage, "toolStripStatusLabelNextPage");
+            this.toolStripStatusLabelNextPage.Name = "toolStripStatusLabelNextPage";
             // 
             // panel1
             // 
@@ -780,5 +822,11 @@ namespace V2RayGCon.Views
         private ToolStripSeparator toolStripSeparator10;
         private ToolStripLabel toolStripLabel2;
         private ToolStripComboBox toolStripComboBoxMarkFilter;
+        private ToolStripDropDownButton toolStripDropDownButtonPager;
+        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripMenuItem clearAllSelectionToolStripMenuItem;
+        private ToolStripMenuItem selectAllServersToolStripMenuItem;
+        private ToolStripStatusLabel toolStripStatusLabelPrePage;
+        private ToolStripStatusLabel toolStripStatusLabelNextPage;
     }
 }

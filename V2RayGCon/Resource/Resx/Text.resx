@@ -576,7 +576,16 @@ Otherwise operations involving the network may fail.</value>
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
-  <data name="Selected" xml:space="preserve">
-    <value>Selected</value>
+  <data name="StatusBarTplSelectedItem" xml:space="preserve">
+    <value>Selecte {0}/{1} item(s)</value>
+  </data>
+  <data name="StatusBarPagerMenuTpl" xml:space="preserve">
+    <value>Show page {0}.</value>
+  </data>
+  <data name="StatusBarPagerInfoTpl" xml:space="preserve">
+    <value>Page {0} of {1}</value>
+  </data>
+  <data name="StatusBarServerCountTpl" xml:space="preserve">
+    <value>Total {0} server(s).</value>
   </data>
 </root>
