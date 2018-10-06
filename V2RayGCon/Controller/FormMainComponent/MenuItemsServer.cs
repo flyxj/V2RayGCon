@@ -259,7 +259,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         void RemoveAllControlsAndRefreshFlyPanel()
         {
             var panel = GetFlyPanel();
-            panel.RemoveAllConrols();
+            panel.RemoveAllServersConrol();
             panel.RefreshUI();
         }
 

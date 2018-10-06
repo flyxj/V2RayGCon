@@ -72,7 +72,8 @@ namespace V2RayGCon.Views
 
             ctrl.Plug(
                 new Controller.OptionComponent.TabSetting(
-                    cboxSettingLanguage));
+                    cboxSettingLanguage,
+                    cboxSettingPageSize));
 
             return ctrl;
         }
