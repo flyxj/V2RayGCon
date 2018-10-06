@@ -164,7 +164,7 @@ namespace V2RayGCon.Test
         public void GetLocalCoreVersion()
         {
 
-            var core = new Model.BaseClass.CoreServer();
+            var core = new Service.Core();
             var version = core.GetCoreVersion();
 
             if (core.IsExecutableExist())

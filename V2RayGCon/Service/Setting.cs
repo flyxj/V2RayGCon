@@ -141,15 +141,15 @@ namespace V2RayGCon.Service
             }
         }
 
-        public List<Model.Data.ServerItem> LoadServerList()
+        public List<Controller.ServerCtrl> LoadServerList()
         {
-            var empty = new List<Model.Data.ServerItem>();
+            var empty = new List<Controller.ServerCtrl>();
 
-            List<Model.Data.ServerItem> list = null;
+            List<Controller.ServerCtrl> list = null;
             try
             {
                 list = JsonConvert.DeserializeObject
-                    <List<Model.Data.ServerItem>>(
+                    <List<Controller.ServerCtrl>>(
                     Properties.Settings.Default.ServerList);
 
                 if (list == null)
@@ -320,7 +320,7 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Save();
         }
 
-        public void SaveServerList(List<Model.Data.ServerItem> serverList)
+        public void SaveServerList(List<Controller.ServerCtrl> serverList)
         {
             string json = JsonConvert.SerializeObject(serverList);
             Properties.Settings.Default.ServerList = json;

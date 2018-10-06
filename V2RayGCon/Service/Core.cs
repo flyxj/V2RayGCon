@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
-namespace V2RayGCon.Model.BaseClass
+namespace V2RayGCon.Service
 {
-    public class CoreServer
+    public class Core
     {
         #region support ctrl+c
         // https://stackoverflow.com/questions/283128/how-do-i-send-ctrlc-to-a-process-in-c
@@ -35,7 +35,7 @@ namespace V2RayGCon.Model.BaseClass
         Process v2rayCore;
         static object coreLock = new object();
 
-        public CoreServer()
+        public Core()
         {
             isRunning = false;
             isCheckCoreReady = false;

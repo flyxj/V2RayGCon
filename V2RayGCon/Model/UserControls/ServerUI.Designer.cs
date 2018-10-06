@@ -1,6 +1,6 @@
 ﻿namespace V2RayGCon.Model.UserControls
 {
-    partial class ServerListItem
+    partial class ServerUI
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerListItem));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerUI));
             this.lbServerTitle = new System.Windows.Forms.Label();
             this.lbStatus = new System.Windows.Forms.Label();
             this.cboxInbound = new System.Windows.Forms.ComboBox();

@@ -1,6 +1,6 @@
 ﻿namespace V2RayGCon.Model.UserControls
 {
-    partial class ImportListItem
+    partial class SubscriptionUI
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportListItem));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SubscriptionUI));
             this.lbIndex = new System.Windows.Forms.Label();
             this.tboxAlias = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tboxUrl = new System.Windows.Forms.TextBox();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.chkMergeWhenStart = new System.Windows.Forms.CheckBox();
+            this.chkIsUse = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.chkMergeWhenSpeedTest = new System.Windows.Forms.CheckBox();
+            this.chkIsSetMark = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lbIndex
@@ -77,29 +77,29 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // chkMergeWhenStart
+            // chkIsUse
             // 
-            resources.ApplyResources(this.chkMergeWhenStart, "chkMergeWhenStart");
-            this.chkMergeWhenStart.Cursor = System.Windows.Forms.Cursors.Default;
-            this.chkMergeWhenStart.Name = "chkMergeWhenStart";
-            this.toolTip1.SetToolTip(this.chkMergeWhenStart, resources.GetString("chkMergeWhenStart.ToolTip"));
-            this.chkMergeWhenStart.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.chkIsUse, "chkIsUse");
+            this.chkIsUse.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkIsUse.Name = "chkIsUse";
+            this.toolTip1.SetToolTip(this.chkIsUse, resources.GetString("chkIsUse.ToolTip"));
+            this.chkIsUse.UseVisualStyleBackColor = true;
             // 
-            // chkMergeWhenSpeedTest
+            // chkIsSetMark
             // 
-            resources.ApplyResources(this.chkMergeWhenSpeedTest, "chkMergeWhenSpeedTest");
-            this.chkMergeWhenSpeedTest.Cursor = System.Windows.Forms.Cursors.Default;
-            this.chkMergeWhenSpeedTest.Name = "chkMergeWhenSpeedTest";
-            this.toolTip1.SetToolTip(this.chkMergeWhenSpeedTest, resources.GetString("chkMergeWhenSpeedTest.ToolTip"));
-            this.chkMergeWhenSpeedTest.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.chkIsSetMark, "chkIsSetMark");
+            this.chkIsSetMark.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkIsSetMark.Name = "chkIsSetMark";
+            this.toolTip1.SetToolTip(this.chkIsSetMark, resources.GetString("chkIsSetMark.ToolTip"));
+            this.chkIsSetMark.UseVisualStyleBackColor = true;
             // 
-            // ImportListItem
+            // SubscriptionListItem
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.chkMergeWhenSpeedTest);
-            this.Controls.Add(this.chkMergeWhenStart);
+            this.Controls.Add(this.chkIsSetMark);
+            this.Controls.Add(this.chkIsUse);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.tboxUrl);
             this.Controls.Add(this.tboxAlias);
@@ -107,7 +107,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lbIndex);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.Name = "ImportListItem";
+            this.Name = "SubscriptionListItem";
             this.Tag = "";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UrlListItem_MouseDown);
@@ -124,8 +124,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tboxUrl;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.CheckBox chkMergeWhenStart;
+        private System.Windows.Forms.CheckBox chkIsUse;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.CheckBox chkMergeWhenSpeedTest;
+        private System.Windows.Forms.CheckBox chkIsSetMark;
     }
 }

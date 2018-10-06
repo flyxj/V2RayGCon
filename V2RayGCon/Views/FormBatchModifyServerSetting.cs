@@ -102,7 +102,7 @@ namespace V2RayGCon.Views
 
         #region private method
         void ModifyServersSetting(
-            List<Model.Data.ServerItem> list,
+            List<Controller.ServerCtrl> list,
             int newMode, string newIP, int newPort, bool isPortAutoIncrease,
             string newMark, int newAutorun, int newImport, int newSkipCN)
         {
@@ -148,7 +148,7 @@ namespace V2RayGCon.Views
         }
 
         void ModifyServerSetting(
-            ref Model.Data.ServerItem server,
+            ref Controller.ServerCtrl server,
             int newMode, string newIP, int newPort,
             string newMark, int newAutorun, int newImport, int newSkipCN)
         {
