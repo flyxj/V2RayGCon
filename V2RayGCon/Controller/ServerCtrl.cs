@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
 
-namespace V2RayGCon.Model.Data
+namespace V2RayGCon.Controller
 {
-    public class ServerItem
+    public class ServerCtrl
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler
@@ -25,7 +25,7 @@ namespace V2RayGCon.Model.Data
 
 
 
-        public ServerItem()
+        public ServerCtrl()
         {
             // new ServerItem will display at the bottom
             index = int.MaxValue;
@@ -47,7 +47,7 @@ namespace V2RayGCon.Model.Data
             inboundIP = "127.0.0.1";
             inboundPort = 1080;
 
-            server = new BaseClass.CoreServer();
+            server = new Service.Core();
             server.OnLog += OnLogHandler;
             server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
@@ -69,7 +69,7 @@ namespace V2RayGCon.Model.Data
         public bool isServerOn;
 
         [JsonIgnore]
-        public Model.BaseClass.CoreServer server;
+        public Service.Core server;
 
         [JsonIgnore]
         ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
@@ -175,7 +175,7 @@ namespace V2RayGCon.Model.Data
             log(text);
             SendLog(url);
 
-            var speedTester = new Model.BaseClass.CoreServer();
+            var speedTester = new Service.Core();
             speedTester.OnLog += OnLogHandler;
             speedTester.RestartCore(config);
 

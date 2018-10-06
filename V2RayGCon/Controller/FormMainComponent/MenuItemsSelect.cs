@@ -83,7 +83,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        void SelectAllServerIF(Func<Model.Data.ServerItem, bool> condiction)
+        void SelectAllServerIF(Func<Controller.ServerCtrl, bool> condiction)
         {
             servers.GetServerList()
                 .Select(s =>

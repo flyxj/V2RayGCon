@@ -211,8 +211,8 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         void SortServerItemList(
-             ref List<Model.Data.ServerItem> list,
-             Comparison<Model.Data.ServerItem> comparer)
+             ref List<Controller.ServerCtrl> list,
+             Comparison<Controller.ServerCtrl> comparer)
         {
             if (list == null || list.Count < 2)
             {

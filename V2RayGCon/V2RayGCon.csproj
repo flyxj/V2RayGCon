@@ -127,50 +127,49 @@
     </Compile>
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
-    <Compile Include="Model\BaseClass\CancelableTimeout.cs" />
+    <Compile Include="Lib\CancelableTimeout.cs" />
     <Compile Include="Model\BaseClass\IFormMainFlyPanelComponent.cs" />
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
     <Compile Include="Model\BaseClass\FormController.cs" />
     <Compile Include="Controller\ConfigerComponent\ConfigerComponentController.cs" />
-    <Compile Include="Model\BaseClass\CoreServer.cs" />
+    <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\ImportItem.cs" />
-    <Compile Include="Model\UserControls\ImportListItem.cs">
+    <Compile Include="Model\UserControls\ImportUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\ImportListItem.Designer.cs">
-      <DependentUpon>ImportListItem.cs</DependentUpon>
+    <Compile Include="Model\UserControls\ImportUI.Designer.cs">
+      <DependentUpon>ImportUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\Servers.cs" />
     <Compile Include="Model\Data\StreamComponent.cs" />
     <Compile Include="Model\Data\LockValuePair.cs" />
-    <Compile Include="Model\Data\ServerItem.cs" />
+    <Compile Include="Controller\ServerCtrl.cs" />
     <Compile Include="Model\Data\SubscriptionItem.cs" />
-    <Compile Include="Model\UserControls\ServerListItem.cs">
+    <Compile Include="Model\UserControls\ServerUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\ServerListItem.Designer.cs">
-      <DependentUpon>ServerListItem.cs</DependentUpon>
+    <Compile Include="Model\UserControls\ServerUI.Designer.cs">
+      <DependentUpon>ServerUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\UserControls\SubscriptionListItem.cs">
+    <Compile Include="Model\UserControls\SubscriptionUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\SubscriptionListItem.Designer.cs">
-      <DependentUpon>SubscriptionListItem.cs</DependentUpon>
+    <Compile Include="Model\UserControls\SubscriptionUI.Designer.cs">
+      <DependentUpon>SubscriptionUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\UserControls\WelcomeFlyPanelComponent.cs">
+    <Compile Include="Model\UserControls\WelcomeUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\WelcomeFlyPanelComponent.Designer.cs">
-      <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>
+    <Compile Include="Model\UserControls\WelcomeUI.Designer.cs">
+      <DependentUpon>WelcomeUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\Caches\CoreCache.cs" />
     <Compile Include="Model\BaseClass\CacheComponent.cs" />
     <Compile Include="Service\Caches\HTML.cs" />
-    <Compile Include="Model\Data\EventList.cs" />
     <Compile Include="Model\Data\DataEvent.cs" />
     <Compile Include="Model\Data\Enum.cs" />
     <Compile Include="Model\Data\Shadowsocks.cs" />
@@ -269,29 +268,29 @@
     <Compile Include="Views\FormSimAddVmessClient.Designer.cs">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Model\UserControls\ServerListItem.resx">
-      <DependentUpon>ServerListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\ServerUI.resx">
+      <DependentUpon>ServerUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\ServerListItem.zh-CN.resx">
-      <DependentUpon>ServerListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\ServerUI.zh-CN.resx">
+      <DependentUpon>ServerUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\ImportListItem.resx">
-      <DependentUpon>ImportListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\ImportUI.resx">
+      <DependentUpon>ImportUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\ImportListItem.zh-CN.resx">
-      <DependentUpon>ImportListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\ImportUI.zh-CN.resx">
+      <DependentUpon>ImportUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\SubscriptionListItem.resx">
-      <DependentUpon>SubscriptionListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\SubscriptionUI.resx">
+      <DependentUpon>SubscriptionUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\SubscriptionListItem.zh-CN.resx">
-      <DependentUpon>SubscriptionListItem.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\SubscriptionUI.zh-CN.resx">
+      <DependentUpon>SubscriptionUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\WelcomeFlyPanelComponent.resx">
-      <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\WelcomeUI.resx">
+      <DependentUpon>WelcomeUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\WelcomeFlyPanelComponent.zh-CN.resx">
-      <DependentUpon>WelcomeFlyPanelComponent.cs</DependentUpon>
+    <EmbeddedResource Include="Model\UserControls\WelcomeUI.zh-CN.resx">
+      <DependentUpon>WelcomeUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -428,7 +427,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Lib\WinFormControl\" />
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
     <Folder Include="Resource\Icon\UCtrlServerList\" />
   </ItemGroup>

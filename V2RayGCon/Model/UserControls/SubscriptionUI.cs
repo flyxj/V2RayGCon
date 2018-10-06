@@ -4,29 +4,29 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.UserControls
 {
-    public partial class ImportListItem : UserControl
+    public partial class SubscriptionUI : UserControl
     {
         Action OnDeleted;
 
-        public ImportListItem(Model.Data.ImportItem subItem, Action OnDeleted)
+        public SubscriptionUI(Model.Data.SubscriptionItem subItem, Action OnDeleted)
         {
             InitializeComponent();
 
             lbIndex.Text = "";
             tboxUrl.Text = subItem.url;
             tboxAlias.Text = subItem.alias;
-            chkMergeWhenStart.Checked = subItem.isUseOnActivate;
-            chkMergeWhenSpeedTest.Checked = subItem.isUseOnSpeedTest;
+            chkIsUse.Checked = subItem.isUse;
+            chkIsSetMark.Checked = subItem.isSetMark;
 
             this.OnDeleted = OnDeleted;
         }
 
-        public Model.Data.ImportItem GetValue()
+        public Model.Data.SubscriptionItem GetValue()
         {
-            return new Model.Data.ImportItem
+            return new Model.Data.SubscriptionItem
             {
-                isUseOnActivate = chkMergeWhenStart.Checked,
-                isUseOnSpeedTest = chkMergeWhenSpeedTest.Checked,
+                isUse = chkIsUse.Checked,
+                isSetMark = chkIsSetMark.Checked,
                 alias = tboxAlias.Text,
                 url = tboxUrl.Text,
             };
@@ -58,7 +58,7 @@ namespace V2RayGCon.Model.UserControls
         private void UrlListItem_MouseDown(object sender, MouseEventArgs e)
         {
             Cursor.Current = Lib.UI.CreateCursorIconFromUserControl(this);
-            DoDragDrop((ImportListItem)sender, DragDropEffects.Move);
+            DoDragDrop((SubscriptionUI)sender, DragDropEffects.Move);
         }
         #endregion
     }

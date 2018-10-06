@@ -6,13 +6,13 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.UserControls
 {
-    public partial class ServerListItem : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
+    public partial class ServerUI : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
-        Model.Data.ServerItem serverItem;
+        Controller.ServerCtrl serverItem;
         public bool isRunning;
         int orgHeight, minHeight;
 
-        public ServerListItem(Model.Data.ServerItem serverItem)
+        public ServerUI(Controller.ServerCtrl serverItem)
         {
             this.serverItem = serverItem;
             InitializeComponent();
@@ -249,7 +249,7 @@ namespace V2RayGCon.Model.UserControls
         private void ServerListItem_MouseDown(object sender, MouseEventArgs e)
         {
             Cursor.Current = Lib.UI.CreateCursorIconFromUserControl(this);
-            DoDragDrop((ServerListItem)sender, DragDropEffects.Move);
+            DoDragDrop((ServerUI)sender, DragDropEffects.Move);
         }
 
         private void btnAction_Click(object sender, System.EventArgs e)

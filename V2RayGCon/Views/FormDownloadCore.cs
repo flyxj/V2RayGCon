@@ -51,7 +51,7 @@ namespace V2RayGCon.Views
 
             Task.Factory.StartNew(() =>
             {
-                var core = new Model.BaseClass.CoreServer();
+                var core = new Service.Core();
                 var version = core.GetCoreVersion();
                 var msg = string.IsNullOrEmpty(version) ?
                     I18N("GetCoreVerFail") :

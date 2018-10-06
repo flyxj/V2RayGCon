@@ -18,10 +18,10 @@ namespace V2RayGCon.Service
             OnRequireStatusBarUpdate,
             OnRequireFlyPanelUpdate;
 
-        List<Model.Data.ServerItem> serverList = null;
+        List<Controller.ServerCtrl> serverList = null;
         List<string> markList = null;
 
-        Model.BaseClass.CancelableTimeout
+        Lib.CancelableTimeout
             lazyGCTimer = null,
             lazySaveServerListTimer = null,
             lazyUpdateNotifyTextTimer = null;
@@ -72,7 +72,7 @@ namespace V2RayGCon.Service
             return -1;
         }
 
-        List<Model.Data.ServerItem> GetSelectedServerList(bool descending = false)
+        List<Controller.ServerCtrl> GetSelectedServerList(bool descending = false)
         {
             var list = serverList.Where(s => s.isSelected);
             if (descending)
@@ -201,7 +201,7 @@ namespace V2RayGCon.Service
                 var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
 
                 lazySaveServerListTimer =
-                    new Model.BaseClass.CancelableTimeout(
+                    new Lib.CancelableTimeout(
                         () => setting.SaveServerList(serverList),
                         delay * 1000);
             }
@@ -216,7 +216,7 @@ namespace V2RayGCon.Service
             if (lazyUpdateNotifyTextTimer == null)
             {
                 lazyUpdateNotifyTextTimer =
-                    new Model.BaseClass.CancelableTimeout(
+                    new Lib.CancelableTimeout(
                         UpdateNotifierText,
                         1000);
             }
@@ -415,7 +415,7 @@ namespace V2RayGCon.Service
             {
                 var delay = Lib.Utils.Str2Int(StrConst("LazyGCDelay"));
 
-                lazyGCTimer = new Model.BaseClass.CancelableTimeout(
+                lazyGCTimer = new Lib.CancelableTimeout(
                     () =>
                     {
                         System.GC.Collect();
@@ -425,7 +425,7 @@ namespace V2RayGCon.Service
             lazyGCTimer.Start();
         }
 
-        public ReadOnlyCollection<Model.Data.ServerItem> GetServerList()
+        public ReadOnlyCollection<Controller.ServerCtrl> GetServerList()
         {
             return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
         }
@@ -603,7 +603,7 @@ namespace V2RayGCon.Service
 
             Task.Factory.StartNew(() =>
             {
-                Lib.Utils.ExecuteInParallel<Model.Data.ServerItem, bool>(list, (server) =>
+                Lib.Utils.ExecuteInParallel<Controller.ServerCtrl, bool>(list, (server) =>
                 {
                     server.RunSpeedTest();
                     return true;
@@ -616,12 +616,12 @@ namespace V2RayGCon.Service
             return true;
         }
 
-        public List<Model.Data.ServerItem> GetActiveServersList()
+        public List<Controller.ServerCtrl> GetActiveServersList()
         {
             return serverList.Where(s => s.isServerOn).ToList();
         }
 
-        public void RestartServersByListThen(List<Model.Data.ServerItem> servers, Action done = null)
+        public void RestartServersByListThen(List<Controller.ServerCtrl> servers, Action done = null)
         {
             var list = servers;
             Action<int, Action> worker = (index, next) =>
@@ -814,7 +814,7 @@ namespace V2RayGCon.Service
                 }));
         }
 
-        public void BindEventsTo(Model.Data.ServerItem server)
+        public void BindEventsTo(Controller.ServerCtrl server)
         {
             server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
@@ -827,7 +827,7 @@ namespace V2RayGCon.Service
             return serverList.Any(s => s.config == config);
         }
 
-        public void ReleaseEventsFrom(Model.Data.ServerItem server)
+        public void ReleaseEventsFrom(Controller.ServerCtrl server)
         {
             server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
@@ -843,7 +843,7 @@ namespace V2RayGCon.Service
                 return false;
             }
 
-            var newServer = new Model.Data.ServerItem()
+            var newServer = new Controller.ServerCtrl()
             {
                 config = config,
                 mark = mark,

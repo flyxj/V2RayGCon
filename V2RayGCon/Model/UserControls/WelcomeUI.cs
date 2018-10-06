@@ -3,14 +3,14 @@ using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Model.UserControls
 {
-    public partial class WelcomeFlyPanelComponent :
+    public partial class WelcomeUI :
         UserControl,
         Model.BaseClass.IFormMainFlyPanelComponent
     {
 
         Service.Servers servers;
 
-        public WelcomeFlyPanelComponent()
+        public WelcomeUI()
         {
             servers = Service.Servers.Instance;
 
