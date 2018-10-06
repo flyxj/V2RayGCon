@@ -48,31 +48,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 
 
         #region public method
-        public void SelectNoSpeedTest()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.isNotRunSpeedTestYet));
-        }
-
-        public void SelectNoMark()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.isMarkEmpty));
-        }
-
-        public void SelectTimeout()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.isSpeedTestTimeout));
-        }
-
-        public void SelectRunning()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.isRunning));
-        }
-
-        public void SelectAutorun()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(s.isAutoRun));
-        }
-
         public void SelectAll()
         {
             LoopThroughServerItemControls((s) => s.SetSelected(true));
@@ -211,7 +186,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     UpdateStatusBarPagerCheckStatus();
 
                     tsdbtnPager.Text = string.Format(
-                        I18N("StatusBarPagerInfoTpl"), 
+                        I18N("StatusBarPagerInfoTpl"),
                         paging[0] + 1,
                         paging[1]);
                 }

@@ -197,42 +197,6 @@ namespace V2RayGCon.Model.UserControls
             }
             private set { }
         }
-
-        public bool isNotRunSpeedTestYet
-        {
-            get
-            {
-                return this.serverItem.speedTestResult < 0;
-            }
-            private set { }
-        }
-
-        public bool isSpeedTestTimeout
-        {
-            get
-            {
-                return this.serverItem.speedTestResult == long.MaxValue;
-            }
-            private set { }
-        }
-
-        public bool isMarkEmpty
-        {
-            get
-            {
-                return string.IsNullOrEmpty(this.serverItem.mark);
-            }
-            private set { }
-        }
-
-        public bool isAutoRun
-        {
-            get
-            {
-                return serverItem.isAutoRun;
-            }
-            private set { }
-        }
         #endregion
 
         #region public method
