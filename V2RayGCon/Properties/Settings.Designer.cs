@@ -133,7 +133,7 @@ namespace V2RayGCon.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("99")]
         public int ServerPanelPageSize {
             get {
                 return ((int)(this["ServerPanelPageSize"]));

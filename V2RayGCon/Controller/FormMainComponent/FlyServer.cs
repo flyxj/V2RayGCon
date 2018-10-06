@@ -250,7 +250,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                             // 如果不RemoveAll会乱序
                             RemoveAllServersConrol();
 
-                            // cleanup selection
+                            // 修改搜索项时应该清除选择,否则会有可显示列表外的选中项
                             servers.SetAllServerIsSelected(false);
 
                             RefreshUI();
@@ -333,7 +333,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     .ToArray());
         }
 
-        void DisposeFlyPanelControlByList(IEnumerable<Model.UserControls.ServerListItem> controlList)
+        void DisposeFlyPanelControlByList(List<Model.UserControls.ServerListItem> controlList)
         {
             foreach (var control in controlList)
             {
@@ -363,7 +363,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
 
-        IEnumerable<Model.UserControls.ServerListItem> GetDeletedControlList(List<Model.Data.ServerItem> serverList)
+        List<Model.UserControls.ServerListItem> GetDeletedControlList(List<Model.Data.ServerItem> serverList)
         {
             var result = new List<Model.UserControls.ServerListItem>();
 
@@ -378,7 +378,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 serverList.RemoveAll(s => s.config == config);
             }
 
-            return result.AsEnumerable();
+            return result;
         }
 
         void RemoveWelcomeItem()
@@ -405,10 +405,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList();
         }
 
-        IEnumerable<Model.UserControls.ServerListItem> GetAllServersControl()
+        List<Model.UserControls.ServerListItem> GetAllServersControl()
         {
             return flyPanel.Controls
-                .OfType<Model.UserControls.ServerListItem>();
+                .OfType<Model.UserControls.ServerListItem>()
+                .ToList();
         }
 
         void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)

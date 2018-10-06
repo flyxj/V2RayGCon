@@ -27,7 +27,7 @@ namespace V2RayGCon.Service
             set
             {
                 Properties.Settings.Default.ServerPanelPageSize =
-                    Lib.Utils.Clamp(value, 1, 100);
+                    Lib.Utils.Clamp(value, 1, 101);
                 Properties.Settings.Default.Save();
             }
         }
