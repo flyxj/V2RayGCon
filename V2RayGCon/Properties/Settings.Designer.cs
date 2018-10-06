@@ -130,5 +130,17 @@ namespace V2RayGCon.Properties {
                 this["Culture"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int ServerPanelPageSize {
+            get {
+                return ((int)(this["ServerPanelPageSize"]));
+            }
+            set {
+                this["ServerPanelPageSize"] = value;
+            }
+        }
     }
 }

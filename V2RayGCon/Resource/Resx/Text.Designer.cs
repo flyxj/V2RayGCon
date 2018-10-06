@@ -1183,6 +1183,42 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Page {0} of {1} 的本地化字符串。
+        /// </summary>
+        internal static string StatusBarPagerInfoTpl {
+            get {
+                return ResourceManager.GetString("StatusBarPagerInfoTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show page {0}. 的本地化字符串。
+        /// </summary>
+        internal static string StatusBarPagerMenuTpl {
+            get {
+                return ResourceManager.GetString("StatusBarPagerMenuTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Total {0} server(s). 的本地化字符串。
+        /// </summary>
+        internal static string StatusBarServerCountTpl {
+            get {
+                return ResourceManager.GetString("StatusBarServerCountTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Selecte {0}/{1} item(s) 的本地化字符串。
+        /// </summary>
+        internal static string StatusBarTplSelectedItem {
+            get {
+                return ResourceManager.GetString("StatusBarTplSelectedItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Stop 的本地化字符串。
         /// </summary>
         internal static string Stop {
@@ -1254,6 +1290,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string Timeout {
             get {
                 return ResourceManager.GetString("Timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Total 的本地化字符串。
+        /// </summary>
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
             }
         }
         

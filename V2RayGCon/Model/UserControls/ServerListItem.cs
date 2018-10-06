@@ -188,38 +188,21 @@ namespace V2RayGCon.Model.UserControls
         }
         #endregion
 
+        #region properties
+        public bool isSelected
+        {
+            get
+            {
+                return serverItem.isSelected;
+            }
+            private set { }
+        }
+        #endregion
+
         #region public method
-        public bool isNotRunSpeedTestYet
-        {
-            get
-            {
-                return this.serverItem.speedTestResult < 0;
-            }
-            private set { }
-        }
-
-        public bool isSpeedTestTimeout
-        {
-            get
-            {
-                return this.serverItem.speedTestResult == long.MaxValue;
-            }
-            private set { }
-        }
-
         public string GetConfig()
         {
             return serverItem.config;
-        }
-
-        public bool GetAutorunStatus()
-        {
-            return serverItem.isAutoRun;
-        }
-
-        public bool GetSelectStatus()
-        {
-            return chkSelected.Checked;
         }
 
         public void SetStatusThen(string status, Action next = null)
@@ -243,9 +226,7 @@ namespace V2RayGCon.Model.UserControls
 
         public void SetSelected(bool selected)
         {
-            serverItem.SetPropertyOnDemand(
-               ref serverItem.isSelected,
-               selected);
+            serverItem.SetIsSelected(selected);
         }
 
         public double GetIndex()
@@ -286,9 +267,12 @@ namespace V2RayGCon.Model.UserControls
 
         private void chkSelected_CheckedChanged(object sender, EventArgs e)
         {
-            serverItem.SetPropertyOnDemand(
-               ref serverItem.isSelected,
-               chkSelected.Checked);
+            var selected = chkSelected.Checked;
+            if (selected == serverItem.isSelected)
+            {
+                return;
+            }
+            serverItem.SetIsSelected(selected);
             HighlightSelectedServerItem(chkSelected.Checked);
         }
 

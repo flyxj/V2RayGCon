@@ -6,19 +6,23 @@ namespace V2RayGCon.Controller.OptionComponent
     {
         Service.Setting setting;
 
-        ComboBox cboxLanguage = null;
+        ComboBox cboxLanguage = null, cboxPageSize = null;
 
         public TabSetting(
-            ComboBox cboxLanguage)
+            ComboBox cboxLanguage,
+            ComboBox cboxPageSize)
         {
             this.setting = Service.Setting.Instance;
             this.cboxLanguage = cboxLanguage;
-            InitElement(cboxLanguage);
+            this.cboxPageSize = cboxPageSize;
+
+            InitElement(cboxLanguage, cboxPageSize);
         }
 
-        private void InitElement(ComboBox cboxLanguage)
+        private void InitElement(ComboBox cboxLanguage, ComboBox cboxPageSize)
         {
             cboxLanguage.SelectedIndex = (int)setting.culture;
+            cboxPageSize.Text = setting.serverPanelPageSize.ToString();
         }
 
         #region public method
@@ -29,17 +33,39 @@ namespace V2RayGCon.Controller.OptionComponent
                 return false;
             }
 
+            var pageSize = Lib.Utils.Str2Int(cboxPageSize.Text);
+            if (pageSize != setting.serverPanelPageSize)
+            {
+                setting.serverPanelPageSize = pageSize;
+                Service.Servers.Instance.InvokeEventOnRequireFlyPanelUpdate(
+                    this, System.EventArgs.Empty);
+            }
+
+
             var index = cboxLanguage.SelectedIndex;
-            setting.culture = (Model.Data.Enum.Cultures)index;
-            MessageBox.Show("Language change has not yet taken effect.\n"
-                + "Please restart this application.");
+            if (IsIndexValide(index) && ((int)setting.culture != index))
+            {
+                setting.culture = (Model.Data.Enum.Cultures)index;
+                MessageBox.Show("Language change has not yet taken effect.\n"
+                    + "Please restart this application.");
+            }
             return true;
         }
 
         public override bool IsOptionsChanged()
         {
+            if (Lib.Utils.Str2Int(cboxPageSize.Text) != setting.serverPanelPageSize)
+            {
+                return true;
+            }
+
             var index = cboxLanguage.SelectedIndex;
-            return IsIndexValide(index) && ((int)setting.culture != index);
+            if (IsIndexValide(index) && ((int)setting.culture != index))
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
 

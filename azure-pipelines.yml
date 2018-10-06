@@ -42,13 +42,13 @@ steps:
 
 #Copy Files
 #Copy files from source folder to target folder using match patterns (The match patterns will only match file paths, not folder paths)
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/V2RayGCon/'
-    contents: 'version.json' 
-    targetFolder: $(Build.ArtifactStagingDirectory)
-    cleanTargetFolder: false # Optional
-    overWrite: true # Optional
-    # flattenFolders: false # Optional
+#- task: CopyFiles@2
+#  inputs:
+#    sourceFolder: '$(Build.SourcesDirectory)/V2RayGCon/'
+#    contents: 'version.json' 
+#    targetFolder: $(Build.ArtifactStagingDirectory)
+#    cleanTargetFolder: false # Optional
+#    overWrite: true # Optional
+#    # flattenFolders: false # Optional
 
 - task: PublishBuildArtifacts@1

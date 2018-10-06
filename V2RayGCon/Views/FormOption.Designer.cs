@@ -40,6 +40,9 @@
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSetting = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cboxSettingPageSize = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.cboxSettingLanguage = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnBakBackup = new System.Windows.Forms.Button();
@@ -131,11 +134,39 @@
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.cboxSettingPageSize);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cboxSettingLanguage);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             this.toolTip1.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
+            // 
+            // cboxSettingPageSize
+            // 
+            resources.ApplyResources(this.cboxSettingPageSize, "cboxSettingPageSize");
+            this.cboxSettingPageSize.FormattingEnabled = true;
+            this.cboxSettingPageSize.Items.AddRange(new object[] {
+            resources.GetString("cboxSettingPageSize.Items"),
+            resources.GetString("cboxSettingPageSize.Items1"),
+            resources.GetString("cboxSettingPageSize.Items2"),
+            resources.GetString("cboxSettingPageSize.Items3"),
+            resources.GetString("cboxSettingPageSize.Items4")});
+            this.cboxSettingPageSize.Name = "cboxSettingPageSize";
+            this.toolTip1.SetToolTip(this.cboxSettingPageSize, resources.GetString("cboxSettingPageSize.ToolTip"));
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // cboxSettingLanguage
             // 
@@ -228,5 +259,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox cboxSettingLanguage;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cboxSettingPageSize;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
     }
 }

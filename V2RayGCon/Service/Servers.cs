@@ -13,7 +13,10 @@ namespace V2RayGCon.Service
 {
     public class Servers : Model.BaseClass.SingletonService<Servers>
     {
-        public event EventHandler OnRequireMenuUpdate, OnRequireFlyPanelUpdate;
+        public event EventHandler
+            OnRequireMenuUpdate,
+            OnRequireStatusBarUpdate,
+            OnRequireFlyPanelUpdate;
 
         List<Model.Data.ServerItem> serverList = null;
         List<string> markList = null;
@@ -268,20 +271,20 @@ namespace V2RayGCon.Service
             setting.UpdateNotifierText(count.ToString() + I18N("ServersAreRunning"));
         }
 
+        void InvokeEventOnRequireStatusBarUpdate(object sender, EventArgs args)
+        {
+            try
+            {
+                OnRequireStatusBarUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         void InvokeEventOnRequireMenuUpdate(object sender, EventArgs args)
         {
             try
             {
                 OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
-        }
-
-        void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
-        {
-            try
-            {
-                OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
             }
             catch { }
         }
@@ -347,6 +350,25 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public int GetTotalSelectedServerCount()
+        {
+            return serverList.Count(s => s.isSelected);
+        }
+
+        public int GetTotalServerCount()
+        {
+            return serverList.Count;
+        }
+
+        public void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        {
+            try
+            {
+                OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         public ReadOnlyCollection<string> GetMarkList()
         {
             if (this.markList == null)
@@ -354,6 +376,17 @@ namespace V2RayGCon.Service
                 UpdateMarkList();
             }
             return markList.AsReadOnly();
+        }
+
+        public void SetAllServerIsSelected(bool isSelected)
+        {
+            serverList
+                .Select(s =>
+                {
+                    s.SetIsSelected(isSelected);
+                    return true;
+                })
+                .ToList();
         }
 
         public void UpdateMarkList()
@@ -686,6 +719,7 @@ namespace V2RayGCon.Service
             Action finish = () =>
             {
                 LazySaveServerList();
+                UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
@@ -704,6 +738,8 @@ namespace V2RayGCon.Service
 
             Action finish = () =>
             {
+                LazySaveServerList();
+                UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
@@ -772,6 +808,7 @@ namespace V2RayGCon.Service
                 () => RemoveServerItemFromListThen(index, () =>
                 {
                     LazySaveServerList();
+                    UpdateMarkList();
                     InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);
                     InvokeEventOnRequireFlyPanelUpdate(serverList, EventArgs.Empty);
                 }));
@@ -782,6 +819,7 @@ namespace V2RayGCon.Service
             server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
+            server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
         }
 
         public bool IsServerItemExist(string config)
@@ -794,6 +832,7 @@ namespace V2RayGCon.Service
             server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
+            server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
         }
 
         public bool AddServer(string config, string mark, bool quiet = false)

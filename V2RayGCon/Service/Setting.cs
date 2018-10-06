@@ -18,6 +18,20 @@ namespace V2RayGCon.Service
         public event EventHandler OnSysProxyChanged;
 
         #region Properties
+        public int serverPanelPageSize
+        {
+            get
+            {
+                return Properties.Settings.Default.ServerPanelPageSize;
+            }
+            set
+            {
+                Properties.Settings.Default.ServerPanelPageSize =
+                    Lib.Utils.Clamp(value, 1, 100);
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public CultureInfo orgCulture = null;
 
         ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();

@@ -394,7 +394,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="version.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Icon\icon_dark.ico" />
@@ -404,6 +403,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
+    <None Include="Resource\Icon\TaskTray\ExpandScope_16x.png" />
+    <None Include="Resource\Icon\TaskTray\WindowsForm_16x.png" />
+    <None Include="Resource\Icon\TaskTray\StatusHelp_16x.png" />
+    <None Include="Resource\Icon\TaskTray\Settings_16x.png" />
+    <None Include="Resource\Icon\TaskTray\FSInteractiveWindow_16x.png" />
+    <None Include="Resource\Icon\TaskTray\EditWindow_16x.png" />
+    <None Include="Resource\Icon\TaskTray\CPPWin32Project_16x.png" />
+    <None Include="Resource\Icon\TaskTray\CopyLongTextToClipboard_16x.png" />
+    <None Include="Resource\Icon\TaskTray\CloseSolution_16x.png" />
+    <None Include="Resource\Icon\TaskTray\BorderElement_16x.png" />
+    <None Include="Resource\Icon\TaskTray\AzureVirtualMachineExtension_16x.png" />
+    <None Include="Resource\Icon\TaskTray\ASX_TransferDownload_blue_16x.png" />
     <None Include="Resource\Config\config_def.txt" />
     <Content Include="Resource\Config\config_pkg.txt" />
     <Content Include="Resource\Config\config_tpl.txt" />
@@ -418,6 +429,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lib\WinFormControl\" />
+    <Folder Include="Resource\Icon\FormMainToolStrip\" />
+    <Folder Include="Resource\Icon\UCtrlServerList\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
