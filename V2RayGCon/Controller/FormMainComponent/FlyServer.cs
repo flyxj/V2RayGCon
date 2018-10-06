@@ -15,6 +15,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripComboBox cboxMarkFilter;
         ToolStripStatusLabel tslbTotal;
         Model.BaseClass.CancelableTimeout lazyStatusBarUpdateTimer = null;
+        Model.UserControls.WelcomeFlyPanelComponent welcomeItem = null;
 
         public FlyServer(
             FlowLayoutPanel panel,
@@ -25,6 +26,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.flyPanel = panel;
             this.cboxMarkFilter = cboxMarkeFilter;
             this.tslbTotal = tslbTotal;
+            this.welcomeItem = new Model.UserControls.WelcomeFlyPanelComponent();
 
             InitFormControls();
             BindDragDropEvent();
@@ -80,12 +82,12 @@ namespace V2RayGCon.Controller.FormMainComponent
             servers.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
             servers.OnRequireStatusBarUpdate -= OnRequireStatusBarUpdateHandler;
             lazyStatusBarUpdateTimer?.Release();
-            RemoveAllConrols(true);
+            RemoveAllServersConrol(true);
         }
 
-        public void RemoveAllConrols(bool blocking = false)
+        public void RemoveAllServersConrol(bool blocking = false)
         {
-            var controlList = GetAllControls();
+            var controlList = GetAllServersControl();
 
             flyPanel.Invoke((MethodInvoker)delegate
             {
@@ -126,13 +128,13 @@ namespace V2RayGCon.Controller.FormMainComponent
             var list = this.GetFilteredList();
             flyPanel?.Invoke((MethodInvoker)delegate
             {
-                if (list == null || list.Count > 0)
+                if (list.Count > 0)
                 {
                     RemoveWelcomeItem();
                 }
                 else
                 {
-                    RemoveAllConrols();
+                    RemoveAllServersConrol();
                     if (string.IsNullOrEmpty(this.searchKeywords))
                     {
                         LoadWelcomeItem();
@@ -192,7 +194,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                         () =>
                         {
                             // 如果不RemoveAll会乱序
-                            RemoveAllConrols();
+                            RemoveAllServersConrol();
 
                             // cleanup selection
                             servers.GetServerList()
@@ -268,19 +270,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                     .ToArray());
         }
 
-        void DisposeFlyPanelControlByList(List<UserControl> controlList)
+        void DisposeFlyPanelControlByList(IEnumerable<Model.UserControls.ServerListItem> controlList)
         {
             foreach (var control in controlList)
             {
-                switch (control)
-                {
-                    case Model.UserControls.ServerListItem serv:
-                        serv.Cleanup();
-                        break;
-                    case Model.UserControls.WelcomeFlyPanelComponent welcome:
-                        welcome.Cleanup();
-                        break;
-                }
+                control.Cleanup();
             }
 
             flyPanel.Invoke((MethodInvoker)delegate
@@ -306,12 +300,11 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
 
-        List<UserControl> GetDeletedControlList(List<Model.Data.ServerItem> serverList)
+        IEnumerable<Model.UserControls.ServerListItem> GetDeletedControlList(List<Model.Data.ServerItem> serverList)
         {
-            var controlList = GetAllControls();
-            var result = new List<UserControl>();
+            var result = new List<Model.UserControls.ServerListItem>();
 
-            foreach (Model.UserControls.ServerListItem control in controlList)
+            foreach (var control in GetAllServersControl())
             {
                 var config = control.GetConfig();
                 if (serverList.Where(s => s.config == config)
@@ -322,7 +315,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 serverList.RemoveAll(s => s.config == config);
             }
 
-            return result;
+            return result.AsEnumerable();
         }
 
         void RemoveWelcomeItem()
@@ -332,10 +325,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .Select(e =>
                 {
                     flyPanel.Controls.Remove(e);
-                    if (!e.IsDisposed)
-                    {
-                        e.Dispose();
-                    }
                     return true;
                 })
                 .ToList();
@@ -353,22 +342,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList();
         }
 
-        List<UserControl> GetAllControls()
+        IEnumerable<Model.UserControls.ServerListItem> GetAllServersControl()
         {
-            List<UserControl> controlList = new List<UserControl>();
-            foreach (Model.BaseClass.IFormMainFlyPanelComponent control in flyPanel.Controls)
-            {
-                switch (control)
-                {
-                    case Model.UserControls.ServerListItem serv:
-                        controlList.Add(serv);
-                        break;
-                    case Model.UserControls.WelcomeFlyPanelComponent welcome:
-                        controlList.Add(welcome);
-                        break;
-                }
-            }
-            return controlList;
+            return flyPanel.Controls
+                .OfType<Model.UserControls.ServerListItem>();
         }
 
         void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)
@@ -378,8 +355,14 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         private void LoadWelcomeItem()
         {
-            flyPanel.Controls.Add(
-                new Model.UserControls.WelcomeFlyPanelComponent());
+            var welcome = flyPanel.Controls
+                .OfType<Model.UserControls.WelcomeFlyPanelComponent>()
+                .FirstOrDefault();
+
+            if (welcome == null)
+            {
+                flyPanel.Controls.Add(welcomeItem);
+            }
         }
 
         private void ResetIndex()
