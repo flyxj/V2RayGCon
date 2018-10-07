@@ -119,8 +119,8 @@
             // 
             // btnMenu
             // 
-            this.btnMenu.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnMenu, "btnMenu");
+            this.btnMenu.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnMenu.Name = "btnMenu";
             this.toolTip1.SetToolTip(this.btnMenu, resources.GetString("btnMenu.ToolTip"));
             this.btnMenu.UseVisualStyleBackColor = true;
@@ -146,8 +146,8 @@
             // 
             // btnStart
             // 
-            this.btnStart.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnStart, "btnStart");
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnStart.Name = "btnStart";
             this.toolTip1.SetToolTip(this.btnStart, resources.GetString("btnStart.ToolTip"));
             this.btnStart.UseVisualStyleBackColor = true;
@@ -173,8 +173,8 @@
             // 
             // btnIsCollapse
             // 
-            this.btnIsCollapse.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnIsCollapse, "btnIsCollapse");
+            this.btnIsCollapse.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnIsCollapse.ImageList = this.imageListCollapse;
             this.btnIsCollapse.Name = "btnIsCollapse";
             this.toolTip1.SetToolTip(this.btnIsCollapse, resources.GetString("btnIsCollapse.ToolTip"));
@@ -207,8 +207,8 @@
             // 
             // btnStop
             // 
-            this.btnStop.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnStop, "btnStop");
+            this.btnStop.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnStop.Name = "btnStop";
             this.toolTip1.SetToolTip(this.btnStop, resources.GetString("btnStop.ToolTip"));
             this.btnStop.UseVisualStyleBackColor = true;
@@ -216,8 +216,8 @@
             // 
             // btnMultiboxing
             // 
-            this.btnMultiboxing.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnMultiboxing, "btnMultiboxing");
+            this.btnMultiboxing.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnMultiboxing.Name = "btnMultiboxing";
             this.toolTip1.SetToolTip(this.btnMultiboxing, resources.GetString("btnMultiboxing.ToolTip"));
             this.btnMultiboxing.UseVisualStyleBackColor = true;
