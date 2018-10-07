@@ -112,8 +112,9 @@
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
-            this.label2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label2.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.label2.Name = "label2";
+            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label2_MouseDown);
             // 
             // btnMenu

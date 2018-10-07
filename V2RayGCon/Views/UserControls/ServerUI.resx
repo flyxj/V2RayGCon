@@ -234,11 +234,8 @@
   <data name="tboxInboundAddr.Text" xml:space="preserve">
     <value>127.0.0.1:1080</value>
   </data>
-  <data name="tboxInboundAddr.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
-  </data>
   <data name="tboxInboundAddr.ToolTip" xml:space="preserve">
-    <value>Effect under HTTP and SOCKS mode only!</value>
+    <value>Valid only for HTTP or SOCKS mode.</value>
   </data>
   <data name="&gt;&gt;tboxInboundAddr.Name" xml:space="preserve">
     <value>tboxInboundAddr</value>
@@ -272,6 +269,9 @@
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value>Drag and drop to adjust order.</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>

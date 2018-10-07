@@ -126,8 +126,14 @@
   <data name="cboxInbound.ToolTip" xml:space="preserve">
     <value>改写配置中的inbound</value>
   </data>
+  <data name="tboxInboundAddr.ToolTip" xml:space="preserve">
+    <value>仅在HTTP或SOCKS模式下生效</value>
+  </data>
   <data name="label2.Text" xml:space="preserve">
     <value>地址</value>
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value>拖放可调整顺序</value>
   </data>
   <data name="btnMenu.ToolTip" xml:space="preserve">
     <value>菜单</value>
@@ -174,17 +180,17 @@
   <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
     <value>关闭全部服务器，然后运行这个服务器</value>
   </data>
-  <data name="stopToolStripMenuItem.Text" xml:space="preserve">
-    <value>停止</value>
-  </data>
-  <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>停止这个服务器</value>
-  </data>
   <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
     <value>多开</value>
   </data>
   <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>和其他已开启服务器并行运行（注意错开inbound端口）</value>
+  </data>
+  <data name="stopToolStripMenuItem.Text" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>停止这个服务器</value>
   </data>
   <data name="toolStripMenuItemIsAutorun.Text" xml:space="preserve">
     <value>自启动</value>
@@ -204,14 +210,14 @@
   <data name="toolStripMenuItemSkipCNSite.ToolTipText" xml:space="preserve">
     <value>（新手专用）不代理国内网址。高级用户请使用v2ray-core的routing</value>
   </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>复制</value>
-  </data>
   <data name="vmessToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>包含主要配置信息</value>
   </data>
   <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>包含完整配置信息</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>复制</value>
   </data>
   <data name="editToolStripMenuItem.Text" xml:space="preserve">
     <value>编辑</value>
@@ -233,6 +239,9 @@
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>需要将inbound选为HTTP模式</value>
+  </data>
+  <data name="ctxMenuStripMore.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>拖放可调整顺序</value>
