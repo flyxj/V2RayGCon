@@ -737,45 +737,43 @@ namespace V2RayGCon.Lib
         {
             var timeout = Str2Int(StrConst("SpeedTestTimeout"));
 
-            WebClient wc = new TimedWebClient
+            long elasped = long.MaxValue;
+            using (WebClient wc = new TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout * 1000,
-            };
-
-            long elasped = long.MaxValue;
-            try
+            })
             {
-                if (port > 0)
+                try
                 {
-                    wc.Proxy = new WebProxy("127.0.0.1", port);
+                    if (port > 0)
+                    {
+                        wc.Proxy = new WebProxy("127.0.0.1", port);
+                    }
+                    Stopwatch sw = new Stopwatch();
+                    sw.Reset();
+                    sw.Start();
+                    wc.DownloadString(url);
+                    sw.Stop();
+                    elasped = sw.ElapsedMilliseconds;
                 }
-                Stopwatch sw = new Stopwatch();
-                sw.Reset();
-                sw.Start();
-                wc.DownloadString(url);
-                sw.Stop();
-                elasped = sw.ElapsedMilliseconds;
+                catch { }
             }
-            catch { }
-            wc.Dispose();
 
             return elasped;
         }
 
+        static IPEndPoint _defaultLoopbackEndpoint = new IPEndPoint(IPAddress.Loopback, port: 0);
         public static int GetFreeTcpPort()
         {
             // https://stackoverflow.com/questions/138043/find-the-next-tcp-port-in-net
-            int port = -1;
-            try
+
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                port = ((IPEndPoint)l.LocalEndpoint).Port;
-                l.Stop();
+                socket.Bind(_defaultLoopbackEndpoint);
+                return ((IPEndPoint)socket.LocalEndPoint).Port;
             }
-            catch { }
-            return port;
+
         }
 
         public static string Fetch(string url, int timeout = -1)
@@ -836,7 +834,10 @@ namespace V2RayGCon.Lib
             foreach (Match match in matches)
             {
                 var v = match.Groups[1].Value;
-                versions.Add(v);
+                if (!versions.Contains(v))
+                {
+                    versions.Add(v);
+                }
             }
 
             return versions;
