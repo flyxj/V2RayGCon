@@ -60,7 +60,7 @@ namespace V2RayGCon.Controller
         public Service.Servers parent = null;
 
         [JsonIgnore]
-        Views.FormSingleServerLog logForm = null;
+        Views.WinForms.FormSingleServerLog logForm = null;
 
         [JsonIgnore]
         public string status;
@@ -116,7 +116,7 @@ namespace V2RayGCon.Controller
             {
                 return false;
             }
-            logForm = new Views.FormSingleServerLog(this);
+            logForm = new Views.WinForms.FormSingleServerLog(this);
 
             logForm.FormClosed += (s, a) =>
             {

@@ -33,7 +33,7 @@ namespace V2RayGCon.Service
             {
                 if (a.Button == MouseButtons.Left)
                 {
-                    Views.FormMain.GetForm();
+                    Views.WinForms.FormMain.GetForm();
                 }
             };
 
@@ -42,7 +42,7 @@ namespace V2RayGCon.Service
 #else
             if (servers.IsEmpty())
             {
-                Views.FormMain.GetForm();
+                Views.WinForms.FormMain.GetForm();
             }
             else
             {
@@ -66,14 +66,14 @@ namespace V2RayGCon.Service
                  servers.DbgFastRestartTest(100);
              }));
 
-            // new Views.FormConfiger(@"{}");
-            // new Views.FormConfigTester();
-            // Views.FormOption.GetForm();
-            Views.FormMain.GetForm();
-            Views.FormLog.GetForm();
+            // new Views.WinForms.FormConfiger(@"{}");
+            // new Views.WinForms.FormConfigTester();
+            // Views.WinForms.FormOption.GetForm();
+            Views.WinForms.FormMain.GetForm();
+            Views.WinForms.FormLog.GetForm();
             // setting.WakeupAutorunServer();
-            // Views.FormSimAddVmessClient.GetForm();
-            // Views.FormDownloadCore.GetForm();
+            // Views.WinForms.FormSimAddVmessClient.GetForm();
+            // Views.WinForms.FormDownloadCore.GetForm();
         }
 #endif
         #endregion
@@ -128,7 +128,7 @@ namespace V2RayGCon.Service
                 new ToolStripMenuItem(
                     I18N("MainWin"),
                     Properties.Resources.WindowsForm_16x,
-                    (s,a)=>Views.FormMain.GetForm()),
+                    (s,a)=>Views.WinForms.FormMain.GetForm()),
 
                 new ToolStripMenuItem(
                     I18N("OtherWin"),
@@ -137,19 +137,19 @@ namespace V2RayGCon.Service
                         new ToolStripMenuItem(
                             I18N("ConfigEditor"),
                             Properties.Resources.EditWindow_16x,
-                            (s,a)=>new Views.FormConfiger() ),
+                            (s,a)=>new Views.WinForms.FormConfiger() ),
                         new ToolStripMenuItem(
                             I18N("GenQRCode"),
                             Properties.Resources.AzureVirtualMachineExtension_16x,
-                            (s,a)=>Views.FormQRCode.GetForm()),
+                            (s,a)=>Views.WinForms.FormQRCode.GetForm()),
                         new ToolStripMenuItem(
                             I18N("Log"),
                             Properties.Resources.FSInteractiveWindow_16x,
-                            (s,a)=>Views.FormLog.GetForm() ),
+                            (s,a)=>Views.WinForms.FormLog.GetForm() ),
                         new ToolStripMenuItem(
                             I18N("Options"),
                             Properties.Resources.Settings_16x,
-                            (s,a)=>Views.FormOption.GetForm() ),
+                            (s,a)=>Views.WinForms.FormOption.GetForm() ),
                     }),
 
                 new ToolStripMenuItem(
@@ -182,7 +182,7 @@ namespace V2RayGCon.Service
                 new ToolStripMenuItem(
                     I18N("DownloadV2rayCore"),
                     Properties.Resources.ASX_TransferDownload_blue_16x,
-                    (s,a)=>Views.FormDownloadCore.GetForm()),
+                    (s,a)=>Views.WinForms.FormDownloadCore.GetForm()),
             });
 
             menu.Items.Add(new ToolStripSeparator());

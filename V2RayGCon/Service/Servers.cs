@@ -480,7 +480,7 @@ namespace V2RayGCon.Service
 
             if (allResults.Count > 0)
             {
-                new Views.FormImportLinksResult(allResults);
+                new Views.WinForms.FormImportLinksResult(allResults);
                 Application.Run();
             }
             else

@@ -71,7 +71,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitCtrlBatchOperation(ToolStripMenuItem stopSelected, ToolStripMenuItem restartSelected, ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem modifySelected, ToolStripMenuItem packSelected)
         {
             modifySelected.Click += GenSelectedServerHandler(
-                () => Views.FormBatchModifyServerSetting.GetForm());
+                () => Views.WinForms.FormBatchModifyServerSetting.GetForm());
 
             packSelected.Click += GenSelectedServerHandler(
                 () => servers.PackSelectedServers());

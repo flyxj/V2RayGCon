@@ -17,7 +17,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
         ToolStripDropDownButton tsdbtnPager;
         Lib.CancelableTimeout lazyStatusBarUpdateTimer = null;
-        Model.UserControls.WelcomeUI welcomeItem = null;
+        Views.UserControls.WelcomeUI welcomeItem = null;
         int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
         public FlyServer(
@@ -37,7 +37,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.tslbTotal = tslbTotal;
             this.tslbPrePage = tslbPrePage;
             this.tslbNextPage = tslbNextPage;
-            this.welcomeItem = new Model.UserControls.WelcomeUI();
+            this.welcomeItem = new Views.UserControls.WelcomeUI();
 
             InitFormControls();
             BindDragDropEvent();
@@ -329,11 +329,11 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             flyPanel.Controls.AddRange(
                 serverList
-                    .Select(s => new Model.UserControls.ServerUI(s))
+                    .Select(s => new Views.UserControls.ServerUI(s))
                     .ToArray());
         }
 
-        void DisposeFlyPanelControlByList(List<Model.UserControls.ServerUI> controlList)
+        void DisposeFlyPanelControlByList(List<Views.UserControls.ServerUI> controlList)
         {
             foreach (var control in controlList)
             {
@@ -363,9 +363,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
 
-        List<Model.UserControls.ServerUI> GetDeletedControlList(List<Controller.ServerCtrl> serverList)
+        List<Views.UserControls.ServerUI> GetDeletedControlList(List<Controller.ServerCtrl> serverList)
         {
-            var result = new List<Model.UserControls.ServerUI>();
+            var result = new List<Views.UserControls.ServerUI>();
 
             foreach (var control in GetAllServersControl())
             {
@@ -384,7 +384,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         void RemoveWelcomeItem()
         {
             var list = flyPanel.Controls
-                .OfType<Model.UserControls.WelcomeUI>()
+                .OfType<Views.UserControls.WelcomeUI>()
                 .Select(e =>
                 {
                     flyPanel.Controls.Remove(e);
@@ -393,10 +393,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList();
         }
 
-        void LoopThroughServerItemControls(Action<Model.UserControls.ServerUI> worker)
+        void LoopThroughServerItemControls(Action<Views.UserControls.ServerUI> worker)
         {
             var list = flyPanel.Controls
-                .OfType<Model.UserControls.ServerUI>()
+                .OfType<Views.UserControls.ServerUI>()
                 .Select(e =>
                 {
                     worker(e);
@@ -405,10 +405,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList();
         }
 
-        List<Model.UserControls.ServerUI> GetAllServersControl()
+        List<Views.UserControls.ServerUI> GetAllServersControl()
         {
             return flyPanel.Controls
-                .OfType<Model.UserControls.ServerUI>()
+                .OfType<Views.UserControls.ServerUI>()
                 .ToList();
         }
 
@@ -420,7 +420,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void LoadWelcomeItem()
         {
             var welcome = flyPanel.Controls
-                .OfType<Model.UserControls.WelcomeUI>()
+                .OfType<Views.UserControls.WelcomeUI>()
                 .FirstOrDefault();
 
             if (welcome == null)
@@ -452,8 +452,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var serverItemMoving = a.Data.GetData(typeof(Model.UserControls.ServerUI))
-                    as Model.UserControls.ServerUI;
+                var serverItemMoving = a.Data.GetData(typeof(Views.UserControls.ServerUI))
+                    as Views.UserControls.ServerUI;
 
                 if (serverItemMoving == null)
                 {
@@ -465,12 +465,12 @@ namespace V2RayGCon.Controller.FormMainComponent
                 var controlDest = panel.GetChildAtPoint(p);
                 int index = panel.Controls.GetChildIndex(controlDest, false);
                 panel.Controls.SetChildIndex(serverItemMoving, index);
-                var serverItemDest = controlDest as Model.UserControls.ServerUI;
+                var serverItemDest = controlDest as Views.UserControls.ServerUI;
                 MoveServerListItem(ref serverItemMoving, ref serverItemDest);
             };
         }
 
-        void MoveServerListItem(ref Model.UserControls.ServerUI moving, ref Model.UserControls.ServerUI destination)
+        void MoveServerListItem(ref Views.UserControls.ServerUI moving, ref Views.UserControls.ServerUI destination)
         {
             var indexDest = destination.GetIndex();
             var indexMoving = moving.GetIndex();
