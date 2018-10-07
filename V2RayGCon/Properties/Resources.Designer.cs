@@ -159,6 +159,16 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap GlyphUp_16x {
+            get {
+                object obj = ResourceManager.GetObject("GlyphUp_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Icon icon_dark {
@@ -212,6 +222,26 @@ namespace V2RayGCon.Properties {
         internal static System.Drawing.Bitmap StatusHelp_16x {
             get {
                 object obj = ResourceManager.GetObject("StatusHelp_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap StepBackArrow_16x {
+            get {
+                object obj = ResourceManager.GetObject("StepBackArrow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap StepOverArrow_16x {
+            get {
+                object obj = ResourceManager.GetObject("StepOverArrow_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

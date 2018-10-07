@@ -43,7 +43,6 @@
             this.cboxMark = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnIsCollapse = new System.Windows.Forms.Button();
-            this.imageListCollapse = new System.Windows.Forms.ImageList(this.components);
             this.lbIsAutorun = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnStop = new System.Windows.Forms.Button();
@@ -175,19 +174,10 @@
             // 
             resources.ApplyResources(this.btnIsCollapse, "btnIsCollapse");
             this.btnIsCollapse.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnIsCollapse.ImageList = this.imageListCollapse;
             this.btnIsCollapse.Name = "btnIsCollapse";
             this.toolTip1.SetToolTip(this.btnIsCollapse, resources.GetString("btnIsCollapse.ToolTip"));
             this.btnIsCollapse.UseVisualStyleBackColor = true;
             this.btnIsCollapse.Click += new System.EventHandler(this.btnIsCollapse_Click);
-            // 
-            // imageListCollapse
-            // 
-            this.imageListCollapse.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListCollapse.ImageStream")));
-            this.imageListCollapse.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListCollapse.Images.SetKeyName(0, "StepBackArrow_16x.png");
-            this.imageListCollapse.Images.SetKeyName(1, "GlyphUp_16x.png");
-            this.imageListCollapse.Images.SetKeyName(2, "StepOverArrow_16x.png");
             // 
             // lbIsAutorun
             // 
@@ -199,8 +189,8 @@
             // 
             // label1
             // 
-            this.label1.Cursor = System.Windows.Forms.Cursors.SizeAll;
             resources.ApplyResources(this.label1, "label1");
+            this.label1.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.label1.Name = "label1";
             this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
@@ -412,7 +402,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label lbIsAutorun;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSkipCNSite;
-        private System.Windows.Forms.ImageList imageListCollapse;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnMultiboxing;
     }

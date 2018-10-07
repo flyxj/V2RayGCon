@@ -402,6 +402,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
+    <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
+    <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />
+    <None Include="Resource\Icon\ServerUI\GlyphUp_16x.png" />
     <None Include="Resource\Icon\TaskTray\ExpandScope_16x.png" />
     <None Include="Resource\Icon\TaskTray\WindowsForm_16x.png" />
     <None Include="Resource\Icon\TaskTray\StatusHelp_16x.png" />

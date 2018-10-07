@@ -11,11 +11,18 @@ namespace V2RayGCon.Views.UserControls
         Controller.ServerCtrl serverItem;
         public bool isRunning;
         int[] formHeight;
+        Bitmap[] foldingButtonIcons;
 
         public ServerUI(Controller.ServerCtrl serverItem)
         {
             this.serverItem = serverItem;
             InitializeComponent();
+
+            this.foldingButtonIcons = new Bitmap[] {
+                Properties.Resources.StepBackArrow_16x,
+                Properties.Resources.GlyphUp_16x,
+                Properties.Resources.StepOverArrow_16x,
+            };
 
             this.formHeight = new int[] {
                 this.Height,  // collapseLevel= 0
@@ -117,9 +124,9 @@ namespace V2RayGCon.Views.UserControls
         {
             var level = Lib.Utils.Clamp(serverItem.collapseLevel, 0, 3);
 
-            if (btnIsCollapse.ImageIndex != level)
+            if (btnIsCollapse.BackgroundImage != foldingButtonIcons[level])
             {
-                btnIsCollapse.ImageIndex = level;
+                btnIsCollapse.BackgroundImage = foldingButtonIcons[level];
             }
 
             var newHeight = this.formHeight[level];
