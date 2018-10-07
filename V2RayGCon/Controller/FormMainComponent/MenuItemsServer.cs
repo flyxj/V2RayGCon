@@ -28,6 +28,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem semiFoldingPanel,
             ToolStripMenuItem expansePanel,
             ToolStripMenuItem sortBySpeed,
             ToolStripMenuItem sortBySummary)
@@ -36,7 +37,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             servers = Service.Servers.Instance;
 
             InitCtrlSorting(sortBySpeed, sortBySummary);
-            InitCtrlView(moveToTop, moveToBottom, collapsePanel, expansePanel);
+            InitCtrlView(moveToTop, moveToBottom, collapsePanel, semiFoldingPanel, expansePanel);
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlDelete(deleteSelected, deleteAllItems);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
@@ -166,16 +167,26 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        private void InitCtrlView(ToolStripMenuItem moveToTop, ToolStripMenuItem moveToBottom, ToolStripMenuItem collapsePanel, ToolStripMenuItem expansePanel)
+        private void InitCtrlView(
+            ToolStripMenuItem moveToTop,
+            ToolStripMenuItem moveToBottom,
+            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem semiFoldingPanel,
+            ToolStripMenuItem expansePanel)
         {
             expansePanel.Click += GenSelectedServerHandler(() =>
             {
-                SetServerItemPanelIsCollapseProperty(false);
+                SetServerItemPanelCollapseLevel(0);
+            });
+
+            semiFoldingPanel.Click += GenSelectedServerHandler(() =>
+            {
+                SetServerItemPanelCollapseLevel(1);
             });
 
             collapsePanel.Click += GenSelectedServerHandler(() =>
             {
-                SetServerItemPanelIsCollapseProperty(true);
+                SetServerItemPanelCollapseLevel(2);
             });
 
             moveToTop.Click += GenSelectedServerHandler(() =>
@@ -240,18 +251,16 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        void SetServerItemPanelIsCollapseProperty(bool isCollapse)
+        void SetServerItemPanelCollapseLevel(int collapseLevel)
         {
+            collapseLevel = Lib.Utils.Clamp(collapseLevel, 0, 3);
             servers
                 .GetServerList()
                 .Where(s => s.isSelected)
                 .Select(s =>
                 {
-                    if (s.isCollapse != isCollapse)
-                    {
-                        s.ToggleIsCollapse();
-                    }
-                    return s;
+                    s.SetPropertyOnDemand(ref s.collapseLevel, collapseLevel);
+                    return true;
                 })
                 .ToList(); // force linq to execute
         }

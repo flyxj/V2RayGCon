@@ -33,24 +33,25 @@
             this.lbServerTitle = new System.Windows.Forms.Label();
             this.lbStatus = new System.Windows.Forms.Label();
             this.cboxInbound = new System.Windows.Forms.ComboBox();
-            this.tboxInboundIP = new System.Windows.Forms.TextBox();
+            this.tboxInboundAddr = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnMenu = new System.Windows.Forms.Button();
             this.lbRunning = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tboxInboundPort = new System.Windows.Forms.TextBox();
             this.chkSelected = new System.Windows.Forms.CheckBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.cboxMark = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnIsCollapse = new System.Windows.Forms.Button();
+            this.imageListCollapse = new System.Windows.Forms.ImageList(this.components);
             this.lbIsAutorun = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnMultiboxing = new System.Windows.Forms.Button();
             this.ctxMenuStripMore = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemStart = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.multiboxingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemIsAutorun = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemIsInjectImport = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,25 +102,27 @@
             this.toolTip1.SetToolTip(this.cboxInbound, resources.GetString("cboxInbound.ToolTip"));
             this.cboxInbound.SelectedIndexChanged += new System.EventHandler(this.cboxInbound_SelectedIndexChanged);
             // 
-            // tboxInboundIP
+            // tboxInboundAddr
             // 
-            this.tboxInboundIP.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.tboxInboundIP, "tboxInboundIP");
-            this.tboxInboundIP.Name = "tboxInboundIP";
-            this.toolTip1.SetToolTip(this.tboxInboundIP, resources.GetString("tboxInboundIP.ToolTip"));
-            this.tboxInboundIP.TextChanged += new System.EventHandler(this.tboxInboundIP_TextChanged);
+            this.tboxInboundAddr.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.tboxInboundAddr, "tboxInboundAddr");
+            this.tboxInboundAddr.Name = "tboxInboundAddr";
+            this.toolTip1.SetToolTip(this.tboxInboundAddr, resources.GetString("tboxInboundAddr.ToolTip"));
+            this.tboxInboundAddr.TextChanged += new System.EventHandler(this.tboxInboundAddr_TextChanged);
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Cursor = System.Windows.Forms.Cursors.Default;
             this.label2.Name = "label2";
+            this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label2_MouseDown);
             // 
             // btnMenu
             // 
             this.btnMenu.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnMenu, "btnMenu");
             this.btnMenu.Name = "btnMenu";
+            this.toolTip1.SetToolTip(this.btnMenu, resources.GetString("btnMenu.ToolTip"));
             this.btnMenu.UseVisualStyleBackColor = true;
             this.btnMenu.Click += new System.EventHandler(this.btnAction_Click);
             // 
@@ -131,14 +134,6 @@
             this.lbRunning.Name = "lbRunning";
             this.toolTip1.SetToolTip(this.lbRunning, resources.GetString("lbRunning.ToolTip"));
             this.lbRunning.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbRunning_MouseDown);
-            // 
-            // tboxInboundPort
-            // 
-            this.tboxInboundPort.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.tboxInboundPort, "tboxInboundPort");
-            this.tboxInboundPort.Name = "tboxInboundPort";
-            this.toolTip1.SetToolTip(this.tboxInboundPort, resources.GetString("tboxInboundPort.ToolTip"));
-            this.tboxInboundPort.TextChanged += new System.EventHandler(this.tboxInboundPort_TextChanged);
             // 
             // chkSelected
             // 
@@ -180,10 +175,19 @@
             // 
             this.btnIsCollapse.Cursor = System.Windows.Forms.Cursors.Default;
             resources.ApplyResources(this.btnIsCollapse, "btnIsCollapse");
+            this.btnIsCollapse.ImageList = this.imageListCollapse;
             this.btnIsCollapse.Name = "btnIsCollapse";
             this.toolTip1.SetToolTip(this.btnIsCollapse, resources.GetString("btnIsCollapse.ToolTip"));
             this.btnIsCollapse.UseVisualStyleBackColor = true;
             this.btnIsCollapse.Click += new System.EventHandler(this.btnIsCollapse_Click);
+            // 
+            // imageListCollapse
+            // 
+            this.imageListCollapse.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListCollapse.ImageStream")));
+            this.imageListCollapse.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListCollapse.Images.SetKeyName(0, "StepBackArrow_16x.png");
+            this.imageListCollapse.Images.SetKeyName(1, "GlyphUp_16x.png");
+            this.imageListCollapse.Images.SetKeyName(2, "StepOverArrow_16x.png");
             // 
             // lbIsAutorun
             // 
@@ -191,6 +195,7 @@
             resources.ApplyResources(this.lbIsAutorun, "lbIsAutorun");
             this.lbIsAutorun.Name = "lbIsAutorun";
             this.toolTip1.SetToolTip(this.lbIsAutorun, resources.GetString("lbIsAutorun.ToolTip"));
+            this.lbIsAutorun.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbIsAutorun_MouseDown);
             // 
             // label1
             // 
@@ -200,19 +205,31 @@
             this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
             // 
-            // label3
+            // btnStop
             // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label3.Name = "label3";
+            this.btnStop.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnStop, "btnStop");
+            this.btnStop.Name = "btnStop";
+            this.toolTip1.SetToolTip(this.btnStop, resources.GetString("btnStop.ToolTip"));
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnMultiboxing
+            // 
+            this.btnMultiboxing.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.btnMultiboxing, "btnMultiboxing");
+            this.btnMultiboxing.Name = "btnMultiboxing";
+            this.toolTip1.SetToolTip(this.btnMultiboxing, resources.GetString("btnMultiboxing.ToolTip"));
+            this.btnMultiboxing.UseVisualStyleBackColor = true;
+            this.btnMultiboxing.Click += new System.EventHandler(this.btnMultiboxing_Click);
             // 
             // ctxMenuStripMore
             // 
             this.ctxMenuStripMore.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxMenuStripMore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemStart,
-            this.stopToolStripMenuItem,
             this.multiboxingToolStripMenuItem,
+            this.stopToolStripMenuItem,
             this.toolStripSeparator1,
             this.toolStripMenuItemIsAutorun,
             this.toolStripMenuItemIsInjectImport,
@@ -234,17 +251,17 @@
             resources.ApplyResources(this.toolStripMenuItemStart, "toolStripMenuItemStart");
             this.toolStripMenuItemStart.Click += new System.EventHandler(this.toolStripMenuItemStart_Click);
             // 
-            // stopToolStripMenuItem
-            // 
-            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            resources.ApplyResources(this.stopToolStripMenuItem, "stopToolStripMenuItem");
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
-            // 
             // multiboxingToolStripMenuItem
             // 
             this.multiboxingToolStripMenuItem.Name = "multiboxingToolStripMenuItem";
             resources.ApplyResources(this.multiboxingToolStripMenuItem, "multiboxingToolStripMenuItem");
             this.multiboxingToolStripMenuItem.Click += new System.EventHandler(this.multiboxingToolStripMenuItem_Click);
+            // 
+            // stopToolStripMenuItem
+            // 
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            resources.ApplyResources(this.stopToolStripMenuItem, "stopToolStripMenuItem");
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -329,29 +346,29 @@
             resources.ApplyResources(this.setAsSystemProxyToolStripMenuItem, "setAsSystemProxyToolStripMenuItem");
             this.setAsSystemProxyToolStripMenuItem.Click += new System.EventHandler(this.setAsSystemProxyToolStripMenuItem_Click);
             // 
-            // ServerListItem
+            // ServerUI
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.btnMultiboxing);
+            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lbIsAutorun);
             this.Controls.Add(this.btnIsCollapse);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboxMark);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.chkSelected);
-            this.Controls.Add(this.tboxInboundPort);
-            this.Controls.Add(this.tboxInboundIP);
+            this.Controls.Add(this.tboxInboundAddr);
             this.Controls.Add(this.btnMenu);
             this.Controls.Add(this.cboxInbound);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lbRunning);
             this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.lbServerTitle);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.Name = "ServerListItem";
+            this.Name = "ServerUI";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Load += new System.EventHandler(this.ServerListItem_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ServerListItem_MouseDown);
@@ -365,13 +382,11 @@
         private System.Windows.Forms.Label lbServerTitle;
         private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.ComboBox cboxInbound;
-        private System.Windows.Forms.TextBox tboxInboundIP;
+        private System.Windows.Forms.TextBox tboxInboundAddr;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnMenu;
         private System.Windows.Forms.Label lbRunning;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tboxInboundPort;
         private System.Windows.Forms.CheckBox chkSelected;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.ContextMenuStrip ctxMenuStripMore;
@@ -397,5 +412,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label lbIsAutorun;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSkipCNSite;
+        private System.Windows.Forms.ImageList imageListCollapse;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnMultiboxing;
     }
 }

@@ -10,16 +10,20 @@ namespace V2RayGCon.Views.UserControls
     {
         Controller.ServerCtrl serverItem;
         public bool isRunning;
-        int orgHeight, minHeight;
+        int[] formHeight;
 
         public ServerUI(Controller.ServerCtrl serverItem)
         {
             this.serverItem = serverItem;
             InitializeComponent();
-            this.orgHeight = this.Height;
-            this.minHeight = this.btnStart.Top;
+
+            this.formHeight = new int[] {
+                this.Height,  // collapseLevel= 0
+                this.lbStatus.Top,
+                this.cboxInbound.Top,
+            };
+
             isRunning = !serverItem.isServerOn;
-            this.Height = this.serverItem.isCollapse ? this.minHeight : this.orgHeight;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
@@ -48,12 +52,6 @@ namespace V2RayGCon.Views.UserControls
                     lbServerTitle, serverItem.GetTitle());
 
                 Lib.UI.UpdateControlOnDemand(
-                    tboxInboundIP, serverItem.inboundIP);
-
-                Lib.UI.UpdateControlOnDemand(
-                    tboxInboundPort, serverItem.inboundPort.ToString());
-
-                Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
 
                 Lib.UI.UpdateControlOnDemand(
@@ -68,13 +66,23 @@ namespace V2RayGCon.Views.UserControls
                     toolStripMenuItemIsAutorun,
                     serverItem.isAutoRun);
 
+                UpdateInboundAddrOndemand();
                 SetAICLable();
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
                 UpdateServerMark();
-                SetButtonCollapseText();
+                UpdateFormCollapseMode();
                 SetTitleToolTip();
             });
+        }
+
+        void UpdateInboundAddrOndemand()
+        {
+            var text = serverItem.inboundIP + ":" + serverItem.inboundPort.ToString();
+            if (tboxInboundAddr.Text != text)
+            {
+                tboxInboundAddr.Text = text;
+            }
         }
 
         private void SetTitleToolTip()
@@ -105,32 +113,20 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        void SetPanelIntoCollapseMode(bool isCollapse)
+        void UpdateFormCollapseMode()
         {
-            if (isCollapse && this.Height != minHeight)
+            var level = Lib.Utils.Clamp(serverItem.collapseLevel, 0, 3);
+
+            if (btnIsCollapse.ImageIndex != level)
             {
-                this.Height = minHeight;
-                return;
+                btnIsCollapse.ImageIndex = level;
             }
 
-            if (!isCollapse && this.Height != this.orgHeight)
+            var newHeight = this.formHeight[level];
+            if (this.Height != newHeight)
             {
-                this.Height = this.orgHeight;
+                this.Height = newHeight;
             }
-        }
-
-        void SetButtonCollapseText()
-        {
-            var isCollapse = serverItem.isCollapse;
-            var text = isCollapse ? "∨" : "∧";
-            SetPanelIntoCollapseMode(isCollapse);
-
-            if (btnIsCollapse.Text == text)
-            {
-                return;
-            }
-
-            btnIsCollapse.Text = text;
         }
 
         void UpdateServerMark()
@@ -171,9 +167,7 @@ namespace V2RayGCon.Views.UserControls
             }
 
             this.isRunning = isServerOn;
-
-            tboxInboundPort.ReadOnly = this.isRunning;
-            tboxInboundIP.ReadOnly = this.isRunning;
+            tboxInboundAddr.ReadOnly = this.isRunning;
 
             if (isServerOn)
             {
@@ -276,20 +270,11 @@ namespace V2RayGCon.Views.UserControls
             HighlightSelectedServerItem(chkSelected.Checked);
         }
 
-        private void tboxInboundIP_TextChanged(object sender, EventArgs e)
+        private void tboxInboundAddr_TextChanged(object sender, EventArgs e)
         {
-            serverItem.SetPropertyOnDemand(
-                ref serverItem.inboundIP,
-                tboxInboundIP.Text,
-                true);
-        }
-
-        private void tboxInboundPort_TextChanged(object sender, EventArgs e)
-        {
-            serverItem.SetPropertyOnDemand(
-                ref serverItem.inboundPort,
-                Lib.Utils.Str2Int(tboxInboundPort.Text),
-                true);
+            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+            serverItem.SetPropertyOnDemand(ref serverItem.inboundIP, ip, true);
+            serverItem.SetPropertyOnDemand(ref serverItem.inboundPort, port, true);
         }
 
         private void lbSummary_Click(object sender, EventArgs e)
@@ -367,9 +352,7 @@ namespace V2RayGCon.Views.UserControls
             }
 
             Service.Setting.Instance.SetSystemProxy(
-                string.Format("{0}:{1}",
-                this.tboxInboundIP.Text,
-                this.tboxInboundPort.Text));
+                this.tboxInboundAddr.Text);
 
             // issue #9
             MessageBox.Show(I18N("SetSysProxyDone"));
@@ -436,12 +419,31 @@ namespace V2RayGCon.Views.UserControls
             serverItem.ToggleIsInjectSkipCNSite();
         }
 
+        private void btnMultiboxing_Click(object sender, EventArgs e)
+        {
+            serverItem.RestartCoreThen();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            serverItem.StopCoreThen();
+        }
+
         private void btnIsCollapse_Click(object sender, EventArgs e)
         {
-            serverItem.ToggleIsCollapse();
+            var level = (serverItem.collapseLevel % 3 + 1) % 3;
+            serverItem.SetPropertyOnDemand(ref serverItem.collapseLevel, level);
+        }
+
+        private void label2_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
+        }
+
+        private void lbIsAutorun_MouseDown(object sender, MouseEventArgs e)
+        {
+            ServerListItem_MouseDown(this, e);
         }
         #endregion
-
-
     }
 }

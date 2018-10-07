@@ -80,7 +80,7 @@ namespace V2RayGCon.Views.WinForms
             bind(toolStripButtonSelectInverse, selectInvertToolStripMenuItem);
             bind(toolStripButtonSelectNone, selectNoneToolStripMenuItem);
 
-            bind(toolStripButtonCollapseSelected, toolStripMenuItemCollapsePanel);
+            bind(toolStripButtonCollapseSelected, toolStripMenuItemFoldingPanel);
             bind(toolStripButtonExpanSelected, toolStripMenuItemExpansePanel);
 
             bind(toolStripButtonRestartSelected, toolStripMenuItemRestartSelected);
@@ -147,7 +147,8 @@ namespace V2RayGCon.Views.WinForms
                 toolStripMenuItemPackSelectedServers,
                 toolStripMenuItemMoveToTop,
                 toolStripMenuItemMoveToBottom,
-                toolStripMenuItemCollapsePanel,
+                toolStripMenuItemFoldingPanel,
+                toolStripMenuItemSemiFoldingPanel,
                 toolStripMenuItemExpansePanel,
                 toolStripMenuItemSortBySpeedTest,
                 toolStripMenuItemSortBySummary));

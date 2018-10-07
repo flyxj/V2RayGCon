@@ -18,9 +18,9 @@ namespace V2RayGCon.Controller
             OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected, isCollapse, isInjectSkipCNSite;
+        public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite;
         public string name, summary, inboundIP, mark;
-        public int overwriteInboundType, inboundPort;
+        public int overwriteInboundType, inboundPort,collapseLevel;
         public double index;
 
 
@@ -34,7 +34,8 @@ namespace V2RayGCon.Controller
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
-            isCollapse = false;
+
+            collapseLevel = 0;
 
             mark = string.Empty;
             status = string.Empty;
@@ -222,12 +223,6 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public void ToggleIsCollapse()
-        {
-            this.isCollapse = !this.isCollapse;
-            InvokeEventOnPropertyChange();
-        }
-
         public void ToggleIsAutorun()
         {
             this.isAutoRun = !this.isAutoRun;
@@ -285,7 +280,8 @@ namespace V2RayGCon.Controller
                     UpdateSummary(JObject.Parse(configString));
                 }
 
-                this.status = string.Empty;
+                // update summary should not clear status
+                // this.status = string.Empty;
                 InvokeEventOnPropertyChange();
                 lambda?.Invoke();
             });
