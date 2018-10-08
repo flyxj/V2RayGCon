@@ -65,6 +65,9 @@
             this.speedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOfThisServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsSystemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pACBlackListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pACWhiteListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuStripMore.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -333,9 +336,30 @@
             // 
             // setAsSystemProxyToolStripMenuItem
             // 
+            this.setAsSystemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.globalProxyToolStripMenuItem,
+            this.pACBlackListToolStripMenuItem,
+            this.pACWhiteListToolStripMenuItem});
             this.setAsSystemProxyToolStripMenuItem.Name = "setAsSystemProxyToolStripMenuItem";
             resources.ApplyResources(this.setAsSystemProxyToolStripMenuItem, "setAsSystemProxyToolStripMenuItem");
-            this.setAsSystemProxyToolStripMenuItem.Click += new System.EventHandler(this.setAsSystemProxyToolStripMenuItem_Click);
+            // 
+            // globalProxyToolStripMenuItem
+            // 
+            this.globalProxyToolStripMenuItem.Name = "globalProxyToolStripMenuItem";
+            resources.ApplyResources(this.globalProxyToolStripMenuItem, "globalProxyToolStripMenuItem");
+            this.globalProxyToolStripMenuItem.Click += new System.EventHandler(this.globalProxyToolStripMenuItem_Click);
+            // 
+            // pACBlackListToolStripMenuItem
+            // 
+            this.pACBlackListToolStripMenuItem.Name = "pACBlackListToolStripMenuItem";
+            resources.ApplyResources(this.pACBlackListToolStripMenuItem, "pACBlackListToolStripMenuItem");
+            this.pACBlackListToolStripMenuItem.Click += new System.EventHandler(this.pACBlackListToolStripMenuItem_Click);
+            // 
+            // pACWhiteListToolStripMenuItem
+            // 
+            this.pACWhiteListToolStripMenuItem.Name = "pACWhiteListToolStripMenuItem";
+            resources.ApplyResources(this.pACWhiteListToolStripMenuItem, "pACWhiteListToolStripMenuItem");
+            this.pACWhiteListToolStripMenuItem.Click += new System.EventHandler(this.pACWhiteListToolStripMenuItem_Click);
             // 
             // ServerUI
             // 
@@ -405,5 +429,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSkipCNSite;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnMultiboxing;
+        private System.Windows.Forms.ToolStripMenuItem globalProxyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pACBlackListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pACWhiteListToolStripMenuItem;
     }
 }

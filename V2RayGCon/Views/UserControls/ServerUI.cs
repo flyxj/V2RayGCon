@@ -13,6 +13,7 @@ namespace V2RayGCon.Views.UserControls
         int[] formHeight;
         Bitmap[] foldingButtonIcons;
 
+
         public ServerUI(Controller.ServerCtrl serverItem)
         {
             this.serverItem = serverItem;
@@ -350,21 +351,6 @@ namespace V2RayGCon.Views.UserControls
             serverItem.ShowLogForm();
         }
 
-        private void setAsSystemProxyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
-            {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
-                return;
-            }
-
-            Service.Setting.Instance.SetSystemProxy(
-                this.tboxInboundAddr.Text);
-
-            // issue #9
-            MessageBox.Show(I18N("SetSysProxyDone"));
-        }
-
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             serverItem.StopCoreThen();
@@ -452,5 +438,48 @@ namespace V2RayGCon.Views.UserControls
             ServerListItem_MouseDown(this, e);
         }
         #endregion
+
+        private void globalProxyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            Service.Setting.Instance.SetSystemProxy(
+                this.tboxInboundAddr.Text);
+
+            // issue #9
+            MessageBox.Show(I18N("SetSysProxyDone"));
+        }
+
+        private void pACBlackListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetSysProxyToPACMode(false);
+        }
+
+        private void SetSysProxyToPACMode(bool isWhiteList)
+        {
+            var index = cboxInbound.SelectedIndex;
+            if (index == (int)Model.Data.Enum.ProxyTypes.Config)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
+            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+
+            Service.Setting.Instance.InvokeOnRequirePACServerStart();
+            var pacUrl = Service.PACServer.Instance.GetPacUrl(isWhiteList, isSocks, ip, port);
+            Service.Setting.Instance.SetSystemProxy(pacUrl);
+            Lib.UI.ShowMessageBoxDoneAsync();
+        }
+
+        private void pACWhiteListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetSysProxyToPACMode(true);
+        }
     }
 }

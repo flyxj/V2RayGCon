@@ -406,6 +406,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
+    <None Include="Resource\PAC\white_cidr.txt" />
+    <None Include="Resource\PAC\white.txt" />
+    <None Include="Resource\PAC\black.txt" />
+    <None Include="Resource\PAC\black_cidr.txt" />
     <Content Include="Resource\PAC\PacTemplateTail.txt" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />

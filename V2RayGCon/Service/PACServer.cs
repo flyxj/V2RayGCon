@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -12,10 +14,12 @@ namespace V2RayGCon.Service
         object webServerLock = new object();
         int port = 3000;
         Setting setting;
+        Dictionary<bool, string> pacCache = null;
 
         PACServer()
         {
             setting = Setting.Instance;
+            ClearCache();
             setting.OnRequirePACServerStart += StartPacServer;
             setting.OnRequirePACServerStop += StopPacServer;
         }
@@ -63,13 +67,22 @@ namespace V2RayGCon.Service
             }
         }
 
-        public string GetPacPrefix()
+        public string GetPacUrl(bool isWhiteList, bool isSocks, string ip, int port)
         {
             if (!isWebServRunning)
             {
                 return null;
             }
-            return GenPrefix(this.port);
+
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
+            return string.Format(
+                "{0}?&type={1}&proto={2}&ip={3}&port={4}&timeout={5}",
+                GenPrefix(this.port),
+                isWhiteList ? "whitelist" : "blacklist",
+                isSocks ? "socks" : "http",
+                ip,
+                port.ToString(),
+                Lib.Utils.RandomHex(16));
         }
 
         public void Cleanup()
@@ -81,6 +94,14 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        void ClearCache()
+        {
+            pacCache = new Dictionary<bool, string> {
+                { true,null },
+                { false,null },
+            };
+        }
+
         void StopPacServer(object sender, EventArgs args)
         {
             lock (webServerLock)
@@ -88,6 +109,7 @@ namespace V2RayGCon.Service
                 if (isWebServRunning)
                 {
                     webServer.Stop();
+                    ClearCache();
                     isWebServRunning = false;
                 }
             }
@@ -112,26 +134,53 @@ namespace V2RayGCon.Service
 
         string SendResponse(HttpListenerRequest request)
         {
-            // e.g. http://localhost:3001/pac/?&port=5678&ip=1.2.3.4&mode=socks/http&type=whitelist/blacklist&key=rnd
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             var query = request.QueryString;
-            var ip = query["ip"] ?? "127.0.0.1";
-            var port = query["port"] ?? "1080";
-            var isSocks = query["proto"] == "socks";
-            var listMode = query["type"] == "whitelist" ? "white" : "black";
-            return GenPacFile(listMode, isSocks, ip, port);
+            var isWhiteList = query["type"] == "whitelist";
+
+            return string.Format(
+                query["proto"] == "socks" ?
+                "var proxy = 'SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT', mode='{2}', {3}" :
+                "var proxy = 'PROXY {0}:{1}; DIRECT', mode='{2}', {3}",
+                query["ip"] ?? "127.0.0.1",
+                query["port"] ?? "1080",
+                isWhiteList ? "white" : "black",
+                GenPacBody(isWhiteList));
         }
 
-        string GenPacFile(string listMode, bool isSocks, string ip, string port)
+        string GenPacBody(bool isWhiteList)
         {
-            var headTpl = isSocks ?
-              "var proxy = 'SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT'" :
-              "var proxy = 'PROXY {0}:{1}; DIRECT'";
-            var head = string.Format(headTpl, ip, port);
-            var mode = ",mode = '" + listMode + "',domains={";
-            var cidrs = ": 1 },cidrs = [";
-            var tail = StrConst("PacTemplateTail");
+            if (pacCache[isWhiteList] != null)
+            {
+                return pacCache[isWhiteList];
+            }
 
-            return "hello";
+            var urlList = Lib.Utils.GetPacUrlList(isWhiteList);
+            var cidrList = Lib.Utils.GetPacCidrList(isWhiteList);
+            var cidrSimList = Lib.Utils.CompactCidrList(ref cidrList);
+
+            var pac = new StringBuilder("domains={");
+            foreach (var url in urlList)
+            {
+                pac.Append("'")
+                    .Append(url)
+                    .Append("':1,");
+            }
+            pac.Length--;
+            pac.Append(" },cidrs = [");
+            foreach (var cidr in cidrSimList)
+            {
+                pac.Append("[")
+                    .Append(cidr[0])
+                    .Append(",")
+                    .Append(cidr[1])
+                    .Append("],");
+            }
+            pac.Length--;
+            pac.Append(StrConst("PacTemplateTail"));
+
+            pacCache[isWhiteList] = pac.ToString();
+            return pacCache[isWhiteList];
         }
         #endregion
     }

@@ -39,7 +39,7 @@ namespace V2RayGCon.Test
 
             var o = listParser(org);
             var e = listParser(expect);
-            var result = Lib.Utils.CompactRangeArrayList(ref o);
+            var result = Lib.Utils.CompactCidrList(ref o);
 
             for (int i = 0; i < result.Count; i++)
             {
@@ -57,7 +57,7 @@ namespace V2RayGCon.Test
         [DataRow("0.0.0.0", 0)]
         public void IP2Int32Test(string address, long expect)
         {
-            Assert.AreEqual(expect, Lib.Utils.IP2Int32(address));
+            Assert.AreEqual(expect, Lib.Utils.IP2Long(address));
         }
 
         [DataTestMethod]

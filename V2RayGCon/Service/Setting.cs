@@ -228,8 +228,8 @@ namespace V2RayGCon.Service
 
             Lib.ProxySetter.SetProxy(link);
             curSysProxyUrl = link;
-            InvokeEventOnSysProxyChanged();
             InvokeOnRequirePACServerStart();
+            InvokeEventOnSysProxyChanged();
         }
 
         public void ClearSystemProxy()
@@ -244,8 +244,8 @@ namespace V2RayGCon.Service
         {
             if (!string.IsNullOrEmpty(curSysProxyUrl))
             {
-                Lib.ProxySetter.SetProxy(curSysProxyUrl);
                 InvokeOnRequirePACServerStart();
+                Lib.ProxySetter.SetProxy(curSysProxyUrl);
             }
         }
 

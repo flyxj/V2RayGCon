@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
@@ -41,6 +43,54 @@ namespace V2RayGCon.Controller.OptionComponent
         }
 
         #region public method
+        public void UpdateSystemProxy()
+        {
+            var curProxyUrl = setting.curSysProxyUrl;
+            if (string.IsNullOrEmpty(curProxyUrl)
+                || !curProxyUrl.Contains("?"))
+            {
+                // do not need to update
+                return;
+            }
+
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+            Uri uri = new Uri(curProxyUrl);
+            var arguments = uri.Query
+                .Substring(1) // Remove '?'
+                .Split('&')
+                .Select(q => q.Split('='))
+                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+
+            if (arguments == null)
+            {
+                return;
+            }
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
+
+            arguments.TryGetValue("ip", out string ip);
+            arguments.TryGetValue("port", out string port);
+            arguments.TryGetValue("type", out string type);
+            arguments.TryGetValue("proto", out string proto);
+
+            if (string.IsNullOrEmpty(ip) 
+                || string.IsNullOrEmpty(port)
+                || string.IsNullOrEmpty(type)
+                || string.IsNullOrEmpty(proto))
+            {
+                return;
+            }
+
+            bool isWhiteList = type == "whitelist";
+            var newProxyUrl = pacServer.GetPacUrl(
+                type == "whitelist",
+                proto == "socks",
+                ip,
+                Lib.Utils.Str2Int(port));
+
+            setting.SetSystemProxy(newProxyUrl);
+        }
+
+
         public override bool SaveOptions()
         {
             if (!IsOptionsChanged())
@@ -61,6 +111,7 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 pacServer.RestartPacServer();
             }
+            UpdateSystemProxy();
             return true;
         }
 

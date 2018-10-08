@@ -22,19 +22,41 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region pac
-
-        public static List<long[]> CompactRangeArrayList(ref List<long[]> rangeList)
+        public static List<string> GetPacUrlList(bool isWhiteList)
         {
-            if (rangeList == null || rangeList.Count <= 0)
+            return StrConst(isWhiteList ? "white" : "black")
+                .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+        }
+
+        public static List<long[]> GetPacCidrList(bool isWhiteList)
+        {
+            var result = new List<long[]>();
+            foreach (var item in
+                StrConst(isWhiteList ? "white_cidr" : "black_cidr").Split(
+                    new char[] { '\n', '\r' },
+                    StringSplitOptions.RemoveEmptyEntries))
+            {
+                var cidr = item.Split('/');
+                var begin = IP2Long(cidr[0]);
+                var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
+                result.Add(new long[] { begin, end });
+            }
+            return result;
+        }
+
+        public static List<long[]> CompactCidrList(ref List<long[]> cidrList)
+        {
+            if (cidrList == null || cidrList.Count <= 0)
             {
                 throw new System.ArgumentException("Range list is empty!");
             }
 
-            rangeList.Sort((a, b) => a[0].CompareTo(b[0]));
+            cidrList.Sort((a, b) => a[0].CompareTo(b[0]));
 
             var result = new List<long[]>();
-            var curRange = rangeList[0];
-            foreach (var range in rangeList)
+            var curRange = cidrList[0];
+            foreach (var range in cidrList)
             {
                 if (range.Length != 2)
                 {
@@ -60,7 +82,7 @@ namespace V2RayGCon.Lib
             return result;
         }
 
-        public static long IP2Int32(string ip)
+        public static long IP2Long(string ip)
         {
             var c = ip.Split('.')
                 .Select(el => (long)Str2Int(el))
