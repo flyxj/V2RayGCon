@@ -76,9 +76,9 @@ namespace V2RayGCon.Views.WinForms
                 button.Click += (s, a) => menu.PerformClick();
             }
 
-            bind(toolStripButtonSelectAll, selectAllToolStripMenuItem);
-            bind(toolStripButtonSelectInverse, selectInvertToolStripMenuItem);
-            bind(toolStripButtonSelectNone, selectNoneToolStripMenuItem);
+            bind(toolStripButtonSelectAllCurPage, selectAllCurPageToolStripMenuItem);
+            bind(toolStripButtonInverseSelectionCurPage, invertSelectionCurPageToolStripMenuItem);
+            bind(toolStripButtonSelectNoneCurPage, selectNoneCurPageToolStripMenuItem1);
 
             bind(toolStripButtonCollapseSelected, toolStripMenuItemFoldingPanel);
             bind(toolStripButtonExpanSelected, toolStripMenuItemExpansePanel);
@@ -99,6 +99,7 @@ namespace V2RayGCon.Views.WinForms
 
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
                 flyServerListContainer,
+                toolStripLabelMarkFilter,
                 toolStripComboBoxMarkFilter,
                 toolStripStatusLabelTotal,
                 toolStripDropDownButtonPager,
@@ -120,17 +121,63 @@ namespace V2RayGCon.Views.WinForms
                 toolStripMenuItemDownLoadV2rayCore,
                 toolStripMenuItemRemoveV2rayCore));
 
+
+
+
+
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsSelect(
-                selectAllToolStripMenuItem,
-                selectNoneToolStripMenuItem,
-                selectInvertToolStripMenuItem,
-                selectAutorunToolStripMenuItem,
-                selectRunningToolStripMenuItem,
-                selectTimeoutToolStripMenuItem,
-                selectNoSpeedTestToolStripMenuItem,
-                SelectNoMarkToolStripMenuItem,
-                clearAllSelectionToolStripMenuItem,
-                selectAllServersToolStripMenuItem));
+                /*
+                ToolStripMenuItem selectAllCurPage,
+                ToolStripMenuItem invertSelectionCurPage,
+                ToolStripMenuItem selectNoneCurPage,
+                */
+                selectAllCurPageToolStripMenuItem,
+                invertSelectionCurPageToolStripMenuItem,
+                selectNoneCurPageToolStripMenuItem1,
+
+                /*
+                ToolStripMenuItem selectAllAllPages,
+                ToolStripMenuItem invertSelectionAllPages,
+                ToolStripMenuItem selectNoneAllPages,       
+                */
+                selectAllAllPagesToolStripMenuItem,
+                invertSelectionAllPagesToolStripMenuItem,
+                selectNoneAllPagesToolStripMenuItem,
+
+                /*
+                ToolStripMenuItem selectAutorunAllPages,
+                ToolStripMenuItem selectNoMarkAllPages,
+                ToolStripMenuItem selectNoSpeedTestAllPages,
+                ToolStripMenuItem selectRunningAllPages,
+                ToolStripMenuItem selectTimeoutAllPages,          
+                */
+                selectAutorunAllPagesToolStripMenuItem,
+                selectNoMarkAllPagesToolStripMenuItem,
+                selectNoSpeedTestAllPagesToolStripMenuItem,
+                selectRunningAllPagesToolStripMenuItem,
+                selectTimeoutAllPagesToolStripMenuItem,
+
+                /*
+                ToolStripMenuItem selectAllAllServers,
+                ToolStripMenuItem invertSelectionAllServers,
+                ToolStripMenuItem selectNoneAllServers,
+                */
+                selectAllAllServersToolStripMenuItem,
+                invertSelectionAllServersToolStripMenuItem,
+                selectNoneAllServersToolStripMenuItem,
+
+                /*
+                ToolStripMenuItem selectAutorunAllServers,
+                ToolStripMenuItem selectNoMarkAllServers,
+                ToolStripMenuItem selectNoSpeedTestAllServers,
+                ToolStripMenuItem selectRunningAllServers,
+                ToolStripMenuItem selectTimeoutAllServers
+                */
+                selectAutorunAllServersToolStripMenuItem,
+                selectNoMarkAllServersToolStripMenuItem,
+                selectNoSpeedTestAllServersToolStripMenuItem,
+                selectRunningAllServersToolStripMenuItem,
+                selectTimeoutAllServersToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,

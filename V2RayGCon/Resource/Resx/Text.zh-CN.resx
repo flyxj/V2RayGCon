@@ -574,6 +574,6 @@ https://github.com/v2ray/v2ray-core</value>
     <value>第{0}/{1}页</value>
   </data>
   <data name="StatusBarServerCountTpl" xml:space="preserve">
-    <value>共有{0}个服务器</value>
+    <value>共{0}/{1}个服务器</value>
   </data>
 </root>

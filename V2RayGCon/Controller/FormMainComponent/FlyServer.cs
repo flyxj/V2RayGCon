@@ -22,6 +22,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public FlyServer(
             FlowLayoutPanel panel,
+            ToolStripLabel lbMarkFilter,
             ToolStripComboBox cboxMarkeFilter,
             ToolStripStatusLabel tslbTotal,
             ToolStripDropDownButton tsdbtnPager,
@@ -39,7 +40,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.tslbNextPage = tslbNextPage;
             this.welcomeItem = new Views.UserControls.WelcomeUI();
 
-            InitFormControls();
+            InitFormControls(lbMarkFilter);
             BindDragDropEvent();
             RefreshUI();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
@@ -48,19 +49,39 @@ namespace V2RayGCon.Controller.FormMainComponent
 
 
         #region public method
-        public void SelectAll()
+        public List<Controller.ServerCtrl> GetFilteredList()
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(true));
+            var list = servers.GetServerList();
+            var keywords = (searchKeywords ?? "").Split(
+                new char[] { ' ', ',' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            if (keywords.Length < 1)
+            {
+                return list.ToList();
+            }
+
+            return list
+                .Where(
+                    e => keywords.All(
+                        k => e.GetSearchTextList().Any(
+                            s => Lib.Utils.PartialMatch(s, k))))
+                .ToList();
         }
 
-        public void SelectNone()
+        public void LoopThroughAllServerUI(Action<Views.UserControls.ServerUI> operation)
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(false));
-        }
-
-        public void SelectInvert()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(!s.isSelected));
+            var list = flyPanel.Controls
+                .OfType<Views.UserControls.ServerUI>()
+                .Select(e =>
+                {
+                    flyPanel?.Invoke((MethodInvoker)delegate
+                    {
+                        operation(e);
+                    });
+                    return true;
+                })
+                .ToList();
         }
 
         public override void Cleanup()
@@ -165,6 +186,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             var text = string.Format(
                 I18N("StatusBarServerCountTpl"),
+                    GetFilteredList().Count,
                     servers.GetTotalServerCount())
                 + " "
                 + string.Format(
@@ -261,7 +283,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             lazyShowSearchResultTimer.Start();
         }
 
-        private void InitFormControls()
+        private void InitFormControls(ToolStripLabel lbMarkFilter)
         {
             InitComboBoxMarkFilter();
             tslbPrePage.Click += (s, a) =>
@@ -275,6 +297,9 @@ namespace V2RayGCon.Controller.FormMainComponent
                 paging[0]++;
                 RefreshUI();
             };
+
+            lbMarkFilter.Click +=
+                (s, a) => this.cboxMarkFilter.Text = string.Empty;
         }
 
         private void InitComboBoxMarkFilter()
@@ -296,26 +321,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 this.searchKeywords = cboxMarkFilter.Text;
                 LazyShowSearchResult();
             };
-        }
-
-        List<Controller.ServerCtrl> GetFilteredList()
-        {
-            var list = servers.GetServerList();
-            var keywords = (searchKeywords ?? "").Split(
-                new char[] { ' ', ',' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            if (keywords.Length < 1)
-            {
-                return list.ToList();
-            }
-
-            return list
-                .Where(
-                    e => keywords.All(
-                        k => e.GetSearchTextList().Any(
-                            s => Lib.Utils.PartialMatch(s, k))))
-                .ToList();
         }
 
         void UpdateMarkFilterItemList(ToolStripComboBox marker)
@@ -388,18 +393,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .Select(e =>
                 {
                     flyPanel.Controls.Remove(e);
-                    return true;
-                })
-                .ToList();
-        }
-
-        void LoopThroughServerItemControls(Action<Views.UserControls.ServerUI> worker)
-        {
-            var list = flyPanel.Controls
-                .OfType<Views.UserControls.ServerUI>()
-                .Select(e =>
-                {
-                    worker(e);
                     return true;
                 })
                 .ToList();

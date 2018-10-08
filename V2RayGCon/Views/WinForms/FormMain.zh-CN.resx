@@ -135,14 +135,14 @@
   <data name="toolStripContainer2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="toolStripButtonSelectAll.ToolTipText" xml:space="preserve">
-    <value>全选</value>
+  <data name="toolStripButtonSelectAllCurPage.ToolTipText" xml:space="preserve">
+    <value>全选当前分页</value>
   </data>
-  <data name="toolStripButtonSelectInverse.ToolTipText" xml:space="preserve">
-    <value>反选</value>
+  <data name="toolStripButtonInverseSelectionCurPage.ToolTipText" xml:space="preserve">
+    <value>反选当前分页</value>
   </data>
-  <data name="toolStripButtonSelectNone.ToolTipText" xml:space="preserve">
-    <value>消除选择</value>
+  <data name="toolStripButtonSelectNoneCurPage.ToolTipText" xml:space="preserve">
+    <value>消除当前分页选中状态</value>
   </data>
   <data name="toolStripButtonCollapseSelected.ToolTipText" xml:space="preserve">
     <value>折叠选中</value>
@@ -168,8 +168,8 @@
   <data name="toolStripButtonFormOption.ToolTipText" xml:space="preserve">
     <value>选项</value>
   </data>
-  <data name="toolStripLabel2.ToolTipText" xml:space="preserve">
-    <value>过滤服务器列表</value>
+  <data name="toolStripLabelMarkFilter.ToolTipText" xml:space="preserve">
+    <value>过滤服务器列表，点击清除过滤参数</value>
   </data>
   <data name="toolStrip1.ToolTip" xml:space="preserve">
     <value />
@@ -195,65 +195,80 @@
   <data name="operationToolStripMenuItem.Text" xml:space="preserve">
     <value>文件</value>
   </data>
-  <data name="selectAllToolStripMenuItem.Text" xml:space="preserve">
+  <data name="selectAllCurPageToolStripMenuItem.Text" xml:space="preserve">
     <value>全选</value>
   </data>
-  <data name="selectAllToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中全部可见服务器</value>
-  </data>
-  <data name="selectNoneToolStripMenuItem.Text" xml:space="preserve">
-    <value>取消选择</value>
-  </data>
-  <data name="selectNoneToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>清空选择</value>
-  </data>
-  <data name="selectInvertToolStripMenuItem.Text" xml:space="preserve">
+  <data name="invertSelectionCurPageToolStripMenuItem.Text" xml:space="preserve">
     <value>反选</value>
   </data>
-  <data name="selectInvertToolStripMenuItem.ToolTipText" xml:space="preserve">
+  <data name="selectNoneCurPageToolStripMenuItem1.Text" xml:space="preserve">
+    <value>清除选择</value>
+  </data>
+  <data name="currentPageToolStripMenuItem.Text" xml:space="preserve">
+    <value>当前页面</value>
+  </data>
+  <data name="currentPageToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>仅对当前分页有效</value>
+  </data>
+  <data name="selectAllAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="invertSelectionAllPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>反选</value>
   </data>
-  <data name="clearAllSelectionToolStripMenuItem.Text" xml:space="preserve">
-    <value>取消所有选中</value>
+  <data name="selectNoneAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>消除选择</value>
   </data>
-  <data name="clearAllSelectionToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>取消所有选中，包括不在本页的项</value>
-  </data>
-  <data name="selectAllServersToolStripMenuItem.Text" xml:space="preserve">
-    <value>选中全部服务器</value>
-  </data>
-  <data name="selectAllServersToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中全部（包括不在本页）的服务器</value>
-  </data>
-  <data name="selectAutorunToolStripMenuItem.Text" xml:space="preserve">
-    <value>选中自启动</value>
-  </data>
-  <data name="selectAutorunToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中勾了自启动的服务器</value>
-  </data>
-  <data name="selectRunningToolStripMenuItem.Text" xml:space="preserve">
-    <value>选中运行中</value>
-  </data>
-  <data name="selectRunningToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中正在运行的服务器</value>
-  </data>
-  <data name="selectTimeoutToolStripMenuItem.Text" xml:space="preserve">
-    <value>选中超时</value>
-  </data>
-  <data name="selectTimeoutToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中测速超时的服务器</value>
-  </data>
-  <data name="selectNoSpeedTestToolStripMenuItem.Text" xml:space="preserve">
+  <data name="selectNoSpeedTestAllPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>选中未测速</value>
   </data>
-  <data name="selectNoSpeedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中未进行速度测试的服务器</value>
+  <data name="selectTimeoutAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中测速超时</value>
   </data>
-  <data name="SelectNoMarkToolStripMenuItem.Text" xml:space="preserve">
+  <data name="selectNoMarkAllPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>选中未标记</value>
   </data>
-  <data name="SelectNoMarkToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>选中未设置标记的服务器</value>
+  <data name="selectAutorunAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中自启动</value>
+  </data>
+  <data name="selectRunningAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中运行中</value>
+  </data>
+  <data name="allPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>全部页面</value>
+  </data>
+  <data name="allPagesToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>对全部分页有效</value>
+  </data>
+  <data name="selectAllAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="invertSelectionAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>反选</value>
+  </data>
+  <data name="selectNoneAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>消除选择</value>
+  </data>
+  <data name="selectNoSpeedTestAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中未测速</value>
+  </data>
+  <data name="selectTimeoutAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中测速超时</value>
+  </data>
+  <data name="selectNoMarkAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中未标记</value>
+  </data>
+  <data name="selectAutorunAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中自启动</value>
+  </data>
+  <data name="selectRunningAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中运行中</value>
+  </data>
+  <data name="allServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>全部服务器</value>
+  </data>
+  <data name="allServersToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>对全部服务器有效</value>
   </data>
   <data name="selectToolStripMenuItem.Text" xml:space="preserve">
     <value>选择</value>

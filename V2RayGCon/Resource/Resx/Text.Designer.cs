@@ -1201,7 +1201,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Total {0} server(s). 的本地化字符串。
+        ///   查找类似 Total {0} of {1} server(s). 的本地化字符串。
         /// </summary>
         internal static string StatusBarServerCountTpl {
             get {
