@@ -406,6 +406,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
+    <Content Include="Resource\PAC\PacTemplateTail.txt" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\GlyphUp_16x.png" />
