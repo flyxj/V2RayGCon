@@ -13,6 +13,66 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow("11,22 2,5 3,4 7,8 1,2 6,6", "1,8 11,22")]
+        [DataRow("11,22 2,5 3,4 7,8 1,2", "1,5 7,8 11,22")]
+        [DataRow("1,2 3,4 1,1 1,2", "1,4")]
+        public void CompactRangeArrayListTest(string org, string expect)
+        {
+            long[] rangeParser(string rangeArray)
+            {
+                var v = rangeArray.Split(',');
+                return new long[] {
+                    (long)Lib.Utils.Str2Int(v[0]),
+                    (long)Lib.Utils.Str2Int(v[1]),
+                };
+            }
+
+            List<long[]> listParser(string listString)
+            {
+                var r = new List<long[]>();
+                foreach (var item in listString.Split(' '))
+                {
+                    r.Add(rangeParser(item));
+                }
+                return r;
+            }
+
+            var o = listParser(org);
+            var e = listParser(expect);
+            var result = Lib.Utils.CompactRangeArrayList(ref o);
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (result[i][0] != e[i][0] || result[i][1] != e[i][1])
+                {
+                    Assert.Fail();
+                }
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("172.316.254.1", 2906455553)] // becareful not a valid ip
+        [DataRow("0.254.255.0", 16711424)]
+        [DataRow("127.0.0.1", 2130706433)]
+        [DataRow("0.0.0.0", 0)]
+        public void IP2Int32Test(string address, long expect)
+        {
+            Assert.AreEqual(expect, Lib.Utils.IP2Int32(address));
+        }
+
+        [DataTestMethod]
+        [DataRow("172.316.254.1", false)]
+        [DataRow("0.254.255.0", true)]
+        [DataRow("192.168.1.15_1", false)]
+        [DataRow("127.0.0.1", true)]
+        [DataRow("0.0.0.", false)]
+        [DataRow("0.0.0.0", true)]
+        public void IsIPTest(string address, bool expect)
+        {
+            Assert.AreEqual(expect, Lib.Utils.IsIP(address));
+        }
+
+        [DataTestMethod]
         [DataRow("EvABk文,tv字vvc", "字文", false)]
         [DataRow("EvABk文,tv字vvc", "ab字", true)]
         [DataRow("ab vvvc", "bc", true)]

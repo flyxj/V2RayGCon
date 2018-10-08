@@ -45,16 +45,33 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cboxSettingLanguage = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPagePAC = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rtboxPacServBlackList = new System.Windows.Forms.RichTextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rtboxPacServWhiteList = new System.Windows.Forms.RichTextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cboxPacServIsAutorun = new System.Windows.Forms.CheckBox();
+            this.tboxPacServPort = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnOptionSave = new System.Windows.Forms.Button();
             this.btnBakRestore = new System.Windows.Forms.Button();
             this.btnOptionExit = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
             this.tabPageSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPagePAC.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -63,6 +80,7 @@
             this.tabControl1.Controls.Add(this.tabPageImport);
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
             this.tabControl1.Controls.Add(this.tabPageSetting);
+            this.tabControl1.Controls.Add(this.tabPagePAC);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -175,6 +193,63 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // tabPagePAC
+            // 
+            this.tabPagePAC.Controls.Add(this.panel1);
+            this.tabPagePAC.Controls.Add(this.groupBox2);
+            resources.ApplyResources(this.tabPagePAC, "tabPagePAC");
+            this.tabPagePAC.Name = "tabPagePAC";
+            this.tabPagePAC.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            resources.ApplyResources(this.groupBox4, "groupBox4");
+            this.groupBox4.Controls.Add(this.rtboxPacServBlackList);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.TabStop = false;
+            // 
+            // rtboxPacServBlackList
+            // 
+            resources.ApplyResources(this.rtboxPacServBlackList, "rtboxPacServBlackList");
+            this.rtboxPacServBlackList.Name = "rtboxPacServBlackList";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rtboxPacServWhiteList);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.TabStop = false;
+            // 
+            // rtboxPacServWhiteList
+            // 
+            resources.ApplyResources(this.rtboxPacServWhiteList, "rtboxPacServWhiteList");
+            this.rtboxPacServWhiteList.Name = "rtboxPacServWhiteList";
+            // 
+            // groupBox2
+            // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.cboxPacServIsAutorun);
+            this.groupBox2.Controls.Add(this.tboxPacServPort);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            // 
+            // cboxPacServIsAutorun
+            // 
+            resources.ApplyResources(this.cboxPacServIsAutorun, "cboxPacServIsAutorun");
+            this.cboxPacServIsAutorun.Name = "cboxPacServIsAutorun";
+            this.cboxPacServIsAutorun.UseVisualStyleBackColor = true;
+            // 
+            // tboxPacServPort
+            // 
+            resources.ApplyResources(this.tboxPacServPort, "tboxPacServPort");
+            this.tboxPacServPort.Name = "tboxPacServPort";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
             // btnBakBackup
             // 
             resources.ApplyResources(this.btnBakBackup, "btnBakBackup");
@@ -206,6 +281,19 @@
             this.btnOptionExit.UseVisualStyleBackColor = true;
             this.btnOptionExit.Click += new System.EventHandler(this.btnOptionExit_Click);
             // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox4, 1, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            this.panel1.Name = "panel1";
+            // 
             // FormOption
             // 
             resources.ApplyResources(this, "$this");
@@ -223,6 +311,13 @@
             this.tabPageSetting.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPagePAC.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -249,5 +344,16 @@
         private System.Windows.Forms.ComboBox cboxSettingPageSize;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabPage tabPagePAC;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RichTextBox rtboxPacServBlackList;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RichTextBox rtboxPacServWhiteList;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox cboxPacServIsAutorun;
+        private System.Windows.Forms.TextBox tboxPacServPort;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
     }
 }

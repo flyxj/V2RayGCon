@@ -142,5 +142,17 @@ namespace V2RayGCon.Properties {
                 this["ServerPanelPageSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PacServerSettings {
+            get {
+                return ((string)(this["PacServerSettings"]));
+            }
+            set {
+                this["PacServerSettings"] = value;
+            }
+        }
     }
 }

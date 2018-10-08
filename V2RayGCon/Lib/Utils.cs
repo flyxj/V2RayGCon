@@ -21,6 +21,66 @@ namespace V2RayGCon.Lib
     {
         public static Service.Cache cache = Service.Cache.Instance;
 
+        #region pac
+
+        public static List<long[]> CompactRangeArrayList(ref List<long[]> rangeList)
+        {
+            if (rangeList == null || rangeList.Count <= 0)
+            {
+                throw new System.ArgumentException("Range list is empty!");
+            }
+
+            rangeList.Sort((a, b) => a[0].CompareTo(b[0]));
+
+            var result = new List<long[]>();
+            var curRange = rangeList[0];
+            foreach (var range in rangeList)
+            {
+                if (range.Length != 2)
+                {
+                    throw new System.ArgumentException("Range must have 2 number.");
+                }
+
+                if (range[0] > range[1])
+                {
+                    throw new ArgumentException("range[0] > range[1]. ");
+                }
+
+                if (range[0] <= curRange[1] + 1)
+                {
+                    curRange[1] = Math.Max(range[1], curRange[1]);
+                }
+                else
+                {
+                    result.Add(curRange);
+                    curRange = range;
+                }
+            }
+            result.Add(curRange);
+            return result;
+        }
+
+        public static long IP2Int32(string ip)
+        {
+            var c = ip.Split('.')
+                .Select(el => (long)Str2Int(el))
+                .ToList();
+
+            if (c.Count < 4)
+            {
+                throw new System.ArgumentException("Not a valid ip.");
+            }
+
+            return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3];
+        }
+
+        public static bool IsIP(string address)
+        {
+            return Regex.IsMatch(address, @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+        }
+
+        #endregion
+
         #region Json
         public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
         {

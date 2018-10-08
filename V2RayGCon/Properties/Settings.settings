@@ -32,5 +32,8 @@
     <Setting Name="ServerPanelPageSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">99</Value>
     </Setting>
+    <Setting Name="PacServerSettings" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

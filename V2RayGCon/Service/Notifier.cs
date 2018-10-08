@@ -11,6 +11,7 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
+        PACServer pacServer;
 
         Notifier()
         {
@@ -19,6 +20,15 @@ namespace V2RayGCon.Service
 
             CreateNotifyIcon();
             Lib.Utils.SupportProtocolTLS12();
+
+            // pacserver should start before set proxy
+            pacServer = Service.PACServer.Instance;
+            var pacSetting = setting.GetPacServerSettings();
+            if (pacSetting.isAutorun)
+            {
+                pacServer.RestartPacServer();
+            }
+
             setting.SaveOriginalSystemProxyInfo();
             setting.LoadSystemProxy();
             setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
@@ -213,6 +223,7 @@ namespace V2RayGCon.Service
             servers.SaveServerListImmediately();
             servers.DisposeLazyTimers();
             setting.RestoreOriginalSystemProxyInfo();
+            pacServer.Cleanup();
 
             AutoResetEvent sayGoodbye = new AutoResetEvent(false);
             servers.StopAllServersThen(() => sayGoodbye.Set());

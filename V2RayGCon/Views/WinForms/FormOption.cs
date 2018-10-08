@@ -75,6 +75,13 @@ namespace V2RayGCon.Views.WinForms
                     cboxSettingLanguage,
                     cboxSettingPageSize));
 
+            ctrl.Plug(
+                new Controller.OptionComponent.PacServer(
+                    tboxPacServPort,
+                    cboxPacServIsAutorun,
+                    rtboxPacServWhiteList,
+                    rtboxPacServBlackList));
+
             return ctrl;
         }
 

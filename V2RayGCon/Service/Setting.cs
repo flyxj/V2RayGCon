@@ -15,7 +15,10 @@ namespace V2RayGCon.Service
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
-        public event EventHandler OnSysProxyChanged;
+        public event EventHandler
+            OnSysProxyChanged,
+            OnRequirePACServerStart,
+            OnRequirePACServerStop;
 
         #region Properties
         public int serverPanelPageSize
@@ -30,6 +33,16 @@ namespace V2RayGCon.Service
                     Lib.Utils.Clamp(value, 1, 101);
                 Properties.Settings.Default.Save();
             }
+        }
+
+        public void InvokeOnRequirePACServerStart()
+        {
+            OnRequirePACServerStart?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void InvokeOnRequirePACServerStop()
+        {
+            OnRequirePACServerStop?.Invoke(this, EventArgs.Empty);
         }
 
         public CultureInfo orgCulture = null;
@@ -141,6 +154,31 @@ namespace V2RayGCon.Service
             }
         }
 
+        public void SavePacServerSettings(Model.Data.PacServerSettings pacSetting)
+        {
+            Properties.Settings.Default.PacServerSettings =
+                JsonConvert.SerializeObject(pacSetting);
+            Properties.Settings.Default.Save();
+        }
+
+        public Model.Data.PacServerSettings GetPacServerSettings()
+        {
+            Model.Data.PacServerSettings result = null;
+
+            var empty = new Model.Data.PacServerSettings();
+            try
+            {
+                result = JsonConvert.DeserializeObject<Model.Data.PacServerSettings>(
+                    Properties.Settings.Default.PacServerSettings);
+            }
+            catch
+            {
+                return empty;
+            }
+
+            return result ?? empty;
+        }
+
         public List<Controller.ServerCtrl> LoadServerList()
         {
             var empty = new List<Controller.ServerCtrl>();
@@ -191,6 +229,7 @@ namespace V2RayGCon.Service
             Lib.ProxySetter.SetProxy(link);
             curSysProxyUrl = link;
             InvokeEventOnSysProxyChanged();
+            InvokeOnRequirePACServerStart();
         }
 
         public void ClearSystemProxy()
@@ -198,6 +237,7 @@ namespace V2RayGCon.Service
             curSysProxyUrl = string.Empty;
             Lib.ProxySetter.ClearProxy();
             InvokeEventOnSysProxyChanged();
+            InvokeOnRequirePACServerStop();
         }
 
         public void LoadSystemProxy()
@@ -205,6 +245,7 @@ namespace V2RayGCon.Service
             if (!string.IsNullOrEmpty(curSysProxyUrl))
             {
                 Lib.ProxySetter.SetProxy(curSysProxyUrl);
+                InvokeOnRequirePACServerStart();
             }
         }
 
