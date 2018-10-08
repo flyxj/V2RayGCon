@@ -1183,6 +1183,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Start PAC server fail. 
+        ///Please check port setting in form option. 的本地化字符串。
+        /// </summary>
+        internal static string StartPacServFail {
+            get {
+                return ResourceManager.GetString("StartPacServFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Page {0} of {1} 的本地化字符串。
         /// </summary>
         internal static string StatusBarPagerInfoTpl {

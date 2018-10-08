@@ -576,4 +576,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="StatusBarServerCountTpl" xml:space="preserve">
     <value>共{0}/{1}个服务器</value>
   </data>
+  <data name="StartPacServFail" xml:space="preserve">
+    <value>启动PAC服务器失败，请检查选项中的端口设置</value>
+  </data>
 </root>

@@ -588,4 +588,8 @@ Otherwise operations involving the network may fail.</value>
   <data name="StatusBarServerCountTpl" xml:space="preserve">
     <value>Total {0} of {1} server(s).</value>
   </data>
+  <data name="StartPacServFail" xml:space="preserve">
+    <value>Start PAC server fail. 
+Please check port setting in form option.</value>
+  </data>
 </root>

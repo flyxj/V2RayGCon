@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Service
 {
@@ -46,9 +49,17 @@ namespace V2RayGCon.Service
                     webServer.Stop();
                 }
 
-                webServer = new Lib.Net.SimpleWebServer(SendResponse, prefix);
-                webServer.Run();
-                isWebServRunning = true;
+                try
+                {
+                    webServer = new Lib.Net.SimpleWebServer(SendResponse, prefix);
+                    webServer.Run();
+                    isWebServRunning = true;
+                }
+                catch
+                {
+                    Task.Factory.StartNew(
+                        () => MessageBox.Show(I18N("StartPacServFail")));
+                }
             }
         }
 
@@ -96,14 +107,31 @@ namespace V2RayGCon.Service
 
         string GenPrefix(int port)
         {
-            return string.Format("http://localhost:{0}/", port);
+            return string.Format("http://localhost:{0}/pac/", port);
         }
 
         string SendResponse(HttpListenerRequest request)
         {
-            return string.Format(
-                "<HTML><BODY>My web page.<br>{0}</BODY></HTML>",
-                DateTime.Now);
+            // e.g. http://localhost:3001/pac/?&port=5678&ip=1.2.3.4&mode=socks/http&type=whitelist/blacklist&key=rnd
+            var query = request.QueryString;
+            var ip = query["ip"] ?? "127.0.0.1";
+            var port = query["port"] ?? "1080";
+            var isSocks = query["proto"] == "socks";
+            var listMode = query["type"] == "whitelist" ? "white" : "black";
+            return GenPacFile(listMode, isSocks, ip, port);
+        }
+
+        string GenPacFile(string listMode, bool isSocks, string ip, string port)
+        {
+            var headTpl = isSocks ?
+              "var proxy = 'SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT'" :
+              "var proxy = 'PROXY {0}:{1}; DIRECT'";
+            var head = string.Format(headTpl, ip, port);
+            var mode = ",mode = '" + listMode + "',domains={";
+            var cidrs = ": 1 },cidrs = [";
+            var tail = StrConst("PacTemplateTail");
+
+            return "hello";
         }
         #endregion
     }

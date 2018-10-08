@@ -339,6 +339,27 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似     ];
+        ///
+        ///function ip2decimal(o) { var c = o.split(&quot;.&quot;); return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3] }
+        ///
+        ///function FindProxyForURL(o, c) {
+        ///    if (/\d+\.\d+\.\d+\.\d+/.test(c)) {
+        ///        if (isInNet(dnsResolve(c), &quot;10.0.0.0&quot;, &quot;255.0.0.0&quot;) ||
+        ///            isInNet(dnsResolve(c), &quot;172.16.0.0&quot;, &quot;255.240.0.0&quot;) ||
+        ///            isInNet(dnsResolve(c), &quot;192.168.0.0&quot;, &quot;255.255.0.0&quot;) ||
+        ///            isInNet(dnsResolve(c), &quot;127.0.0.0&quot;, &quot;255.255.255.0&quot;))
+        ///            return &quot;DIRECT&quot;;
+        ///
+        ///        for (var [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string PacTemplateTail {
+            get {
+                return ResourceManager.GetString("PacTemplateTail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 5 的本地化字符串。
         /// </summary>
         internal static string ParseImportDepth {
