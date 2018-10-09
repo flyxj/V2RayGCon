@@ -61,6 +61,7 @@ namespace V2RayGCon.Controller
             var data = new Dictionary<string, string> {
                     { "import", Properties.Settings.Default.ImportUrls },
                     { "subscription",Properties.Settings.Default.SubscribeUrls },
+                    { "pacserv",Properties.Settings.Default.PacServerSettings },
                     { "servers" ,serverString},
                 };
 
@@ -116,6 +117,12 @@ namespace V2RayGCon.Controller
             {
                 GetComponent<Controller.OptionComponent.Subscription>()
                     .Reload(options["subscription"]);
+            }
+
+            if (options.ContainsKey("pacserv"))
+            {
+                GetComponent<Controller.OptionComponent.PacServer>()
+                    .Reload(options["pacserv"]);
             }
 
             if (options.ContainsKey("servers")

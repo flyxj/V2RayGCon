@@ -15,7 +15,6 @@ namespace V2RayGCon.Controller.OptionComponent
         RichTextBox rtboxCustomWhiteList, rtboxCustomBlackList;
 
         public PacServer(
-
             TextBox port,
             CheckBox isAutorun,
             RichTextBox customWhiteList,
@@ -24,67 +23,25 @@ namespace V2RayGCon.Controller.OptionComponent
             setting = Service.Setting.Instance;
             pacServer = Service.PACServer.Instance;
 
-            InitControls(port, isAutorun, customWhiteList, customBlackList);
-        }
-
-        private void InitControls(TextBox port, CheckBox isAutorun, RichTextBox customWhiteList, RichTextBox customBlackList)
-        {
             tboxPort = port;
             chkIsAutorun = isAutorun;
             rtboxCustomBlackList = customBlackList;
             rtboxCustomWhiteList = customWhiteList;
 
-            var pacSetting = setting.GetPacServerSettings();
-            port.Text = pacSetting.port.ToString();
-            isAutorun.Checked = pacSetting.isAutorun;
-            customBlackList.Text = pacSetting.customBlackList;
-            customWhiteList.Text = pacSetting.customWhiteList;
+            InitControls();
         }
 
         #region public method
-        public void UpdateSystemProxy()
+        public void Reload(string rawPacServSetting)
         {
-            var proxy = setting.GetSysProxySetting();
-            if (string.IsNullOrEmpty(proxy.autoConfigUrl))
+            Properties.Settings.Default.PacServerSettings = rawPacServSetting;
+            Properties.Settings.Default.Save();
+
+            InitControls();
+            if (pacServer.isWebServRunning)
             {
-                // do not need to update
-                return;
+                pacServer.RestartPacServer();
             }
-
-            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
-            Uri uri = new Uri(proxy.autoConfigUrl);
-            var arguments = uri.Query
-                .Substring(1) // Remove '?'
-                .Split('&')
-                .Select(q => q.Split('='))
-                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
-
-            if (arguments == null)
-            {
-                return;
-            }
-
-            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
-
-            arguments.TryGetValue("ip", out string ip);
-            arguments.TryGetValue("port", out string port);
-            arguments.TryGetValue("type", out string type);
-            arguments.TryGetValue("proto", out string proto);
-
-            if (string.IsNullOrEmpty(ip)
-                || string.IsNullOrEmpty(port)
-                || string.IsNullOrEmpty(type)
-                || string.IsNullOrEmpty(proto))
-            {
-                Debug.WriteLine("Update pac url fail!");
-                return;
-            }
-
-            pacServer.SetPACProx(
-                ip,
-                Lib.Utils.Str2Int(port),
-                proto == "socks",
-                type == "whitelist");
         }
 
         public override bool SaveOptions()
@@ -128,15 +85,60 @@ namespace V2RayGCon.Controller.OptionComponent
         #endregion
 
         #region private method
-        bool IsIndexValide(int index)
+        private void InitControls()
         {
-            if (index < 0 || index > 2)
-            {
-                return false;
-            }
-            return true;
+            var pacSetting = setting.GetPacServerSettings();
+
+            tboxPort.Text = pacSetting.port.ToString();
+            chkIsAutorun.Checked = pacSetting.isAutorun;
+            rtboxCustomBlackList.Text = pacSetting.customBlackList;
+            rtboxCustomWhiteList.Text = pacSetting.customWhiteList;
         }
 
+        void UpdateSystemProxy()
+        {
+            var proxy = setting.GetSysProxySetting();
+            if (string.IsNullOrEmpty(proxy.autoConfigUrl))
+            {
+                // do not need to update
+                return;
+            }
+
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+            Uri uri = new Uri(proxy.autoConfigUrl);
+            var arguments = uri.Query
+                .Substring(1) // Remove '?'
+                .Split('&')
+                .Select(q => q.Split('='))
+                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+
+            if (arguments == null)
+            {
+                return;
+            }
+
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
+
+            arguments.TryGetValue("ip", out string ip);
+            arguments.TryGetValue("port", out string port);
+            arguments.TryGetValue("type", out string type);
+            arguments.TryGetValue("proto", out string proto);
+
+            if (string.IsNullOrEmpty(ip)
+                || string.IsNullOrEmpty(port)
+                || string.IsNullOrEmpty(type)
+                || string.IsNullOrEmpty(proto))
+            {
+                Debug.WriteLine("Update pac url fail!");
+                return;
+            }
+
+            pacServer.SetPACProx(
+                ip,
+                Lib.Utils.Str2Int(port),
+                proto == "socks",
+                type == "whitelist");
+        }
         #endregion
     }
 }
