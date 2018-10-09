@@ -589,4 +589,7 @@ Otherwise operations involving the network may fail.</value>
     <value>Start PAC server fail. 
 Please check port setting in form option.</value>
   </data>
+  <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
+    <value>Set mode to HTTP or SOCKS first, please!</value>
+  </data>
 </root>

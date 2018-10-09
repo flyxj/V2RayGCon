@@ -576,4 +576,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="StartPacServFail" xml:space="preserve">
     <value>启动PAC服务器失败，请检查选项中的端口设置</value>
   </data>
+  <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
+    <value>请先把模式设为HTTP或SOCKS</value>
+  </data>
 </root>

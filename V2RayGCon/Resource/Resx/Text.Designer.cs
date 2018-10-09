@@ -1267,6 +1267,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Set mode to HTTP or SOCKS first, please! 的本地化字符串。
+        /// </summary>
+        internal static string SysProxyRequireHttpOrSocksMode {
+            get {
+                return ResourceManager.GetString("SysProxyRequireHttpOrSocksMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 System proxy must be a HTTP server. 的本地化字符串。
         /// </summary>
         internal static string SysProxyRequireHTTPServer {

@@ -51,7 +51,7 @@ namespace V2RayGCon.Views.UserControls
             var index = cboxInbound.SelectedIndex;
             if (index == (int)Model.Data.Enum.ProxyTypes.Config)
             {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                MessageBox.Show(I18N("SysProxyRequireHttpOrSocksMode"));
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace V2RayGCon.Views.UserControls
             var index = cboxInbound.SelectedIndex;
             if (index == (int)Model.Data.Enum.ProxyTypes.Config)
             {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                MessageBox.Show(I18N("SysProxyRequireHttpOrSocksMode"));
                 return;
             }
 
