@@ -11,12 +11,19 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Cache cache;
         Service.Servers servers;
+        Service.PACServer pacServer;
+
+        ToolStripMenuItem restartPACServer, stopPACServer;
 
         public MenuItemsServer(
             ToolStripMenuItem stopSelected,
             ToolStripMenuItem restartSelected,
+
             ToolStripMenuItem clearSysProxy,
+            ToolStripMenuItem restartPACServer,
+            ToolStripMenuItem stopPACServer,
             ToolStripMenuItem refreshSummary,
+
             ToolStripMenuItem speedTestOnSelected,
             ToolStripMenuItem deleteSelected,
             ToolStripMenuItem copyAsV2rayLinks,
@@ -35,13 +42,18 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
+            pacServer = Service.PACServer.Instance;
 
             InitCtrlSorting(sortBySpeed, sortBySummary);
             InitCtrlView(moveToTop, moveToBottom, collapsePanel, semiFoldingPanel, expansePanel);
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlDelete(deleteSelected, deleteAllItems);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(clearSysProxy, refreshSummary);
+            InitCtrlSysProxy(
+                refreshSummary,
+                clearSysProxy,
+                restartPACServer,
+                stopPACServer);
         }
 
         #region public method
@@ -52,6 +64,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
+            pacServer.OnPACServerStatusChanged -= OnPACServerStatusChangedHandler;
         }
         #endregion
 
@@ -286,8 +299,39 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        private void InitCtrlSysProxy(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)
+        void OnPACServerStatusChangedHandler(object sender, EventArgs args)
         {
+            var isRunning = pacServer.isWebServRunning;
+            this.restartPACServer.Checked = isRunning;
+            this.stopPACServer.Checked = !isRunning;
+
+        }
+
+        private void InitCtrlSysProxy(
+            ToolStripMenuItem refreshSummary,
+            ToolStripMenuItem clearSysProxy,
+            ToolStripMenuItem restartPACServer,
+            ToolStripMenuItem stopPACServer)
+        {
+
+            this.restartPACServer = restartPACServer;
+            this.stopPACServer = stopPACServer;
+
+            // refresh check status
+            OnPACServerStatusChangedHandler(this, EventArgs.Empty);
+
+            pacServer.OnPACServerStatusChanged += OnPACServerStatusChangedHandler;
+
+            restartPACServer.Click += (s, a) =>
+            {
+                pacServer.RestartPacServer();
+            };
+
+            stopPACServer.Click += (s, a) =>
+            {
+                pacServer.StopPacServer();
+            };
+
             // misc
             clearSysProxy.Click += (s, a) =>
             {

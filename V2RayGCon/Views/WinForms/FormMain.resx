@@ -912,6 +912,18 @@
   <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
     <value>Clear proxy setting</value>
   </data>
+  <data name="startPACServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="startPACServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start PAC server</value>
+  </data>
+  <data name="stopPACServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="stopPACServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Stop PAC server</value>
+  </data>
   <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
   </data>
@@ -7806,6 +7818,18 @@
     <value>toolMenuItemClearSysProxy</value>
   </data>
   <data name="&gt;&gt;toolMenuItemClearSysProxy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;startPACServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>startPACServerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;startPACServerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>stopPACServerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">

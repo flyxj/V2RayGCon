@@ -234,6 +234,21 @@
   <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
     <value>此服务器日志</value>
   </data>
+  <data name="globalProxyToolStripMenuItem.Text" xml:space="preserve">
+    <value>全局代理</value>
+  </data>
+  <data name="pACBlackListToolStripMenuItem.Text" xml:space="preserve">
+    <value>PAC黑名单</value>
+  </data>
+  <data name="pACWhiteListToolStripMenuItem.Text" xml:space="preserve">
+    <value>PAC白名单</value>
+  </data>
+  <data name="copyPACBlackListLinkToolStripMenuItem.Text" xml:space="preserve">
+    <value>复制PAC黑名单链接</value>
+  </data>
+  <data name="copyPACWhiteListLinkToolStripMenuItem.Text" xml:space="preserve">
+    <value>复制PAC白名单链接</value>
+  </data>
   <data name="setAsSystemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>设为系统代理</value>
   </data>

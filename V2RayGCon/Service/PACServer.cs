@@ -10,9 +10,9 @@ namespace V2RayGCon.Service
 {
     class PACServer : Model.BaseClass.SingletonService<PACServer>
     {
+        public event EventHandler OnPACServerStatusChanged;
         Lib.Net.SimpleWebServer webServer = null;
         object webServerLock = new object();
-        int port = 3000;
         Setting setting;
         Dictionary<bool, string> pacCache = null;
 
@@ -43,9 +43,7 @@ namespace V2RayGCon.Service
         public void RestartPacServer()
         {
             var pacSetting = setting.GetPacServerSettings();
-            this.port = pacSetting.port;
-
-            var prefix = GenPrefix(port);
+            var prefix = GenPrefix(pacSetting.port);
             lock (webServerLock)
             {
                 if (isWebServRunning)
@@ -55,7 +53,11 @@ namespace V2RayGCon.Service
 
                 try
                 {
-                    webServer = new Lib.Net.SimpleWebServer(SendResponse, prefix);
+                    webServer = new Lib.Net.SimpleWebServer(
+                        SendResponse,
+                        prefix,
+                        "application/x-ns-proxy-autoconfig");
+
                     webServer.Run();
                     isWebServRunning = true;
                 }
@@ -65,24 +67,26 @@ namespace V2RayGCon.Service
                         () => MessageBox.Show(I18N("StartPacServFail")));
                 }
             }
+            InvokeOnPACServerStatusChanged();
         }
 
         public string GetPacUrl(bool isWhiteList, bool isSocks, string ip, int port)
         {
-            if (!isWebServRunning)
-            {
-                return null;
-            }
-
+            var pacSetting = setting.GetPacServerSettings();
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             return string.Format(
                 "{0}?&type={1}&proto={2}&ip={3}&port={4}&timeout={5}",
-                GenPrefix(this.port),
+                GenPrefix(pacSetting.port),
                 isWhiteList ? "whitelist" : "blacklist",
                 isSocks ? "socks" : "http",
                 ip,
                 port.ToString(),
                 Lib.Utils.RandomHex(16));
+        }
+
+        public void StopPacServer()
+        {
+            StopPacServer(this, EventArgs.Empty);
         }
 
         public void Cleanup()
@@ -94,14 +98,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        void ClearCache()
-        {
-            pacCache = new Dictionary<bool, string> {
-                { true,null },
-                { false,null },
-            };
-        }
-
         void StopPacServer(object sender, EventArgs args)
         {
             lock (webServerLock)
@@ -113,6 +109,25 @@ namespace V2RayGCon.Service
                     isWebServRunning = false;
                 }
             }
+            InvokeOnPACServerStatusChanged();
+        }
+
+
+        void InvokeOnPACServerStatusChanged()
+        {
+            try
+            {
+                OnPACServerStatusChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
+        void ClearCache()
+        {
+            pacCache = new Dictionary<bool, string> {
+                { true,null },
+                { false,null },
+            };
         }
 
         void StartPacServer(object sender, EventArgs args)

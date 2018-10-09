@@ -477,9 +477,39 @@ namespace V2RayGCon.Views.UserControls
             Lib.UI.ShowMessageBoxDoneAsync();
         }
 
+        void CopyPACUrlToClipboard(bool isWhiteList)
+        {
+            var index = cboxInbound.SelectedIndex;
+            if (index == (int)Model.Data.Enum.ProxyTypes.Config)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
+            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+
+            var pacUrl = Service.PACServer.Instance.GetPacUrl(isWhiteList, isSocks, ip, port);
+
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(pacUrl) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
+
         private void pACWhiteListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetSysProxyToPACMode(true);
+        }
+
+        private void copyPACBlackListLinkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopyPACUrlToClipboard(false);
+        }
+
+        private void copyPACWhiteListLinkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopyPACUrlToClipboard(true);
         }
     }
 }

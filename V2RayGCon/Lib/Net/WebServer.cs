@@ -31,8 +31,9 @@ namespace V2RayGCon.Lib.Net
     {
         private readonly HttpListener _listener = new HttpListener();
         private readonly Func<HttpListenerRequest, string> _responderMethod;
+        string _mime = null;
 
-        public SimpleWebServer(string[] prefixes, Func<HttpListenerRequest, string> method)
+        public SimpleWebServer(Func<HttpListenerRequest, string> method, string prefix, string mime = null)
         {
             if (!HttpListener.IsSupported)
                 throw new NotSupportedException(
@@ -40,25 +41,19 @@ namespace V2RayGCon.Lib.Net
 
             // URI prefixes are required, for example 
             // "http://localhost:8080/index/".
-            if (prefixes == null || prefixes.Length == 0)
-                throw new ArgumentException("prefixes");
+            if (string.IsNullOrEmpty(prefix))
+                throw new ArgumentException("prefix");
 
             // A responder method is required
             if (method == null)
                 throw new ArgumentException("method");
 
-            foreach (string s in prefixes)
-            {
-                _listener.Prefixes.Add(s);
-                Debug.WriteLine("Prefix:" + s);
-            }
-
+            _mime = mime;
+            _listener.Prefixes.Add(prefix);
+            Debug.WriteLine("Prefix:" + prefix);
             _responderMethod = method;
             _listener.Start();
         }
-
-        public SimpleWebServer(Func<HttpListenerRequest, string> method, params string[] prefixes)
-            : this(prefixes, method) { }
 
         public void Run()
         {
@@ -77,6 +72,10 @@ namespace V2RayGCon.Lib.Net
                             {
                                 string rstr = _responderMethod(ctx.Request);
                                 byte[] buf = Encoding.UTF8.GetBytes(rstr);
+                                if (!string.IsNullOrEmpty(_mime))
+                                {
+                                    ctx.Response.ContentType = _mime;
+                                }
                                 ctx.Response.ContentLength64 = buf.Length;
                                 ctx.Response.OutputStream.Write(buf, 0, buf.Length);
                             }

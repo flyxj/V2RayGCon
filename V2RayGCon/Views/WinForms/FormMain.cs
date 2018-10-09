@@ -33,7 +33,7 @@ namespace V2RayGCon.Views.WinForms
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
 #endif
-            Lib.UI.AutoScaleToolSripControls(this);
+            Lib.UI.AutoScaleToolSripControls(this, 16);
             this.Show();
         }
 
@@ -182,8 +182,13 @@ namespace V2RayGCon.Views.WinForms
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 toolStripMenuItemStopSelected,
                 toolStripMenuItemRestartSelected,
+
+                // sys proxy
                 toolMenuItemClearSysProxy,
+                startPACServerToolStripMenuItem,
+                stopPACServerToolStripMenuItem,
                 toolMenuItemRefreshSummary,
+
                 toolStripMenuItemSpeedTestOnSelected,
                 toolStripMenuItemDeleteSelectedServers,
                 toolStripMenuItemCopyAsV2rayLink,
