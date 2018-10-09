@@ -66,10 +66,11 @@ namespace V2RayGCon.Lib
         {
             // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
             var factor = GetFormScalingFactor(form);
-            if (factor <= 1)
+            if (factor < 1)
             {
-                return;
+                factor = 1;
             }
+
             var menuList = GetAllControls<ToolStrip>(form);
             foreach (var menu in menuList)
             {
