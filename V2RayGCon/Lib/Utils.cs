@@ -22,11 +22,36 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region pac
+        public static bool IsCidr(string address)
+        {
+            var parts = address.Split('/');
+
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+
+            if (!IsIP(parts[0]))
+            {
+                return false;
+            }
+            var mask = Str2Int(parts[1]);
+            return mask > 0 && mask < 32;
+        }
+
         public static List<string> GetPacUrlList(bool isWhiteList)
         {
             return StrConst(isWhiteList ? "white" : "black")
                 .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
+        }
+
+        public static long[] Cidr2RangeArray(string cidrString)
+        {
+            var cidr = cidrString.Split('/');
+            var begin = IP2Long(cidr[0]);
+            var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
+            return new long[] { begin, end };
         }
 
         public static List<long[]> GetPacCidrList(bool isWhiteList)
@@ -37,10 +62,7 @@ namespace V2RayGCon.Lib
                     new char[] { '\n', '\r' },
                     StringSplitOptions.RemoveEmptyEntries))
             {
-                var cidr = item.Split('/');
-                var begin = IP2Long(cidr[0]);
-                var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
-                result.Add(new long[] { begin, end });
+                result.Add(Cidr2RangeArray(item));
             }
             return result;
         }

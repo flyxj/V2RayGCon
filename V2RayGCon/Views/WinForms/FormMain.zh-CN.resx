@@ -351,12 +351,6 @@
   <data name="toolStripMenuItemPackSelectedServers.ToolTipText" xml:space="preserve">
     <value>将选中服务器打包成一个服务器</value>
   </data>
-  <data name="toolMenuItemRefreshSummary.Text" xml:space="preserve">
-    <value>刷新摘要</value>
-  </data>
-  <data name="toolMenuItemRefreshSummary.ToolTipText" xml:space="preserve">
-    <value>刷新下面服务器的名字/IP/协议信息</value>
-  </data>
   <data name="toolStripMenuItemDeleteAllServer.Text" xml:space="preserve">
     <value>删除全部</value>
   </data>
@@ -383,6 +377,12 @@
   </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>系统代理</value>
+  </data>
+  <data name="refreshSummaryToolStripMenuItem.Text" xml:space="preserve">
+    <value>刷新摘要</value>
+  </data>
+  <data name="refreshSummaryToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>刷新全部服务器的摘要信息</value>
   </data>
   <data name="toolMenuItemServer.Text" xml:space="preserve">
     <value>服务器</value>

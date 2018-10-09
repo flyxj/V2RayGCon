@@ -62,7 +62,6 @@ namespace V2RayGCon.Views.WinForms
 
         #region private method
 
-
         void BindToolStripButtonToMenuItem()
         {
             void bind(ToolStripButton button, ToolStripMenuItem menu)
@@ -114,10 +113,6 @@ namespace V2RayGCon.Views.WinForms
                 toolMenuItemOptions,
                 toolStripMenuItemDownLoadV2rayCore,
                 toolStripMenuItemRemoveV2rayCore));
-
-
-
-
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsSelect(
                 /*
@@ -174,24 +169,57 @@ namespace V2RayGCon.Views.WinForms
                 selectTimeoutAllServersToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
+                // for invoke ui refresh
+                //MenuStrip menuContainer,
                 menuStrip1,
-                toolStripMenuItemStopSelected,
-                toolStripMenuItemRestartSelected,
 
-                // sys proxy
+                //// system proxy
+                //ToolStripMenuItem curSysProxySummary,
+                //ToolStripMenuItem clearSysProxy,
+                //ToolStripMenuItem restartPACServer,
+                //ToolStripMenuItem stopPACServer,
                 toolMenuItemCurrentSysProxy,
                 toolMenuItemClearSysProxy,
                 startPACServerToolStripMenuItem,
                 stopPACServerToolStripMenuItem,
 
-                toolStripMenuItemSpeedTestOnSelected,
+
+                //// misc
+                //ToolStripMenuItem refreshSummary,
+                //ToolStripMenuItem deleteAllServers,
+                //ToolStripMenuItem deleteSelected,
+                refreshSummaryToolStripMenuItem,
+                toolStripMenuItemDeleteAllServer,
                 toolStripMenuItemDeleteSelectedServers,
+
+                //// copy
+                //ToolStripMenuItem copyAsV2rayLinks,
+                //ToolStripMenuItem copyAsVmessLinks,
+                //ToolStripMenuItem copyAsSubscriptions,
                 toolStripMenuItemCopyAsV2rayLink,
                 toolStripMenuItemCopyAsVmessLink,
                 toolStripMenuItemCopyAsSubscription,
-                toolStripMenuItemDeleteAllServer,
+
+                //// batch op
+                //ToolStripMenuItem speedTestOnSelected,
+                //ToolStripMenuItem modifySelected,
+                //ToolStripMenuItem packSelected,
+                //ToolStripMenuItem stopSelected,
+                //ToolStripMenuItem restartSelected,
+                toolStripMenuItemSpeedTestOnSelected,
                 toolStripMenuItemModifySettings,
                 toolStripMenuItemPackSelectedServers,
+                toolStripMenuItemStopSelected,
+                toolStripMenuItemRestartSelected,
+
+                //// view
+                //ToolStripMenuItem moveToTop,
+                //ToolStripMenuItem moveToBottom,
+                //ToolStripMenuItem foldPanel,
+                //ToolStripMenuItem semiFoldingPanel,
+                //ToolStripMenuItem expansePanel,
+                //ToolStripMenuItem sortBySpeed,
+                //ToolStripMenuItem sortBySummary)
                 toolStripMenuItemMoveToTop,
                 toolStripMenuItemMoveToBottom,
                 toolStripMenuItemFoldingPanel,

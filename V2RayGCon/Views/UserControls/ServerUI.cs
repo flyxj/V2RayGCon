@@ -75,6 +75,8 @@ namespace V2RayGCon.Views.UserControls
             var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
             Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
             var pacUrl = pacServer.GetPacUrl(isWhiteList, isSocks, ip, port);
+            pacServer.StartPacServer();
+
             MessageBox.Show(
                 Lib.Utils.CopyToClipboard(pacUrl) ?
                 I18N("LinksCopied") :

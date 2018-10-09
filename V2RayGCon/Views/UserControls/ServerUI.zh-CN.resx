@@ -237,11 +237,20 @@
   <data name="globalProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>全局代理</value>
   </data>
+  <data name="globalProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>需要将模式选为HTTP</value>
+  </data>
   <data name="pACBlackListToolStripMenuItem.Text" xml:space="preserve">
     <value>PAC黑名单</value>
   </data>
+  <data name="pACBlackListToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>模式需选为HTTP/SOCKS</value>
+  </data>
   <data name="pACWhiteListToolStripMenuItem.Text" xml:space="preserve">
     <value>PAC白名单</value>
+  </data>
+  <data name="pACWhiteListToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>模式需选为HTTP/SOCKS</value>
   </data>
   <data name="copyPACBlackListLinkToolStripMenuItem.Text" xml:space="preserve">
     <value>复制PAC黑名单链接</value>
@@ -250,10 +259,7 @@
     <value>复制PAC白名单链接</value>
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>设为系统代理</value>
-  </data>
-  <data name="setAsSystemProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>需要将inbound选为HTTP模式</value>
+    <value>系统代理</value>
   </data>
   <data name="ctxMenuStripMore.ToolTip" xml:space="preserve">
     <value />

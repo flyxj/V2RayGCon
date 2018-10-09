@@ -30,10 +30,11 @@ namespace V2RayGCon.Lib.Net
     public class SimpleWebServer
     {
         private readonly HttpListener _listener = new HttpListener();
-        private readonly Func<HttpListenerRequest, string> _responderMethod;
-        string _mime = null;
 
-        public SimpleWebServer(Func<HttpListenerRequest, string> method, string prefix, string mime = null)
+        // tuple<string content, string mimeType>
+        private readonly Func<HttpListenerRequest, Tuple<string, string>> _responderMethod;
+
+        public SimpleWebServer(Func<HttpListenerRequest, Tuple<string, string>> method, string prefix)
         {
             if (!HttpListener.IsSupported)
                 throw new NotSupportedException(
@@ -48,7 +49,6 @@ namespace V2RayGCon.Lib.Net
             if (method == null)
                 throw new ArgumentException("method");
 
-            _mime = mime;
             _listener.Prefixes.Add(prefix);
             Debug.WriteLine("Prefix:" + prefix);
             _responderMethod = method;
@@ -70,11 +70,11 @@ namespace V2RayGCon.Lib.Net
                             var ctx = c as HttpListenerContext;
                             try
                             {
-                                string rstr = _responderMethod(ctx.Request);
-                                byte[] buf = Encoding.UTF8.GetBytes(rstr);
-                                if (!string.IsNullOrEmpty(_mime))
+                                Tuple<string, string> rsp = _responderMethod(ctx.Request);
+                                byte[] buf = Encoding.UTF8.GetBytes(rsp.Item1);
+                                if (!string.IsNullOrEmpty(rsp.Item2))
                                 {
-                                    ctx.Response.ContentType = _mime;
+                                    ctx.Response.ContentType = rsp.Item2;
                                 }
                                 ctx.Response.ContentLength64 = buf.Length;
                                 ctx.Response.OutputStream.Write(buf, 0, buf.Length);

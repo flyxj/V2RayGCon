@@ -17,26 +17,36 @@ namespace V2RayGCon.Controller.FormMainComponent
         MenuStrip menuContainer;
 
         public MenuItemsServer(
-            MenuStrip menuContainer, // for invoke ui refresh
-            ToolStripMenuItem stopSelected,
-            ToolStripMenuItem restartSelected,
+            // for invoke ui refresh
+            MenuStrip menuContainer,
 
+            // system proxy
             ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer,
 
-            ToolStripMenuItem speedTestOnSelected,
+            // misc
+            ToolStripMenuItem refreshSummary,
+            ToolStripMenuItem deleteAllServers,
             ToolStripMenuItem deleteSelected,
+
+            // copy
             ToolStripMenuItem copyAsV2rayLinks,
             ToolStripMenuItem copyAsVmessLinks,
             ToolStripMenuItem copyAsSubscriptions,
-            ToolStripMenuItem deleteAllItems,
+
+            // batch op
+            ToolStripMenuItem speedTestOnSelected,
             ToolStripMenuItem modifySelected,
             ToolStripMenuItem packSelected,
+            ToolStripMenuItem stopSelected,
+            ToolStripMenuItem restartSelected,
+
+            // view
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
-            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem foldPanel,
             ToolStripMenuItem semiFoldingPanel,
             ToolStripMenuItem expansePanel,
             ToolStripMenuItem sortBySpeed,
@@ -49,9 +59,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.menuContainer = menuContainer; // for invoke ui update
 
             InitCtrlSorting(sortBySpeed, sortBySummary);
-            InitCtrlView(moveToTop, moveToBottom, collapsePanel, semiFoldingPanel, expansePanel);
+            InitCtrlView(moveToTop, moveToBottom, foldPanel, semiFoldingPanel, expansePanel);
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
-            InitCtrlDelete(deleteSelected, deleteAllItems);
+            InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
             InitCtrlSysProxy(curSysProxySummary, clearSysProxy, restartPACServer, stopPACServer);
         }
@@ -141,8 +151,17 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        private void InitCtrlDelete(ToolStripMenuItem deleteSelected, ToolStripMenuItem deleteAllItems)
+        private void InitCtrlMisc(
+            ToolStripMenuItem refreshSummary,
+            ToolStripMenuItem deleteSelected,
+            ToolStripMenuItem deleteAllItems)
         {
+            refreshSummary.Click += (s, a) =>
+            {
+                cache.html.Clear();
+                servers.UpdateAllServersSummary();
+            };
+
             deleteAllItems.Click += (s, a) =>
             {
                 if (!Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
@@ -367,12 +386,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     pacServer.ClearSysProxy();
                 }
-            };
-
-            curSysProxySummary.Click += (s, a) =>
-            {
-                cache.html.Clear();
-                servers.UpdateAllServersSummary();
             };
         }
 

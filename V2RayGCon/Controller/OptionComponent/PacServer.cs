@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -28,14 +29,12 @@ namespace V2RayGCon.Controller.OptionComponent
 
         private void InitControls(TextBox port, CheckBox isAutorun, RichTextBox customWhiteList, RichTextBox customBlackList)
         {
-
             tboxPort = port;
             chkIsAutorun = isAutorun;
             rtboxCustomBlackList = customBlackList;
             rtboxCustomWhiteList = customWhiteList;
 
             var pacSetting = setting.GetPacServerSettings();
-
             port.Text = pacSetting.port.ToString();
             isAutorun.Checked = pacSetting.isAutorun;
             customBlackList.Text = pacSetting.customBlackList;
@@ -77,6 +76,7 @@ namespace V2RayGCon.Controller.OptionComponent
                 || string.IsNullOrEmpty(type)
                 || string.IsNullOrEmpty(proto))
             {
+                Debug.WriteLine("Update pac url fail!");
                 return;
             }
 

@@ -49,13 +49,25 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public void StartPacServer()
+        {
+            lock (webServerLock)
+            {
+                if (isWebServRunning)
+                {
+                    return;
+                }
+                RestartPacServer();
+            }
+        }
+
         public void SetPACProx(string ip, int port, bool isSocks, bool isWhiteList)
         {
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.autoConfigUrl = GetPacUrl(isWhiteList, isSocks, ip, port);
             Lib.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
-            StartPacServer(this, EventArgs.Empty);
+            StartPacServer();
             InvokeOnPACServerStatusChanged();
         }
 
@@ -81,20 +93,17 @@ namespace V2RayGCon.Service
         {
             var pacSetting = setting.GetPacServerSettings();
             var prefix = GenPrefix(pacSetting.port);
+
             lock (webServerLock)
             {
                 if (isWebServRunning)
                 {
-                    webServer.Stop();
+                    StopPacServer();
                 }
 
                 try
                 {
-                    webServer = new Lib.Net.SimpleWebServer(
-                        SendResponse,
-                        prefix,
-                        "application/x-ns-proxy-autoconfig");
-
+                    webServer = new Lib.Net.SimpleWebServer(GenPACResponse, prefix);
                     webServer.Run();
                     isWebServRunning = true;
                 }
@@ -107,14 +116,9 @@ namespace V2RayGCon.Service
             InvokeOnPACServerStatusChanged();
         }
 
-        public void StopPacServer()
-        {
-            StopPacServer(this, EventArgs.Empty);
-        }
-
         public void Cleanup()
         {
-            StopPacServer(this, EventArgs.Empty);
+            StopPacServer();
             Lib.ProxySetter.SetProxy(orgSysProxySetting);
         }
 
@@ -131,10 +135,8 @@ namespace V2RayGCon.Service
                 port.ToString(),
                 Lib.Utils.RandomHex(16));
         }
-        #endregion
 
-        #region private method
-        void StopPacServer(object sender, EventArgs args)
+        public void StopPacServer()
         {
             lock (webServerLock)
             {
@@ -147,6 +149,10 @@ namespace V2RayGCon.Service
             }
             InvokeOnPACServerStatusChanged();
         }
+        #endregion
+
+        #region private method
+
 
         void InvokeOnPACServerStatusChanged()
         {
@@ -165,30 +171,21 @@ namespace V2RayGCon.Service
             };
         }
 
-        void StartPacServer(object sender, EventArgs args)
-        {
-            lock (webServerLock)
-            {
-                if (isWebServRunning)
-                {
-                    return;
-                }
-                RestartPacServer();
-            }
-        }
-
         string GenPrefix(int port)
         {
             return string.Format("http://localhost:{0}/pac/", port);
         }
 
-        string SendResponse(HttpListenerRequest request)
+        Tuple<string, string> GenPACResponse(HttpListenerRequest request)
         {
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             var query = request.QueryString;
             var isWhiteList = query["type"] == "whitelist";
 
-            return string.Format(
+            // ie require this header
+            var mime = "application/x-ns-proxy-autoconfig";
+
+            var content = string.Format(
                 query["proto"] == "socks" ?
                 "var proxy = 'SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT', mode='{2}', {3}" :
                 "var proxy = 'PROXY {0}:{1}; DIRECT', mode='{2}', {3}",
@@ -196,6 +193,43 @@ namespace V2RayGCon.Service
                 query["port"] ?? "1080",
                 isWhiteList ? "white" : "black",
                 GenPacBody(isWhiteList));
+
+            return new Tuple<string, string>(content, mime);
+        }
+
+        void MergeCustomPACSetting(ref List<string> urlList, ref List<long[]> cidrList, string customList)
+        {
+            var list = customList.Split(
+                new char[] { '\n', '\r' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var line in list)
+            {
+                // ignore single line comment
+                if (line.StartsWith("//"))
+                {
+                    continue;
+                }
+
+                var item = line.Trim();
+                if (Lib.Utils.IsIP(item))
+                {
+                    var v = Lib.Utils.IP2Long(item);
+                    cidrList.Add(new long[] { v, v });
+                    continue;
+                }
+
+                if (Lib.Utils.IsCidr(item))
+                {
+                    cidrList.Add(Lib.Utils.Cidr2RangeArray(item));
+                    continue;
+                }
+
+                if (!urlList.Contains(item))
+                {
+                    urlList.Add(item);
+                }
+            }
         }
 
         string GenPacBody(bool isWhiteList)
@@ -207,8 +241,13 @@ namespace V2RayGCon.Service
 
             var urlList = Lib.Utils.GetPacUrlList(isWhiteList);
             var cidrList = Lib.Utils.GetPacCidrList(isWhiteList);
-            var cidrSimList = Lib.Utils.CompactCidrList(ref cidrList);
 
+            // merge user settings
+            var customSetting = setting.GetPacServerSettings();
+            var customUrlList = isWhiteList ? customSetting.customWhiteList : customSetting.customBlackList;
+            MergeCustomPACSetting(ref urlList, ref cidrList, customUrlList);
+
+            var cidrSimList = Lib.Utils.CompactCidrList(ref cidrList);
             var pac = new StringBuilder("domains={");
             foreach (var url in urlList)
             {
