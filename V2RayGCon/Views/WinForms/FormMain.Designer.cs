@@ -53,7 +53,7 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabelMarkFilter = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxMarkFilter = new System.Windows.Forms.ToolStripComboBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mainMneuStrip = new System.Windows.Forms.MenuStrip();
             this.operationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemSimAddVmessServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemImportLinkFromClipboard = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,7 +139,7 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripContainer2.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.mainMneuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -318,16 +318,16 @@ namespace V2RayGCon.Views.WinForms
             // 
             // menuStrip1
             // 
-            resources.ApplyResources(this.menuStrip1, "menuStrip1");
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            resources.ApplyResources(this.mainMneuStrip, "menuStrip1");
+            this.mainMneuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.mainMneuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.operationToolStripMenuItem,
             this.selectToolStripMenuItem,
             this.toolMenuItemServer,
             this.windowToolStripMenuItem,
             this.aboutToolStripMenuItem1});
-            this.menuStrip1.Name = "menuStrip1";
-            this.toolTip1.SetToolTip(this.menuStrip1, resources.GetString("menuStrip1.ToolTip"));
+            this.mainMneuStrip.Name = "menuStrip1";
+            this.toolTip1.SetToolTip(this.mainMneuStrip, resources.GetString("menuStrip1.ToolTip"));
             // 
             // operationToolStripMenuItem
             // 
@@ -826,8 +826,8 @@ namespace V2RayGCon.Views.WinForms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.mainMneuStrip);
+            this.MainMenuStrip = this.mainMneuStrip;
             this.Name = "FormMain";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormMain_Shown);
@@ -838,8 +838,8 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripContainer2.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.mainMneuStrip.ResumeLayout(false);
+            this.mainMneuStrip.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -850,7 +850,7 @@ namespace V2RayGCon.Views.WinForms
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip mainMneuStrip;
         private System.Windows.Forms.ToolStripMenuItem operationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolMenuItemImportLinkFromClipboard;

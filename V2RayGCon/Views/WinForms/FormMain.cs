@@ -171,7 +171,7 @@ namespace V2RayGCon.Views.WinForms
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 // for invoke ui refresh
                 //MenuStrip menuContainer,
-                menuStrip1,
+                mainMneuStrip,
 
                 //// system proxy
                 //ToolStripMenuItem curSysProxySummary,
