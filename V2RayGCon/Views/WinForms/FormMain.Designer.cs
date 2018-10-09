@@ -108,15 +108,16 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemSpeedTestOnSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemPackSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.refreshSummaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemCurrentSysProxy = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyPACURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.startPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshSummaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemConfigEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemQRCode = new System.Windows.Forms.ToolStripMenuItem();
@@ -316,9 +317,9 @@ namespace V2RayGCon.Views.WinForms
             resources.ApplyResources(this.toolStripComboBoxMarkFilter, "toolStripComboBoxMarkFilter");
             this.toolStripComboBoxMarkFilter.Name = "toolStripComboBoxMarkFilter";
             // 
-            // menuStrip1
+            // mainMneuStrip
             // 
-            resources.ApplyResources(this.mainMneuStrip, "menuStrip1");
+            resources.ApplyResources(this.mainMneuStrip, "mainMneuStrip");
             this.mainMneuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mainMneuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.operationToolStripMenuItem,
@@ -326,8 +327,8 @@ namespace V2RayGCon.Views.WinForms
             this.toolMenuItemServer,
             this.windowToolStripMenuItem,
             this.aboutToolStripMenuItem1});
-            this.mainMneuStrip.Name = "menuStrip1";
-            this.toolTip1.SetToolTip(this.mainMneuStrip, resources.GetString("menuStrip1.ToolTip"));
+            this.mainMneuStrip.Name = "mainMneuStrip";
+            this.toolTip1.SetToolTip(this.mainMneuStrip, resources.GetString("mainMneuStrip.ToolTip"));
             // 
             // operationToolStripMenuItem
             // 
@@ -542,9 +543,9 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemSpeedTestOnSelected,
             this.toolStripMenuItemPackSelectedServers,
             this.toolStripSeparator1,
+            this.refreshSummaryToolStripMenuItem,
             this.toolStripMenuItemDeleteServers,
-            this.systemProxyToolStripMenuItem,
-            this.refreshSummaryToolStripMenuItem});
+            this.systemProxyToolStripMenuItem});
             this.toolMenuItemServer.Name = "toolMenuItemServer";
             // 
             // toolStripMenuItemModifySelected
@@ -662,6 +663,11 @@ namespace V2RayGCon.Views.WinForms
             resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             // 
+            // refreshSummaryToolStripMenuItem
+            // 
+            resources.ApplyResources(this.refreshSummaryToolStripMenuItem, "refreshSummaryToolStripMenuItem");
+            this.refreshSummaryToolStripMenuItem.Name = "refreshSummaryToolStripMenuItem";
+            // 
             // toolStripMenuItemDeleteServers
             // 
             resources.ApplyResources(this.toolStripMenuItemDeleteServers, "toolStripMenuItemDeleteServers");
@@ -685,6 +691,7 @@ namespace V2RayGCon.Views.WinForms
             resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
             this.systemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolMenuItemCurrentSysProxy,
+            this.copyPACURLToolStripMenuItem,
             this.toolMenuItemClearSysProxy,
             this.startPACServerToolStripMenuItem,
             this.stopPACServerToolStripMenuItem});
@@ -694,6 +701,11 @@ namespace V2RayGCon.Views.WinForms
             // 
             resources.ApplyResources(this.toolMenuItemCurrentSysProxy, "toolMenuItemCurrentSysProxy");
             this.toolMenuItemCurrentSysProxy.Name = "toolMenuItemCurrentSysProxy";
+            // 
+            // copyPACURLToolStripMenuItem
+            // 
+            resources.ApplyResources(this.copyPACURLToolStripMenuItem, "copyPACURLToolStripMenuItem");
+            this.copyPACURLToolStripMenuItem.Name = "copyPACURLToolStripMenuItem";
             // 
             // toolMenuItemClearSysProxy
             // 
@@ -709,11 +721,6 @@ namespace V2RayGCon.Views.WinForms
             // 
             resources.ApplyResources(this.stopPACServerToolStripMenuItem, "stopPACServerToolStripMenuItem");
             this.stopPACServerToolStripMenuItem.Name = "stopPACServerToolStripMenuItem";
-            // 
-            // refreshSummaryToolStripMenuItem
-            // 
-            resources.ApplyResources(this.refreshSummaryToolStripMenuItem, "refreshSummaryToolStripMenuItem");
-            this.refreshSummaryToolStripMenuItem.Name = "refreshSummaryToolStripMenuItem";
             // 
             // windowToolStripMenuItem
             // 
@@ -953,5 +960,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem startPACServerToolStripMenuItem;
         private ToolStripMenuItem stopPACServerToolStripMenuItem;
         private ToolStripMenuItem refreshSummaryToolStripMenuItem;
+        private ToolStripMenuItem copyPACURLToolStripMenuItem;
     }
 }

@@ -12,6 +12,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         Service.Cache cache;
         Service.Servers servers;
         Service.PACServer pacServer;
+        Service.Setting setting;
 
         ToolStripMenuItem restartPACServer, stopPACServer, curSysProxySummary;
         MenuStrip menuContainer;
@@ -22,6 +23,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             // system proxy
             ToolStripMenuItem curSysProxySummary,
+            ToolStripMenuItem copyCurPacUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer,
@@ -54,6 +56,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
+            setting = Service.Setting.Instance;
             pacServer = Service.PACServer.Instance;
 
             this.menuContainer = menuContainer; // for invoke ui update
@@ -63,7 +66,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(curSysProxySummary, clearSysProxy, restartPACServer, stopPACServer);
+            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, clearSysProxy, restartPACServer, stopPACServer);
         }
 
         #region public method
@@ -356,6 +359,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         private void InitCtrlSysProxy(
             ToolStripMenuItem curSysProxySummary,
+            ToolStripMenuItem copyCurPacUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer)
@@ -386,6 +390,17 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     pacServer.ClearSysProxy();
                 }
+            };
+
+            copyCurPacUrl.Click += (s, a) =>
+            {
+                var proxy = setting.GetSysProxySetting();
+                var url = proxy.autoConfigUrl;
+
+                MessageBox.Show(
+                    Lib.Utils.CopyToClipboard(url) ?
+                    I18N("LinksCopied") :
+                    I18N("CopyFail"));
             };
         }
 

@@ -351,6 +351,12 @@
   <data name="toolStripMenuItemPackSelectedServers.ToolTipText" xml:space="preserve">
     <value>将选中服务器打包成一个服务器</value>
   </data>
+  <data name="refreshSummaryToolStripMenuItem.Text" xml:space="preserve">
+    <value>刷新摘要</value>
+  </data>
+  <data name="refreshSummaryToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>刷新全部服务器的摘要信息</value>
+  </data>
   <data name="toolStripMenuItemDeleteAllServer.Text" xml:space="preserve">
     <value>删除全部</value>
   </data>
@@ -366,6 +372,9 @@
   <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
     <value>删除服务器</value>
   </data>
+  <data name="copyPACURLToolStripMenuItem.Text" xml:space="preserve">
+    <value>复制PAC链接</value>
+  </data>
   <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
     <value>清除代理设置</value>
   </data>
@@ -377,12 +386,6 @@
   </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>系统代理</value>
-  </data>
-  <data name="refreshSummaryToolStripMenuItem.Text" xml:space="preserve">
-    <value>刷新摘要</value>
-  </data>
-  <data name="refreshSummaryToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>刷新全部服务器的摘要信息</value>
   </data>
   <data name="toolMenuItemServer.Text" xml:space="preserve">
     <value>服务器</value>
@@ -423,7 +426,7 @@
   <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
     <value>关于</value>
   </data>
-  <data name="menuStrip1.ToolTip" xml:space="preserve">
+  <data name="mainMneuStrip.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="toolStripDropDownButtonPager.Text" xml:space="preserve">
