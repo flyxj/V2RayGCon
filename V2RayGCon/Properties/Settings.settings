@@ -23,9 +23,6 @@
     <Setting Name="WinFormPosList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SysProxyUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="Culture" Type="System.String" Scope="User">
       <Value Profile="(Default)">auto</Value>
     </Setting>
@@ -33,6 +30,9 @@
       <Value Profile="(Default)">99</Value>
     </Setting>
     <Setting Name="PacServerSettings" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SysProxySetting" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

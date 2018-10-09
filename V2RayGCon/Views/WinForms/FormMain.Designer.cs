@@ -108,7 +108,6 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemSpeedTestOnSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemPackSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolMenuItemRefreshSummary = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteServers = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,6 +171,7 @@ namespace V2RayGCon.Views.WinForms
             // toolStrip1
             // 
             resources.ApplyResources(this.toolStrip1, "toolStrip1");
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonSelectAllCurPage,
             this.toolStripButtonInverseSelectionCurPage,
@@ -518,7 +518,6 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemSpeedTestOnSelected,
             this.toolStripMenuItemPackSelectedServers,
             this.toolStripSeparator1,
-            this.toolMenuItemRefreshSummary,
             this.toolStripMenuItemDeleteServers,
             this.systemProxyToolStripMenuItem});
             this.toolMenuItemServer.Name = "toolMenuItemServer";
@@ -639,11 +638,6 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
-            // toolMenuItemRefreshSummary
-            // 
-            this.toolMenuItemRefreshSummary.Name = "toolMenuItemRefreshSummary";
-            resources.ApplyResources(this.toolMenuItemRefreshSummary, "toolMenuItemRefreshSummary");
-            // 
             // toolStripMenuItemDeleteServers
             // 
             this.toolStripMenuItemDeleteServers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -760,6 +754,7 @@ namespace V2RayGCon.Views.WinForms
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelTotal,
             this.toolStripDropDownButtonPager,
@@ -850,7 +845,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem systemProxyToolStripMenuItem;
         private ToolStripMenuItem toolMenuItemCurrentSysProxy;
         private ToolStripMenuItem toolMenuItemClearSysProxy;
-        private ToolStripMenuItem toolMenuItemRefreshSummary;
         private ToolStripMenuItem toolStripMenuItemSpeedTestOnSelected;
         private ToolStripMenuItem toolStripMenuItemDeleteServers;
         private ToolStripMenuItem toolStripMenuItem1;

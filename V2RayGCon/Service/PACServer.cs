@@ -11,6 +11,8 @@ namespace V2RayGCon.Service
     class PACServer : Model.BaseClass.SingletonService<PACServer>
     {
         public event EventHandler OnPACServerStatusChanged;
+
+        Model.Data.ProxyRegKeyValue orgSysProxySetting;
         Lib.Net.SimpleWebServer webServer = null;
         object webServerLock = new object();
         Setting setting;
@@ -19,9 +21,16 @@ namespace V2RayGCon.Service
         PACServer()
         {
             setting = Setting.Instance;
+            orgSysProxySetting = Lib.ProxySetter.GetProxySetting();
             ClearCache();
-            setting.OnRequirePACServerStart += StartPacServer;
-            setting.OnRequirePACServerStop += StopPacServer;
+            var pacSet = setting.GetPacServerSettings();
+            var proxy = setting.GetSysProxySetting();
+            Lib.ProxySetter.SetProxy(proxy);
+
+            if (pacSet.isAutorun || !string.IsNullOrEmpty(proxy.autoConfigUrl))
+            {
+                RestartPacServer();
+            }
         }
 
         #region properties method
@@ -40,6 +49,34 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public void SetPACProx(string ip, int port, bool isSocks, bool isWhiteList)
+        {
+            var proxy = new Model.Data.ProxyRegKeyValue();
+            proxy.autoConfigUrl = GetPacUrl(isWhiteList, isSocks, ip, port);
+            Lib.ProxySetter.SetProxy(proxy);
+            setting.SaveSysProxySetting(proxy);
+            StartPacServer(this, EventArgs.Empty);
+            InvokeOnPACServerStatusChanged();
+        }
+
+        public void SetGlobalProxy(string ip, int port)
+        {
+            var proxy = new Model.Data.ProxyRegKeyValue();
+            proxy.proxyEnable = true;
+            proxy.proxyServer = string.Format("{0}:{1}", ip, port.ToString());
+            Lib.ProxySetter.SetProxy(proxy);
+            setting.SaveSysProxySetting(proxy);
+            InvokeOnPACServerStatusChanged();
+        }
+
+        public void ClearSysProxy()
+        {
+            var proxy = new Model.Data.ProxyRegKeyValue();
+            setting.SaveSysProxySetting(proxy);
+            Lib.ProxySetter.SetProxy(proxy);
+            InvokeOnPACServerStatusChanged();
+        }
+
         public void RestartPacServer()
         {
             var pacSetting = setting.GetPacServerSettings();
@@ -70,6 +107,17 @@ namespace V2RayGCon.Service
             InvokeOnPACServerStatusChanged();
         }
 
+        public void StopPacServer()
+        {
+            StopPacServer(this, EventArgs.Empty);
+        }
+
+        public void Cleanup()
+        {
+            StopPacServer(this, EventArgs.Empty);
+            Lib.ProxySetter.SetProxy(orgSysProxySetting);
+        }
+
         public string GetPacUrl(bool isWhiteList, bool isSocks, string ip, int port)
         {
             var pacSetting = setting.GetPacServerSettings();
@@ -82,18 +130,6 @@ namespace V2RayGCon.Service
                 ip,
                 port.ToString(),
                 Lib.Utils.RandomHex(16));
-        }
-
-        public void StopPacServer()
-        {
-            StopPacServer(this, EventArgs.Empty);
-        }
-
-        public void Cleanup()
-        {
-            StopPacServer(this, EventArgs.Empty);
-            setting.OnRequirePACServerStart -= StartPacServer;
-            setting.OnRequirePACServerStop -= StopPacServer;
         }
         #endregion
 
@@ -111,7 +147,6 @@ namespace V2RayGCon.Service
             }
             InvokeOnPACServerStatusChanged();
         }
-
 
         void InvokeOnPACServerStatusChanged()
         {

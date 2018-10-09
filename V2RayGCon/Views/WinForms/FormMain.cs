@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
 
 namespace V2RayGCon.Views.WinForms
 {
@@ -48,7 +47,6 @@ namespace V2RayGCon.Views.WinForms
             {
                 setting.SaveFormRect(this);
                 ToolStripManager.SaveSettings(this);
-                setting.OnSysProxyChanged -= OnSysProxyChangedHandler;
                 formMainCtrl.Cleanup();
                 servers.LazyGC();
             };
@@ -59,11 +57,7 @@ namespace V2RayGCon.Views.WinForms
                 Properties.Resources.Version);
 
             formMainCtrl = InitFormMainCtrl();
-
             BindToolStripButtonToMenuItem();
-
-            toolMenuItemCurrentSysProxy.Text = GetCurrentSysProxySetting();
-            setting.OnSysProxyChanged += OnSysProxyChangedHandler;
         }
 
         #region private method
@@ -180,14 +174,15 @@ namespace V2RayGCon.Views.WinForms
                 selectTimeoutAllServersToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
+                menuStrip1,
                 toolStripMenuItemStopSelected,
                 toolStripMenuItemRestartSelected,
 
                 // sys proxy
+                toolMenuItemCurrentSysProxy,
                 toolMenuItemClearSysProxy,
                 startPACServerToolStripMenuItem,
                 stopPACServerToolStripMenuItem,
-                toolMenuItemRefreshSummary,
 
                 toolStripMenuItemSpeedTestOnSelected,
                 toolStripMenuItemDeleteSelectedServers,
@@ -208,34 +203,6 @@ namespace V2RayGCon.Views.WinForms
             return ctrl;
         }
 
-        void OnSysProxyChangedHandler(object sender, EventArgs args)
-        {
-            menuStrip1.Invoke((MethodInvoker)delegate
-            {
-                toolMenuItemCurrentSysProxy.Text = GetCurrentSysProxySetting();
-            });
-        }
-
-        string GetCurrentSysProxySetting()
-        {
-            var str = I18N("CurSysProxy");
-            var proxy = string.Empty;
-
-            if (Lib.ProxySetter.GetProxyState())
-            {
-                proxy = Lib.ProxySetter.GetProxyUrl();
-            }
-
-            if (string.IsNullOrEmpty(proxy))
-            {
-                str = string.Format("{0}:{1}", str, I18N("NotSet"));
-            }
-            else
-            {
-                str = string.Format("{0} http://{1}", str, proxy);
-            }
-            return str;
-        }
         #endregion
 
         #region UI event handler

@@ -8,14 +8,19 @@ namespace V2RayGCon.Views.UserControls
 {
     public partial class ServerUI : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
+        Service.Setting setting;
+        Service.PACServer pacServer;
         Controller.ServerCtrl serverItem;
+
         public bool isRunning;
         int[] formHeight;
         Bitmap[] foldingButtonIcons;
 
-
         public ServerUI(Controller.ServerCtrl serverItem)
         {
+            setting = Service.Setting.Instance;
+            pacServer = Service.PACServer.Instance;
+
             this.serverItem = serverItem;
             InitializeComponent();
 
@@ -42,6 +47,40 @@ namespace V2RayGCon.Views.UserControls
         }
 
         #region private method
+        private void SetSysProxyToPACMode(bool isWhiteList)
+        {
+            var index = cboxInbound.SelectedIndex;
+            if (index == (int)Model.Data.Enum.ProxyTypes.Config)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
+            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+
+            pacServer.SetPACProx(ip, port, isSocks, isWhiteList);
+            Lib.UI.ShowMessageBoxDoneAsync();
+        }
+
+        void CopyPACUrlToClipboard(bool isWhiteList)
+        {
+            var index = cboxInbound.SelectedIndex;
+            if (index == (int)Model.Data.Enum.ProxyTypes.Config)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
+            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+            var pacUrl = pacServer.GetPacUrl(isWhiteList, isSocks, ip, port);
+            MessageBox.Show(
+                Lib.Utils.CopyToClipboard(pacUrl) ?
+                I18N("LinksCopied") :
+                I18N("CopyFail"));
+        }
+
         void RestartServer()
         {
             var server = this.serverItem;
@@ -437,64 +476,10 @@ namespace V2RayGCon.Views.UserControls
         {
             ServerListItem_MouseDown(this, e);
         }
-        #endregion
-
-        private void globalProxyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
-            {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
-                return;
-            }
-
-            Service.Setting.Instance.SetSystemProxy(
-                this.tboxInboundAddr.Text);
-
-            // issue #9
-            MessageBox.Show(I18N("SetSysProxyDone"));
-        }
 
         private void pACBlackListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetSysProxyToPACMode(false);
-        }
-
-        private void SetSysProxyToPACMode(bool isWhiteList)
-        {
-            var index = cboxInbound.SelectedIndex;
-            if (index == (int)Model.Data.Enum.ProxyTypes.Config)
-            {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
-                return;
-            }
-
-            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
-            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
-
-            Service.Setting.Instance.InvokeOnRequirePACServerStart();
-            var pacUrl = Service.PACServer.Instance.GetPacUrl(isWhiteList, isSocks, ip, port);
-            Service.Setting.Instance.SetSystemProxy(pacUrl);
-            Lib.UI.ShowMessageBoxDoneAsync();
-        }
-
-        void CopyPACUrlToClipboard(bool isWhiteList)
-        {
-            var index = cboxInbound.SelectedIndex;
-            if (index == (int)Model.Data.Enum.ProxyTypes.Config)
-            {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
-                return;
-            }
-
-            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
-            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
-
-            var pacUrl = Service.PACServer.Instance.GetPacUrl(isWhiteList, isSocks, ip, port);
-
-            MessageBox.Show(
-                Lib.Utils.CopyToClipboard(pacUrl) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
         }
 
         private void pACWhiteListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -511,5 +496,21 @@ namespace V2RayGCon.Views.UserControls
         {
             CopyPACUrlToClipboard(true);
         }
+
+        private void globalProxyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
+            {
+                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                return;
+            }
+
+            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+            pacServer.SetGlobalProxy(ip, port);
+
+            // issue #9
+            MessageBox.Show(I18N("SetSysProxyDone"));
+        }
+        #endregion
     }
 }

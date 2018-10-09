@@ -45,16 +45,15 @@ namespace V2RayGCon.Controller.OptionComponent
         #region public method
         public void UpdateSystemProxy()
         {
-            var curProxyUrl = setting.curSysProxyUrl;
-            if (string.IsNullOrEmpty(curProxyUrl)
-                || !curProxyUrl.Contains("?"))
+            var proxy = setting.GetSysProxySetting();
+            if (string.IsNullOrEmpty(proxy.autoConfigUrl))
             {
                 // do not need to update
                 return;
             }
 
             // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
-            Uri uri = new Uri(curProxyUrl);
+            Uri uri = new Uri(proxy.autoConfigUrl);
             var arguments = uri.Query
                 .Substring(1) // Remove '?'
                 .Split('&')
@@ -65,6 +64,7 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 return;
             }
+
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
 
             arguments.TryGetValue("ip", out string ip);
@@ -72,7 +72,7 @@ namespace V2RayGCon.Controller.OptionComponent
             arguments.TryGetValue("type", out string type);
             arguments.TryGetValue("proto", out string proto);
 
-            if (string.IsNullOrEmpty(ip) 
+            if (string.IsNullOrEmpty(ip)
                 || string.IsNullOrEmpty(port)
                 || string.IsNullOrEmpty(type)
                 || string.IsNullOrEmpty(proto))
@@ -80,16 +80,12 @@ namespace V2RayGCon.Controller.OptionComponent
                 return;
             }
 
-            bool isWhiteList = type == "whitelist";
-            var newProxyUrl = pacServer.GetPacUrl(
-                type == "whitelist",
-                proto == "socks",
+            pacServer.SetPACProx(
                 ip,
-                Lib.Utils.Str2Int(port));
-
-            setting.SetSystemProxy(newProxyUrl);
+                Lib.Utils.Str2Int(port),
+                proto == "socks",
+                type == "whitelist");
         }
-
 
         public override bool SaveOptions()
         {

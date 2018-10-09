@@ -15,10 +15,6 @@ namespace V2RayGCon.Service
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
-        public event EventHandler
-            OnSysProxyChanged,
-            OnRequirePACServerStart,
-            OnRequirePACServerStop;
 
         #region Properties
         public int serverPanelPageSize
@@ -33,16 +29,6 @@ namespace V2RayGCon.Service
                     Lib.Utils.Clamp(value, 1, 101);
                 Properties.Settings.Default.Save();
             }
-        }
-
-        public void InvokeOnRequirePACServerStart()
-        {
-            OnRequirePACServerStart?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void InvokeOnRequirePACServerStop()
-        {
-            OnRequirePACServerStop?.Invoke(this, EventArgs.Empty);
         }
 
         public CultureInfo orgCulture = null;
@@ -67,19 +53,6 @@ namespace V2RayGCon.Service
                     }
                 }
                 _logCache.Enqueue(value);
-            }
-        }
-
-        public string curSysProxyUrl
-        {
-            get
-            {
-                return Properties.Settings.Default.SysProxyUrl;
-            }
-            set
-            {
-                Properties.Settings.Default.SysProxyUrl = value.ToString();
-                Properties.Settings.Default.Save();
             }
         }
 
@@ -112,8 +85,6 @@ namespace V2RayGCon.Service
             }
 
         }
-
-        public Tuple<bool, string> orgSysProxyInfo = null;
 
         public bool isShowConfigerToolsPanel
         {
@@ -152,6 +123,29 @@ namespace V2RayGCon.Service
                     SetCulture("zh-CN");
                     break;
             }
+        }
+
+        public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
+        {
+            Properties.Settings.Default.SysProxySetting =
+                JsonConvert.SerializeObject(proxy);
+            Properties.Settings.Default.Save();
+        }
+
+        public Model.Data.ProxyRegKeyValue GetSysProxySetting()
+        {
+            var empty = new Model.Data.ProxyRegKeyValue();
+            Model.Data.ProxyRegKeyValue proxy = null;
+            try
+            {
+                proxy = JsonConvert.DeserializeObject<Model.Data.ProxyRegKeyValue>(
+                    Properties.Settings.Default.SysProxySetting);
+            }
+            catch
+            {
+                return empty;
+            }
+            return proxy ?? empty;
         }
 
         public void SavePacServerSettings(Model.Data.PacServerSettings pacSetting)
@@ -217,50 +211,6 @@ namespace V2RayGCon.Service
             }
 
             return list;
-        }
-
-        public void SetSystemProxy(string link)
-        {
-            if (string.IsNullOrEmpty(link))
-            {
-                return;
-            }
-
-            Lib.ProxySetter.SetProxy(link);
-            curSysProxyUrl = link;
-            InvokeOnRequirePACServerStart();
-            InvokeEventOnSysProxyChanged();
-        }
-
-        public void ClearSystemProxy()
-        {
-            curSysProxyUrl = string.Empty;
-            Lib.ProxySetter.ClearProxy();
-            InvokeEventOnSysProxyChanged();
-            InvokeOnRequirePACServerStop();
-        }
-
-        public void LoadSystemProxy()
-        {
-            if (!string.IsNullOrEmpty(curSysProxyUrl))
-            {
-                InvokeOnRequirePACServerStart();
-                Lib.ProxySetter.SetProxy(curSysProxyUrl);
-            }
-        }
-
-        public void SaveOriginalSystemProxyInfo()
-        {
-            orgSysProxyInfo = new Tuple<bool, string>(
-                Lib.ProxySetter.GetProxyState(),
-                Lib.ProxySetter.GetProxyUrl());
-        }
-
-        public void RestoreOriginalSystemProxyInfo()
-        {
-            Lib.ProxySetter.SetProxy(
-                orgSysProxyInfo.Item2,
-                orgSysProxyInfo.Item1);
         }
 
         public void SaveFormRect(Form form)
@@ -405,15 +355,6 @@ namespace V2RayGCon.Service
             }
 
             return winFormRectListCache;
-        }
-
-        void InvokeEventOnSysProxyChanged()
-        {
-            try
-            {
-                OnSysProxyChanged?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
         }
         #endregion
     }

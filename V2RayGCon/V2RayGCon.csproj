@@ -134,6 +134,7 @@
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
     <Compile Include="Model\BaseClass\FormController.cs" />
     <Compile Include="Controller\ConfigerComponent\ConfigerComponentController.cs" />
+    <Compile Include="Model\Data\ProxyRegKeyValue.cs" />
     <Compile Include="Model\Data\PacServerSettings.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />

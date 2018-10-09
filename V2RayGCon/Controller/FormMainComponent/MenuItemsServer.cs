@@ -13,16 +13,18 @@ namespace V2RayGCon.Controller.FormMainComponent
         Service.Servers servers;
         Service.PACServer pacServer;
 
-        ToolStripMenuItem restartPACServer, stopPACServer;
+        ToolStripMenuItem restartPACServer, stopPACServer, curSysProxySummary;
+        MenuStrip menuContainer;
 
         public MenuItemsServer(
+            MenuStrip menuContainer, // for invoke ui refresh
             ToolStripMenuItem stopSelected,
             ToolStripMenuItem restartSelected,
 
+            ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer,
-            ToolStripMenuItem refreshSummary,
 
             ToolStripMenuItem speedTestOnSelected,
             ToolStripMenuItem deleteSelected,
@@ -44,16 +46,14 @@ namespace V2RayGCon.Controller.FormMainComponent
             servers = Service.Servers.Instance;
             pacServer = Service.PACServer.Instance;
 
+            this.menuContainer = menuContainer; // for invoke ui update
+
             InitCtrlSorting(sortBySpeed, sortBySummary);
             InitCtrlView(moveToTop, moveToBottom, collapsePanel, semiFoldingPanel, expansePanel);
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlDelete(deleteSelected, deleteAllItems);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(
-                refreshSummary,
-                clearSysProxy,
-                restartPACServer,
-                stopPACServer);
+            InitCtrlSysProxy(curSysProxySummary, clearSysProxy, restartPACServer, stopPACServer);
         }
 
         #region public method
@@ -69,6 +69,27 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
+        string GenCurSysProxySettingString()
+        {
+            var strCurProxy = I18N("CurSysProxy");
+            var proxy = Lib.ProxySetter.GetProxySetting();
+
+            if (!string.IsNullOrEmpty(proxy.autoConfigUrl))
+            {
+                return string.Format("{0} {1}", strCurProxy, proxy.autoConfigUrl);
+            }
+
+            if (proxy.proxyEnable)
+            {
+                return string.Format(
+                    "{0} http://{1}",
+                    strCurProxy,
+                    proxy.proxyServer);
+            }
+
+            return string.Format("{0}:{1}", strCurProxy, I18N("NotSet"));
+        }
+
         EventHandler GenSelectedServerHandler(Action lambda)
         {
             return (s, a) =>
@@ -302,20 +323,27 @@ namespace V2RayGCon.Controller.FormMainComponent
         void OnPACServerStatusChangedHandler(object sender, EventArgs args)
         {
             var isRunning = pacServer.isWebServRunning;
-            this.restartPACServer.Checked = isRunning;
-            this.stopPACServer.Checked = !isRunning;
+            var curSetting = GenCurSysProxySettingString();
 
+            this.menuContainer?.Invoke((MethodInvoker)delegate
+            {
+                this.curSysProxySummary.Text =
+                Lib.Utils.CutStr(curSetting, 32);
+                this.restartPACServer.Checked = isRunning;
+                this.stopPACServer.Checked = !isRunning;
+
+            });
         }
 
         private void InitCtrlSysProxy(
-            ToolStripMenuItem refreshSummary,
+            ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer)
         {
-
             this.restartPACServer = restartPACServer;
             this.stopPACServer = stopPACServer;
+            this.curSysProxySummary = curSysProxySummary;
 
             // refresh check status
             OnPACServerStatusChangedHandler(this, EventArgs.Empty);
@@ -337,11 +365,11 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
                 {
-                    Service.Setting.Instance.ClearSystemProxy();
+                    pacServer.ClearSysProxy();
                 }
             };
 
-            refreshSummary.Click += (s, a) =>
+            curSysProxySummary.Click += (s, a) =>
             {
                 cache.html.Clear();
                 servers.UpdateAllServersSummary();
