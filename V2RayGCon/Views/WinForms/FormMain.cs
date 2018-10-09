@@ -32,7 +32,7 @@ namespace V2RayGCon.Views.WinForms
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
 #endif
-            
+
             this.Show();
         }
 
@@ -42,12 +42,13 @@ namespace V2RayGCon.Views.WinForms
             Lib.UI.AutoScaleToolSripControls(this, 16);
 
             // https://alexpkent.wordpress.com/2011/05/11/25/
-            ToolStripManager.LoadSettings(this);
+            // 添加新控件的时候会有bug,不显示新控件
+            // ToolStripManager.LoadSettings(this); 
 
             this.FormClosed += (s, a) =>
             {
                 setting.SaveFormRect(this);
-                ToolStripManager.SaveSettings(this);
+                // ToolStripManager.SaveSettings(this);
                 formMainCtrl.Cleanup();
                 servers.LazyGC();
             };
