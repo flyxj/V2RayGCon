@@ -89,6 +89,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             servers.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
             servers.OnRequireStatusBarUpdate -= OnRequireStatusBarUpdateHandler;
             lazyStatusBarUpdateTimer?.Release();
+            lazyShowSearchResultTimer?.Release();
             RemoveAllServersConrol(true);
         }
 
@@ -96,7 +97,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             var controlList = GetAllServersControl();
 
-            flyPanel.Invoke((MethodInvoker)delegate
+            flyPanel?.Invoke((MethodInvoker)delegate
             {
                 flyPanel.SuspendLayout();
                 flyPanel.Controls.Clear();
@@ -213,9 +214,20 @@ namespace V2RayGCon.Controller.FormMainComponent
                         paging[1]);
                 }
 
-                tsdbtnPager.Visible = showPager;
-                tslbNextPage.Visible = showPager;
-                tslbPrePage.Visible = showPager;
+                if (tsdbtnPager.Visible != showPager)
+                {
+                    tsdbtnPager.Visible = showPager;
+                }
+
+                if (tslbNextPage.Visible != showPager)
+                {
+                    tslbNextPage.Visible = showPager;
+                }
+
+                if (tslbPrePage.Visible != showPager)
+                {
+                    tslbPrePage.Visible = showPager;
+                }
 
                 if (text != tslbTotal.Text)
                 {
@@ -309,7 +321,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             cboxMarkFilter.DropDown += (s, e) =>
             {
                 // cboxMarkFilter has no Invoke method.
-                this.flyPanel.Invoke((MethodInvoker)delegate
+                this.flyPanel?.Invoke((MethodInvoker)delegate
                 {
                     UpdateMarkFilterItemList(cboxMarkFilter);
                     Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMarkFilter);
@@ -345,7 +357,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 control.Cleanup();
             }
 
-            flyPanel.Invoke((MethodInvoker)delegate
+            flyPanel?.Invoke((MethodInvoker)delegate
             {
                 foreach (var control in controlList)
                 {
