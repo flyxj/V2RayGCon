@@ -49,7 +49,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem foldPanel,
-            ToolStripMenuItem semiFoldingPanel,
             ToolStripMenuItem expansePanel,
             ToolStripMenuItem sortBySpeed,
             ToolStripMenuItem sortBySummary)
@@ -62,7 +61,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.menuContainer = menuContainer; // for invoke ui update
 
             InitCtrlSorting(sortBySpeed, sortBySummary);
-            InitCtrlView(moveToTop, moveToBottom, foldPanel, semiFoldingPanel, expansePanel);
+            InitCtrlView(moveToTop, moveToBottom, foldPanel, expansePanel);
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
@@ -227,7 +226,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
             ToolStripMenuItem collapsePanel,
-            ToolStripMenuItem semiFoldingPanel,
             ToolStripMenuItem expansePanel)
         {
             expansePanel.Click += GenSelectedServerHandler(() =>
@@ -235,14 +233,9 @@ namespace V2RayGCon.Controller.FormMainComponent
                 SetServerItemPanelCollapseLevel(0);
             });
 
-            semiFoldingPanel.Click += GenSelectedServerHandler(() =>
-            {
-                SetServerItemPanelCollapseLevel(1);
-            });
-
             collapsePanel.Click += GenSelectedServerHandler(() =>
             {
-                SetServerItemPanelCollapseLevel(2);
+                SetServerItemPanelCollapseLevel(1);
             });
 
             moveToTop.Click += GenSelectedServerHandler(() =>

@@ -515,9 +515,6 @@ Are you sure want to continue?</value>
   <data name="Timeout" xml:space="preserve">
     <value>Timeout</value>
   </data>
-  <data name="VisitWebPageTest" xml:space="preserve">
-    <value>Visit web page test</value>
-  </data>
   <data name="LastTestNoFinishYet" xml:space="preserve">
     <value>Last test is not finished yet. Please wait till test finish.</value>
   </data>

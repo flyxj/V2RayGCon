@@ -26,13 +26,12 @@ namespace V2RayGCon.Views.UserControls
 
             this.foldingButtonIcons = new Bitmap[] {
                 Properties.Resources.StepBackArrow_16x,
-                Properties.Resources.GlyphUp_16x,
+                // Properties.Resources.GlyphUp_16x,
                 Properties.Resources.StepOverArrow_16x,
             };
 
             this.formHeight = new int[] {
                 this.Height,  // collapseLevel= 0
-                this.lbStatus.Top,
                 this.cboxInbound.Top,
             };
 
@@ -120,8 +119,8 @@ namespace V2RayGCon.Views.UserControls
                 UpdateChkSelected();
                 ShowOnOffStatus(serverItem.server.isRunning);
                 UpdateServerMark();
-                UpdateFormCollapseMode();
-                SetTitleToolTip();
+                UpdateFormFoldingMode();
+                UpdateToolsTip();
             });
         }
 
@@ -134,20 +133,19 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        private void SetTitleToolTip()
+        private void UpdateToolsTip()
         {
             var status = serverItem.status;
-            if (string.IsNullOrEmpty(status))
+            if (toolTip1.GetToolTip(lbStatus) != status)
             {
-                return;
+                toolTip1.SetToolTip(lbStatus, status);
             }
 
-            if (toolTip1.GetToolTip(lbServerTitle) == status)
+            var title = lbServerTitle.Text;
+            if (toolTip1.GetToolTip(lbServerTitle) != title)
             {
-                return;
+                toolTip1.SetToolTip(lbServerTitle, title);
             }
-
-            toolTip1.SetToolTip(lbServerTitle, status);
         }
 
         private void SetAICLable()
@@ -162,9 +160,9 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        void UpdateFormCollapseMode()
+        void UpdateFormFoldingMode()
         {
-            var level = Lib.Utils.Clamp(serverItem.collapseLevel, 0, 3);
+            var level = Lib.Utils.Clamp(serverItem.collapseLevel, 0, foldingButtonIcons.Length);
 
             if (btnIsCollapse.BackgroundImage != foldingButtonIcons[level])
             {
@@ -423,11 +421,6 @@ namespace V2RayGCon.Views.UserControls
             ServerListItem_MouseDown(this, e);
         }
 
-        private void label1_MouseDown(object sender, MouseEventArgs e)
-        {
-            ServerListItem_MouseDown(this, e);
-        }
-
         private void lbRunning_MouseDown(object sender, MouseEventArgs e)
         {
             ServerListItem_MouseDown(this, e);
@@ -465,13 +458,8 @@ namespace V2RayGCon.Views.UserControls
 
         private void btnIsCollapse_Click(object sender, EventArgs e)
         {
-            var level = (serverItem.collapseLevel % 3 + 1) % 3;
+            var level = (serverItem.collapseLevel + 1) % 2;
             serverItem.SetPropertyOnDemand(ref serverItem.collapseLevel, level);
-        }
-
-        private void label2_MouseDown(object sender, MouseEventArgs e)
-        {
-            ServerListItem_MouseDown(this, e);
         }
 
         private void lbIsAutorun_MouseDown(object sender, MouseEventArgs e)

@@ -219,14 +219,12 @@ namespace V2RayGCon.Views.WinForms
                 //ToolStripMenuItem moveToTop,
                 //ToolStripMenuItem moveToBottom,
                 //ToolStripMenuItem foldPanel,
-                //ToolStripMenuItem semiFoldingPanel,
                 //ToolStripMenuItem expansePanel,
                 //ToolStripMenuItem sortBySpeed,
                 //ToolStripMenuItem sortBySummary)
                 toolStripMenuItemMoveToTop,
                 toolStripMenuItemMoveToBottom,
                 toolStripMenuItemFoldingPanel,
-                toolStripMenuItemSemiFoldingPanel,
                 toolStripMenuItemExpansePanel,
                 toolStripMenuItemSortBySpeedTest,
                 toolStripMenuItemSortBySummary));

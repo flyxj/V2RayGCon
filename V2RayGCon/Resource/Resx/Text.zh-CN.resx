@@ -506,9 +506,6 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Timeout" xml:space="preserve">
     <value>超时</value>
   </data>
-  <data name="VisitWebPageTest" xml:space="preserve">
-    <value>访问网页测试</value>
-  </data>
   <data name="LastTestNoFinishYet" xml:space="preserve">
     <value>上次测试未完成，请等测试完成。</value>
   </data>

@@ -721,34 +721,34 @@
     <value>Select</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
     <value>Move to top</value>
   </data>
   <data name="toolStripMenuItemMoveToBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemMoveToBottom.Text" xml:space="preserve">
     <value>Move to bottom</value>
   </data>
   <data name="toolStripMenuItemSortBySpeedTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemSortBySpeedTest.Text" xml:space="preserve">
     <value>Sort by speed test</value>
   </data>
   <data name="toolStripMenuItemSortBySummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemSortBySummary.Text" xml:space="preserve">
     <value>Sort by summary</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
+    <value>177, 6</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
     <value>Modify settings</value>
@@ -757,10 +757,10 @@
     <value>Batch modify servers settings. Selected servers which are running will reboot.</value>
   </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
+    <value>177, 6</value>
   </data>
   <data name="toolStripMenuItemFoldingPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemFoldingPanel.Text" xml:space="preserve">
     <value>Folding panel</value>
@@ -768,17 +768,8 @@
   <data name="toolStripMenuItemFoldingPanel.ToolTipText" xml:space="preserve">
     <value>Fold server panel into a single line mode.</value>
   </data>
-  <data name="toolStripMenuItemSemiFoldingPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="toolStripMenuItemSemiFoldingPanel.Text" xml:space="preserve">
-    <value>Semi-folding panel</value>
-  </data>
-  <data name="toolStripMenuItemSemiFoldingPanel.ToolTipText" xml:space="preserve">
-    <value>Fold server panel into couple lines mode.</value>
-  </data>
   <data name="toolStripMenuItemExpansePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
     <value>Expand panel</value>
@@ -937,25 +928,25 @@
     <value>Server</value>
   </data>
   <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
     <value>Config editor</value>
   </data>
   <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolMenuItemQRCode.Text" xml:space="preserve">
     <value>QRCode</value>
   </data>
   <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolMenuItemLog.Text" xml:space="preserve">
     <value>Log</value>
   </data>
   <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>Options</value>
@@ -7698,12 +7689,6 @@
     <value>toolStripMenuItemFoldingPanel</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemFoldingPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemSemiFoldingPanel.Name" xml:space="preserve">
-    <value>toolStripMenuItemSemiFoldingPanel</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemSemiFoldingPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemExpansePanel.Name" xml:space="preserve">

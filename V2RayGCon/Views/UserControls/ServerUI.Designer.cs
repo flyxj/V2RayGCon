@@ -34,7 +34,6 @@
             this.lbStatus = new System.Windows.Forms.Label();
             this.cboxInbound = new System.Windows.Forms.ComboBox();
             this.tboxInboundAddr = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnMenu = new System.Windows.Forms.Button();
             this.lbRunning = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -44,7 +43,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnIsCollapse = new System.Windows.Forms.Button();
             this.lbIsAutorun = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnMultiboxing = new System.Windows.Forms.Button();
             this.ctxMenuStripMore = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -86,6 +84,7 @@
             // 
             // lbStatus
             // 
+            this.lbStatus.AutoEllipsis = true;
             this.lbStatus.Cursor = System.Windows.Forms.Cursors.SizeAll;
             resources.ApplyResources(this.lbStatus, "lbStatus");
             this.lbStatus.Name = "lbStatus";
@@ -114,14 +113,6 @@
             this.tboxInboundAddr.Name = "tboxInboundAddr";
             this.toolTip1.SetToolTip(this.tboxInboundAddr, resources.GetString("tboxInboundAddr.ToolTip"));
             this.tboxInboundAddr.TextChanged += new System.EventHandler(this.tboxInboundAddr_TextChanged);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.label2.Name = "label2";
-            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
-            this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label2_MouseDown);
             // 
             // btnMenu
             // 
@@ -193,14 +184,6 @@
             this.lbIsAutorun.Name = "lbIsAutorun";
             this.toolTip1.SetToolTip(this.lbIsAutorun, resources.GetString("lbIsAutorun.ToolTip"));
             this.lbIsAutorun.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbIsAutorun_MouseDown);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.label1.Name = "label1";
-            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
-            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
             // 
             // btnStop
             // 
@@ -393,7 +376,6 @@
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lbIsAutorun);
             this.Controls.Add(this.btnIsCollapse);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.cboxMark);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.chkSelected);
@@ -401,7 +383,6 @@
             this.Controls.Add(this.btnMenu);
             this.Controls.Add(this.cboxInbound);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.lbRunning);
             this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.lbServerTitle);
@@ -421,7 +402,6 @@
         private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.ComboBox cboxInbound;
         private System.Windows.Forms.TextBox tboxInboundAddr;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnMenu;
         private System.Windows.Forms.Label lbRunning;
         private System.Windows.Forms.ToolTip toolTip1;
@@ -441,7 +421,6 @@
         private System.Windows.Forms.ToolStripMenuItem setAsSystemProxyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ComboBox cboxMark;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemStart;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemIsAutorun;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemIsInjectImport;

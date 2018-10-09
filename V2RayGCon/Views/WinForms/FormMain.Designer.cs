@@ -97,7 +97,6 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemModifySettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemFoldingPanel = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemSemiFoldingPanel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemExpansePanel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCopyAsV2rayLink = new System.Windows.Forms.ToolStripMenuItem();
@@ -536,7 +535,6 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemModifySettings,
             this.toolStripSeparator4,
             this.toolStripMenuItemFoldingPanel,
-            this.toolStripMenuItemSemiFoldingPanel,
             this.toolStripMenuItemExpansePanel});
             this.toolStripMenuItemModifySelected.Name = "toolStripMenuItemModifySelected";
             resources.ApplyResources(this.toolStripMenuItemModifySelected, "toolStripMenuItemModifySelected");
@@ -580,11 +578,6 @@ namespace V2RayGCon.Views.WinForms
             // 
             this.toolStripMenuItemFoldingPanel.Name = "toolStripMenuItemFoldingPanel";
             resources.ApplyResources(this.toolStripMenuItemFoldingPanel, "toolStripMenuItemFoldingPanel");
-            // 
-            // toolStripMenuItemSemiFoldingPanel
-            // 
-            this.toolStripMenuItemSemiFoldingPanel.Name = "toolStripMenuItemSemiFoldingPanel";
-            resources.ApplyResources(this.toolStripMenuItemSemiFoldingPanel, "toolStripMenuItemSemiFoldingPanel");
             // 
             // toolStripMenuItemExpansePanel
             // 
@@ -905,7 +898,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripDropDownButton toolStripDropDownButtonPager;
         private ToolStripStatusLabel toolStripStatusLabelPrePage;
         private ToolStripStatusLabel toolStripStatusLabelNextPage;
-        private ToolStripMenuItem toolStripMenuItemSemiFoldingPanel;
         private ToolStripMenuItem currentPageToolStripMenuItem;
         private ToolStripMenuItem selectAllCurPageToolStripMenuItem;
         private ToolStripMenuItem invertSelectionCurPageToolStripMenuItem;

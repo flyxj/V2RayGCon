@@ -20,7 +20,7 @@ namespace V2RayGCon.Controller
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite;
         public string name, summary, inboundIP, mark;
-        public int overwriteInboundType, inboundPort,collapseLevel;
+        public int overwriteInboundType, inboundPort, collapseLevel;
         public double index;
 
 
@@ -172,7 +172,7 @@ namespace V2RayGCon.Controller
             }
 
             var url = StrConst("SpeedTestUrl");
-            var text = I18N("Testing") + " ...";
+            var text = I18N("Testing");
             log(text);
             SendLog(url);
 
@@ -181,9 +181,12 @@ namespace V2RayGCon.Controller
             speedTester.RestartCore(config);
 
             this.speedTestResult = Lib.Utils.VisitWebPageSpeedTest(url, port);
-            text = string.Format("{0}:{1}",
-                I18N("VisitWebPageTest"),
-                speedTestResult < long.MaxValue ? speedTestResult.ToString() + "ms" : I18N("Timeout"));
+
+            text = string.Format("{0}",
+                speedTestResult < long.MaxValue ?
+                speedTestResult.ToString() + "ms" :
+                I18N("Timeout"));
+
             log(text);
             speedTester.StopCore();
             speedTester.OnLog -= OnLogHandler;
