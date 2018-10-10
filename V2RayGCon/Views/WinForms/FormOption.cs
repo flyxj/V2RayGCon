@@ -73,13 +73,13 @@ namespace V2RayGCon.Views.WinForms
             ctrl.Plug(
                 new Controller.OptionComponent.TabSetting(
                     cboxSettingLanguage,
-                    cboxSettingPageSize));
+                    cboxSettingPageSize,
+                    chkSetServAutotrack));
 
             ctrl.Plug(
                 new Controller.OptionComponent.PacServer(
                     tboxPacServPort,
                     chkPacServIsAutorun,
-                    chkPacAutoTrack,
                     rtboxPacServWhiteList,
                     rtboxPacServBlackList));
 

@@ -154,5 +154,17 @@ namespace V2RayGCon.Properties {
                 this["SysProxySetting"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServerTracker {
+            get {
+                return ((string)(this["ServerTracker"]));
+            }
+            set {
+                this["ServerTracker"] = value;
+            }
+        }
     }
 }

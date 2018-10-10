@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -428,6 +429,69 @@ namespace V2RayGCon.Controller
             return config.ToString(Formatting.None);
         }
 
+        void TrackServer(JObject parsedConfig)
+        {
+            var setting = Service.Setting.Instance;
+            if (!setting.isServerTrackerOn)
+            {
+                return;
+            }
+
+
+
+            var servers = Service.Servers.Instance;
+            SaveTrackedServerList(setting, servers);
+
+            var pacServer = Service.PACServer.Instance;
+            var inboundProtocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
+            UpdateSystemProxySetting(setting, pacServer, inboundProtocol);
+        }
+
+        private void UpdateSystemProxySetting(Service.Setting setting, Service.PACServer pacServer, string inboundProtocol)
+        {
+            Action<string> error = (s) =>
+            {
+                var msgBox = I18N("SetSysProxyFail");
+                Task.Factory.StartNew(() => MessageBox.Show(msgBox));
+                SendLog(I18N("AutoTracker") + ":" + s);
+            };
+
+            if (string.IsNullOrEmpty(inboundProtocol))
+            {
+                error("No inbound protocol!");
+                return;
+            }
+
+            var protocol = inboundProtocol.ToLower();
+            var proxySetting = setting.GetSysProxySetting();
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                if (protocol != "socks" && protocol != "http")
+                {
+                    error("PAC proxy support socks and http protocol only.");
+                    return;
+                }
+            }
+            else if (proxySetting.proxyEnable && protocol != "http")
+            {
+                error("Global proxy support http protocol only!");
+                return;
+            }
+
+            pacServer.LazySysProxyUpdater(protocol == "socks", inboundIP, inboundPort);
+        }
+
+        private void SaveTrackedServerList(Service.Setting setting, Service.Servers servers)
+        {
+            var runningServerList = servers.GetServerList()
+                .Where(s => s.isServerOn && s.config != this.config)
+                .Select(s => s.config)
+                .ToList();
+            runningServerList.Insert(0, this.config);
+            var trackerSetting = setting.GetServerTrackerSetting();
+            trackerSetting.serverList = runningServerList;
+            setting.SaveServerTrackerSetting(trackerSetting);
+        }
 
         void RestartCoreWorker(Action next)
         {
@@ -450,17 +514,7 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
-            if (overwriteInboundType == 1 || overwriteInboundType == 2)
-            {
-                var pacServSetting = Service.Setting.Instance.GetPacServerSettings();
-                if (pacServSetting.isAutoTrack)
-                {
-                    var inboundType = Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType];
-                    var isSocks = inboundType == "socks";
-                    Service.PACServer.Instance.LazySysProxyUpdater(
-                         isSocks, inboundIP, inboundPort);
-                }
-            }
+            TrackServer(cfg);
 
             server.RestartCoreThen(
                 cfg.ToString(),

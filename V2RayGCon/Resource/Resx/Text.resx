@@ -592,4 +592,10 @@ Please check port setting in form option.</value>
   <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
     <value>Set mode to HTTP or SOCKS first, please!</value>
   </data>
+  <data name="AutoTracker" xml:space="preserve">
+    <value>Auto tracker</value>
+  </data>
+  <data name="SetSysProxyFail" xml:space="preserve">
+    <value>Set system proxy fail!</value>
+  </data>
 </root>

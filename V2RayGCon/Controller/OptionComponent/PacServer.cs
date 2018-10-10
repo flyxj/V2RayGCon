@@ -8,13 +8,12 @@ namespace V2RayGCon.Controller.OptionComponent
         Service.PACServer pacServer;
 
         TextBox tboxPort;
-        CheckBox chkIsAutorun, chkIsAutoTrack;
+        CheckBox chkIsAutorun;
         RichTextBox rtboxCustomWhiteList, rtboxCustomBlackList;
 
         public PacServer(
             TextBox port,
             CheckBox isAutorun,
-            CheckBox isAutoTrack,
             RichTextBox customWhiteList,
             RichTextBox customBlackList)
         {
@@ -23,7 +22,6 @@ namespace V2RayGCon.Controller.OptionComponent
 
             tboxPort = port;
             chkIsAutorun = isAutorun;
-            chkIsAutoTrack = isAutoTrack;
             rtboxCustomBlackList = customBlackList;
             rtboxCustomWhiteList = customWhiteList;
 
@@ -54,7 +52,6 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 port = Lib.Utils.Str2Int(tboxPort.Text),
                 isAutorun = chkIsAutorun.Checked,
-                isAutoTrack = chkIsAutoTrack.Checked,
                 customBlackList = rtboxCustomBlackList.Text,
                 customWhiteList = rtboxCustomWhiteList.Text,
             };
@@ -74,7 +71,6 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (s.port != Lib.Utils.Str2Int(tboxPort.Text)
                 || s.isAutorun != chkIsAutorun.Checked
-                || s.isAutoTrack != chkIsAutoTrack.Checked
                 || s.customBlackList != rtboxCustomBlackList.Text
                 || s.customWhiteList != rtboxCustomWhiteList.Text)
             {
@@ -91,7 +87,6 @@ namespace V2RayGCon.Controller.OptionComponent
             var pacSetting = setting.GetPacServerSettings();
             tboxPort.Text = pacSetting.port.ToString();
             chkIsAutorun.Checked = pacSetting.isAutorun;
-            chkIsAutoTrack.Checked = pacSetting.isAutoTrack;
             rtboxCustomBlackList.Text = pacSetting.customBlackList;
             rtboxCustomWhiteList.Text = pacSetting.customWhiteList;
         }

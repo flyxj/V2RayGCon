@@ -17,6 +17,8 @@ namespace V2RayGCon.Service
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
 
         #region Properties
+        public bool isServerTrackerOn = false;
+
         public int serverPanelPageSize
         {
             get
@@ -112,6 +114,28 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void SaveServerTrackerSetting(Model.Data.ServerTracker serverTrackerSetting)
+        {
+            Properties.Settings.Default.ServerTracker =
+                JsonConvert.SerializeObject(serverTrackerSetting);
+            Properties.Settings.Default.Save();
+        }
+
+        public Model.Data.ServerTracker GetServerTrackerSetting()
+        {
+            var empty = new Model.Data.ServerTracker();
+            Model.Data.ServerTracker r = null;
+            try
+            {
+                r = JsonConvert.DeserializeObject<Model.Data.ServerTracker>(Properties.Settings.Default.ServerTracker);
+            }
+            catch
+            {
+                return empty;
+            }
+            return r ?? empty;
+        }
+
         public void SwitchCulture()
         {
             switch (culture)

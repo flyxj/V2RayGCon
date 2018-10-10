@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -39,19 +40,16 @@ namespace V2RayGCon.Service
 
 #if DEBUG
             This_function_do_some_tedious_stuff();
-#else
+#endif
             if (servers.IsEmpty())
             {
                 Views.WinForms.FormMain.GetForm();
             }
             else
             {
-                servers.WakeupAutorunServersThen();
+                servers.WakeupAutorunServersThen(RestoreTracker);
             }
-#endif
         }
-
-
 
         #region DEBUG code TL;DR
 #if DEBUG
@@ -86,6 +84,52 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        private void RestoreTracker()
+        {
+            var trackerSetting = setting.GetServerTrackerSetting();
+
+            // wake up track server
+            if (!trackerSetting.isTrackerOn)
+            {
+                return;
+            }
+
+            var trackerList = trackerSetting.serverList;
+            if (trackerList.Count < 1)
+            {
+                setting.isServerTrackerOn = true;
+                return;
+            }
+
+            Action done = () =>
+            {
+                var trackedServerList = servers.GetServerList()
+                    .Where(s => s.config == trackerList[0])
+                    .ToList();
+
+                setting.isServerTrackerOn = true;
+                if (trackedServerList.Any())
+                {
+                    servers.RestartServersByListThen(trackedServerList);
+                }
+            };
+
+            if (trackerList.Count > 1)
+            {
+                var list = servers.GetServerList()
+                .Where(s =>
+                    trackerList.Contains(s.config)
+                    && !s.isServerOn
+                    && s.config != trackerSetting.serverList[0]
+                ).ToList();
+                servers.RestartServersByListThen(list, done);
+            }
+            else
+            {
+                done();
+            }
+        }
+
         void UpdateNotifierTextHandler(object sender, Model.Data.StrEvent args)
         {
             // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars

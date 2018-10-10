@@ -133,6 +133,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Auto tracker 的本地化字符串。
+        /// </summary>
+        internal static string AutoTracker {
+            get {
+                return ResourceManager.GetString("AutoTracker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Available examples ... 的本地化字符串。
         /// </summary>
         internal static string AvailableExamples {
@@ -1152,6 +1161,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SetSysProxyDone {
             get {
                 return ResourceManager.GetString("SetSysProxyDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set system proxy fail! 的本地化字符串。
+        /// </summary>
+        internal static string SetSysProxyFail {
+            get {
+                return ResourceManager.GetString("SetSysProxyFail", resourceCulture);
             }
         }
         

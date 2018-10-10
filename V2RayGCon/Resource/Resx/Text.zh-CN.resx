@@ -579,4 +579,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
     <value>请先把模式设为HTTP或SOCKS</value>
   </data>
+  <data name="AutoTracker" xml:space="preserve">
+    <value>自动追踪</value>
+  </data>
+  <data name="SetSysProxyFail" xml:space="preserve">
+    <value>设置系统代理失败！</value>
+  </data>
 </root>

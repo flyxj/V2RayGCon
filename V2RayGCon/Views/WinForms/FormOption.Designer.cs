@@ -39,6 +39,8 @@
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSetting = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.chkSetServAutotrack = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cboxSettingPageSize = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,7 +55,6 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rtboxPacServBlackList = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chkPacAutoTrack = new System.Windows.Forms.CheckBox();
             this.chkPacServIsAutorun = new System.Windows.Forms.CheckBox();
             this.tboxPacServPort = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -66,6 +67,7 @@
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
             this.tabPageSetting.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPagePACServ.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -145,10 +147,26 @@
             // tabPageSetting
             // 
             resources.ApplyResources(this.tabPageSetting, "tabPageSetting");
+            this.tabPageSetting.Controls.Add(this.groupBox5);
             this.tabPageSetting.Controls.Add(this.groupBox1);
             this.tabPageSetting.Name = "tabPageSetting";
             this.toolTip1.SetToolTip(this.tabPageSetting, resources.GetString("tabPageSetting.ToolTip"));
             this.tabPageSetting.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.chkSetServAutotrack);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox5, resources.GetString("groupBox5.ToolTip"));
+            // 
+            // chkSetServAutotrack
+            // 
+            resources.ApplyResources(this.chkSetServAutotrack, "chkSetServAutotrack");
+            this.chkSetServAutotrack.Name = "chkSetServAutotrack";
+            this.toolTip1.SetToolTip(this.chkSetServAutotrack, resources.GetString("chkSetServAutotrack.ToolTip"));
+            this.chkSetServAutotrack.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -260,20 +278,12 @@
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.chkPacAutoTrack);
             this.groupBox2.Controls.Add(this.chkPacServIsAutorun);
             this.groupBox2.Controls.Add(this.tboxPacServPort);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
-            // 
-            // chkPacAutoTrack
-            // 
-            resources.ApplyResources(this.chkPacAutoTrack, "chkPacAutoTrack");
-            this.chkPacAutoTrack.Name = "chkPacAutoTrack";
-            this.toolTip1.SetToolTip(this.chkPacAutoTrack, resources.GetString("chkPacAutoTrack.ToolTip"));
-            this.chkPacAutoTrack.UseVisualStyleBackColor = true;
             // 
             // chkPacServIsAutorun
             // 
@@ -342,6 +352,8 @@
             this.tabPageImport.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
             this.tabPageSetting.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPagePACServ.ResumeLayout(false);
@@ -388,6 +400,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox chkPacAutoTrack;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox chkSetServAutotrack;
     }
 }

@@ -117,21 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;cboxSettingPageSize.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tabPagePACServ.Size" type="System.Drawing.Size, System.Drawing">
     <value>718, 572</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="rtboxPacServBlackList.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
   <data name="tabPagePACServ.Text" xml:space="preserve">
     <value>PAC server</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cboxSettingPageSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
@@ -139,28 +135,23 @@
     <value>Bottom</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="panel1.ToolTip" xml:space="preserve">
-    <value />
+    <value>1</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnImportAdd.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="btnUpdateViaSubscription.Text" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="chkSetServAutotrack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="chkPacAutoTrack.ToolTip" xml:space="preserve">
-    <value>Update proxy setting when switching servers.</value>
   </data>
   <data name="&gt;&gt;rtboxPacServBlackList.Type" xml:space="preserve">
     <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -210,6 +201,9 @@
   <data name="btnBakRestore.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom</value>
   </data>
+  <data name="cboxSettingPageSize.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
   <data name="&gt;&gt;rtboxPacServWhiteList.Parent" xml:space="preserve">
     <value>groupBox3</value>
   </data>
@@ -239,6 +233,9 @@
   </data>
   <data name="cboxSettingPageSize.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 69</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Name" xml:space="preserve">
+    <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
     <value>groupBox3</value>
@@ -285,9 +282,6 @@
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Page size</value>
-  </data>
   <data name="btnOptionSave.ToolTip" xml:space="preserve">
     <value>Save all options.</value>
   </data>
@@ -315,11 +309,14 @@
   <data name="&gt;&gt;flyImportPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="chkSetServAutotrack.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
     <value>tabPagePACServ</value>
   </data>
-  <data name="chkPacAutoTrack.Text" xml:space="preserve">
-    <value>Auto tracking</value>
+  <data name="flySubsUrlContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>582, 554</value>
   </data>
   <data name="btnBakBackup.Text" xml:space="preserve">
     <value>Backup</value>
@@ -339,6 +336,9 @@
   <data name="cboxSettingPageSize.Items2" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="groupBox5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="&gt;&gt;btnBakBackup.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -353,6 +353,9 @@
   </data>
   <data name="groupBox1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
+  </data>
+  <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>669, 67</value>
   </data>
   <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -375,11 +378,20 @@
   <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
     <value>338, 454</value>
   </data>
+  <data name="&gt;&gt;groupBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tabPageSubscribe.Name" xml:space="preserve">
     <value>tabPageSubscribe</value>
   </data>
   <data name="tabPageSubscribe.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
+  </data>
+  <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 141</value>
+  </data>
+  <data name="&gt;&gt;btnOptionExit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 18</value>
@@ -405,6 +417,9 @@
   <data name="btnAddSubsUrl.Text" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="chkSetServAutotrack.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 27</value>
+  </data>
   <data name="rtboxPacServWhiteList.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 27</value>
   </data>
@@ -414,8 +429,11 @@
   <data name="btnBakBackup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom</value>
   </data>
-  <data name="&gt;&gt;flySubsUrlContainer.Name" xml:space="preserve">
-    <value>flySubsUrlContainer</value>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;tabPagePACServ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
     <value>726, 604</value>
@@ -468,8 +486,8 @@
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
     <value>groupBox1</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tabPageSubscribe.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;tabPageSetting.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -489,6 +507,9 @@
   <data name="tabPageSetting.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 28</value>
   </data>
+  <data name="chkSetServAutotrack.Text" xml:space="preserve">
+    <value>Auto track</value>
+  </data>
   <data name="rtboxPacServWhiteList.Size" type="System.Drawing.Size, System.Drawing">
     <value>303, 414</value>
   </data>
@@ -498,11 +519,14 @@
   <data name="btnOptionExit.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 34</value>
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="panel1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>tabPageSetting</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 98</value>
   </data>
   <data name="&gt;&gt;rtboxPacServBlackList.Parent" xml:space="preserve">
     <value>groupBox4</value>
@@ -512,138 +536,6 @@
   </data>
   <data name="flySubsUrlContainer.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;flySubsUrlContainer.Parent" xml:space="preserve">
-    <value>tabPageSubscribe</value>
-  </data>
-  <data name="&gt;&gt;btnOptionExit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label5.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;btnImportAdd.Name" xml:space="preserve">
-    <value>btnImportAdd</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
-  </data>
-  <data name="&gt;&gt;tabPagePACServ.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="btnOptionExit.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="btnUpdateViaSubscription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>598, 51</value>
-  </data>
-  <data name="rtboxPacServWhiteList.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="&gt;&gt;cboxSettingLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cboxSettingPageSize.Name" xml:space="preserve">
-    <value>cboxSettingPageSize</value>
-  </data>
-  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="flyImportPanel.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 18</value>
-  </data>
-  <data name="rtboxPacServWhiteList.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="btnBakRestore.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="btnBakRestore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 34</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Port</value>
-  </data>
-  <data name="btnImportAdd.Text" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value>Show how many servers per page in form main.</value>
-  </data>
-  <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tboxPacServPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 18</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 34</value>
-  </data>
-  <data name="cboxSettingPageSize.Items3" xml:space="preserve">
-    <value>30</value>
-  </data>
-  <data name="&gt;&gt;rtboxPacServWhiteList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="&gt;&gt;rtboxPacServWhiteList.Name" xml:space="preserve">
-    <value>rtboxPacServWhiteList</value>
-  </data>
-  <data name="tabPageSubscribe.Size" type="System.Drawing.Size, System.Drawing">
-    <value>718, 572</value>
-  </data>
-  <data name="&gt;&gt;rtboxPacServBlackList.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="tabPageSubscribe.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="flyImportPanel.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rtboxPacServBlackList.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="tabControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6817,6 +6709,144 @@
         //////////////////////////////////////////////////////////////////8=
 </value>
   </data>
+  <data name="groupBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;flySubsUrlContainer.Parent" xml:space="preserve">
+    <value>tabPageSubscribe</value>
+  </data>
+  <data name="rtboxPacServBlackList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;btnImportAdd.Name" xml:space="preserve">
+    <value>btnImportAdd</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="chkSetServAutotrack.ToolTip" xml:space="preserve">
+    <value>Auto update system proxy when switch server and keep server running state of last exit.</value>
+  </data>
+  <data name="&gt;&gt;tabPagePACServ.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnOptionExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="btnUpdateViaSubscription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>598, 51</value>
+  </data>
+  <data name="rtboxPacServWhiteList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="&gt;&gt;cboxSettingLanguage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cboxSettingPageSize.Name" xml:space="preserve">
+    <value>cboxSettingPageSize</value>
+  </data>
+  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="flyImportPanel.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 18</value>
+  </data>
+  <data name="rtboxPacServWhiteList.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="btnBakRestore.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnBakRestore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 34</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="btnImportAdd.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value>Show how many servers per page in form main.</value>
+  </data>
+  <data name="groupBox4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tboxPacServPort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 18</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>26, 34</value>
+  </data>
+  <data name="cboxSettingPageSize.Items3" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="&gt;&gt;rtboxPacServWhiteList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="&gt;&gt;rtboxPacServWhiteList.Name" xml:space="preserve">
+    <value>rtboxPacServWhiteList</value>
+  </data>
+  <data name="tabPageSubscribe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>718, 572</value>
+  </data>
+  <data name="&gt;&gt;rtboxPacServBlackList.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="tabPageSubscribe.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="flyImportPanel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="rtboxPacServBlackList.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
+    <value>groupBox4</value>
+  </data>
+  <data name="groupBox5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tabControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Page size</value>
+  </data>
   <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
     <value>tableLayoutPanel1</value>
   </data>
@@ -6849,9 +6879,6 @@
   </data>
   <data name="btnBakBackup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
-  </data>
-  <data name="chkPacAutoTrack.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="flyImportPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 9</value>
@@ -6904,6 +6931,9 @@
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>687, 460</value>
   </data>
+  <data name="&gt;&gt;chkSetServAutotrack.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;tabPageSubscribe.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
@@ -6955,9 +6985,6 @@
   <data name="flySubsUrlContainer.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;tabPagePACServ.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;btnImportAdd.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
@@ -6982,6 +7009,9 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Views</value>
   </data>
+  <data name="&gt;&gt;chkSetServAutotrack.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
   <data name="&gt;&gt;btnUpdateViaSubscription.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -6989,7 +7019,7 @@
     <value>0</value>
   </data>
   <data name="&gt;&gt;chkPacServIsAutorun.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="groupBox1.ToolTip" xml:space="preserve">
     <value />
@@ -7039,17 +7069,17 @@
   <data name="btnBakRestore.ToolTip" xml:space="preserve">
     <value>(Experimental!) Restore options from file.</value>
   </data>
+  <data name="&gt;&gt;chkSetServAutotrack.Name" xml:space="preserve">
+    <value>chkSetServAutotrack</value>
+  </data>
   <data name="&gt;&gt;btnBakRestore.Name" xml:space="preserve">
     <value>btnBakRestore</value>
-  </data>
-  <data name="&gt;&gt;chkPacAutoTrack.Parent" xml:space="preserve">
-    <value>groupBox2</value>
   </data>
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="&gt;&gt;tboxPacServPort.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="tableLayoutPanel1.ToolTip" xml:space="preserve">
     <value />
@@ -7071,9 +7101,6 @@
   </data>
   <data name="&gt;&gt;btnOptionExit.Parent" xml:space="preserve">
     <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkPacAutoTrack.Name" xml:space="preserve">
-    <value>chkPacAutoTrack</value>
   </data>
   <data name="tabPageSetting.Size" type="System.Drawing.Size, System.Drawing">
     <value>718, 572</value>
@@ -7102,6 +7129,12 @@
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Black list</value>
   </data>
+  <data name="&gt;&gt;flySubsUrlContainer.Name" xml:space="preserve">
+    <value>flySubsUrlContainer</value>
+  </data>
+  <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
   <data name="label3.Text" xml:space="preserve">
     <value>(1 - 100)</value>
   </data>
@@ -7114,11 +7147,11 @@
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;chkPacAutoTrack.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="chkPacAutoTrack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 22</value>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -7134,6 +7167,12 @@
   </data>
   <data name="btnAddSubsUrl.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.Parent" xml:space="preserve">
+    <value>tabPageSetting</value>
+  </data>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>Server</value>
   </data>
   <data name="rtboxPacServBlackList.ToolTip" xml:space="preserve">
     <value />
@@ -7159,11 +7198,14 @@
   <data name="rtboxPacServWhiteList.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="cboxSettingPageSize.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;chkSetServAutotrack.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabPageSubscribe.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="flyImportPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;groupBox5.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;btnAddSubsUrl.Name" xml:space="preserve">
     <value>btnAddSubsUrl</value>
@@ -7186,9 +7228,6 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>762, 675</value>
   </data>
-  <data name="flyImportPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="btnImportAdd.ToolTip" xml:space="preserve">
     <value>Add import URL.</value>
   </data>
@@ -7198,14 +7237,8 @@
   <data name="&gt;&gt;btnAddSubsUrl.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="flySubsUrlContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 554</value>
-  </data>
   <data name="btnImportAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="chkPacAutoTrack.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
   </data>
   <data name="btnBakRestore.Location" type="System.Drawing.Point, System.Drawing">
     <value>387, 628</value>
@@ -7215,9 +7248,6 @@
   </data>
   <data name="tabControl1.ToolTip" xml:space="preserve">
     <value />
-  </data>
-  <data name="chkPacAutoTrack.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 31</value>
   </data>
   <data name="cboxSettingLanguage.ToolTip" xml:space="preserve">
     <value />
@@ -7246,8 +7276,8 @@
   <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 98</value>
+  <data name="chkSetServAutotrack.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>687, 460</value>
@@ -7291,8 +7321,8 @@
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;chkPacAutoTrack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;cboxSettingPageSize.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="btnOptionSave.Text" xml:space="preserve">
     <value>Save</value>

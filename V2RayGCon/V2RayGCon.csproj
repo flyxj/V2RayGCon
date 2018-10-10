@@ -137,6 +137,7 @@
     <Compile Include="Model\Data\PacUrlParams.cs" />
     <Compile Include="Model\Data\ProxyRegKeyValue.cs" />
     <Compile Include="Model\Data\PacServerSettings.cs" />
+    <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
