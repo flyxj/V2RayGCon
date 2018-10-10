@@ -257,7 +257,7 @@ namespace V2RayGCon.Service
 
                 Action<int, Action> worker = (index, next) =>
                 {
-                    list[index].GetProxyAddrThen((s) =>
+                    list[index].GetProxyAddrForNotifierThen((s) =>
                     {
                         textList.Add(s);
                         next();

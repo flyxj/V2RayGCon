@@ -4,7 +4,7 @@
     {
         public string customWhiteList, customBlackList;
         public int port;
-        public bool isAutorun;
+        public bool isAutorun, isAutoTrack;
 
         public PacServerSettings()
         {
@@ -12,6 +12,7 @@
             customBlackList = string.Empty;
             port = 3000;
             isAutorun = false;
+            isAutoTrack = false;
         }
     }
 }

@@ -387,11 +387,11 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             copyCurPacUrl.Click += (s, a) =>
             {
-                var proxy = setting.GetSysProxySetting();
-                var url = proxy.autoConfigUrl;
+                var p = Lib.ProxySetter.GetProxySetting();
+                var u = p.autoConfigUrl;
 
                 MessageBox.Show(
-                    Lib.Utils.CopyToClipboard(url) ?
+                    Lib.Utils.CopyToClipboard(u) ?
                     I18N("LinksCopied") :
                     I18N("CopyFail"));
             };

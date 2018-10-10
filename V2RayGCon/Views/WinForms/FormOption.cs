@@ -78,7 +78,8 @@ namespace V2RayGCon.Views.WinForms
             ctrl.Plug(
                 new Controller.OptionComponent.PacServer(
                     tboxPacServPort,
-                    cboxPacServIsAutorun,
+                    chkPacServIsAutorun,
+                    chkPacAutoTrack,
                     rtboxPacServWhiteList,
                     rtboxPacServBlackList));
 

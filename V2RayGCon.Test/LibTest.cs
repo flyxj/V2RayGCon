@@ -12,6 +12,55 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+
+
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow(
+            "port=4321&ip=8.7.6.5&proto=http&type=blacklist",
+            "false,false,8.7.6.5,4321")]
+        [DataRow(
+            "port=5678&ip=1233.2.3.4&proto=socks&type=whitelist",
+            null)]
+        [DataRow(
+            "port=-5678&ip=1.2.3.4&proto=socks&type=whitelist",
+            null)]
+        [DataRow(
+            "port=5678&ip=1.2.3.4&proto=socks&type=whitelist",
+            "true,true,1.2.3.4,5678")]
+
+        // url = "type,proto,ip,port"
+        public void GetProxyParamsFromUrlTest(string url, string expect)
+        {
+            var proxyParams = Lib.Utils.GetProxyParamsFromUrl(
+                url == null ? null : (
+                "http://localhost:3000/pac/?&"
+                + url
+                + "&key="
+                + Lib.Utils.RandomHex(8)));
+
+            if (expect == null)
+            {
+                if (proxyParams == null)
+                {
+                    return;
+                }
+                Assert.Fail();
+                return;
+            }
+
+            var expParts = expect.Split(',');
+
+            if (
+                proxyParams.isWhiteList.ToString().ToLower() != expParts[0]
+                || proxyParams.isSocks.ToString().ToLower() != expParts[1]
+                || proxyParams.ip != expParts[2]
+                || proxyParams.port.ToString() != expParts[3])
+            {
+                Assert.Fail();
+            }
+        }
+
         [DataTestMethod]
         [DataRow("11,22 2,5 3,4 7,8 1,2 6,6", "1,8 11,22")]
         [DataRow("11,22 2,5 3,4 7,8 1,2", "1,5 7,8 11,22")]

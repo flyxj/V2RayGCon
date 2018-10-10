@@ -22,6 +22,69 @@ namespace V2RayGCon.Lib
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region pac
+        public static bool IsProxySettingEmpty(Model.Data.ProxyRegKeyValue proxySetting)
+        {
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                return false;
+            }
+
+            if (proxySetting.proxyEnable)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        {
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            Uri uri = null;
+            uri = new Uri(url);
+
+            var arguments = uri.Query
+                .Substring(1) // Remove '?'
+                .Split('&')
+                .Select(q => q.Split('='))
+                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+
+            if (arguments == null)
+            {
+                return null;
+            }
+
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
+
+            arguments.TryGetValue("ip", out string ip);
+            arguments.TryGetValue("port", out string portStr);
+            arguments.TryGetValue("type", out string type);
+            arguments.TryGetValue("proto", out string proto);
+
+            var port = Lib.Utils.Str2Int(portStr);
+
+            if (!IsIP(ip) || port < 0
+                || string.IsNullOrEmpty(type)
+                || string.IsNullOrEmpty(proto))
+            {
+                return null;
+            }
+
+            return new Model.Data.PacUrlParams
+            {
+                ip = ip,
+                port = port,
+                isSocks = (proto.ToLower() == "socks"),
+                isWhiteList = (type.ToLower() == "whitelist"),
+            };
+        }
+
         public static bool IsCidr(string address)
         {
             var parts = address.Split('/');

@@ -55,10 +55,16 @@ namespace V2RayGCon.Views.UserControls
                 return;
             }
 
-            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
             Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
+            var p = new Model.Data.PacUrlParams
+            {
+                ip = ip,
+                port = port,
+                isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS,
+                isWhiteList = isWhiteList,
+            };
 
-            pacServer.SetPACProx(ip, port, isSocks, isWhiteList);
+            pacServer.SetPACProx(p);
             Lib.UI.ShowMessageBoxDoneAsync();
         }
 
@@ -71,9 +77,16 @@ namespace V2RayGCon.Views.UserControls
                 return;
             }
 
-            var isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS;
             Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
-            var pacUrl = pacServer.GetPacUrl(isWhiteList, isSocks, ip, port);
+            var p = new Model.Data.PacUrlParams
+            {
+                ip = ip,
+                port = port,
+                isWhiteList = isWhiteList,
+                isSocks = index == (int)Model.Data.Enum.ProxyTypes.SOCKS,
+            };
+
+            var pacUrl = pacServer.GenPacUrl(p);
             pacServer.StartPacServer();
 
             MessageBox.Show(

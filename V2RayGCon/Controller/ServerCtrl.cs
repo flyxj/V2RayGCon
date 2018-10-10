@@ -23,8 +23,6 @@ namespace V2RayGCon.Controller
         public int overwriteInboundType, inboundPort, collapseLevel;
         public double index;
 
-
-
         public ServerCtrl()
         {
             // new ServerItem will display at the bottom
@@ -125,33 +123,6 @@ namespace V2RayGCon.Controller
                 logForm = null;
             };
             return true;
-        }
-
-        string PrepareSpeedTestConfig(int port)
-        {
-            var empty = string.Empty;
-            if (port <= 0)
-            {
-                return empty;
-            }
-
-            var config = GetDecodedConfig(true, true, false);
-
-            if (config == null)
-            {
-                return empty;
-            }
-
-            if (!OverwriteInboundSettings(
-                ref config,
-                (int)Model.Data.Enum.ProxyTypes.HTTP,
-                "127.0.0.1",
-                port))
-            {
-                return empty;
-            }
-
-            return config.ToString(Formatting.None);
         }
 
         public void RunSpeedTest()
@@ -333,7 +304,7 @@ namespace V2RayGCon.Controller
             Task.Factory.StartNew(() => RestartCoreWorker(next));
         }
 
-        public void GetProxyAddrThen(Action<string> next)
+        public void GetProxyAddrForNotifierThen(Action<string> next)
         {
             if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
                 || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
@@ -409,12 +380,13 @@ namespace V2RayGCon.Controller
                 name+summary,
 
                 // index 1
-                Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType]
+                Model.Data.Table.inboundOverwriteTypesName[
+                    Lib.Utils.Clamp(overwriteInboundType,0,3)]
                 +inboundIP
                 +inboundPort.ToString(),
 
                 // index 2
-                this.mark,
+                this.mark??"",
             };
         }
 
@@ -429,6 +401,34 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
+        string PrepareSpeedTestConfig(int port)
+        {
+            var empty = string.Empty;
+            if (port <= 0)
+            {
+                return empty;
+            }
+
+            var config = GetDecodedConfig(true, true, false);
+
+            if (config == null)
+            {
+                return empty;
+            }
+
+            if (!OverwriteInboundSettings(
+                ref config,
+                (int)Model.Data.Enum.ProxyTypes.HTTP,
+                "127.0.0.1",
+                port))
+            {
+                return empty;
+            }
+
+            return config.ToString(Formatting.None);
+        }
+
+
         void RestartCoreWorker(Action next)
         {
             JObject cfg = GetDecodedConfig(true, false, true);
@@ -449,6 +449,18 @@ namespace V2RayGCon.Controller
             }
 
             InjectSkipCNSite(ref cfg);
+
+            if (overwriteInboundType == 1 || overwriteInboundType == 2)
+            {
+                var pacServSetting = Service.Setting.Instance.GetPacServerSettings();
+                if (pacServSetting.isAutoTrack)
+                {
+                    var inboundType = Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType];
+                    var isSocks = inboundType == "socks";
+                    Service.PACServer.Instance.LazySysProxyUpdater(
+                         isSocks, inboundIP, inboundPort);
+                }
+            }
 
             server.RestartCoreThen(
                 cfg.ToString(),

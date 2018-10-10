@@ -70,6 +70,7 @@ namespace V2RayGCon.Lib.Net
                             var ctx = c as HttpListenerContext;
                             try
                             {
+                                // tuple<content,mime>
                                 Tuple<string, string> rsp = _responderMethod(ctx.Request);
                                 byte[] buf = Encoding.UTF8.GetBytes(rsp.Item1);
                                 if (!string.IsNullOrEmpty(rsp.Item2))

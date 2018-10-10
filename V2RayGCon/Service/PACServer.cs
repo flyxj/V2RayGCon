@@ -23,13 +23,18 @@ namespace V2RayGCon.Service
             setting = Setting.Instance;
             orgSysProxySetting = Lib.ProxySetter.GetProxySetting();
             ClearCache();
-            var pacSet = setting.GetPacServerSettings();
-            var proxy = setting.GetSysProxySetting();
-            Lib.ProxySetter.SetProxy(proxy);
+            var pacSetting = setting.GetPacServerSettings();
+            var proxySetting = setting.GetSysProxySetting();
 
-            if (pacSet.isAutorun || !string.IsNullOrEmpty(proxy.autoConfigUrl))
+            if (pacSetting.isAutorun || !string.IsNullOrEmpty(proxySetting.autoConfigUrl))
             {
                 RestartPacServer();
+            }
+
+            // becareful issue #9 #3
+            if (!Lib.Utils.IsProxySettingEmpty(proxySetting))
+            {
+                Lib.ProxySetter.SetProxy(proxySetting);
             }
         }
 
@@ -49,6 +54,43 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+
+        Lib.CancelableTimeout lazySysProxyUpdaterTimer = null;
+        public void LazySysProxyUpdater(bool isSocks, string ip, int port)
+        {
+            lazySysProxyUpdaterTimer?.Release();
+            lazySysProxyUpdaterTimer = null;
+
+            var proxySetting = setting.GetSysProxySetting();
+            if (Lib.Utils.IsProxySettingEmpty(proxySetting))
+            {
+                return;
+            }
+
+            Action setProxy;
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                var p = Lib.Utils.GetProxyParamsFromUrl(proxySetting.autoConfigUrl);
+                p.ip = ip;
+                p.port = port;
+                p.isSocks = isSocks;
+                setProxy = () => SetPACProx(p);
+            }
+            else
+            {
+                // global proxy must be http 
+                if (isSocks)
+                {
+                    return;
+                }
+                setProxy = () => SetGlobalProxy(ip, port);
+            }
+
+            lazySysProxyUpdaterTimer =
+                    new Lib.CancelableTimeout(setProxy, 1000);
+            lazySysProxyUpdaterTimer.Start();
+        }
+
         public void StartPacServer()
         {
             lock (webServerLock)
@@ -61,10 +103,10 @@ namespace V2RayGCon.Service
             }
         }
 
-        public void SetPACProx(string ip, int port, bool isSocks, bool isWhiteList)
+        public void SetPACProx(Model.Data.PacUrlParams param)
         {
             var proxy = new Model.Data.ProxyRegKeyValue();
-            proxy.autoConfigUrl = GetPacUrl(isWhiteList, isSocks, ip, port);
+            proxy.autoConfigUrl = GenPacUrl(param);
             Lib.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
             StartPacServer();
@@ -103,7 +145,7 @@ namespace V2RayGCon.Service
 
                 try
                 {
-                    webServer = new Lib.Net.SimpleWebServer(GenPACResponse, prefix);
+                    webServer = new Lib.Net.SimpleWebServer(GenWebResponse, prefix);
                     webServer.Run();
                     isWebServRunning = true;
                 }
@@ -122,17 +164,17 @@ namespace V2RayGCon.Service
             Lib.ProxySetter.SetProxy(orgSysProxySetting);
         }
 
-        public string GetPacUrl(bool isWhiteList, bool isSocks, string ip, int port)
+        public string GenPacUrl(Model.Data.PacUrlParams param)
         {
             var pacSetting = setting.GetPacServerSettings();
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             return string.Format(
                 "{0}?&type={1}&proto={2}&ip={3}&port={4}&timeout={5}",
                 GenPrefix(pacSetting.port),
-                isWhiteList ? "whitelist" : "blacklist",
-                isSocks ? "socks" : "http",
-                ip,
-                port.ToString(),
+                param.isWhiteList ? "whitelist" : "blacklist",
+                param.isSocks ? "socks" : "http",
+                param.ip,
+                param.port.ToString(),
                 Lib.Utils.RandomHex(16));
         }
 
@@ -152,8 +194,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-
-
         void InvokeOnPACServerStatusChanged()
         {
             try
@@ -176,23 +216,26 @@ namespace V2RayGCon.Service
             return string.Format("http://localhost:{0}/pac/", port);
         }
 
-        Tuple<string, string> GenPACResponse(HttpListenerRequest request)
+        Tuple<string, string> GenWebResponse(HttpListenerRequest request)
         {
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
-            var query = request.QueryString;
-            var isWhiteList = query["type"] == "whitelist";
+            var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri);
+            if (urlParam == null)
+            {
+                return new Tuple<string, string>("Bad request params.", null);
+            }
 
             // ie require this header
             var mime = "application/x-ns-proxy-autoconfig";
 
             var content = string.Format(
-                query["proto"] == "socks" ?
+                urlParam.isSocks ?
                 "var proxy = 'SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT', mode='{2}', {3}" :
                 "var proxy = 'PROXY {0}:{1}; DIRECT', mode='{2}', {3}",
-                query["ip"] ?? "127.0.0.1",
-                query["port"] ?? "1080",
-                isWhiteList ? "white" : "black",
-                GenPacBody(isWhiteList));
+                urlParam.ip,
+                urlParam.port,
+                urlParam.isWhiteList ? "white" : "black",
+                GenPacFileBody(urlParam.isWhiteList));
 
             return new Tuple<string, string>(content, mime);
         }
@@ -205,13 +248,14 @@ namespace V2RayGCon.Service
 
             foreach (var line in list)
             {
+                var item = line.Trim();
+
                 // ignore single line comment
-                if (line.StartsWith("//"))
+                if (item.StartsWith("//"))
                 {
                     continue;
                 }
 
-                var item = line.Trim();
                 if (Lib.Utils.IsIP(item))
                 {
                     var v = Lib.Utils.IP2Long(item);
@@ -232,7 +276,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        string GenPacBody(bool isWhiteList)
+        string GenPacFileBody(bool isWhiteList)
         {
             if (pacCache[isWhiteList] != null)
             {

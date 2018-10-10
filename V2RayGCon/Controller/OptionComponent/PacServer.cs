@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
@@ -11,12 +8,13 @@ namespace V2RayGCon.Controller.OptionComponent
         Service.PACServer pacServer;
 
         TextBox tboxPort;
-        CheckBox chkIsAutorun;
+        CheckBox chkIsAutorun, chkIsAutoTrack;
         RichTextBox rtboxCustomWhiteList, rtboxCustomBlackList;
 
         public PacServer(
             TextBox port,
             CheckBox isAutorun,
+            CheckBox isAutoTrack,
             RichTextBox customWhiteList,
             RichTextBox customBlackList)
         {
@@ -25,6 +23,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             tboxPort = port;
             chkIsAutorun = isAutorun;
+            chkIsAutoTrack = isAutoTrack;
             rtboxCustomBlackList = customBlackList;
             rtboxCustomWhiteList = customWhiteList;
 
@@ -55,6 +54,7 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 port = Lib.Utils.Str2Int(tboxPort.Text),
                 isAutorun = chkIsAutorun.Checked,
+                isAutoTrack = chkIsAutoTrack.Checked,
                 customBlackList = rtboxCustomBlackList.Text,
                 customWhiteList = rtboxCustomWhiteList.Text,
             };
@@ -74,6 +74,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             if (s.port != Lib.Utils.Str2Int(tboxPort.Text)
                 || s.isAutorun != chkIsAutorun.Checked
+                || s.isAutoTrack != chkIsAutoTrack.Checked
                 || s.customBlackList != rtboxCustomBlackList.Text
                 || s.customWhiteList != rtboxCustomWhiteList.Text)
             {
@@ -88,56 +89,24 @@ namespace V2RayGCon.Controller.OptionComponent
         private void InitControls()
         {
             var pacSetting = setting.GetPacServerSettings();
-
             tboxPort.Text = pacSetting.port.ToString();
             chkIsAutorun.Checked = pacSetting.isAutorun;
+            chkIsAutoTrack.Checked = pacSetting.isAutoTrack;
             rtboxCustomBlackList.Text = pacSetting.customBlackList;
             rtboxCustomWhiteList.Text = pacSetting.customWhiteList;
         }
 
         void UpdateSystemProxy()
         {
-            var proxy = setting.GetSysProxySetting();
-            if (string.IsNullOrEmpty(proxy.autoConfigUrl))
-            {
-                // do not need to update
-                return;
-            }
+            var proxySetting = setting.GetSysProxySetting();
+            var proxyParams = Lib.Utils.GetProxyParamsFromUrl(proxySetting.autoConfigUrl);
 
-            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
-            Uri uri = new Uri(proxy.autoConfigUrl);
-            var arguments = uri.Query
-                .Substring(1) // Remove '?'
-                .Split('&')
-                .Select(q => q.Split('='))
-                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
-
-            if (arguments == null)
+            if (proxyParams == null)
             {
                 return;
             }
 
-            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
-
-            arguments.TryGetValue("ip", out string ip);
-            arguments.TryGetValue("port", out string port);
-            arguments.TryGetValue("type", out string type);
-            arguments.TryGetValue("proto", out string proto);
-
-            if (string.IsNullOrEmpty(ip)
-                || string.IsNullOrEmpty(port)
-                || string.IsNullOrEmpty(type)
-                || string.IsNullOrEmpty(proto))
-            {
-                Debug.WriteLine("Update pac url fail!");
-                return;
-            }
-
-            pacServer.SetPACProx(
-                ip,
-                Lib.Utils.Str2Int(port),
-                proto == "socks",
-                type == "whitelist");
+            pacServer.SetPACProx(proxyParams);
         }
         #endregion
     }
