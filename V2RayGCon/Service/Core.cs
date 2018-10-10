@@ -77,7 +77,10 @@ namespace V2RayGCon.Service
                 }
             };
 
-            Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
+            // since 3.46.* v is deleted
+            Regex pattern = new Regex(@"(?<version>(\d+\.)+\d+)");
+            // Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
+
             try
             {
                 p.Start();
@@ -365,11 +368,11 @@ namespace V2RayGCon.Service
             // Assume core ready after 2.5 seconds, in case log set to none.
             if (ready.WaitOne(2500))
             {
-                Debug.WriteLine("Wait too long, assume core started.");
+                Debug.WriteLine("Core is ready.");
             }
             else
             {
-                Debug.WriteLine("Core is started.");
+                Debug.WriteLine("Wait too long, assume core started.");
             }
 
             OnCoreReady -= onCoreReady;
@@ -386,8 +389,9 @@ namespace V2RayGCon.Service
             }
 
             if (isCheckCoreReady
+                && msg.Contains("[Warning]")
                 && msg.Contains("started")
-                && msg.Contains("Core")
+                && msg.Contains("ore:")
                 && msg.Contains("V2Ray"))
             {
                 InvokeEventOnCoreReady();

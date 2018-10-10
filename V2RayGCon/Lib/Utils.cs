@@ -21,6 +21,173 @@ namespace V2RayGCon.Lib
     {
         public static Service.Cache cache = Service.Cache.Instance;
 
+        #region pac
+        public static bool IsProxySettingEmpty(Model.Data.ProxyRegKeyValue proxySetting)
+        {
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                return false;
+            }
+
+            if (proxySetting.proxyEnable)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        {
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            Uri uri = null;
+            uri = new Uri(url);
+
+            var arguments = uri.Query
+                .Substring(1) // Remove '?'
+                .Split('&')
+                .Select(q => q.Split('='))
+                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+
+            if (arguments == null)
+            {
+                return null;
+            }
+
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
+
+            arguments.TryGetValue("ip", out string ip);
+            arguments.TryGetValue("port", out string portStr);
+            arguments.TryGetValue("type", out string type);
+            arguments.TryGetValue("proto", out string proto);
+
+            var port = Lib.Utils.Str2Int(portStr);
+
+            if (!IsIP(ip) || port < 0
+                || string.IsNullOrEmpty(type)
+                || string.IsNullOrEmpty(proto))
+            {
+                return null;
+            }
+
+            return new Model.Data.PacUrlParams
+            {
+                ip = ip,
+                port = port,
+                isSocks = (proto.ToLower() == "socks"),
+                isWhiteList = (type.ToLower() == "whitelist"),
+            };
+        }
+
+        public static bool IsCidr(string address)
+        {
+            var parts = address.Split('/');
+
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+
+            if (!IsIP(parts[0]))
+            {
+                return false;
+            }
+            var mask = Str2Int(parts[1]);
+            return mask > 0 && mask < 32;
+        }
+
+        public static List<string> GetPacUrlList(bool isWhiteList)
+        {
+            return StrConst(isWhiteList ? "white" : "black")
+                .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+        }
+
+        public static long[] Cidr2RangeArray(string cidrString)
+        {
+            var cidr = cidrString.Split('/');
+            var begin = IP2Long(cidr[0]);
+            var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
+            return new long[] { begin, end };
+        }
+
+        public static List<long[]> GetPacCidrList(bool isWhiteList)
+        {
+            var result = new List<long[]>();
+            foreach (var item in
+                StrConst(isWhiteList ? "white_cidr" : "black_cidr").Split(
+                    new char[] { '\n', '\r' },
+                    StringSplitOptions.RemoveEmptyEntries))
+            {
+                result.Add(Cidr2RangeArray(item));
+            }
+            return result;
+        }
+
+        public static List<long[]> CompactCidrList(ref List<long[]> cidrList)
+        {
+            if (cidrList == null || cidrList.Count <= 0)
+            {
+                throw new System.ArgumentException("Range list is empty!");
+            }
+
+            cidrList.Sort((a, b) => a[0].CompareTo(b[0]));
+
+            var result = new List<long[]>();
+            var curRange = cidrList[0];
+            foreach (var range in cidrList)
+            {
+                if (range.Length != 2)
+                {
+                    throw new System.ArgumentException("Range must have 2 number.");
+                }
+
+                if (range[0] > range[1])
+                {
+                    throw new ArgumentException("range[0] > range[1]. ");
+                }
+
+                if (range[0] <= curRange[1] + 1)
+                {
+                    curRange[1] = Math.Max(range[1], curRange[1]);
+                }
+                else
+                {
+                    result.Add(curRange);
+                    curRange = range;
+                }
+            }
+            result.Add(curRange);
+            return result;
+        }
+
+        public static long IP2Long(string ip)
+        {
+            var c = ip.Split('.')
+                .Select(el => (long)Str2Int(el))
+                .ToList();
+
+            if (c.Count < 4)
+            {
+                throw new System.ArgumentException("Not a valid ip.");
+            }
+
+            return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3];
+        }
+
+        public static bool IsIP(string address)
+        {
+            return Regex.IsMatch(address, @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+        }
+
+        #endregion
+
         #region Json
         public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
         {
@@ -737,45 +904,43 @@ namespace V2RayGCon.Lib
         {
             var timeout = Str2Int(StrConst("SpeedTestTimeout"));
 
-            WebClient wc = new TimedWebClient
+            long elasped = long.MaxValue;
+            using (WebClient wc = new TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout * 1000,
-            };
-
-            long elasped = long.MaxValue;
-            try
+            })
             {
-                if (port > 0)
+                try
                 {
-                    wc.Proxy = new WebProxy("127.0.0.1", port);
+                    if (port > 0)
+                    {
+                        wc.Proxy = new WebProxy("127.0.0.1", port);
+                    }
+                    Stopwatch sw = new Stopwatch();
+                    sw.Reset();
+                    sw.Start();
+                    wc.DownloadString(url);
+                    sw.Stop();
+                    elasped = sw.ElapsedMilliseconds;
                 }
-                Stopwatch sw = new Stopwatch();
-                sw.Reset();
-                sw.Start();
-                wc.DownloadString(url);
-                sw.Stop();
-                elasped = sw.ElapsedMilliseconds;
+                catch { }
             }
-            catch { }
-            wc.Dispose();
 
             return elasped;
         }
 
+        static IPEndPoint _defaultLoopbackEndpoint = new IPEndPoint(IPAddress.Loopback, port: 0);
         public static int GetFreeTcpPort()
         {
             // https://stackoverflow.com/questions/138043/find-the-next-tcp-port-in-net
-            int port = -1;
-            try
+
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                port = ((IPEndPoint)l.LocalEndpoint).Port;
-                l.Stop();
+                socket.Bind(_defaultLoopbackEndpoint);
+                return ((IPEndPoint)socket.LocalEndPoint).Port;
             }
-            catch { }
-            return port;
+
         }
 
         public static string Fetch(string url, int timeout = -1)
@@ -836,7 +1001,10 @@ namespace V2RayGCon.Lib
             foreach (Match match in matches)
             {
                 var v = match.Groups[1].Value;
-                versions.Add(v);
+                if (!versions.Contains(v))
+                {
+                    versions.Add(v);
+                }
             }
 
             return versions;

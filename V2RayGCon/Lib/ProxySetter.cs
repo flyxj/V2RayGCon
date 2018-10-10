@@ -25,49 +25,38 @@ namespace V2RayGCon.Lib
             return key;
         }
 
-        #endregion
-
-        #region public method
-        public static void ClearProxy()
+        static void RefreshSettings()
         {
-            SetProxy("", false);
-        }
-
-        public static void SetProxy(string proxyhost, bool proxyEnabled = true)
-        {
-            using (var key = GetRegKey(true))
-            {
-                key.SetValue("ProxyServer", proxyhost, RegistryValueKind.String);
-                key.SetValue("ProxyEnable", proxyEnabled ? 1 : 0, RegistryValueKind.DWord);
-                key.Close();
-            }
-
-            // These lines implement the Interface in the beginning of program 
-            // They cause the OS to refresh the settings, causing IP to realy update
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
         }
+        #endregion
 
-        public static string GetProxyUrl()
+        #region public method
+        public static Model.Data.ProxyRegKeyValue GetProxySetting()
         {
-            var value = "";
+            var proxy = new Model.Data.ProxyRegKeyValue();
             using (var key = GetRegKey(false))
             {
-                value = key.GetValue("ProxyServer", "").ToString();
+                proxy.proxyServer = key.GetValue("ProxyServer", "").ToString();
+                proxy.proxyEnable = key.GetValue("ProxyEnable", "0").ToString() == "1";
+                proxy.autoConfigUrl = key.GetValue("AutoConfigURL", "").ToString();
                 key.Close();
             }
-            return value;
+            return proxy;
         }
 
-        public static bool GetProxyState()
+        public static void SetProxy(Model.Data.ProxyRegKeyValue proxy)
         {
-            var value = "0";
-            using (var key = GetRegKey(false))
+            using (var key = GetRegKey(true))
             {
-                value = key.GetValue("ProxyEnable", "0").ToString();
+                key.SetValue("AutoConfigURL", proxy.autoConfigUrl, RegistryValueKind.String);
+                key.SetValue("ProxyServer", proxy.proxyServer, RegistryValueKind.String);
+                key.SetValue("ProxyEnable", proxy.proxyEnable ? 1 : 0, RegistryValueKind.DWord);
                 key.Close();
             }
-            return value == "1";
+
+            RefreshSettings();
         }
         #endregion
     }

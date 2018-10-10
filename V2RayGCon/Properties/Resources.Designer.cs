@@ -159,6 +159,16 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap GlyphUp_16x {
+            get {
+                object obj = ResourceManager.GetObject("GlyphUp_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Icon icon_dark {
@@ -217,6 +227,26 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap StepBackArrow_16x {
+            get {
+                object obj = ResourceManager.GetObject("StepBackArrow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap StepOverArrow_16x {
+            get {
+                object obj = ResourceManager.GetObject("StepOverArrow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 V2RayGCon.Resource.Resx.Text 的本地化字符串。
         /// </summary>
         internal static string Text {
@@ -226,7 +256,7 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
-        ///   查找类似 1.0.33.1 的本地化字符串。
+        ///   查找类似 1.0.34 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {

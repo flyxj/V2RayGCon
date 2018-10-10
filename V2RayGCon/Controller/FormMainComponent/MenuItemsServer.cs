@@ -11,36 +11,61 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Cache cache;
         Service.Servers servers;
+        Service.PACServer pacServer;
+        Service.Setting setting;
+
+        ToolStripMenuItem restartPACServer, stopPACServer, curSysProxySummary;
+        MenuStrip menuContainer;
 
         public MenuItemsServer(
-            ToolStripMenuItem stopSelected,
-            ToolStripMenuItem restartSelected,
+            // for invoke ui refresh
+            MenuStrip menuContainer,
+
+            // system proxy
+            ToolStripMenuItem curSysProxySummary,
+            ToolStripMenuItem copyCurPacUrl,
             ToolStripMenuItem clearSysProxy,
+            ToolStripMenuItem restartPACServer,
+            ToolStripMenuItem stopPACServer,
+
+            // misc
             ToolStripMenuItem refreshSummary,
-            ToolStripMenuItem speedTestOnSelected,
+            ToolStripMenuItem deleteAllServers,
             ToolStripMenuItem deleteSelected,
+
+            // copy
             ToolStripMenuItem copyAsV2rayLinks,
             ToolStripMenuItem copyAsVmessLinks,
             ToolStripMenuItem copyAsSubscriptions,
-            ToolStripMenuItem deleteAllItems,
+
+            // batch op
+            ToolStripMenuItem speedTestOnSelected,
             ToolStripMenuItem modifySelected,
             ToolStripMenuItem packSelected,
+            ToolStripMenuItem stopSelected,
+            ToolStripMenuItem restartSelected,
+
+            // view
             ToolStripMenuItem moveToTop,
             ToolStripMenuItem moveToBottom,
-            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem foldPanel,
             ToolStripMenuItem expansePanel,
             ToolStripMenuItem sortBySpeed,
             ToolStripMenuItem sortBySummary)
         {
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
+            setting = Service.Setting.Instance;
+            pacServer = Service.PACServer.Instance;
+
+            this.menuContainer = menuContainer; // for invoke ui update
 
             InitCtrlSorting(sortBySpeed, sortBySummary);
-            InitCtrlView(moveToTop, moveToBottom, collapsePanel, expansePanel);
+            InitCtrlView(moveToTop, moveToBottom, foldPanel, expansePanel);
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
-            InitCtrlDelete(deleteSelected, deleteAllItems);
+            InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(clearSysProxy, refreshSummary);
+            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, clearSysProxy, restartPACServer, stopPACServer);
         }
 
         #region public method
@@ -51,10 +76,32 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
+            pacServer.OnPACServerStatusChanged -= OnPACServerStatusChangedHandler;
         }
         #endregion
 
         #region private method
+        string GenCurSysProxySettingString()
+        {
+            var strCurProxy = I18N("CurSysProxy");
+            var proxy = Lib.ProxySetter.GetProxySetting();
+
+            if (!string.IsNullOrEmpty(proxy.autoConfigUrl))
+            {
+                return string.Format("{0} {1}", strCurProxy, proxy.autoConfigUrl);
+            }
+
+            if (proxy.proxyEnable)
+            {
+                return string.Format(
+                    "{0} http://{1}",
+                    strCurProxy,
+                    proxy.proxyServer);
+            }
+
+            return string.Format("{0}:{1}", strCurProxy, I18N("NotSet"));
+        }
+
         EventHandler GenSelectedServerHandler(Action lambda)
         {
             return (s, a) =>
@@ -71,7 +118,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitCtrlBatchOperation(ToolStripMenuItem stopSelected, ToolStripMenuItem restartSelected, ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem modifySelected, ToolStripMenuItem packSelected)
         {
             modifySelected.Click += GenSelectedServerHandler(
-                () => Views.FormBatchModifyServerSetting.GetForm());
+                () => Views.WinForms.FormBatchModifyServerSetting.GetForm());
 
             packSelected.Click += GenSelectedServerHandler(
                 () => servers.PackSelectedServers());
@@ -106,8 +153,17 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        private void InitCtrlDelete(ToolStripMenuItem deleteSelected, ToolStripMenuItem deleteAllItems)
+        private void InitCtrlMisc(
+            ToolStripMenuItem refreshSummary,
+            ToolStripMenuItem deleteSelected,
+            ToolStripMenuItem deleteAllItems)
         {
+            refreshSummary.Click += (s, a) =>
+            {
+                cache.html.Clear();
+                servers.UpdateAllServersSummary();
+            };
+
             deleteAllItems.Click += (s, a) =>
             {
                 if (!Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
@@ -166,16 +222,20 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        private void InitCtrlView(ToolStripMenuItem moveToTop, ToolStripMenuItem moveToBottom, ToolStripMenuItem collapsePanel, ToolStripMenuItem expansePanel)
+        private void InitCtrlView(
+            ToolStripMenuItem moveToTop,
+            ToolStripMenuItem moveToBottom,
+            ToolStripMenuItem collapsePanel,
+            ToolStripMenuItem expansePanel)
         {
             expansePanel.Click += GenSelectedServerHandler(() =>
             {
-                SetServerItemPanelIsCollapseProperty(false);
+                SetServerItemPanelCollapseLevel(0);
             });
 
             collapsePanel.Click += GenSelectedServerHandler(() =>
             {
-                SetServerItemPanelIsCollapseProperty(true);
+                SetServerItemPanelCollapseLevel(1);
             });
 
             moveToTop.Click += GenSelectedServerHandler(() =>
@@ -240,18 +300,16 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        void SetServerItemPanelIsCollapseProperty(bool isCollapse)
+        void SetServerItemPanelCollapseLevel(int collapseLevel)
         {
+            collapseLevel = Lib.Utils.Clamp(collapseLevel, 0, 3);
             servers
                 .GetServerList()
                 .Where(s => s.isSelected)
                 .Select(s =>
                 {
-                    if (s.isCollapse != isCollapse)
-                    {
-                        s.ToggleIsCollapse();
-                    }
-                    return s;
+                    s.SetPropertyOnDemand(ref s.collapseLevel, collapseLevel);
+                    return true;
                 })
                 .ToList(); // force linq to execute
         }
@@ -277,21 +335,65 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        private void InitCtrlSysProxy(ToolStripMenuItem clearSysProxy, ToolStripMenuItem refreshSummary)
+        void OnPACServerStatusChangedHandler(object sender, EventArgs args)
         {
+            var isRunning = pacServer.isWebServRunning;
+            var curSetting = GenCurSysProxySettingString();
+
+            this.menuContainer?.Invoke((MethodInvoker)delegate
+            {
+                this.curSysProxySummary.Text =
+                Lib.Utils.CutStr(curSetting, 32);
+                this.restartPACServer.Checked = isRunning;
+                this.stopPACServer.Checked = !isRunning;
+
+            });
+        }
+
+        private void InitCtrlSysProxy(
+            ToolStripMenuItem curSysProxySummary,
+            ToolStripMenuItem copyCurPacUrl,
+            ToolStripMenuItem clearSysProxy,
+            ToolStripMenuItem restartPACServer,
+            ToolStripMenuItem stopPACServer)
+        {
+            this.restartPACServer = restartPACServer;
+            this.stopPACServer = stopPACServer;
+            this.curSysProxySummary = curSysProxySummary;
+
+            // refresh check status
+            OnPACServerStatusChangedHandler(this, EventArgs.Empty);
+
+            pacServer.OnPACServerStatusChanged += OnPACServerStatusChangedHandler;
+
+            restartPACServer.Click += (s, a) =>
+            {
+                pacServer.RestartPacServer();
+            };
+
+            stopPACServer.Click += (s, a) =>
+            {
+                pacServer.StopPacServer();
+            };
+
             // misc
             clearSysProxy.Click += (s, a) =>
             {
                 if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
                 {
-                    Service.Setting.Instance.ClearSystemProxy();
+                    pacServer.ClearSysProxy();
                 }
             };
 
-            refreshSummary.Click += (s, a) =>
+            copyCurPacUrl.Click += (s, a) =>
             {
-                cache.html.Clear();
-                servers.UpdateAllServersSummary();
+                var p = Lib.ProxySetter.GetProxySetting();
+                var u = p.autoConfigUrl;
+
+                MessageBox.Show(
+                    Lib.Utils.CopyToClipboard(u) ?
+                    I18N("LinksCopied") :
+                    I18N("CopyFail"));
             };
         }
 

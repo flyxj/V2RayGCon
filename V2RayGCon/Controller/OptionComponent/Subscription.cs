@@ -73,7 +73,7 @@ namespace V2RayGCon.Controller.OptionComponent
         List<Model.Data.SubscriptionItem> CollectSubscriptionItems()
         {
             var itemList = new List<Model.Data.SubscriptionItem>();
-            foreach (Model.UserControls.SubscriptionUI item in this.flyPanel.Controls)
+            foreach (Views.UserControls.SubscriptionUI item in this.flyPanel.Controls)
             {
                 var v = item.GetValue();
                 if (!string.IsNullOrEmpty(v.alias)
@@ -98,7 +98,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             foreach (var item in subItemList)
             {
-                this.flyPanel.Controls.Add(new Model.UserControls.SubscriptionUI(item, UpdatePanelItemsIndex));
+                this.flyPanel.Controls.Add(new Views.UserControls.SubscriptionUI(item, UpdatePanelItemsIndex));
             }
 
             UpdatePanelItemsIndex();
@@ -109,7 +109,7 @@ namespace V2RayGCon.Controller.OptionComponent
             this.btnAdd.Click += (s, a) =>
             {
                 this.flyPanel.Controls.Add(
-                    new Model.UserControls.SubscriptionUI(
+                    new Views.UserControls.SubscriptionUI(
                         new Model.Data.SubscriptionItem(),
                         UpdatePanelItemsIndex));
                 UpdatePanelItemsIndex();
@@ -123,7 +123,7 @@ namespace V2RayGCon.Controller.OptionComponent
                 this.btnUpdate.Enabled = false;
 
                 var subs = new Dictionary<string, string>();
-                foreach (Model.UserControls.SubscriptionUI item in this.flyPanel.Controls)
+                foreach (Views.UserControls.SubscriptionUI item in this.flyPanel.Controls)
                 {
                     var value = item.GetValue();
                     if (value.isUse
@@ -151,8 +151,8 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var data = a.Data.GetData(typeof(Model.UserControls.SubscriptionUI))
-                    as Model.UserControls.SubscriptionUI;
+                var data = a.Data.GetData(typeof(Views.UserControls.SubscriptionUI))
+                    as Views.UserControls.SubscriptionUI;
 
                 var _destination = s as FlowLayoutPanel;
                 Point p = _destination.PointToClient(new Point(a.X, a.Y));
@@ -178,7 +178,7 @@ namespace V2RayGCon.Controller.OptionComponent
         void UpdatePanelItemsIndex()
         {
             var index = 1;
-            foreach (Model.UserControls.SubscriptionUI item in this.flyPanel.Controls)
+            foreach (Views.UserControls.SubscriptionUI item in this.flyPanel.Controls)
             {
                 item.SetIndex(index++);
             }

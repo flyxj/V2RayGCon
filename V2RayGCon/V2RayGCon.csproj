@@ -96,7 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\Configer.cs" />
+    <Compile Include="Controller\FormConfigerCtrl.cs" />
     <Compile Include="Controller\ConfigerComponent\Editor.cs" />
     <Compile Include="Controller\ConfigerComponent\Import.cs" />
     <Compile Include="Controller\ConfigerComponent\EnvVar.cs" />
@@ -113,11 +113,13 @@
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
+    <Compile Include="Controller\OptionComponent\PacServer.cs" />
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
-    <Compile Include="Controller\OptionCtrl.cs" />
+    <Compile Include="Controller\FormOptionCtrl.cs" />
     <Compile Include="Lib\ChildProcessTracker.cs" />
     <Compile Include="Lib\DllLoader.cs" />
+    <Compile Include="Lib\Net\WebServer.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
     <Compile Include="Lib\StringResource.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
@@ -132,16 +134,21 @@
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
     <Compile Include="Model\BaseClass\FormController.cs" />
     <Compile Include="Controller\ConfigerComponent\ConfigerComponentController.cs" />
+    <Compile Include="Model\Data\PacUrlParams.cs" />
+    <Compile Include="Model\Data\ProxyRegKeyValue.cs" />
+    <Compile Include="Model\Data\PacServerSettings.cs" />
+    <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\ImportItem.cs" />
-    <Compile Include="Model\UserControls\ImportUI.cs">
+    <Compile Include="Service\PACServer.cs" />
+    <Compile Include="Views\UserControls\ImportUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\ImportUI.Designer.cs">
+    <Compile Include="Views\UserControls\ImportUI.Designer.cs">
       <DependentUpon>ImportUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\Servers.cs" />
@@ -149,22 +156,22 @@
     <Compile Include="Model\Data\LockValuePair.cs" />
     <Compile Include="Controller\ServerCtrl.cs" />
     <Compile Include="Model\Data\SubscriptionItem.cs" />
-    <Compile Include="Model\UserControls\ServerUI.cs">
+    <Compile Include="Views\UserControls\ServerUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\ServerUI.Designer.cs">
+    <Compile Include="Views\UserControls\ServerUI.Designer.cs">
       <DependentUpon>ServerUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\UserControls\SubscriptionUI.cs">
+    <Compile Include="Views\UserControls\SubscriptionUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\SubscriptionUI.Designer.cs">
+    <Compile Include="Views\UserControls\SubscriptionUI.Designer.cs">
       <DependentUpon>SubscriptionUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\UserControls\WelcomeUI.cs">
+    <Compile Include="Views\UserControls\WelcomeUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Model\UserControls\WelcomeUI.Designer.cs">
+    <Compile Include="Views\UserControls\WelcomeUI.Designer.cs">
       <DependentUpon>WelcomeUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\Caches\CoreCache.cs" />
@@ -194,46 +201,46 @@
     <Compile Include="Service\Caches\Template.cs" />
     <Compile Include="Service\Downloader.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Views\FormConfiger.cs">
+    <Compile Include="Views\WinForms\FormConfiger.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormConfiger.Designer.cs">
+    <Compile Include="Views\WinForms\FormConfiger.Designer.cs">
       <DependentUpon>FormConfiger.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormDownloadCore.cs">
+    <Compile Include="Views\WinForms\FormDownloadCore.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormDownloadCore.Designer.cs">
+    <Compile Include="Views\WinForms\FormDownloadCore.Designer.cs">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormImportLinksResult.cs">
+    <Compile Include="Views\WinForms\FormImportLinksResult.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormImportLinksResult.Designer.cs">
+    <Compile Include="Views\WinForms\FormImportLinksResult.Designer.cs">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormBatchModifyServerSetting.cs">
+    <Compile Include="Views\WinForms\FormBatchModifyServerSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormBatchModifyServerSetting.Designer.cs">
+    <Compile Include="Views\WinForms\FormBatchModifyServerSetting.Designer.cs">
       <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormSingleServerLog.cs">
+    <Compile Include="Views\WinForms\FormSingleServerLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormSingleServerLog.Designer.cs">
+    <Compile Include="Views\WinForms\FormSingleServerLog.Designer.cs">
       <DependentUpon>FormSingleServerLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormLog.cs">
+    <Compile Include="Views\WinForms\FormLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormLog.Designer.cs">
+    <Compile Include="Views\WinForms\FormLog.Designer.cs">
       <DependentUpon>FormLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormMain.cs">
+    <Compile Include="Views\WinForms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormMain.Designer.cs">
+    <Compile Include="Views\WinForms\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Service\Setting.cs" />
@@ -244,52 +251,52 @@
     <Compile Include="Lib\QRCode\QRCodeSplash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormOption.cs">
+    <Compile Include="Views\WinForms\FormOption.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormOption.Designer.cs">
+    <Compile Include="Views\WinForms\FormOption.Designer.cs">
       <DependentUpon>FormOption.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormQRCode.cs">
+    <Compile Include="Views\WinForms\FormQRCode.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormQRCode.Designer.cs">
+    <Compile Include="Views\WinForms\FormQRCode.Designer.cs">
       <DependentUpon>FormQRCode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormSearch.cs">
+    <Compile Include="Views\WinForms\FormSearch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormSearch.Designer.cs">
+    <Compile Include="Views\WinForms\FormSearch.Designer.cs">
       <DependentUpon>FormSearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormSimAddVmessClient.cs">
+    <Compile Include="Views\WinForms\FormSimAddVmessClient.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormSimAddVmessClient.Designer.cs">
+    <Compile Include="Views\WinForms\FormSimAddVmessClient.Designer.cs">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Model\UserControls\ServerUI.resx">
+    <EmbeddedResource Include="Views\UserControls\ServerUI.resx">
       <DependentUpon>ServerUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\ServerUI.zh-CN.resx">
+    <EmbeddedResource Include="Views\UserControls\ServerUI.zh-CN.resx">
       <DependentUpon>ServerUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\ImportUI.resx">
+    <EmbeddedResource Include="Views\UserControls\ImportUI.resx">
       <DependentUpon>ImportUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\ImportUI.zh-CN.resx">
+    <EmbeddedResource Include="Views\UserControls\ImportUI.zh-CN.resx">
       <DependentUpon>ImportUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\SubscriptionUI.resx">
+    <EmbeddedResource Include="Views\UserControls\SubscriptionUI.resx">
       <DependentUpon>SubscriptionUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\SubscriptionUI.zh-CN.resx">
+    <EmbeddedResource Include="Views\UserControls\SubscriptionUI.zh-CN.resx">
       <DependentUpon>SubscriptionUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\WelcomeUI.resx">
+    <EmbeddedResource Include="Views\UserControls\WelcomeUI.resx">
       <DependentUpon>WelcomeUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\UserControls\WelcomeUI.zh-CN.resx">
+    <EmbeddedResource Include="Views\UserControls\WelcomeUI.zh-CN.resx">
       <DependentUpon>WelcomeUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -315,70 +322,70 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Text.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormBatchModifyServerSetting.resx">
+    <EmbeddedResource Include="Views\WinForms\FormBatchModifyServerSetting.resx">
       <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormBatchModifyServerSetting.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormBatchModifyServerSetting.zh-CN.resx">
       <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormConfiger.resx">
+    <EmbeddedResource Include="Views\WinForms\FormConfiger.resx">
       <DependentUpon>FormConfiger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormConfiger.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormConfiger.zh-CN.resx">
       <DependentUpon>FormConfiger.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormDownloadCore.resx">
+    <EmbeddedResource Include="Views\WinForms\FormDownloadCore.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormImportLinksResult.resx">
+    <EmbeddedResource Include="Views\WinForms\FormImportLinksResult.resx">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormImportLinksResult.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormImportLinksResult.zh-CN.resx">
       <DependentUpon>FormImportLinksResult.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormSingleServerLog.resx">
+    <EmbeddedResource Include="Views\WinForms\FormSingleServerLog.resx">
       <DependentUpon>FormSingleServerLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormSingleServerLog.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormSingleServerLog.zh-CN.resx">
       <DependentUpon>FormSingleServerLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormLog.resx">
+    <EmbeddedResource Include="Views\WinForms\FormLog.resx">
       <DependentUpon>FormLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormLog.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormLog.zh-CN.resx">
       <DependentUpon>FormLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormMain.resx">
+    <EmbeddedResource Include="Views\WinForms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormMain.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormMain.zh-CN.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormOption.resx">
+    <EmbeddedResource Include="Views\WinForms\FormOption.resx">
       <DependentUpon>FormOption.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormOption.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormOption.zh-CN.resx">
       <DependentUpon>FormOption.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormQRCode.resx">
+    <EmbeddedResource Include="Views\WinForms\FormQRCode.resx">
       <DependentUpon>FormQRCode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormQRCode.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormQRCode.zh-CN.resx">
       <DependentUpon>FormQRCode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormSearch.resx">
+    <EmbeddedResource Include="Views\WinForms\FormSearch.resx">
       <DependentUpon>FormSearch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormSearch.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormSearch.zh-CN.resx">
       <DependentUpon>FormSearch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormDownloadCore.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormDownloadCore.zh-CN.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormSimAddVmessClient.resx">
+    <EmbeddedResource Include="Views\WinForms\FormSimAddVmessClient.resx">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormSimAddVmessClient.zh-CN.resx">
+    <EmbeddedResource Include="Views\WinForms\FormSimAddVmessClient.zh-CN.resx">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
@@ -402,6 +409,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
+    <None Include="Resource\PAC\white_cidr.txt" />
+    <None Include="Resource\PAC\white.txt" />
+    <None Include="Resource\PAC\black.txt" />
+    <None Include="Resource\PAC\black_cidr.txt" />
+    <Content Include="Resource\PAC\PacTemplateTail.txt" />
+    <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
+    <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />
+    <None Include="Resource\Icon\ServerUI\GlyphUp_16x.png" />
     <None Include="Resource\Icon\TaskTray\ExpandScope_16x.png" />
     <None Include="Resource\Icon\TaskTray\WindowsForm_16x.png" />
     <None Include="Resource\Icon\TaskTray\StatusHelp_16x.png" />
@@ -428,7 +443,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
-    <Folder Include="Resource\Icon\UCtrlServerList\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

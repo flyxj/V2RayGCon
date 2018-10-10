@@ -93,7 +93,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitMenuAbout(ToolStripMenuItem checkUpdate, ToolStripMenuItem about, ToolStripMenuItem help, ToolStripMenuItem downloadV2rayCore, ToolStripMenuItem removeV2rayCore)
         {
             // menu about
-            downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
+            downloadV2rayCore.Click += (s, a) => Views.WinForms.FormDownloadCore.GetForm();
 
             removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
 
@@ -110,7 +110,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             // menu file
             simVmessServer.Click +=
-                (s, a) => Views.FormSimAddVmessClient.GetForm();
+                (s, a) => Views.WinForms.FormSimAddVmessClient.GetForm();
 
             importLinkFromClipboard.Click += (s, a) =>
             {
@@ -126,13 +126,13 @@ namespace V2RayGCon.Controller.FormMainComponent
         private static void InitMenuWindows(ToolStripMenuItem miFormConfigEditor, ToolStripMenuItem miFormQRCode, ToolStripMenuItem miFormLog, ToolStripMenuItem miFormOptions)
         {
             // menu window
-            miFormConfigEditor.Click += (s, a) => new Views.FormConfiger();
+            miFormConfigEditor.Click += (s, a) => new Views.WinForms.FormConfiger();
 
-            miFormQRCode.Click += (s, a) => Views.FormQRCode.GetForm();
+            miFormQRCode.Click += (s, a) => Views.WinForms.FormQRCode.GetForm();
 
-            miFormLog.Click += (s, a) => Views.FormLog.GetForm();
+            miFormLog.Click += (s, a) => Views.WinForms.FormLog.GetForm();
 
-            miFormOptions.Click += (s, a) => Views.FormOption.GetForm();
+            miFormOptions.Click += (s, a) => Views.WinForms.FormOption.GetForm();
         }
 
         private void RemoveV2RayCore()

@@ -17,11 +17,12 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
         ToolStripDropDownButton tsdbtnPager;
         Lib.CancelableTimeout lazyStatusBarUpdateTimer = null;
-        Model.UserControls.WelcomeUI welcomeItem = null;
+        Views.UserControls.WelcomeUI welcomeItem = null;
         int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
         public FlyServer(
             FlowLayoutPanel panel,
+            ToolStripLabel lbMarkFilter,
             ToolStripComboBox cboxMarkeFilter,
             ToolStripStatusLabel tslbTotal,
             ToolStripDropDownButton tsdbtnPager,
@@ -37,9 +38,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.tslbTotal = tslbTotal;
             this.tslbPrePage = tslbPrePage;
             this.tslbNextPage = tslbNextPage;
-            this.welcomeItem = new Model.UserControls.WelcomeUI();
+            this.welcomeItem = new Views.UserControls.WelcomeUI();
 
-            InitFormControls();
+            InitFormControls(lbMarkFilter);
             BindDragDropEvent();
             RefreshUI();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
@@ -48,19 +49,39 @@ namespace V2RayGCon.Controller.FormMainComponent
 
 
         #region public method
-        public void SelectAll()
+        public List<Controller.ServerCtrl> GetFilteredList()
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(true));
+            var list = servers.GetServerList();
+            var keywords = (searchKeywords ?? "").Split(
+                new char[] { ' ', ',' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            if (keywords.Length < 1)
+            {
+                return list.ToList();
+            }
+
+            return list
+                .Where(
+                    e => keywords.All(
+                        k => e.GetSearchTextList().Any(
+                            s => Lib.Utils.PartialMatch(s, k))))
+                .ToList();
         }
 
-        public void SelectNone()
+        public void LoopThroughAllServerUI(Action<Views.UserControls.ServerUI> operation)
         {
-            LoopThroughServerItemControls((s) => s.SetSelected(false));
-        }
-
-        public void SelectInvert()
-        {
-            LoopThroughServerItemControls((s) => s.SetSelected(!s.isSelected));
+            var list = flyPanel.Controls
+                .OfType<Views.UserControls.ServerUI>()
+                .Select(e =>
+                {
+                    flyPanel?.Invoke((MethodInvoker)delegate
+                    {
+                        operation(e);
+                    });
+                    return true;
+                })
+                .ToList();
         }
 
         public override void Cleanup()
@@ -68,6 +89,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             servers.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
             servers.OnRequireStatusBarUpdate -= OnRequireStatusBarUpdateHandler;
             lazyStatusBarUpdateTimer?.Release();
+            lazyShowSearchResultTimer?.Release();
             RemoveAllServersConrol(true);
         }
 
@@ -75,7 +97,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             var controlList = GetAllServersControl();
 
-            flyPanel.Invoke((MethodInvoker)delegate
+            flyPanel?.Invoke((MethodInvoker)delegate
             {
                 flyPanel.SuspendLayout();
                 flyPanel.Controls.Clear();
@@ -165,6 +187,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             var text = string.Format(
                 I18N("StatusBarServerCountTpl"),
+                    GetFilteredList().Count,
                     servers.GetTotalServerCount())
                 + " "
                 + string.Format(
@@ -191,9 +214,20 @@ namespace V2RayGCon.Controller.FormMainComponent
                         paging[1]);
                 }
 
-                tsdbtnPager.Visible = showPager;
-                tslbNextPage.Visible = showPager;
-                tslbPrePage.Visible = showPager;
+                if (tsdbtnPager.Visible != showPager)
+                {
+                    tsdbtnPager.Visible = showPager;
+                }
+
+                if (tslbNextPage.Visible != showPager)
+                {
+                    tslbNextPage.Visible = showPager;
+                }
+
+                if (tslbPrePage.Visible != showPager)
+                {
+                    tslbPrePage.Visible = showPager;
+                }
 
                 if (text != tslbTotal.Text)
                 {
@@ -261,7 +295,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             lazyShowSearchResultTimer.Start();
         }
 
-        private void InitFormControls()
+        private void InitFormControls(ToolStripLabel lbMarkFilter)
         {
             InitComboBoxMarkFilter();
             tslbPrePage.Click += (s, a) =>
@@ -275,6 +309,9 @@ namespace V2RayGCon.Controller.FormMainComponent
                 paging[0]++;
                 RefreshUI();
             };
+
+            lbMarkFilter.Click +=
+                (s, a) => this.cboxMarkFilter.Text = string.Empty;
         }
 
         private void InitComboBoxMarkFilter()
@@ -284,7 +321,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             cboxMarkFilter.DropDown += (s, e) =>
             {
                 // cboxMarkFilter has no Invoke method.
-                this.flyPanel.Invoke((MethodInvoker)delegate
+                this.flyPanel?.Invoke((MethodInvoker)delegate
                 {
                     UpdateMarkFilterItemList(cboxMarkFilter);
                     Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMarkFilter);
@@ -298,26 +335,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             };
         }
 
-        List<Controller.ServerCtrl> GetFilteredList()
-        {
-            var list = servers.GetServerList();
-            var keywords = (searchKeywords ?? "").Split(
-                new char[] { ' ', ',' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            if (keywords.Length < 1)
-            {
-                return list.ToList();
-            }
-
-            return list
-                .Where(
-                    e => keywords.All(
-                        k => e.GetSearchTextList().Any(
-                            s => Lib.Utils.PartialMatch(s, k))))
-                .ToList();
-        }
-
         void UpdateMarkFilterItemList(ToolStripComboBox marker)
         {
             marker.Items.Clear();
@@ -329,18 +346,18 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             flyPanel.Controls.AddRange(
                 serverList
-                    .Select(s => new Model.UserControls.ServerUI(s))
+                    .Select(s => new Views.UserControls.ServerUI(s))
                     .ToArray());
         }
 
-        void DisposeFlyPanelControlByList(List<Model.UserControls.ServerUI> controlList)
+        void DisposeFlyPanelControlByList(List<Views.UserControls.ServerUI> controlList)
         {
             foreach (var control in controlList)
             {
                 control.Cleanup();
             }
 
-            flyPanel.Invoke((MethodInvoker)delegate
+            flyPanel?.Invoke((MethodInvoker)delegate
             {
                 foreach (var control in controlList)
                 {
@@ -363,9 +380,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
 
-        List<Model.UserControls.ServerUI> GetDeletedControlList(List<Controller.ServerCtrl> serverList)
+        List<Views.UserControls.ServerUI> GetDeletedControlList(List<Controller.ServerCtrl> serverList)
         {
-            var result = new List<Model.UserControls.ServerUI>();
+            var result = new List<Views.UserControls.ServerUI>();
 
             foreach (var control in GetAllServersControl())
             {
@@ -384,7 +401,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         void RemoveWelcomeItem()
         {
             var list = flyPanel.Controls
-                .OfType<Model.UserControls.WelcomeUI>()
+                .OfType<Views.UserControls.WelcomeUI>()
                 .Select(e =>
                 {
                     flyPanel.Controls.Remove(e);
@@ -393,22 +410,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList();
         }
 
-        void LoopThroughServerItemControls(Action<Model.UserControls.ServerUI> worker)
-        {
-            var list = flyPanel.Controls
-                .OfType<Model.UserControls.ServerUI>()
-                .Select(e =>
-                {
-                    worker(e);
-                    return true;
-                })
-                .ToList();
-        }
-
-        List<Model.UserControls.ServerUI> GetAllServersControl()
+        List<Views.UserControls.ServerUI> GetAllServersControl()
         {
             return flyPanel.Controls
-                .OfType<Model.UserControls.ServerUI>()
+                .OfType<Views.UserControls.ServerUI>()
                 .ToList();
         }
 
@@ -420,7 +425,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void LoadWelcomeItem()
         {
             var welcome = flyPanel.Controls
-                .OfType<Model.UserControls.WelcomeUI>()
+                .OfType<Views.UserControls.WelcomeUI>()
                 .FirstOrDefault();
 
             if (welcome == null)
@@ -452,8 +457,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var serverItemMoving = a.Data.GetData(typeof(Model.UserControls.ServerUI))
-                    as Model.UserControls.ServerUI;
+                var serverItemMoving = a.Data.GetData(typeof(Views.UserControls.ServerUI))
+                    as Views.UserControls.ServerUI;
 
                 if (serverItemMoving == null)
                 {
@@ -465,12 +470,12 @@ namespace V2RayGCon.Controller.FormMainComponent
                 var controlDest = panel.GetChildAtPoint(p);
                 int index = panel.Controls.GetChildIndex(controlDest, false);
                 panel.Controls.SetChildIndex(serverItemMoving, index);
-                var serverItemDest = controlDest as Model.UserControls.ServerUI;
+                var serverItemDest = controlDest as Views.UserControls.ServerUI;
                 MoveServerListItem(ref serverItemMoving, ref serverItemDest);
             };
         }
 
-        void MoveServerListItem(ref Model.UserControls.ServerUI moving, ref Model.UserControls.ServerUI destination)
+        void MoveServerListItem(ref Views.UserControls.ServerUI moving, ref Views.UserControls.ServerUI destination)
         {
             var indexDest = destination.GetIndex();
             var indexMoving = moving.GetIndex();

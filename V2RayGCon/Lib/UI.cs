@@ -61,20 +61,23 @@ namespace V2RayGCon.Lib
             }
         }
 
-        public static void AutoScaleToolSripControls(Form form)
+        // if baseLine is set, use baseLine instead of orginal image scaling size
+        public static void AutoScaleToolSripControls(Form form, int baseLine = -1)
         {
             // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
             var factor = GetFormScalingFactor(form);
-            if (factor <= 1)
+            if (factor < 1)
             {
-                return;
+                factor = 1;
             }
+
             var menuList = GetAllControls<ToolStrip>(form);
             foreach (var menu in menuList)
             {
                 menu.ImageScalingSize = new Size(
-                        (int)(menu.ImageScalingSize.Width * factor),
-                        (int)(menu.ImageScalingSize.Height * factor));
+                        (int)((baseLine < 0 ? menu.ImageScalingSize.Width : baseLine) * factor),
+                        (int)((baseLine < 0 ? menu.ImageScalingSize.Height : baseLine) * factor));
+
                 foreach (var cbox in GetAllControls<ComboBox>(menu))
                 {
                     cbox.Width = (int)(cbox.Width * factor);

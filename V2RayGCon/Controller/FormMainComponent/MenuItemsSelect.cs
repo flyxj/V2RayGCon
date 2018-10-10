@@ -8,68 +8,39 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Servers servers;
         public MenuItemsSelect(
-            ToolStripMenuItem selectAll,
-            ToolStripMenuItem selectNone,
-            ToolStripMenuItem selectInvert,
-            ToolStripMenuItem selectAutorun,
-            ToolStripMenuItem selectRunning,
-            ToolStripMenuItem selectTimeout,
-            ToolStripMenuItem selectNoSpeedTest,
-            ToolStripMenuItem selectNoMark,
-            ToolStripMenuItem clearAllSelection,
-            ToolStripMenuItem selectAllIgnorePage)
+            ToolStripMenuItem selectAllCurPage,
+            ToolStripMenuItem invertSelectionCurPage,
+            ToolStripMenuItem selectNoneCurPage,
+
+            ToolStripMenuItem selectAllAllPages,
+            ToolStripMenuItem invertSelectionAllPages,
+            ToolStripMenuItem selectNoneAllPages,
+
+            ToolStripMenuItem selectAutorunAllPages,
+            ToolStripMenuItem selectNoMarkAllPages,
+            ToolStripMenuItem selectNoSpeedTestAllPages,
+            ToolStripMenuItem selectRunningAllPages,
+            ToolStripMenuItem selectTimeoutAllPages,
+
+            ToolStripMenuItem selectAllAllServers,
+            ToolStripMenuItem invertSelectionAllServers,
+            ToolStripMenuItem selectNoneAllServers,
+
+            ToolStripMenuItem selectAutorunAllServers,
+            ToolStripMenuItem selectNoMarkAllServers,
+            ToolStripMenuItem selectNoSpeedTestAllServers,
+            ToolStripMenuItem selectRunningAllServers,
+            ToolStripMenuItem selectTimeoutAllServers)
+
+
         {
             servers = Service.Servers.Instance;
 
-            selectAllIgnorePage.Click += (s, a) =>
-            {
-                servers.SetAllServerIsSelected(true);
-            };
-
-            clearAllSelection.Click += (s, a) =>
-            {
-                servers.SetAllServerIsSelected(false);
-            };
-
-            selectNoMark.Click +=
-                (s, a) => SelectAllServerIF(
-                    el => string.IsNullOrEmpty(el.mark));
-
-            selectNoSpeedTest.Click +=
-                (s, a) => SelectAllServerIF(
-                    el => el.speedTestResult < 0);
-
-            selectTimeout.Click +=
-                (s, a) => SelectAllServerIF(
-                    el => el.speedTestResult == long.MaxValue);
-
-
-            selectRunning.Click +=
-                (s, a) => SelectAllServerIF(
-                    el => el.isServerOn);
-
-            selectAutorun.Click +=
-                (s, a) => SelectAllServerIF(
-                    el => el.isAutoRun);
-
-            // current page only
-            // fly panel may not ready while this init
-
-            selectAll.Click += (s, a) =>
-            {
-                GetFlyPanel().SelectAll();
-            };
-
-            selectNone.Click += (s, a) =>
-            {
-                GetFlyPanel().SelectNone();
-            };
-
-            selectInvert.Click += (s, a) =>
-            {
-                GetFlyPanel().SelectInvert();
-            };
+            InitAllPagesSelectors(selectNoneAllPages, invertSelectionAllPages, selectAllAllPages, selectAutorunAllPages, selectRunningAllPages, selectTimeoutAllPages, selectNoSpeedTestAllPages, selectNoMarkAllPages);
+            InitAllServersSelector(selectNoneAllServers, invertSelectionAllServers, selectAllAllServers, selectAutorunAllServers, selectRunningAllServers, selectTimeoutAllServers, selectNoSpeedTestAllServers, selectNoMarkAllServers);
+            InitCurPageSelectors(selectAllCurPage, selectNoneCurPage, invertSelectionCurPage);
         }
+
 
         #region public method
         public override bool RefreshUI()
@@ -83,7 +54,116 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        void SelectAllServerIF(Func<Controller.ServerCtrl, bool> condiction)
+        private void InitAllPagesSelectors(ToolStripMenuItem selectNoneAllPages, ToolStripMenuItem invertSelectionAllPages, ToolStripMenuItem selectAllAllPages, ToolStripMenuItem selectAutorunAllPages, ToolStripMenuItem selectRunningAllPages, ToolStripMenuItem selectTimeoutAllPages, ToolStripMenuItem selectNoSpeedTestAllPages, ToolStripMenuItem selectNoMarkAllPages)
+        {
+            selectAllAllPages.Click +=
+                            (s, a) => SelectAllPagesWhere(el => true);
+
+            selectNoneAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => false);
+
+            invertSelectionAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => !el.isSelected);
+
+            selectAutorunAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => el.isAutoRun);
+
+            selectRunningAllPages.Click +=
+                 (s, a) => SelectAllPagesWhere(el => el.isServerOn);
+
+            selectTimeoutAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => el.speedTestResult == long.MaxValue);
+
+            selectNoSpeedTestAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => el.speedTestResult < 0);
+
+            selectNoMarkAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => string.IsNullOrEmpty(el.mark));
+        }
+
+        private void InitAllServersSelector(ToolStripMenuItem selectNoneAllServers, ToolStripMenuItem invertSelectionAllServers, ToolStripMenuItem selectAllAllServers, ToolStripMenuItem selectAutorunAllServers, ToolStripMenuItem selectRunningAllServers, ToolStripMenuItem selectTimeoutAllServers, ToolStripMenuItem selectNoSpeedTestAllServers, ToolStripMenuItem selectNoMarkAllServers)
+        {
+            selectAllAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => true);
+
+            invertSelectionAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => !el.isSelected);
+
+            selectNoneAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => false);
+
+            selectNoMarkAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => string.IsNullOrEmpty(el.mark));
+
+            selectNoSpeedTestAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => el.speedTestResult < 0);
+
+            selectTimeoutAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => el.speedTestResult == long.MaxValue);
+
+
+            selectRunningAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => el.isServerOn);
+
+            selectAutorunAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => el.isAutoRun);
+        }
+
+        private void InitCurPageSelectors(ToolStripMenuItem selectAllCurPage, ToolStripMenuItem selectNoneCurPage, ToolStripMenuItem invertSelectionCurPage)
+        {
+            selectAllCurPage.Click +=
+                (s, a) => SelectCurPageWhere(el => true);
+
+            selectNoneCurPage.Click +=
+                (s, a) => SelectCurPageWhere(el => false);
+
+            invertSelectionCurPage.Click +=
+                (s, a) => SelectCurPageWhere(el => !el.isSelected);
+        }
+
+        void SelectCurPageWhere(Func<Views.UserControls.ServerUI, bool> condiction)
+        {
+            var panel = GetFlyPanel();
+            var configs = panel.GetFilteredList().Select(s => s.config);
+
+            // clear all not in current filtered list
+            servers.GetServerList()
+                .Where(s => !configs.Contains(s.config))
+                .Select(s =>
+                {
+                    s.SetIsSelected(false);
+                    return true;
+                })
+                .ToList();
+
+            panel.LoopThroughAllServerUI(s =>
+            {
+                s.SetSelected(condiction(s));
+            });
+        }
+
+        void SelectAllPagesWhere(Func<Controller.ServerCtrl, bool> condiction)
+        {
+            var configs = GetFlyPanel().GetFilteredList()
+                .Select(s => s.config)
+                .ToList();
+
+            servers.GetServerList()
+                .Select(s =>
+                {
+                    if (!configs.Contains(s.config))
+                    {
+                        s.SetIsSelected(false);
+                        return false;
+                    }
+                    s.SetIsSelected(condiction(s));
+                    return true;
+                })
+                .ToList();
+        }
+
+
+        void SelectAllServersWhere(Func<Controller.ServerCtrl, bool> condiction)
         {
             servers.GetServerList()
                 .Select(s =>

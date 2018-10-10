@@ -515,9 +515,6 @@ Are you sure want to continue?</value>
   <data name="Timeout" xml:space="preserve">
     <value>Timeout</value>
   </data>
-  <data name="VisitWebPageTest" xml:space="preserve">
-    <value>Visit web page test</value>
-  </data>
   <data name="LastTestNoFinishYet" xml:space="preserve">
     <value>Last test is not finished yet. Please wait till test finish.</value>
   </data>
@@ -586,6 +583,19 @@ Otherwise operations involving the network may fail.</value>
     <value>Page {0} of {1}</value>
   </data>
   <data name="StatusBarServerCountTpl" xml:space="preserve">
-    <value>Total {0} server(s).</value>
+    <value>Total {0} of {1} server(s).</value>
+  </data>
+  <data name="StartPacServFail" xml:space="preserve">
+    <value>Start PAC server fail. 
+Please check port setting in form option.</value>
+  </data>
+  <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
+    <value>Set mode to HTTP or SOCKS first, please!</value>
+  </data>
+  <data name="AutoTracker" xml:space="preserve">
+    <value>Auto tracker</value>
+  </data>
+  <data name="SetSysProxyFail" xml:space="preserve">
+    <value>Set system proxy fail!</value>
   </data>
 </root>

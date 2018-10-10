@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static V2RayGCon.Lib.StringResource;
@@ -18,12 +19,10 @@ namespace V2RayGCon.Controller
             OnRequireMenuUpdate;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected, isCollapse, isInjectSkipCNSite;
+        public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite;
         public string name, summary, inboundIP, mark;
-        public int overwriteInboundType, inboundPort;
+        public int overwriteInboundType, inboundPort, collapseLevel;
         public double index;
-
-
 
         public ServerCtrl()
         {
@@ -34,7 +33,8 @@ namespace V2RayGCon.Controller
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
-            isCollapse = false;
+
+            collapseLevel = 0;
 
             mark = string.Empty;
             status = string.Empty;
@@ -60,7 +60,7 @@ namespace V2RayGCon.Controller
         public Service.Servers parent = null;
 
         [JsonIgnore]
-        Views.FormSingleServerLog logForm = null;
+        Views.WinForms.FormSingleServerLog logForm = null;
 
         [JsonIgnore]
         public string status;
@@ -116,7 +116,7 @@ namespace V2RayGCon.Controller
             {
                 return false;
             }
-            logForm = new Views.FormSingleServerLog(this);
+            logForm = new Views.WinForms.FormSingleServerLog(this);
 
             logForm.FormClosed += (s, a) =>
             {
@@ -124,33 +124,6 @@ namespace V2RayGCon.Controller
                 logForm = null;
             };
             return true;
-        }
-
-        string PrepareSpeedTestConfig(int port)
-        {
-            var empty = string.Empty;
-            if (port <= 0)
-            {
-                return empty;
-            }
-
-            var config = GetDecodedConfig(true, true, false);
-
-            if (config == null)
-            {
-                return empty;
-            }
-
-            if (!OverwriteInboundSettings(
-                ref config,
-                (int)Model.Data.Enum.ProxyTypes.HTTP,
-                "127.0.0.1",
-                port))
-            {
-                return empty;
-            }
-
-            return config.ToString(Formatting.None);
         }
 
         public void RunSpeedTest()
@@ -171,7 +144,7 @@ namespace V2RayGCon.Controller
             }
 
             var url = StrConst("SpeedTestUrl");
-            var text = I18N("Testing") + " ...";
+            var text = I18N("Testing");
             log(text);
             SendLog(url);
 
@@ -180,9 +153,12 @@ namespace V2RayGCon.Controller
             speedTester.RestartCore(config);
 
             this.speedTestResult = Lib.Utils.VisitWebPageSpeedTest(url, port);
-            text = string.Format("{0}:{1}",
-                I18N("VisitWebPageTest"),
-                speedTestResult < long.MaxValue ? speedTestResult.ToString() + "ms" : I18N("Timeout"));
+
+            text = string.Format("{0}",
+                speedTestResult < long.MaxValue ?
+                speedTestResult.ToString() + "ms" :
+                I18N("Timeout"));
+
             log(text);
             speedTester.StopCore();
             speedTester.OnLog -= OnLogHandler;
@@ -220,12 +196,6 @@ namespace V2RayGCon.Controller
             {
                 RestartCoreThen();
             }
-        }
-
-        public void ToggleIsCollapse()
-        {
-            this.isCollapse = !this.isCollapse;
-            InvokeEventOnPropertyChange();
         }
 
         public void ToggleIsAutorun()
@@ -285,7 +255,8 @@ namespace V2RayGCon.Controller
                     UpdateSummary(JObject.Parse(configString));
                 }
 
-                this.status = string.Empty;
+                // update summary should not clear status
+                // this.status = string.Empty;
                 InvokeEventOnPropertyChange();
                 lambda?.Invoke();
             });
@@ -334,7 +305,7 @@ namespace V2RayGCon.Controller
             Task.Factory.StartNew(() => RestartCoreWorker(next));
         }
 
-        public void GetProxyAddrThen(Action<string> next)
+        public void GetProxyAddrForNotifierThen(Action<string> next)
         {
             if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
                 || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
@@ -410,12 +381,13 @@ namespace V2RayGCon.Controller
                 name+summary,
 
                 // index 1
-                Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType]
+                Model.Data.Table.inboundOverwriteTypesName[
+                    Lib.Utils.Clamp(overwriteInboundType,0,3)]
                 +inboundIP
                 +inboundPort.ToString(),
 
                 // index 2
-                this.mark,
+                this.mark??"",
             };
         }
 
@@ -430,6 +402,97 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
+        string PrepareSpeedTestConfig(int port)
+        {
+            var empty = string.Empty;
+            if (port <= 0)
+            {
+                return empty;
+            }
+
+            var config = GetDecodedConfig(true, true, false);
+
+            if (config == null)
+            {
+                return empty;
+            }
+
+            if (!OverwriteInboundSettings(
+                ref config,
+                (int)Model.Data.Enum.ProxyTypes.HTTP,
+                "127.0.0.1",
+                port))
+            {
+                return empty;
+            }
+
+            return config.ToString(Formatting.None);
+        }
+
+        void TrackServer(JObject parsedConfig)
+        {
+            var setting = Service.Setting.Instance;
+            if (!setting.isServerTrackerOn)
+            {
+                return;
+            }
+
+
+
+            var servers = Service.Servers.Instance;
+            SaveTrackedServerList(setting, servers);
+
+            var pacServer = Service.PACServer.Instance;
+            var inboundProtocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
+            UpdateSystemProxySetting(setting, pacServer, inboundProtocol);
+        }
+
+        private void UpdateSystemProxySetting(Service.Setting setting, Service.PACServer pacServer, string inboundProtocol)
+        {
+            Action<string> error = (s) =>
+            {
+                var msgBox = I18N("SetSysProxyFail");
+                Task.Factory.StartNew(() => MessageBox.Show(msgBox));
+                SendLog(I18N("AutoTracker") + ":" + s);
+            };
+
+            if (string.IsNullOrEmpty(inboundProtocol))
+            {
+                error("No inbound protocol!");
+                return;
+            }
+
+            var protocol = inboundProtocol.ToLower();
+            var proxySetting = setting.GetSysProxySetting();
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                if (protocol != "socks" && protocol != "http")
+                {
+                    error("PAC proxy support socks and http protocol only.");
+                    return;
+                }
+            }
+            else if (proxySetting.proxyEnable && protocol != "http")
+            {
+                error("Global proxy support http protocol only!");
+                return;
+            }
+
+            pacServer.LazySysProxyUpdater(protocol == "socks", inboundIP, inboundPort);
+        }
+
+        private void SaveTrackedServerList(Service.Setting setting, Service.Servers servers)
+        {
+            var runningServerList = servers.GetServerList()
+                .Where(s => s.isServerOn && s.config != this.config)
+                .Select(s => s.config)
+                .ToList();
+            runningServerList.Insert(0, this.config);
+            var trackerSetting = setting.GetServerTrackerSetting();
+            trackerSetting.serverList = runningServerList;
+            setting.SaveServerTrackerSetting(trackerSetting);
+        }
+
         void RestartCoreWorker(Action next)
         {
             JObject cfg = GetDecodedConfig(true, false, true);
@@ -450,6 +513,8 @@ namespace V2RayGCon.Controller
             }
 
             InjectSkipCNSite(ref cfg);
+
+            TrackServer(cfg);
 
             server.RestartCoreThen(
                 cfg.ToString(),

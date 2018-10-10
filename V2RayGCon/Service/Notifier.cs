@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -11,19 +12,19 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
+        PACServer pacServer;
 
         Notifier()
         {
             setting = Setting.Instance;
             setting.SwitchCulture();
+            servers = Servers.Instance;
+            pacServer = Service.PACServer.Instance;
 
             CreateNotifyIcon();
             Lib.Utils.SupportProtocolTLS12();
-            setting.SaveOriginalSystemProxyInfo();
-            setting.LoadSystemProxy();
-            setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
 
-            servers = Servers.Instance;
+            setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
             servers.Prepare(setting);
 
             Application.ApplicationExit += (s, a) => Cleanup();
@@ -33,25 +34,22 @@ namespace V2RayGCon.Service
             {
                 if (a.Button == MouseButtons.Left)
                 {
-                    Views.FormMain.GetForm();
+                    Views.WinForms.FormMain.GetForm();
                 }
             };
 
 #if DEBUG
             This_function_do_some_tedious_stuff();
-#else
+#endif
             if (servers.IsEmpty())
             {
-                Views.FormMain.GetForm();
+                Views.WinForms.FormMain.GetForm();
             }
             else
             {
-                servers.WakeupAutorunServersThen();
+                servers.WakeupAutorunServersThen(RestoreTracker);
             }
-#endif
         }
-
-
 
         #region DEBUG code TL;DR
 #if DEBUG
@@ -66,14 +64,14 @@ namespace V2RayGCon.Service
                  servers.DbgFastRestartTest(100);
              }));
 
-            // new Views.FormConfiger(@"{}");
-            // new Views.FormConfigTester();
-            // Views.FormOption.GetForm();
-            Views.FormMain.GetForm();
-            Views.FormLog.GetForm();
+            // new Views.WinForms.FormConfiger(@"{}");
+            // new Views.WinForms.FormConfigTester();
+            // Views.WinForms.FormOption.GetForm();
+            Views.WinForms.FormMain.GetForm();
+            Views.WinForms.FormLog.GetForm();
             // setting.WakeupAutorunServer();
-            // Views.FormSimAddVmessClient.GetForm();
-            // Views.FormDownloadCore.GetForm();
+            // Views.WinForms.FormSimAddVmessClient.GetForm();
+            // Views.WinForms.FormDownloadCore.GetForm();
         }
 #endif
         #endregion
@@ -86,6 +84,52 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        private void RestoreTracker()
+        {
+            var trackerSetting = setting.GetServerTrackerSetting();
+
+            // wake up track server
+            if (!trackerSetting.isTrackerOn)
+            {
+                return;
+            }
+
+            var trackerList = trackerSetting.serverList;
+            if (trackerList.Count < 1)
+            {
+                setting.isServerTrackerOn = true;
+                return;
+            }
+
+            Action done = () =>
+            {
+                var trackedServerList = servers.GetServerList()
+                    .Where(s => s.config == trackerList[0])
+                    .ToList();
+
+                setting.isServerTrackerOn = true;
+                if (trackedServerList.Any())
+                {
+                    servers.RestartServersByListThen(trackedServerList);
+                }
+            };
+
+            if (trackerList.Count > 1)
+            {
+                var list = servers.GetServerList()
+                .Where(s =>
+                    trackerList.Contains(s.config)
+                    && !s.isServerOn
+                    && s.config != trackerSetting.serverList[0]
+                ).ToList();
+                servers.RestartServersByListThen(list, done);
+            }
+            else
+            {
+                done();
+            }
+        }
+
         void UpdateNotifierTextHandler(object sender, Model.Data.StrEvent args)
         {
             // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
@@ -128,7 +172,7 @@ namespace V2RayGCon.Service
                 new ToolStripMenuItem(
                     I18N("MainWin"),
                     Properties.Resources.WindowsForm_16x,
-                    (s,a)=>Views.FormMain.GetForm()),
+                    (s,a)=>Views.WinForms.FormMain.GetForm()),
 
                 new ToolStripMenuItem(
                     I18N("OtherWin"),
@@ -137,19 +181,19 @@ namespace V2RayGCon.Service
                         new ToolStripMenuItem(
                             I18N("ConfigEditor"),
                             Properties.Resources.EditWindow_16x,
-                            (s,a)=>new Views.FormConfiger() ),
+                            (s,a)=>new Views.WinForms.FormConfiger() ),
                         new ToolStripMenuItem(
                             I18N("GenQRCode"),
                             Properties.Resources.AzureVirtualMachineExtension_16x,
-                            (s,a)=>Views.FormQRCode.GetForm()),
+                            (s,a)=>Views.WinForms.FormQRCode.GetForm()),
                         new ToolStripMenuItem(
                             I18N("Log"),
                             Properties.Resources.FSInteractiveWindow_16x,
-                            (s,a)=>Views.FormLog.GetForm() ),
+                            (s,a)=>Views.WinForms.FormLog.GetForm() ),
                         new ToolStripMenuItem(
                             I18N("Options"),
                             Properties.Resources.Settings_16x,
-                            (s,a)=>Views.FormOption.GetForm() ),
+                            (s,a)=>Views.WinForms.FormOption.GetForm() ),
                     }),
 
                 new ToolStripMenuItem(
@@ -182,7 +226,7 @@ namespace V2RayGCon.Service
                 new ToolStripMenuItem(
                     I18N("DownloadV2rayCore"),
                     Properties.Resources.ASX_TransferDownload_blue_16x,
-                    (s,a)=>Views.FormDownloadCore.GetForm()),
+                    (s,a)=>Views.WinForms.FormDownloadCore.GetForm()),
             });
 
             menu.Items.Add(new ToolStripSeparator());
@@ -212,8 +256,7 @@ namespace V2RayGCon.Service
 
             servers.SaveServerListImmediately();
             servers.DisposeLazyTimers();
-            setting.RestoreOriginalSystemProxyInfo();
-
+            pacServer.Cleanup();
             AutoResetEvent sayGoodbye = new AutoResetEvent(false);
             servers.StopAllServersThen(() => sayGoodbye.Set());
             sayGoodbye.WaitOne();

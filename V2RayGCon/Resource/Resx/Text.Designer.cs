@@ -133,6 +133,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Auto tracker 的本地化字符串。
+        /// </summary>
+        internal static string AutoTracker {
+            get {
+                return ResourceManager.GetString("AutoTracker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Available examples ... 的本地化字符串。
         /// </summary>
         internal static string AvailableExamples {
@@ -1156,6 +1165,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Set system proxy fail! 的本地化字符串。
+        /// </summary>
+        internal static string SetSysProxyFail {
+            get {
+                return ResourceManager.GetString("SetSysProxyFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Speed test 的本地化字符串。
         /// </summary>
         internal static string SpeedTest {
@@ -1183,6 +1201,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Start PAC server fail. 
+        ///Please check port setting in form option. 的本地化字符串。
+        /// </summary>
+        internal static string StartPacServFail {
+            get {
+                return ResourceManager.GetString("StartPacServFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Page {0} of {1} 的本地化字符串。
         /// </summary>
         internal static string StatusBarPagerInfoTpl {
@@ -1201,7 +1229,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Total {0} server(s). 的本地化字符串。
+        ///   查找类似 Total {0} of {1} server(s). 的本地化字符串。
         /// </summary>
         internal static string StatusBarServerCountTpl {
             get {
@@ -1253,6 +1281,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SysNotSupportTLS12 {
             get {
                 return ResourceManager.GetString("SysNotSupportTLS12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Set mode to HTTP or SOCKS first, please! 的本地化字符串。
+        /// </summary>
+        internal static string SysProxyRequireHttpOrSocksMode {
+            get {
+                return ResourceManager.GetString("SysProxyRequireHttpOrSocksMode", resourceCulture);
             }
         }
         
@@ -1364,15 +1401,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string VisitVlinkPage {
             get {
                 return ResourceManager.GetString("VisitVlinkPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Visit web page test 的本地化字符串。
-        /// </summary>
-        internal static string VisitWebPageTest {
-            get {
-                return ResourceManager.GetString("VisitWebPageTest", resourceCulture);
             }
         }
         

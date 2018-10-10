@@ -506,9 +506,6 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Timeout" xml:space="preserve">
     <value>超时</value>
   </data>
-  <data name="VisitWebPageTest" xml:space="preserve">
-    <value>访问网页测试</value>
-  </data>
   <data name="LastTestNoFinishYet" xml:space="preserve">
     <value>上次测试未完成，请等测试完成。</value>
   </data>
@@ -574,6 +571,18 @@ https://github.com/v2ray/v2ray-core</value>
     <value>第{0}/{1}页</value>
   </data>
   <data name="StatusBarServerCountTpl" xml:space="preserve">
-    <value>共有{0}个服务器</value>
+    <value>共{0}/{1}个服务器</value>
+  </data>
+  <data name="StartPacServFail" xml:space="preserve">
+    <value>启动PAC服务器失败，请检查选项中的端口设置</value>
+  </data>
+  <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
+    <value>请先把模式设为HTTP或SOCKS</value>
+  </data>
+  <data name="AutoTracker" xml:space="preserve">
+    <value>自动追踪</value>
+  </data>
+  <data name="SetSysProxyFail" xml:space="preserve">
+    <value>设置系统代理失败！</value>
   </data>
 </root>
