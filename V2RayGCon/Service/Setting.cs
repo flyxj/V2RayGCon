@@ -23,7 +23,8 @@ namespace V2RayGCon.Service
         {
             get
             {
-                return Properties.Settings.Default.ServerPanelPageSize;
+                var size = Properties.Settings.Default.ServerPanelPageSize;
+                return Lib.Utils.Clamp(size, 1, 101);
             }
             set
             {

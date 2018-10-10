@@ -12,8 +12,6 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
-
-
         [DataTestMethod]
         [DataRow(null, null)]
         [DataRow(
