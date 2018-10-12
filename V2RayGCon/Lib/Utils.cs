@@ -13,12 +13,13 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
     public class Utils
     {
+
         public static Service.Cache cache = Service.Cache.Instance;
 
         #region pac
@@ -104,7 +105,7 @@ namespace V2RayGCon.Lib
 
         public static List<string> GetPacUrlList(bool isWhiteList)
         {
-            return StrConst(isWhiteList ? "white" : "black")
+            return (isWhiteList ? StrConst.white : StrConst.black)
                 .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
         }
@@ -121,8 +122,8 @@ namespace V2RayGCon.Lib
         {
             var result = new List<long[]>();
             foreach (var item in
-                StrConst(isWhiteList ? "white_cidr" : "black_cidr").Split(
-                    new char[] { '\n', '\r' },
+                (isWhiteList ? StrConst.white_cidr : StrConst.black_cidr)
+                .Split(new char[] { '\n', '\r' },
                     StringSplitOptions.RemoveEmptyEntries))
             {
                 result.Add(Cidr2RangeArray(item));
@@ -212,7 +213,7 @@ namespace V2RayGCon.Lib
         public static string GetAliasFromConfig(JObject config)
         {
             var name = GetValue<string>(config, "v2raygcon.alias");
-            return string.IsNullOrEmpty(name) ? I18N("Empty") : CutStr(name, 12);
+            return string.IsNullOrEmpty(name) ? I18N.Empty : CutStr(name, 12);
         }
 
         public static string GetSummaryFromConfig(JObject config)
@@ -902,7 +903,7 @@ namespace V2RayGCon.Lib
         #region net
         public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
-            var timeout = Str2Int(StrConst("SpeedTestTimeout"));
+            var timeout = Str2Int(StrConst.SpeedTestTimeout);
 
             long elasped = long.MaxValue;
             using (WebClient wc = new TimedWebClient
@@ -968,14 +969,14 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(StrConst("UrlLatestVGC"));
+            string html = Fetch(StrConst.UrlLatestVGC);
 
             if (string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
 
-            string p = StrConst("PatternLatestVGC");
+            string p = StrConst.PatternLatestVGC;
             var match = Regex.Match(html, p, RegexOptions.IgnoreCase);
             if (match.Success)
             {
@@ -989,14 +990,14 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(StrConst("ReleasePageUrl"));
+            string html = Fetch(StrConst.ReleasePageUrl);
 
             if (string.IsNullOrEmpty(html))
             {
                 return versions;
             }
 
-            string pattern = StrConst("PatternDownloadLink");
+            string pattern = StrConst.PatternDownloadLink;
             var matches = Regex.Matches(html, pattern, RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
@@ -1139,9 +1140,9 @@ namespace V2RayGCon.Lib
         {
             return string.Format(
                "{0}{1}{2}",
-               StrConst("PatternNonAlphabet"), // vme[ss]
+               StrConst.PatternNonAlphabet, // vme[ss]
                GetLinkPrefix(linkType),
-               StrConst("PatternBase64"));
+               StrConst.PatternBase64);
         }
 
         public static string AddLinkPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
@@ -1173,8 +1174,8 @@ namespace V2RayGCon.Lib
         {
             MessageBox.Show(
                 Lib.Utils.CopyToClipboard(content) ?
-                I18N("CopySuccess") :
-                I18N("CopyFail"));
+                I18N.CopySuccess :
+                I18N.CopyFail);
         }
 
         public static bool CopyToClipboard(string content)
@@ -1206,7 +1207,7 @@ namespace V2RayGCon.Lib
             }
             catch (System.NotSupportedException)
             {
-                MessageBox.Show(I18N("SysNotSupportTLS12"));
+                MessageBox.Show(I18N.SysNotSupportTLS12);
             }
         }
 
@@ -1362,6 +1363,19 @@ namespace V2RayGCon.Lib
             {
                 // Process already exited.
             }
+        }
+        #endregion
+
+        #region for Testing
+        public static string[] TestingGetResourceConfigJson()
+        {
+            return new string[]
+            {
+                StrConst.config_example,
+                StrConst.config_min,
+                StrConst.config_tpl,
+                StrConst.config_pkg,
+            };
         }
         #endregion
     }

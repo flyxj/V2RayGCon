@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 
 namespace V2RayGCon.Controller.ConfigerComponet
@@ -85,7 +85,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #region public method
         public override void Update(JObject config)
         {
-            content = I18N("AnalysingImport");
+            content = I18N.AnalysingImport;
             var plainText = config.ToString();
             // todo
             Task.Factory.StartNew(() =>
@@ -105,25 +105,25 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 {
                     result = string.Format(
                             "{0}{1}{2}",
-                            I18N("DecodeImportFail"),
+                            I18N.DecodeImportFail,
                             Environment.NewLine,
-                            I18N("FileNotFound"));
+                            I18N.FileNotFound);
                 }
                 catch (FormatException)
                 {
-                    result = I18N("DecodeImportFail");
+                    result = I18N.DecodeImportFail;
                 }
                 catch (System.Net.WebException)
                 {
                     result = string.Format(
                             "{0}{1}{2}",
-                            I18N("DecodeImportFail"),
+                            I18N.DecodeImportFail,
                             Environment.NewLine,
-                            I18N("NetworkTimeout"));
+                            I18N.NetworkTimeout);
                 }
                 catch (Newtonsoft.Json.JsonReaderException)
                 {
-                    result = I18N("DecodeImportFail");
+                    result = I18N.DecodeImportFail;
                 }
 
                 editor.Invoke((MethodInvoker)delegate

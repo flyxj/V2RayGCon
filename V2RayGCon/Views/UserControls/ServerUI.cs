@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.UserControls
 {
@@ -51,7 +51,7 @@ namespace V2RayGCon.Views.UserControls
             var index = cboxInbound.SelectedIndex;
             if (index == (int)Model.Data.Enum.ProxyTypes.Config)
             {
-                MessageBox.Show(I18N("SysProxyRequireHttpOrSocksMode"));
+                MessageBox.Show(I18N.SysProxyRequireHttpOrSocksMode);
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace V2RayGCon.Views.UserControls
             var index = cboxInbound.SelectedIndex;
             if (index == (int)Model.Data.Enum.ProxyTypes.Config)
             {
-                MessageBox.Show(I18N("SysProxyRequireHttpOrSocksMode"));
+                MessageBox.Show(I18N.SysProxyRequireHttpOrSocksMode);
                 return;
             }
 
@@ -91,8 +91,8 @@ namespace V2RayGCon.Views.UserControls
 
             MessageBox.Show(
                 Lib.Utils.CopyToClipboard(pacUrl) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
+                I18N.LinksCopied :
+                I18N.CopyFail);
         }
 
         void RestartServer()
@@ -366,8 +366,8 @@ namespace V2RayGCon.Views.UserControls
                                Lib.Utils.Vmess2VmessLink(
                                    Lib.Utils.ConfigString2Vmess(
                                        this.serverItem.config))) ?
-                           I18N("LinksCopied") :
-                           I18N("CopyFail"));
+                           I18N.LinksCopied :
+                           I18N.CopyFail);
         }
 
         private void v2rayToolStripMenuItem_Click(object sender, EventArgs e)
@@ -377,13 +377,13 @@ namespace V2RayGCon.Views.UserControls
                                Lib.Utils.AddLinkPrefix(
                                    Lib.Utils.Base64Encode(this.serverItem.config),
                                    Model.Data.Enum.LinkTypes.v2ray)) ?
-                           I18N("LinksCopied") :
-                           I18N("CopyFail"));
+                           I18N.LinksCopied :
+                           I18N.CopyFail);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
+            if (!Lib.UI.Confirm(I18N.ConfirmDeleteControl))
             {
                 return;
             }
@@ -504,7 +504,7 @@ namespace V2RayGCon.Views.UserControls
         {
             if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
             {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                MessageBox.Show(I18N.SysProxyRequireHTTPServer);
                 return;
             }
 
@@ -512,7 +512,7 @@ namespace V2RayGCon.Views.UserControls
             pacServer.SetGlobalProxy(ip, port);
 
             // issue #9
-            MessageBox.Show(I18N("SetSysProxyDone"));
+            MessageBox.Show(I18N.SetSysProxyDone);
         }
         #endregion
     }

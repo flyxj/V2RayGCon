@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
@@ -87,7 +87,7 @@ namespace V2RayGCon.Lib
 
         public static void ShowMessageBoxDoneAsync()
         {
-            Task.Factory.StartNew(() => MessageBox.Show(I18N("Done")));
+            Task.Factory.StartNew(() => MessageBox.Show(I18N.Done));
         }
 
         public static bool UpdateControlOnDemand(Control control, int value)
@@ -302,7 +302,7 @@ namespace V2RayGCon.Lib
                 InitialDirectory = "c:\\",
                 Filter = extension,
                 RestoreDirectory = true,
-                Title = I18N("SaveAs"),
+                Title = I18N.SaveAs,
                 ShowHelp = true,
             };
 
@@ -361,7 +361,7 @@ namespace V2RayGCon.Lib
         {
             var confirm = MessageBox.Show(
                 content,
-                I18N("Confirm"),
+                I18N.Confirm,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);

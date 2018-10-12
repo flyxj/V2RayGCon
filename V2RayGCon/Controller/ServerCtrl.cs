@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller
 {
@@ -139,12 +139,12 @@ namespace V2RayGCon.Controller
 
             if (string.IsNullOrEmpty(config))
             {
-                log(I18N("DecodeImportFail"));
+                log(I18N.DecodeImportFail);
                 return;
             }
 
-            var url = StrConst("SpeedTestUrl");
-            var text = I18N("Testing");
+            var url = StrConst.SpeedTestUrl;
+            var text = I18N.Testing;
             log(text);
             SendLog(url);
 
@@ -157,7 +157,7 @@ namespace V2RayGCon.Controller
             text = string.Format("{0}",
                 speedTestResult < long.MaxValue ?
                 speedTestResult.ToString() + "ms" :
-                I18N("Timeout"));
+                I18N.Timeout);
 
             log(text);
             speedTester.StopCore();
@@ -451,9 +451,9 @@ namespace V2RayGCon.Controller
         {
             Action<string> error = (s) =>
             {
-                var msgBox = I18N("SetSysProxyFail");
+                var msgBox = I18N.SetSysProxyFail;
                 Task.Factory.StartNew(() => MessageBox.Show(msgBox));
-                SendLog(I18N("AutoTracker") + ":" + s);
+                SendLog(I18N.AutoTracker + ":" + s);
             };
 
             if (string.IsNullOrEmpty(inboundProtocol))
@@ -596,7 +596,7 @@ namespace V2RayGCon.Controller
 
             if (cfg == null)
             {
-                SendLog(I18N("DecodeImportFail"));
+                SendLog(I18N.DecodeImportFail);
                 if (isUseCache)
                 {
                     try
@@ -604,7 +604,7 @@ namespace V2RayGCon.Controller
                         cfg = JObject.Parse(cache[config]);
                     }
                     catch (KeyNotFoundException) { }
-                    SendLog(I18N("UsingDecodeCache"));
+                    SendLog(I18N.UsingDecodeCache);
                 }
             }
 
@@ -625,7 +625,7 @@ namespace V2RayGCon.Controller
 
             }
 
-            Task.Factory.StartNew(() => MessageBox.Show(I18N("StopServerFirst")));
+            Task.Factory.StartNew(() => MessageBox.Show(I18N.StopServerFirst));
             return true;
         }
 
@@ -666,7 +666,7 @@ namespace V2RayGCon.Controller
             }
             catch
             {
-                SendLog(I18N("CoreCantSetLocalAddr"));
+                SendLog(I18N.CoreCantSetLocalAddr);
             }
             return false;
         }

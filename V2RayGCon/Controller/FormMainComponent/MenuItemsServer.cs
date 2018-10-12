@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
@@ -83,7 +83,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #region private method
         string GenCurSysProxySettingString()
         {
-            var strCurProxy = I18N("CurSysProxy");
+            var strCurProxy = I18N.CurSysProxy;
             var proxy = Lib.ProxySetter.GetProxySetting();
 
             if (!string.IsNullOrEmpty(proxy.autoConfigUrl))
@@ -99,7 +99,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     proxy.proxyServer);
             }
 
-            return string.Format("{0}:{1}", strCurProxy, I18N("NotSet"));
+            return string.Format("{0}:{1}", strCurProxy, I18N.NotSet);
         }
 
         EventHandler GenSelectedServerHandler(Action lambda)
@@ -108,7 +108,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 if (!servers.IsSelecteAnyServer())
                 {
-                    Task.Factory.StartNew(() => MessageBox.Show(I18N("SelectServerFirst")));
+                    Task.Factory.StartNew(() => MessageBox.Show(I18N.SelectServerFirst));
                     return;
                 }
                 lambda();
@@ -125,20 +125,20 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             speedTestOnSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (!Lib.UI.Confirm(I18N("TestWillTakeALongTime")))
+                if (!Lib.UI.Confirm(I18N.TestWillTakeALongTime))
                 {
                     return;
                 }
 
                 if (!servers.RunSpeedTestOnSelectedServers())
                 {
-                    MessageBox.Show(I18N("LastTestNoFinishYet"));
+                    MessageBox.Show(I18N.LastTestNoFinishYet);
                 }
             });
 
             stopSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmStopAllSelectedServers")))
+                if (Lib.UI.Confirm(I18N.ConfirmStopAllSelectedServers))
                 {
                     servers.StopAllSelectedThen();
                 }
@@ -146,7 +146,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             restartSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmRestartAllSelectedServers")))
+                if (Lib.UI.Confirm(I18N.ConfirmRestartAllSelectedServers))
                 {
                     servers.RestartAllSelectedServersThen();
                 }
@@ -166,7 +166,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             deleteAllItems.Click += (s, a) =>
             {
-                if (!Lib.UI.Confirm(I18N("ConfirmDeleteAllServers")))
+                if (!Lib.UI.Confirm(I18N.ConfirmDeleteAllServers))
                 {
                     return;
                 }
@@ -176,7 +176,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             deleteSelected.Click += GenSelectedServerHandler(() =>
             {
-                if (!Lib.UI.Confirm(I18N("ConfirmDeleteSelectedServers")))
+                if (!Lib.UI.Confirm(I18N.ConfirmDeleteSelectedServers))
                 {
                     return;
                 }
@@ -192,8 +192,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 Lib.Utils.CopyToClipboard(
                     Lib.Utils.Base64Encode(
                         EncodeAllServersIntoVmessLinks())) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
+                I18N.LinksCopied :
+                I18N.CopyFail);
             });
 
             copyAsV2rayLinks.Click += GenSelectedServerHandler(() =>
@@ -208,8 +208,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 MessageBox.Show(
                     Lib.Utils.CopyToClipboard(
                         string.Join(Environment.NewLine, list)) ?
-                    I18N("LinksCopied") :
-                    I18N("CopyFail"));
+                    I18N.LinksCopied :
+                    I18N.CopyFail);
             });
 
             copyAsVmessLinks.Click += GenSelectedServerHandler(() =>
@@ -217,8 +217,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                 MessageBox.Show(
                    Lib.Utils.CopyToClipboard(
                        EncodeAllServersIntoVmessLinks()) ?
-                   I18N("LinksCopied") :
-                   I18N("CopyFail"));
+                   I18N.LinksCopied :
+                   I18N.CopyFail);
             });
         }
 
@@ -379,7 +379,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             // misc
             clearSysProxy.Click += (s, a) =>
             {
-                if (Lib.UI.Confirm(I18N("ConfirmClearSysProxy")))
+                if (Lib.UI.Confirm(I18N.ConfirmClearSysProxy))
                 {
                     pacServer.ClearSysProxy();
                 }
@@ -392,8 +392,8 @@ namespace V2RayGCon.Controller.FormMainComponent
 
                 MessageBox.Show(
                     Lib.Utils.CopyToClipboard(u) ?
-                    I18N("LinksCopied") :
-                    I18N("CopyFail"));
+                    I18N.LinksCopied :
+                    I18N.CopyFail);
             };
         }
 

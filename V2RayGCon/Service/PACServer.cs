@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
@@ -152,7 +152,7 @@ namespace V2RayGCon.Service
                 catch
                 {
                     Task.Factory.StartNew(
-                        () => MessageBox.Show(I18N("StartPacServFail")));
+                        () => MessageBox.Show(I18N.StartPacServFail));
                 }
             }
             InvokeOnPACServerStatusChanged();
@@ -310,7 +310,7 @@ namespace V2RayGCon.Service
                     .Append("],");
             }
             pac.Length--;
-            pac.Append(StrConst("PacTemplateTail"));
+            pac.Append(StrConst.PacTemplateTail);
 
             pacCache[isWhiteList] = pac.ToString();
             return pacCache[isWhiteList];

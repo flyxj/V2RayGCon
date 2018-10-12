@@ -2,9 +2,10 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
+using V2RayGCon.Test.Resource.Resx;
+
 using static V2RayGCon.Lib.Utils;
-using static V2RayGCon.Test.Resource.StringResource;
 
 
 namespace V2RayGCon.Test
@@ -309,19 +310,19 @@ namespace V2RayGCon.Test
             Assert.AreEqual(default(int), value);
         }
 
-        [DataTestMethod]
-        [DataRow("config_min")]
-        [DataRow("config_tpl")]
-        [DataRow("config_def")]
-        public void ConfigResource_Validate(string filename)
+        [TestMethod]
+        public void ConfigResource_Validate()
         {
-            try
+            foreach(var config in Lib.Utils.TestingGetResourceConfigJson())
             {
-                JObject.Parse(StrConst(filename));
-            }
-            catch
-            {
-                Assert.Fail();
+                try
+                {
+                    JObject.Parse(config);
+                }
+                catch
+                {
+                    Assert.Fail();
+                }
             }
         }
 
@@ -340,21 +341,6 @@ namespace V2RayGCon.Test
                 var len = Lib.Utils.Str2ListStr(item.Key).Count;
                 Assert.AreEqual(item.Value, len);
             }
-
-        }
-
-        [DataTestMethod]
-        [DataRow("this_resource_key_not_exist")]
-        public void resData_ThrowExceptionWhenKeyNotExist(string key)
-        {
-            Assert.ThrowsException<KeyNotFoundException>(() => StrConst(key));
-        }
-
-        [DataTestMethod]
-        [DataRow("Executable", "v2ray.exe")]
-        public void resData_Test(string key, string expect)
-        {
-            Assert.AreEqual<string>(expect, StrConst(key));
         }
 
         [TestMethod]
@@ -371,7 +357,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void ExtractLinks_FromLinksTxt()
         {
-            var content = testData("links");
+            var content = TestConst.links;
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
             Assert.AreEqual(2, links.Count);
         }

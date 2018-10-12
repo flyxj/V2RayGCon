@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.WinForms
 {
@@ -39,7 +39,7 @@ namespace V2RayGCon.Views.WinForms
             {
                 if (!this.optionCtrl.IsOptionsSaved())
                 {
-                    a.Cancel = !Lib.UI.Confirm(I18N("ConfirmCloseWinWithoutSave"));
+                    a.Cancel = !Lib.UI.Confirm(I18N.ConfirmCloseWinWithoutSave);
                 }
             };
 
@@ -97,7 +97,7 @@ namespace V2RayGCon.Views.WinForms
         private void btnOptionSave_Click(object sender, System.EventArgs e)
         {
             this.optionCtrl.SaveAllOptions();
-            MessageBox.Show(I18N("Done"));
+            MessageBox.Show(I18N.Done);
         }
 
         private void btnBakBackup_Click(object sender, System.EventArgs e)

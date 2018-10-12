@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
@@ -322,7 +322,7 @@ namespace V2RayGCon.Service
 
         public void UpdateNotifierText(string title = null)
         {
-            var text = string.IsNullOrEmpty(title) ? I18N("Description") : title;
+            var text = string.IsNullOrEmpty(title) ? I18N.Description : title;
             try
             {
                 OnUpdateNotifierText?.Invoke(this, new Model.Data.StrEvent(text));

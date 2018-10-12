@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.UserControls
 {
@@ -42,7 +42,7 @@ namespace V2RayGCon.Views.UserControls
         #region UI event
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
+            if (!Lib.UI.Confirm(I18N.ConfirmDeleteControl))
             {
                 return;
             }

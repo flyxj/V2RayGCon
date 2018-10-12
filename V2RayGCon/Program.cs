@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 #region Support CallerMemberName on .net 4.0
 namespace System.Runtime.CompilerServices
@@ -72,7 +72,7 @@ namespace V2RayGCon
             }
             else
             {
-                MessageBox.Show(I18N("ExitOtherVGCFirst"));
+                MessageBox.Show(I18N.ExitOtherVGCFirst);
             }
 
             Lib.DllLoader.FreeLibrary(pShcoreDll);
@@ -105,7 +105,7 @@ namespace V2RayGCon
             System.Diagnostics.Process.Start(GetBugLogFileName());
 #if DEBUG
 #else
-            MessageBox.Show(I18N("LooksLikeABug")
+            MessageBox.Show(I18N.LooksLikeABug
                 + System.Environment.NewLine
                 + GetBugLogFileName());
 #endif
@@ -135,7 +135,7 @@ namespace V2RayGCon
         static string GetBugLogFileName()
         {
             var appData = Lib.Utils.GetAppDataFolder();
-            return Path.Combine(appData, StrConst("BugFileName"));
+            return Path.Combine(appData, StrConst.BugFileName);
         }
 
         static void SaveBugLog(string content)

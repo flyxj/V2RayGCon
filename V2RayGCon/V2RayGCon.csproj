@@ -121,7 +121,6 @@
     <Compile Include="Lib\DllLoader.cs" />
     <Compile Include="Lib\Net\WebServer.cs" />
     <Compile Include="Lib\ProxySetter.cs" />
-    <Compile Include="Lib\StringResource.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
     <Compile Include="Lib\TimedWebClient.cs">
@@ -181,20 +180,20 @@
     <Compile Include="Model\Data\Enum.cs" />
     <Compile Include="Model\Data\Shadowsocks.cs" />
     <Compile Include="Model\Data\Table.cs" />
-    <Compile Include="Resource\Resx\Data.Designer.cs">
-      <DependentUpon>Data.resx</DependentUpon>
+    <Compile Include="Resource\Resx\StrConst.Designer.cs">
+      <DependentUpon>StrConst.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resource\Resx\Text.zh-CN.Designer.cs">
-      <DependentUpon>Text.zh-CN.resx</DependentUpon>
+    <Compile Include="Resource\Resx\I18N.zh-CN.Designer.cs">
+      <DependentUpon>I18N.zh-CN.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resource\Resx\Text.Designer.cs">
+    <Compile Include="Resource\Resx\I18N.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Text.resx</DependentUpon>
+      <DependentUpon>I18N.resx</DependentUpon>
     </Compile>
     <Compile Include="Model\Data\Vmess.cs" />
     <Compile Include="Service\Cache.cs" />
@@ -309,18 +308,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Resource\Resx\Data.resx">
+    <EmbeddedResource Include="Resource\Resx\StrConst.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Data.Designer.cs</LastGenOutput>
+      <LastGenOutput>StrConst.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Resx\Text.zh-CN.resx">
+    <EmbeddedResource Include="Resource\Resx\I18N.zh-CN.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Text.zh-CN.Designer.cs</LastGenOutput>
+      <LastGenOutput>I18N.zh-CN.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Resx\Text.resx">
+    <EmbeddedResource Include="Resource\Resx\I18N.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Text.Designer.cs</LastGenOutput>
+      <LastGenOutput>I18N.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\WinForms\FormBatchModifyServerSetting.resx">
       <DependentUpon>FormBatchModifyServerSetting.cs</DependentUpon>
@@ -429,7 +428,7 @@
     <None Include="Resource\Icon\TaskTray\BorderElement_16x.png" />
     <None Include="Resource\Icon\TaskTray\AzureVirtualMachineExtension_16x.png" />
     <None Include="Resource\Icon\TaskTray\ASX_TransferDownload_blue_16x.png" />
-    <None Include="Resource\Config\config_def.txt" />
+    <None Include="Resource\Config\config_example.txt" />
     <Content Include="Resource\Config\config_pkg.txt" />
     <Content Include="Resource\Config\config_tpl.txt" />
     <None Include="Resource\Config\config_min.txt" />

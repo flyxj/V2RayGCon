@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
@@ -29,7 +29,7 @@ namespace V2RayGCon.Lib
          */
         public static JObject Parse(string configString)
         {
-            var maxDepth = Lib.Utils.Str2Int(StrConst("ParseImportDepth"));
+            var maxDepth = Lib.Utils.Str2Int(StrConst.ParseImportDepth);
 
             var result = ParseImportRecursively(
                 GetContentFromCache,

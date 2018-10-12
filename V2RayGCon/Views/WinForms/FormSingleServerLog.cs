@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.WinForms
 {
@@ -29,7 +29,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.Show();
 
-            this.Text = I18N("Log") + " - " + serverItem.summary;
+            this.Text = I18N.Log + " - " + serverItem.summary;
             rtBoxLogger.Text = serverItem.logCache;
             serverItem.OnLog += OnLogHandler;
         }

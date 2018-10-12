@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service.Caches
 {
@@ -27,10 +27,10 @@ namespace V2RayGCon.Service.Caches
             lock (c.rwLock)
             {
                 var timeout = Lib.Utils.Str2Int(
-                    StrConst("ParseImportTimeOut"));
+                    StrConst.ParseImportTimeOut);
 
                 var retry = Lib.Utils.Str2Int(
-                    StrConst("ParseImportRetry"));
+                    StrConst.ParseImportRetry);
 
                 for (var i = 0;
                     i < retry && string.IsNullOrEmpty(c.content);

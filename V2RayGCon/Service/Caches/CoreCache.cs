@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service.Caches
 {
@@ -70,7 +70,7 @@ namespace V2RayGCon.Service.Caches
         void TrimDownCache()
         {
             var keys = new List<string>(data.Keys);
-            var cacheSize = Lib.Utils.Str2Int(StrConst("DecodeCacheSize"));
+            var cacheSize = Lib.Utils.Str2Int(StrConst.DecodeCacheSize);
 
             for (var i = 0; i < keys.Count - cacheSize; i++)
             {

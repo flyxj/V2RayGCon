@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
@@ -186,12 +186,12 @@ namespace V2RayGCon.Controller.FormMainComponent
         void UpdateStatusBar()
         {
             var text = string.Format(
-                I18N("StatusBarServerCountTpl"),
+                I18N.StatusBarServerCountTpl,
                     GetFilteredList().Count,
                     servers.GetTotalServerCount())
                 + " "
                 + string.Format(
-                    I18N("StatusBarTplSelectedItem"),
+                    I18N.StatusBarTplSelectedItem,
                     servers.GetTotalSelectedServerCount(),
                     GetAllServersControl().Count());
 
@@ -209,7 +209,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     UpdateStatusBarPagerCheckStatus();
 
                     tsdbtnPager.Text = string.Format(
-                        I18N("StatusBarPagerInfoTpl"),
+                        I18N.StatusBarPagerInfoTpl,
                         paging[0] + 1,
                         paging[1]);
                 }
@@ -252,7 +252,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 var index = i;
                 var item = new ToolStripMenuItem(
-                    string.Format(I18N("StatusBarPagerMenuTpl"), (index + 1)),
+                    string.Format(I18N.StatusBarPagerMenuTpl, (index + 1)),
                     null,
                     (s, a) =>
                     {
@@ -275,7 +275,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             // create on demand
             if (lazyShowSearchResultTimer == null)
             {
-                var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
+                var delay = Lib.Utils.Str2Int(StrConst.LazySaveServerListDelay);
 
                 lazyShowSearchResultTimer =
                     new Lib.CancelableTimeout(

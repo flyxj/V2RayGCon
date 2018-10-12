@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Model.Data
 {
@@ -167,13 +167,13 @@ namespace V2RayGCon.Model.Data
 
             // { 0, "config.json"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "cfgMin"));
+            list.Add(SS(I18N.Default, "cfgMin"));
             list.Add(SS("Empty", "cfgEmpty"));
             d.Add(0, list);
 
             //{ 1, "log"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "logFile"));
+            list.Add(SS(I18N.Default, "logFile"));
             list.Add(SS("None", "logNone"));
             list.Add(SS("Error", "logError"));
             list.Add(SS("Warning", "logWarning"));
@@ -183,27 +183,27 @@ namespace V2RayGCon.Model.Data
 
             //{ 2, "api"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "apiDefault"));
+            list.Add(SS(I18N.Default, "apiDefault"));
             d.Add(2, list);
 
             //{ 3, "dns"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "dnsDefault"));
-            list.Add(SS(I18N("CFnGoogle"), "dnsCFnGoogle"));
+            list.Add(SS(I18N.Default, "dnsDefault"));
+            list.Add(SS(I18N.CFnGoogle, "dnsCFnGoogle"));
             d.Add(3, list);
 
             //{ 4, "stats"},
 
             //{ 5, "routing"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "routeAll"));
+            list.Add(SS(I18N.Default, "routeAll"));
             list.Add(SS("skip CN web site", "routeCNIP"));
             list.Add(SS("Inbound to Outbound", "routeIn2Out"));
             d.Add(5, list);
 
             //{ 6, "policy"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "policyDefault"));
+            list.Add(SS(I18N.Default, "policyDefault"));
             d.Add(6, list);
 
             //{ 7, "inbound"},
@@ -226,23 +226,23 @@ namespace V2RayGCon.Model.Data
 
             //{ 9, "transport"},
             list = NewList();
-            list.Add(SS(I18N("Default"), "transDefault"));
+            list.Add(SS(I18N.Default, "transDefault"));
             d.Add(9, list);
 
             //{ 10,"v2raygcon" },
             list = NewList();
-            list.Add(SS(I18N("Default"), "v2raygcon"));
-            list.Add(SS(I18N("Import"), "vgcImport"));
+            list.Add(SS(I18N.Default, "v2raygcon"));
+            list.Add(SS(I18N.Import, "vgcImport"));
             d.Add(10, list);
 
             //{ 11,"inboundDetour"}, 
             list = NewList();
-            list.Add(SS(I18N("Default"), "inDtrDefault"));
+            list.Add(SS(I18N.Default, "inDtrDefault"));
             d.Add(11, list);
 
             //{ 12,"outboundDetour"}, outDtrDefault
             list = NewList();
-            list.Add(SS(I18N("Default"), "outDtrDefault"));
+            list.Add(SS(I18N.Default, "outDtrDefault"));
             list.Add(SS("Freedom", "outDtrFreedom"));
             d.Add(12, list);
 

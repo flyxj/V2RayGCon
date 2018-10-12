@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
@@ -107,18 +107,18 @@ namespace V2RayGCon.Service
 
                 if (config == null)
                 {
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail"), mark));
+                    result.Add(GenImportResult(link, false, I18N.DecodeFail, mark));
                     continue;
                 }
 
                 if (AddServer(Lib.Utils.Config2String(config), mark, true))
                 {
                     isAddNewServer = true;
-                    result.Add(GenImportResult(link, true, I18N("Success"), mark));
+                    result.Add(GenImportResult(link, true, I18N.Success, mark));
                 }
                 else
                 {
-                    result.Add(GenImportResult(link, false, I18N("DuplicateServer"), mark));
+                    result.Add(GenImportResult(link, false, I18N.DuplicateServer, mark));
                 }
             }
 
@@ -144,18 +144,18 @@ namespace V2RayGCon.Service
                         if (AddServer(Lib.Utils.Config2String(config), mark, true))
                         {
                             isAddNewServer = true;
-                            result.Add(GenImportResult(link, true, I18N("Success"), mark));
+                            result.Add(GenImportResult(link, true, I18N.Success, mark));
                         }
                         else
                         {
-                            result.Add(GenImportResult(link, false, I18N("DuplicateServer"), mark));
+                            result.Add(GenImportResult(link, false, I18N.DuplicateServer, mark));
                         }
                     }
                 }
                 catch
                 {
                     // skip if error occured
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail"), mark));
+                    result.Add(GenImportResult(link, false, I18N.DecodeFail, mark));
                 }
             }
 
@@ -175,18 +175,18 @@ namespace V2RayGCon.Service
 
                 if (config == null)
                 {
-                    result.Add(GenImportResult(link, false, I18N("DecodeFail"), mark));
+                    result.Add(GenImportResult(link, false, I18N.DecodeFail, mark));
                     continue;
                 }
 
                 if (AddServer(Lib.Utils.Config2String(config), mark, true))
                 {
-                    result.Add(GenImportResult(link, true, I18N("Success"), mark));
+                    result.Add(GenImportResult(link, true, I18N.Success, mark));
                     isAddNewServer = true;
                 }
                 else
                 {
-                    result.Add(GenImportResult(link, false, I18N("DuplicateServer"), mark));
+                    result.Add(GenImportResult(link, false, I18N.DuplicateServer, mark));
                 }
             }
 
@@ -198,7 +198,7 @@ namespace V2RayGCon.Service
             // create on demand
             if (lazySaveServerListTimer == null)
             {
-                var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
+                var delay = Lib.Utils.Str2Int(StrConst.LazySaveServerListDelay);
 
                 lazySaveServerListTimer =
                     new Lib.CancelableTimeout(
@@ -268,7 +268,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            setting.UpdateNotifierText(count.ToString() + I18N("ServersAreRunning"));
+            setting.UpdateNotifierText(count.ToString() + I18N.ServersAreRunning);
         }
 
         void InvokeEventOnRequireStatusBarUpdate(object sender, EventArgs args)
@@ -413,7 +413,7 @@ namespace V2RayGCon.Service
             // Create on demand.
             if (lazyGCTimer == null)
             {
-                var delay = Lib.Utils.Str2Int(StrConst("LazyGCDelay"));
+                var delay = Lib.Utils.Str2Int(StrConst.LazyGCDelay);
 
                 lazyGCTimer = new Lib.CancelableTimeout(
                     () =>
@@ -485,7 +485,7 @@ namespace V2RayGCon.Service
             }
             else
             {
-                MessageBox.Show(I18N("NoLinkFound"));
+                MessageBox.Show(I18N.NoLinkFound);
             }
         }
 
@@ -555,15 +555,15 @@ namespace V2RayGCon.Service
             var serverNameList = new List<string>();
 
             var id = Guid.NewGuid().ToString();
-            var port = Lib.Utils.Str2Int(StrConst("PacmanInitPort"));
-            var tagPrefix = StrConst("PacmanTagPrefix");
+            var port = Lib.Utils.Str2Int(StrConst.PacmanInitPort);
+            var tagPrefix = StrConst.PacmanTagPrefix;
 
             Action done = () =>
             {
                 var config = cache.tpl.LoadPackage("main");
                 config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
                 Lib.Utils.UnionJson(ref config, packages);
-                OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageDone")));
+                OnSendLogHandler(this, new Model.Data.StrEvent(I18N.PackageDone));
                 AddServer(config.ToString(Formatting.None), "Package");
                 UpdateMarkList();
                 Lib.UI.ShowMessageBoxDoneAsync();
@@ -579,11 +579,11 @@ namespace V2RayGCon.Service
                     var vnext = GenVnextConfigPart(index, port, id);
                     Lib.Utils.UnionJson(ref packages, vnext);
                     serverNameList.Add(server.name);
-                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageSuccess") + ": " + server.name));
+                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N.PackageSuccess + ": " + server.name));
                 }
                 catch
                 {
-                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N("PackageFail") + ": " + server.name));
+                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N.PackageFail + ": " + server.name));
                 }
                 next();
             };
@@ -610,7 +610,7 @@ namespace V2RayGCon.Service
                 });
 
                 isTesting = false;
-                MessageBox.Show(I18N("SpeedTestFinished"));
+                MessageBox.Show(I18N.SpeedTestFinished);
             });
 
             return true;
@@ -701,7 +701,7 @@ namespace V2RayGCon.Service
         {
             if (isTesting)
             {
-                MessageBox.Show(I18N("LastTestNoFinishYet"));
+                MessageBox.Show(I18N.LastTestNoFinishYet);
                 return;
             }
 
@@ -732,7 +732,7 @@ namespace V2RayGCon.Service
         {
             if (isTesting)
             {
-                MessageBox.Show(I18N("LastTestNoFinishYet"));
+                MessageBox.Show(I18N.LastTestNoFinishYet);
                 return;
             }
 
@@ -793,14 +793,14 @@ namespace V2RayGCon.Service
         {
             if (isTesting)
             {
-                MessageBox.Show(I18N("LastTestNoFinishYet"));
+                MessageBox.Show(I18N.LastTestNoFinishYet);
                 return;
             }
 
             var index = GetServerIndexByConfig(config);
             if (index < 0)
             {
-                MessageBox.Show(I18N("CantFindOrgServDelFail"));
+                MessageBox.Show(I18N.CantFindOrgServDelFail);
                 return;
             }
 
@@ -923,7 +923,7 @@ namespace V2RayGCon.Service
                 }
 
                 Task.WaitAll(taskList.ToArray());
-                MessageBox.Show(I18N("Done"));
+                MessageBox.Show(I18N.Done);
             });
         }
 #endif
