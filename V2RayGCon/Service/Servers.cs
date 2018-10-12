@@ -257,7 +257,7 @@ namespace V2RayGCon.Service
 
                 Action<int, Action> worker = (index, next) =>
                 {
-                    list[index].GetServerInboundInfoForNotifierThen((s) =>
+                    list[index].GetterInboundInfoFor((s) =>
                     {
                         textList.Add(s);
                         next();

@@ -175,7 +175,7 @@ namespace V2RayGCon.Views.UserControls
 
         void UpdateFormFoldingMode()
         {
-            var level = Lib.Utils.Clamp(serverItem.collapseLevel, 0, foldingButtonIcons.Length);
+            var level = Lib.Utils.Clamp(serverItem.foldingLevel, 0, foldingButtonIcons.Length);
 
             if (btnIsCollapse.BackgroundImage != foldingButtonIcons[level])
             {
@@ -471,8 +471,8 @@ namespace V2RayGCon.Views.UserControls
 
         private void btnIsCollapse_Click(object sender, EventArgs e)
         {
-            var level = (serverItem.collapseLevel + 1) % 2;
-            serverItem.SetPropertyOnDemand(ref serverItem.collapseLevel, level);
+            var level = (serverItem.foldingLevel + 1) % 2;
+            serverItem.SetPropertyOnDemand(ref serverItem.foldingLevel, level);
         }
 
         private void lbIsAutorun_MouseDown(object sender, MouseEventArgs e)

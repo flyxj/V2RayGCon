@@ -585,4 +585,16 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="SetSysProxyFail" xml:space="preserve">
     <value>设置系统代理失败！</value>
   </data>
+  <data name="GetInboundInfoFail" xml:space="preserve">
+    <value>获取Inbound信息失败!</value>
+  </data>
+  <data name="GlobalProxyRequireHttpServer" xml:space="preserve">
+    <value>HTTP服务器才可以设置为全局代理</value>
+  </data>
+  <data name="PacProxyRequireSocksOrHttpServer" xml:space="preserve">
+    <value>SOCKS或HTTP服务器才可以设置为PAC代理</value>
+  </data>
+  <data name="ServerIsNotRunning" xml:space="preserve">
+    <value>服务器未运行!</value>
+  </data>
 </root>

@@ -53,6 +53,24 @@ namespace V2RayGCon.Service
         }
         #endregion
 
+
+        #region static method
+        public static Model.Data.Enum.SystemProxyMode DetectSystemProxyMode(Model.Data.ProxyRegKeyValue proxySetting)
+        {
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                return Model.Data.Enum.SystemProxyMode.PAC;
+            }
+
+            if (proxySetting.proxyEnable)
+            {
+                return Model.Data.Enum.SystemProxyMode.Global;
+            }
+
+            return Model.Data.Enum.SystemProxyMode.None;
+        }
+        #endregion
+
         #region public method
 
         Lib.CancelableTimeout lazySysProxyUpdaterTimer = null;
@@ -62,32 +80,31 @@ namespace V2RayGCon.Service
             lazySysProxyUpdaterTimer = null;
 
             var proxySetting = setting.GetSysProxySetting();
-            if (Lib.Utils.IsProxySettingEmpty(proxySetting))
-            {
-                return;
-            }
 
-            Action setProxy;
-            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            Action setProxy = null;
+            switch (DetectSystemProxyMode(proxySetting))
             {
-                var p = Lib.Utils.GetProxyParamsFromUrl(proxySetting.autoConfigUrl);
-                p.ip = ip;
-                p.port = port;
-                p.isSocks = isSocks;
-                setProxy = () => SetPACProx(p);
-            }
-            else
-            {
-                // global proxy must be http 
-                if (isSocks)
-                {
+                case Model.Data.Enum.SystemProxyMode.None:
                     return;
-                }
-                setProxy = () => SetGlobalProxy(ip, port);
+                case Model.Data.Enum.SystemProxyMode.PAC:
+                    // get current pac mode (white list or black list)
+                    var p = Lib.Utils.GetProxyParamsFromUrl(proxySetting.autoConfigUrl);
+                    p.ip = ip;
+                    p.port = port;
+                    p.isSocks = isSocks;
+                    setProxy = () => SetPACProx(p);
+                    break;
+                case Model.Data.Enum.SystemProxyMode.Global:
+                    // global proxy must be http 
+                    if (isSocks)
+                    {
+                        return;
+                    }
+                    setProxy = () => SetGlobalProxy(ip, port);
+                    break;
             }
 
-            lazySysProxyUpdaterTimer =
-                    new Lib.CancelableTimeout(setProxy, 1000);
+            lazySysProxyUpdaterTimer = new Lib.CancelableTimeout(setProxy, 1000);
             lazySysProxyUpdaterTimer.Start();
         }
 

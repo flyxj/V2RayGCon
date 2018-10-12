@@ -308,7 +308,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .Where(s => s.isSelected)
                 .Select(s =>
                 {
-                    s.SetPropertyOnDemand(ref s.collapseLevel, collapseLevel);
+                    s.SetPropertyOnDemand(ref s.foldingLevel, collapseLevel);
                     return true;
                 })
                 .ToList(); // force linq to execute

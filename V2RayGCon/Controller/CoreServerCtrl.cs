@@ -21,20 +21,20 @@ namespace V2RayGCon.Controller
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite;
         public string name, summary, inboundIP, mark;
-        public int overwriteInboundType, inboundPort, collapseLevel;
+        public int overwriteInboundType, inboundPort, foldingLevel;
         public double index;
 
         public CoreServerCtrl()
         {
-            // new ServerItem will display at the bottom
-            index = int.MaxValue;
+            // new server will displays at the bottom
+            index = double.MaxValue;
 
             isSelected = false;
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
 
-            collapseLevel = 0;
+            foldingLevel = 0;
 
             mark = string.Empty;
             status = string.Empty;
@@ -99,6 +99,35 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region public method
+        public bool BecomeSystemProxy(bool isGlobal, bool skipServerOnDetection=false)
+        {
+            if (!skipServerOnDetection && !isServerOn)
+            {
+                SendLog(I18N.ServerIsNotRunning);
+                return false;
+            }
+
+            var inboundInfo = GetParsedInboundInfo();
+            if (inboundInfo == null)
+            {
+                SendLog(I18N.GetInboundInfoFail);
+                return false;
+            }
+
+            var protocol = inboundInfo.Item1;
+            var ip = inboundInfo.Item2;
+            var port = inboundInfo.Item3;
+
+            if (!IsSuitableForProxy(isGlobal, protocol))
+            {
+                return false;
+            }
+
+            var pacServer = Service.PacServer.Instance;
+            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
+            return true;
+        }
+
         public void SetIsSelected(bool selected)
         {
             if (selected == isSelected)
@@ -266,6 +295,7 @@ namespace V2RayGCon.Controller
         {
             this.server.StopCoreThen(() =>
             {
+                lazyServerTrackerTimer?.Release();
                 this.server.OnLog -= OnLogHandler;
                 this.server.OnCoreStatusChanged -= OnCoreStateChangedHandler;
                 Task.Factory.StartNew(() =>
@@ -297,6 +327,7 @@ namespace V2RayGCon.Controller
 
         public void StopCoreThen(Action next = null)
         {
+            TrackServerAsync(false);
             Task.Factory.StartNew(() => server.StopCoreThen(next));
         }
 
@@ -305,7 +336,7 @@ namespace V2RayGCon.Controller
             Task.Factory.StartNew(() => RestartCoreWorker(next));
         }
 
-        public void GetServerInboundInfoForNotifierThen(Action<string> next)
+        public void GetterInboundInfoFor(Action<string> next)
         {
             if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
                 || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
@@ -313,7 +344,7 @@ namespace V2RayGCon.Controller
                 next(string.Format(
                     "[{0}] {1}://{2}:{3}",
                     this.name,
-                    Model.Data.Table.inboundOverwriteTypesName[overwriteInboundType],
+                    GetOverwriteInboundTypeName(),
                     this.inboundIP,
                     this.inboundPort));
                 return;
@@ -374,21 +405,20 @@ namespace V2RayGCon.Controller
             InvokeEventOnPropertyChange();
         }
 
-        public List<string> GetSearchTextList()
+        public bool GetterInfoFor(Func<string[], bool> filter)
         {
-            return new List<string> {
+            return filter(new string[] {
                 // index 0
                 name+summary,
 
                 // index 1
-                Model.Data.Table.inboundOverwriteTypesName[
-                    Lib.Utils.Clamp(overwriteInboundType,0,3)]
+                GetOverwriteInboundTypeName()
                 +inboundIP
                 +inboundPort.ToString(),
 
                 // index 2
                 this.mark??"",
-            };
+            });
         }
 
         public string GetTitle()
@@ -429,7 +459,22 @@ namespace V2RayGCon.Controller
             return config.ToString(Formatting.None);
         }
 
-        void TrackServer(JObject parsedConfig)
+        Lib.CancelableTimeout lazyServerTrackerTimer = null;
+        void SetLazyServerTracker(Action onTimeout)
+        {
+            lazyServerTrackerTimer?.Release();
+            lazyServerTrackerTimer = null;
+
+            lazyServerTrackerTimer = new Lib.CancelableTimeout(onTimeout, 1000);
+            lazyServerTrackerTimer.Start();
+        }
+
+        /// <summary>
+        /// Track server start or stop.
+        /// ParsedConfig equal null means stop.
+        /// </summary>
+        /// <param name="parsedConfig"></param>
+        void TrackServerAsync(bool isServerStart)
         {
             var setting = Service.Setting.Instance;
             if (!setting.isServerTrackerOn)
@@ -437,57 +482,126 @@ namespace V2RayGCon.Controller
                 return;
             }
 
-            var servers = Service.Servers.Instance;
-            SaveTrackedServerList(setting, servers);
-
-            var pacServer = Service.PacServer.Instance;
-            var inboundProtocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
-            UpdateSystemProxySetting(setting, pacServer, inboundProtocol);
-        }
-
-        private void UpdateSystemProxySetting(Service.Setting setting, Service.PacServer pacServer, string inboundProtocol)
-        {
-            Action<string> error = (s) =>
+            Action onTimeout = () =>
             {
-                var msgBox = I18N.SetSysProxyFail;
-                Task.Factory.StartNew(() => MessageBox.Show(msgBox));
-                SendLog(I18N.AutoTracker + ":" + s);
+                UpdateTrackerSetting(isServerStart);
+
+                var isGlobal = false;
+                switch (Service.PacServer.DetectSystemProxyMode(
+                    setting.GetSysProxySetting()))
+                {
+                    case Model.Data.Enum.SystemProxyMode.None:
+                        return;
+                    case Model.Data.Enum.SystemProxyMode.Global:
+                        isGlobal = true;
+                        break;
+                    case Model.Data.Enum.SystemProxyMode.PAC:
+                        isGlobal = false;
+                        break;
+                }
+
+                if (isServerStart)
+                {
+                    BecomeSystemProxy(isGlobal,true);
+                }
+                else
+                {
+                    TrackServerStop(isGlobal);
+                }
             };
 
-            if (string.IsNullOrEmpty(inboundProtocol))
-            {
-                error("No inbound protocol!");
-                return;
-            }
-
-            var protocol = inboundProtocol.ToLower();
-            var proxySetting = setting.GetSysProxySetting();
-            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
-            {
-                if (protocol != "socks" && protocol != "http")
-                {
-                    error("PAC proxy support socks and http protocol only.");
-                    return;
-                }
-            }
-            else if (proxySetting.proxyEnable && protocol != "http")
-            {
-                error("Global proxy support http protocol only!");
-                return;
-            }
-
-            pacServer.LazySysProxyUpdater(protocol == "socks", inboundIP, inboundPort);
+            SetLazyServerTracker(onTimeout);
         }
 
-        private void SaveTrackedServerList(Service.Setting setting, Service.Servers servers)
+        void TrackServerStop(bool isGlobal)
         {
-            var runningServerList = servers.GetServerList()
-                .Where(s => s.isServerOn && s.config != this.config)
+            var servers = Service.Servers.Instance;
+            foreach (var server in servers.GetServerList())
+            {
+                if (server.BecomeSystemProxy(isGlobal))
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// return Tuple(protocol, ip, port)
+        /// </summary>
+        /// <returns></returns>
+        Tuple<string, string, int> GetParsedInboundInfo()
+        {
+            var protocol = GetOverwriteInboundTypeName();
+            var ip = inboundIP;
+            var port = inboundPort;
+
+            if (protocol == "config")
+            {
+                var parsedConfig = GetDecodedConfig(true, false, true);
+                if (parsedConfig == null)
+                {
+                    return null;
+                }
+                protocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
+                ip = Lib.Utils.GetValue<string>(parsedConfig, "inbound.listen");
+                port = Lib.Utils.GetValue<int>(parsedConfig, "inbound.port");
+            }
+
+            return new Tuple<string, string, int>(protocol, ip, port);
+        }
+
+        string GetOverwriteInboundTypeName()
+        {
+            var table = Model.Data.Table.inboundOverwriteTypesName;
+            return table[Lib.Utils.Clamp(
+                this.overwriteInboundType, 0, table.Length)];
+        }
+
+        bool IsSuitableForProxy(bool isGlobalProxy, string protocol)
+        {
+            if (isGlobalProxy && protocol != "http")
+            {
+                SendLog(I18N.GlobalProxyRequireHttpServer);
+                return false;
+            }
+
+            if (protocol != "socks" && protocol != "http")
+            {
+                SendLog(I18N.PacProxyRequireSocksOrHttpServer);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// update running servers list
+        /// </summary>
+        /// <param name="includeCurServer"></param>
+        void UpdateTrackerSetting(bool includeCurServer)
+        {
+            var setting = Service.Setting.Instance;
+            var servers = Service.Servers.Instance;
+
+            var trackerSetting = setting.GetServerTrackerSetting();
+            var tracked = trackerSetting.serverList;
+
+            var running = servers.GetServerList()
+                .Where(s => s.isServerOn)
                 .Select(s => s.config)
                 .ToList();
-            runningServerList.Insert(0, this.config);
-            var trackerSetting = setting.GetServerTrackerSetting();
-            trackerSetting.serverList = runningServerList;
+
+            tracked.RemoveAll(c => running.Any(r => r == c));  // remove stopped
+            running.RemoveAll(r => tracked.Any(t => t == r));
+            tracked.AddRange(running);
+            tracked.Remove(this.config);
+
+            if (includeCurServer)
+            {
+                tracked.Insert(0, this.config);
+            }
+
+            trackerSetting.serverList = tracked;
             setting.SaveServerTrackerSetting(trackerSetting);
         }
 
@@ -512,7 +626,7 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
-            TrackServer(cfg);
+            TrackServerAsync(true);
 
             server.RestartCoreThen(
                 cfg.ToString(),
@@ -641,7 +755,7 @@ namespace V2RayGCon.Controller
                 return true;
             }
 
-            var protocol = Model.Data.Table.inboundOverwriteTypesName[(int)type];
+            var protocol = GetOverwriteInboundTypeName();
 
             var part = protocol + "In";
             try

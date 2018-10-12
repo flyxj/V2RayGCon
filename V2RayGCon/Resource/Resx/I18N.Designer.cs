@@ -749,6 +749,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Get inbound information fail! 的本地化字符串。
+        /// </summary>
+        internal static string GetInboundInfoFail {
+            get {
+                return ResourceManager.GetString("GetInboundInfoFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Get latest version fail! 的本地化字符串。
         /// </summary>
         internal static string GetLatestVerFail {
@@ -772,6 +781,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string GetVGCVerFail {
             get {
                 return ResourceManager.GetString("GetVGCVerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Global proxy require http server! 的本地化字符串。
+        /// </summary>
+        internal static string GlobalProxyRequireHttpServer {
+            get {
+                return ResourceManager.GetString("GlobalProxyRequireHttpServer", resourceCulture);
             }
         }
         
@@ -1030,6 +1048,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 PAC proxy require socks or http server. 的本地化字符串。
+        /// </summary>
+        internal static string PacProxyRequireSocksOrHttpServer {
+            get {
+                return ResourceManager.GetString("PacProxyRequireSocksOrHttpServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Can not parse json! Please check current config. 的本地化字符串。
         /// </summary>
         internal static string PleaseCheckConfig {
@@ -1116,6 +1143,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string SelectServerFirst {
             get {
                 return ResourceManager.GetString("SelectServerFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Server is not running! 的本地化字符串。
+        /// </summary>
+        internal static string ServerIsNotRunning {
+            get {
+                return ResourceManager.GetString("ServerIsNotRunning", resourceCulture);
             }
         }
         

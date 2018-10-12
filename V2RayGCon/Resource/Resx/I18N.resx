@@ -598,4 +598,16 @@ Please check port setting in form option.</value>
   <data name="SetSysProxyFail" xml:space="preserve">
     <value>Set system proxy fail!</value>
   </data>
+  <data name="GetInboundInfoFail" xml:space="preserve">
+    <value>Get inbound information fail!</value>
+  </data>
+  <data name="GlobalProxyRequireHttpServer" xml:space="preserve">
+    <value>Global proxy require http server!</value>
+  </data>
+  <data name="PacProxyRequireSocksOrHttpServer" xml:space="preserve">
+    <value>PAC proxy require socks or http server.</value>
+  </data>
+  <data name="ServerIsNotRunning" xml:space="preserve">
+    <value>Server is not running!</value>
+  </data>
 </root>

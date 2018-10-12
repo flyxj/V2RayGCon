@@ -62,10 +62,10 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
 
             return list
-                .Where(
-                    e => keywords.All(
-                        k => e.GetSearchTextList().Any(
-                            s => Lib.Utils.PartialMatch(s, k))))
+                .Where(serv => serv.GetterInfoFor(
+                    infos => keywords.All(
+                        kw => infos.Any(
+                            info => Lib.Utils.PartialMatch(info, kw)))))
                 .ToList();
         }
 
