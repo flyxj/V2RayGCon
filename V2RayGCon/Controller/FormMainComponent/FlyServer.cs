@@ -49,7 +49,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
 
         #region public method
-        public List<Controller.ServerCtrl> GetFilteredList()
+        public List<Controller.CoreServerCtrl> GetFilteredList()
         {
             var list = servers.GetServerList();
             var keywords = (searchKeywords ?? "").Split(
@@ -161,7 +161,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        List<Controller.ServerCtrl> GenPagedServerList(List<Controller.ServerCtrl> serverList)
+        List<Controller.CoreServerCtrl> GenPagedServerList(List<Controller.CoreServerCtrl> serverList)
         {
             var count = serverList.Count;
             var pageSize = setting.serverPanelPageSize;
@@ -342,7 +342,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 servers.GetMarkList().ToArray());
         }
 
-        void AddNewServerItems(List<Controller.ServerCtrl> serverList)
+        void AddNewServerItems(List<Controller.CoreServerCtrl> serverList)
         {
             flyPanel.Controls.AddRange(
                 serverList
@@ -366,7 +366,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        void RemoveDeletedServerItems(ref List<Controller.ServerCtrl> serverList)
+        void RemoveDeletedServerItems(ref List<Controller.CoreServerCtrl> serverList)
         {
             var deletedControlList = GetDeletedControlList(serverList);
 
@@ -380,7 +380,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
 
-        List<Views.UserControls.ServerUI> GetDeletedControlList(List<Controller.ServerCtrl> serverList)
+        List<Views.UserControls.ServerUI> GetDeletedControlList(List<Controller.CoreServerCtrl> serverList)
         {
             var result = new List<Views.UserControls.ServerUI>();
 

@@ -102,7 +102,7 @@ namespace V2RayGCon.Views.WinForms
 
         #region private method
         void ModifyServersSetting(
-            List<Controller.ServerCtrl> list,
+            List<Controller.CoreServerCtrl> list,
             int newMode, string newIP, int newPort, bool isPortAutoIncrease,
             string newMark, int newAutorun, int newImport, int newSkipCN)
         {
@@ -148,7 +148,7 @@ namespace V2RayGCon.Views.WinForms
         }
 
         void ModifyServerSetting(
-            ref Controller.ServerCtrl server,
+            ref Controller.CoreServerCtrl server,
             int newMode, string newIP, int newPort,
             string newMark, int newAutorun, int newImport, int newSkipCN)
         {

@@ -11,7 +11,7 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Cache cache;
         Service.Servers servers;
-        Service.PACServer pacServer;
+        Service.PacServer pacServer;
         Service.Setting setting;
 
         ToolStripMenuItem restartPACServer, stopPACServer, curSysProxySummary;
@@ -56,7 +56,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
             setting = Service.Setting.Instance;
-            pacServer = Service.PACServer.Instance;
+            pacServer = Service.PacServer.Instance;
 
             this.menuContainer = menuContainer; // for invoke ui update
 
@@ -271,8 +271,8 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         void SortServerItemList(
-             ref List<Controller.ServerCtrl> list,
-             Comparison<Controller.ServerCtrl> comparer)
+             ref List<Controller.CoreServerCtrl> list,
+             Comparison<Controller.CoreServerCtrl> comparer)
         {
             if (list == null || list.Count < 2)
             {

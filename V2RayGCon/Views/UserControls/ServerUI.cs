@@ -9,17 +9,17 @@ namespace V2RayGCon.Views.UserControls
     public partial class ServerUI : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Service.Setting setting;
-        Service.PACServer pacServer;
-        Controller.ServerCtrl serverItem;
+        Service.PacServer pacServer;
+        Controller.CoreServerCtrl serverItem;
 
         public bool isRunning;
         int[] formHeight;
         Bitmap[] foldingButtonIcons;
 
-        public ServerUI(Controller.ServerCtrl serverItem)
+        public ServerUI(Controller.CoreServerCtrl serverItem)
         {
             setting = Service.Setting.Instance;
-            pacServer = Service.PACServer.Instance;
+            pacServer = Service.PacServer.Instance;
 
             this.serverItem = serverItem;
             InitializeComponent();

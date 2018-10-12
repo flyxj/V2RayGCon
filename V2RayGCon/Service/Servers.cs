@@ -18,7 +18,7 @@ namespace V2RayGCon.Service
             OnRequireStatusBarUpdate,
             OnRequireFlyPanelUpdate;
 
-        List<Controller.ServerCtrl> serverList = null;
+        List<Controller.CoreServerCtrl> serverList = null;
         List<string> markList = null;
 
         Lib.CancelableTimeout
@@ -72,7 +72,7 @@ namespace V2RayGCon.Service
             return -1;
         }
 
-        List<Controller.ServerCtrl> GetSelectedServerList(bool descending = false)
+        List<Controller.CoreServerCtrl> GetSelectedServerList(bool descending = false)
         {
             var list = serverList.Where(s => s.isSelected);
             if (descending)
@@ -257,7 +257,7 @@ namespace V2RayGCon.Service
 
                 Action<int, Action> worker = (index, next) =>
                 {
-                    list[index].GetProxyAddrForNotifierThen((s) =>
+                    list[index].GetServerInboundInfoForNotifierThen((s) =>
                     {
                         textList.Add(s);
                         next();
@@ -425,7 +425,7 @@ namespace V2RayGCon.Service
             lazyGCTimer.Start();
         }
 
-        public ReadOnlyCollection<Controller.ServerCtrl> GetServerList()
+        public ReadOnlyCollection<Controller.CoreServerCtrl> GetServerList()
         {
             return serverList.OrderBy(s => s.index).ToList().AsReadOnly();
         }
@@ -603,7 +603,7 @@ namespace V2RayGCon.Service
 
             Task.Factory.StartNew(() =>
             {
-                Lib.Utils.ExecuteInParallel<Controller.ServerCtrl, bool>(list, (server) =>
+                Lib.Utils.ExecuteInParallel<Controller.CoreServerCtrl, bool>(list, (server) =>
                 {
                     server.RunSpeedTest();
                     return true;
@@ -616,12 +616,12 @@ namespace V2RayGCon.Service
             return true;
         }
 
-        public List<Controller.ServerCtrl> GetActiveServersList()
+        public List<Controller.CoreServerCtrl> GetActiveServersList()
         {
             return serverList.Where(s => s.isServerOn).ToList();
         }
 
-        public void RestartServersByListThen(List<Controller.ServerCtrl> servers, Action done = null)
+        public void RestartServersByListThen(List<Controller.CoreServerCtrl> servers, Action done = null)
         {
             var list = servers;
             Action<int, Action> worker = (index, next) =>
@@ -814,7 +814,7 @@ namespace V2RayGCon.Service
                 }));
         }
 
-        public void BindEventsTo(Controller.ServerCtrl server)
+        public void BindEventsTo(Controller.CoreServerCtrl server)
         {
             server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
@@ -827,7 +827,7 @@ namespace V2RayGCon.Service
             return serverList.Any(s => s.config == config);
         }
 
-        public void ReleaseEventsFrom(Controller.ServerCtrl server)
+        public void ReleaseEventsFrom(Controller.CoreServerCtrl server)
         {
             server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
@@ -843,7 +843,7 @@ namespace V2RayGCon.Service
                 return false;
             }
 
-            var newServer = new Controller.ServerCtrl()
+            var newServer = new Controller.CoreServerCtrl()
             {
                 config = config,
                 mark = mark,

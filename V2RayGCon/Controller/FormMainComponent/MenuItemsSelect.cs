@@ -142,7 +142,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        void SelectAllPagesWhere(Func<Controller.ServerCtrl, bool> condiction)
+        void SelectAllPagesWhere(Func<Controller.CoreServerCtrl, bool> condiction)
         {
             var configs = GetFlyPanel().GetFilteredList()
                 .Select(s => s.config)
@@ -163,7 +163,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
 
-        void SelectAllServersWhere(Func<Controller.ServerCtrl, bool> condiction)
+        void SelectAllServersWhere(Func<Controller.CoreServerCtrl, bool> condiction)
         {
             servers.GetServerList()
                 .Select(s =>

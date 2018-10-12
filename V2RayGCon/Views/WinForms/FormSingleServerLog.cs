@@ -8,9 +8,9 @@ namespace V2RayGCon.Views.WinForms
     public partial class FormSingleServerLog : Form
     {
         int maxNumberLines;
-        Controller.ServerCtrl serverItem;
+        Controller.CoreServerCtrl serverItem;
 
-        public FormSingleServerLog(Controller.ServerCtrl serverItem)
+        public FormSingleServerLog(Controller.CoreServerCtrl serverItem)
         {
             maxNumberLines = Service.Setting.Instance.maxLogLines;
 

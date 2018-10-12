@@ -8,7 +8,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
-    class PACServer : Model.BaseClass.SingletonService<PACServer>
+    class PacServer : Model.BaseClass.SingletonService<PacServer>
     {
         public event EventHandler OnPACServerStatusChanged;
 
@@ -18,7 +18,7 @@ namespace V2RayGCon.Service
         Setting setting;
         Dictionary<bool, string> pacCache = null;
 
-        PACServer()
+        PacServer()
         {
             setting = Setting.Instance;
             orgSysProxySetting = Lib.ProxySetter.GetProxySetting();

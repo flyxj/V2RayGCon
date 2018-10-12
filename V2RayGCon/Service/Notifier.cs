@@ -12,14 +12,14 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
-        PACServer pacServer;
+        PacServer pacServer;
 
         Notifier()
         {
             setting = Setting.Instance;
             setting.SwitchCulture();
             servers = Servers.Instance;
-            pacServer = Service.PACServer.Instance;
+            pacServer = Service.PacServer.Instance;
 
             CreateNotifyIcon();
             Lib.Utils.SupportProtocolTLS12();

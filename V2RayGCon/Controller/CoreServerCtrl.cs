@@ -10,7 +10,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller
 {
-    public class ServerCtrl
+    public class CoreServerCtrl
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler
@@ -24,7 +24,7 @@ namespace V2RayGCon.Controller
         public int overwriteInboundType, inboundPort, collapseLevel;
         public double index;
 
-        public ServerCtrl()
+        public CoreServerCtrl()
         {
             // new ServerItem will display at the bottom
             index = int.MaxValue;
@@ -305,7 +305,7 @@ namespace V2RayGCon.Controller
             Task.Factory.StartNew(() => RestartCoreWorker(next));
         }
 
-        public void GetProxyAddrForNotifierThen(Action<string> next)
+        public void GetServerInboundInfoForNotifierThen(Action<string> next)
         {
             if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
                 || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
@@ -437,17 +437,15 @@ namespace V2RayGCon.Controller
                 return;
             }
 
-
-
             var servers = Service.Servers.Instance;
             SaveTrackedServerList(setting, servers);
 
-            var pacServer = Service.PACServer.Instance;
+            var pacServer = Service.PacServer.Instance;
             var inboundProtocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
             UpdateSystemProxySetting(setting, pacServer, inboundProtocol);
         }
 
-        private void UpdateSystemProxySetting(Service.Setting setting, Service.PACServer pacServer, string inboundProtocol)
+        private void UpdateSystemProxySetting(Service.Setting setting, Service.PacServer pacServer, string inboundProtocol)
         {
             Action<string> error = (s) =>
             {

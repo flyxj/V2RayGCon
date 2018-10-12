@@ -5,7 +5,7 @@ namespace V2RayGCon.Controller.OptionComponent
     class PacServer : OptionComponentController
     {
         Service.Setting setting;
-        Service.PACServer pacServer;
+        Service.PacServer pacServer;
 
         TextBox tboxPort;
         CheckBox chkIsAutorun;
@@ -18,7 +18,7 @@ namespace V2RayGCon.Controller.OptionComponent
             RichTextBox customBlackList)
         {
             setting = Service.Setting.Instance;
-            pacServer = Service.PACServer.Instance;
+            pacServer = Service.PacServer.Instance;
 
             tboxPort = port;
             chkIsAutorun = isAutorun;
