@@ -143,6 +143,7 @@
     <Compile Include="Model\BaseClass\NotifyComponent.cs" />
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\ImportItem.cs" />
+    <Compile Include="Service\Launcher.cs" />
     <Compile Include="Service\PacServer.cs" />
     <Compile Include="Views\UserControls\ImportUI.cs">
       <SubType>UserControl</SubType>

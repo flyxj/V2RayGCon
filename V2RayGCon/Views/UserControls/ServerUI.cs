@@ -12,7 +12,6 @@ namespace V2RayGCon.Views.UserControls
         Service.PacServer pacServer;
         Controller.CoreServerCtrl serverItem;
 
-        public bool isRunning;
         int[] formHeight;
         Bitmap[] foldingButtonIcons;
 
@@ -26,7 +25,6 @@ namespace V2RayGCon.Views.UserControls
 
             this.foldingButtonIcons = new Bitmap[] {
                 Properties.Resources.StepBackArrow_16x,
-                // Properties.Resources.GlyphUp_16x,
                 Properties.Resources.StepOverArrow_16x,
             };
 
@@ -34,8 +32,6 @@ namespace V2RayGCon.Views.UserControls
                 this.Height,  // collapseLevel= 0
                 this.cboxInbound.Top,
             };
-
-            isRunning = !serverItem.isServerOn;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
@@ -128,9 +124,9 @@ namespace V2RayGCon.Views.UserControls
                     serverItem.isAutoRun);
 
                 UpdateInboundAddrOndemand();
-                SetAICLable();
+                UpdateAicLable();
                 UpdateChkSelected();
-                ShowOnOffStatus(serverItem.server.isRunning);
+                UpdateOnOffLabel(serverItem.server.isRunning);
                 UpdateServerMark();
                 UpdateFormFoldingMode();
                 UpdateToolsTip();
@@ -161,7 +157,7 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        private void SetAICLable()
+        private void UpdateAicLable()
         {
             var text = serverItem.isAutoRun ? "A" : "";
             text += serverItem.isInjectImport ? "I" : "";
@@ -219,25 +215,19 @@ namespace V2RayGCon.Views.UserControls
             lbStatus.ForeColor = colorRed;
         }
 
-        private void ShowOnOffStatus(bool isServerOn)
+        private void UpdateOnOffLabel(bool isServerOn)
         {
-            if (this.isRunning == isServerOn)
+            var text = isServerOn ? "ON" : "OFF";
+
+            if (tboxInboundAddr.ReadOnly != isServerOn)
             {
-                return;
+                tboxInboundAddr.ReadOnly = isServerOn;
             }
 
-            this.isRunning = isServerOn;
-            tboxInboundAddr.ReadOnly = this.isRunning;
-
-            if (isServerOn)
+            if (lbRunning.Text != text)
             {
-                lbRunning.ForeColor = Color.DarkOrange;
-                lbRunning.Text = "ON";
-            }
-            else
-            {
-                lbRunning.ForeColor = Color.Green;
-                lbRunning.Text = "OFF";
+                lbRunning.Text = text;
+                lbRunning.ForeColor = isServerOn ? Color.DarkOrange : Color.Green;
             }
         }
         #endregion

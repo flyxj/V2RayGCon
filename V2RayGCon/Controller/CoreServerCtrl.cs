@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -17,6 +16,11 @@ namespace V2RayGCon.Controller
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
             OnRequireMenuUpdate;
+
+        /// <summary>
+        /// false: stop true: start
+        /// </summary>
+        public event EventHandler<Model.Data.BoolEvent> OnRequireKeepTrack;
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite;
@@ -99,14 +103,8 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region public method
-        public bool BecomeSystemProxy(bool isGlobal, bool skipServerOnDetection=false)
+        public bool BecomeSystemProxy(bool isGlobal)
         {
-            if (!skipServerOnDetection && !isServerOn)
-            {
-                SendLog(I18N.ServerIsNotRunning);
-                return false;
-            }
-
             var inboundInfo = GetParsedInboundInfo();
             if (inboundInfo == null)
             {
@@ -295,7 +293,6 @@ namespace V2RayGCon.Controller
         {
             this.server.StopCoreThen(() =>
             {
-                lazyServerTrackerTimer?.Release();
                 this.server.OnLog -= OnLogHandler;
                 this.server.OnCoreStatusChanged -= OnCoreStateChangedHandler;
                 Task.Factory.StartNew(() =>
@@ -327,7 +324,7 @@ namespace V2RayGCon.Controller
 
         public void StopCoreThen(Action next = null)
         {
-            TrackServerAsync(false);
+            OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(false));
             Task.Factory.StartNew(() => server.StopCoreThen(next));
         }
 
@@ -459,71 +456,7 @@ namespace V2RayGCon.Controller
             return config.ToString(Formatting.None);
         }
 
-        Lib.CancelableTimeout lazyServerTrackerTimer = null;
-        void SetLazyServerTracker(Action onTimeout)
-        {
-            lazyServerTrackerTimer?.Release();
-            lazyServerTrackerTimer = null;
 
-            lazyServerTrackerTimer = new Lib.CancelableTimeout(onTimeout, 1000);
-            lazyServerTrackerTimer.Start();
-        }
-
-        /// <summary>
-        /// Track server start or stop.
-        /// ParsedConfig equal null means stop.
-        /// </summary>
-        /// <param name="parsedConfig"></param>
-        void TrackServerAsync(bool isServerStart)
-        {
-            var setting = Service.Setting.Instance;
-            if (!setting.isServerTrackerOn)
-            {
-                return;
-            }
-
-            Action onTimeout = () =>
-            {
-                UpdateTrackerSetting(isServerStart);
-
-                var isGlobal = false;
-                switch (Service.PacServer.DetectSystemProxyMode(
-                    setting.GetSysProxySetting()))
-                {
-                    case Model.Data.Enum.SystemProxyMode.None:
-                        return;
-                    case Model.Data.Enum.SystemProxyMode.Global:
-                        isGlobal = true;
-                        break;
-                    case Model.Data.Enum.SystemProxyMode.PAC:
-                        isGlobal = false;
-                        break;
-                }
-
-                if (isServerStart)
-                {
-                    BecomeSystemProxy(isGlobal,true);
-                }
-                else
-                {
-                    TrackServerStop(isGlobal);
-                }
-            };
-
-            SetLazyServerTracker(onTimeout);
-        }
-
-        void TrackServerStop(bool isGlobal)
-        {
-            var servers = Service.Servers.Instance;
-            foreach (var server in servers.GetServerList())
-            {
-                if (server.BecomeSystemProxy(isGlobal))
-                {
-                    break;
-                }
-            }
-        }
 
         /// <summary>
         /// return Tuple(protocol, ip, port)
@@ -574,37 +507,6 @@ namespace V2RayGCon.Controller
             return true;
         }
 
-        /// <summary>
-        /// update running servers list
-        /// </summary>
-        /// <param name="includeCurServer"></param>
-        void UpdateTrackerSetting(bool includeCurServer)
-        {
-            var setting = Service.Setting.Instance;
-            var servers = Service.Servers.Instance;
-
-            var trackerSetting = setting.GetServerTrackerSetting();
-            var tracked = trackerSetting.serverList;
-
-            var running = servers.GetServerList()
-                .Where(s => s.isServerOn)
-                .Select(s => s.config)
-                .ToList();
-
-            tracked.RemoveAll(c => running.Any(r => r == c));  // remove stopped
-            running.RemoveAll(r => tracked.Any(t => t == r));
-            tracked.AddRange(running);
-            tracked.Remove(this.config);
-
-            if (includeCurServer)
-            {
-                tracked.Insert(0, this.config);
-            }
-
-            trackerSetting.serverList = tracked;
-            setting.SaveServerTrackerSetting(trackerSetting);
-        }
-
         void RestartCoreWorker(Action next)
         {
             JObject cfg = GetDecodedConfig(true, false, true);
@@ -626,7 +528,7 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
-            TrackServerAsync(true);
+            OnRequireKeepTrack(this, new Model.Data.BoolEvent(true));
 
             server.RestartCoreThen(
                 cfg.ToString(),

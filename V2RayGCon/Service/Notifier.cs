@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
@@ -12,23 +10,14 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
-        PacServer pacServer;
 
         Notifier()
         {
             setting = Setting.Instance;
-            setting.SwitchCulture();
             servers = Servers.Instance;
-            pacServer = Service.PacServer.Instance;
 
             CreateNotifyIcon();
-            Lib.Utils.SupportProtocolTLS12();
-
             setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
-            servers.Prepare(setting);
-
-            Application.ApplicationExit += (s, a) => Cleanup();
-            Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
 
             ni.MouseClick += (s, a) =>
             {
@@ -37,99 +26,24 @@ namespace V2RayGCon.Service
                     Views.WinForms.FormMain.GetForm();
                 }
             };
-
-#if DEBUG
-            This_function_do_some_tedious_stuff();
-#endif
-            if (servers.IsEmpty())
-            {
-                Views.WinForms.FormMain.GetForm();
-            }
-            else
-            {
-                servers.WakeupAutorunServersThen(RestoreTracker);
-            }
         }
-
-        #region DEBUG code TL;DR
-#if DEBUG
-        void This_function_do_some_tedious_stuff()
-        {
-
-            // Some test code
-            ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
-            ni.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(
-                "Debug", null, (_s, _a) =>
-             {
-                 servers.DbgFastRestartTest(100);
-             }));
-
-            // new Views.WinForms.FormConfiger(@"{}");
-            // new Views.WinForms.FormConfigTester();
-            // Views.WinForms.FormOption.GetForm();
-            Views.WinForms.FormMain.GetForm();
-            Views.WinForms.FormLog.GetForm();
-            // setting.WakeupAutorunServer();
-            // Views.WinForms.FormSimAddVmessClient.GetForm();
-            // Views.WinForms.FormDownloadCore.GetForm();
-        }
-#endif
-        #endregion
 
         #region public method
-        public string GetLogCache()
+#if DEBUG
+        public void InjectDebugMenuItem(ToolStripMenuItem menu)
         {
-            return setting.logCache;
+            ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
+            ni.ContextMenuStrip.Items.Insert(0, menu);
+        }
+#endif
+
+        public void Cleanup()
+        {
+            ni.Visible = false;
         }
         #endregion
 
         #region private method
-        private void RestoreTracker()
-        {
-            var trackerSetting = setting.GetServerTrackerSetting();
-
-            // wake up track server
-            if (!trackerSetting.isTrackerOn)
-            {
-                return;
-            }
-
-            var trackerList = trackerSetting.serverList;
-            if (trackerList.Count < 1)
-            {
-                setting.isServerTrackerOn = true;
-                return;
-            }
-
-            Action done = () =>
-            {
-                var trackedServerList = servers.GetServerList()
-                    .Where(s => s.config == trackerList[0])
-                    .ToList();
-
-                setting.isServerTrackerOn = true;
-                if (trackedServerList.Any())
-                {
-                    servers.RestartServersByListThen(trackedServerList);
-                }
-            };
-
-            if (trackerList.Count > 1)
-            {
-                var list = servers.GetServerList()
-                .Where(s =>
-                    trackerList.Contains(s.config)
-                    && !s.isServerOn
-                    && s.config != trackerSetting.serverList[0]
-                ).ToList();
-                servers.RestartServersByListThen(list, done);
-            }
-            else
-            {
-                done();
-            }
-        }
-
         void UpdateNotifierTextHandler(object sender, Model.Data.StrEvent args)
         {
             // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
@@ -248,18 +162,6 @@ namespace V2RayGCon.Service
             });
 
             return menu;
-        }
-
-        void Cleanup()
-        {
-            ni.Visible = false;
-
-            servers.SaveServerListImmediately();
-            servers.DisposeLazyTimers();
-            pacServer.Cleanup();
-            AutoResetEvent sayGoodbye = new AutoResetEvent(false);
-            servers.StopAllServersThen(() => sayGoodbye.Set());
-            sayGoodbye.WaitOne();
         }
         #endregion
     }

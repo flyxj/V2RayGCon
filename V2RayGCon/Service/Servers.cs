@@ -60,6 +60,106 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+
+        /// <summary>
+        /// update running servers list
+        /// </summary>
+        /// <param name="includeCurServer"></param>
+        Model.Data.ServerTracker GenCurTrackerSetting(string curServer, bool isStart)
+        {
+            var trackerSetting = setting.GetServerTrackerSetting();
+            var tracked = trackerSetting.serverList;
+
+            var running = GetServerList()
+                .Where(s => s.isServerOn)
+                .Select(s => s.config)
+                .ToList();
+
+            tracked.RemoveAll(c => !running.Any(r => r == c));  // remove stopped
+            running.RemoveAll(r => tracked.Any(t => t == r));
+            tracked.AddRange(running);
+            tracked.Remove(curServer);
+
+            if (isStart)
+            {
+                tracked.Insert(0, curServer);
+            }
+
+            trackerSetting.serverList = tracked;
+            return trackerSetting;
+        }
+
+        void OnRequireKeepTrackHandler(object sender, Model.Data.BoolEvent isServerStart)
+        {
+            if (!setting.isServerTrackerOn)
+            {
+                return;
+            }
+
+            SetLazyServerTrackUpdater(() =>
+                LazyServerTrackUpdateWorker(
+                    sender as Controller.CoreServerCtrl,
+                    isServerStart.Data));
+        }
+
+        void LazyServerTrackUpdateWorker(
+            Controller.CoreServerCtrl servCtrl,
+            bool isStart)
+        {
+            var curTrackerSetting = GenCurTrackerSetting(servCtrl.config, isStart);
+            var isGlobal = false;
+            curTrackerSetting.curServer = null;
+
+            switch (Service.PacServer.DetectSystemProxyMode(
+                setting.GetSysProxySetting()))
+            {
+                case Model.Data.Enum.SystemProxyMode.None:
+
+                    setting.SaveServerTrackerSetting(curTrackerSetting);
+                    return;
+                case Model.Data.Enum.SystemProxyMode.Global:
+                    isGlobal = true;
+                    break;
+                case Model.Data.Enum.SystemProxyMode.PAC:
+                    isGlobal = false;
+                    break;
+            }
+
+            foreach (var c in curTrackerSetting.serverList)
+            {
+                var serv = serverList.FirstOrDefault(s => s.config == c);
+                if (serv == null)
+                {
+                    continue;
+                }
+
+                if (serv.BecomeSystemProxy(isGlobal))
+                {
+                    curTrackerSetting.curServer = serv.config;
+                    break;
+                }
+            }
+
+            // 没有可用服务器时不要清空代理设置
+            // 否则全部重启时会丢失代理设置
+            if (isStart && curTrackerSetting.curServer != servCtrl.config)
+            {
+                Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
+            }
+
+            setting.SaveServerTrackerSetting(curTrackerSetting);
+        }
+
+        Lib.CancelableTimeout lazyServerTrackerTimer = null;
+        void SetLazyServerTrackUpdater(Action onTimeout)
+        {
+            lazyServerTrackerTimer?.Release();
+            lazyServerTrackerTimer = null;
+
+            lazyServerTrackerTimer = new Lib.CancelableTimeout(onTimeout, 1000);
+            lazyServerTrackerTimer.Start();
+        }
+
         int GetServerIndexByConfig(string config)
         {
             for (int i = 0; i < serverList.Count; i++)
@@ -350,6 +450,16 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public void Cleanup()
+        {
+            setting.isServerTrackerOn = false;
+            lazySaveServerListTimer?.Timeout();
+            DisposeLazyTimers();
+            AutoResetEvent sayGoodbye = new AutoResetEvent(false);
+            StopAllServersThen(() => sayGoodbye.Set());
+            sayGoodbye.WaitOne();
+        }
+
         public int GetTotalSelectedServerCount()
         {
             return serverList.Count(s => s.isSelected);
@@ -529,13 +639,9 @@ namespace V2RayGCon.Service
             });
         }
 
-        public void SaveServerListImmediately()
-        {
-            lazySaveServerListTimer?.Timeout();
-        }
-
         public void DisposeLazyTimers()
         {
+            lazyServerTrackerTimer?.Release();
             lazyGCTimer?.Release();
             lazySaveServerListTimer?.Release();
             lazyUpdateNotifyTextTimer?.Release();
@@ -632,21 +738,44 @@ namespace V2RayGCon.Service
             Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
         }
 
-        public void WakeupAutorunServersThen(Action done = null)
+        public void WakeupServers()
         {
+            List<Controller.CoreServerCtrl> bootList = GenBootServerList();
+
             Action<int, Action> worker = (index, next) =>
             {
-                if (serverList[index].isAutoRun)
-                {
-                    serverList[index].RestartCoreThen(next);
-                }
-                else
-                {
-                    next();
-                }
+                bootList[index].RestartCoreThen(next);
             };
 
-            Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, done);
+            Lib.Utils.ChainActionHelperAsync(bootList.Count, worker);
+        }
+
+        private List<Controller.CoreServerCtrl> GenBootServerList()
+        {
+            List<Controller.CoreServerCtrl> result = null;
+
+            var trackerSetting = setting.GetServerTrackerSetting();
+            if (trackerSetting.isTrackerOn)
+            {
+                var trackList = trackerSetting.serverList;
+                setting.isServerTrackerOn = true;
+                result = serverList.Where(
+                    s => s.isAutoRun || trackList.Contains(s.config))
+                    .ToList();
+
+                if (trackerSetting != null)
+                {
+                    result.RemoveAll(s => s.config == trackerSetting.curServer);
+                    var lastServer = serverList.FirstOrDefault(s => s.config == trackerSetting.curServer);
+                    result.Insert(0, lastServer);
+                }
+            }
+            else
+            {
+                result = serverList.Where(s => s.isAutoRun).ToList();
+            }
+
+            return result;
         }
 
         public void RestartAllSelectedServersThen(Action done = null)
@@ -816,6 +945,7 @@ namespace V2RayGCon.Service
 
         public void BindEventsTo(Controller.CoreServerCtrl server)
         {
+            server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
             server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
@@ -829,6 +959,7 @@ namespace V2RayGCon.Service
 
         public void ReleaseEventsFrom(Controller.CoreServerCtrl server)
         {
+            server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
             server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;

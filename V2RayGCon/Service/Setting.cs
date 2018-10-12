@@ -14,6 +14,19 @@ namespace V2RayGCon.Service
 {
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
+        Setting()
+        {
+            switch (culture)
+            {
+                case Model.Data.Enum.Cultures.enUS:
+                    SetCulture("");
+                    break;
+                case Model.Data.Enum.Cultures.zhCN:
+                    SetCulture("zh-CN");
+                    break;
+            }
+        }
+
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
 
         #region Properties
@@ -137,18 +150,7 @@ namespace V2RayGCon.Service
             return r ?? empty;
         }
 
-        public void SwitchCulture()
-        {
-            switch (culture)
-            {
-                case Model.Data.Enum.Cultures.enUS:
-                    SetCulture("");
-                    break;
-                case Model.Data.Enum.Cultures.zhCN:
-                    SetCulture("zh-CN");
-                    break;
-            }
-        }
+
 
         public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
         {

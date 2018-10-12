@@ -2,6 +2,16 @@
 
 namespace V2RayGCon.Model.Data
 {
+    public class BoolEvent : EventArgs
+    {
+        public bool Data;
+        public BoolEvent(bool data)
+        {
+            Data = data;
+        }
+
+    }
+
     public class StrEvent : EventArgs
     {
         public string Data;

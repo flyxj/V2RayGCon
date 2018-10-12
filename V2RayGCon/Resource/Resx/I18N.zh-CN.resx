@@ -594,7 +594,4 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="PacProxyRequireSocksOrHttpServer" xml:space="preserve">
     <value>SOCKS或HTTP服务器才可以设置为PAC代理</value>
   </data>
-  <data name="ServerIsNotRunning" xml:space="preserve">
-    <value>服务器未运行!</value>
-  </data>
 </root>
