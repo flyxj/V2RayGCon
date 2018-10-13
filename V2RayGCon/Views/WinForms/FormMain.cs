@@ -183,6 +183,7 @@ namespace V2RayGCon.Views.WinForms
                 //ToolStripMenuItem stopPACServer,
                 toolMenuItemCurrentSysProxy,
                 copyPACURLToolStripMenuItem,
+                copyPACDebuggerURLToolStripMenuItem,
                 toolMenuItemClearSysProxy,
                 startPACServerToolStripMenuItem,
                 stopPACServerToolStripMenuItem,

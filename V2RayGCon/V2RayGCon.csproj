@@ -414,7 +414,7 @@
     <None Include="Resource\PAC\black.txt" />
     <None Include="Resource\PAC\black_cidr.txt" />
     <Content Include="Resource\PAC\PacDebuggerTpl.txt" />
-    <Content Include="Resource\PAC\PacTemplateTail.txt" />
+    <Content Include="Resource\PAC\PacJsTpl.txt" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\GlyphUp_16x.png" />

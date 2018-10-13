@@ -105,7 +105,7 @@ namespace V2RayGCon.Lib
             return mask > 0 && mask < 32;
         }
 
-        public static List<string> GetPacUrlList(bool isWhiteList)
+        public static List<string> GetPacDomainList(bool isWhiteList)
         {
             return (isWhiteList ? StrConst.white : StrConst.black)
                 .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)

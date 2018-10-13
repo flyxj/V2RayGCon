@@ -24,6 +24,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             // system proxy
             ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem copyCurPacUrl,
+            ToolStripMenuItem copyCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer,
@@ -65,7 +66,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, clearSysProxy, restartPACServer, stopPACServer);
+            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, copyCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
         }
 
         #region public method
@@ -353,6 +354,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitCtrlSysProxy(
             ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem copyCurPacUrl,
+            ToolStripMenuItem copyCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer)
@@ -383,6 +385,17 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     pacServer.ClearSysProxy();
                 }
+            };
+
+            copyCurPacDebuggerUrl.Click += (s, a) =>
+            {
+                var p = Lib.ProxySetter.GetProxySetting();
+                var u = p.autoConfigUrl + "&debug=true";
+
+                MessageBox.Show(
+                    Lib.Utils.CopyToClipboard(u) ?
+                    I18N.LinksCopied :
+                    I18N.CopyFail);
             };
 
             copyCurPacUrl.Click += (s, a) =>

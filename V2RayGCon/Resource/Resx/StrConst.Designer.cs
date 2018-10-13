@@ -410,19 +410,51 @@ namespace V2RayGCon.Resource.Resx {
         ///    &lt;title&gt;Page Title&lt;/title&gt;
         ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
         ///    &lt;script src=&quot;__PacServerUrl__&quot;&gt;&lt;/script&gt;
-        ///&lt;/head&gt;
-        ///
-        ///&lt;body&gt;
-        ///    &lt;div&gt;&lt;span id=&quot;output&quot;&gt;&lt;/span&gt;&lt;/div&gt;
-        ///    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;input&quot; onchange=&quot;InputChanged();&quot;&gt;&lt;/div&gt;
-        ///    &lt;script&gt;
-        ///        var isPlainHostName = function(c) {
-        ///            return c.indexOf(&quot;.&quot;) &lt; 0;
-        ///    [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    &lt;style&gt;
+        ///        .inline-block {
+        ///            display: inline-block;
+        ///        }
+        ///        
+        ///        .title {
+        ///            font-size: 24px;
+        ///            font-weight: bold;
+        ///        }
+        ///        
+        ///        .tag {
+        ///            width: 55px;        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string PacDebuggerTpl {
             get {
                 return ResourceManager.GetString("PacDebuggerTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /**
+        ///// for custom PAC 
+        ///var customSettings = {
+        ///    &quot;protocol&quot;: &quot;socks/http&quot;,
+        ///    &quot;mode&quot;: &quot;white/black&quot;,
+        ///    &quot;white&quot;: &quot;text of white list&quot;,
+        ///    &quot;black&quot;: &quot;text of black list&quot;,
+        ///    &quot;ip&quot;: &quot;127.0.0.1&quot;,
+        ///    &quot;port&quot;: 1234
+        ///};
+        /// */
+        ///
+        ///var proxy = &apos;__PROXY__&apos;,
+        ///    mode = &apos;__MODE__&apos;,
+        ///    domains = { __DOMAINS__ },
+        ///    cidrs = [__CIDRS__];
+        ///
+        ///function ip2decimal(o) { var c = o.split(&quot;.&quot;); return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3] }
+        ///
+        ///function FindProxyForURL(o, c) {
+        ///    if (/\d+\.\d+\.\d+\. [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string PacJsTpl {
+            get {
+                return ResourceManager.GetString("PacJsTpl", resourceCulture);
             }
         }
         
@@ -441,27 +473,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PacmanTagPrefix {
             get {
                 return ResourceManager.GetString("PacmanTagPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似     ];
-        ///
-        ///function ip2decimal(o) { var c = o.split(&quot;.&quot;); return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3] }
-        ///
-        ///function FindProxyForURL(o, c) {
-        ///    if (/\d+\.\d+\.\d+\.\d+/.test(c)) {
-        ///        if (isInNet(dnsResolve(c), &quot;10.0.0.0&quot;, &quot;255.0.0.0&quot;) ||
-        ///            isInNet(dnsResolve(c), &quot;172.16.0.0&quot;, &quot;255.240.0.0&quot;) ||
-        ///            isInNet(dnsResolve(c), &quot;192.168.0.0&quot;, &quot;255.255.0.0&quot;) ||
-        ///            isInNet(dnsResolve(c), &quot;127.0.0.0&quot;, &quot;255.255.255.0&quot;))
-        ///            return &quot;DIRECT&quot;;
-        ///
-        ///        for (var [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string PacTemplateTail {
-            get {
-                return ResourceManager.GetString("PacTemplateTail", resourceCulture);
             }
         }
         

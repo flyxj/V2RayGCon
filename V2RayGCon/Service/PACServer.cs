@@ -16,7 +16,7 @@ namespace V2RayGCon.Service
         Lib.Net.SimpleWebServer webServer = null;
         object webServerLock = new object();
         Setting setting;
-        Dictionary<bool, string> pacCache = null;
+        Dictionary<bool, string[]> pacCache = null;
 
         PacServer()
         {
@@ -221,7 +221,7 @@ namespace V2RayGCon.Service
 
         void ClearCache()
         {
-            pacCache = new Dictionary<bool, string> {
+            pacCache = new Dictionary<bool, string[]> {
                 { true,null },
                 { false,null },
             };
@@ -231,8 +231,6 @@ namespace V2RayGCon.Service
         {
             return string.Format("http://localhost:{0}/pac/", port);
         }
-
-
 
         Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
@@ -277,19 +275,25 @@ namespace V2RayGCon.Service
             // ie require this header
             var mime = "application/x-ns-proxy-autoconfig";
 
-            var content = string.Format(
-                urlParam.isSocks ?
-                "var proxy = 'SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT', mode='{2}', {3}" :
-                "var proxy = 'PROXY {0}:{1}; DIRECT', mode='{2}', {3}",
-                urlParam.ip,
-                urlParam.port,
-                urlParam.isWhiteList ? "white" : "black",
-                GenPacFileBody(urlParam.isWhiteList));
+            var proxy = urlParam.isSocks ?
+                "SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT" :
+                "PROXY {0}:{1}; DIRECT";
+            var mode = urlParam.isWhiteList ? "white" : "black";
+            var domainAndCidrs = GenDomainAndCidrContent(urlParam.isWhiteList);
+
+            var content = StrConst.PacJsTpl
+                .Replace("__PROXY__", string.Format(proxy, urlParam.ip, urlParam.port))
+                .Replace("__MODE__", mode)
+                .Replace("__DOMAINS__", domainAndCidrs[0])
+                .Replace("__CIDRS__", domainAndCidrs[1]);
 
             return new Tuple<string, string>(content, mime);
         }
 
-        void MergeCustomPACSetting(ref List<string> urlList, ref List<long[]> cidrList, string customList)
+        void MergeCustomPacSetting(
+            ref List<string> domainList,
+            ref List<long[]> cidrList,
+            string customList)
         {
             var list = customList.Split(
                 new char[] { '\n', '\r' },
@@ -318,50 +322,60 @@ namespace V2RayGCon.Service
                     continue;
                 }
 
-                if (!urlList.Contains(item))
+                if (!domainList.Contains(item))
                 {
-                    urlList.Add(item);
+                    domainList.Add(item);
                 }
             }
         }
 
-        string GenPacFileBody(bool isWhiteList)
+        /// <summary>
+        /// string[0] domain list
+        /// string[1] cidr list
+        /// </summary>
+        /// <param name="isWhiteList"></param>
+        /// <returns></returns>
+        string[] GenDomainAndCidrContent(bool isWhiteList)
         {
             if (pacCache[isWhiteList] != null)
             {
                 return pacCache[isWhiteList];
             }
 
-            var urlList = Lib.Utils.GetPacUrlList(isWhiteList);
+            var domainList = Lib.Utils.GetPacDomainList(isWhiteList);
             var cidrList = Lib.Utils.GetPacCidrList(isWhiteList);
 
             // merge user settings
             var customSetting = setting.GetPacServerSettings();
             var customUrlList = isWhiteList ? customSetting.customWhiteList : customSetting.customBlackList;
-            MergeCustomPACSetting(ref urlList, ref cidrList, customUrlList);
+            MergeCustomPacSetting(ref domainList, ref cidrList, customUrlList);
 
             var cidrSimList = Lib.Utils.CompactCidrList(ref cidrList);
-            var pac = new StringBuilder("domains={");
-            foreach (var url in urlList)
+            var domainSB = new StringBuilder();
+            foreach (var url in domainList)
             {
-                pac.Append("'")
+                domainSB.Append("'")
                     .Append(url)
                     .Append("':1,");
             }
-            pac.Length--;
-            pac.Append(" },cidrs = [");
+            domainSB.Length--;
+
+            var cidrSB = new StringBuilder();
             foreach (var cidr in cidrSimList)
             {
-                pac.Append("[")
+                cidrSB.Append("[")
                     .Append(cidr[0])
                     .Append(",")
                     .Append(cidr[1])
                     .Append("],");
             }
-            pac.Length--;
-            pac.Append(StrConst.PacTemplateTail);
+            cidrSB.Length--;
 
-            pacCache[isWhiteList] = pac.ToString();
+            pacCache[isWhiteList] = new string[] {
+                domainSB.ToString(),
+                cidrSB.ToString(),
+            };
+
             return pacCache[isWhiteList];
         }
         #endregion
