@@ -96,7 +96,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            SetLazyServerTrackUpdater(() =>
+            SetLazyServerTrackerUpdater(() =>
                 LazyServerTrackUpdateWorker(
                     sender as Controller.CoreServerCtrl,
                     isServerStart.Data));
@@ -114,7 +114,6 @@ namespace V2RayGCon.Service
                 setting.GetSysProxySetting()))
             {
                 case Model.Data.Enum.SystemProxyMode.None:
-
                     setting.SaveServerTrackerSetting(curTrackerSetting);
                     return;
                 case Model.Data.Enum.SystemProxyMode.Global:
@@ -151,12 +150,11 @@ namespace V2RayGCon.Service
         }
 
         Lib.CancelableTimeout lazyServerTrackerTimer = null;
-        void SetLazyServerTrackUpdater(Action onTimeout)
+        void SetLazyServerTrackerUpdater(Action onTimeout)
         {
             lazyServerTrackerTimer?.Release();
             lazyServerTrackerTimer = null;
-
-            lazyServerTrackerTimer = new Lib.CancelableTimeout(onTimeout, 1000);
+            lazyServerTrackerTimer = new Lib.CancelableTimeout(onTimeout, 2000);
             lazyServerTrackerTimer.Start();
         }
 
@@ -757,8 +755,9 @@ namespace V2RayGCon.Service
             var trackerSetting = setting.GetServerTrackerSetting();
             if (trackerSetting.isTrackerOn)
             {
-                var trackList = trackerSetting.serverList;
                 setting.isServerTrackerOn = true;
+
+                var trackList = trackerSetting.serverList;
                 result = serverList.Where(
                     s => s.isAutoRun || trackList.Contains(s.config))
                     .ToList();

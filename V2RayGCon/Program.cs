@@ -73,6 +73,7 @@ namespace V2RayGCon
             Lib.DllLoader.FreeLibrary(pShcoreDll);
         }
 
+        #region private method
         private static IntPtr HiResSupport()
         {
             // load Shcore.dll and get high resolution support
@@ -84,5 +85,6 @@ namespace V2RayGCon
                 (method) => ((SetProcessDpiAwareness)method).Invoke(2));
             return pDll;
         }
+        #endregion
     }
 }

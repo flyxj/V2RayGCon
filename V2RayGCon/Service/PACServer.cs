@@ -53,7 +53,6 @@ namespace V2RayGCon.Service
         }
         #endregion
 
-
         #region static method
         public static Model.Data.Enum.SystemProxyMode DetectSystemProxyMode(Model.Data.ProxyRegKeyValue proxySetting)
         {

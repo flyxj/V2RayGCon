@@ -13,7 +13,6 @@ namespace V2RayGCon.Service
         Service.Notifier notifier;
         Service.Servers servers;
 
-
         Launcher()
         {
             Lib.Utils.SupportProtocolTLS12();

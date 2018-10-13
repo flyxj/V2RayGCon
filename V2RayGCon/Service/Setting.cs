@@ -150,8 +150,6 @@ namespace V2RayGCon.Service
             return r ?? empty;
         }
 
-
-
         public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
         {
             Properties.Settings.Default.SysProxySetting =
