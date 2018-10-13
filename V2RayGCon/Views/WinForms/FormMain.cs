@@ -32,14 +32,13 @@ namespace V2RayGCon.Views.WinForms
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
 #endif
-
+            Lib.UI.AutoScaleToolSripControls(this, 16);
             this.Show();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
             setting.RestoreFormRect(this);
-            Lib.UI.AutoScaleToolSripControls(this, 16);
 
             // https://alexpkent.wordpress.com/2011/05/11/25/
             // 添加新控件的时候会有bug,不显示新控件
