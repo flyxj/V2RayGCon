@@ -24,6 +24,7 @@
         
         .content {
             width: 80%;
+            max-width: 400px;
             font-size: 16px;
             color: goldenrod;
         }
@@ -34,6 +35,7 @@
         
         .fill {
             width: 100%;
+            max-width: 200px;
         }
     </style>
 </head>
@@ -43,8 +45,8 @@
         <div class="title">PAC debugger</div>
         <div>
             <div class="inline-block tag">Keywords:</div>
-                <div class="inline-block content"><span id="keyword"></span></div>
-            </div>
+            <div class="inline-block content"><span id="keyword"></span></div>
+        </div>
         <div>
             <div class="inline-block tag">Result:</div>
             <div class="inline-block content"><span id="output"></span></div>
@@ -52,14 +54,13 @@
         <div>
             <div class="inline-block tag">URL:</div>
             <div class="inline-block content">
-                <input class="inline-block fill searcher" placeholder="google.com <Enter>"
-                     type="text" id="input" onchange="Search();">
+                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input" onchange="Search();">
             </div>
         </div>
     </div>
 
     <script>
-        var isPlainHostName = function(c) {
+        var isPlainHostName = isPlainHostName || function(c) {
             return c.indexOf(".") < 0;
         };
 
@@ -69,9 +70,13 @@
 
         var Search = function() {
             var kw = input.value;
-            var result = FindProxyForURL("", kw);
-            keyword.innerHTML=kw;
-            output.innerHTML = result;
+            try {
+                var result = FindProxyForURL("", kw);
+                output.innerHTML = result;
+            } catch (err) {
+                output.innerHTML = err;
+            }
+            keyword.innerHTML = kw;
         }
     </script>
 </body>

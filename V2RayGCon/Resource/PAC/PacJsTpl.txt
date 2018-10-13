@@ -1,16 +1,4 @@
-﻿/**
-// for custom PAC 
-var customSettings = {
-    "protocol": "socks/http",
-    "mode": "white/black",
-    "white": "text of white list",
-    "black": "text of black list",
-    "ip": "127.0.0.1",
-    "port": 1234
-};
- */
-
-var proxy = '__PROXY__',
+﻿var proxy = '__PROXY__',
     mode = '__MODE__',
     domains = { __DOMAINS__ },
     cidrs = [__CIDRS__];

@@ -323,6 +323,28 @@ namespace V2RayGCon.Lib
             return Model.Data.Enum.SaveFileErrorCode.Fail;
         }
 
+        public static string ShowSelectFileDialog(string extension)
+        {
+            OpenFileDialog readFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Filter = extension,
+                RestoreDirectory = true,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                ShowHelp = true,
+            };
+
+            var fileName = string.Empty;
+
+            if (readFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return null;
+            }
+
+            return readFileDialog.FileName;
+        }
+
         /* return:
          * 
          * Null means cancelled.

@@ -77,13 +77,17 @@ namespace V2RayGCon.Lib
                 return null;
             }
 
+            var isSocks = proto == null ? false : proto.ToLower() == "socks";
+            var isWhiteList = type == null ? false : type.ToLower() == "whitelist";
+            var isDebug = debug == null ? false : debug.ToLower() == "true";
+
             return new Model.Data.PacUrlParams
             {
                 ip = ip,
                 port = port,
-                isSocks = (proto?.ToLower() == "socks"),
-                isWhiteList = (type?.ToLower() == "whitelist"),
-                isDebug = (debug?.ToLower() == "true"),
+                isSocks = isSocks,
+                isWhiteList = isWhiteList,
+                isDebug = isDebug,
                 mime = mime ?? "",
             };
         }

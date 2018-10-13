@@ -81,7 +81,12 @@ namespace V2RayGCon.Views.WinForms
                     tboxPacServPort,
                     chkPacServIsAutorun,
                     rtboxPacServWhiteList,
-                    rtboxPacServBlackList));
+                    rtboxPacServBlackList,
+
+                    // custom pac file
+                    tboxPacFilePath,
+                    chkPacCustomFile,
+                    btnPacBrowseFile));
 
             return ctrl;
         }

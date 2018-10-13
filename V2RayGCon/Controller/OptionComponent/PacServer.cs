@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
@@ -7,15 +8,21 @@ namespace V2RayGCon.Controller.OptionComponent
         Service.Setting setting;
         Service.PacServer pacServer;
 
-        TextBox tboxPort;
-        CheckBox chkIsAutorun;
+        TextBox tboxPort, tboxCustomPacFilePath;
+        CheckBox chkIsAutorun, chkCustomPacFile;
         RichTextBox rtboxCustomWhiteList, rtboxCustomBlackList;
+        Button btnBrowseCustomPacFile;
 
         public PacServer(
             TextBox port,
             CheckBox isAutorun,
             RichTextBox customWhiteList,
-            RichTextBox customBlackList)
+            RichTextBox customBlackList,
+
+            // custom pac file
+            TextBox tboxCustomPacFilePath,
+            CheckBox chkCustomPacFile,
+            Button btnBrowseCustomPacFile)
         {
             setting = Service.Setting.Instance;
             pacServer = Service.PacServer.Instance;
@@ -25,8 +32,14 @@ namespace V2RayGCon.Controller.OptionComponent
             rtboxCustomBlackList = customBlackList;
             rtboxCustomWhiteList = customWhiteList;
 
+            this.chkCustomPacFile = chkCustomPacFile;
+            this.tboxCustomPacFilePath = tboxCustomPacFilePath;
+            this.btnBrowseCustomPacFile = btnBrowseCustomPacFile;
+
             InitControls();
+            BindEvents();
         }
+
 
         #region public method
         public void Reload(string rawPacServSetting)
@@ -54,6 +67,8 @@ namespace V2RayGCon.Controller.OptionComponent
                 isAutorun = chkIsAutorun.Checked,
                 customBlackList = rtboxCustomBlackList.Text,
                 customWhiteList = rtboxCustomWhiteList.Text,
+                customPacFilePath = tboxCustomPacFilePath.Text,
+                isUseCustomPac = chkCustomPacFile.Checked,
             };
 
             setting.SavePacServerSettings(pacSetting);
@@ -69,10 +84,18 @@ namespace V2RayGCon.Controller.OptionComponent
         {
             var s = setting.GetPacServerSettings();
 
+            // basic
             if (s.port != Lib.Utils.Str2Int(tboxPort.Text)
                 || s.isAutorun != chkIsAutorun.Checked
                 || s.customBlackList != rtboxCustomBlackList.Text
                 || s.customWhiteList != rtboxCustomWhiteList.Text)
+            {
+                return true;
+            }
+
+            // custom pac file
+            if (s.isUseCustomPac != this.chkCustomPacFile.Checked
+                || s.customPacFilePath != this.tboxCustomPacFilePath.Text)
             {
                 return true;
             }
@@ -82,6 +105,18 @@ namespace V2RayGCon.Controller.OptionComponent
         #endregion
 
         #region private method
+        private void BindEvents()
+        {
+            this.btnBrowseCustomPacFile.Click += (s, a) =>
+            {
+                var filename = Lib.UI.ShowSelectFileDialog(StrConst.ExtJs);
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    this.tboxCustomPacFilePath.Text = filename;
+                }
+            };
+        }
+
         private void InitControls()
         {
             var pacSetting = setting.GetPacServerSettings();
@@ -89,6 +124,8 @@ namespace V2RayGCon.Controller.OptionComponent
             chkIsAutorun.Checked = pacSetting.isAutorun;
             rtboxCustomBlackList.Text = pacSetting.customBlackList;
             rtboxCustomWhiteList.Text = pacSetting.customWhiteList;
+            chkCustomPacFile.Checked = pacSetting.isUseCustomPac;
+            tboxCustomPacFilePath.Text = pacSetting.customPacFilePath;
         }
 
         void UpdateSystemProxy()

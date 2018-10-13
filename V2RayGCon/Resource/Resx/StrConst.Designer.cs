@@ -347,6 +347,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 JS Files|*.js|All File|*.* 的本地化字符串。
+        /// </summary>
+        internal static string ExtJs {
+            get {
+                return ResourceManager.GetString("ExtJs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Json File|*.json|All File|*.* 的本地化字符串。
         /// </summary>
         internal static string ExtJson {
@@ -421,7 +430,7 @@ namespace V2RayGCon.Resource.Resx {
         ///        }
         ///        
         ///        .tag {
-        ///            width: 55px;        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///            width: 90px;        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string PacDebuggerTpl {
             get {

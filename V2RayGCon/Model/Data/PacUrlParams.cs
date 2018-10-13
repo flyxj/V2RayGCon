@@ -16,7 +16,6 @@
             isDebug = false;
             port = 0;
         }
-
         #region public method
         // override operators is too complex for one simple purpose
         //public bool IsSameAs(PacUrlParams b)

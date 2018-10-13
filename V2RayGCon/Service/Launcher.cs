@@ -28,7 +28,9 @@ namespace V2RayGCon.Service
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
+
         #region debug
+#if DEBUG
         void This_Function_Is_Used_For_Debugging()
         {
             notifier.InjectDebugMenuItem(new ToolStripMenuItem(
@@ -48,6 +50,7 @@ namespace V2RayGCon.Service
             // Views.WinForms.FormSimAddVmessClient.GetForm();
             // Views.WinForms.FormDownloadCore.GetForm();
         }
+#endif
         #endregion
 
         #region public method
