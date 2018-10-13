@@ -161,7 +161,7 @@ namespace V2RayGCon.Service
 
                 try
                 {
-                    webServer = new Lib.Net.SimpleWebServer(GenWebResponse, prefix);
+                    webServer = new Lib.Net.SimpleWebServer(WebRequestDispatcher, prefix);
                     webServer.Run();
                     isWebServRunning = true;
                 }
@@ -232,7 +232,9 @@ namespace V2RayGCon.Service
             return string.Format("http://localhost:{0}/pac/", port);
         }
 
-        Tuple<string, string> GenWebResponse(HttpListenerRequest request)
+
+
+        Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri);
@@ -241,6 +243,37 @@ namespace V2RayGCon.Service
                 return new Tuple<string, string>("Bad request params.", null);
             }
 
+            if (urlParam.isDebug)
+            {
+                return ResponsWithDebugger(urlParam);
+            }
+
+            if (urlParam.mime == "js")
+            {
+                return ResponseWithJsFile(urlParam);
+            }
+
+            return ResponseWithPacFile(urlParam);
+        }
+
+        private Tuple<string, string> ResponseWithJsFile(Model.Data.PacUrlParams urlParam)
+        {
+            var response = ResponseWithPacFile(urlParam);
+            var mime = "application/javascript";
+            return new Tuple<string, string>(response.Item1, mime);
+        }
+
+        private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
+        {
+            var pacUrl = GenPacUrl(urlParam) + "&mime=js";
+            var tpl = StrConst.PacDebuggerTpl;
+            var html = tpl.Replace("__PacServerUrl__", pacUrl);
+            var mime = "text/html; charset=utf-8";
+            return new Tuple<string, string>(html, mime);
+        }
+
+        private Tuple<string, string> ResponseWithPacFile(Model.Data.PacUrlParams urlParam)
+        {
             // ie require this header
             var mime = "application/x-ns-proxy-autoconfig";
 

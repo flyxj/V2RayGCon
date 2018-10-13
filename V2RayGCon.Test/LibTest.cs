@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using V2RayGCon.Resource.Resx;
 using V2RayGCon.Test.Resource.Resx;
 
 using static V2RayGCon.Lib.Utils;
@@ -17,7 +16,7 @@ namespace V2RayGCon.Test
         [DataRow(null, null)]
         [DataRow(
             "port=4321&ip=8.7.6.5&proto=http&type=blacklist",
-            "false,false,8.7.6.5,4321")]
+            "false,false,8.7.6.5,4321,false")]
         [DataRow(
             "port=5678&ip=1233.2.3.4&proto=socks&type=whitelist",
             null)]
@@ -25,10 +24,10 @@ namespace V2RayGCon.Test
             "port=-5678&ip=1.2.3.4&proto=socks&type=whitelist",
             null)]
         [DataRow(
-            "port=5678&ip=1.2.3.4&proto=socks&type=whitelist",
-            "true,true,1.2.3.4,5678")]
+            "port=5678&ip=1.2.3.4&proto=socks&type=whitelist&debug=true",
+            "true,true,1.2.3.4,5678,true")]
 
-        // url = "type,proto,ip,port"
+        // url = "type,proto,ip,port,debug"
         public void GetProxyParamsFromUrlTest(string url, string expect)
         {
             var proxyParams = Lib.Utils.GetProxyParamsFromUrl(
@@ -54,7 +53,8 @@ namespace V2RayGCon.Test
                 proxyParams.isWhiteList.ToString().ToLower() != expParts[0]
                 || proxyParams.isSocks.ToString().ToLower() != expParts[1]
                 || proxyParams.ip != expParts[2]
-                || proxyParams.port.ToString() != expParts[3])
+                || proxyParams.port.ToString() != expParts[3]
+                || proxyParams.isDebug.ToString().ToLower() != expParts[4])
             {
                 Assert.Fail();
             }
@@ -313,7 +313,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void ConfigResource_Validate()
         {
-            foreach(var config in Lib.Utils.TestingGetResourceConfigJson())
+            foreach (var config in Lib.Utils.TestingGetResourceConfigJson())
             {
                 try
                 {

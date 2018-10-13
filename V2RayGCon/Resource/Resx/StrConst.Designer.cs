@@ -401,6 +401,32 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 &lt;!DOCTYPE html&gt;
+        ///&lt;html&gt;
+        ///
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+        ///    &lt;title&gt;Page Title&lt;/title&gt;
+        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+        ///    &lt;script src=&quot;__PacServerUrl__&quot;&gt;&lt;/script&gt;
+        ///&lt;/head&gt;
+        ///
+        ///&lt;body&gt;
+        ///    &lt;div&gt;&lt;span id=&quot;output&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+        ///    &lt;div&gt;&lt;input type=&quot;text&quot; id=&quot;input&quot; onchange=&quot;InputChanged();&quot;&gt;&lt;/div&gt;
+        ///    &lt;script&gt;
+        ///        var isPlainHostName = function(c) {
+        ///            return c.indexOf(&quot;.&quot;) &lt; 0;
+        ///    [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string PacDebuggerTpl {
+            get {
+                return ResourceManager.GetString("PacDebuggerTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 10800 的本地化字符串。
         /// </summary>
         internal static string PacmanInitPort {

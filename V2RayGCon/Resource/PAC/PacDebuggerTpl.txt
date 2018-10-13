@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="__PacServerUrl__"></script>
+    <style>
+        .inline-block {
+            display: inline-block;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .tag {
+            width: 55px;
+            font-size: 16px;
+        }
+        
+        .content {
+            width: 300px;
+            font-size: 16px;
+            color: goldenrod;
+        }
+        
+        .searcher {
+            color: black;
+        }
+        
+        .fill {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="title">PAC debugger</div>
+        <div>
+            <div class="inline-block tag">Result:</div>
+            <div class="inline-block content"><span id="output"></span></div>
+        </div>
+        <div>
+            <div class="inline-block tag">URL:</div>
+            <div class="inline-block content">
+                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input" onchange="Search();">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var isPlainHostName = function(c) {
+            return c.indexOf(".") < 0;
+        };
+
+        var output = document.getElementById("output");
+        var input = document.getElementById("input");
+
+        var Search = function() {
+            var keyword = input.value;
+            var result = FindProxyForURL("", keyword);
+            console.log("kw: ", keyword, " out: ", result);
+            output.innerHTML = result;
+        }
+    </script>
+</body>
+
+</html>

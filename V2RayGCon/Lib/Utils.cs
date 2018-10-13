@@ -63,6 +63,8 @@ namespace V2RayGCon.Lib
 
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
 
+            arguments.TryGetValue("mime", out string mime);
+            arguments.TryGetValue("debug", out string debug);
             arguments.TryGetValue("ip", out string ip);
             arguments.TryGetValue("port", out string portStr);
             arguments.TryGetValue("type", out string type);
@@ -70,9 +72,7 @@ namespace V2RayGCon.Lib
 
             var port = Lib.Utils.Str2Int(portStr);
 
-            if (!IsIP(ip) || port < 0
-                || string.IsNullOrEmpty(type)
-                || string.IsNullOrEmpty(proto))
+            if (!IsIP(ip) || port < 0 || port > 65535)
             {
                 return null;
             }
@@ -81,8 +81,10 @@ namespace V2RayGCon.Lib
             {
                 ip = ip,
                 port = port,
-                isSocks = (proto.ToLower() == "socks"),
-                isWhiteList = (type.ToLower() == "whitelist"),
+                isSocks = (proto?.ToLower() == "socks"),
+                isWhiteList = (type?.ToLower() == "whitelist"),
+                isDebug = (debug?.ToLower() == "true"),
+                mime = mime ?? "",
             };
         }
 
