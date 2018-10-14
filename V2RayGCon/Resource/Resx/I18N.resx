@@ -607,4 +607,7 @@ Please check port setting in form option.</value>
   <data name="PacProxyRequireSocksOrHttpServer" xml:space="preserve">
     <value>PAC proxy require socks or http server.</value>
   </data>
+  <data name="VisitPacDebugger" xml:space="preserve">
+    <value>Visit PAC debugger webpage?</value>
+  </data>
 </root>

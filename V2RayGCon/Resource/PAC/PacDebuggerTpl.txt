@@ -6,15 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="__PacServerUrl__"></script>
+    <script src="__PacServerUrl__&mime=js"></script>
     <style>
+        .main-wrapper {
+            margin: 8px auto;
+            width: 100%;
+            max-width: 500px;
+        }
+        
         .inline-block {
             display: inline-block;
         }
         
         .title {
+            text-align: center;
             font-size: 24px;
             font-weight: bold;
+        }
+        
+        .download {
+            text-align: left;
         }
         
         .tag {
@@ -41,10 +52,11 @@
 </head>
 
 <body>
-    <div>
+    <div class="main-wrapper">
         <div class="title">PAC debugger</div>
+        <div><br/></div>
         <div>
-            <div class="inline-block tag">Keywords:</div>
+            <div class="inline-block tag">Keyword:</div>
             <div class="inline-block content"><span id="keyword"></span></div>
         </div>
         <div>
@@ -54,8 +66,15 @@
         <div>
             <div class="inline-block tag">URL:</div>
             <div class="inline-block content">
-                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input" onchange="Search();">
+                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input" onchange="Search();" onClick="this.select();">
             </div>
+        </div>
+        <div><br/></div>
+        <div class="download">
+            <a target="_blank" href="__PacServerUrl__&mime=js">View PAC source code</a>
+        </div>
+        <div class="download">
+            <a target="_blank" href="__PacServerUrl__&mime=js" download="pac.txt">Download PAC file</a>
         </div>
     </div>
 
@@ -77,7 +96,12 @@
                 output.innerHTML = err;
             }
             keyword.innerHTML = kw;
-        }
+        };
+
+        (function() {
+            input.value = "google.com";
+            Search();
+        })();
     </script>
 </body>
 

@@ -114,7 +114,7 @@ namespace V2RayGCon.Views.WinForms
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemCurrentSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.copyPACURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyPACDebuggerURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visitPACDebuggerURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.startPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -687,7 +687,7 @@ namespace V2RayGCon.Views.WinForms
             this.systemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolMenuItemCurrentSysProxy,
             this.copyPACURLToolStripMenuItem,
-            this.copyPACDebuggerURLToolStripMenuItem,
+            this.visitPACDebuggerURLToolStripMenuItem,
             this.toolStripSeparator11,
             this.toolMenuItemClearSysProxy,
             this.startPACServerToolStripMenuItem,
@@ -704,10 +704,10 @@ namespace V2RayGCon.Views.WinForms
             resources.ApplyResources(this.copyPACURLToolStripMenuItem, "copyPACURLToolStripMenuItem");
             this.copyPACURLToolStripMenuItem.Name = "copyPACURLToolStripMenuItem";
             // 
-            // copyPACDebuggerURLToolStripMenuItem
+            // visitPACDebuggerURLToolStripMenuItem
             // 
-            resources.ApplyResources(this.copyPACDebuggerURLToolStripMenuItem, "copyPACDebuggerURLToolStripMenuItem");
-            this.copyPACDebuggerURLToolStripMenuItem.Name = "copyPACDebuggerURLToolStripMenuItem";
+            resources.ApplyResources(this.visitPACDebuggerURLToolStripMenuItem, "visitPACDebuggerURLToolStripMenuItem");
+            this.visitPACDebuggerURLToolStripMenuItem.Name = "visitPACDebuggerURLToolStripMenuItem";
             // 
             // toolStripSeparator11
             // 
@@ -967,7 +967,7 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem stopPACServerToolStripMenuItem;
         private ToolStripMenuItem refreshSummaryToolStripMenuItem;
         private ToolStripMenuItem copyPACURLToolStripMenuItem;
-        private ToolStripMenuItem copyPACDebuggerURLToolStripMenuItem;
+        private ToolStripMenuItem visitPACDebuggerURLToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator11;
     }
 }

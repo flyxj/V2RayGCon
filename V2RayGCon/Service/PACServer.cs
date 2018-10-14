@@ -343,9 +343,8 @@ namespace V2RayGCon.Service
 
         private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
         {
-            var pacUrl = GenPacUrl(urlParam) + "&mime=js";
             var tpl = StrConst.PacDebuggerTpl;
-            var html = tpl.Replace("__PacServerUrl__", pacUrl);
+            var html = tpl.Replace("__PacServerUrl__", GenPacUrl(urlParam));
             var mime = "text/html; charset=utf-8";
             return new Tuple<string, string>(html, mime);
         }

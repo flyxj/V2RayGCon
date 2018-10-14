@@ -24,7 +24,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             // system proxy
             ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem copyCurPacDebuggerUrl,
+            ToolStripMenuItem visitCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer,
@@ -66,7 +66,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, copyCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
+            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, visitCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
         }
 
         #region public method
@@ -354,7 +354,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitCtrlSysProxy(
             ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem copyCurPacDebuggerUrl,
+            ToolStripMenuItem visitCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer)
@@ -387,15 +387,11 @@ namespace V2RayGCon.Controller.FormMainComponent
                 }
             };
 
-            copyCurPacDebuggerUrl.Click += (s, a) =>
+            visitCurPacDebuggerUrl.Click += (s, a) =>
             {
                 var p = Lib.ProxySetter.GetProxySetting();
-                var u = p.autoConfigUrl + "&debug=true";
-
-                MessageBox.Show(
-                    Lib.Utils.CopyToClipboard(u) ?
-                    I18N.LinksCopied :
-                    I18N.CopyFail);
+                var url = p.autoConfigUrl + "&debug=true";
+                Lib.UI.VisitUrl(I18N.VisitPacDebugger, url);
             };
 
             copyCurPacUrl.Click += (s, a) =>
