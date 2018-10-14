@@ -335,16 +335,18 @@ namespace V2RayGCon.Controller
 
         public void GetterInboundInfoFor(Action<string> next)
         {
-            if (overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.HTTP
-                || overwriteInboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
+            var inType = overwriteInboundType;
+            switch (inType)
             {
-                next(string.Format(
+                case (int)Model.Data.Enum.ProxyTypes.HTTP:
+                case (int)Model.Data.Enum.ProxyTypes.SOCKS:
+                    next(string.Format(
                     "[{0}] {1}://{2}:{3}",
                     this.name,
-                    GetOverwriteInboundTypeName(),
+                    GetInProtocolNameByNumber(inType),
                     this.inboundIP,
                     this.inboundPort));
-                return;
+                    return;
             }
 
             var serverName = this.name;
@@ -409,7 +411,7 @@ namespace V2RayGCon.Controller
                 name+summary,
 
                 // index 1
-                GetOverwriteInboundTypeName()
+                GetInProtocolNameByNumber(overwriteInboundType)
                 +inboundIP
                 +inboundPort.ToString(),
 
@@ -456,15 +458,13 @@ namespace V2RayGCon.Controller
             return config.ToString(Formatting.None);
         }
 
-
-
         /// <summary>
         /// return Tuple(protocol, ip, port)
         /// </summary>
         /// <returns></returns>
         Tuple<string, string, int> GetParsedInboundInfo()
         {
-            var protocol = GetOverwriteInboundTypeName();
+            var protocol = GetInProtocolNameByNumber(overwriteInboundType);
             var ip = inboundIP;
             var port = inboundPort;
 
@@ -483,11 +483,11 @@ namespace V2RayGCon.Controller
             return new Tuple<string, string, int>(protocol, ip, port);
         }
 
-        string GetOverwriteInboundTypeName()
+        string GetInProtocolNameByNumber(int typeNumber)
         {
             var table = Model.Data.Table.inboundOverwriteTypesName;
             return table[Lib.Utils.Clamp(
-                this.overwriteInboundType, 0, table.Length)];
+                typeNumber, 0, table.Length)];
         }
 
         bool IsSuitableForProxy(bool isGlobalProxy, string protocol)
@@ -649,16 +649,16 @@ namespace V2RayGCon.Controller
             string ip,
             int port)
         {
-            var type = (Model.Data.Enum.ProxyTypes)inboundType;
-
-            if (type != Model.Data.Enum.ProxyTypes.HTTP
-                && type != Model.Data.Enum.ProxyTypes.SOCKS)
+            switch (inboundType)
             {
-                return true;
+                case (int)Model.Data.Enum.ProxyTypes.HTTP:
+                case (int)Model.Data.Enum.ProxyTypes.SOCKS:
+                    break;
+                default:
+                    return true;
             }
 
-            var protocol = GetOverwriteInboundTypeName();
-
+            var protocol = GetInProtocolNameByNumber(inboundType);
             var part = protocol + "In";
             try
             {
@@ -669,7 +669,7 @@ namespace V2RayGCon.Controller
                 o["inbound"]["settings"] =
                     Service.Cache.Instance.tpl.LoadTemplate(part);
 
-                if (type == Model.Data.Enum.ProxyTypes.SOCKS)
+                if (inboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
                 {
                     o["inbound"]["settings"]["ip"] = ip;
                 }

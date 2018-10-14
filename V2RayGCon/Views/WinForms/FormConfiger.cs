@@ -15,7 +15,7 @@ namespace V2RayGCon.Views.WinForms
         public Rectangle panel;
         public Rectangle page;
 
-        public Lib.CancelableTimeout timerHide, timerShow;
+        public Lib.Sys.CancelableTimeout timerHide, timerShow;
 
         public void Dispose()
         {
@@ -312,8 +312,8 @@ namespace V2RayGCon.Views.WinForms
             toolsPanelController.span = span;
             toolsPanelController.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
-            toolsPanelController.timerHide = new Lib.CancelableTimeout(FoldToolsPanel, 800);
-            toolsPanelController.timerShow = new Lib.CancelableTimeout(ExpanseToolsPanel, 500);
+            toolsPanelController.timerHide = new Lib.Sys.CancelableTimeout(FoldToolsPanel, 800);
+            toolsPanelController.timerShow = new Lib.Sys.CancelableTimeout(ExpanseToolsPanel, 500);
 
             var page = tabCtrlToolPanel.TabPages[0];
             toolsPanelController.page = new Rectangle(

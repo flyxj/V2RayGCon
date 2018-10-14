@@ -16,7 +16,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripComboBox cboxMarkFilter;
         ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
         ToolStripDropDownButton tsdbtnPager;
-        Lib.CancelableTimeout lazyStatusBarUpdateTimer = null;
+        Lib.Sys.CancelableTimeout lazyStatusBarUpdateTimer = null;
         Views.UserControls.WelcomeUI welcomeItem = null;
         int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
@@ -122,7 +122,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             if (lazyStatusBarUpdateTimer == null)
             {
                 lazyStatusBarUpdateTimer =
-                    new Lib.CancelableTimeout(
+                    new Lib.Sys.CancelableTimeout(
                         UpdateStatusBar,
                         300);
             }
@@ -263,7 +263,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         string searchKeywords = "";
-        Lib.CancelableTimeout lazyShowSearchResultTimer = null;
+        Lib.Sys.CancelableTimeout lazyShowSearchResultTimer = null;
         void LazyShowSearchResult()
         {
             // create on demand
@@ -272,7 +272,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 var delay = Lib.Utils.Str2Int(StrConst.LazySaveServerListDelay);
 
                 lazyShowSearchResultTimer =
-                    new Lib.CancelableTimeout(
+                    new Lib.Sys.CancelableTimeout(
                         () =>
                         {
                             // 如果不RemoveAll会乱序

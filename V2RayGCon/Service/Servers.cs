@@ -21,15 +21,12 @@ namespace V2RayGCon.Service
         List<Controller.CoreServerCtrl> serverList = null;
         List<string> markList = null;
 
-        Lib.CancelableTimeout
+        Lib.Sys.CancelableTimeout
             lazyGCTimer = null,
             lazySaveServerListTimer = null,
             lazyUpdateNotifyTextTimer = null;
 
         object serverListWriteLock = new object();
-
-        int preRunningServerCount = 0;
-
         Setting setting = null;
 
         Servers()
@@ -126,6 +123,7 @@ namespace V2RayGCon.Service
 
             foreach (var c in curTrackerSetting.serverList)
             {
+                // 按trackerList的顺序来试
                 var serv = serverList.FirstOrDefault(s => s.config == c);
                 if (serv == null)
                 {
@@ -149,12 +147,12 @@ namespace V2RayGCon.Service
             setting.SaveServerTrackerSetting(curTrackerSetting);
         }
 
-        Lib.CancelableTimeout lazyServerTrackerTimer = null;
+        Lib.Sys.CancelableTimeout lazyServerTrackerTimer = null;
         void SetLazyServerTrackerUpdater(Action onTimeout)
         {
             lazyServerTrackerTimer?.Release();
             lazyServerTrackerTimer = null;
-            lazyServerTrackerTimer = new Lib.CancelableTimeout(onTimeout, 2000);
+            lazyServerTrackerTimer = new Lib.Sys.CancelableTimeout(onTimeout, 2000);
             lazyServerTrackerTimer.Start();
         }
 
@@ -299,7 +297,7 @@ namespace V2RayGCon.Service
                 var delay = Lib.Utils.Str2Int(StrConst.LazySaveServerListDelay);
 
                 lazySaveServerListTimer =
-                    new Lib.CancelableTimeout(
+                    new Lib.Sys.CancelableTimeout(
                         () => setting.SaveServerList(serverList),
                         delay * 1000);
             }
@@ -314,9 +312,9 @@ namespace V2RayGCon.Service
             if (lazyUpdateNotifyTextTimer == null)
             {
                 lazyUpdateNotifyTextTimer =
-                    new Lib.CancelableTimeout(
+                    new Lib.Sys.CancelableTimeout(
                         UpdateNotifierText,
-                        1000);
+                        2000);
             }
 
             lazyUpdateNotifyTextTimer.Start();
@@ -330,11 +328,6 @@ namespace V2RayGCon.Service
                 .ToList();
 
             var count = list.Count;
-            if (count == preRunningServerCount)
-            {
-                return;
-            }
-            preRunningServerCount = count;
 
             if (count <= 0)
             {
@@ -523,7 +516,7 @@ namespace V2RayGCon.Service
             {
                 var delay = Lib.Utils.Str2Int(StrConst.LazyGCDelay);
 
-                lazyGCTimer = new Lib.CancelableTimeout(
+                lazyGCTimer = new Lib.Sys.CancelableTimeout(
                     () =>
                     {
                         System.GC.Collect();
@@ -762,11 +755,14 @@ namespace V2RayGCon.Service
                     s => s.isAutoRun || trackList.Contains(s.config))
                     .ToList();
 
-                if (trackerSetting != null)
+                if (trackerSetting.curServer != null)
                 {
                     result.RemoveAll(s => s.config == trackerSetting.curServer);
                     var lastServer = serverList.FirstOrDefault(s => s.config == trackerSetting.curServer);
-                    result.Insert(0, lastServer);
+                    if (lastServer != null)
+                    {
+                        result.Insert(0, lastServer);
+                    }
                 }
             }
             else

@@ -25,7 +25,7 @@ namespace V2RayGCon.Service
         PacServer()
         {
             setting = Setting.Instance;
-            orgSysProxySetting = Lib.ProxySetter.GetProxySetting();
+            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             ClearCache();
             var pacSetting = setting.GetPacServerSettings();
             var proxySetting = setting.GetSysProxySetting();
@@ -38,7 +38,7 @@ namespace V2RayGCon.Service
             // becareful issue #9 #3
             if (!Lib.Utils.IsProxySettingEmpty(proxySetting))
             {
-                Lib.ProxySetter.SetProxy(proxySetting);
+                Lib.Sys.ProxySetter.SetProxy(proxySetting);
             }
         }
 
@@ -76,7 +76,7 @@ namespace V2RayGCon.Service
 
         #region public method
 
-        Lib.CancelableTimeout lazySysProxyUpdaterTimer = null;
+        Lib.Sys.CancelableTimeout lazySysProxyUpdaterTimer = null;
         public void LazySysProxyUpdater(bool isSocks, string ip, int port)
         {
             lazySysProxyUpdaterTimer?.Release();
@@ -111,7 +111,7 @@ namespace V2RayGCon.Service
                     break;
             }
 
-            lazySysProxyUpdaterTimer = new Lib.CancelableTimeout(setProxy, 1000);
+            lazySysProxyUpdaterTimer = new Lib.Sys.CancelableTimeout(setProxy, 1000);
             lazySysProxyUpdaterTimer.Start();
         }
 
@@ -131,7 +131,7 @@ namespace V2RayGCon.Service
         {
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.autoConfigUrl = GenPacUrl(param);
-            Lib.ProxySetter.SetProxy(proxy);
+            Lib.Sys.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
             StartPacServer();
             InvokeOnPACServerStatusChanged();
@@ -142,7 +142,7 @@ namespace V2RayGCon.Service
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.proxyEnable = true;
             proxy.proxyServer = string.Format("{0}:{1}", ip, port.ToString());
-            Lib.ProxySetter.SetProxy(proxy);
+            Lib.Sys.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
             InvokeOnPACServerStatusChanged();
         }
@@ -151,7 +151,7 @@ namespace V2RayGCon.Service
         {
             var proxy = new Model.Data.ProxyRegKeyValue();
             setting.SaveSysProxySetting(proxy);
-            Lib.ProxySetter.SetProxy(proxy);
+            Lib.Sys.ProxySetter.SetProxy(proxy);
             InvokeOnPACServerStatusChanged();
         }
 
@@ -211,13 +211,13 @@ namespace V2RayGCon.Service
             customPacFileWatcher.EnableRaisingEvents = true;
         }
 
-        Lib.CancelableTimeout lazyCustomPacFileCacheUpdateTimer = null;
+        Lib.Sys.CancelableTimeout lazyCustomPacFileCacheUpdateTimer = null;
         void LazyCustomPacFileCacheUpdate()
         {
             // this program is getting lazier and lazier.
             if (lazyCustomPacFileCacheUpdateTimer == null)
             {
-                lazyCustomPacFileCacheUpdateTimer = new Lib.CancelableTimeout(
+                lazyCustomPacFileCacheUpdateTimer = new Lib.Sys.CancelableTimeout(
                     UpdateCustomPacCache, 2000);
             }
 
@@ -244,7 +244,7 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             StopPacServer();
-            Lib.ProxySetter.SetProxy(orgSysProxySetting);
+            Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
             lazyCustomPacFileCacheUpdateTimer?.Release();
         }
 

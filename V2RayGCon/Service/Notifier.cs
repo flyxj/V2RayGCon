@@ -48,6 +48,11 @@ namespace V2RayGCon.Service
         {
             // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
             var text = Lib.Utils.CutStr(args.Data, 127);
+            if (ni.Text == text)
+            {
+                return;
+            }
+
             Type t = typeof(NotifyIcon);
             BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
             t.GetField("text", hidden).SetValue(ni, text);

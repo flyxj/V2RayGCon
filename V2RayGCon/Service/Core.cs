@@ -358,7 +358,7 @@ namespace V2RayGCon.Service
             v2rayCore.Start();
 
             // Add to JOB object require win8+.
-            Lib.ChildProcessTracker.AddProcess(v2rayCore);
+            Lib.Sys.ChildProcessTracker.AddProcess(v2rayCore);
 
             v2rayCore.StandardInput.WriteLine(config);
             v2rayCore.StandardInput.Close();
@@ -366,15 +366,7 @@ namespace V2RayGCon.Service
             v2rayCore.BeginOutputReadLine();
 
             // Assume core ready after 2.5 seconds, in case log set to none.
-            if (ready.WaitOne(2500))
-            {
-                Debug.WriteLine("Core is ready.");
-            }
-            else
-            {
-                Debug.WriteLine("Wait too long, assume core started.");
-            }
-
+            ready.WaitOne(2500);
             OnCoreReady -= onCoreReady;
             isCheckCoreReady = false;
         }

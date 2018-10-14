@@ -85,7 +85,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         string GenCurSysProxySettingString()
         {
             var strCurProxy = I18N.CurSysProxy;
-            var proxy = Lib.ProxySetter.GetProxySetting();
+            var proxy = Lib.Sys.ProxySetter.GetProxySetting();
 
             if (!string.IsNullOrEmpty(proxy.autoConfigUrl))
             {
@@ -389,14 +389,14 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             visitCurPacDebuggerUrl.Click += (s, a) =>
             {
-                var p = Lib.ProxySetter.GetProxySetting();
+                var p = Lib.Sys.ProxySetter.GetProxySetting();
                 var url = p.autoConfigUrl + "&debug=true";
                 Lib.UI.VisitUrl(I18N.VisitPacDebugger, url);
             };
 
             copyCurPacUrl.Click += (s, a) =>
             {
-                var p = Lib.ProxySetter.GetProxySetting();
+                var p = Lib.Sys.ProxySetter.GetProxySetting();
                 var u = p.autoConfigUrl;
 
                 MessageBox.Show(

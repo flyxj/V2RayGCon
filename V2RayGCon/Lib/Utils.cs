@@ -20,7 +20,6 @@ namespace V2RayGCon.Lib
     public class Utils
     {
 
-        public static Service.Cache cache = Service.Cache.Instance;
 
         #region pac
         public static bool IsProxySettingEmpty(Model.Data.ProxyRegKeyValue proxySetting)
@@ -380,36 +379,42 @@ namespace V2RayGCon.Lib
             return true;
         }
 
-        public static JObject ExtractJObjectPart(JObject source, string path)
+        public static bool TryExtractJObjectPart(
+            JObject source,
+            string path,
+            out JObject result)
         {
             var parts = ParsePathIntoParentAndKey(path);
             var key = parts.Item2;
             var parentPath = parts.Item1;
+            result = null;
 
             if (string.IsNullOrEmpty(key))
             {
-                throw new KeyNotFoundException("key is empty");
+                // throw new KeyNotFoundException("Key is empty");
+                return false;
             }
 
             var node = GetKey(source, path);
             if (node == null)
             {
-                throw new KeyNotFoundException();
+                // throw new KeyNotFoundException("This JObject has no key: " + path);
+                return false;
             }
 
-            var result = CreateJObject(parentPath);
+            result = CreateJObject(parentPath);
 
             var parent = string.IsNullOrEmpty(parentPath) ?
                 result : GetKey(result, parentPath);
 
             if (parent == null || !(parent is JObject))
             {
-                throw new KeyNotFoundException("Create parent JObject fail!");
+                // throw new KeyNotFoundException("Create parent JObject fail!");
+                return false;
             }
 
             parent[key] = node.DeepClone();
-
-            return result;
+            return true;
         }
 
         public static void RemoveKeyFromJObject(JObject json, string path)
@@ -465,23 +470,17 @@ namespace V2RayGCon.Lib
                     "outboundDetour",
                     "routing.settings.rules"})
             {
-                JObject nodeBody = null;
-                JObject nodeMixin = null;
-                try
+                if (TryExtractJObjectPart(body, key, out JObject nodeBody))
                 {
-                    nodeBody = ExtractJObjectPart(body, key);
                     RemoveKeyFromJObject(body, key);
                 }
-                catch (KeyNotFoundException) { }
 
-                try
+                if (TryExtractJObjectPart(mixin, key, out JObject nodeMixin))
                 {
-                    nodeMixin = ExtractJObjectPart(mixin, key);
                     ConcatJson(ref backup, nodeMixin);
                     RemoveKeyFromJObject(mixin, key);
                     ConcatJson(ref body, nodeMixin);
                 }
-                catch (KeyNotFoundException) { }
 
                 if (nodeBody != null)
                 {
@@ -709,6 +708,8 @@ namespace V2RayGCon.Lib
 
         public static JObject SSLink2Config(string ssLink)
         {
+            var cache = Service.Cache.Instance;
+
             Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
             if (ss == null)
             {
@@ -774,12 +775,13 @@ namespace V2RayGCon.Lib
                     break;
             }
 
-
             return vmess;
         }
 
         public static JObject Vmess2Config(Model.Data.Vmess vmess)
         {
+            var cache = Service.Cache.Instance;
+
             if (vmess == null)
             {
                 return null;
@@ -912,7 +914,7 @@ namespace V2RayGCon.Lib
             var timeout = Str2Int(StrConst.SpeedTestTimeout);
 
             long elasped = long.MaxValue;
-            using (WebClient wc = new TimedWebClient
+            using (WebClient wc = new Lib.Net.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout * 1000,
@@ -954,7 +956,7 @@ namespace V2RayGCon.Lib
         {
             var html = string.Empty;
 
-            using (WebClient wc = new TimedWebClient
+            using (WebClient wc = new Lib.Net.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout,

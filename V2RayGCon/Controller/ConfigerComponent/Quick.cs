@@ -46,7 +46,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
                     "routing",
                 })
             {
-                var part = Lib.Utils.ExtractJObjectPart(mtproto, key);
+                if (!Lib.Utils.TryExtractJObjectPart(mtproto, key, out JObject part))
+                {
+                    continue;
+                }
+
                 if (Lib.Utils.Contains(container.config, part))
                 {
                     try
@@ -56,10 +60,10 @@ namespace V2RayGCon.Controller.ConfigerComponet
                     catch (KeyNotFoundException) { }
                 }
             }
-            var user0 = Lib.Utils.GetKey(mtproto, "inboundDetour.0.settings.users.0");
-            if (user0 != null && user0 is JObject)
+            var user = Lib.Utils.GetKey(mtproto, "inboundDetour.0.settings.users.0");
+            if (user != null && user is JObject)
             {
-                user0["secret"] = Lib.Utils.RandomHex(32);
+                user["secret"] = Lib.Utils.RandomHex(32);
             }
 
             Lib.Utils.CombineConfig(ref container.config, mtproto);

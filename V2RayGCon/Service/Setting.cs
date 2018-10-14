@@ -142,6 +142,10 @@ namespace V2RayGCon.Service
             try
             {
                 r = JsonConvert.DeserializeObject<Model.Data.ServerTracker>(Properties.Settings.Default.ServerTracker);
+                if (r.serverList == null)
+                {
+                    r.serverList = new List<string>();
+                }
             }
             catch
             {

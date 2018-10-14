@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -50,7 +49,7 @@ namespace V2RayGCon.Lib.Net
                 throw new ArgumentException("method");
 
             _listener.Prefixes.Add(prefix);
-            Debug.WriteLine("Prefix:" + prefix);
+            // Debug.WriteLine("Prefix:" + prefix);
             _responderMethod = method;
             _listener.Start();
         }
@@ -59,8 +58,7 @@ namespace V2RayGCon.Lib.Net
         {
             ThreadPool.QueueUserWorkItem((o) =>
             {
-                Debug.WriteLine("Webserver running...");
-
+                // Debug.WriteLine("Webserver running...");
                 try
                 {
                     while (_listener.IsListening)

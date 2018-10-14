@@ -117,18 +117,18 @@
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\FormOptionCtrl.cs" />
-    <Compile Include="Lib\ChildProcessTracker.cs" />
-    <Compile Include="Lib\DllLoader.cs" />
+    <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
+    <Compile Include="Lib\Sys\DllLoader.cs" />
     <Compile Include="Lib\Net\WebServer.cs" />
-    <Compile Include="Lib\ProxySetter.cs" />
+    <Compile Include="Lib\Sys\ProxySetter.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
-    <Compile Include="Lib\TimedWebClient.cs">
+    <Compile Include="Lib\Net\TimedWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
-    <Compile Include="Lib\CancelableTimeout.cs" />
+    <Compile Include="Lib\Sys\CancelableTimeout.cs" />
     <Compile Include="Model\BaseClass\IFormMainFlyPanelComponent.cs" />
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
     <Compile Include="Model\BaseClass\FormController.cs" />

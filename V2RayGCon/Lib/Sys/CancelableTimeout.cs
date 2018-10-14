@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace V2RayGCon.Lib
+namespace V2RayGCon.Lib.Sys
 {
     class CancelableTimeout
     {

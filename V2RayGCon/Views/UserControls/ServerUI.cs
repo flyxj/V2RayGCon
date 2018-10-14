@@ -57,7 +57,9 @@ namespace V2RayGCon.Views.UserControls
                 var box = rtboxServerTitle;
                 var title = box.Text.ToLower();
                 var keyword = keywords.FirstOrDefault(
-                    s => Lib.Utils.PartialMatch(title, s)).ToLower();
+                    s => !string.IsNullOrEmpty(s)
+                    && Lib.Utils.PartialMatch(title, s))?.ToLower();
+
                 if (keyword == null)
                 {
                     return;

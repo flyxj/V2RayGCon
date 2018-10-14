@@ -70,15 +70,15 @@ namespace V2RayGCon
                 MessageBox.Show(I18N.ExitOtherVGCFirst);
 
             }
-            Lib.DllLoader.FreeLibrary(pShcoreDll);
+            Lib.Sys.DllLoader.FreeLibrary(pShcoreDll);
         }
 
         #region private method
         private static IntPtr HiResSupport()
         {
             // load Shcore.dll and get high resolution support
-            IntPtr pDll = Lib.DllLoader.LoadLibrary(@"Shcore.DLL");
-            Lib.DllLoader.CallMethod(
+            IntPtr pDll = Lib.Sys.DllLoader.LoadLibrary(@"Shcore.DLL");
+            Lib.Sys.DllLoader.CallMethod(
                 pDll,
                 @"SetProcessDpiAwareness",
                 typeof(SetProcessDpiAwareness),
