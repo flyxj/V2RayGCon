@@ -217,15 +217,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 if (tsdbtnPager.Visible != showPager)
                 {
                     tsdbtnPager.Visible = showPager;
-                }
-
-                if (tslbNextPage.Visible != showPager)
-                {
                     tslbNextPage.Visible = showPager;
-                }
-
-                if (tslbPrePage.Visible != showPager)
-                {
                     tslbPrePage.Visible = showPager;
                 }
 
@@ -234,6 +226,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                     tslbTotal.Text = text;
                 }
             });
+
+            LoopThroughAllServerUI(sui => sui.SetKeywords(searchKeywords));
         }
 
         private void UpdateStatusBarPagerCheckStatus()

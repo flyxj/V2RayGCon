@@ -360,10 +360,13 @@
             // rtboxServerTitle
             // 
             this.rtboxServerTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtboxServerTitle.Cursor = System.Windows.Forms.Cursors.Default;
             this.rtboxServerTitle.DetectUrls = false;
+            this.rtboxServerTitle.ForeColor = System.Drawing.SystemColors.ControlText;
             resources.ApplyResources(this.rtboxServerTitle, "rtboxServerTitle");
             this.rtboxServerTitle.Name = "rtboxServerTitle";
             this.rtboxServerTitle.ReadOnly = true;
+            this.rtboxServerTitle.Click += new System.EventHandler(this.rtboxServerTitle_Click);
             // 
             // ServerUI
             // 

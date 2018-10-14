@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -14,6 +15,7 @@ namespace V2RayGCon.Views.UserControls
 
         int[] formHeight;
         Bitmap[] foldingButtonIcons;
+        string[] keywords = null;
 
         public ServerUI(Controller.CoreServerCtrl serverItem)
         {
@@ -43,6 +45,44 @@ namespace V2RayGCon.Views.UserControls
         }
 
         #region private method
+        private void HighLightTitleWithKeywords()
+        {
+            if (keywords == null)
+            {
+                return;
+            }
+
+            rtboxServerTitle?.Invoke((MethodInvoker)delegate
+            {
+                var box = rtboxServerTitle;
+                var title = box.Text.ToLower();
+                var keyword = keywords.FirstOrDefault(
+                    s => Lib.Utils.PartialMatch(title, s)).ToLower();
+                if (keyword == null)
+                {
+                    return;
+                }
+
+                var highlight = Color.DeepPink;
+
+                int idxTitle = 0, idxKeyword = 0;
+                while (idxTitle < title.Length && idxKeyword < keyword.Length)
+                {
+                    if (title[idxTitle] == keyword[idxKeyword])
+                    {
+                        box.SelectionStart = idxTitle;
+                        box.SelectionLength = 1;
+                        box.SelectionColor = highlight;
+                        idxKeyword++;
+                    }
+                    idxTitle++;
+                }
+                box.SelectionStart = 0;
+                box.SelectionLength = 0;
+                box.DeselectAll();
+            });
+        }
+
         private void SetSysProxyToPACMode(bool isWhiteList)
         {
             var index = cboxInbound.SelectedIndex;
@@ -247,9 +287,21 @@ namespace V2RayGCon.Views.UserControls
         #endregion
 
         #region public method
-        public void HighLightKeywords(string[] keywords)
+        public void SetKeywords(string keywords)
         {
+            this.keywords = (keywords ?? "").Split(
+               new char[] { ' ', ',' },
+               StringSplitOptions.RemoveEmptyEntries);
 
+            Task.Factory.StartNew(() =>
+            {
+                // control may be desposed, the sun may explode while this function is running
+                try
+                {
+                    HighLightTitleWithKeywords();
+                }
+                catch { }
+            });
         }
 
         public string GetConfig()
@@ -478,6 +530,11 @@ namespace V2RayGCon.Views.UserControls
             ServerListItem_MouseDown(this, e);
         }
 
+        private void rtboxServerTitle_Click(object sender, EventArgs e)
+        {
+            chkSelected.Checked = !chkSelected.Checked;
+        }
+
         private void pACBlackListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetSysProxyToPACMode(false);
@@ -513,5 +570,7 @@ namespace V2RayGCon.Views.UserControls
             MessageBox.Show(I18N.SetSysProxyDone);
         }
         #endregion
+
+
     }
 }
