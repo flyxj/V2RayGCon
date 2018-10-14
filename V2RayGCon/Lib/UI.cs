@@ -134,7 +134,7 @@ namespace V2RayGCon.Lib
 
         public static bool UpdateControlOnDemand(Control control, string value)
         {
-            if (!(control is TextBox) && !(control is Label))
+            if (!(control is TextBox) && !(control is Label) && !(control is RichTextBox))
             {
                 throw new ArgumentException("Unsupported control type");
             }

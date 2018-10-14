@@ -39,6 +39,7 @@ namespace V2RayGCon.Views.UserControls
             SetStatusThen(string.Empty);
             RefreshUI(this, EventArgs.Empty);
             this.serverItem.OnPropertyChanged += RefreshUI;
+            rtboxServerTitle.BackColor = this.BackColor;
         }
 
         #region private method
@@ -73,6 +74,7 @@ namespace V2RayGCon.Views.UserControls
                 return;
             }
 
+
             Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
             var p = new Model.Data.PacUrlParams
             {
@@ -100,13 +102,14 @@ namespace V2RayGCon.Views.UserControls
 
         void RefreshUI(object sender, EventArgs arg)
         {
-            lbServerTitle.Invoke((MethodInvoker)delegate
+
+            rtboxServerTitle.Invoke((MethodInvoker)delegate
             {
                 Lib.UI.UpdateControlOnDemand(
                     cboxInbound, serverItem.overwriteInboundType);
 
                 Lib.UI.UpdateControlOnDemand(
-                    lbServerTitle, serverItem.GetTitle());
+                    rtboxServerTitle, serverItem.GetTitle());
 
                 Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
@@ -150,10 +153,10 @@ namespace V2RayGCon.Views.UserControls
                 toolTip1.SetToolTip(lbStatus, status);
             }
 
-            var title = lbServerTitle.Text;
-            if (toolTip1.GetToolTip(lbServerTitle) != title)
+            var title = rtboxServerTitle.Text;
+            if (toolTip1.GetToolTip(rtboxServerTitle) != title)
             {
-                toolTip1.SetToolTip(lbServerTitle, title);
+                toolTip1.SetToolTip(rtboxServerTitle, title);
             }
         }
 
@@ -208,9 +211,9 @@ namespace V2RayGCon.Views.UserControls
 
         void HighlightSelectedServerItem(bool selected)
         {
-            var fontStyle = new Font(lbServerTitle.Font, selected ? FontStyle.Bold : FontStyle.Regular);
+            var fontStyle = new Font(rtboxServerTitle.Font, selected ? FontStyle.Bold : FontStyle.Regular);
             var colorRed = selected ? Color.OrangeRed : Color.Black;
-            lbServerTitle.Font = fontStyle;
+            rtboxServerTitle.Font = fontStyle;
             lbStatus.Font = fontStyle;
             lbStatus.ForeColor = colorRed;
         }
@@ -244,6 +247,11 @@ namespace V2RayGCon.Views.UserControls
         #endregion
 
         #region public method
+        public void HighLightKeywords(string[] keywords)
+        {
+
+        }
+
         public string GetConfig()
         {
             return serverItem.config;
