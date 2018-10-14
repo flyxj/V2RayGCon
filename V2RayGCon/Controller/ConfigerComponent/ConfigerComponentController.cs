@@ -6,12 +6,12 @@ namespace V2RayGCon.Controller.ConfigerComponet
         Model.BaseClass.NotifyComponent,
         Model.BaseClass.IFormComponentController
     {
-        protected Controller.Configer container;
+        protected Controller.FormConfigerCtrl container;
 
         // bind UI controls with component
         public void Bind(Model.BaseClass.FormController container)
         {
-            this.container = container as Controller.Configer;
+            this.container = container as Controller.FormConfigerCtrl;
         }
 
         // update component settings from config

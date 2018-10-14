@@ -2,9 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Test.Resource.Resx;
+
 using static V2RayGCon.Lib.Utils;
-using static V2RayGCon.Test.Resource.StringResource;
 
 
 namespace V2RayGCon.Test
@@ -12,6 +12,114 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow(
+            "port=4321&ip=8.7.6.5&proto=http&type=blacklist",
+            "false,false,8.7.6.5,4321,false")]
+        [DataRow(
+            "port=5678&ip=1233.2.3.4&proto=socks&type=whitelist",
+            null)]
+        [DataRow(
+            "port=-5678&ip=1.2.3.4&proto=socks&type=whitelist",
+            null)]
+        [DataRow(
+            "port=5678&ip=1.2.3.4&proto=socks&type=whitelist&debug=true",
+            "true,true,1.2.3.4,5678,true")]
+
+        // url = "type,proto,ip,port,debug"
+        public void GetProxyParamsFromUrlTest(string url, string expect)
+        {
+            var proxyParams = Lib.Utils.GetProxyParamsFromUrl(
+                url == null ? null : (
+                "http://localhost:3000/pac/?&"
+                + url
+                + "&key="
+                + Lib.Utils.RandomHex(8)));
+
+            if (expect == null)
+            {
+                if (proxyParams == null)
+                {
+                    return;
+                }
+                Assert.Fail();
+                return;
+            }
+
+            var expParts = expect.Split(',');
+
+            if (
+                proxyParams.isWhiteList.ToString().ToLower() != expParts[0]
+                || proxyParams.isSocks.ToString().ToLower() != expParts[1]
+                || proxyParams.ip != expParts[2]
+                || proxyParams.port.ToString() != expParts[3]
+                || proxyParams.isDebug.ToString().ToLower() != expParts[4])
+            {
+                Assert.Fail();
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("11,22 2,5 3,4 7,8 1,2 6,6", "1,8 11,22")]
+        [DataRow("11,22 2,5 3,4 7,8 1,2", "1,5 7,8 11,22")]
+        [DataRow("1,2 3,4 1,1 1,2", "1,4")]
+        public void CompactRangeArrayListTest(string org, string expect)
+        {
+            long[] rangeParser(string rangeArray)
+            {
+                var v = rangeArray.Split(',');
+                return new long[] {
+                    (long)Lib.Utils.Str2Int(v[0]),
+                    (long)Lib.Utils.Str2Int(v[1]),
+                };
+            }
+
+            List<long[]> listParser(string listString)
+            {
+                var r = new List<long[]>();
+                foreach (var item in listString.Split(' '))
+                {
+                    r.Add(rangeParser(item));
+                }
+                return r;
+            }
+
+            var o = listParser(org);
+            var e = listParser(expect);
+            var result = Lib.Utils.CompactCidrList(ref o);
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (result[i][0] != e[i][0] || result[i][1] != e[i][1])
+                {
+                    Assert.Fail();
+                }
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("172.316.254.1", 2906455553)] // becareful not a valid ip
+        [DataRow("0.254.255.0", 16711424)]
+        [DataRow("127.0.0.1", 2130706433)]
+        [DataRow("0.0.0.0", 0)]
+        public void IP2Int32Test(string address, long expect)
+        {
+            Assert.AreEqual(expect, Lib.Utils.IP2Long(address));
+        }
+
+        [DataTestMethod]
+        [DataRow("172.316.254.1", false)]
+        [DataRow("0.254.255.0", true)]
+        [DataRow("192.168.1.15_1", false)]
+        [DataRow("127.0.0.1", true)]
+        [DataRow("0.0.0.", false)]
+        [DataRow("0.0.0.0", true)]
+        public void IsIPTest(string address, bool expect)
+        {
+            Assert.AreEqual(expect, Lib.Utils.IsIP(address));
+        }
+
         [DataTestMethod]
         [DataRow("EvABk文,tv字vvc", "字文", false)]
         [DataRow("EvABk文,tv字vvc", "ab字", true)]
@@ -164,7 +272,7 @@ namespace V2RayGCon.Test
         public void GetLocalCoreVersion()
         {
 
-            var core = new Model.BaseClass.CoreServer();
+            var core = new Service.Core();
             var version = core.GetCoreVersion();
 
             if (core.IsExecutableExist())
@@ -202,19 +310,19 @@ namespace V2RayGCon.Test
             Assert.AreEqual(default(int), value);
         }
 
-        [DataTestMethod]
-        [DataRow("config_min")]
-        [DataRow("config_tpl")]
-        [DataRow("config_def")]
-        public void ConfigResource_Validate(string filename)
+        [TestMethod]
+        public void ConfigResource_Validate()
         {
-            try
+            foreach (var config in Lib.Utils.TestingGetResourceConfigJson())
             {
-                JObject.Parse(StrConst(filename));
-            }
-            catch
-            {
-                Assert.Fail();
+                try
+                {
+                    JObject.Parse(config);
+                }
+                catch
+                {
+                    Assert.Fail();
+                }
             }
         }
 
@@ -233,21 +341,6 @@ namespace V2RayGCon.Test
                 var len = Lib.Utils.Str2ListStr(item.Key).Count;
                 Assert.AreEqual(item.Value, len);
             }
-
-        }
-
-        [DataTestMethod]
-        [DataRow("this_resource_key_not_exist")]
-        public void resData_ThrowExceptionWhenKeyNotExist(string key)
-        {
-            Assert.ThrowsException<KeyNotFoundException>(() => StrConst(key));
-        }
-
-        [DataTestMethod]
-        [DataRow("Executable", "v2ray.exe")]
-        public void resData_Test(string key, string expect)
-        {
-            Assert.AreEqual<string>(expect, StrConst(key));
         }
 
         [TestMethod]
@@ -264,7 +357,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void ExtractLinks_FromLinksTxt()
         {
-            var content = testData("links");
+            var content = TestConst.links;
             var links = Lib.Utils.ExtractLinks(content, Model.Data.Enum.LinkTypes.vmess);
             Assert.AreEqual(2, links.Count);
         }

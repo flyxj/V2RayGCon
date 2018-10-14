@@ -8,26 +8,41 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
+        Setting()
+        {
+            switch (culture)
+            {
+                case Model.Data.Enum.Cultures.enUS:
+                    SetCulture("");
+                    break;
+                case Model.Data.Enum.Cultures.zhCN:
+                    SetCulture("zh-CN");
+                    break;
+            }
+        }
+
         public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
-        public event EventHandler OnSysProxyChanged;
 
         #region Properties
+        public bool isServerTrackerOn = false;
+
         public int serverPanelPageSize
         {
             get
             {
-                return Properties.Settings.Default.ServerPanelPageSize;
+                var size = Properties.Settings.Default.ServerPanelPageSize;
+                return Lib.Utils.Clamp(size, 1, 101);
             }
             set
             {
                 Properties.Settings.Default.ServerPanelPageSize =
-                    Lib.Utils.Clamp(value, 1, 100);
+                    Lib.Utils.Clamp(value, 1, 101);
                 Properties.Settings.Default.Save();
             }
         }
@@ -54,19 +69,6 @@ namespace V2RayGCon.Service
                     }
                 }
                 _logCache.Enqueue(value);
-            }
-        }
-
-        public string curSysProxyUrl
-        {
-            get
-            {
-                return Properties.Settings.Default.SysProxyUrl;
-            }
-            set
-            {
-                Properties.Settings.Default.SysProxyUrl = value.ToString();
-                Properties.Settings.Default.Save();
             }
         }
 
@@ -100,8 +102,6 @@ namespace V2RayGCon.Service
 
         }
 
-        public Tuple<bool, string> orgSysProxyInfo = null;
-
         public bool isShowConfigerToolsPanel
         {
             get
@@ -128,28 +128,89 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
-        public void SwitchCulture()
+        public void SaveServerTrackerSetting(Model.Data.ServerTracker serverTrackerSetting)
         {
-            switch (culture)
-            {
-                case Model.Data.Enum.Cultures.enUS:
-                    SetCulture("");
-                    break;
-                case Model.Data.Enum.Cultures.zhCN:
-                    SetCulture("zh-CN");
-                    break;
-            }
+            Properties.Settings.Default.ServerTracker =
+                JsonConvert.SerializeObject(serverTrackerSetting);
+            Properties.Settings.Default.Save();
         }
 
-        public List<Model.Data.ServerItem> LoadServerList()
+        public Model.Data.ServerTracker GetServerTrackerSetting()
         {
-            var empty = new List<Model.Data.ServerItem>();
+            var empty = new Model.Data.ServerTracker();
+            Model.Data.ServerTracker r = null;
+            try
+            {
+                r = JsonConvert.DeserializeObject<Model.Data.ServerTracker>(Properties.Settings.Default.ServerTracker);
+                if (r.serverList == null)
+                {
+                    r.serverList = new List<string>();
+                }
+            }
+            catch
+            {
+                return empty;
+            }
+            return r ?? empty;
+        }
 
-            List<Model.Data.ServerItem> list = null;
+        public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
+        {
+            Properties.Settings.Default.SysProxySetting =
+                JsonConvert.SerializeObject(proxy);
+            Properties.Settings.Default.Save();
+        }
+
+        public Model.Data.ProxyRegKeyValue GetSysProxySetting()
+        {
+            var empty = new Model.Data.ProxyRegKeyValue();
+            Model.Data.ProxyRegKeyValue proxy = null;
+            try
+            {
+                proxy = JsonConvert.DeserializeObject<Model.Data.ProxyRegKeyValue>(
+                    Properties.Settings.Default.SysProxySetting);
+            }
+            catch
+            {
+                return empty;
+            }
+            return proxy ?? empty;
+        }
+
+        public void SavePacServerSettings(Model.Data.PacServerSettings pacSetting)
+        {
+            Properties.Settings.Default.PacServerSettings =
+                JsonConvert.SerializeObject(pacSetting);
+            Properties.Settings.Default.Save();
+        }
+
+        public Model.Data.PacServerSettings GetPacServerSettings()
+        {
+            Model.Data.PacServerSettings result = null;
+
+            var empty = new Model.Data.PacServerSettings();
+            try
+            {
+                result = JsonConvert.DeserializeObject<Model.Data.PacServerSettings>(
+                    Properties.Settings.Default.PacServerSettings);
+            }
+            catch
+            {
+                return empty;
+            }
+
+            return result ?? empty;
+        }
+
+        public List<Controller.CoreServerCtrl> LoadServerList()
+        {
+            var empty = new List<Controller.CoreServerCtrl>();
+
+            List<Controller.CoreServerCtrl> list = null;
             try
             {
                 list = JsonConvert.DeserializeObject
-                    <List<Model.Data.ServerItem>>(
+                    <List<Controller.CoreServerCtrl>>(
                     Properties.Settings.Default.ServerList);
 
                 if (list == null)
@@ -179,47 +240,6 @@ namespace V2RayGCon.Service
             }
 
             return list;
-        }
-
-        public void SetSystemProxy(string link)
-        {
-            if (string.IsNullOrEmpty(link))
-            {
-                return;
-            }
-
-            Lib.ProxySetter.SetProxy(link);
-            curSysProxyUrl = link;
-            InvokeEventOnSysProxyChanged();
-        }
-
-        public void ClearSystemProxy()
-        {
-            curSysProxyUrl = string.Empty;
-            Lib.ProxySetter.ClearProxy();
-            InvokeEventOnSysProxyChanged();
-        }
-
-        public void LoadSystemProxy()
-        {
-            if (!string.IsNullOrEmpty(curSysProxyUrl))
-            {
-                Lib.ProxySetter.SetProxy(curSysProxyUrl);
-            }
-        }
-
-        public void SaveOriginalSystemProxyInfo()
-        {
-            orgSysProxyInfo = new Tuple<bool, string>(
-                Lib.ProxySetter.GetProxyState(),
-                Lib.ProxySetter.GetProxyUrl());
-        }
-
-        public void RestoreOriginalSystemProxyInfo()
-        {
-            Lib.ProxySetter.SetProxy(
-                orgSysProxyInfo.Item2,
-                orgSysProxyInfo.Item1);
         }
 
         public void SaveFormRect(Form form)
@@ -306,7 +326,7 @@ namespace V2RayGCon.Service
 
         public void UpdateNotifierText(string title = null)
         {
-            var text = string.IsNullOrEmpty(title) ? I18N("Description") : title;
+            var text = string.IsNullOrEmpty(title) ? I18N.Description : title;
             try
             {
                 OnUpdateNotifierText?.Invoke(this, new Model.Data.StrEvent(text));
@@ -320,7 +340,7 @@ namespace V2RayGCon.Service
             Properties.Settings.Default.Save();
         }
 
-        public void SaveServerList(List<Model.Data.ServerItem> serverList)
+        public void SaveServerList(List<Controller.CoreServerCtrl> serverList)
         {
             string json = JsonConvert.SerializeObject(serverList);
             Properties.Settings.Default.ServerList = json;
@@ -364,15 +384,6 @@ namespace V2RayGCon.Service
             }
 
             return winFormRectListCache;
-        }
-
-        void InvokeEventOnSysProxyChanged()
-        {
-            try
-            {
-                OnSysProxyChanged?.Invoke(this, EventArgs.Empty);
-            }
-            catch { }
         }
         #endregion
     }

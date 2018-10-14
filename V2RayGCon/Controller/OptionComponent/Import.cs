@@ -65,7 +65,7 @@ namespace V2RayGCon.Controller.OptionComponent
         List<Model.Data.ImportItem> CollectImportItems()
         {
             var itemList = new List<Model.Data.ImportItem>();
-            foreach (Model.UserControls.ImportListItem item in this.flyPanel.Controls)
+            foreach (Views.UserControls.ImportUI item in this.flyPanel.Controls)
             {
                 var v = item.GetValue();
                 if (!string.IsNullOrEmpty(v.alias)
@@ -90,7 +90,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
             foreach (var item in importUrlItemList)
             {
-                this.flyPanel.Controls.Add(new Model.UserControls.ImportListItem(item, UpdatePanelItemsIndex));
+                this.flyPanel.Controls.Add(new Views.UserControls.ImportUI(item, UpdatePanelItemsIndex));
             }
 
             UpdatePanelItemsIndex();
@@ -101,7 +101,7 @@ namespace V2RayGCon.Controller.OptionComponent
             this.btnAdd.Click += (s, a) =>
             {
                 this.flyPanel.Controls.Add(
-                    new Model.UserControls.ImportListItem(
+                    new Views.UserControls.ImportUI(
                         new Model.Data.ImportItem(),
                         UpdatePanelItemsIndex));
                 UpdatePanelItemsIndex();
@@ -114,8 +114,8 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var data = a.Data.GetData(typeof(Model.UserControls.ImportListItem))
-                    as Model.UserControls.ImportListItem;
+                var data = a.Data.GetData(typeof(Views.UserControls.ImportUI))
+                    as Views.UserControls.ImportUI;
 
                 var _destination = s as FlowLayoutPanel;
                 Point p = _destination.PointToClient(new Point(a.X, a.Y));
@@ -140,7 +140,7 @@ namespace V2RayGCon.Controller.OptionComponent
         void UpdatePanelItemsIndex()
         {
             var index = 1;
-            foreach (Model.UserControls.ImportListItem item in this.flyPanel.Controls)
+            foreach (Views.UserControls.ImportUI item in this.flyPanel.Controls)
             {
                 item.SetIndex(index++);
             }

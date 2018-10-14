@@ -26,9 +26,9 @@ namespace V2RayGCon.Controller.OptionComponent
         #endregion
 
         #region protected method
-        protected OptionCtrl GetContainer()
+        protected FormOptionCtrl GetContainer()
         {
-            return auxComponentController.GetContainer<OptionCtrl>();
+            return auxComponentController.GetContainer<FormOptionCtrl>();
         }
         #endregion
 

@@ -109,18 +109,6 @@ namespace V2RayGCon.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SysProxyUrl {
-            get {
-                return ((string)(this["SysProxyUrl"]));
-            }
-            set {
-                this["SysProxyUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("auto")]
         public string Culture {
             get {
@@ -133,13 +121,49 @@ namespace V2RayGCon.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("99")]
         public int ServerPanelPageSize {
             get {
                 return ((int)(this["ServerPanelPageSize"]));
             }
             set {
                 this["ServerPanelPageSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PacServerSettings {
+            get {
+                return ((string)(this["PacServerSettings"]));
+            }
+            set {
+                this["PacServerSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SysProxySetting {
+            get {
+                return ((string)(this["SysProxySetting"]));
+            }
+            set {
+                this["SysProxySetting"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ServerTracker {
+            get {
+                return ((string)(this["ServerTracker"]));
+            }
+            set {
+                this["ServerTracker"] = value;
             }
         }
     }

@@ -13,13 +13,184 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
     public class Utils
     {
-        public static Service.Cache cache = Service.Cache.Instance;
+        #region pac
+        public static bool IsProxyNotSet(Model.Data.ProxyRegKeyValue proxySetting)
+        {
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                return false;
+            }
+
+            if (proxySetting.proxyEnable)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        {
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            Uri uri = null;
+            uri = new Uri(url);
+
+            var arguments = uri.Query
+                .Substring(1) // Remove '?'
+                .Split('&')
+                .Select(q => q.Split('='))
+                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+
+            if (arguments == null)
+            {
+                return null;
+            }
+
+            // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
+
+            arguments.TryGetValue("mime", out string mime);
+            arguments.TryGetValue("debug", out string debug);
+            arguments.TryGetValue("ip", out string ip);
+            arguments.TryGetValue("port", out string portStr);
+            arguments.TryGetValue("type", out string type);
+            arguments.TryGetValue("proto", out string proto);
+
+            var port = Lib.Utils.Str2Int(portStr);
+
+            if (!IsIP(ip) || port < 0 || port > 65535)
+            {
+                return null;
+            }
+
+            var isSocks = proto == null ? false : proto.ToLower() == "socks";
+            var isWhiteList = type == null ? false : type.ToLower() == "whitelist";
+            var isDebug = debug == null ? false : debug.ToLower() == "true";
+
+            return new Model.Data.PacUrlParams
+            {
+                ip = ip,
+                port = port,
+                isSocks = isSocks,
+                isWhiteList = isWhiteList,
+                isDebug = isDebug,
+                mime = mime ?? "",
+            };
+        }
+
+        public static bool IsCidr(string address)
+        {
+            var parts = address.Split('/');
+
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+
+            if (!IsIP(parts[0]))
+            {
+                return false;
+            }
+            var mask = Str2Int(parts[1]);
+            return mask > 0 && mask < 32;
+        }
+
+        public static List<string> GetPacDomainList(bool isWhiteList)
+        {
+            return (isWhiteList ? StrConst.white : StrConst.black)
+                .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+        }
+
+        public static long[] Cidr2RangeArray(string cidrString)
+        {
+            var cidr = cidrString.Split('/');
+            var begin = IP2Long(cidr[0]);
+            var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
+            return new long[] { begin, end };
+        }
+
+        public static List<long[]> GetPacCidrList(bool isWhiteList)
+        {
+            var result = new List<long[]>();
+            foreach (var item in
+                (isWhiteList ? StrConst.white_cidr : StrConst.black_cidr)
+                .Split(new char[] { '\n', '\r' },
+                    StringSplitOptions.RemoveEmptyEntries))
+            {
+                result.Add(Cidr2RangeArray(item));
+            }
+            return result;
+        }
+
+        public static List<long[]> CompactCidrList(ref List<long[]> cidrList)
+        {
+            if (cidrList == null || cidrList.Count <= 0)
+            {
+                throw new System.ArgumentException("Range list is empty!");
+            }
+
+            cidrList.Sort((a, b) => a[0].CompareTo(b[0]));
+
+            var result = new List<long[]>();
+            var curRange = cidrList[0];
+            foreach (var range in cidrList)
+            {
+                if (range.Length != 2)
+                {
+                    throw new System.ArgumentException("Range must have 2 number.");
+                }
+
+                if (range[0] > range[1])
+                {
+                    throw new ArgumentException("range[0] > range[1]. ");
+                }
+
+                if (range[0] <= curRange[1] + 1)
+                {
+                    curRange[1] = Math.Max(range[1], curRange[1]);
+                }
+                else
+                {
+                    result.Add(curRange);
+                    curRange = range;
+                }
+            }
+            result.Add(curRange);
+            return result;
+        }
+
+        public static long IP2Long(string ip)
+        {
+            var c = ip.Split('.')
+                .Select(el => (long)Str2Int(el))
+                .ToList();
+
+            if (c.Count < 4)
+            {
+                throw new System.ArgumentException("Not a valid ip.");
+            }
+
+            return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3];
+        }
+
+        public static bool IsIP(string address)
+        {
+            return Regex.IsMatch(address, @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+        }
+
+        #endregion
 
         #region Json
         public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
@@ -45,7 +216,7 @@ namespace V2RayGCon.Lib
         public static string GetAliasFromConfig(JObject config)
         {
             var name = GetValue<string>(config, "v2raygcon.alias");
-            return string.IsNullOrEmpty(name) ? I18N("Empty") : CutStr(name, 12);
+            return string.IsNullOrEmpty(name) ? I18N.Empty : CutStr(name, 12);
         }
 
         public static string GetSummaryFromConfig(JObject config)
@@ -206,36 +377,42 @@ namespace V2RayGCon.Lib
             return true;
         }
 
-        public static JObject ExtractJObjectPart(JObject source, string path)
+        public static bool TryExtractJObjectPart(
+            JObject source,
+            string path,
+            out JObject result)
         {
             var parts = ParsePathIntoParentAndKey(path);
             var key = parts.Item2;
             var parentPath = parts.Item1;
+            result = null;
 
             if (string.IsNullOrEmpty(key))
             {
-                throw new KeyNotFoundException("key is empty");
+                // throw new KeyNotFoundException("Key is empty");
+                return false;
             }
 
             var node = GetKey(source, path);
             if (node == null)
             {
-                throw new KeyNotFoundException();
+                // throw new KeyNotFoundException("This JObject has no key: " + path);
+                return false;
             }
 
-            var result = CreateJObject(parentPath);
+            result = CreateJObject(parentPath);
 
             var parent = string.IsNullOrEmpty(parentPath) ?
                 result : GetKey(result, parentPath);
 
             if (parent == null || !(parent is JObject))
             {
-                throw new KeyNotFoundException("Create parent JObject fail!");
+                // throw new KeyNotFoundException("Create parent JObject fail!");
+                return false;
             }
 
             parent[key] = node.DeepClone();
-
-            return result;
+            return true;
         }
 
         public static void RemoveKeyFromJObject(JObject json, string path)
@@ -291,23 +468,17 @@ namespace V2RayGCon.Lib
                     "outboundDetour",
                     "routing.settings.rules"})
             {
-                JObject nodeBody = null;
-                JObject nodeMixin = null;
-                try
+                if (TryExtractJObjectPart(body, key, out JObject nodeBody))
                 {
-                    nodeBody = ExtractJObjectPart(body, key);
                     RemoveKeyFromJObject(body, key);
                 }
-                catch (KeyNotFoundException) { }
 
-                try
+                if (TryExtractJObjectPart(mixin, key, out JObject nodeMixin))
                 {
-                    nodeMixin = ExtractJObjectPart(mixin, key);
                     ConcatJson(ref backup, nodeMixin);
                     RemoveKeyFromJObject(mixin, key);
                     ConcatJson(ref body, nodeMixin);
                 }
-                catch (KeyNotFoundException) { }
 
                 if (nodeBody != null)
                 {
@@ -535,6 +706,8 @@ namespace V2RayGCon.Lib
 
         public static JObject SSLink2Config(string ssLink)
         {
+            var cache = Service.Cache.Instance;
+
             Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
             if (ss == null)
             {
@@ -600,12 +773,13 @@ namespace V2RayGCon.Lib
                     break;
             }
 
-
             return vmess;
         }
 
         public static JObject Vmess2Config(Model.Data.Vmess vmess)
         {
+            var cache = Service.Cache.Instance;
+
             if (vmess == null)
             {
                 return null;
@@ -735,54 +909,52 @@ namespace V2RayGCon.Lib
         #region net
         public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
-            var timeout = Str2Int(StrConst("SpeedTestTimeout"));
+            var timeout = Str2Int(StrConst.SpeedTestTimeout);
 
-            WebClient wc = new TimedWebClient
+            long elasped = long.MaxValue;
+            using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout * 1000,
-            };
-
-            long elasped = long.MaxValue;
-            try
+            })
             {
-                if (port > 0)
+                try
                 {
-                    wc.Proxy = new WebProxy("127.0.0.1", port);
+                    if (port > 0)
+                    {
+                        wc.Proxy = new WebProxy("127.0.0.1", port);
+                    }
+                    Stopwatch sw = new Stopwatch();
+                    sw.Reset();
+                    sw.Start();
+                    wc.DownloadString(url);
+                    sw.Stop();
+                    elasped = sw.ElapsedMilliseconds;
                 }
-                Stopwatch sw = new Stopwatch();
-                sw.Reset();
-                sw.Start();
-                wc.DownloadString(url);
-                sw.Stop();
-                elasped = sw.ElapsedMilliseconds;
+                catch { }
             }
-            catch { }
-            wc.Dispose();
 
             return elasped;
         }
 
+        static IPEndPoint _defaultLoopbackEndpoint = new IPEndPoint(IPAddress.Loopback, port: 0);
         public static int GetFreeTcpPort()
         {
             // https://stackoverflow.com/questions/138043/find-the-next-tcp-port-in-net
-            int port = -1;
-            try
+
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                TcpListener l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                port = ((IPEndPoint)l.LocalEndpoint).Port;
-                l.Stop();
+                socket.Bind(_defaultLoopbackEndpoint);
+                return ((IPEndPoint)socket.LocalEndPoint).Port;
             }
-            catch { }
-            return port;
+
         }
 
         public static string Fetch(string url, int timeout = -1)
         {
             var html = string.Empty;
 
-            using (WebClient wc = new TimedWebClient
+            using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout,
@@ -803,14 +975,14 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(StrConst("UrlLatestVGC"));
+            string html = Fetch(StrConst.UrlLatestVGC);
 
             if (string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
 
-            string p = StrConst("PatternLatestVGC");
+            string p = StrConst.PatternLatestVGC;
             var match = Regex.Match(html, p, RegexOptions.IgnoreCase);
             if (match.Success)
             {
@@ -824,19 +996,22 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(StrConst("ReleasePageUrl"));
+            string html = Fetch(StrConst.ReleasePageUrl);
 
             if (string.IsNullOrEmpty(html))
             {
                 return versions;
             }
 
-            string pattern = StrConst("PatternDownloadLink");
+            string pattern = StrConst.PatternDownloadLink;
             var matches = Regex.Matches(html, pattern, RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
                 var v = match.Groups[1].Value;
-                versions.Add(v);
+                if (!versions.Contains(v))
+                {
+                    versions.Add(v);
+                }
             }
 
             return versions;
@@ -971,9 +1146,9 @@ namespace V2RayGCon.Lib
         {
             return string.Format(
                "{0}{1}{2}",
-               StrConst("PatternNonAlphabet"), // vme[ss]
+               StrConst.PatternNonAlphabet, // vme[ss]
                GetLinkPrefix(linkType),
-               StrConst("PatternBase64"));
+               StrConst.PatternBase64);
         }
 
         public static string AddLinkPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
@@ -1005,8 +1180,8 @@ namespace V2RayGCon.Lib
         {
             MessageBox.Show(
                 Lib.Utils.CopyToClipboard(content) ?
-                I18N("CopySuccess") :
-                I18N("CopyFail"));
+                I18N.CopySuccess :
+                I18N.CopyFail);
         }
 
         public static bool CopyToClipboard(string content)
@@ -1038,7 +1213,7 @@ namespace V2RayGCon.Lib
             }
             catch (System.NotSupportedException)
             {
-                MessageBox.Show(I18N("SysNotSupportTLS12"));
+                MessageBox.Show(I18N.SysNotSupportTLS12);
             }
         }
 
@@ -1194,6 +1369,19 @@ namespace V2RayGCon.Lib
             {
                 // Process already exited.
             }
+        }
+        #endregion
+
+        #region for Testing
+        public static string[] TestingGetResourceConfigJson()
+        {
+            return new string[]
+            {
+                StrConst.config_example,
+                StrConst.config_min,
+                StrConst.config_tpl,
+                StrConst.config_pkg,
+            };
         }
         #endregion
     }

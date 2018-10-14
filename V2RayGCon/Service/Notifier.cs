@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
@@ -15,73 +14,32 @@ namespace V2RayGCon.Service
         Notifier()
         {
             setting = Setting.Instance;
-            setting.SwitchCulture();
+            servers = Servers.Instance;
 
             CreateNotifyIcon();
-            Lib.Utils.SupportProtocolTLS12();
-            setting.SaveOriginalSystemProxyInfo();
-            setting.LoadSystemProxy();
             setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
-
-            servers = Servers.Instance;
-            servers.Prepare(setting);
-
-            Application.ApplicationExit += (s, a) => Cleanup();
-            Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
 
             ni.MouseClick += (s, a) =>
             {
                 if (a.Button == MouseButtons.Left)
                 {
-                    Views.FormMain.GetForm();
+                    Views.WinForms.FormMain.GetForm();
                 }
             };
-
-#if DEBUG
-            This_function_do_some_tedious_stuff();
-#else
-            if (servers.IsEmpty())
-            {
-                Views.FormMain.GetForm();
-            }
-            else
-            {
-                servers.WakeupAutorunServersThen();
-            }
-#endif
         }
-
-
-
-        #region DEBUG code TL;DR
-#if DEBUG
-        void This_function_do_some_tedious_stuff()
-        {
-
-            // Some test code
-            ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
-            ni.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(
-                "Debug", null, (_s, _a) =>
-             {
-                 servers.DbgFastRestartTest(100);
-             }));
-
-            // new Views.FormConfiger(@"{}");
-            // new Views.FormConfigTester();
-            // Views.FormOption.GetForm();
-            Views.FormMain.GetForm();
-            Views.FormLog.GetForm();
-            // setting.WakeupAutorunServer();
-            // Views.FormSimAddVmessClient.GetForm();
-            // Views.FormDownloadCore.GetForm();
-        }
-#endif
-        #endregion
 
         #region public method
-        public string GetLogCache()
+#if DEBUG
+        public void InjectDebugMenuItem(ToolStripMenuItem menu)
         {
-            return setting.logCache;
+            ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
+            ni.ContextMenuStrip.Items.Insert(0, menu);
+        }
+#endif
+
+        public void Cleanup()
+        {
+            ni.Visible = false;
         }
         #endregion
 
@@ -90,6 +48,11 @@ namespace V2RayGCon.Service
         {
             // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
             var text = Lib.Utils.CutStr(args.Data, 127);
+            if (ni.Text == text)
+            {
+                return;
+            }
+
             Type t = typeof(NotifyIcon);
             BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
             t.GetField("text", hidden).SetValue(ni, text);
@@ -100,7 +63,7 @@ namespace V2RayGCon.Service
         void CreateNotifyIcon()
         {
             ni = new NotifyIcon();
-            ni.Text = I18N("Description");
+            ni.Text = I18N.Description;
 #if DEBUG
             ni.Icon = Properties.Resources.icon_light;
 #else
@@ -126,34 +89,34 @@ namespace V2RayGCon.Service
 
             menu.Items.AddRange(new ToolStripMenuItem[] {
                 new ToolStripMenuItem(
-                    I18N("MainWin"),
+                    I18N.MainWin,
                     Properties.Resources.WindowsForm_16x,
-                    (s,a)=>Views.FormMain.GetForm()),
+                    (s,a)=>Views.WinForms.FormMain.GetForm()),
 
                 new ToolStripMenuItem(
-                    I18N("OtherWin"),
+                    I18N.OtherWin,
                     Properties.Resources.CPPWin32Project_16x,
                     new ToolStripMenuItem[]{
                         new ToolStripMenuItem(
-                            I18N("ConfigEditor"),
+                            I18N.ConfigEditor,
                             Properties.Resources.EditWindow_16x,
-                            (s,a)=>new Views.FormConfiger() ),
+                            (s,a)=>new Views.WinForms.FormConfiger() ),
                         new ToolStripMenuItem(
-                            I18N("GenQRCode"),
+                            I18N.GenQRCode,
                             Properties.Resources.AzureVirtualMachineExtension_16x,
-                            (s,a)=>Views.FormQRCode.GetForm()),
+                            (s,a)=>Views.WinForms.FormQRCode.GetForm()),
                         new ToolStripMenuItem(
-                            I18N("Log"),
+                            I18N.Log,
                             Properties.Resources.FSInteractiveWindow_16x,
-                            (s,a)=>Views.FormLog.GetForm() ),
+                            (s,a)=>Views.WinForms.FormLog.GetForm() ),
                         new ToolStripMenuItem(
-                            I18N("Options"),
+                            I18N.Options,
                             Properties.Resources.Settings_16x,
-                            (s,a)=>Views.FormOption.GetForm() ),
+                            (s,a)=>Views.WinForms.FormOption.GetForm() ),
                     }),
 
                 new ToolStripMenuItem(
-                    I18N("ScanQRCode"),
+                    I18N.ScanQRCode,
                     Properties.Resources.ExpandScope_16x,
                     (s,a)=>{
                         void Success(string link)
@@ -165,14 +128,14 @@ namespace V2RayGCon.Service
 
                         void Fail()
                         {
-                            MessageBox.Show(I18N("NoQRCode"));
+                            MessageBox.Show(I18N.NoQRCode);
                         }
 
                         Lib.QRCode.QRCode.ScanQRCode(Success,Fail);
                     }),
 
                 new ToolStripMenuItem(
-                    I18N("ImportLink"),
+                    I18N.ImportLink,
                     Properties.Resources.CopyLongTextToClipboard_16x,
                     (s,a)=>{
                         string links = Lib.Utils.GetClipboardText();
@@ -180,43 +143,30 @@ namespace V2RayGCon.Service
                     }),
 
                 new ToolStripMenuItem(
-                    I18N("DownloadV2rayCore"),
+                    I18N.DownloadV2rayCore,
                     Properties.Resources.ASX_TransferDownload_blue_16x,
-                    (s,a)=>Views.FormDownloadCore.GetForm()),
+                    (s,a)=>Views.WinForms.FormDownloadCore.GetForm()),
             });
 
             menu.Items.Add(new ToolStripSeparator());
 
             menu.Items.AddRange(new ToolStripMenuItem[] {
                 new ToolStripMenuItem(
-                    I18N("Help"),
+                    I18N.Help,
                     Properties.Resources.StatusHelp_16x,
-                    (s,a)=>Lib.UI.VisitUrl(I18N("VistWikiPage"),Properties.Resources.WikiLink)),
+                    (s,a)=>Lib.UI.VisitUrl(I18N.VistWikiPage,Properties.Resources.WikiLink)),
 
                 new ToolStripMenuItem(
-                    I18N("Exit"),
+                    I18N.Exit,
                     Properties.Resources.CloseSolution_16x,
                     (s,a)=>{
-                        if (Lib.UI.Confirm(I18N("ConfirmExitApp"))){
+                        if (Lib.UI.Confirm(I18N.ConfirmExitApp)){
                             Application.Exit();
                         }
                     })
             });
 
             return menu;
-        }
-
-        void Cleanup()
-        {
-            ni.Visible = false;
-
-            servers.SaveServerListImmediately();
-            servers.DisposeLazyTimers();
-            setting.RestoreOriginalSystemProxyInfo();
-
-            AutoResetEvent sayGoodbye = new AutoResetEvent(false);
-            servers.StopAllServersThen(() => sayGoodbye.Set());
-            sayGoodbye.WaitOne();
         }
         #endregion
     }

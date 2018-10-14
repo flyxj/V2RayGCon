@@ -134,7 +134,8 @@
     <value>https://github.com/nobody3u/V2RayGCon</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>1.0.33</value>
+    <value>1.0.34.3</value>
+    <comment>refact code</comment>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>V2RayGCon</value>
@@ -177,5 +178,14 @@
   </data>
   <data name="ExpandScope_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resource\Icon\TaskTray\ExpandScope_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GlyphUp_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resource\Icon\ServerUI\GlyphUp_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StepBackArrow_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resource\Icon\ServerUI\StepBackArrow_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StepOverArrow_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resource\Icon\ServerUI\StepOverArrow_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

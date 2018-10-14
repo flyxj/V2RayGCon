@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
@@ -61,20 +61,23 @@ namespace V2RayGCon.Lib
             }
         }
 
-        public static void AutoScaleToolSripControls(Form form)
+        // if baseLine is set, use baseLine instead of orginal image scaling size
+        public static void AutoScaleToolSripControls(Form form, int baseLine = -1)
         {
             // https://www.medo64.com/2014/01/scaling-toolstrip-with-dpi/
             var factor = GetFormScalingFactor(form);
-            if (factor <= 1)
+            if (factor < 1)
             {
-                return;
+                factor = 1;
             }
+
             var menuList = GetAllControls<ToolStrip>(form);
             foreach (var menu in menuList)
             {
                 menu.ImageScalingSize = new Size(
-                        (int)(menu.ImageScalingSize.Width * factor),
-                        (int)(menu.ImageScalingSize.Height * factor));
+                        (int)((baseLine < 0 ? menu.ImageScalingSize.Width : baseLine) * factor),
+                        (int)((baseLine < 0 ? menu.ImageScalingSize.Height : baseLine) * factor));
+
                 foreach (var cbox in GetAllControls<ComboBox>(menu))
                 {
                     cbox.Width = (int)(cbox.Width * factor);
@@ -84,7 +87,7 @@ namespace V2RayGCon.Lib
 
         public static void ShowMessageBoxDoneAsync()
         {
-            Task.Factory.StartNew(() => MessageBox.Show(I18N("Done")));
+            Task.Factory.StartNew(() => MessageBox.Show(I18N.Done));
         }
 
         public static bool UpdateControlOnDemand(Control control, int value)
@@ -131,7 +134,7 @@ namespace V2RayGCon.Lib
 
         public static bool UpdateControlOnDemand(Control control, string value)
         {
-            if (!(control is TextBox) && !(control is Label))
+            if (!(control is TextBox) && !(control is Label) && !(control is RichTextBox))
             {
                 throw new ArgumentException("Unsupported control type");
             }
@@ -299,7 +302,7 @@ namespace V2RayGCon.Lib
                 InitialDirectory = "c:\\",
                 Filter = extension,
                 RestoreDirectory = true,
-                Title = I18N("SaveAs"),
+                Title = I18N.SaveAs,
                 ShowHelp = true,
             };
 
@@ -318,6 +321,28 @@ namespace V2RayGCon.Lib
             }
             catch { }
             return Model.Data.Enum.SaveFileErrorCode.Fail;
+        }
+
+        public static string ShowSelectFileDialog(string extension)
+        {
+            OpenFileDialog readFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Filter = extension,
+                RestoreDirectory = true,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                ShowHelp = true,
+            };
+
+            var fileName = string.Empty;
+
+            if (readFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return null;
+            }
+
+            return readFileDialog.FileName;
         }
 
         /* return:
@@ -358,7 +383,7 @@ namespace V2RayGCon.Lib
         {
             var confirm = MessageBox.Show(
                 content,
-                I18N("Confirm"),
+                I18N.Confirm,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
@@ -35,7 +35,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #region public method
         public void ImportServersFromTextFile()
         {
-            string v2rayLinks = Lib.UI.ShowReadFileDialog(StrConst("ExtText"), out string filename);
+            string v2rayLinks = Lib.UI.ShowReadFileDialog(StrConst.ExtText, out string filename);
 
             if (v2rayLinks == null)
             {
@@ -49,7 +49,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             if (this.servers.IsEmpty())
             {
-                MessageBox.Show(I18N("ServerListIsEmpty"));
+                MessageBox.Show(I18N.ServerListIsEmpty);
                 return;
             }
 
@@ -62,15 +62,15 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
 
             switch (Lib.UI.ShowSaveFileDialog(
-                StrConst("ExtText"),
+                StrConst.ExtText,
                 s,
                 out string filename))
             {
                 case Model.Data.Enum.SaveFileErrorCode.Success:
-                    MessageBox.Show(I18N("Done"));
+                    MessageBox.Show(I18N.Done);
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Fail:
-                    MessageBox.Show(I18N("WriteFileFail"));
+                    MessageBox.Show(I18N.WriteFileFail);
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Cancel:
                     // do nothing
@@ -93,24 +93,24 @@ namespace V2RayGCon.Controller.FormMainComponent
         private void InitMenuAbout(ToolStripMenuItem checkUpdate, ToolStripMenuItem about, ToolStripMenuItem help, ToolStripMenuItem downloadV2rayCore, ToolStripMenuItem removeV2rayCore)
         {
             // menu about
-            downloadV2rayCore.Click += (s, a) => Views.FormDownloadCore.GetForm();
+            downloadV2rayCore.Click += (s, a) => Views.WinForms.FormDownloadCore.GetForm();
 
             removeV2rayCore.Click += (s, a) => RemoveV2RayCore();
 
             checkUpdate.Click += (s, a) => CheckVGCUpdate();
 
             about.Click += (s, a) =>
-                Lib.UI.VisitUrl(I18N("VistPorjectPage"), Properties.Resources.ProjectLink);
+                Lib.UI.VisitUrl(I18N.VistPorjectPage, Properties.Resources.ProjectLink);
 
             help.Click += (s, a) =>
-                Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
+                Lib.UI.VisitUrl(I18N.VistWikiPage, Properties.Resources.WikiLink);
         }
 
         private void InitMenuFile(ToolStripMenuItem simVmessServer, ToolStripMenuItem importLinkFromClipboard, ToolStripMenuItem exportAllServer, ToolStripMenuItem importFromFile)
         {
             // menu file
             simVmessServer.Click +=
-                (s, a) => Views.FormSimAddVmessClient.GetForm();
+                (s, a) => Views.WinForms.FormSimAddVmessClient.GetForm();
 
             importLinkFromClipboard.Click += (s, a) =>
             {
@@ -126,25 +126,25 @@ namespace V2RayGCon.Controller.FormMainComponent
         private static void InitMenuWindows(ToolStripMenuItem miFormConfigEditor, ToolStripMenuItem miFormQRCode, ToolStripMenuItem miFormLog, ToolStripMenuItem miFormOptions)
         {
             // menu window
-            miFormConfigEditor.Click += (s, a) => new Views.FormConfiger();
+            miFormConfigEditor.Click += (s, a) => new Views.WinForms.FormConfiger();
 
-            miFormQRCode.Click += (s, a) => Views.FormQRCode.GetForm();
+            miFormQRCode.Click += (s, a) => Views.WinForms.FormQRCode.GetForm();
 
-            miFormLog.Click += (s, a) => Views.FormLog.GetForm();
+            miFormLog.Click += (s, a) => Views.WinForms.FormLog.GetForm();
 
-            miFormOptions.Click += (s, a) => Views.FormOption.GetForm();
+            miFormOptions.Click += (s, a) => Views.WinForms.FormOption.GetForm();
         }
 
         private void RemoveV2RayCore()
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmRemoveV2RayCore")))
+            if (!Lib.UI.Confirm(I18N.ConfirmRemoveV2RayCore))
             {
                 return;
             }
 
             if (!Directory.Exists(Lib.Utils.GetAppDataFolder()))
             {
-                MessageBox.Show(I18N("Done"));
+                MessageBox.Show(I18N.Done);
                 return;
             }
 
@@ -156,10 +156,10 @@ namespace V2RayGCon.Controller.FormMainComponent
                 }
                 catch (System.IO.IOException)
                 {
-                    MessageBox.Show(I18N("FileInUse"));
+                    MessageBox.Show(I18N.FileInUse);
                     return;
                 }
-                MessageBox.Show(I18N("Done"));
+                MessageBox.Show(I18N.Done);
             });
         }
 
@@ -168,7 +168,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             var version = Lib.Utils.GetLatestVGCVersion();
             if (string.IsNullOrEmpty(version))
             {
-                MessageBox.Show(I18N("GetVGCVerFail"));
+                MessageBox.Show(I18N.GetVGCVerFail);
                 return;
             }
 
@@ -178,15 +178,15 @@ namespace V2RayGCon.Controller.FormMainComponent
             var result = verCur.CompareTo(verNew);
             if (result >= 0)
             {
-                MessageBox.Show(I18N("NoNewVGC"));
+                MessageBox.Show(I18N.NoNewVGC);
                 return;
             }
 
-            var confirmTpl = I18N("ConfirmDownloadNewVGC");
+            var confirmTpl = I18N.ConfirmDownloadNewVGC;
             var msg = string.Format(confirmTpl, version);
             if (Lib.UI.Confirm(msg))
             {
-                var tpl = StrConst("TplUrlVGCRelease");
+                var tpl = StrConst.TplUrlVGCRelease;
                 var url = string.Format(tpl, version);
                 System.Diagnostics.Process.Start(url);
             }

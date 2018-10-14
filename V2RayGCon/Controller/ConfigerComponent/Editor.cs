@@ -3,7 +3,7 @@ using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.ConfigerComponet
 {
@@ -130,7 +130,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             if (!CheckValid())
             {
-                if (Lib.UI.Confirm(I18N("EditorDiscardChange")))
+                if (Lib.UI.Confirm(I18N.EditorDiscardChange))
                 {
                     DiscardChanges();
                 }
@@ -191,7 +191,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             cboxExamples.Items.Clear();
 
-            cboxExamples.Items.Add(I18N("AvailableExamples"));
+            cboxExamples.Items.Add(I18N.AvailableExamples);
             var descriptions = GetExamplesDescription();
             if (descriptions.Count < 1)
             {
@@ -265,7 +265,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             catch
             {
-                MessageBox.Show(I18N("EditorNoExample"));
+                MessageBox.Show(I18N.EditorNoExample);
             }
         }
 
@@ -286,7 +286,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             else
             {
-                if (Lib.UI.Confirm(I18N("CannotParseJson")))
+                if (Lib.UI.Confirm(I18N.CannotParseJson))
                 {
                     preSection = curSection;
                     ShowSection();
@@ -328,7 +328,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             catch
             {
-                MessageBox.Show(I18N("PleaseCheckConfig"));
+                MessageBox.Show(I18N.PleaseCheckConfig);
             }
         }
 
