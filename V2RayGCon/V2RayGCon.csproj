@@ -119,11 +119,11 @@
     <Compile Include="Controller\FormOptionCtrl.cs" />
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
-    <Compile Include="Lib\Net\WebServer.cs" />
+    <Compile Include="Lib\Nets\WebServer.cs" />
     <Compile Include="Lib\Sys\ProxySetter.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
-    <Compile Include="Lib\Net\TimedWebClient.cs">
+    <Compile Include="Lib\Nets\TimedWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Lib\UI.cs" />

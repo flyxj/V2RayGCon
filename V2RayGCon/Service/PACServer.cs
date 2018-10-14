@@ -15,7 +15,7 @@ namespace V2RayGCon.Service
         public event EventHandler OnPACServerStatusChanged;
 
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
-        Lib.Net.SimpleWebServer webServer = null;
+        Lib.Nets.SimpleWebServer webServer = null;
         object webServerLock = new object();
         Setting setting;
         Dictionary<bool, string[]> defaultPacCache = null;
@@ -36,7 +36,7 @@ namespace V2RayGCon.Service
             }
 
             // becareful issue #9 #3
-            if (!Lib.Utils.IsProxySettingEmpty(proxySetting))
+            if (!Lib.Utils.IsProxyNotSet(proxySetting))
             {
                 Lib.Sys.ProxySetter.SetProxy(proxySetting);
             }
@@ -169,7 +169,7 @@ namespace V2RayGCon.Service
 
                 try
                 {
-                    webServer = new Lib.Net.SimpleWebServer(WebRequestDispatcher, prefix);
+                    webServer = new Lib.Nets.SimpleWebServer(WebRequestDispatcher, prefix);
                     webServer.Run();
                     isWebServRunning = true;
                 }

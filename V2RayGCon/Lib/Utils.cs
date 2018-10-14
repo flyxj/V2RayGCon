@@ -19,10 +19,8 @@ namespace V2RayGCon.Lib
 {
     public class Utils
     {
-
-
         #region pac
-        public static bool IsProxySettingEmpty(Model.Data.ProxyRegKeyValue proxySetting)
+        public static bool IsProxyNotSet(Model.Data.ProxyRegKeyValue proxySetting)
         {
             if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
             {
@@ -914,7 +912,7 @@ namespace V2RayGCon.Lib
             var timeout = Str2Int(StrConst.SpeedTestTimeout);
 
             long elasped = long.MaxValue;
-            using (WebClient wc = new Lib.Net.TimedWebClient
+            using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout * 1000,
@@ -956,7 +954,7 @@ namespace V2RayGCon.Lib
         {
             var html = string.Empty;
 
-            using (WebClient wc = new Lib.Net.TimedWebClient
+            using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout,

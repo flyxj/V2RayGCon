@@ -3,7 +3,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 
-namespace V2RayGCon.Lib.Net
+namespace V2RayGCon.Lib.Nets
 {
     // https://codehosting.net/blog/BlogEngine/post/Simple-C-Web-Server
 
@@ -28,6 +28,7 @@ namespace V2RayGCon.Lib.Net
 
     public class SimpleWebServer
     {
+
         private readonly HttpListener _listener = new HttpListener();
 
         // tuple<string content, string mimeType>

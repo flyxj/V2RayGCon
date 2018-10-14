@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace V2RayGCon.Lib.Net
+namespace V2RayGCon.Lib.Nets
 {
     // use string s = new TimedWebClient { Timeout = 500 }.DownloadString(URL);
 
