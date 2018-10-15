@@ -55,6 +55,9 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rtboxPacServBlackList = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnPacBrowseFile = new System.Windows.Forms.Button();
+            this.tboxPacFilePath = new System.Windows.Forms.TextBox();
+            this.chkPacCustomFile = new System.Windows.Forms.CheckBox();
             this.chkPacServIsAutorun = new System.Windows.Forms.CheckBox();
             this.tboxPacServPort = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -278,12 +281,35 @@
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.btnPacBrowseFile);
+            this.groupBox2.Controls.Add(this.tboxPacFilePath);
+            this.groupBox2.Controls.Add(this.chkPacCustomFile);
             this.groupBox2.Controls.Add(this.chkPacServIsAutorun);
             this.groupBox2.Controls.Add(this.tboxPacServPort);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
+            // 
+            // btnPacBrowseFile
+            // 
+            resources.ApplyResources(this.btnPacBrowseFile, "btnPacBrowseFile");
+            this.btnPacBrowseFile.Name = "btnPacBrowseFile";
+            this.toolTip1.SetToolTip(this.btnPacBrowseFile, resources.GetString("btnPacBrowseFile.ToolTip"));
+            this.btnPacBrowseFile.UseVisualStyleBackColor = true;
+            // 
+            // tboxPacFilePath
+            // 
+            resources.ApplyResources(this.tboxPacFilePath, "tboxPacFilePath");
+            this.tboxPacFilePath.Name = "tboxPacFilePath";
+            this.toolTip1.SetToolTip(this.tboxPacFilePath, resources.GetString("tboxPacFilePath.ToolTip"));
+            // 
+            // chkPacCustomFile
+            // 
+            resources.ApplyResources(this.chkPacCustomFile, "chkPacCustomFile");
+            this.chkPacCustomFile.Name = "chkPacCustomFile";
+            this.toolTip1.SetToolTip(this.chkPacCustomFile, resources.GetString("chkPacCustomFile.ToolTip"));
+            this.chkPacCustomFile.UseVisualStyleBackColor = true;
             // 
             // chkPacServIsAutorun
             // 
@@ -402,5 +428,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox chkSetServAutotrack;
+        private System.Windows.Forms.Button btnPacBrowseFile;
+        private System.Windows.Forms.TextBox tboxPacFilePath;
+        private System.Windows.Forms.CheckBox chkPacCustomFile;
     }
 }

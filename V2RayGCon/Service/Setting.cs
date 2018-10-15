@@ -6,15 +6,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
-        public event EventHandler<Model.Data.StrEvent> OnLog, OnUpdateNotifierText;
+        public event EventHandler<Model.Data.StrEvent> OnLog;
+
+        Lib.Sys.CancelableTimeout lazyGCTimer = null;
+
+        // Singleton need this private ctor.
+        Setting() { }
 
         #region Properties
         public bool isServerTrackerOn = false;
@@ -115,6 +119,24 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void Cleanup()
+        {
+            lazyGCTimer?.Release();
+        }
+
+        public void LazyGC()
+        {
+            // Create on demand.
+            if (lazyGCTimer == null)
+            {
+                lazyGCTimer = new Lib.Sys.CancelableTimeout(
+                    () => GC.Collect(),
+                    1000 * Lib.Utils.Str2Int(StrConst.LazyGCDelay));
+            }
+
+            lazyGCTimer.Start();
+        }
+
         public void SaveServerTrackerSetting(Model.Data.ServerTracker serverTrackerSetting)
         {
             Properties.Settings.Default.ServerTracker =
@@ -129,25 +151,16 @@ namespace V2RayGCon.Service
             try
             {
                 r = JsonConvert.DeserializeObject<Model.Data.ServerTracker>(Properties.Settings.Default.ServerTracker);
+                if (r.serverList == null)
+                {
+                    r.serverList = new List<string>();
+                }
             }
             catch
             {
                 return empty;
             }
             return r ?? empty;
-        }
-
-        public void SwitchCulture()
-        {
-            switch (culture)
-            {
-                case Model.Data.Enum.Cultures.enUS:
-                    SetCulture("");
-                    break;
-                case Model.Data.Enum.Cultures.zhCN:
-                    SetCulture("zh-CN");
-                    break;
-            }
         }
 
         public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
@@ -198,15 +211,15 @@ namespace V2RayGCon.Service
             return result ?? empty;
         }
 
-        public List<Controller.ServerCtrl> LoadServerList()
+        public List<Controller.CoreServerCtrl> LoadServerList()
         {
-            var empty = new List<Controller.ServerCtrl>();
+            var empty = new List<Controller.CoreServerCtrl>();
 
-            List<Controller.ServerCtrl> list = null;
+            List<Controller.CoreServerCtrl> list = null;
             try
             {
                 list = JsonConvert.DeserializeObject
-                    <List<Controller.ServerCtrl>>(
+                    <List<Controller.CoreServerCtrl>>(
                     Properties.Settings.Default.ServerList);
 
                 if (list == null)
@@ -320,23 +333,13 @@ namespace V2RayGCon.Service
             return new List<Model.Data.SubscriptionItem>();
         }
 
-        public void UpdateNotifierText(string title = null)
-        {
-            var text = string.IsNullOrEmpty(title) ? I18N("Description") : title;
-            try
-            {
-                OnUpdateNotifierText?.Invoke(this, new Model.Data.StrEvent(text));
-            }
-            catch { }
-        }
-
         public void SaveSubscriptionItems(string options)
         {
             Properties.Settings.Default.SubscribeUrls = options;
             Properties.Settings.Default.Save();
         }
 
-        public void SaveServerList(List<Controller.ServerCtrl> serverList)
+        public void SaveServerList(List<Controller.CoreServerCtrl> serverList)
         {
             string json = JsonConvert.SerializeObject(serverList);
             Properties.Settings.Default.ServerList = json;
@@ -345,18 +348,7 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        private static void SetCulture(string cultureString)
-        {
-            var ci = new CultureInfo(cultureString);
 
-            Thread.CurrentThread.CurrentCulture.GetType()
-                .GetProperty("DefaultThreadCurrentCulture")
-                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
-
-            Thread.CurrentThread.CurrentCulture.GetType()
-                .GetProperty("DefaultThreadCurrentUICulture")
-                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
-        }
 
         Dictionary<string, Rectangle> winFormRectListCache = null;
         Dictionary<string, Rectangle> GetWinFormRectList()

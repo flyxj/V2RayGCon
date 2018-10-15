@@ -65,24 +65,24 @@ namespace V2RayGCon.Test
         [DataTestMethod]
         [DataRow(@"{'a':1}", "b")]
         [DataRow(@"{}", "")]
-        public void ExtractJObjectPartFailTest(string json, string path)
+        public void TryExtractJObjectPartFailTest(string json, string path)
         {
-            Assert.ThrowsException<KeyNotFoundException>(() =>
-            {
-                Lib.Utils.ExtractJObjectPart(JObject.Parse(json), path);
-            });
+            var stat = Lib.Utils.TryExtractJObjectPart(JObject.Parse(json), path, out JObject part);
+            Assert.AreEqual(false, stat);
+            Assert.AreEqual(null, part);
         }
 
         [DataTestMethod]
         [DataRow(@"{'a':{'b':{'c':[]}},'b':1}", "a", @"{'a':{'b':{'c':[]}}}")]
         [DataRow(@"{'a':1,'b':1}", "a", @"{'a':1}")]
         [DataRow(@"{'a':1}", "a", @"{'a':1}")]
-        public void ExtractJObjectPartNormalTest(string json, string path, string expect)
+        public void TryExtractJObjectPartNormalTest(string json, string path, string expect)
         {
             var source = JObject.Parse(json);
-            var part = Lib.Utils.ExtractJObjectPart(source, path);
+            var stat = Lib.Utils.TryExtractJObjectPart(source, path, out JObject part);
             var e = JObject.Parse(expect);
 
+            Assert.AreEqual(true, stat);
             Assert.AreEqual<bool>(true, JObject.DeepEquals(e, part));
         }
 

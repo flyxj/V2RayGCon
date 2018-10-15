@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
@@ -137,7 +137,7 @@ namespace V2RayGCon.Controller.OptionComponent
                 if (subs.Count <= 0)
                 {
                     this.btnUpdate.Enabled = true;
-                    MessageBox.Show(I18N("NoSubsUrlAvailable"));
+                    MessageBox.Show(I18N.NoSubsUrlAvailable);
                     return;
                 }
 
@@ -191,7 +191,7 @@ namespace V2RayGCon.Controller.OptionComponent
                 // dict( [url]=>mark ) to list(url,mark) mark maybe null
                 var list = subscriptions.Select(s => s).ToList();
 
-                var timeout = Lib.Utils.Str2Int(StrConst("ParseImportTimeOut"));
+                var timeout = Lib.Utils.Str2Int(StrConst.ParseImportTimeOut);
                 var contents = Lib.Utils.ExecuteInParallel<
                     KeyValuePair<string, string>,
                     string[]>(list, (item) =>
@@ -200,12 +200,12 @@ namespace V2RayGCon.Controller.OptionComponent
                      var subsString = Lib.Utils.Fetch(item.Key, timeout * 1000);
                      if (string.IsNullOrEmpty(subsString))
                      {
-                         setting.SendLog(I18N("DownloadFail") + "\n" + item.Key);
+                         setting.SendLog(I18N.DownloadFail + "\n" + item.Key);
                          return new string[] { string.Empty, item.Value };
                      }
 
                      var links = new List<string>();
-                     var matches = Regex.Matches(subsString, StrConst("PatternBase64NonStandard"));
+                     var matches = Regex.Matches(subsString, StrConst.PatternBase64NonStandard);
                      foreach (Match match in matches)
                      {
                          try

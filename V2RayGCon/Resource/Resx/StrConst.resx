@@ -133,9 +133,6 @@
   <data name="Executable" xml:space="preserve">
     <value>v2ray.exe</value>
   </data>
-  <data name="config_def" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Config\config_def.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="config_tpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Config\config_tpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -235,9 +232,6 @@
     <value>tag</value>
     <comment>package in(out)bound tag prefix</comment>
   </data>
-  <data name="PacTemplateTail" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\PacTemplateTail.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="black" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\PAC\black.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
   </data>
@@ -249,5 +243,17 @@
   </data>
   <data name="white_cidr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\PAC\white_cidr.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
+  </data>
+  <data name="config_example" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Config\config_example.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="PacDebuggerTpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\PAC\PacDebuggerTpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="PacJsTpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\PAC\PacJsTpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ExtJs" xml:space="preserve">
+    <value>JS Files|*.js|All File|*.*</value>
   </data>
 </root>

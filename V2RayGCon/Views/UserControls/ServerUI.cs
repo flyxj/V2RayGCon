@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.UserControls
 {
     public partial class ServerUI : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Service.Setting setting;
-        Service.PACServer pacServer;
-        Controller.ServerCtrl serverItem;
+        Service.Servers servers;
+        Service.PacServer pacServer;
+        Controller.CoreServerCtrl serverItem;
 
-        public bool isRunning;
         int[] formHeight;
         Bitmap[] foldingButtonIcons;
+        string[] keywords = null;
 
-        public ServerUI(Controller.ServerCtrl serverItem)
+        public ServerUI(Controller.CoreServerCtrl serverItem)
         {
             setting = Service.Setting.Instance;
-            pacServer = Service.PACServer.Instance;
+            pacServer = Service.PacServer.Instance;
+            servers = Service.Servers.Instance;
 
             this.serverItem = serverItem;
             InitializeComponent();
 
             this.foldingButtonIcons = new Bitmap[] {
                 Properties.Resources.StepBackArrow_16x,
-                // Properties.Resources.GlyphUp_16x,
                 Properties.Resources.StepOverArrow_16x,
             };
 
@@ -34,8 +36,6 @@ namespace V2RayGCon.Views.UserControls
                 this.Height,  // collapseLevel= 0
                 this.cboxInbound.Top,
             };
-
-            isRunning = !serverItem.isServerOn;
         }
 
         private void ServerListItem_Load(object sender, EventArgs e)
@@ -43,15 +43,56 @@ namespace V2RayGCon.Views.UserControls
             SetStatusThen(string.Empty);
             RefreshUI(this, EventArgs.Empty);
             this.serverItem.OnPropertyChanged += RefreshUI;
+            rtboxServerTitle.BackColor = this.BackColor;
         }
 
         #region private method
+        private void HighLightTitleWithKeywords()
+        {
+            if (keywords == null)
+            {
+                return;
+            }
+
+            rtboxServerTitle?.Invoke((MethodInvoker)delegate
+            {
+                var box = rtboxServerTitle;
+                var title = box.Text.ToLower();
+                var keyword = keywords.FirstOrDefault(
+                    s => !string.IsNullOrEmpty(s)
+                    && Lib.Utils.PartialMatch(title, s))?.ToLower();
+
+                if (keyword == null)
+                {
+                    return;
+                }
+
+                var highlight = Color.DeepPink;
+
+                int idxTitle = 0, idxKeyword = 0;
+                while (idxTitle < title.Length && idxKeyword < keyword.Length)
+                {
+                    if (title[idxTitle] == keyword[idxKeyword])
+                    {
+                        box.SelectionStart = idxTitle;
+                        box.SelectionLength = 1;
+                        box.SelectionColor = highlight;
+                        idxKeyword++;
+                    }
+                    idxTitle++;
+                }
+                box.SelectionStart = 0;
+                box.SelectionLength = 0;
+                box.DeselectAll();
+            });
+        }
+
         private void SetSysProxyToPACMode(bool isWhiteList)
         {
             var index = cboxInbound.SelectedIndex;
             if (index == (int)Model.Data.Enum.ProxyTypes.Config)
             {
-                MessageBox.Show(I18N("SysProxyRequireHttpOrSocksMode"));
+                MessageBox.Show(I18N.SysProxyRequireHttpOrSocksMode);
                 return;
             }
 
@@ -73,9 +114,10 @@ namespace V2RayGCon.Views.UserControls
             var index = cboxInbound.SelectedIndex;
             if (index == (int)Model.Data.Enum.ProxyTypes.Config)
             {
-                MessageBox.Show(I18N("SysProxyRequireHttpOrSocksMode"));
+                MessageBox.Show(I18N.SysProxyRequireHttpOrSocksMode);
                 return;
             }
+
 
             Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
             var p = new Model.Data.PacUrlParams
@@ -91,26 +133,27 @@ namespace V2RayGCon.Views.UserControls
 
             MessageBox.Show(
                 Lib.Utils.CopyToClipboard(pacUrl) ?
-                I18N("LinksCopied") :
-                I18N("CopyFail"));
+                I18N.LinksCopied :
+                I18N.CopyFail);
         }
 
         void RestartServer()
         {
             var server = this.serverItem;
-            server.parent.StopAllServersThen(
+            servers.StopAllServersThen(
                 () => server.RestartCoreThen());
         }
 
         void RefreshUI(object sender, EventArgs arg)
         {
-            lbServerTitle.Invoke((MethodInvoker)delegate
+
+            rtboxServerTitle.Invoke((MethodInvoker)delegate
             {
                 Lib.UI.UpdateControlOnDemand(
                     cboxInbound, serverItem.overwriteInboundType);
 
                 Lib.UI.UpdateControlOnDemand(
-                    lbServerTitle, serverItem.GetTitle());
+                    rtboxServerTitle, serverItem.GetTitle());
 
                 Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
@@ -128,9 +171,9 @@ namespace V2RayGCon.Views.UserControls
                     serverItem.isAutoRun);
 
                 UpdateInboundAddrOndemand();
-                SetAICLable();
+                UpdateAicLable();
                 UpdateChkSelected();
-                ShowOnOffStatus(serverItem.server.isRunning);
+                UpdateOnOffLabel(serverItem.server.isRunning);
                 UpdateServerMark();
                 UpdateFormFoldingMode();
                 UpdateToolsTip();
@@ -154,14 +197,14 @@ namespace V2RayGCon.Views.UserControls
                 toolTip1.SetToolTip(lbStatus, status);
             }
 
-            var title = lbServerTitle.Text;
-            if (toolTip1.GetToolTip(lbServerTitle) != title)
+            var title = rtboxServerTitle.Text;
+            if (toolTip1.GetToolTip(rtboxServerTitle) != title)
             {
-                toolTip1.SetToolTip(lbServerTitle, title);
+                toolTip1.SetToolTip(rtboxServerTitle, title);
             }
         }
 
-        private void SetAICLable()
+        private void UpdateAicLable()
         {
             var text = serverItem.isAutoRun ? "A" : "";
             text += serverItem.isInjectImport ? "I" : "";
@@ -175,7 +218,7 @@ namespace V2RayGCon.Views.UserControls
 
         void UpdateFormFoldingMode()
         {
-            var level = Lib.Utils.Clamp(serverItem.collapseLevel, 0, foldingButtonIcons.Length);
+            var level = Lib.Utils.Clamp(serverItem.foldingLevel, 0, foldingButtonIcons.Length);
 
             if (btnIsCollapse.BackgroundImage != foldingButtonIcons[level])
             {
@@ -212,32 +255,26 @@ namespace V2RayGCon.Views.UserControls
 
         void HighlightSelectedServerItem(bool selected)
         {
-            var fontStyle = new Font(lbServerTitle.Font, selected ? FontStyle.Bold : FontStyle.Regular);
+            var fontStyle = new Font(rtboxServerTitle.Font, selected ? FontStyle.Bold : FontStyle.Regular);
             var colorRed = selected ? Color.OrangeRed : Color.Black;
-            lbServerTitle.Font = fontStyle;
+            rtboxServerTitle.Font = fontStyle;
             lbStatus.Font = fontStyle;
             lbStatus.ForeColor = colorRed;
         }
 
-        private void ShowOnOffStatus(bool isServerOn)
+        private void UpdateOnOffLabel(bool isServerOn)
         {
-            if (this.isRunning == isServerOn)
+            var text = isServerOn ? "ON" : "OFF";
+
+            if (tboxInboundAddr.ReadOnly != isServerOn)
             {
-                return;
+                tboxInboundAddr.ReadOnly = isServerOn;
             }
 
-            this.isRunning = isServerOn;
-            tboxInboundAddr.ReadOnly = this.isRunning;
-
-            if (isServerOn)
+            if (lbRunning.Text != text)
             {
-                lbRunning.ForeColor = Color.DarkOrange;
-                lbRunning.Text = "ON";
-            }
-            else
-            {
-                lbRunning.ForeColor = Color.Green;
-                lbRunning.Text = "OFF";
+                lbRunning.Text = text;
+                lbRunning.ForeColor = isServerOn ? Color.DarkOrange : Color.Green;
             }
         }
         #endregion
@@ -254,6 +291,23 @@ namespace V2RayGCon.Views.UserControls
         #endregion
 
         #region public method
+        public void SetKeywords(string keywords)
+        {
+            this.keywords = (keywords ?? "").Split(
+               new char[] { ' ', ',' },
+               StringSplitOptions.RemoveEmptyEntries);
+
+            Task.Factory.StartNew(() =>
+            {
+                // control may be desposed, the sun may explode while this function is running
+                try
+                {
+                    HighLightTitleWithKeywords();
+                }
+                catch { }
+            });
+        }
+
         public string GetConfig()
         {
             return serverItem.config;
@@ -366,8 +420,8 @@ namespace V2RayGCon.Views.UserControls
                                Lib.Utils.Vmess2VmessLink(
                                    Lib.Utils.ConfigString2Vmess(
                                        this.serverItem.config))) ?
-                           I18N("LinksCopied") :
-                           I18N("CopyFail"));
+                           I18N.LinksCopied :
+                           I18N.CopyFail);
         }
 
         private void v2rayToolStripMenuItem_Click(object sender, EventArgs e)
@@ -377,19 +431,18 @@ namespace V2RayGCon.Views.UserControls
                                Lib.Utils.AddLinkPrefix(
                                    Lib.Utils.Base64Encode(this.serverItem.config),
                                    Model.Data.Enum.LinkTypes.v2ray)) ?
-                           I18N("LinksCopied") :
-                           I18N("CopyFail"));
+                           I18N.LinksCopied :
+                           I18N.CopyFail);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Lib.UI.Confirm(I18N("ConfirmDeleteControl")))
+            if (!Lib.UI.Confirm(I18N.ConfirmDeleteControl))
             {
                 return;
             }
             Cleanup();
-            serverItem.parent.DeleteServerByConfig(serverItem.config);
-
+            servers.DeleteServerByConfig(serverItem.config);
         }
 
         private void speedTestToolStripMenuItem_Click(object sender, EventArgs e)
@@ -471,13 +524,18 @@ namespace V2RayGCon.Views.UserControls
 
         private void btnIsCollapse_Click(object sender, EventArgs e)
         {
-            var level = (serverItem.collapseLevel + 1) % 2;
-            serverItem.SetPropertyOnDemand(ref serverItem.collapseLevel, level);
+            var level = (serverItem.foldingLevel + 1) % 2;
+            serverItem.SetPropertyOnDemand(ref serverItem.foldingLevel, level);
         }
 
         private void lbIsAutorun_MouseDown(object sender, MouseEventArgs e)
         {
             ServerListItem_MouseDown(this, e);
+        }
+
+        private void rtboxServerTitle_Click(object sender, EventArgs e)
+        {
+            chkSelected.Checked = !chkSelected.Checked;
         }
 
         private void pACBlackListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -504,7 +562,7 @@ namespace V2RayGCon.Views.UserControls
         {
             if (cboxInbound.SelectedIndex != (int)Model.Data.Enum.ProxyTypes.HTTP)
             {
-                MessageBox.Show(I18N("SysProxyRequireHTTPServer"));
+                MessageBox.Show(I18N.SysProxyRequireHTTPServer);
                 return;
             }
 
@@ -512,8 +570,10 @@ namespace V2RayGCon.Views.UserControls
             pacServer.SetGlobalProxy(ip, port);
 
             // issue #9
-            MessageBox.Show(I18N("SetSysProxyDone"));
+            MessageBox.Show(I18N.SetSysProxyDone);
         }
         #endregion
+
+
     }
 }

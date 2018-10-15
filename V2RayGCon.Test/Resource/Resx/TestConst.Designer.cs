@@ -22,14 +22,14 @@ namespace V2RayGCon.Test.Resource.Resx {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Data {
+    internal class TestConst {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Data() {
+        internal TestConst() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace V2RayGCon.Test.Resource.Resx {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("V2RayGCon.Test.Resource.Resx.Data", typeof(Data).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("V2RayGCon.Test.Resource.Resx.TestConst", typeof(TestConst).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -47,7 +47,7 @@ namespace V2RayGCon.Test.Resource.Resx {
         }
         
         /// <summary>
-        ///   使用此强类型资源类，为所有资源查找
+        ///   重写当前线程的 CurrentUICulture 属性
         ///   重写当前线程的 CurrentUICulture 属性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -61,7 +61,15 @@ namespace V2RayGCon.Test.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 hello 的本地化字符串。
+        ///   查找类似 dummy00:
+        ///v2ray://ZHVtbXkwMA==
+        ///vmess://ZHVtbXkwMA==
+        ///ss://ZHVtbXkwMA==
+        ///dummy01:
+        ///v2ray://ZHVtbXkwMQ==
+        ///vmess://ZHVtbXkwMQ==
+        ///ss://ZHVtbXkwMQ==
+        /// 的本地化字符串。
         /// </summary>
         internal static string links {
             get {

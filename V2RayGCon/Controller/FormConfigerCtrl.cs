@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller
 {
@@ -87,7 +87,7 @@ namespace V2RayGCon.Controller
             if (originalConfig == newConfig
                 || servers.IsServerItemExist(newConfig))
             {
-                MessageBox.Show(I18N("DuplicateServer"));
+                MessageBox.Show(I18N.DuplicateServer);
                 return false;
             }
 
@@ -97,7 +97,7 @@ namespace V2RayGCon.Controller
             }
             else
             {
-                MessageBox.Show(I18N("OrgServNotFound"));
+                MessageBox.Show(I18N.OrgServNotFound);
                 return false;
             }
 
@@ -119,7 +119,7 @@ namespace V2RayGCon.Controller
             }
             else
             {
-                MessageBox.Show(I18N("DuplicateServer"));
+                MessageBox.Show(I18N.DuplicateServer);
             }
         }
 
@@ -203,7 +203,7 @@ namespace V2RayGCon.Controller
                 o = Service.Cache.Instance.tpl.LoadMinConfig();
                 Task.Factory.StartNew(
                     () => MessageBox.Show(
-                        I18N("EditorCannotLoadServerConfig")));
+                        I18N.EditorCannotLoadServerConfig));
             }
 
             config = o;

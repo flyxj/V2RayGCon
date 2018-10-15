@@ -22,14 +22,14 @@ namespace V2RayGCon.Resource.Resx {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Text {
+    internal class I18N {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Text() {
+        internal I18N() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace V2RayGCon.Resource.Resx {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("V2RayGCon.Resource.Resx.Text", typeof(Text).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("V2RayGCon.Resource.Resx.I18N", typeof(I18N).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -749,6 +749,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Get inbound information fail! 的本地化字符串。
+        /// </summary>
+        internal static string GetInboundInfoFail {
+            get {
+                return ResourceManager.GetString("GetInboundInfoFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Get latest version fail! 的本地化字符串。
         /// </summary>
         internal static string GetLatestVerFail {
@@ -772,6 +781,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string GetVGCVerFail {
             get {
                 return ResourceManager.GetString("GetVGCVerFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Global proxy require http server! 的本地化字符串。
+        /// </summary>
+        internal static string GlobalProxyRequireHttpServer {
+            get {
+                return ResourceManager.GetString("GlobalProxyRequireHttpServer", resourceCulture);
             }
         }
         
@@ -1026,6 +1044,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PackageSuccess {
             get {
                 return ResourceManager.GetString("PackageSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PAC proxy require socks or http server. 的本地化字符串。
+        /// </summary>
+        internal static string PacProxyRequireSocksOrHttpServer {
+            get {
+                return ResourceManager.GetString("PacProxyRequireSocksOrHttpServer", resourceCulture);
             }
         }
         
@@ -1374,6 +1401,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string V2RayLink {
             get {
                 return ResourceManager.GetString("V2RayLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visit PAC debugger webpage? 的本地化字符串。
+        /// </summary>
+        internal static string VisitPacDebugger {
+            get {
+                return ResourceManager.GetString("VisitPacDebugger", resourceCulture);
             }
         }
         

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.UserControls
 {
@@ -34,17 +34,17 @@ namespace V2RayGCon.Views.UserControls
 
         private void lbV2rayCoreGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Lib.UI.VisitUrl(I18N("VisitV2rayCoreReleasePage"), StrConst("ReleasePageUrl"));
+            Lib.UI.VisitUrl(I18N.VisitV2rayCoreReleasePage, StrConst.ReleasePageUrl);
         }
 
         private void lbWiki_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Lib.UI.VisitUrl(I18N("VistWikiPage"), Properties.Resources.WikiLink);
+            Lib.UI.VisitUrl(I18N.VistWikiPage, Properties.Resources.WikiLink);
         }
 
         private void lbIssue_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Lib.UI.VisitUrl(I18N("VisitVGCIssuePage"), Properties.Resources.IssueLink);
+            Lib.UI.VisitUrl(I18N.VisitVGCIssuePage, Properties.Resources.IssueLink);
         }
 
         private void lbCopyFromClipboard_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -64,7 +64,7 @@ namespace V2RayGCon.Views.UserControls
 
             void Fail()
             {
-                MessageBox.Show(I18N("NoQRCode"));
+                MessageBox.Show(I18N.NoQRCode);
             }
 
             Lib.QRCode.QRCode.ScanQRCode(Success, Fail);

@@ -2,12 +2,14 @@
 {
     public class PacServerSettings
     {
-        public string customWhiteList, customBlackList;
+        public string customWhiteList, customBlackList, customPacFilePath;
         public int port;
-        public bool isAutorun;
+        public bool isAutorun, isUseCustomPac;
 
         public PacServerSettings()
         {
+            isUseCustomPac = false;
+            customPacFilePath = string.Empty;
             customBlackList = string.Empty;
             customBlackList = string.Empty;
             port = 3000;

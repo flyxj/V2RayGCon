@@ -2,6 +2,16 @@
 {
     public class Enum
     {
+        /// <summary>
+        /// None,PAC,Global
+        /// </summary>
+        public enum SystemProxyMode
+        {
+            None,
+            PAC,
+            Global,
+        }
+
         public enum Cultures
         {
             auto = 0,
@@ -16,6 +26,9 @@
             ss = 2,
         }
 
+        /// <summary>
+        /// Inbound types
+        /// </summary>
         public enum ProxyTypes
         {
             Config = 0,

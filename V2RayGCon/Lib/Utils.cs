@@ -13,16 +13,14 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
     public class Utils
     {
-        public static Service.Cache cache = Service.Cache.Instance;
-
         #region pac
-        public static bool IsProxySettingEmpty(Model.Data.ProxyRegKeyValue proxySetting)
+        public static bool IsProxyNotSet(Model.Data.ProxyRegKeyValue proxySetting)
         {
             if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
             {
@@ -62,6 +60,8 @@ namespace V2RayGCon.Lib
 
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
 
+            arguments.TryGetValue("mime", out string mime);
+            arguments.TryGetValue("debug", out string debug);
             arguments.TryGetValue("ip", out string ip);
             arguments.TryGetValue("port", out string portStr);
             arguments.TryGetValue("type", out string type);
@@ -69,19 +69,23 @@ namespace V2RayGCon.Lib
 
             var port = Lib.Utils.Str2Int(portStr);
 
-            if (!IsIP(ip) || port < 0
-                || string.IsNullOrEmpty(type)
-                || string.IsNullOrEmpty(proto))
+            if (!IsIP(ip) || port < 0 || port > 65535)
             {
                 return null;
             }
+
+            var isSocks = proto == null ? false : proto.ToLower() == "socks";
+            var isWhiteList = type == null ? false : type.ToLower() == "whitelist";
+            var isDebug = debug == null ? false : debug.ToLower() == "true";
 
             return new Model.Data.PacUrlParams
             {
                 ip = ip,
                 port = port,
-                isSocks = (proto.ToLower() == "socks"),
-                isWhiteList = (type.ToLower() == "whitelist"),
+                isSocks = isSocks,
+                isWhiteList = isWhiteList,
+                isDebug = isDebug,
+                mime = mime ?? "",
             };
         }
 
@@ -102,9 +106,9 @@ namespace V2RayGCon.Lib
             return mask > 0 && mask < 32;
         }
 
-        public static List<string> GetPacUrlList(bool isWhiteList)
+        public static List<string> GetPacDomainList(bool isWhiteList)
         {
-            return StrConst(isWhiteList ? "white" : "black")
+            return (isWhiteList ? StrConst.white : StrConst.black)
                 .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
         }
@@ -121,8 +125,8 @@ namespace V2RayGCon.Lib
         {
             var result = new List<long[]>();
             foreach (var item in
-                StrConst(isWhiteList ? "white_cidr" : "black_cidr").Split(
-                    new char[] { '\n', '\r' },
+                (isWhiteList ? StrConst.white_cidr : StrConst.black_cidr)
+                .Split(new char[] { '\n', '\r' },
                     StringSplitOptions.RemoveEmptyEntries))
             {
                 result.Add(Cidr2RangeArray(item));
@@ -212,25 +216,26 @@ namespace V2RayGCon.Lib
         public static string GetAliasFromConfig(JObject config)
         {
             var name = GetValue<string>(config, "v2raygcon.alias");
-            return string.IsNullOrEmpty(name) ? I18N("Empty") : CutStr(name, 12);
+            return string.IsNullOrEmpty(name) ? I18N.Empty : CutStr(name, 12);
         }
 
         public static string GetSummaryFromConfig(JObject config)
         {
-            var protocol = GetValue<string>(config, "outbound.protocol");
-            var ip = string.Empty;
-            if (protocol == "vmess" || protocol == "shadowsocks")
+            var protocol = GetValue<string>(config, "outbound.protocol")?.ToLower();
+            string ipKey = null;
+            switch (protocol)
             {
-                var keys = Model.Data.Table.servInfoKeys[protocol];
-                ip = GetValue<string>(config, keys[0]); // ip
+                case "vmess":
+                    ipKey = "outbound.settings.vnext.0.address";
+                    break;
+                case "shadowsocks":
+                    ipKey = "outbound.settings.servers.0.address";
+                    protocol = "ss";
+                    break;
             }
 
-            var summary = protocol;
-            if (!string.IsNullOrEmpty(ip))
-            {
-                summary += "@" + ip;
-            }
-            return summary;
+            string ip = GetValue<string>(config, ipKey);
+            return protocol + (ip == null ? string.Empty : "@" + ip);
         }
 
         static bool Contains(JProperty main, JProperty sub)
@@ -373,36 +378,42 @@ namespace V2RayGCon.Lib
             return true;
         }
 
-        public static JObject ExtractJObjectPart(JObject source, string path)
+        public static bool TryExtractJObjectPart(
+            JObject source,
+            string path,
+            out JObject result)
         {
             var parts = ParsePathIntoParentAndKey(path);
             var key = parts.Item2;
             var parentPath = parts.Item1;
+            result = null;
 
             if (string.IsNullOrEmpty(key))
             {
-                throw new KeyNotFoundException("key is empty");
+                // throw new KeyNotFoundException("Key is empty");
+                return false;
             }
 
             var node = GetKey(source, path);
             if (node == null)
             {
-                throw new KeyNotFoundException();
+                // throw new KeyNotFoundException("This JObject has no key: " + path);
+                return false;
             }
 
-            var result = CreateJObject(parentPath);
+            result = CreateJObject(parentPath);
 
             var parent = string.IsNullOrEmpty(parentPath) ?
                 result : GetKey(result, parentPath);
 
             if (parent == null || !(parent is JObject))
             {
-                throw new KeyNotFoundException("Create parent JObject fail!");
+                // throw new KeyNotFoundException("Create parent JObject fail!");
+                return false;
             }
 
             parent[key] = node.DeepClone();
-
-            return result;
+            return true;
         }
 
         public static void RemoveKeyFromJObject(JObject json, string path)
@@ -458,23 +469,17 @@ namespace V2RayGCon.Lib
                     "outboundDetour",
                     "routing.settings.rules"})
             {
-                JObject nodeBody = null;
-                JObject nodeMixin = null;
-                try
+                if (TryExtractJObjectPart(body, key, out JObject nodeBody))
                 {
-                    nodeBody = ExtractJObjectPart(body, key);
                     RemoveKeyFromJObject(body, key);
                 }
-                catch (KeyNotFoundException) { }
 
-                try
+                if (TryExtractJObjectPart(mixin, key, out JObject nodeMixin))
                 {
-                    nodeMixin = ExtractJObjectPart(mixin, key);
                     ConcatJson(ref backup, nodeMixin);
                     RemoveKeyFromJObject(mixin, key);
                     ConcatJson(ref body, nodeMixin);
                 }
-                catch (KeyNotFoundException) { }
 
                 if (nodeBody != null)
                 {
@@ -486,17 +491,6 @@ namespace V2RayGCon.Lib
 
             // restore mixin
             ConcatJson(ref mixin, backup);
-        }
-
-        public static string InjectGlobalImport(string config, bool isIncludeSpeedTest, bool isIncludeActivate)
-        {
-            JObject import = ImportItemList2JObject(
-                Service.Setting.Instance.GetGlobalImportItems(),
-                isIncludeSpeedTest,
-                isIncludeActivate);
-
-            MergeJson(ref import, JObject.Parse(config));
-            return import.ToString();
         }
 
         public static JObject ImportItemList2JObject(
@@ -532,6 +526,11 @@ namespace V2RayGCon.Lib
 
         public static JToken GetKey(JToken json, string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
             var curPos = json;
             var keys = path.Split('.');
 
@@ -700,26 +699,7 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static JObject SSLink2Config(string ssLink)
-        {
-            Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
-            if (ss == null)
-            {
-                return null;
-            }
 
-            TryParseIPAddr(ss.addr, out string ip, out int port);
-
-            var config = cache.tpl.LoadTemplate("tplImportSS");
-
-            var setting = config["outbound"]["settings"]["servers"][0];
-            setting["address"] = ip;
-            setting["port"] = port;
-            setting["method"] = ss.method;
-            setting["password"] = ss.pass;
-
-            return config.DeepClone() as JObject;
-        }
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
@@ -767,70 +747,7 @@ namespace V2RayGCon.Lib
                     break;
             }
 
-
             return vmess;
-        }
-
-        public static JObject Vmess2Config(Model.Data.Vmess vmess)
-        {
-            if (vmess == null)
-            {
-                return null;
-            }
-
-            // prepare template
-            var config = cache.tpl.LoadTemplate("tplImportVmess");
-            config["v2raygcon"]["alias"] = vmess.ps;
-
-            var cPos = config["outbound"]["settings"]["vnext"][0];
-            cPos["address"] = vmess.add;
-            cPos["port"] = Lib.Utils.Str2Int(vmess.port);
-            cPos["users"][0]["id"] = vmess.id;
-            cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
-
-            // insert stream type
-            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
-            string streamType = vmess.net.ToLower();
-
-            if (!streamTypes.Contains(streamType))
-            {
-                return config.DeepClone() as JObject;
-            }
-
-            config["outbound"]["streamSettings"] =
-                cache.tpl.LoadTemplate(streamType);
-
-            try
-            {
-                switch (streamType)
-                {
-                    case "kcp":
-                        config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
-                        break;
-                    case "ws":
-                        config["outbound"]["streamSettings"]["wsSettings"]["path"] =
-                            string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
-                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
-                        {
-                            config["outbound"]["streamSettings"]["wsSettings"]["headers"]["Host"] = vmess.host;
-                        }
-                        break;
-                    case "h2":
-                        config["outbound"]["streamSettings"]["httpSettings"]["path"] = vmess.path;
-                        config["outbound"]["streamSettings"]["httpSettings"]["host"] = Str2JArray(vmess.host);
-                        break;
-                }
-
-            }
-            catch { }
-
-            try
-            {
-                // must place at the end. cos this key is add by streamSettings
-                config["outbound"]["streamSettings"]["security"] = vmess.tls;
-            }
-            catch { }
-            return config.DeepClone() as JObject;
         }
 
         public static JArray Str2JArray(string content)
@@ -902,10 +819,10 @@ namespace V2RayGCon.Lib
         #region net
         public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
-            var timeout = Str2Int(StrConst("SpeedTestTimeout"));
+            var timeout = Str2Int(StrConst.SpeedTestTimeout);
 
             long elasped = long.MaxValue;
-            using (WebClient wc = new TimedWebClient
+            using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout * 1000,
@@ -947,7 +864,7 @@ namespace V2RayGCon.Lib
         {
             var html = string.Empty;
 
-            using (WebClient wc = new TimedWebClient
+            using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
                 Timeout = timeout,
@@ -968,14 +885,14 @@ namespace V2RayGCon.Lib
 
         public static string GetLatestVGCVersion()
         {
-            string html = Fetch(StrConst("UrlLatestVGC"));
+            string html = Fetch(StrConst.UrlLatestVGC);
 
             if (string.IsNullOrEmpty(html))
             {
                 return string.Empty;
             }
 
-            string p = StrConst("PatternLatestVGC");
+            string p = StrConst.PatternLatestVGC;
             var match = Regex.Match(html, p, RegexOptions.IgnoreCase);
             if (match.Success)
             {
@@ -989,14 +906,14 @@ namespace V2RayGCon.Lib
         {
             List<string> versions = new List<string> { };
 
-            string html = Fetch(StrConst("ReleasePageUrl"));
+            string html = Fetch(StrConst.ReleasePageUrl);
 
             if (string.IsNullOrEmpty(html))
             {
                 return versions;
             }
 
-            string pattern = StrConst("PatternDownloadLink");
+            string pattern = StrConst.PatternDownloadLink;
             var matches = Regex.Matches(html, pattern, RegexOptions.IgnoreCase);
             foreach (Match match in matches)
             {
@@ -1139,9 +1056,9 @@ namespace V2RayGCon.Lib
         {
             return string.Format(
                "{0}{1}{2}",
-               StrConst("PatternNonAlphabet"), // vme[ss]
+               StrConst.PatternNonAlphabet, // vme[ss]
                GetLinkPrefix(linkType),
-               StrConst("PatternBase64"));
+               StrConst.PatternBase64);
         }
 
         public static string AddLinkPrefix(string b64Content, Model.Data.Enum.LinkTypes linkType)
@@ -1173,8 +1090,8 @@ namespace V2RayGCon.Lib
         {
             MessageBox.Show(
                 Lib.Utils.CopyToClipboard(content) ?
-                I18N("CopySuccess") :
-                I18N("CopyFail"));
+                I18N.CopySuccess :
+                I18N.CopyFail);
         }
 
         public static bool CopyToClipboard(string content)
@@ -1206,7 +1123,7 @@ namespace V2RayGCon.Lib
             }
             catch (System.NotSupportedException)
             {
-                MessageBox.Show(I18N("SysNotSupportTLS12"));
+                MessageBox.Show(I18N.SysNotSupportTLS12);
             }
         }
 
@@ -1362,6 +1279,19 @@ namespace V2RayGCon.Lib
             {
                 // Process already exited.
             }
+        }
+        #endregion
+
+        #region for Testing
+        public static string[] TestingGetResourceConfigJson()
+        {
+            return new string[]
+            {
+                StrConst.config_example,
+                StrConst.config_min,
+                StrConst.config_tpl,
+                StrConst.config_pkg,
+            };
         }
         #endregion
     }

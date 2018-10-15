@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
@@ -17,7 +17,7 @@ namespace V2RayGCon.Service
         public Downloader()
         {
             SetArchitecture(false);
-            _version = StrConst("DefCoreVersion");
+            _version = StrConst.DefCoreVersion;
             client = null;
         }
 
@@ -25,7 +25,7 @@ namespace V2RayGCon.Service
 
         public void SetArchitecture(bool win64 = false)
         {
-            _packageName = win64 ? StrConst("PkgWin64") : StrConst("PkgWin32");
+            _packageName = win64 ? StrConst.PkgWin64 : StrConst.PkgWin32;
         }
 
         public void SetVersion(string version)
@@ -126,7 +126,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            SendLog(string.Format("{0}", I18N("DownloadCompleted")));
+            SendLog(string.Format("{0}", I18N.DownloadCompleted));
 
             UpdateCore();
         }
@@ -139,7 +139,7 @@ namespace V2RayGCon.Service
 
         void Download()
         {
-            string tpl = StrConst("DownloadLinkTpl");
+            string tpl = StrConst.DownloadLinkTpl;
             string url = string.Format(tpl, _version, _packageName);
 
             client = new WebClient();
@@ -155,7 +155,7 @@ namespace V2RayGCon.Service
             };
 
             Lib.Utils.CreateAppDataFolder();
-            SendLog(string.Format("{0}:{1}", I18N("Download"), url));
+            SendLog(string.Format("{0}:{1}", I18N.Download, url));
             client.DownloadFileAsync(new Uri(url), GetLocalFilePath());
         }
 

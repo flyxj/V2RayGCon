@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
@@ -114,7 +114,7 @@ namespace V2RayGCon.Service
 
             for (var i = 0; i < folders.Length; i++)
             {
-                var file = Path.Combine(folders[i], StrConst("Executable"));
+                var file = Path.Combine(folders[i], StrConst.Executable);
                 if (File.Exists(file))
                 {
                     return file;
@@ -141,7 +141,7 @@ namespace V2RayGCon.Service
                 else
                 {
                     Task.Factory.StartNew(
-                        () => MessageBox.Show(I18N("ExeNotFound")));
+                        () => MessageBox.Show(I18N.ExeNotFound));
                 }
             }
             Task.Factory.StartNew(() => InvokeEventOnCoreStatusChanged());
@@ -254,7 +254,7 @@ namespace V2RayGCon.Service
         {
             AutoResetEvent finished = new AutoResetEvent(false);
 
-            SendLog(I18N("AttachToV2rayCoreProcessFail"));
+            SendLog(I18N.AttachToV2rayCoreProcessFail);
 
             v2rayCore.Exited += (s, a) =>
             {
@@ -309,7 +309,7 @@ namespace V2RayGCon.Service
 
         void OnCoreExisted(object sender, EventArgs args)
         {
-            SendLog(I18N("CoreExit"));
+            SendLog(I18N.CoreExit);
             ReleaseEvents(v2rayCore);
 
             var err = v2rayCore.ExitCode;
@@ -317,7 +317,7 @@ namespace V2RayGCon.Service
             {
                 v2rayCore.Close();
                 Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N("V2rayCoreExitAbnormally")));
+                    () => MessageBox.Show(I18N.V2rayCoreExitAbnormally));
             }
 
             // SendLog("Exit code: " + err);
@@ -358,7 +358,7 @@ namespace V2RayGCon.Service
             v2rayCore.Start();
 
             // Add to JOB object require win8+.
-            Lib.ChildProcessTracker.AddProcess(v2rayCore);
+            Lib.Sys.ChildProcessTracker.AddProcess(v2rayCore);
 
             v2rayCore.StandardInput.WriteLine(config);
             v2rayCore.StandardInput.Close();
@@ -366,15 +366,7 @@ namespace V2RayGCon.Service
             v2rayCore.BeginOutputReadLine();
 
             // Assume core ready after 2.5 seconds, in case log set to none.
-            if (ready.WaitOne(2500))
-            {
-                Debug.WriteLine("Core is ready.");
-            }
-            else
-            {
-                Debug.WriteLine("Wait too long, assume core started.");
-            }
-
+            ready.WaitOne(2500);
             OnCoreReady -= onCoreReady;
             isCheckCoreReady = false;
         }

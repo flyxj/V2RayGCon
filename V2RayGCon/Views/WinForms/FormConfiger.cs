@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 
 namespace V2RayGCon.Views.WinForms
@@ -15,7 +15,7 @@ namespace V2RayGCon.Views.WinForms
         public Rectangle panel;
         public Rectangle page;
 
-        public Lib.CancelableTimeout timerHide, timerShow;
+        public Lib.Sys.CancelableTimeout timerHide, timerShow;
 
         public void Dispose()
         {
@@ -78,7 +78,7 @@ namespace V2RayGCon.Views.WinForms
                 if (!configer.IsConfigSaved())
                 {
                     a.Cancel = !Lib.UI.Confirm(
-                        I18N("ConfirmCloseWinWithoutSave"));
+                        I18N.ConfirmCloseWinWithoutSave);
                 }
             };
 
@@ -88,7 +88,7 @@ namespace V2RayGCon.Views.WinForms
                 servers.OnRequireMenuUpdate -= MenuUpdateHandler;
                 setting.SaveFormRect(this);
                 toolsPanelController.Dispose();
-                servers.LazyGC();
+                setting.LazyGC();
             };
         }
 
@@ -113,17 +113,17 @@ namespace V2RayGCon.Views.WinForms
             configer.InjectConfigHelper(null);
 
             switch (Lib.UI.ShowSaveFileDialog(
-                StrConst("ExtJson"),
+                StrConst.ExtJson,
                 configer.GetConfigFormated(),
                 out string filename))
             {
                 case Model.Data.Enum.SaveFileErrorCode.Success:
                     SetTitle(filename);
                     configer.MarkOriginalFile();
-                    MessageBox.Show(I18N("Done"));
+                    MessageBox.Show(I18N.Done);
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Fail:
-                    MessageBox.Show(I18N("WriteFileFail"));
+                    MessageBox.Show(I18N.WriteFileFail);
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Cancel:
                     // do nothing
@@ -133,7 +133,7 @@ namespace V2RayGCon.Views.WinForms
 
         private void AddNewServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Lib.UI.Confirm(I18N("AddNewServer")))
+            if (Lib.UI.Confirm(I18N.AddNewServer))
             {
                 configer.AddNewServer();
                 SetTitle(configer.GetAlias());
@@ -143,12 +143,12 @@ namespace V2RayGCon.Views.WinForms
         private void LoadJsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!configer.IsConfigSaved()
-                && !Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+                && !Lib.UI.Confirm(I18N.ConfirmLoadNewServer))
             {
                 return;
             }
 
-            string json = Lib.UI.ShowReadFileDialog(StrConst("ExtJson"), out string filename);
+            string json = Lib.UI.ShowReadFileDialog(StrConst.ExtJson, out string filename);
 
             // user cancelled.
             if (json == null)
@@ -163,7 +163,7 @@ namespace V2RayGCon.Views.WinForms
             }
             else
             {
-                MessageBox.Show(I18N("LoadJsonFail"));
+                MessageBox.Show(I18N.LoadJsonFail);
             }
         }
 
@@ -179,7 +179,7 @@ namespace V2RayGCon.Views.WinForms
 
         private void SaveConfigStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Lib.UI.Confirm(I18N("ConfirmSaveCurConfig")))
+            if (Lib.UI.Confirm(I18N.ConfirmSaveCurConfig))
             {
                 if (configer.SaveServer())
                 {
@@ -312,8 +312,8 @@ namespace V2RayGCon.Views.WinForms
             toolsPanelController.span = span;
             toolsPanelController.tabWidth = tabCtrlToolPanel.Left + tabCtrlToolPanel.ItemSize.Width;
 
-            toolsPanelController.timerHide = new Lib.CancelableTimeout(FoldToolsPanel, 800);
-            toolsPanelController.timerShow = new Lib.CancelableTimeout(ExpanseToolsPanel, 500);
+            toolsPanelController.timerHide = new Lib.Sys.CancelableTimeout(FoldToolsPanel, 800);
+            toolsPanelController.timerShow = new Lib.Sys.CancelableTimeout(ExpanseToolsPanel, 500);
 
             var page = tabCtrlToolPanel.TabPages[0];
             toolsPanelController.page = new Rectangle(
@@ -375,7 +375,7 @@ namespace V2RayGCon.Views.WinForms
                 var org = serverList[i].config;
                 menuReplaceServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
-                    if (Lib.UI.Confirm(I18N("ReplaceServer")))
+                    if (Lib.UI.Confirm(I18N.ReplaceServer))
                     {
                         if (configer.ReplaceServer(org))
                         {
@@ -387,7 +387,7 @@ namespace V2RayGCon.Views.WinForms
                 menuLoadServer.Add(new ToolStripMenuItem(name, null, (s, a) =>
                 {
                     if (!configer.IsConfigSaved()
-                    && !Lib.UI.Confirm(I18N("ConfirmLoadNewServer")))
+                    && !Lib.UI.Confirm(I18N.ConfirmLoadNewServer))
                     {
                         return;
                     }

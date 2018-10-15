@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace V2RayGCon.Lib
+namespace V2RayGCon.Lib.Sys
 {
     // https://stackoverflow.com/questions/197725/programmatically-set-browser-proxy-settings-in-c-sharp
     class ProxySetter

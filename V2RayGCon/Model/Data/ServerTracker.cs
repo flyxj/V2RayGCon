@@ -6,11 +6,13 @@ namespace V2RayGCon.Model.Data
     {
         public bool isTrackerOn;
         public List<string> serverList;
+        public string curServer;
 
         public ServerTracker()
         {
             isTrackerOn = false;
             serverList = new List<string>();
+            curServer = string.Empty;
         }
     }
 }

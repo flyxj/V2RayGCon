@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
@@ -16,7 +16,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripComboBox cboxMarkFilter;
         ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
         ToolStripDropDownButton tsdbtnPager;
-        Lib.CancelableTimeout lazyStatusBarUpdateTimer = null;
+        Lib.Sys.CancelableTimeout lazyStatusBarUpdateTimer = null;
         Views.UserControls.WelcomeUI welcomeItem = null;
         int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
@@ -49,7 +49,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
 
         #region public method
-        public List<Controller.ServerCtrl> GetFilteredList()
+        public List<Controller.CoreServerCtrl> GetFilteredList()
         {
             var list = servers.GetServerList();
             var keywords = (searchKeywords ?? "").Split(
@@ -62,10 +62,10 @@ namespace V2RayGCon.Controller.FormMainComponent
             }
 
             return list
-                .Where(
-                    e => keywords.All(
-                        k => e.GetSearchTextList().Any(
-                            s => Lib.Utils.PartialMatch(s, k))))
+                .Where(serv => serv.GetterInfoFor(
+                    infos => keywords.All(
+                        kw => infos.Any(
+                            info => Lib.Utils.PartialMatch(info, kw)))))
                 .ToList();
         }
 
@@ -122,7 +122,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             if (lazyStatusBarUpdateTimer == null)
             {
                 lazyStatusBarUpdateTimer =
-                    new Lib.CancelableTimeout(
+                    new Lib.Sys.CancelableTimeout(
                         UpdateStatusBar,
                         300);
             }
@@ -161,7 +161,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        List<Controller.ServerCtrl> GenPagedServerList(List<Controller.ServerCtrl> serverList)
+        List<Controller.CoreServerCtrl> GenPagedServerList(List<Controller.CoreServerCtrl> serverList)
         {
             var count = serverList.Count;
             var pageSize = setting.serverPanelPageSize;
@@ -186,12 +186,12 @@ namespace V2RayGCon.Controller.FormMainComponent
         void UpdateStatusBar()
         {
             var text = string.Format(
-                I18N("StatusBarServerCountTpl"),
+                I18N.StatusBarServerCountTpl,
                     GetFilteredList().Count,
                     servers.GetTotalServerCount())
                 + " "
                 + string.Format(
-                    I18N("StatusBarTplSelectedItem"),
+                    I18N.StatusBarTplSelectedItem,
                     servers.GetTotalSelectedServerCount(),
                     GetAllServersControl().Count());
 
@@ -209,7 +209,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     UpdateStatusBarPagerCheckStatus();
 
                     tsdbtnPager.Text = string.Format(
-                        I18N("StatusBarPagerInfoTpl"),
+                        I18N.StatusBarPagerInfoTpl,
                         paging[0] + 1,
                         paging[1]);
                 }
@@ -217,15 +217,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 if (tsdbtnPager.Visible != showPager)
                 {
                     tsdbtnPager.Visible = showPager;
-                }
-
-                if (tslbNextPage.Visible != showPager)
-                {
                     tslbNextPage.Visible = showPager;
-                }
-
-                if (tslbPrePage.Visible != showPager)
-                {
                     tslbPrePage.Visible = showPager;
                 }
 
@@ -234,6 +226,8 @@ namespace V2RayGCon.Controller.FormMainComponent
                     tslbTotal.Text = text;
                 }
             });
+
+            LoopThroughAllServerUI(sui => sui.SetKeywords(searchKeywords));
         }
 
         private void UpdateStatusBarPagerCheckStatus()
@@ -252,7 +246,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 var index = i;
                 var item = new ToolStripMenuItem(
-                    string.Format(I18N("StatusBarPagerMenuTpl"), (index + 1)),
+                    string.Format(I18N.StatusBarPagerMenuTpl, (index + 1)),
                     null,
                     (s, a) =>
                     {
@@ -269,16 +263,16 @@ namespace V2RayGCon.Controller.FormMainComponent
         }
 
         string searchKeywords = "";
-        Lib.CancelableTimeout lazyShowSearchResultTimer = null;
+        Lib.Sys.CancelableTimeout lazyShowSearchResultTimer = null;
         void LazyShowSearchResult()
         {
             // create on demand
             if (lazyShowSearchResultTimer == null)
             {
-                var delay = Lib.Utils.Str2Int(StrConst("LazySaveServerListDelay"));
+                var delay = Lib.Utils.Str2Int(StrConst.LazySaveServerListDelay);
 
                 lazyShowSearchResultTimer =
-                    new Lib.CancelableTimeout(
+                    new Lib.Sys.CancelableTimeout(
                         () =>
                         {
                             // 如果不RemoveAll会乱序
@@ -342,7 +336,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 servers.GetMarkList().ToArray());
         }
 
-        void AddNewServerItems(List<Controller.ServerCtrl> serverList)
+        void AddNewServerItems(List<Controller.CoreServerCtrl> serverList)
         {
             flyPanel.Controls.AddRange(
                 serverList
@@ -366,7 +360,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             });
         }
 
-        void RemoveDeletedServerItems(ref List<Controller.ServerCtrl> serverList)
+        void RemoveDeletedServerItems(ref List<Controller.CoreServerCtrl> serverList)
         {
             var deletedControlList = GetDeletedControlList(serverList);
 
@@ -380,7 +374,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             Task.Factory.StartNew(() => DisposeFlyPanelControlByList(deletedControlList));
         }
 
-        List<Views.UserControls.ServerUI> GetDeletedControlList(List<Controller.ServerCtrl> serverList)
+        List<Views.UserControls.ServerUI> GetDeletedControlList(List<Controller.CoreServerCtrl> serverList)
         {
             var result = new List<Views.UserControls.ServerUI>();
 

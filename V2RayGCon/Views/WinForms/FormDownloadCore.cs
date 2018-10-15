@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.WinForms
 {
@@ -28,7 +28,7 @@ namespace V2RayGCon.Views.WinForms
             this.FormClosed += (s, e) =>
             {
                 downloader?.Cancel();
-                Service.Servers.Instance.LazyGC();
+                Service.Setting.Instance.LazyGC();
             };
 
 #if DEBUG
@@ -54,8 +54,8 @@ namespace V2RayGCon.Views.WinForms
                 var core = new Service.Core();
                 var version = core.GetCoreVersion();
                 var msg = string.IsNullOrEmpty(version) ?
-                    I18N("GetCoreVerFail") :
-                    string.Format(I18N("CurrentCoreVerIs"), version);
+                    I18N.GetCoreVerFail :
+                    string.Format(I18N.CurrentCoreVerIs, version);
                 try
                 {
                     el.Invoke((MethodInvoker)delegate { el.Text = msg; });
@@ -104,21 +104,21 @@ namespace V2RayGCon.Views.WinForms
             {
                 ResetUI(100);
                 Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N("DownloadCompleted")));
+                    () => MessageBox.Show(I18N.DownloadCompleted));
             };
 
             downloader.OnDownloadCancelled += (s, a) =>
             {
                 ResetUI(0);
                 Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N("DownloadCancelled")));
+                    () => MessageBox.Show(I18N.DownloadCancelled));
             };
 
             downloader.OnDownloadFail += (s, a) =>
             {
                 ResetUI(0);
                 Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N("TryManualDownload")));
+                    () => MessageBox.Show(I18N.TryManualDownload));
             };
 
             downloader.DownloadV2RayCore();
@@ -138,7 +138,7 @@ namespace V2RayGCon.Views.WinForms
         void InitUI()
         {
             cboxArch.SelectedIndex = 0;
-            var verList = Lib.Utils.Str2ListStr(StrConst("VerList"));
+            var verList = Lib.Utils.Str2ListStr(StrConst.VerList);
             Lib.UI.FillComboBox(cboxVer, verList);
             pgBarDownload.Value = 0;
         }
@@ -173,7 +173,7 @@ namespace V2RayGCon.Views.WinForms
                         }
                         else
                         {
-                            MessageBox.Show(I18N("GetVersionListFail"));
+                            MessageBox.Show(I18N.GetVersionListFail);
                         }
                     });
                 }
@@ -185,7 +185,7 @@ namespace V2RayGCon.Views.WinForms
         {
             if (downloader != null)
             {
-                MessageBox.Show(I18N("Downloading"));
+                MessageBox.Show(I18N.Downloading);
                 return;
             }
 
@@ -195,7 +195,7 @@ namespace V2RayGCon.Views.WinForms
 
         void btnCancel_Click(object sender, System.EventArgs e)
         {
-            if (downloader != null && Lib.UI.Confirm(I18N("CancelDownload")))
+            if (downloader != null && Lib.UI.Confirm(I18N.CancelDownload))
             {
                 downloader?.Cancel();
             }

@@ -22,14 +22,14 @@ namespace V2RayGCon.Resource.Resx {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Data {
+    internal class StrConst {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Data() {
+        internal StrConst() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace V2RayGCon.Resource.Resx {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("V2RayGCon.Resource.Resx.Data", typeof(Data).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("V2RayGCon.Resource.Resx.StrConst", typeof(StrConst).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -180,9 +180,9 @@ namespace V2RayGCon.Resource.Resx {
         ///    &quot;accounts&quot;: [
         ///  [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
-        internal static string config_def {
+        internal static string config_example {
             get {
-                return ResourceManager.GetString("config_def", resourceCulture);
+                return ResourceManager.GetString("config_example", resourceCulture);
             }
         }
         
@@ -347,6 +347,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 JS Files|*.js|All File|*.* 的本地化字符串。
+        /// </summary>
+        internal static string ExtJs {
+            get {
+                return ResourceManager.GetString("ExtJs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Json File|*.json|All File|*.* 的本地化字符串。
         /// </summary>
         internal static string ExtJson {
@@ -401,6 +410,64 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 &lt;!DOCTYPE html&gt;
+        ///&lt;html&gt;
+        ///
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+        ///    &lt;title&gt;Page Title&lt;/title&gt;
+        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+        ///    &lt;script src=&quot;__PacServerUrl__&quot;&gt;&lt;/script&gt;
+        ///    &lt;style&gt;
+        ///        .inline-block {
+        ///            display: inline-block;
+        ///        }
+        ///        
+        ///        .title {
+        ///            font-size: 24px;
+        ///            font-weight: bold;
+        ///        }
+        ///        
+        ///        .tag {
+        ///            width: 90px;        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string PacDebuggerTpl {
+            get {
+                return ResourceManager.GetString("PacDebuggerTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 /**
+        ///// for custom PAC 
+        ///var customSettings = {
+        ///    &quot;protocol&quot;: &quot;socks/http&quot;,
+        ///    &quot;mode&quot;: &quot;white/black&quot;,
+        ///    &quot;white&quot;: &quot;text of white list&quot;,
+        ///    &quot;black&quot;: &quot;text of black list&quot;,
+        ///    &quot;ip&quot;: &quot;127.0.0.1&quot;,
+        ///    &quot;port&quot;: 1234
+        ///};
+        /// */
+        ///
+        ///var proxy = &apos;__PROXY__&apos;,
+        ///    mode = &apos;__MODE__&apos;,
+        ///    domains = { __DOMAINS__ },
+        ///    cidrs = [__CIDRS__];
+        ///
+        ///function ip2decimal(o) { var c = o.split(&quot;.&quot;); return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3] }
+        ///
+        ///function FindProxyForURL(o, c) {
+        ///    if (/\d+\.\d+\.\d+\. [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string PacJsTpl {
+            get {
+                return ResourceManager.GetString("PacJsTpl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 10800 的本地化字符串。
         /// </summary>
         internal static string PacmanInitPort {
@@ -415,27 +482,6 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PacmanTagPrefix {
             get {
                 return ResourceManager.GetString("PacmanTagPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似     ];
-        ///
-        ///function ip2decimal(o) { var c = o.split(&quot;.&quot;); return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3] }
-        ///
-        ///function FindProxyForURL(o, c) {
-        ///    if (/\d+\.\d+\.\d+\.\d+/.test(c)) {
-        ///        if (isInNet(dnsResolve(c), &quot;10.0.0.0&quot;, &quot;255.0.0.0&quot;) ||
-        ///            isInNet(dnsResolve(c), &quot;172.16.0.0&quot;, &quot;255.240.0.0&quot;) ||
-        ///            isInNet(dnsResolve(c), &quot;192.168.0.0&quot;, &quot;255.255.0.0&quot;) ||
-        ///            isInNet(dnsResolve(c), &quot;127.0.0.0&quot;, &quot;255.255.255.0&quot;))
-        ///            return &quot;DIRECT&quot;;
-        ///
-        ///        for (var [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string PacTemplateTail {
-            get {
-                return ResourceManager.GetString("PacTemplateTail", resourceCulture);
             }
         }
         

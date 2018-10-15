@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerUI));
-            this.lbServerTitle = new System.Windows.Forms.Label();
             this.lbStatus = new System.Windows.Forms.Label();
             this.cboxInbound = new System.Windows.Forms.ComboBox();
             this.tboxInboundAddr = new System.Windows.Forms.TextBox();
@@ -69,18 +68,9 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.copyPACBlackListLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyPACWhiteListLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rtboxServerTitle = new System.Windows.Forms.RichTextBox();
             this.ctxMenuStripMore.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lbServerTitle
-            // 
-            this.lbServerTitle.AutoEllipsis = true;
-            this.lbServerTitle.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.lbServerTitle, "lbServerTitle");
-            this.lbServerTitle.Name = "lbServerTitle";
-            this.toolTip1.SetToolTip(this.lbServerTitle, resources.GetString("lbServerTitle.ToolTip"));
-            this.lbServerTitle.UseCompatibleTextRendering = true;
-            this.lbServerTitle.Click += new System.EventHandler(this.lbSummary_Click);
             // 
             // lbStatus
             // 
@@ -367,11 +357,23 @@
             resources.ApplyResources(this.copyPACWhiteListLinkToolStripMenuItem, "copyPACWhiteListLinkToolStripMenuItem");
             this.copyPACWhiteListLinkToolStripMenuItem.Click += new System.EventHandler(this.copyPACWhiteListLinkToolStripMenuItem_Click);
             // 
+            // rtboxServerTitle
+            // 
+            this.rtboxServerTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtboxServerTitle.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rtboxServerTitle.DetectUrls = false;
+            this.rtboxServerTitle.ForeColor = System.Drawing.SystemColors.ControlText;
+            resources.ApplyResources(this.rtboxServerTitle, "rtboxServerTitle");
+            this.rtboxServerTitle.Name = "rtboxServerTitle";
+            this.rtboxServerTitle.ReadOnly = true;
+            this.rtboxServerTitle.Click += new System.EventHandler(this.rtboxServerTitle_Click);
+            // 
             // ServerUI
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.rtboxServerTitle);
             this.Controls.Add(this.btnMultiboxing);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.lbIsAutorun);
@@ -385,7 +387,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.lbRunning);
             this.Controls.Add(this.lbStatus);
-            this.Controls.Add(this.lbServerTitle);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.Name = "ServerUI";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
@@ -398,7 +399,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label lbServerTitle;
         private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.ComboBox cboxInbound;
         private System.Windows.Forms.TextBox tboxInboundAddr;
@@ -437,5 +437,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem copyPACBlackListLinkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyPACWhiteListLinkToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox rtboxServerTitle;
     }
 }

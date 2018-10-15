@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller
 {
@@ -45,7 +45,7 @@ namespace V2RayGCon.Controller
         {
             if (!IsOptionsSaved())
             {
-                MessageBox.Show(I18N("SaveChangeFirst"));
+                MessageBox.Show(I18N.SaveChangeFirst);
                 return;
             }
 
@@ -66,15 +66,15 @@ namespace V2RayGCon.Controller
                 };
 
             switch (Lib.UI.ShowSaveFileDialog(
-                StrConst("ExtText"),
+                StrConst.ExtText,
                 JsonConvert.SerializeObject(data),
                 out string filename))
             {
                 case Model.Data.Enum.SaveFileErrorCode.Success:
-                    MessageBox.Show(I18N("Done"));
+                    MessageBox.Show(I18N.Done);
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Fail:
-                    MessageBox.Show(I18N("WriteFileFail"));
+                    MessageBox.Show(I18N.WriteFileFail);
                     break;
                 case Model.Data.Enum.SaveFileErrorCode.Cancel:
                     // do nothing
@@ -84,14 +84,14 @@ namespace V2RayGCon.Controller
 
         public void RestoreOptions()
         {
-            string backup = Lib.UI.ShowReadFileDialog(StrConst("ExtText"), out string filename);
+            string backup = Lib.UI.ShowReadFileDialog(StrConst.ExtText, out string filename);
 
             if (backup == null)
             {
                 return;
             }
 
-            if (!Lib.UI.Confirm(I18N("ConfirmAllOptionWillBeReplaced")))
+            if (!Lib.UI.Confirm(I18N.ConfirmAllOptionWillBeReplaced))
             {
                 return;
             }
@@ -103,7 +103,7 @@ namespace V2RayGCon.Controller
             }
             catch
             {
-                MessageBox.Show(I18N("DecodeFail"));
+                MessageBox.Show(I18N.DecodeFail);
                 return;
             }
 
@@ -126,13 +126,13 @@ namespace V2RayGCon.Controller
             }
 
             if (options.ContainsKey("servers")
-                && Lib.UI.Confirm(I18N("ConfirmImportServers")))
+                && Lib.UI.Confirm(I18N.ConfirmImportServers))
             {
                 Service.Servers.Instance.ImportLinks(options["servers"]);
             }
             else
             {
-                MessageBox.Show(I18N("Done"));
+                MessageBox.Show(I18N.Done);
             }
 
         }

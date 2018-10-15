@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using static V2RayGCon.Lib.StringResource;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.WinForms
 {
@@ -158,11 +158,11 @@ namespace V2RayGCon.Views.WinForms
                     break;
                 case Lib.QRCode.QRCode.WriteErrors.DataEmpty:
                     picQRCode.Image = null;
-                    MessageBox.Show(I18N("EmptyLink"));
+                    MessageBox.Show(I18N.EmptyLink);
                     break;
                 case Lib.QRCode.QRCode.WriteErrors.DataTooBig:
                     picQRCode.Image = null;
-                    MessageBox.Show(I18N("DataTooBig"));
+                    MessageBox.Show(I18N.DataTooBig);
                     break;
             }
         }
@@ -180,7 +180,7 @@ namespace V2RayGCon.Views.WinForms
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog
             {
-                Filter = StrConst("ExtPng"),
+                Filter = StrConst.ExtPng,
                 FilterIndex = 1,
                 RestoreDirectory = true,
             };

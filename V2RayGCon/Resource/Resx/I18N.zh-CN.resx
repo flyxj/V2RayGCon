@@ -117,485 +117,484 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
-  </data>
   <data name="CannotParseJson" xml:space="preserve">
-    <value>Can not parse json! Discard changes?</value>
+    <value>无法解析JSON文件，丢弃更改?</value>
   </data>
   <data name="CantLauchCore" xml:space="preserve">
-    <value>Error: can not lauch v2ray-core.</value>
+    <value>错误：无法运行v2ray-core!</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>确认</value>
   </data>
   <data name="ConfirmDeleteSelectedServers" xml:space="preserve">
-    <value>Delete selected servers?</value>
+    <value>删除选中的服务器？</value>
   </data>
   <data name="ConfirmExitApp" xml:space="preserve">
-    <value>Exit program?</value>
+    <value>退出程序？</value>
   </data>
   <data name="CopyFail" xml:space="preserve">
-    <value>Copy fail!</value>
+    <value>复制失败</value>
   </data>
   <data name="CoreCantSetLocalAddr" xml:space="preserve">
-    <value>Can not set local proxy address!</value>
+    <value>无法设置本地代理地址</value>
   </data>
   <data name="CoreExit" xml:space="preserve">
-    <value>V2ray-core has stopped!</value>
+    <value>v2ray-core 已关闭!</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Graphics configuration editor for v2ray-core.</value>
+    <value>v2ray-core图形配置编辑工具</value>
   </data>
   <data name="DownloadCompleted" xml:space="preserve">
-    <value>Download v2ray-core completed!</value>
+    <value>下载 v2ray-core 完成！</value>
   </data>
   <data name="TryManualDownload" xml:space="preserve">
-    <value>Download fail!
-You can download manually from the link below.
+    <value>下载失败！你可以从以下网址下载：
 https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="DownloadV2rayCore" xml:space="preserve">
-    <value>Download v2ray-core</value>
+    <value>下载v2ray-core</value>
   </data>
   <data name="Done" xml:space="preserve">
-    <value>Done</value>
+    <value>完成</value>
   </data>
   <data name="Downloading" xml:space="preserve">
-    <value>Downloading, please wait ...</value>
+    <value>正在下载，请稍后。</value>
   </data>
   <data name="EditorCannotLoadServerConfig" xml:space="preserve">
-    <value>Cannot load server config. Using default config!</value>
+    <value>加载服务器配置失败，调取默认配置文件。</value>
   </data>
   <data name="EditorCheckConfig" xml:space="preserve">
-    <value>Can not parse json! Please check you config.</value>
+    <value>无法解析JSON文件，请仔细检查。</value>
   </data>
   <data name="EditorDiscardChange" xml:space="preserve">
-    <value>Config is invalid.
-Discard latest changes and continue?</value>
+    <value>配置文件存在无效项！
+取消最近一次的修改并继续？</value>
   </data>
   <data name="EditorNoExample" xml:space="preserve">
-    <value>No example for this part.</value>
+    <value>这个部分没有参考样例。</value>
   </data>
   <data name="EditorSaveChange" xml:space="preserve">
-    <value>Config has change, save it now?</value>
+    <value>配置已修改，是否保存修改？</value>
   </data>
   <data name="ExeNotFound" xml:space="preserve">
-    <value>Please download v2ray-core first!（checkout systray icon's popup menu.）</value>
+    <value>请先下载v2ray-core（可点托盘图标相应菜单）</value>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>退出</value>
   </data>
   <data name="ImportLink" xml:space="preserve">
-    <value>Import links from clipboard</value>
+    <value>剪切板导入</value>
   </data>
   <data name="ImportLinkFail" xml:space="preserve">
-    <value>Found no link!</value>
+    <value>链接导入失败！</value>
   </data>
   <data name="ImportLinkSuccess" xml:space="preserve">
-    <value>Import Success!</value>
+    <value>链接导入成功！</value>
   </data>
   <data name="ConfigEditor" xml:space="preserve">
-    <value>Config Editor</value>
+    <value>配置编辑器</value>
   </data>
   <data name="OtherWin" xml:space="preserve">
-    <value>Other windows</value>
+    <value>其他窗口</value>
   </data>
   <data name="MainWin" xml:space="preserve">
-    <value>Main Window</value>
+    <value>主窗口</value>
   </data>
   <data name="LinksCopied" xml:space="preserve">
-    <value>Links has been copied to clipboard.</value>
+    <value>链接已复制到剪切板</value>
   </data>
   <data name="NoQRCode" xml:space="preserve">
-    <value>Can not find any QR code.</value>
+    <value>没有扫到二维码</value>
   </data>
   <data name="NotSupportLinkType" xml:space="preserve">
-    <value>Duplicate link or unable to decode</value>
+    <value>链接已存在或无法解码</value>
   </data>
   <data name="ScanQRCode" xml:space="preserve">
-    <value>Scan QR code</value>
+    <value>扫描二维码</value>
   </data>
   <data name="Win32" xml:space="preserve">
-    <value>Windows 32bit</value>
+    <value>Windows 32位</value>
   </data>
   <data name="Win64" xml:space="preserve">
-    <value>Windows 64bit</value>
+    <value>Windows 64位</value>
   </data>
   <data name="CopySuccess" xml:space="preserve">
-    <value>Copied to clipboard.</value>
+    <value>已复制到剪切板</value>
   </data>
   <data name="ProxyModeAll" xml:space="preserve">
-    <value>Proxy all website</value>
+    <value>全部走代理</value>
   </data>
   <data name="ProxyModeNone" xml:space="preserve">
-    <value>No proxy</value>
+    <value>不使用代理</value>
   </data>
   <data name="ProxyModePAC" xml:space="preserve">
-    <value>Proxy accroding to PAC setting</value>
+    <value>根据PAC设置自动选择</value>
   </data>
   <data name="SetProxyMode" xml:space="preserve">
-    <value>Set proxy mode</value>
+    <value>设置代理模式</value>
   </data>
   <data name="WarnIENotSupportPac" xml:space="preserve">
-    <value>Notice! IE not support PAC.</value>
+    <value>注意：IE不支持PAC文件！</value>
   </data>
   <data name="PleaseCheckConfig" xml:space="preserve">
-    <value>Can not parse json! Please check current config.</value>
+    <value>无法解析Json，请检查当前配置内容。</value>
   </data>
   <data name="WarnMultipleInstance" xml:space="preserve">
-    <value>Another instance is already running.
-Are you sure to launch another one?</value>
+    <value>已存在另一个实例，确定要再开一个？</value>
   </data>
   <data name="Empty" xml:space="preserve">
-    <value>(Empty)</value>
+    <value>(空白)</value>
   </data>
   <data name="SaveAs" xml:space="preserve">
-    <value>Save as</value>
+    <value>另存为</value>
   </data>
   <data name="WriteFileFail" xml:space="preserve">
-    <value>Write to file fail!</value>
+    <value>写入文件失败！</value>
   </data>
   <data name="AddNewServer" xml:space="preserve">
-    <value>Save current config as new server?</value>
+    <value>用当前配置新增一个服务器?</value>
   </data>
   <data name="ReplaceServer" xml:space="preserve">
-    <value>Use current config to replace selected server?</value>
+    <value>用当前配置覆盖选定服务器?</value>
   </data>
   <data name="ConfirmLoadNewServer" xml:space="preserve">
-    <value>Current config will be cleared!
-Load new config?</value>
+    <value>当前配置将被清除！
+确定要加载新配置？</value>
   </data>
   <data name="LoadJsonFail" xml:space="preserve">
-    <value>Load json file fail!</value>
+    <value>加载Json文件失败！</value>
   </data>
   <data name="AvailableExamples" xml:space="preserve">
-    <value>Available examples ...</value>
+    <value>可用示例 ...</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Default</value>
+    <value>默认</value>
   </data>
   <data name="AddServer" xml:space="preserve">
-    <value>Add server</value>
+    <value>添加服务器</value>
   </data>
   <data name="AddServSuccess" xml:space="preserve">
-    <value>Add server success!</value>
+    <value>成功添加服务器！</value>
   </data>
   <data name="DuplicateServer" xml:space="preserve">
-    <value>Duplicate server</value>
+    <value>已存在相同服务器</value>
   </data>
   <data name="DownloadProgress" xml:space="preserve">
-    <value>Download progress</value>
+    <value>下载进度</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>Download</value>
+    <value>下载</value>
   </data>
   <data name="Latest" xml:space="preserve">
-    <value>latest</value>
+    <value>最新</value>
   </data>
   <data name="GetLatestVerFail" xml:space="preserve">
-    <value>Get latest version fail!</value>
+    <value>获取版本号失败！</value>
   </data>
   <data name="GetVersionListFail" xml:space="preserve">
-    <value>Get v2ray-core versions list fail!</value>
+    <value>获取v2ray-core可用版本失败！</value>
   </data>
   <data name="CancelDownload" xml:space="preserve">
-    <value>Cancel current download?</value>
+    <value>取消当前下载？</value>
   </data>
   <data name="DownloadCancelled" xml:space="preserve">
-    <value>Download cancelled!</value>
+    <value>下载终止</value>
   </data>
   <data name="ConfirmDownloadNewVGC" xml:space="preserve">
-    <value>New V2RayGCon v{0} is available.
-Checkout download page?</value>
+    <value>有新版 V2RayGCon v{0} 。
+是否跳转到下载页面?</value>
   </data>
   <data name="GetVGCVerFail" xml:space="preserve">
-    <value>Get V2RayGCon latest version number fail!</value>
+    <value>获取最新V2RayGCon版本号失败！</value>
   </data>
   <data name="NoNewVGC" xml:space="preserve">
-    <value>The current V2RayGCon is the latest version.</value>
+    <value>当前V2RayGCon已经是最新版本。</value>
   </data>
   <data name="VistPorjectPage" xml:space="preserve">
-    <value>Vist project page?</value>
+    <value>访问项目主页？</value>
   </data>
   <data name="ConfirmDeleteAllServers" xml:space="preserve">
-    <value>DELETE ALL SERVERS?</value>
+    <value>删除所有服务器？</value>
   </data>
   <data name="ConfirmSaveCurConfig" xml:space="preserve">
-    <value>Save current config?</value>
+    <value>保存当前配置？</value>
   </data>
   <data name="OrgServNotFound" xml:space="preserve">
-    <value>Can not find original config!
-Please use [Add new server] or [Replace server].</value>
+    <value>找不到原服务器!
+请使用 "添加新服务" 或 "覆盖服务器"</value>
   </data>
   <data name="AddServFail" xml:space="preserve">
-    <value>Add server fail, please check your settings.</value>
+    <value>添加服务器失败，请检查你的设置。</value>
   </data>
   <data name="CurrentCoreVerIs" xml:space="preserve">
-    <value>Current v2ray-core version is v{0}</value>
+    <value>当前v2ray-core版本是 v{0}</value>
   </data>
   <data name="GetCoreVerFail" xml:space="preserve">
-    <value>Get v2ray-core version fail!</value>
+    <value>获取v2ray-core版本失败！</value>
   </data>
   <data name="ConfirmCloseWindow" xml:space="preserve">
-    <value>Close window?</value>
+    <value>关闭窗口?</value>
   </data>
   <data name="ServerListIsEmpty" xml:space="preserve">
-    <value>Server list is empty!</value>
+    <value>没服务器可导！</value>
   </data>
   <data name="DataTooBig" xml:space="preserve">
-    <value>Data too big. Please trim down the config file.</value>
+    <value>信息量太大，请裁减配置文件。</value>
   </data>
   <data name="EmptyLink" xml:space="preserve">
-    <value>Link is empty!</value>
+    <value>空链接！</value>
   </data>
   <data name="VistWikiPage" xml:space="preserve">
-    <value>Visit wiki page of this project?</value>
+    <value>访问本项目的wiki页面?</value>
   </data>
   <data name="CFnGoogle" xml:space="preserve">
-    <value>CF and Google</value>
+    <value>CF 和 Google</value>
   </data>
   <data name="DecodeVLinkFail" xml:space="preserve">
-    <value>Fail to decode v-link!</value>
+    <value>解码v-link失败!</value>
   </data>
   <data name="GenVLinkFail" xml:space="preserve">
-    <value>Fail to generate v-link!</value>
+    <value>生成v-link失败!</value>
   </data>
   <data name="VisitVlinkPage" xml:space="preserve">
-    <value>Vist v-link wiki page?</value>
+    <value>访问v-link的wiki说明页面？</value>
   </data>
   <data name="DecodeFail" xml:space="preserve">
-    <value>Decode fail.</value>
+    <value>解码失败</value>
   </data>
   <data name="Success" xml:space="preserve">
-    <value>Success.</value>
+    <value>成功</value>
   </data>
   <data name="NoLinkFound" xml:space="preserve">
-    <value>No links found.</value>
+    <value>没找到任何链接。</value>
   </data>
   <data name="NetworkTimeout" xml:space="preserve">
-    <value>Network timeout</value>
+    <value>网络连接超时</value>
   </data>
   <data name="Reason" xml:space="preserve">
-    <value>Reason</value>
+    <value>原因</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
   </data>
   <data name="DecodeImportFail" xml:space="preserve">
-    <value>Decode import fail!</value>
+    <value>解码Import失败!</value>
   </data>
   <data name="AnalysingImport" xml:space="preserve">
-    <value>Analysing import, please wait ...</value>
+    <value>正在分析import请稍等...</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
-    <value>File not found!</value>
+    <value>未能找到文件！</value>
   </data>
   <data name="UsingDecodeCache" xml:space="preserve">
-    <value>Use decode cache.</value>
+    <value>使用解码缓存</value>
   </data>
   <data name="ConfigTester" xml:space="preserve">
-    <value>ConfigTester</value>
+    <value>配置测试器</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>帮助</value>
   </data>
   <data name="Log" xml:space="preserve">
-    <value>Log</value>
+    <value>日志</value>
   </data>
   <data name="GenQRCode" xml:space="preserve">
-    <value>Generate QRCode</value>
+    <value>生成二维码</value>
   </data>
   <data name="ConfirmRemoveV2RayCore" xml:space="preserve">
-    <value>Remove v2ray-core from this computer?</value>
+    <value>从这台电脑中删除v2ray-core?</value>
   </data>
   <data name="FileInUse" xml:space="preserve">
-    <value>The file is in use. Please close v2ray-core first.</value>
+    <value>文件正在使用，请先关闭v2ray-core.</value>
   </data>
   <data name="ConfirmCloseWinWithoutSave" xml:space="preserve">
-    <value>Discard unsaved changes and close this window?</value>
+    <value>放弃未保存的修改并关闭窗口？</value>
   </data>
   <data name="AttachToV2rayCoreProcessFail" xml:space="preserve">
-    <value>Attach to v2ray-core process fail!</value>
+    <value>附加到v2ray-core进程失败！</value>
   </data>
   <data name="V2rayCoreExitAbnormally" xml:space="preserve">
-    <value>V2ray-core exit abnormally.</value>
+    <value>V2ray-core非正常终止！</value>
   </data>
   <data name="Options" xml:space="preserve">
-    <value>Options</value>
+    <value>选项</value>
   </data>
   <data name="NoSubsUrlAvailable" xml:space="preserve">
-    <value>No subscription links available.</value>
+    <value>没有可用的订阅链接</value>
   </data>
   <data name="DownloadFail" xml:space="preserve">
-    <value>Download fail!</value>
+    <value>下载失败！</value>
   </data>
   <data name="ConfirmDeleteControl" xml:space="preserve">
-    <value>Delete this item?</value>
-  </data>
-  <data name="SaveChangeFirst" xml:space="preserve">
-    <value>Please save the modified option first!</value>
+    <value>删除此项？</value>
   </data>
   <data name="ConfirmAllOptionWillBeReplaced" xml:space="preserve">
-    <value>All options will be replaced!
-Are you sure want to continue?</value>
+    <value>所有选项将被覆盖。确定要继续？</value>
   </data>
   <data name="ConfirmImportServers" xml:space="preserve">
-    <value>Import server/client configs from backup file?</value>
+    <value>从备份文件中导入服务器（客户端）配置？</value>
+  </data>
+  <data name="SaveChangeFirst" xml:space="preserve">
+    <value>请先保存已更改的配置项!</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>编辑</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>启动</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>停止</value>
   </data>
   <data name="CantFindOrgServDelFail" xml:space="preserve">
-    <value>Can find original server. Delete fail!</value>
+    <value>找不到原服务器，删除失败！</value>
   </data>
   <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
-  </data>
-  <data name="V2RayLink" xml:space="preserve">
-    <value>v2ray:// ...</value>
-  </data>
-  <data name="VmessLink" xml:space="preserve">
-    <value>vmess:// ...</value>
+    <value>复制</value>
   </data>
   <data name="CurSysProxy" xml:space="preserve">
-    <value>Current</value>
+    <value>当前</value>
   </data>
   <data name="NotSet" xml:space="preserve">
-    <value>not set</value>
+    <value>未设置</value>
   </data>
   <data name="SetAsSysProxy" xml:space="preserve">
-    <value>Set as system proxy</value>
+    <value>设为系统代理</value>
   </data>
   <data name="SysProxyRequireHTTPServer" xml:space="preserve">
-    <value>System proxy must be a HTTP server.</value>
+    <value>只有HTTP服务器才能设为系统代理</value>
   </data>
   <data name="StopServerFirst" xml:space="preserve">
-    <value>Stop server first, please!</value>
+    <value>请先停止服务器再修改</value>
   </data>
   <data name="ConfirmClearSysProxy" xml:space="preserve">
-    <value>Clear system proxy setting?</value>
+    <value>清除系统代理设定？</value>
   </data>
   <data name="ConfirmRestartAllAutorunServer" xml:space="preserve">
-    <value>Restart all autorun servers?</value>
+    <value>重启所有自启动服务器？</value>
   </data>
   <data name="ConfirmRestartAllServer" xml:space="preserve">
-    <value>Restart all running servers?</value>
+    <value>重启全部正在运行的服务器？</value>
   </data>
   <data name="ConfirmStopAllServer" xml:space="preserve">
-    <value>Stop all servers?</value>
+    <value>停止全部服务器？</value>
   </data>
   <data name="VisitV2rayCoreReleasePage" xml:space="preserve">
-    <value>Vist v2ray-core release page?</value>
+    <value>访问v2ray-core发布页面？</value>
   </data>
   <data name="VisitVGCIssuePage" xml:space="preserve">
-    <value>Vist V2RayGCon issue page?</value>
+    <value>访问V2RayGCon的issue页面？</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>删除</value>
   </data>
   <data name="ConfirmRestartAllSelectedServers" xml:space="preserve">
-    <value>Restart all selected servers?</value>
+    <value>重启所有选中服务器？</value>
   </data>
   <data name="ConfirmStopAllSelectedServers" xml:space="preserve">
-    <value>Stop all selected servers?</value>
+    <value>停止所有选中服务器？</value>
   </data>
   <data name="GetFreePortFail" xml:space="preserve">
-    <value>Fail to get free tcp port!</value>
+    <value>无法获取空闲端口！</value>
   </data>
   <data name="SpeedTest" xml:space="preserve">
-    <value>Speed test</value>
+    <value>速度测试</value>
   </data>
   <data name="Timeout" xml:space="preserve">
-    <value>Timeout</value>
+    <value>超时</value>
   </data>
   <data name="LastTestNoFinishYet" xml:space="preserve">
-    <value>Last test is not finished yet. Please wait till test finish.</value>
+    <value>上次测试未完成，请等测试完成。</value>
   </data>
   <data name="Testing" xml:space="preserve">
-    <value>Testing </value>
+    <value>正在测试</value>
   </data>
   <data name="TestWillTakeALongTime" xml:space="preserve">
-    <value>The test will take a very long time.
-Are you sure you want to continue?</value>
+    <value>测试需要很长时间，真的要测试？</value>
   </data>
   <data name="SpeedTestFinished" xml:space="preserve">
-    <value>Speed tests have finished.</value>
+    <value>已完成速度测试。</value>
   </data>
   <data name="ServersAreRunning" xml:space="preserve">
-    <value>servers are running.</value>
+    <value>个服务器正在运行</value>
   </data>
   <data name="ExitOtherVGCFirst" xml:space="preserve">
-    <value>Another V2RayGCon is running, please exit first.</value>
+    <value>另一个V2RayGCon正在运行，请先退出。</value>
   </data>
   <data name="SelectServerFirst" xml:space="preserve">
-    <value>Please select ther servers first.</value>
+    <value>请先选择要进行此操作的服务器</value>
   </data>
   <data name="LooksLikeABug" xml:space="preserve">
-    <value>Looks like you found a bug.
-Please send the following file to the author.</value>
+    <value>看来你遇到bug了,请将以下文件发给作者：</value>
   </data>
   <data name="PackageFail" xml:space="preserve">
-    <value>Package failed</value>
+    <value>打包失败</value>
   </data>
   <data name="PackageSuccess" xml:space="preserve">
-    <value>Package success</value>
+    <value>打包成功</value>
   </data>
   <data name="PackageDone" xml:space="preserve">
-    <value>Package done.</value>
+    <value>打包完成。</value>
   </data>
   <data name="SetSysProxyDone" xml:space="preserve">
-    <value>Set system proxy complete.</value>
+    <value>系统代理设置完成。</value>
   </data>
   <data name="LogOfThisServer" xml:space="preserve">
-    <value>Log of this server</value>
+    <value>此服务器日志</value>
   </data>
   <data name="Multiboxing" xml:space="preserve">
-    <value>Multiboxing</value>
+    <value>多开</value>
   </data>
   <data name="All" xml:space="preserve">
-    <value>All</value>
+    <value>全部</value>
   </data>
   <data name="NoMark" xml:space="preserve">
-    <value>No mark</value>
+    <value>未标记</value>
   </data>
   <data name="SysNotSupportTLS12" xml:space="preserve">
-    <value>Your system does not support TLS1.2.
-Please upgrade to .NET 4.5 or higher.
-Otherwise operations involving the network may fail.</value>
+    <value>你的系统不支持TLS1.2，请升级.net至4.5或更高版本。
+否则涉及网络的操作可能失败。</value>
   </data>
   <data name="Total" xml:space="preserve">
-    <value>Total</value>
+    <value>合计</value>
   </data>
   <data name="StatusBarTplSelectedItem" xml:space="preserve">
-    <value>Selecte {0}/{1} item(s)</value>
+    <value>选中{0}/{1}项</value>
   </data>
   <data name="StatusBarPagerMenuTpl" xml:space="preserve">
-    <value>Show page {0}.</value>
+    <value>第 {0} 页</value>
   </data>
   <data name="StatusBarPagerInfoTpl" xml:space="preserve">
-    <value>Page {0} of {1}</value>
+    <value>第{0}/{1}页</value>
   </data>
   <data name="StatusBarServerCountTpl" xml:space="preserve">
-    <value>Total {0} of {1} server(s).</value>
+    <value>共{0}/{1}个服务器</value>
   </data>
   <data name="StartPacServFail" xml:space="preserve">
-    <value>Start PAC server fail. 
-Please check port setting in form option.</value>
+    <value>启动PAC服务器失败，请检查选项中的端口设置</value>
   </data>
   <data name="SysProxyRequireHttpOrSocksMode" xml:space="preserve">
-    <value>Set mode to HTTP or SOCKS first, please!</value>
+    <value>请先把模式设为HTTP或SOCKS</value>
   </data>
   <data name="AutoTracker" xml:space="preserve">
-    <value>Auto tracker</value>
+    <value>自动追踪</value>
   </data>
   <data name="SetSysProxyFail" xml:space="preserve">
-    <value>Set system proxy fail!</value>
+    <value>设置系统代理失败！</value>
+  </data>
+  <data name="GetInboundInfoFail" xml:space="preserve">
+    <value>获取Inbound信息失败!</value>
+  </data>
+  <data name="GlobalProxyRequireHttpServer" xml:space="preserve">
+    <value>HTTP服务器才可以设置为全局代理</value>
+  </data>
+  <data name="PacProxyRequireSocksOrHttpServer" xml:space="preserve">
+    <value>SOCKS或HTTP服务器才可以设置为PAC代理</value>
+  </data>
+  <data name="VisitPacDebugger" xml:space="preserve">
+    <value>打开PAC调试器页面？</value>
   </data>
 </root>
