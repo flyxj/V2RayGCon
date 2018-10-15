@@ -428,7 +428,6 @@
     <None Include="Resource\Icon\TaskTray\CPPWin32Project_16x.png" />
     <None Include="Resource\Icon\TaskTray\CopyLongTextToClipboard_16x.png" />
     <None Include="Resource\Icon\TaskTray\CloseSolution_16x.png" />
-    <None Include="Resource\Icon\TaskTray\BorderElement_16x.png" />
     <None Include="Resource\Icon\TaskTray\AzureVirtualMachineExtension_16x.png" />
     <None Include="Resource\Icon\TaskTray\ASX_TransferDownload_blue_16x.png" />
     <None Include="Resource\Config\config_example.txt" />
