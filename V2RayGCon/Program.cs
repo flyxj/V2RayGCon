@@ -68,7 +68,6 @@ namespace V2RayGCon
             else
             {
                 MessageBox.Show(I18N.ExitOtherVGCFirst);
-
             }
             Lib.Sys.DllLoader.FreeLibrary(pShcoreDll);
         }

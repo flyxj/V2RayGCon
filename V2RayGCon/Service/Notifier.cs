@@ -11,13 +11,15 @@ namespace V2RayGCon.Service
         Setting setting;
         Servers servers;
 
-        Notifier()
+        Notifier() { }
+
+        public void Prepare(Setting setting, Servers servers)
         {
-            setting = Setting.Instance;
-            servers = Servers.Instance;
+            this.setting = setting;
+            this.servers = servers;
 
             CreateNotifyIcon();
-            setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
+            servers.OnRequireNotifierUpdate += UpdateNotifierTextHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -40,6 +42,7 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             ni.Visible = false;
+            servers.OnRequireNotifierUpdate -= UpdateNotifierTextHandler;
         }
         #endregion
 

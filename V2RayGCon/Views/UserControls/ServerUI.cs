@@ -10,6 +10,7 @@ namespace V2RayGCon.Views.UserControls
     public partial class ServerUI : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Service.Setting setting;
+        Service.Servers servers;
         Service.PacServer pacServer;
         Controller.CoreServerCtrl serverItem;
 
@@ -21,6 +22,7 @@ namespace V2RayGCon.Views.UserControls
         {
             setting = Service.Setting.Instance;
             pacServer = Service.PacServer.Instance;
+            servers = Service.Servers.Instance;
 
             this.serverItem = serverItem;
             InitializeComponent();
@@ -138,7 +140,7 @@ namespace V2RayGCon.Views.UserControls
         void RestartServer()
         {
             var server = this.serverItem;
-            server.parent.StopAllServersThen(
+            servers.StopAllServersThen(
                 () => server.RestartCoreThen());
         }
 
@@ -440,8 +442,7 @@ namespace V2RayGCon.Views.UserControls
                 return;
             }
             Cleanup();
-            serverItem.parent.DeleteServerByConfig(serverItem.config);
-
+            servers.DeleteServerByConfig(serverItem.config);
         }
 
         private void speedTestToolStripMenuItem_Click(object sender, EventArgs e)

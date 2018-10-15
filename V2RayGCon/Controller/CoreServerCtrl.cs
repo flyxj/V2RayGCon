@@ -11,11 +11,19 @@ namespace V2RayGCon.Controller
 {
     public class CoreServerCtrl
     {
+        [JsonIgnore]
+        Service.Cache cache;
+        [JsonIgnore]
+        Service.PacServer pacServer;
+        [JsonIgnore]
+        public Service.Servers servers;
+
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
-            OnRequireMenuUpdate;
+            OnRequireMenuUpdate,
+            OnRequireNotifierUpdate;
 
         /// <summary>
         /// false: stop true: start
@@ -50,6 +58,16 @@ namespace V2RayGCon.Controller
             overwriteInboundType = 0;
             inboundIP = "127.0.0.1";
             inboundPort = 1080;
+        }
+
+        public void Prepare(
+             Service.Cache cache,
+             Service.PacServer pacServer,
+            Service.Servers servers)
+        {
+            this.cache = cache;
+            this.pacServer = pacServer;
+            this.servers = servers;
 
             server = new Service.Core();
             server.OnLog += OnLogHandler;
@@ -59,9 +77,6 @@ namespace V2RayGCon.Controller
         #region non-serialize properties
         [JsonIgnore]
         public long speedTestResult;
-
-        [JsonIgnore]
-        public Service.Servers parent = null;
 
         [JsonIgnore]
         Views.WinForms.FormSingleServerLog logForm = null;
@@ -121,7 +136,6 @@ namespace V2RayGCon.Controller
                 return false;
             }
 
-            var pacServer = Service.PacServer.Instance;
             pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
             return true;
         }
@@ -324,8 +338,13 @@ namespace V2RayGCon.Controller
 
         public void StopCoreThen(Action next = null)
         {
-            OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(false));
-            Task.Factory.StartNew(() => server.StopCoreThen(next));
+            Task.Factory.StartNew(() => server.StopCoreThen(
+                () =>
+                {
+                    OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
+                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(false));
+                    next?.Invoke();
+                }));
         }
 
         public void RestartCoreThen(Action next = null)
@@ -376,9 +395,9 @@ namespace V2RayGCon.Controller
 
             this.mark = mark;
             if (!string.IsNullOrEmpty(mark)
-                && !(this.parent.GetMarkList().Contains(mark)))
+                && !(this.servers.GetMarkList().Contains(mark)))
             {
-                this.parent.UpdateMarkList();
+                this.servers.UpdateMarkList();
             }
             InvokeEventOnPropertyChange();
         }
@@ -528,11 +547,14 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
-            OnRequireKeepTrack(this, new Model.Data.BoolEvent(true));
-
             server.RestartCoreThen(
                 cfg.ToString(),
-                next,
+                () =>
+                {
+                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(true));
+                    OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
+                    next?.Invoke();
+                },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
         }
 
@@ -552,7 +574,6 @@ namespace V2RayGCon.Controller
                 { "outboundDetour","outDtrFreedom" },
             };
 
-            var cache = Service.Cache.Instance;
             foreach (var item in dict)
             {
                 var tpl = Lib.Utils.CreateJObject(item.Key);
@@ -593,8 +614,6 @@ namespace V2RayGCon.Controller
 
         JObject GetDecodedConfig(bool isUseCache, bool isIncludeSpeedTest, bool isIncludeActivate)
         {
-            var cache = Service.Cache.Instance.core;
-
             JObject cfg = null;
             try
             {
@@ -603,7 +622,7 @@ namespace V2RayGCon.Controller
                     Lib.Utils.InjectGlobalImport(config, isIncludeSpeedTest, isIncludeActivate) :
                     config);
 
-                cache[config] = cfg.ToString(Formatting.None);
+                cache.core[config] = cfg.ToString(Formatting.None);
 
             }
             catch { }
@@ -615,7 +634,7 @@ namespace V2RayGCon.Controller
                 {
                     try
                     {
-                        cfg = JObject.Parse(cache[config]);
+                        cfg = JObject.Parse(cache.core[config]);
                     }
                     catch (KeyNotFoundException) { }
                     SendLog(I18N.UsingDecodeCache);
@@ -666,8 +685,7 @@ namespace V2RayGCon.Controller
                 o["inbound"]["protocol"] = protocol;
                 o["inbound"]["listen"] = ip;
                 o["inbound"]["port"] = port;
-                o["inbound"]["settings"] =
-                    Service.Cache.Instance.tpl.LoadTemplate(part);
+                o["inbound"]["settings"] = cache.tpl.LoadTemplate(part);
 
                 if (inboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
                 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
@@ -8,25 +7,41 @@ namespace V2RayGCon.Service
 {
     class Launcher : Model.BaseClass.SingletonService<Launcher>
     {
-        Service.Setting setting;
-        Service.PacServer pacServer;
-        Service.Notifier notifier;
-        Service.Servers servers;
+        Setting setting;
+        Servers servers;
+        Notifier notifier;
 
         Launcher()
         {
-            Lib.Utils.SupportProtocolTLS12();
-
+            // warn-up
+            var cache = Cache.Instance;
+            var pacServer = PacServer.Instance;
             setting = Setting.Instance;
-            pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
 
-            Application.ApplicationExit += Cleanup;
-            Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
+            // dependency injection
+            pacServer.Prepare(setting);
+            servers.Prepare(setting, pacServer, cache);
+            notifier.Prepare(setting, servers);
 
-            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            Application.ApplicationExit += (s, a) =>
+            {
+                notifier.Cleanup();
+                servers.Cleanup();
+                pacServer.Cleanup();
+            };
+
+            Microsoft.Win32.SystemEvents.SessionEnding +=
+                (s, a) => Application.Exit();
+
+            Application.ThreadException +=
+                (s, a) => SaveUnHandledException(
+                    a.Exception.ToString());
+
+            AppDomain.CurrentDomain.UnhandledException +=
+                (s, a) => SaveUnHandledException(
+                    (a.ExceptionObject as Exception).ToString());
         }
 
         #region debug
@@ -56,7 +71,7 @@ namespace V2RayGCon.Service
         #region public method
         public void run()
         {
-            servers.Prepare(setting);
+            Lib.Utils.SupportProtocolTLS12();
 
             if (servers.IsEmpty())
             {
@@ -75,16 +90,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region unhandled exception
-        void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            SaveUnHandledException(e.Exception.ToString());
-        }
-
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            SaveUnHandledException((e.ExceptionObject as Exception).ToString());
-        }
-
         void ShowExceptionDetails()
         {
             System.Diagnostics.Process.Start(GetBugLogFileName());
@@ -123,15 +128,6 @@ namespace V2RayGCon.Service
                 File.WriteAllText(bugFileName, content);
             }
             catch { }
-        }
-        #endregion
-
-        #region private method
-        void Cleanup(object sender, EventArgs args)
-        {
-            notifier.Cleanup();
-            servers.Cleanup();
-            pacServer.Cleanup();
         }
         #endregion
     }

@@ -248,32 +248,5 @@ namespace V2RayGCon.Model.Data
 
             return d;
         }
-
-        // servers summary
-        public static Dictionary<string, string[]> servInfoKeys = ServInfoKeysHelper();
-        static Dictionary<string, string[]> ServInfoKeysHelper()
-        {
-            var streamType = "outbound.streamSettings.network";
-            var type = "outbound.streamSettings.kcpSettings.header.type";
-            var path = "outbound.streamSettings.wsSettings.path";
-            var tls = "outbound.streamSettings.security";
-
-            var ssIP = "outbound.settings.servers.0.address";
-            var ssPort = "outbound.settings.servers.0.port";
-
-            var vmessIP = "outbound.settings.vnext.0.address";
-            var vmessPort = "outbound.settings.vnext.0.port";
-
-            var keys = new Dictionary<string, string[]>();
-
-            // ip,port,tls, path,streamType,type
-            keys.Add("shadowsocks", new string[] {
-                ssIP,ssPort,tls,path,streamType,type});
-
-            keys.Add("vmess", new string[] {
-                vmessIP,vmessPort,tls,path,streamType,type});
-
-            return keys;
-        }
     }
 }

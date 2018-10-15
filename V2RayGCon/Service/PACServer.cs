@@ -10,21 +10,24 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
-    class PacServer : Model.BaseClass.SingletonService<PacServer>
+    public class PacServer : Model.BaseClass.SingletonService<PacServer>
     {
-        public event EventHandler OnPACServerStatusChanged;
+        Setting setting;
 
+        public event EventHandler OnPACServerStatusChanged;
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
         Lib.Nets.SimpleWebServer webServer = null;
         object webServerLock = new object();
-        Setting setting;
+
         Dictionary<bool, string[]> defaultPacCache = null;
         string customPacCache = string.Empty;
         FileSystemWatcher customPacFileWatcher = null;
 
-        PacServer()
+        PacServer() { }
+
+        public void Prepare(Setting setting)
         {
-            setting = Setting.Instance;
+            this.setting = setting;
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             ClearCache();
             var pacSetting = setting.GetPacServerSettings();

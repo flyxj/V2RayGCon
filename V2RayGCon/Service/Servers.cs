@@ -13,10 +13,18 @@ namespace V2RayGCon.Service
 {
     public class Servers : Model.BaseClass.SingletonService<Servers>
     {
+        Setting setting = null;
+        PacServer pacServer = null;
+        Cache cache = null;
+
+        public event EventHandler<Model.Data.StrEvent>
+            OnRequireNotifierUpdate;
+
         public event EventHandler
             OnRequireMenuUpdate,
             OnRequireStatusBarUpdate,
             OnRequireFlyPanelUpdate;
+
 
         List<Controller.CoreServerCtrl> serverList = null;
         List<string> markList = null;
@@ -27,11 +35,27 @@ namespace V2RayGCon.Service
             lazyUpdateNotifyTextTimer = null;
 
         object serverListWriteLock = new object();
-        Setting setting = null;
 
         Servers()
         {
             isTesting = false;
+        }
+
+        public void Prepare(
+           Setting setting,
+           PacServer pacServer,
+           Cache cache)
+        {
+            this.cache = cache;
+            this.setting = setting;
+            this.pacServer = pacServer;
+            this.serverList = setting.LoadServerList();
+
+            foreach (var server in serverList)
+            {
+                server.Prepare(cache, pacServer, this);
+                BindEventsTo(server);
+            }
         }
 
         #region property
@@ -303,11 +327,9 @@ namespace V2RayGCon.Service
             }
 
             lazySaveServerListTimer.Start();
-
-            LazyUpdateNotifyText();
         }
 
-        void LazyUpdateNotifyText()
+        void LazyUpdateNotifyTextHandler(object sender, EventArgs args)
         {
             if (lazyUpdateNotifyTextTimer == null)
             {
@@ -320,6 +342,15 @@ namespace V2RayGCon.Service
             lazyUpdateNotifyTextTimer.Start();
         }
 
+        void InvokeEventOnRequireNotifierUpdate(string text)
+        {
+            try
+            {
+                OnRequireNotifierUpdate?.Invoke(this, new Model.Data.StrEvent(text));
+            }
+            catch { }
+        }
+
         void UpdateNotifierText()
         {
             var list = serverList
@@ -329,37 +360,33 @@ namespace V2RayGCon.Service
 
             var count = list.Count;
 
-            if (count <= 0)
+            if (count <= 0 || count > 3)
             {
-                setting.UpdateNotifierText();
+                InvokeEventOnRequireNotifierUpdate(
+                    count <= 0 ?
+                    I18N.Description :
+                    count.ToString() + I18N.ServersAreRunning);
                 return;
             }
 
-            if (count < 4)
+            var texts = new List<string>();
+
+            Action done = () =>
             {
+                InvokeEventOnRequireNotifierUpdate(
+                    string.Join(Environment.NewLine, texts));
+            };
 
-                var textList = new List<string>();
-
-                Action done = () =>
+            Action<int, Action> worker = (index, next) =>
+            {
+                list[index].GetterInboundInfoFor((s) =>
                 {
-                    var text = string.Join(System.Environment.NewLine, textList);
-                    setting.UpdateNotifierText(text);
-                };
+                    texts.Add(s);
+                    next?.Invoke();
+                });
+            };
 
-                Action<int, Action> worker = (index, next) =>
-                {
-                    list[index].GetterInboundInfoFor((s) =>
-                    {
-                        textList.Add(s);
-                        next();
-                    });
-                };
-
-                Lib.Utils.ChainActionHelperAsync(count, worker, done);
-                return;
-            }
-
-            setting.UpdateNotifierText(count.ToString() + I18N.ServersAreRunning);
+            Lib.Utils.ChainActionHelperAsync(count, worker, done);
         }
 
         void InvokeEventOnRequireStatusBarUpdate(object sender, EventArgs args)
@@ -398,7 +425,6 @@ namespace V2RayGCon.Service
                 lock (serverListWriteLock)
                 {
                     ReleaseEventsFrom(server);
-                    server.parent = null;
                     serverList.RemoveAt(index);
                 }
                 next?.Invoke();
@@ -407,7 +433,6 @@ namespace V2RayGCon.Service
 
         JObject ExtractOutboundInfoFromConfig(string configString, string id, int portBase, int index, string tagPrefix)
         {
-            var cache = Service.Cache.Instance;
             var pkg = cache.tpl.LoadPackage("package");
             var config = Lib.ImportParser.Parse(configString);
 
@@ -433,7 +458,7 @@ namespace V2RayGCon.Service
 
         JObject GenVnextConfigPart(int index, int basePort, string id)
         {
-            var vnext = Service.Cache.Instance.tpl.LoadPackage("vnext");
+            var vnext = cache.tpl.LoadPackage("vnext");
             vnext["outbound"]["settings"]["vnext"][0]["port"] = basePort + index;
             vnext["outbound"]["settings"]["vnext"][0]["users"][0]["id"] = id;
             return vnext;
@@ -645,7 +670,6 @@ namespace V2RayGCon.Service
 
         public void PackSelectedServers()
         {
-            var cache = Service.Cache.Instance;
             var list = GetSelectedServerList(true);
 
             var packages = JObject.Parse(@"{}");
@@ -815,7 +839,10 @@ namespace V2RayGCon.Service
                 {
                     serverList[index].server.StopCoreThen(next);
                 }
-                else { next(); }
+                else
+                {
+                    next();
+                }
             };
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, lambda);
@@ -901,18 +928,6 @@ namespace V2RayGCon.Service
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, done);
         }
 
-        public void Prepare(Setting setting)
-        {
-            this.setting = setting;
-            this.serverList = setting.LoadServerList();
-
-            foreach (var server in serverList)
-            {
-                server.parent = this;
-                BindEventsTo(server);
-            }
-        }
-
         public void DeleteServerByConfig(string config)
         {
             if (isTesting)
@@ -938,6 +953,11 @@ namespace V2RayGCon.Service
                 }));
         }
 
+        public bool IsServerItemExist(string config)
+        {
+            return serverList.Any(s => s.config == config);
+        }
+
         public void BindEventsTo(Controller.CoreServerCtrl server)
         {
             server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
@@ -945,11 +965,7 @@ namespace V2RayGCon.Service
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
             server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
-        }
-
-        public bool IsServerItemExist(string config)
-        {
-            return serverList.Any(s => s.config == config);
+            server.OnRequireNotifierUpdate += LazyUpdateNotifyTextHandler;
         }
 
         public void ReleaseEventsFrom(Controller.CoreServerCtrl server)
@@ -959,6 +975,7 @@ namespace V2RayGCon.Service
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
             server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
+            server.OnRequireNotifierUpdate -= LazyUpdateNotifyTextHandler;
         }
 
         public bool AddServer(string config, string mark, bool quiet = false)
@@ -980,7 +997,7 @@ namespace V2RayGCon.Service
                 serverList.Add(newServer);
             }
 
-            newServer.parent = this;
+            newServer.Prepare(cache, pacServer, this);
             BindEventsTo(newServer);
 
             if (!quiet)

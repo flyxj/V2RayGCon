@@ -221,20 +221,21 @@ namespace V2RayGCon.Lib
 
         public static string GetSummaryFromConfig(JObject config)
         {
-            var protocol = GetValue<string>(config, "outbound.protocol");
-            var ip = string.Empty;
-            if (protocol == "vmess" || protocol == "shadowsocks")
+            var protocol = GetValue<string>(config, "outbound.protocol")?.ToLower();
+            string ipKey = null;
+            switch (protocol)
             {
-                var keys = Model.Data.Table.servInfoKeys[protocol];
-                ip = GetValue<string>(config, keys[0]); // ip
+                case "vmess":
+                    ipKey = "outbound.settings.vnext.0.address";
+                    break;
+                case "shadowsocks":
+                    ipKey = "outbound.settings.servers.0.address";
+                    protocol = "ss";
+                    break;
             }
 
-            var summary = protocol;
-            if (!string.IsNullOrEmpty(ip))
-            {
-                summary += "@" + ip;
-            }
-            return summary;
+            string ip = GetValue<string>(config, ipKey);
+            return protocol + (ip == null ? string.Empty : "@" + ip);
         }
 
         static bool Contains(JProperty main, JProperty sub)
@@ -536,6 +537,11 @@ namespace V2RayGCon.Lib
 
         public static JToken GetKey(JToken json, string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
             var curPos = json;
             var keys = path.Split('.');
 
