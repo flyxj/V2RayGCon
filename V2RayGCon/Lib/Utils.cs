@@ -493,17 +493,6 @@ namespace V2RayGCon.Lib
             ConcatJson(ref mixin, backup);
         }
 
-        public static string InjectGlobalImport(string config, bool isIncludeSpeedTest, bool isIncludeActivate)
-        {
-            JObject import = ImportItemList2JObject(
-                Service.Setting.Instance.GetGlobalImportItems(),
-                isIncludeSpeedTest,
-                isIncludeActivate);
-
-            MergeJson(ref import, JObject.Parse(config));
-            return import.ToString();
-        }
-
         public static JObject ImportItemList2JObject(
             List<Model.Data.ImportItem> items,
             bool isIncludeSpeedTest,
@@ -710,28 +699,7 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static JObject SSLink2Config(string ssLink)
-        {
-            var cache = Service.Cache.Instance;
 
-            Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
-            if (ss == null)
-            {
-                return null;
-            }
-
-            TryParseIPAddr(ss.addr, out string ip, out int port);
-
-            var config = cache.tpl.LoadTemplate("tplImportSS");
-
-            var setting = config["outbound"]["settings"]["servers"][0];
-            setting["address"] = ip;
-            setting["port"] = port;
-            setting["method"] = ss.method;
-            setting["password"] = ss.pass;
-
-            return config.DeepClone() as JObject;
-        }
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
@@ -780,70 +748,6 @@ namespace V2RayGCon.Lib
             }
 
             return vmess;
-        }
-
-        public static JObject Vmess2Config(Model.Data.Vmess vmess)
-        {
-            var cache = Service.Cache.Instance;
-
-            if (vmess == null)
-            {
-                return null;
-            }
-
-            // prepare template
-            var config = cache.tpl.LoadTemplate("tplImportVmess");
-            config["v2raygcon"]["alias"] = vmess.ps;
-
-            var cPos = config["outbound"]["settings"]["vnext"][0];
-            cPos["address"] = vmess.add;
-            cPos["port"] = Lib.Utils.Str2Int(vmess.port);
-            cPos["users"][0]["id"] = vmess.id;
-            cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
-
-            // insert stream type
-            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
-            string streamType = vmess.net.ToLower();
-
-            if (!streamTypes.Contains(streamType))
-            {
-                return config.DeepClone() as JObject;
-            }
-
-            config["outbound"]["streamSettings"] =
-                cache.tpl.LoadTemplate(streamType);
-
-            try
-            {
-                switch (streamType)
-                {
-                    case "kcp":
-                        config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
-                        break;
-                    case "ws":
-                        config["outbound"]["streamSettings"]["wsSettings"]["path"] =
-                            string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
-                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
-                        {
-                            config["outbound"]["streamSettings"]["wsSettings"]["headers"]["Host"] = vmess.host;
-                        }
-                        break;
-                    case "h2":
-                        config["outbound"]["streamSettings"]["httpSettings"]["path"] = vmess.path;
-                        config["outbound"]["streamSettings"]["httpSettings"]["host"] = Str2JArray(vmess.host);
-                        break;
-                }
-
-            }
-            catch { }
-
-            try
-            {
-                // must place at the end. cos this key is add by streamSettings
-                config["outbound"]["streamSettings"]["security"] = vmess.tls;
-            }
-            catch { }
-            return config.DeepClone() as JObject;
         }
 
         public static JArray Str2JArray(string content)

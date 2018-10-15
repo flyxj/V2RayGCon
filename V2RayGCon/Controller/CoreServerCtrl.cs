@@ -17,6 +17,8 @@ namespace V2RayGCon.Controller
         Service.PacServer pacServer;
         [JsonIgnore]
         public Service.Servers servers;
+        [JsonIgnore]
+        public Service.Setting setting;
 
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler
@@ -60,14 +62,16 @@ namespace V2RayGCon.Controller
             inboundPort = 1080;
         }
 
-        public void Prepare(
+        public void Run(
              Service.Cache cache,
+             Service.Setting setting,
              Service.PacServer pacServer,
             Service.Servers servers)
         {
             this.cache = cache;
             this.pacServer = pacServer;
             this.servers = servers;
+            this.setting = setting;
 
             server = new Service.Core();
             server.OnLog += OnLogHandler;
@@ -284,7 +288,7 @@ namespace V2RayGCon.Controller
             Task.Factory.StartNew(() =>
             {
                 var configString = isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(this.config, false, true) :
+                    InjectGlobalImport(this.config, false, true) :
                     this.config;
                 try
                 {
@@ -450,6 +454,17 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region private method
+        string InjectGlobalImport(string config, bool isIncludeSpeedTest, bool isIncludeActivate)
+        {
+            JObject import = Lib.Utils.ImportItemList2JObject(
+                setting.GetGlobalImportItems(),
+                isIncludeSpeedTest,
+                isIncludeActivate);
+
+            Lib.Utils.MergeJson(ref import, JObject.Parse(config));
+            return import.ToString();
+        }
+
         string PrepareSpeedTestConfig(int port)
         {
             var empty = string.Empty;
@@ -619,7 +634,7 @@ namespace V2RayGCon.Controller
             {
                 cfg = Lib.ImportParser.Parse(
                     isInjectImport ?
-                    Lib.Utils.InjectGlobalImport(config, isIncludeSpeedTest, isIncludeActivate) :
+                    InjectGlobalImport(config, isIncludeSpeedTest, isIncludeActivate) :
                     config);
 
                 cache.core[config] = cfg.ToString(Formatting.None);

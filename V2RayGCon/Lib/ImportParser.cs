@@ -8,19 +8,14 @@ namespace V2RayGCon.Lib
 {
     public class ImportParser
     {
-        #region public method
-        public static List<string> GetImportUrls(JObject config)
+        static Service.Cache cache;
+
+        public static void Run(Service.Cache cacheServ)
         {
-            List<string> urls = null;
-            var empty = new List<string>();
-            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
-            if (import != null && import is JObject)
-            {
-                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
-            }
-            return urls ?? new List<string>();
+            cache = cacheServ;
         }
 
+        #region public method
         /*
          * exceptions  
          * test<FormatException> base64 decode fail
@@ -93,15 +88,26 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region private method
+        static List<string> GetImportUrls(JObject config)
+        {
+            List<string> urls = null;
+            var empty = new List<string>();
+            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
+            if (import != null && import is JObject)
+            {
+                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
+            }
+            return urls ?? new List<string>();
+        }
+
         static List<string> GetContentFromCache(List<string> urls)
         {
             return urls.Count <= 0 ?
                 urls :
                 Lib.Utils.ExecuteInParallel<string, string>(
                     urls,
-                    (url) => Service.Cache.Instance.html[url]);
+                    (url) => cache.html[url]);
         }
-
         #endregion
 
     }

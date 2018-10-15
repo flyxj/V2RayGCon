@@ -45,7 +45,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.FormClosed += (s, a) =>
             {
-                Service.Servers.Instance.LazyGC();
+                Service.Setting.Instance.LazyGC();
             };
         }
 

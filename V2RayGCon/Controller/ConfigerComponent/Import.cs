@@ -11,6 +11,8 @@ namespace V2RayGCon.Controller.ConfigerComponet
 {
     class Import : ConfigerComponentController
     {
+        Service.Setting setting;
+
         Scintilla editor;
         CheckBox cboxGlobalImport;
 
@@ -21,6 +23,8 @@ namespace V2RayGCon.Controller.ConfigerComponet
             Button clearCache,
             Button copy)
         {
+            this.setting = Service.Setting.Instance;
+
             this.editor = Lib.UI.CreateScintilla(container, true);
             this.cboxGlobalImport = globalImport;
             DataBinding();
@@ -86,51 +90,60 @@ namespace V2RayGCon.Controller.ConfigerComponet
         public override void Update(JObject config)
         {
             content = I18N.AnalysingImport;
+
             var plainText = config.ToString();
-            // todo
+            if (cboxGlobalImport.Checked)
+            {
+                var configWithGlobalImports =
+                    Lib.Utils.ImportItemList2JObject(
+                        setting.GetGlobalImportItems(), false, true);
+
+                Lib.Utils.MergeJson(ref configWithGlobalImports, config);
+                plainText = configWithGlobalImports.ToString();
+            }
+
             Task.Factory.StartNew(() =>
             {
-                var result = "{}";
-                try
-                {
-                    result = Lib.ImportParser.Parse(
-                        cboxGlobalImport.Checked ?
-                        Lib.Utils.InjectGlobalImport(plainText, false, true) :
-                            plainText)
-                            .ToString();
-
-                    Service.Servers.Instance.LazyGC();
-                }
-                catch (FileNotFoundException)
-                {
-                    result = string.Format(
-                            "{0}{1}{2}",
-                            I18N.DecodeImportFail,
-                            Environment.NewLine,
-                            I18N.FileNotFound);
-                }
-                catch (FormatException)
-                {
-                    result = I18N.DecodeImportFail;
-                }
-                catch (System.Net.WebException)
-                {
-                    result = string.Format(
-                            "{0}{1}{2}",
-                            I18N.DecodeImportFail,
-                            Environment.NewLine,
-                            I18N.NetworkTimeout);
-                }
-                catch (Newtonsoft.Json.JsonReaderException)
-                {
-                    result = I18N.DecodeImportFail;
-                }
+                string result = ParseConfig(plainText);
+                setting.LazyGC();
 
                 editor.Invoke((MethodInvoker)delegate
                 {
                     content = result;
                 });
+
             });
+        }
+
+        private static string ParseConfig(string plainText)
+        {
+            try
+            {
+                return Lib.ImportParser.Parse(plainText).ToString();
+            }
+            catch (FileNotFoundException)
+            {
+                return string.Format("{0}{1}{2}",
+                        I18N.DecodeImportFail,
+                        Environment.NewLine,
+                        I18N.FileNotFound);
+            }
+            catch (FormatException)
+            {
+                return I18N.DecodeImportFail;
+            }
+            catch (System.Net.WebException)
+            {
+                return string.Format(
+                        "{0}{1}{2}",
+                        I18N.DecodeImportFail,
+                        Environment.NewLine,
+                        I18N.NetworkTimeout);
+            }
+            catch (Newtonsoft.Json.JsonReaderException)
+            {
+                return I18N.DecodeImportFail;
+            }
         }
         #endregion
     }

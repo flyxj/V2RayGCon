@@ -25,7 +25,7 @@ namespace V2RayGCon.Service
 
         PacServer() { }
 
-        public void Prepare(Setting setting)
+        public void Run(Setting setting)
         {
             this.setting = setting;
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();

@@ -88,7 +88,7 @@ namespace V2RayGCon.Views.WinForms
                 servers.OnRequireMenuUpdate -= MenuUpdateHandler;
                 setting.SaveFormRect(this);
                 toolsPanelController.Dispose();
-                servers.LazyGC();
+                setting.LazyGC();
             };
         }
 

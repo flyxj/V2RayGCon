@@ -49,7 +49,7 @@ namespace V2RayGCon.Views.WinForms
                 setting.SaveFormRect(this);
                 // ToolStripManager.SaveSettings(this);
                 formMainCtrl.Cleanup();
-                servers.LazyGC();
+                setting.LazyGC();
             };
 
             this.Text = string.Format(

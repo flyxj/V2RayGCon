@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
@@ -20,16 +22,21 @@ namespace V2RayGCon.Service
             servers = Servers.Instance;
             notifier = Notifier.Instance;
 
+            // set culture
+            SetCulture(setting.culture);
+
             // dependency injection
-            pacServer.Prepare(setting);
-            servers.Prepare(setting, pacServer, cache);
-            notifier.Prepare(setting, servers);
+            Lib.ImportParser.Run(cache);
+            pacServer.Run(setting);
+            servers.Run(setting, pacServer, cache);
+            notifier.Run(setting, servers);
 
             Application.ApplicationExit += (s, a) =>
             {
                 notifier.Cleanup();
                 servers.Cleanup();
                 pacServer.Cleanup();
+                setting.Cleanup();
             };
 
             Microsoft.Win32.SystemEvents.SessionEnding +=
@@ -43,6 +50,35 @@ namespace V2RayGCon.Service
                 (s, a) => SaveUnHandledException(
                     (a.ExceptionObject as Exception).ToString());
         }
+
+        #region private method
+        void SetCulture(Model.Data.Enum.Cultures culture)
+        {
+            string cultureString = null;
+
+            switch (culture)
+            {
+                case Model.Data.Enum.Cultures.enUS:
+                    cultureString = "";
+                    break;
+                case Model.Data.Enum.Cultures.zhCN:
+                    cultureString = "zh-CN";
+                    break;
+                case Model.Data.Enum.Cultures.auto:
+                    return;
+            }
+
+            var ci = new CultureInfo(cultureString);
+
+            Thread.CurrentThread.CurrentCulture.GetType()
+                .GetProperty("DefaultThreadCurrentCulture")
+                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
+
+            Thread.CurrentThread.CurrentCulture.GetType()
+                .GetProperty("DefaultThreadCurrentUICulture")
+                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
+        }
+        #endregion
 
         #region debug
 #if DEBUG

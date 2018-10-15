@@ -6,27 +6,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
-        Setting()
-        {
-            switch (culture)
-            {
-                case Model.Data.Enum.Cultures.enUS:
-                    SetCulture("");
-                    break;
-                case Model.Data.Enum.Cultures.zhCN:
-                    SetCulture("zh-CN");
-                    break;
-            }
-        }
-
         public event EventHandler<Model.Data.StrEvent> OnLog;
+
+        Lib.Sys.CancelableTimeout lazyGCTimer = null;
+
+        // Singleton need this private ctor.
+        Setting() { }
 
         #region Properties
         public bool isServerTrackerOn = false;
@@ -127,6 +119,24 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void Cleanup()
+        {
+            lazyGCTimer?.Release();
+        }
+
+        public void LazyGC()
+        {
+            // Create on demand.
+            if (lazyGCTimer == null)
+            {
+                lazyGCTimer = new Lib.Sys.CancelableTimeout(
+                    () => GC.Collect(),
+                    1000 * Lib.Utils.Str2Int(StrConst.LazyGCDelay));
+            }
+
+            lazyGCTimer.Start();
+        }
+
         public void SaveServerTrackerSetting(Model.Data.ServerTracker serverTrackerSetting)
         {
             Properties.Settings.Default.ServerTracker =
@@ -338,18 +348,7 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        private static void SetCulture(string cultureString)
-        {
-            var ci = new CultureInfo(cultureString);
 
-            Thread.CurrentThread.CurrentCulture.GetType()
-                .GetProperty("DefaultThreadCurrentCulture")
-                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
-
-            Thread.CurrentThread.CurrentCulture.GetType()
-                .GetProperty("DefaultThreadCurrentUICulture")
-                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
-        }
 
         Dictionary<string, Rectangle> winFormRectListCache = null;
         Dictionary<string, Rectangle> GetWinFormRectList()

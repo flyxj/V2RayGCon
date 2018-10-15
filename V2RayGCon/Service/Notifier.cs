@@ -13,7 +13,7 @@ namespace V2RayGCon.Service
 
         Notifier() { }
 
-        public void Prepare(Setting setting, Servers servers)
+        public void Run(Setting setting, Servers servers)
         {
             this.setting = setting;
             this.servers = servers;
