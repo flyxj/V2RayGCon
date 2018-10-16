@@ -597,4 +597,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="VisitPacDebugger" xml:space="preserve">
     <value>打开PAC调试器页面？</value>
   </data>
+  <data name="NoServerCapableOfSysProxy" xml:space="preserve">
+    <value>没有可用作系统代理的服务器。</value>
+  </data>
 </root>

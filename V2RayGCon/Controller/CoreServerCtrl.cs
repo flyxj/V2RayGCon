@@ -141,6 +141,8 @@ namespace V2RayGCon.Controller
             }
 
             pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
+            SendLog(I18N.SetAsSysProxy);
+
             return true;
         }
 

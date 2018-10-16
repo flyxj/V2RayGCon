@@ -610,4 +610,7 @@ Please check port setting in form option.</value>
   <data name="VisitPacDebugger" xml:space="preserve">
     <value>Visit PAC debugger webpage?</value>
   </data>
+  <data name="NoServerCapableOfSysProxy" xml:space="preserve">
+    <value>No server capable of system proxy.</value>
+  </data>
 </root>

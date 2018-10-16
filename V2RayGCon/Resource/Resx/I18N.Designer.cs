@@ -966,6 +966,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 No server capable of system proxy. 的本地化字符串。
+        /// </summary>
+        internal static string NoServerCapableOfSysProxy {
+            get {
+                return ResourceManager.GetString("NoServerCapableOfSysProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No subscription links available. 的本地化字符串。
         /// </summary>
         internal static string NoSubsUrlAvailable {

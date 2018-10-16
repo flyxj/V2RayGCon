@@ -129,9 +129,9 @@ namespace V2RayGCon.Service
             var curTrackerSetting = GenCurTrackerSetting(servCtrl.config, isStart);
             var isGlobal = false;
             curTrackerSetting.curServer = null;
+            var proxySetting = setting.GetSysProxySetting();
 
-            switch (Service.PacServer.DetectSystemProxyMode(
-                setting.GetSysProxySetting()))
+            switch (PacServer.DetectSystemProxyMode(proxySetting))
             {
                 case Model.Data.Enum.SystemProxyMode.None:
                     setting.SaveServerTrackerSetting(curTrackerSetting);
@@ -162,8 +162,9 @@ namespace V2RayGCon.Service
 
             // 没有可用服务器时不要清空代理设置
             // 否则全部重启时会丢失代理设置
-            if (isStart && curTrackerSetting.curServer != servCtrl.config)
+            if (curTrackerSetting.curServer == null)
             {
+                OnSendLogHandler(this, new Model.Data.StrEvent(I18N.NoServerCapableOfSysProxy));
                 Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
             }
 
