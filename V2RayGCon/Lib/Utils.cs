@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -560,6 +561,13 @@ namespace V2RayGCon.Lib
             return GetValue<T>(json, $"{prefix}.{key}");
         }
 
+        /// <summary>
+        /// return null if not exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static T GetValue<T>(JToken json, string path)
         {
             var key = GetKey(json, path);
@@ -953,6 +961,18 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static string SHA256(string randomString)
+        {
+            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
+        }
+
         public static bool PartialMatch(string source, string partial)
         {
             var s = source.ToLower();

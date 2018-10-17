@@ -18,6 +18,8 @@ namespace V2RayGCon.Service
             // warn-up
             var cache = Cache.Instance;
             var pacServer = PacServer.Instance;
+            var cmder = Cmder.Instance;
+
             setting = Setting.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
@@ -29,6 +31,7 @@ namespace V2RayGCon.Service
             Lib.ImportParser.Run(cache);
             pacServer.Run(setting);
             servers.Run(setting, pacServer, cache);
+            cmder.Run(setting, servers, pacServer);
             notifier.Run(setting, servers);
 
             Application.ApplicationExit += (s, a) =>
