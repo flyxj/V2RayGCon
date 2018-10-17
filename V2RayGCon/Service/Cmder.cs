@@ -62,16 +62,16 @@ namespace V2RayGCon.Service
         #region commands
         void InitCmdHandler()
         {
-            RegistCmd("echo", s => s);
-            RegistCmd("getServersInfo", GetServersInfo);
+            RegistCmd("Echo", s => s);
+            RegistCmd("GetServersInfo", GetServersInfo);
+            RegistCmd("ShowAllCmd", _ => string.Join(",", cmds.Keys));
         }
 
-        string GetServersInfo(string param)
+        string GetServersInfo(string _)
         {
             var list = servers.GetServerList()
                 .Select(s => new servInfo(s))
                 .ToList();
-
             return JsonConvert.SerializeObject(list);
         }
         #endregion
@@ -83,7 +83,6 @@ namespace V2RayGCon.Service
             {
                 throw new ArgumentException($"Command already existed: {name}");
             }
-
             cmds[name] = func;
         }
 
@@ -135,13 +134,12 @@ namespace V2RayGCon.Service
 
             if (post == null
                 || string.IsNullOrEmpty(cmd)
-                || !cmds.ContainsKey(cmd)
-                || param == null)
+                || !cmds.ContainsKey(cmd))
             {
                 return GenRespose(false, "Bad post request params!");
             }
 
-            var result = cmds[cmd](param);
+            var result = cmds[cmd](param ?? "");
             return GenRespose(result != null, result ?? "");
         }
         #endregion

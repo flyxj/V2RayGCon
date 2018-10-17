@@ -24,7 +24,6 @@ namespace V2RayGCon.Service
             servers = Servers.Instance;
             notifier = Notifier.Instance;
 
-            // set culture
             SetCulture(setting.culture);
 
             // dependency injection

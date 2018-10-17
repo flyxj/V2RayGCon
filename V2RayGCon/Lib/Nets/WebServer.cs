@@ -76,6 +76,14 @@ namespace V2RayGCon.Lib.Nets
                                 {
                                     ctx.Response.ContentType = rsp.Item2;
                                 }
+                                //// cors
+                                //if (ctx.Request.HttpMethod.ToLower() == "post")
+                                //{
+                                //    ctx.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+                                //    ctx.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST");
+                                //    ctx.Response.AddHeader("Access-Control-Max-Age", "1728000");
+                                //}
+                                //ctx.Response.AppendHeader("Access-Control-Allow-Origin", "*");
                                 ctx.Response.ContentLength64 = buf.Length;
                                 ctx.Response.OutputStream.Write(buf, 0, buf.Length);
                             }

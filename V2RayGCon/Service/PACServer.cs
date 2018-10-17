@@ -326,7 +326,7 @@ namespace V2RayGCon.Service
 
         Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
-            if (request.HttpMethod == "POST")
+            if (request.HttpMethod.ToLower() == "post")
             {
                 var result = postRequestHandler?.Invoke(request);
                 return new Tuple<string, string>(result ?? "no handler", "application/json");
@@ -362,7 +362,10 @@ namespace V2RayGCon.Service
         private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
         {
             var tpl = StrConst.PacDebuggerTpl;
-            var html = tpl.Replace("__PacServerUrl__", GenPacUrl(urlParam));
+            var url = GenPacUrl(urlParam);
+            var prefix = url.Split('?')[0];
+            var html = tpl.Replace("__PacServerUrl__", url)
+                .Replace("__PacPrefixUrl__", prefix);
             var mime = "text/html; charset=utf-8";
             return new Tuple<string, string>(html, mime);
         }
