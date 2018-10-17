@@ -827,31 +827,42 @@ namespace V2RayGCon.Lib
         #region net
         public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
-            var timeout = Str2Int(StrConst.SpeedTestTimeout);
+            var timeout = Str2Int(StrConst.SpeedTestTimeout) * 1000;
 
             long elasped = long.MaxValue;
-            using (WebClient wc = new Lib.Nets.TimedWebClient
+            try
             {
-                Encoding = System.Text.Encoding.UTF8,
-                Timeout = timeout * 1000,
-            })
-            {
-                try
+                using (WebClient wc = new Lib.Nets.TimedWebClient
                 {
+                    Encoding = System.Text.Encoding.UTF8,
+                    Timeout = timeout,
+                })
+                {
+
                     if (port > 0)
                     {
                         wc.Proxy = new WebProxy("127.0.0.1", port);
                     }
+
+                    AutoResetEvent speedTestCompleted = new AutoResetEvent(false);
+                    wc.DownloadStringCompleted += (s, a) => speedTestCompleted.Set();
+
                     Stopwatch sw = new Stopwatch();
                     sw.Reset();
                     sw.Start();
-                    wc.DownloadString(url);
+                    wc.DownloadStringAsync(new Uri(url));
+
+                    // 收到信号为True
+                    if (!speedTestCompleted.WaitOne(timeout))
+                    {
+                        wc.CancelAsync();
+                        return elasped;
+                    }
                     sw.Stop();
                     elasped = sw.ElapsedMilliseconds;
                 }
-                catch { }
             }
-
+            catch { }
             return elasped;
         }
 
