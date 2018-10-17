@@ -27,7 +27,7 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 首次使用请打开日志窗口，查看输出信息排查错误  
 
 ### PAC说明
-本软件使用的是txthingking的PAC,特此感谢  
+本软件使用的是txthinking的PAC,特此感谢  
 Github地址：[https://github.com/txthinking/pac](https://github.com/txthinking/pac)  
 
 ### 设计目标
