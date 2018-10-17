@@ -1174,6 +1174,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please set any server as PAC proxy first. 的本地化字符串。
+        /// </summary>
+        internal static string SetAnyServerAsPacServerFirst {
+            get {
+                return ResourceManager.GetString("SetAnyServerAsPacServerFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Set as system proxy 的本地化字符串。
         /// </summary>
         internal static string SetAsSysProxy {
