@@ -80,8 +80,6 @@
         <br/>
         <div class="title">Cmd debugger</div>
         <div>
-            <div class="inline-block tag">Response:</div>
-            <div class="inline-block content"><span id="response"></span></div>
             <div class="inline-block tag">Cmd:</div>
             <div class="inline-block content">
                 <input class="inline-block fill searcher" placeholder="ShowAllCmd <Enter>" type="text" id="cmd" onchange="SendPost();" onClick="this.select();">
@@ -90,6 +88,8 @@
             <div class="inline-block content">
                 <input class="inline-block fill searcher" placeholder="" type="text" id="param" onchange="SendPost();" onClick="this.select();">
             </div>
+            <div class="inline-block tag">Response:</div>
+            <div class="inline-block content"><span id="response"></span></div>
         </div>
     </div>
 
