@@ -1067,7 +1067,7 @@ namespace V2RayGCon.Lib
             ip = "127.0.0.1";
             port = 1080;
 
-            string[] parts = address.Split(':');
+            string[] parts = address.Split(new char[] { ':' },StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
             {
                 return false;

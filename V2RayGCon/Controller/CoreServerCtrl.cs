@@ -122,6 +122,30 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region public method
+        public void SetIPandPortOnDemand(string ip, int port)
+        {
+            var changed = false;
+
+            if (ip != this.inboundIP)
+            {
+                this.inboundIP = ip;
+                changed = true;
+            }
+
+            if (port != this.inboundPort)
+            {
+                this.inboundPort = port;
+                changed = true;
+
+            }
+
+            if (changed)
+            {
+                InvokeEventOnPropertyChange();
+
+            }
+        }
+
         public bool BecomeSystemProxy(bool isGlobal)
         {
             var inboundInfo = GetParsedInboundInfo();

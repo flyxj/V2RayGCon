@@ -134,8 +134,8 @@
     <value>https://github.com/nobody3u/V2RayGCon</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>1.0.35.3</value>
-    <comment>opt speed test</comment>
+    <value>1.0.35.4</value>
+    <comment>inbound address</comment>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>V2RayGCon</value>
