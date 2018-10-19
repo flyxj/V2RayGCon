@@ -165,7 +165,10 @@ namespace V2RayGCon.Service
             if (curTrackerSetting.curServer == null)
             {
                 OnSendLogHandler(this, new Model.Data.StrEvent(I18N.NoServerCapableOfSysProxy));
-                Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
+                if (serverList.Count(s => s.isServerOn) > 0)
+                {
+                    Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
+                }
             }
 
             setting.SaveServerTrackerSetting(curTrackerSetting);
