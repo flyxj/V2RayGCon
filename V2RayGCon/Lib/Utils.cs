@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -560,6 +561,13 @@ namespace V2RayGCon.Lib
             return GetValue<T>(json, $"{prefix}.{key}");
         }
 
+        /// <summary>
+        /// return null if not exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static T GetValue<T>(JToken json, string path)
         {
             var key = GetKey(json, path);
@@ -819,31 +827,42 @@ namespace V2RayGCon.Lib
         #region net
         public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
-            var timeout = Str2Int(StrConst.SpeedTestTimeout);
+            var timeout = Str2Int(StrConst.SpeedTestTimeout) * 1000;
 
             long elasped = long.MaxValue;
-            using (WebClient wc = new Lib.Nets.TimedWebClient
+            try
             {
-                Encoding = System.Text.Encoding.UTF8,
-                Timeout = timeout * 1000,
-            })
-            {
-                try
+                using (WebClient wc = new Lib.Nets.TimedWebClient
                 {
+                    Encoding = System.Text.Encoding.UTF8,
+                    Timeout = timeout,
+                })
+                {
+
                     if (port > 0)
                     {
                         wc.Proxy = new WebProxy("127.0.0.1", port);
                     }
+
+                    AutoResetEvent speedTestCompleted = new AutoResetEvent(false);
+                    wc.DownloadStringCompleted += (s, a) => speedTestCompleted.Set();
+
                     Stopwatch sw = new Stopwatch();
                     sw.Reset();
                     sw.Start();
-                    wc.DownloadString(url);
+                    wc.DownloadStringAsync(new Uri(url));
+
+                    // 收到信号为True
+                    if (!speedTestCompleted.WaitOne(timeout))
+                    {
+                        wc.CancelAsync();
+                        return elasped;
+                    }
                     sw.Stop();
                     elasped = sw.ElapsedMilliseconds;
                 }
-                catch { }
             }
-
+            catch { }
             return elasped;
         }
 
@@ -953,6 +972,18 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static string SHA256(string randomString)
+        {
+            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
+        }
+
         public static bool PartialMatch(string source, string partial)
         {
             var s = source.ToLower();
@@ -1036,7 +1067,7 @@ namespace V2RayGCon.Lib
             ip = "127.0.0.1";
             port = 1080;
 
-            string[] parts = address.Split(':');
+            string[] parts = address.Split(new char[] { ':' },StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
             {
                 return false;

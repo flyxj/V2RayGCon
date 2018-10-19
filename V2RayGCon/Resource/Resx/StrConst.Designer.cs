@@ -418,19 +418,19 @@ namespace V2RayGCon.Resource.Resx {
         ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///    &lt;title&gt;Page Title&lt;/title&gt;
         ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-        ///    &lt;script src=&quot;__PacServerUrl__&quot;&gt;&lt;/script&gt;
+        ///    &lt;script src=&quot;__PacServerUrl__&amp;mime=js&quot;&gt;&lt;/script&gt;
         ///    &lt;style&gt;
+        ///        .main-wrapper {
+        ///            margin: 8px auto;
+        ///            width: 100%;
+        ///            max-width: 500px;
+        ///        }
+        ///        
         ///        .inline-block {
         ///            display: inline-block;
         ///        }
         ///        
-        ///        .title {
-        ///            font-size: 24px;
-        ///            font-weight: bold;
-        ///        }
-        ///        
-        ///        .tag {
-        ///            width: 90px;        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string PacDebuggerTpl {
             get {
@@ -439,19 +439,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 /**
-        ///// for custom PAC 
-        ///var customSettings = {
-        ///    &quot;protocol&quot;: &quot;socks/http&quot;,
-        ///    &quot;mode&quot;: &quot;white/black&quot;,
-        ///    &quot;white&quot;: &quot;text of white list&quot;,
-        ///    &quot;black&quot;: &quot;text of black list&quot;,
-        ///    &quot;ip&quot;: &quot;127.0.0.1&quot;,
-        ///    &quot;port&quot;: 1234
-        ///};
-        /// */
-        ///
-        ///var proxy = &apos;__PROXY__&apos;,
+        ///   查找类似 var proxy = &apos;__PROXY__&apos;,
         ///    mode = &apos;__MODE__&apos;,
         ///    domains = { __DOMAINS__ },
         ///    cidrs = [__CIDRS__];
@@ -459,7 +447,11 @@ namespace V2RayGCon.Resource.Resx {
         ///function ip2decimal(o) { var c = o.split(&quot;.&quot;); return 256 * (256 * (256 * +c[0] + +c[1]) + +c[2]) + +c[3] }
         ///
         ///function FindProxyForURL(o, c) {
-        ///    if (/\d+\.\d+\.\d+\. [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    if (/\d+\.\d+\.\d+\.\d+/.test(c)) {
+        ///        if (isInNet(dnsResolve(c), &quot;10.0.0.0&quot;, &quot;255.0.0.0&quot;) ||
+        ///            isInNet(dnsResolve(c), &quot;172.16.0.0&quot;, &quot;255.240.0.0&quot;) ||
+        ///            isInNet(dnsResolve(c), &quot;192.168.0.0&quot;, &quot;255.255.0.0&quot;) ||
+        ///            isI [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string PacJsTpl {
             get {
@@ -585,7 +577,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 12 的本地化字符串。
+        ///   查找类似 20 的本地化字符串。
         /// </summary>
         internal static string SpeedTestTimeout {
             get {

@@ -74,14 +74,14 @@ namespace V2RayGCon.Views.WinForms
             bind(toolStripButtonInverseSelectionCurPage, invertSelectionCurPageToolStripMenuItem);
             bind(toolStripButtonSelectNoneCurPage, selectNoneCurPageToolStripMenuItem1);
 
-            bind(toolStripButtonCollapseSelected, toolStripMenuItemFoldingPanel);
-            bind(toolStripButtonExpanSelected, toolStripMenuItemExpansePanel);
+            bind(toolStripButtonAllServerSelectAll, selectAllAllServersToolStripMenuItem);
+            bind(toolStripButtonAllServerSelectNone, selectNoneAllServersToolStripMenuItem);
 
             bind(toolStripButtonRestartSelected, toolStripMenuItemRestartSelected);
             bind(toolStripButtonStopSelected, toolStripMenuItemStopSelected);
 
             bind(toolStripButtonModifySelected, toolStripMenuItemModifySettings);
-            bind(toolStripButtonSortSelectedBySummary, toolStripMenuItemSortBySummary);
+            bind(toolStripButtonRunSpeedTest, toolStripMenuItemSpeedTestOnSelected);
             bind(toolStripButtonSortSelectedBySpeedTestResult, toolStripMenuItemSortBySpeedTest);
 
             bind(toolStripButtonFormOption, toolMenuItemOptions);

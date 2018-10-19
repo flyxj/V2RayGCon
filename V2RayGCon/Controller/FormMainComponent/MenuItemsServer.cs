@@ -389,9 +389,14 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             visitCurPacDebuggerUrl.Click += (s, a) =>
             {
-                var p = Lib.Sys.ProxySetter.GetProxySetting();
-                var url = p.autoConfigUrl + "&debug=true";
-                Lib.UI.VisitUrl(I18N.VisitPacDebugger, url);
+                var p = setting.GetSysProxySetting();
+                var url = p.autoConfigUrl;
+                if (string.IsNullOrEmpty(url))
+                {
+                    MessageBox.Show(I18N.SetAnyServerAsPacServerFirst);
+                    return;
+                }
+                Lib.UI.VisitUrl(I18N.VisitPacDebugger, url + "&debug=true");
             };
 
             copyCurPacUrl.Click += (s, a) =>
