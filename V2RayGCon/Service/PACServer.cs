@@ -141,13 +141,14 @@ namespace V2RayGCon.Service
             InvokeOnPACServerStatusChanged();
         }
 
-
-
         public void SetGlobalProxy(string ip, int port)
         {
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.proxyEnable = true;
-            proxy.proxyServer = string.Format("{0}:{1}", ip, port.ToString());
+            proxy.proxyServer = string.Format(
+                "{0}:{1}",
+                ip == "0.0.0.0" ? "127.0.0.1" : ip,
+                port.ToString());
             Lib.Sys.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
             InvokeOnPACServerStatusChanged();
@@ -269,7 +270,7 @@ namespace V2RayGCon.Service
                 GenPrefix(pacSetting.port),
                 param.isWhiteList ? "whitelist" : "blacklist",
                 param.isSocks ? "socks" : "http",
-                param.ip,
+                param.ip == "0.0.0.0" ? "127.0.0.1" : param.ip,
                 param.port.ToString(),
                 Lib.Utils.RandomHex(16));
         }
