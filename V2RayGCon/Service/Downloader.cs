@@ -5,6 +5,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     class Downloader
     {
         public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
@@ -54,6 +55,12 @@ namespace V2RayGCon.Service
             }
             catch { }
             return false;
+        }
+
+        public void Cleanup()
+        {
+            Cancel();
+            client?.Dispose();
         }
 
         public void Cancel()

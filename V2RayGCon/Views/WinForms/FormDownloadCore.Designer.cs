@@ -60,7 +60,7 @@
             this.btnRefreshVer.Name = "btnRefreshVer";
             this.toolTip1.SetToolTip(this.btnRefreshVer, resources.GetString("btnRefreshVer.ToolTip"));
             this.btnRefreshVer.UseVisualStyleBackColor = true;
-            this.btnRefreshVer.Click += new System.EventHandler(this.btnRefreshVer_Click);
+            this.btnRefreshVer.Click += new System.EventHandler(this.BtnRefreshVer_Click);
             // 
             // btnDownload
             // 
@@ -68,7 +68,7 @@
             this.btnDownload.Name = "btnDownload";
             this.toolTip1.SetToolTip(this.btnDownload, resources.GetString("btnDownload.ToolTip"));
             this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.btnDownload.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
             // btnCancel
             // 
@@ -76,7 +76,7 @@
             this.btnCancel.Name = "btnCancel";
             this.toolTip1.SetToolTip(this.btnCancel, resources.GetString("btnCancel.ToolTip"));
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // btnCheckVersion
             // 
@@ -84,7 +84,7 @@
             this.btnCheckVersion.Name = "btnCheckVersion";
             this.toolTip1.SetToolTip(this.btnCheckVersion, resources.GetString("btnCheckVersion.ToolTip"));
             this.btnCheckVersion.UseVisualStyleBackColor = true;
-            this.btnCheckVersion.Click += new System.EventHandler(this.btnCheckVersion_Click);
+            this.btnCheckVersion.Click += new System.EventHandler(this.BtnCheckVersion_Click);
             // 
             // btnExit
             // 
@@ -92,7 +92,7 @@
             this.btnExit.Name = "btnExit";
             this.toolTip1.SetToolTip(this.btnExit, resources.GetString("btnExit.ToolTip"));
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // pgBarDownload
             // 

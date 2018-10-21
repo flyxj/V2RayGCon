@@ -208,7 +208,7 @@ namespace V2RayGCon.Views.WinForms
             }
         }
 
-        private void tabCtrlToolPanel_MouseLeave(object sender, EventArgs e)
+        private void TabCtrlToolPanel_MouseLeave(object sender, EventArgs e)
         {
             toolsPanelController.timerShow.Cancel();
         }
