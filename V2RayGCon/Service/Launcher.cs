@@ -27,7 +27,6 @@ namespace V2RayGCon.Service
             SetCulture(setting.culture);
 
             // dependency injection
-            Lib.ImportParser.Run(cache);
             pacServer.Run(setting);
             servers.Run(setting, pacServer, cache);
             cmder.Run(setting, servers, pacServer);

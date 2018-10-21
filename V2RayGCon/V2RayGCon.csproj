@@ -129,7 +129,6 @@
     </Compile>
     <Compile Include="Lib\Sys\SafeNativeMethods.cs" />
     <Compile Include="Lib\UI.cs" />
-    <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Lib\Sys\CancelableTimeout.cs" />
     <Compile Include="Model\BaseClass\IFormMainFlyPanelComponent.cs" />
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />

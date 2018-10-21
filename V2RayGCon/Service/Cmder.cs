@@ -55,7 +55,7 @@ namespace V2RayGCon.Service
 
         public void Cleanup()
         {
-
+            // reserved
         }
         #endregion
 

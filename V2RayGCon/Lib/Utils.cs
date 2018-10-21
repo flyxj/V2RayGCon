@@ -194,6 +194,61 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Json
+        public static JObject ParseImportRecursively(
+          Func<List<string>, List<string>> fetcher,
+          JObject config,
+          int depth)
+        {
+            var empty = JObject.Parse(@"{}");
+
+            if (depth <= 0)
+            {
+                return empty;
+            }
+
+            // var config = JObject.Parse(configString);
+
+            var urls = Lib.Utils.ExtractImportUrlsFrom(config);
+            var contents = fetcher(urls);
+
+            if (contents.Count <= 0)
+            {
+                return config;
+            }
+
+            var configList =
+                Lib.Utils.ExecuteInParallel<string, JObject>(
+                    contents,
+                    (content) =>
+                    {
+                        return ParseImportRecursively(
+                            fetcher,
+                            JObject.Parse(content),
+                            depth - 1);
+                    });
+
+            var result = empty;
+            foreach (var c in configList)
+            {
+                Lib.Utils.CombineConfig(ref result, c);
+            }
+            Lib.Utils.CombineConfig(ref result, config);
+
+            return result;
+        }
+
+        public static List<string> ExtractImportUrlsFrom(JObject config)
+        {
+            List<string> urls = null;
+            var empty = new List<string>();
+            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
+            if (import != null && import is JObject)
+            {
+                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
+            }
+            return urls ?? new List<string>();
+        }
+
         public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
         {
             var empty = new Dictionary<string, string>();

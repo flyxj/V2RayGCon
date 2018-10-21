@@ -320,7 +320,7 @@ namespace V2RayGCon.Controller
                 try
                 {
                     UpdateSummary(
-                        Lib.ImportParser.Parse(configString));
+                        servers.ParseImport(configString));
                 }
                 catch
                 {
@@ -659,7 +659,7 @@ namespace V2RayGCon.Controller
             JObject cfg = null;
             try
             {
-                cfg = Lib.ImportParser.Parse(
+                cfg = servers.ParseImport(
                     isInjectImport ?
                     InjectGlobalImport(config, isIncludeSpeedTest, isIncludeActivate) :
                     config);

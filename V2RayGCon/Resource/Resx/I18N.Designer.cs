@@ -1459,6 +1459,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Visit the following web page? 的本地化字符串。
+        /// </summary>
+        internal static string VisitWebPage {
+            get {
+                return ResourceManager.GetString("VisitWebPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Vist project page? 的本地化字符串。
         /// </summary>
         internal static string VistPorjectPage {

@@ -92,6 +92,7 @@ namespace V2RayGCon.Views.WinForms
             var ctrl = new Controller.FormMainCtrl();
 
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
+                this,
                 flyServerListContainer,
                 toolStripLabelMarkFilter,
                 toolStripComboBoxMarkFilter,

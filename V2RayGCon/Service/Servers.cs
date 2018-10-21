@@ -80,6 +80,15 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        List<string> GetHtmlContentFromCache(List<string> urls)
+        {
+            return urls.Count <= 0 ?
+                urls :
+                Lib.Utils.ExecuteInParallel<string, string>(
+                    urls,
+                    (url) => cache.html[url]);
+        }
+
 
         /// <summary>
         /// update running servers list
@@ -520,7 +529,7 @@ namespace V2RayGCon.Service
         JObject ExtractOutboundInfoFromConfig(string configString, string id, int portBase, int index, string tagPrefix)
         {
             var pkg = cache.tpl.LoadPackage("package");
-            var config = Lib.ImportParser.Parse(configString);
+            var config = ParseImport(configString);
 
             var tagin = tagPrefix + "in" + index.ToString();
             var tagout = tagPrefix + "out" + index.ToString();
@@ -552,14 +561,42 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        /*
+         * exceptions  
+         * test<FormatException> base64 decode fail
+         * test<System.Net.WebException> url not exist
+         * test<Newtonsoft.Json.JsonReaderException> json decode fail
+         */
+        public JObject ParseImport(string configString)
+        {
+            var maxDepth = Lib.Utils.Str2Int(StrConst.ParseImportDepth);
+
+            var result = Lib.Utils.ParseImportRecursively(
+                GetHtmlContentFromCache,
+                JObject.Parse(configString),
+                maxDepth);
+
+            try
+            {
+                Lib.Utils.RemoveKeyFromJObject(result, "v2raygcon.import");
+            }
+            catch (KeyNotFoundException)
+            {
+                // do nothing;
+            }
+
+            return result;
+        }
+
+
         public void Cleanup()
         {
             setting.isServerTrackerOn = false;
             lazySaveServerListTimer?.Timeout();
-            DisposeLazyTimers();
             AutoResetEvent sayGoodbye = new AutoResetEvent(false);
             StopAllServersThen(() => sayGoodbye.Set());
             sayGoodbye.WaitOne();
+            DisposeLazyTimers();
         }
 
         public int GetTotalSelectedServerCount()

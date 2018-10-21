@@ -11,6 +11,7 @@ namespace V2RayGCon.Controller.FormMainComponent
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     class FlyServer : FormMainComponentController
     {
+        Form formMain;
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
         Service.Setting setting;
@@ -23,6 +24,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FlyServer(
+            Form formMain,
             FlowLayoutPanel panel,
             ToolStripLabel lbMarkFilter,
             ToolStripComboBox cboxMarkeFilter,
@@ -34,6 +36,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.servers = Service.Servers.Instance;
             this.setting = Service.Setting.Instance;
 
+            this.formMain = formMain;
             this.flyPanel = panel;
             this.cboxMarkFilter = cboxMarkeFilter;
             this.tsdbtnPager = tsdbtnPager;
@@ -259,6 +262,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                         // servers.ClearSelection();
 
                         RefreshUI();
+                        formMain.Activate();
                     });
                 tsdbtnPager.DropDownItems.Add(item);
             }
@@ -298,12 +302,14 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 paging[0]--;
                 RefreshUI();
+                formMain.Activate();
             };
 
             tslbNextPage.Click += (s, a) =>
             {
                 paging[0]++;
                 RefreshUI();
+                formMain.Activate();
             };
 
             lbMarkFilter.Click +=

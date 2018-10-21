@@ -603,4 +603,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="SetAnyServerAsPacServerFirst" xml:space="preserve">
     <value>请先将任意服务器设为PAC代理。</value>
   </data>
+  <data name="VisitWebPage" xml:space="preserve">
+    <value>访问以下网址？</value>
+  </data>
 </root>

@@ -616,4 +616,7 @@ Please check port setting in form option.</value>
   <data name="SetAnyServerAsPacServerFirst" xml:space="preserve">
     <value>Please set any server as PAC proxy first.</value>
   </data>
+  <data name="VisitWebPage" xml:space="preserve">
+    <value>Visit the following web page?</value>
+  </data>
 </root>

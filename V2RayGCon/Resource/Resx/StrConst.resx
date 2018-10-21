@@ -256,4 +256,7 @@
   <data name="ExtJs" xml:space="preserve">
     <value>JS Files|*.js|All File|*.*</value>
   </data>
+  <data name="Nobody3uVideoUrl" xml:space="preserve">
+    <value>https://www.youtube.com/watch?v=BA7fdSkp8ds</value>
+  </data>
 </root>
