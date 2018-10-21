@@ -7,7 +7,7 @@
 [5]: https://img.shields.io/github/license/nobody3u/V2RayGCon.svg "Licence Badge"
 [6]: https://github.com/nobody3u/V2RayGCon/blob/master/LICENSE "Licence"
 [7]: https://img.shields.io/github/release/nobody3u/V2RayGCon/all.svg "Release Badge"
-[8]: https://github.com/nobody3u/V2RayGCon/releases "Releases"
+[8]: https://github.com/nobody3u/V2RayGCon/releases/latest "Releases"
 
 V2RayGCon是windows平台下的v2ray-core图形配置程序  
 

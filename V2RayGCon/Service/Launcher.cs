@@ -12,15 +12,20 @@ namespace V2RayGCon.Service
         Setting setting;
         Servers servers;
         Notifier notifier;
+        PacServer pacServer;
+        Model.Data.ProxyRegKeyValue orgSysProxySetting;
+
+        bool isCleanup = false;
 
         Launcher()
         {
+            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
-            var pacServer = PacServer.Instance;
             var cmder = Cmder.Instance;
 
             setting = Setting.Instance;
+            pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
 
@@ -32,16 +37,8 @@ namespace V2RayGCon.Service
             cmder.Run(setting, servers, pacServer);
             notifier.Run(setting, servers);
 
-            Application.ApplicationExit += (s, a) =>
-            {
-                notifier.Cleanup();
-                servers.Cleanup();
-                pacServer.Cleanup();
-                setting.Cleanup();
-            };
-
-            Microsoft.Win32.SystemEvents.SessionEnding +=
-                (s, a) => Application.Exit();
+            Application.ApplicationExit += OnApplicationExitHandler;
+            Microsoft.Win32.SystemEvents.SessionEnding += OnApplicationExitHandler;
 
             Application.ThreadException +=
                 (s, a) => SaveUnHandledException(
@@ -50,6 +47,22 @@ namespace V2RayGCon.Service
             AppDomain.CurrentDomain.UnhandledException +=
                 (s, a) => SaveUnHandledException(
                     (a.ExceptionObject as Exception).ToString());
+        }
+
+        private void OnApplicationExitHandler(object sender, EventArgs args)
+        {
+            if (isCleanup)
+            {
+                return;
+            }
+
+            isCleanup = true;
+
+            notifier.Cleanup();
+            servers.Cleanup();
+            pacServer.Cleanup();
+            setting.Cleanup();
+            Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
         }
 
         #region private method

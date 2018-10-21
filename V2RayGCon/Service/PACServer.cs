@@ -15,7 +15,7 @@ namespace V2RayGCon.Service
         Setting setting;
 
         public event EventHandler OnPACServerStatusChanged;
-        Model.Data.ProxyRegKeyValue orgSysProxySetting;
+
         Lib.Nets.SimpleWebServer webServer = null;
         object webServerLock = new object();
 
@@ -29,7 +29,7 @@ namespace V2RayGCon.Service
         public void Run(Setting setting)
         {
             this.setting = setting;
-            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
+
             ClearCache();
             var pacSetting = setting.GetPacServerSettings();
             var proxySetting = setting.GetSysProxySetting();
@@ -257,7 +257,6 @@ namespace V2RayGCon.Service
         {
             postRequestHandler = null;
             StopPacServer();
-            Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
             lazyCustomPacFileCacheUpdateTimer?.Release();
         }
 
