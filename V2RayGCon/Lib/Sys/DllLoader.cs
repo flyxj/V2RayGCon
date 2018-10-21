@@ -5,14 +5,6 @@ namespace V2RayGCon.Lib.Sys
 {
     static class DllLoader
     {
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool FreeLibrary(IntPtr hModule);
 
         /*
          * Suppose we call SetProcessDpiAwareness from Shcore.dll.
@@ -42,7 +34,7 @@ namespace V2RayGCon.Lib.Sys
                 return null;
             }
 
-            IntPtr pMethod = GetProcAddress(pDll, methodName);
+            IntPtr pMethod = Lib.Sys.SafeNativeMethods.GetProcAddress(pDll, methodName);
             if (pMethod != IntPtr.Zero)
             {
                 return Marshal.GetDelegateForFunctionPointer(pMethod, methodType);

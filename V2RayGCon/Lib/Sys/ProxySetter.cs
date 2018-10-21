@@ -1,15 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace V2RayGCon.Lib.Sys
 {
     // https://stackoverflow.com/questions/197725/programmatically-set-browser-proxy-settings-in-c-sharp
     class ProxySetter
     {
-        [DllImport("wininet.dll")]
-        public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
+
         public const int INTERNET_OPTION_SETTINGS_CHANGED = 39;
         public const int INTERNET_OPTION_REFRESH = 37;
 
@@ -27,8 +25,8 @@ namespace V2RayGCon.Lib.Sys
 
         static void RefreshSettings()
         {
-            InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
-            InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
+            Lib.Sys.SafeNativeMethods.InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
+            Lib.Sys.SafeNativeMethods.InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
         }
         #endregion
 
@@ -41,7 +39,6 @@ namespace V2RayGCon.Lib.Sys
                 proxy.proxyServer = key.GetValue("ProxyServer", "").ToString();
                 proxy.proxyEnable = key.GetValue("ProxyEnable", "0").ToString() == "1";
                 proxy.autoConfigUrl = key.GetValue("AutoConfigURL", "").ToString();
-                key.Close();
             }
             return proxy;
         }
@@ -53,7 +50,6 @@ namespace V2RayGCon.Lib.Sys
                 key.SetValue("AutoConfigURL", proxy.autoConfigUrl, RegistryValueKind.String);
                 key.SetValue("ProxyServer", proxy.proxyServer, RegistryValueKind.String);
                 key.SetValue("ProxyEnable", proxy.proxyEnable ? 1 : 0, RegistryValueKind.DWord);
-                key.Close();
             }
 
             RefreshSettings();

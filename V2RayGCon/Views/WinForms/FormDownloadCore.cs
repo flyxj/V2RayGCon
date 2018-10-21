@@ -27,7 +27,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.FormClosed += (s, e) =>
             {
-                downloader?.Cancel();
+                downloader.Cleanup();
                 Service.Setting.Instance.LazyGC();
             };
 
@@ -143,12 +143,12 @@ namespace V2RayGCon.Views.WinForms
             pgBarDownload.Value = 0;
         }
 
-        private void btnExit_Click(object sender, System.EventArgs e)
+        private void BtnExit_Click(object sender, System.EventArgs e)
         {
             this.Close();
         }
 
-        private void btnRefreshVer_Click(object sender, System.EventArgs e)
+        private void BtnRefreshVer_Click(object sender, System.EventArgs e)
         {
             var elRefresh = btnRefreshVer;
             var elCboxVer = cboxVer;
@@ -181,7 +181,7 @@ namespace V2RayGCon.Views.WinForms
             });
         }
 
-        private void btnUpdate_Click(object sender, System.EventArgs e)
+        private void BtnUpdate_Click(object sender, System.EventArgs e)
         {
             if (downloader != null)
             {
@@ -193,7 +193,7 @@ namespace V2RayGCon.Views.WinForms
             DownloadV2RayCore();
         }
 
-        void btnCancel_Click(object sender, System.EventArgs e)
+        void BtnCancel_Click(object sender, System.EventArgs e)
         {
             if (downloader != null && Lib.UI.Confirm(I18N.CancelDownload))
             {
@@ -201,7 +201,7 @@ namespace V2RayGCon.Views.WinForms
             }
         }
 
-        private void btnCheckVersion_Click(object sender, System.EventArgs e)
+        private void BtnCheckVersion_Click(object sender, System.EventArgs e)
         {
             RefreshCurrentCoreVersion();
         }

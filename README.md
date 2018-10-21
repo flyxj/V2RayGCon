@@ -1,4 +1,13 @@
-[![Build Status](https://dev.azure.com/wgu6ymoma/V2RayGCon/_apis/build/status/nobody3u.V2RayGCon)](https://dev.azure.com/wgu6ymoma/V2RayGCon/_build/latest?definitionId=3)  
+[![Build Status][1]][2] [![Release][7]][8] [![Total Downloads][3]][4] [![License][5]][6]
+
+[1]: https://dev.azure.com/wgu6ymoma/V2RayGCon/_apis/build/status/nobody3u.V2RayGCon "Build Status Badge"
+[2]: https://dev.azure.com/wgu6ymoma/V2RayGCon/_build/latest?definitionId=3 "Azure Build Status"
+[3]: https://img.shields.io/github/downloads/nobody3u/V2RayGCon/total.svg "Total Downloads Badge"
+[4]: https://github.com/nobody3u/V2RayGCon/releases "Releases"
+[5]: https://img.shields.io/github/license/nobody3u/V2RayGCon.svg "Licence Badge"
+[6]: https://github.com/nobody3u/V2RayGCon/blob/master/LICENSE "Licence"
+[7]: https://img.shields.io/github/release/nobody3u/V2RayGCon/all.svg "Release Badge"
+[8]: https://github.com/nobody3u/V2RayGCon/releases "Releases"
 
 V2RayGCon是windows平台下的v2ray-core图形配置程序  
 
@@ -17,10 +26,10 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 或手动下载再解压到本软件目录内    
   
 按需选用下列方式添加配置：  
-1. 托盘菜单->`扫描二维码`  
-2. 托盘菜单->`剪切板导入`  
-3. 托盘菜单->`主窗口`->`文件`->`添加vmess客户端`  
-4. 托盘菜单->`主窗口`->`窗口`->`配置编辑器`  
+ 1. 托盘菜单->`扫描二维码`  
+ 2. 托盘菜单->`剪切板导入`  
+ 3. 托盘菜单->`主窗口`->`文件`->`添加vmess客户端`  
+ 4. 托盘菜单->`主窗口`->`窗口`->`配置编辑器`  
     
 添加配置后，可在主窗口中启用相应配置  
   
@@ -31,9 +40,9 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 Github地址：[https://github.com/txthinking/pac](https://github.com/txthinking/pac)  
 
 ### 设计目标
-1. 保留用户对v2ray-core的操控能力  
-2. 简化配置过程  
-3. 尽量使用v2ray-core的原生功能  
+ 1. 保留用户对v2ray-core的操控能力  
+ 2. 简化配置过程  
+ 3. 尽量使用v2ray-core的原生功能  
   
 ### 截图  
 系统托盘图标  
@@ -56,3 +65,4 @@ Github地址：[https://github.com/txthinking/pac](https://github.com/txthinking
   
 二维码生成器  
 ![qrcode.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/qrcode.png)  
+

@@ -8,6 +8,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     class FlyServer : FormMainComponentController
     {
         FlowLayoutPanel flyPanel;
@@ -17,9 +18,10 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
         ToolStripDropDownButton tsdbtnPager;
         Lib.Sys.CancelableTimeout lazyStatusBarUpdateTimer = null;
-        Views.UserControls.WelcomeUI welcomeItem = null;
-        int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
+        readonly Views.UserControls.WelcomeUI welcomeItem = null;
+        readonly int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FlyServer(
             FlowLayoutPanel panel,
             ToolStripLabel lbMarkFilter,
@@ -451,10 +453,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var serverItemMoving = a.Data.GetData(typeof(Views.UserControls.ServerUI))
-                    as Views.UserControls.ServerUI;
 
-                if (serverItemMoving == null)
+                if (!(a.Data.GetData(typeof(Views.UserControls.ServerUI)) is Views.UserControls.ServerUI serverItemMoving))
                 {
                     return;
                 }

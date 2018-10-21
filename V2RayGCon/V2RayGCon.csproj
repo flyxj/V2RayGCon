@@ -117,6 +117,7 @@
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\FormOptionCtrl.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
     <Compile Include="Lib\Nets\WebServer.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Lib\Nets\TimedWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Lib\Sys\SafeNativeMethods.cs" />
     <Compile Include="Lib\UI.cs" />
     <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Lib\Sys\CancelableTimeout.cs" />

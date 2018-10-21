@@ -65,17 +65,19 @@ namespace V2RayGCon.Service
 
         void CreateNotifyIcon()
         {
-            ni = new NotifyIcon();
-            ni.Text = I18N.Description;
+            ni = new NotifyIcon
+            {
+                Text = I18N.Description,
 #if DEBUG
-            ni.Icon = Properties.Resources.icon_light;
+                Icon = Properties.Resources.icon_light,
 #else
-            ni.Icon = Properties.Resources.icon_dark;
+                Icon = Properties.Resources.icon_dark,
 #endif
-            ni.BalloonTipTitle = Properties.Resources.AppName;
+                BalloonTipTitle = Properties.Resources.AppName,
 
-            ni.ContextMenuStrip = CreateMenu();
-            ni.Visible = true;
+                ContextMenuStrip = CreateMenu(),
+                Visible = true
+            };
         }
 
         ContextMenuStrip CreateMenu()

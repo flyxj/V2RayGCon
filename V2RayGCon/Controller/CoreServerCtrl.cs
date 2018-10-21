@@ -9,6 +9,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public class CoreServerCtrl
     {
         [JsonIgnore]
@@ -98,7 +99,7 @@ namespace V2RayGCon.Controller
         ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
 
         [JsonIgnore]
-        public string logCache
+        public string LogCache
         {
             get
             {
@@ -543,7 +544,7 @@ namespace V2RayGCon.Controller
             return new Tuple<string, string, int>(protocol, ip, port);
         }
 
-        string GetInProtocolNameByNumber(int typeNumber)
+        static string GetInProtocolNameByNumber(int typeNumber)
         {
             var table = Model.Data.Table.inboundOverwriteTypesName;
             return table[Lib.Utils.Clamp(
@@ -753,7 +754,7 @@ namespace V2RayGCon.Controller
         {
             var msg = string.Format("[{0}] {1}", this.name, arg.Data);
 
-            logCache = msg;
+            LogCache = msg;
             try
             {
                 OnLog?.Invoke(this, new Model.Data.StrEvent(msg));

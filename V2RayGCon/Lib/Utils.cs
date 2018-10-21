@@ -844,8 +844,17 @@ namespace V2RayGCon.Lib
                         wc.Proxy = new WebProxy("127.0.0.1", port);
                     }
 
+                    var result = string.Empty;
                     AutoResetEvent speedTestCompleted = new AutoResetEvent(false);
-                    wc.DownloadStringCompleted += (s, a) => speedTestCompleted.Set();
+                    wc.DownloadStringCompleted += (s, a) =>
+                    {
+                        try
+                        {
+                            result = a.Result;
+                        }
+                        catch { }
+                        speedTestCompleted.Set();
+                    };
 
                     Stopwatch sw = new Stopwatch();
                     sw.Reset();
@@ -859,7 +868,10 @@ namespace V2RayGCon.Lib
                         return elasped;
                     }
                     sw.Stop();
-                    elasped = sw.ElapsedMilliseconds;
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        elasped = sw.ElapsedMilliseconds;
+                    }
                 }
             }
             catch { }
@@ -1067,7 +1079,7 @@ namespace V2RayGCon.Lib
             ip = "127.0.0.1";
             port = 1080;
 
-            string[] parts = address.Split(new char[] { ':' },StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = address.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
             {
                 return false;

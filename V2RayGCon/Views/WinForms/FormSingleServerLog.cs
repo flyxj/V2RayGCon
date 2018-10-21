@@ -30,7 +30,7 @@ namespace V2RayGCon.Views.WinForms
             this.Show();
 
             this.Text = I18N.Log + " - " + serverItem.summary;
-            rtBoxLogger.Text = serverItem.logCache;
+            rtBoxLogger.Text = serverItem.LogCache;
             serverItem.OnLog += OnLogHandler;
         }
 
