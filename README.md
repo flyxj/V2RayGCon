@@ -1,4 +1,5 @@
 [![Build Status][1]][2] [![Release][7]][8] [![Total Downloads][3]][4] [![License][5]][6]
+
 [1]: https://dev.azure.com/wgu6ymoma/V2RayGCon/_apis/build/status/nobody3u.V2RayGCon "Build Status Badge"
 [2]: https://dev.azure.com/wgu6ymoma/V2RayGCon/_build/latest?definitionId=3 "Azure Build Status"
 [3]: https://img.shields.io/github/downloads/nobody3u/V2RayGCon/total.svg "Total Downloads Badge"
