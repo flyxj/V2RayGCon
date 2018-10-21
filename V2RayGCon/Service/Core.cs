@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,16 +15,6 @@ namespace V2RayGCon.Service
         #region support ctrl+c
         // https://stackoverflow.com/questions/283128/how-do-i-send-ctrlc-to-a-process-in-c
         internal const int CTRL_C_EVENT = 0;
-        [DllImport("kernel32.dll")]
-        internal static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        internal static extern bool AttachConsole(uint dwProcessId);
-        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        internal static extern bool FreeConsole();
-        [DllImport("kernel32.dll")]
-        static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
-        // Delegate type to be used as the Handler Routine for SCCH
-        delegate Boolean ConsoleCtrlDelegate(uint CtrlType);
         #endregion
 
         public event EventHandler<Model.Data.StrEvent> OnLog;
@@ -216,7 +205,7 @@ namespace V2RayGCon.Service
 
             try
             {
-                if (AttachConsole((uint)v2rayCore.Id))
+                if (Lib.Sys.SafeNativeMethods.AttachConsole((uint)v2rayCore.Id))
                 {
                     AutoResetEvent finished = new AutoResetEvent(false);
                     v2rayCore.Exited += (s, a) =>
@@ -224,15 +213,15 @@ namespace V2RayGCon.Service
                         v2rayCore.Close();
                         finished.Set();
                     };
-                    SetConsoleCtrlHandler(null, true);
-                    GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+                    Lib.Sys.SafeNativeMethods.SetConsoleCtrlHandler(null, true);
+                    Lib.Sys.SafeNativeMethods.GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
 
                     if (finished.WaitOne(3000))
                     {
                         kill = false;
                     }
-                    FreeConsole();
-                    SetConsoleCtrlHandler(null, false);
+                    Lib.Sys.SafeNativeMethods.FreeConsole();
+                    Lib.Sys.SafeNativeMethods.SetConsoleCtrlHandler(null, false);
                 }
             }
             catch { }
@@ -265,7 +254,7 @@ namespace V2RayGCon.Service
             finished.WaitOne(2000);
         }
 
-        void InvokeActionIgnoreError(Action lambda)
+        static void InvokeActionIgnoreError(Action lambda)
         {
             try
             {

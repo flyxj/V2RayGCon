@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -14,13 +13,6 @@ namespace V2RayGCon.Lib
 {
     public class UI
     {
-        #region DLL
-        [DllImport("User32.dll")]
-        static extern IntPtr GetDC(IntPtr hwnd);
-        [DllImport("User32.dll")]
-        static extern void ReleaseDC(IntPtr hwnd, IntPtr dc);
-        #endregion
-
         #region private method
         static double GetScalingFactorFromGraphic(Graphics graphic, int step)
         {
@@ -44,11 +36,11 @@ namespace V2RayGCon.Lib
         public static double GetScreenScalingFactor()
         {
             // https://stackoverflow.com/questions/14385838/draw-on-screen-without-form
-            IntPtr desktopPtr = GetDC(IntPtr.Zero);
+            IntPtr desktopPtr = Lib.Sys.SafeNativeMethods.GetDC(IntPtr.Zero);
             Graphics g = Graphics.FromHdc(desktopPtr);
             var result = GetScalingFactorFromGraphic(g, 25);
             g.Dispose();
-            ReleaseDC(IntPtr.Zero, desktopPtr);
+            Lib.Sys.SafeNativeMethods.ReleaseDC(IntPtr.Zero, desktopPtr);
             return result;
         }
 

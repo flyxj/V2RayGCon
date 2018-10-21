@@ -63,7 +63,7 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        void SendLog(string message)
+        static void SendLog(string message)
         {
             Service.Setting.Instance.SendLog(message);
         }

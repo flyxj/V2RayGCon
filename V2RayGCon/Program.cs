@@ -8,17 +8,17 @@ using V2RayGCon.Resource.Resx;
 namespace System.Runtime.CompilerServices
 {
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-    public class CallerMemberNameAttribute : Attribute
+    public sealed class CallerMemberNameAttribute : Attribute
     {
     }
 
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-    public class CallerFilePathAttribute : Attribute
+    public sealed class CallerFilePathAttribute : Attribute
     {
     }
 
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-    public class CallerLineNumberAttribute : Attribute
+    public sealed class CallerLineNumberAttribute : Attribute
     {
     }
 }
@@ -69,14 +69,14 @@ namespace V2RayGCon
             {
                 MessageBox.Show(I18N.ExitOtherVGCFirst);
             }
-            Lib.Sys.DllLoader.FreeLibrary(pShcoreDll);
+            Lib.Sys.SafeNativeMethods.FreeLibrary(pShcoreDll);
         }
 
         #region private method
         private static IntPtr HiResSupport()
         {
             // load Shcore.dll and get high resolution support
-            IntPtr pDll = Lib.Sys.DllLoader.LoadLibrary(@"Shcore.DLL");
+            IntPtr pDll = Lib.Sys.SafeNativeMethods.LoadLibrary(@"Shcore.DLL");
             Lib.Sys.DllLoader.CallMethod(
                 pDll,
                 @"SetProcessDpiAwareness",
