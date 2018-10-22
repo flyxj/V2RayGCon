@@ -445,7 +445,7 @@ namespace V2RayGCon.Controller
 
         public void ChangeIndex(double index)
         {
-            if (this.index == index)
+            if (Lib.Utils.AreEqual(this.index, index))
             {
                 return;
             }

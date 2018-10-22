@@ -676,7 +676,6 @@ namespace V2RayGCon.Lib
             return config.ToString(Formatting.None);
         }
 
-
         public static string Config2Base64String(JObject config)
         {
             return Base64Encode(config.ToString(Formatting.None));
@@ -1039,6 +1038,11 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static bool AreEqual(double a, double b)
+        {
+            return Math.Abs(a - b) < 0.000001;
+        }
+
         public static string SHA256(string randomString)
         {
             var crypt = new System.Security.Cryptography.SHA256Managed();
@@ -1296,7 +1300,7 @@ namespace V2RayGCon.Lib
             };
         }
 
-        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lamda)
+        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lambda)
         {
             var result = new List<TResult>();
 
@@ -1308,7 +1312,7 @@ namespace V2RayGCon.Lib
             var taskList = new List<Task<TResult>>();
             foreach (var value in values)
             {
-                var task = new Task<TResult>(() => lamda(value));
+                var task = new Task<TResult>(() => lambda(value));
                 taskList.Add(task);
                 task.Start();
             }
@@ -1333,14 +1337,14 @@ namespace V2RayGCon.Lib
             return result;
         }
 
-        public static void RunAsSTAThread(Action lamda)
+        public static void RunAsSTAThread(Action lambda)
         {
             // https://www.codeproject.com/Questions/727531/ThreadStateException-cant-handeled-in-ClipBoard-Se
             AutoResetEvent @event = new AutoResetEvent(false);
             Thread thread = new Thread(
                 () =>
                 {
-                    lamda();
+                    lambda();
                     @event.Set();
                 });
             thread.SetApartmentState(ApartmentState.STA);

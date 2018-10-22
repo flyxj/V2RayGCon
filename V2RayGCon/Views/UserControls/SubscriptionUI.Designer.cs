@@ -93,7 +93,7 @@
             this.toolTip1.SetToolTip(this.chkIsSetMark, resources.GetString("chkIsSetMark.ToolTip"));
             this.chkIsSetMark.UseVisualStyleBackColor = true;
             // 
-            // SubscriptionListItem
+            // SubscriptionUI
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -107,7 +107,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lbIndex);
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.Name = "SubscriptionListItem";
+            this.Name = "SubscriptionUI";
             this.Tag = "";
             this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.UrlListItem_MouseDown);

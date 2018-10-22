@@ -13,15 +13,15 @@ namespace V2RayGCon.Lib.Sys
          * [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
          * private delegate int SetProcessDpiAwareness(int PROCESS_DPI_AWARENESS);
          * 
-         * Then parameter lamda should look like this:
+         * Then parameter lambda should look like this:
          * (method) => ((SetProcessDpiAwareness)method).Invoke(0);  // PROCESS_DPI_AWARENESS=0
          */
-        public static bool CallMethod(IntPtr pDll, string methodName, Type methodType, Action<Delegate> lamda)
+        public static bool CallMethod(IntPtr pDll, string methodName, Type methodType, Action<Delegate> lambda)
         {
             var method = GetMethod(pDll, methodName, methodType);
             if (method != null)
             {
-                lamda(method);
+                lambda(method);
                 return true;
             }
             return false;

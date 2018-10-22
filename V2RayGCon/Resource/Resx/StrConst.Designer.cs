@@ -622,7 +622,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.45,v3.43,v3.41 的本地化字符串。
+        ///   查找类似 v3.48,v3.47,v3.46 的本地化字符串。
         /// </summary>
         internal static string VerList {
             get {

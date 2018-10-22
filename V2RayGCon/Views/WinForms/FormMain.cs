@@ -67,7 +67,13 @@ namespace V2RayGCon.Views.WinForms
         {
             void bind(ToolStripButton button, ToolStripMenuItem menu)
             {
-                button.Click += (s, a) => menu.PerformClick();
+                button.Click += (s, a) =>
+                {
+                    menu.PerformClick();
+
+                    // Do not know why, form main will lost focus sometime.
+                    this.Activate();
+                };
             }
 
             bind(toolStripButtonSelectAllCurPage, selectAllCurPageToolStripMenuItem);
