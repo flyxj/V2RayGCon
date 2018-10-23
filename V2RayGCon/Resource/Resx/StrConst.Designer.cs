@@ -410,6 +410,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 30 的本地化字符串。
+        /// </summary>
+        internal static string LazySaveUserSettingsDelay {
+            get {
+                return ResourceManager.GetString("LazySaveUserSettingsDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 https://www.youtube.com/watch?v=BA7fdSkp8ds 的本地化字符串。
         /// </summary>
         internal static string Nobody3uVideoUrl {

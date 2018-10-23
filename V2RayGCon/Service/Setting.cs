@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -14,13 +15,28 @@ namespace V2RayGCon.Service
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
-
-        Lib.Sys.CancelableTimeout lazyGCTimer = null;
+        Model.Data.UserSettings userSettings;
 
         // Singleton need this private ctor.
-        Setting() { }
+        Setting()
+        {
+            userSettings = LoadUserSettings();
+        }
 
         #region Properties
+        public bool isPortable
+        {
+            get
+            {
+                return Properties.Settings.Default.Portable;
+            }
+            set
+            {
+                Properties.Settings.Default.Portable = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public bool isServerTrackerOn = false;
 
         public int serverPanelPageSize
@@ -124,6 +140,28 @@ namespace V2RayGCon.Service
             lazyGCTimer?.Release();
         }
 
+        readonly object saveUserSettingsLocker = new object();
+        public void SaveUserSettingsWorker()
+        {
+            lock (saveUserSettingsLocker)
+            {
+                // do something
+                if (userSettings.isPortable)
+                {
+                    SaveUserSettingsToFile();
+                    return;
+                }
+
+                // make sure usersetting.config.isPortable is set to false
+                SetUserSettingFileIsPortableToFalse();
+            }
+        }
+
+        /*
+         * string something;
+         * if(something == null){} // Boom!
+         */
+        Lib.Sys.CancelableTimeout lazyGCTimer = null;
         public void LazyGC()
         {
             // Create on demand.
@@ -348,7 +386,135 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        static void SetUserSettingFileIsPortableToFalse()
+        {
+            var filename = Properties.Resources.PortableUserSettingsFilename;
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    var s = JsonConvert
+                        .DeserializeObject<Model.Data.UserSettings>(
+                        File.ReadAllText(filename));
+                    if (s.isPortable)
+                    {
+                        s.isPortable = false;
+                        File.WriteAllText(filename, JsonConvert.SerializeObject(s));
+                    }
+                }
+                catch { }
+            }
+        }
 
+        void SaveUserSettingsToProperties()
+        {
+            var p = Properties.Settings.Default;
+            var s = userSettings;
+
+            // int
+            p.MaxLogLine = s.MaxLogLine;
+            p.ServerPanelPageSize = s.ServerPanelPageSize;
+
+            // bool
+            p.CfgShowToolPanel = s.CfgShowToolPanel;
+            p.Portable = s.isPortable;
+
+            // string
+            p.ImportUrls = s.ImportUrls;
+            p.DecodeCache = s.DecodeCache;
+            p.SubscribeUrls = s.SubscribeUrls;
+            p.Culture = s.Culture;
+            p.ServerList = s.ServerList;
+            p.PacServerSettings = s.PacServerSettings;
+            p.SysProxySetting = s.SysProxySetting;
+            p.ServerTracker = s.ServerTracker;
+            p.WinFormPosList = s.WinFormPosList;
+
+            p.Save();
+        }
+
+        void SaveUserSettingsToFile()
+        {
+            var filename = Properties.Resources.PortableUserSettingsFilename;
+            try
+            {
+                var content = JsonConvert.SerializeObject(userSettings);
+                File.WriteAllText(filename, content);
+            }
+            catch
+            {
+                MessageBox.Show(I18N.SaveUserSettingsToFileFail);
+            }
+        }
+
+        Model.Data.UserSettings LoadUserSettingsFromPorperties()
+        {
+            var empty = new Model.Data.UserSettings();
+            try
+            {
+                var p = Properties.Settings.Default;
+
+                var result = new Model.Data.UserSettings
+                {
+                    // int
+                    MaxLogLine = p.MaxLogLine,
+                    ServerPanelPageSize = p.ServerPanelPageSize,
+
+                    // bool
+                    CfgShowToolPanel = p.CfgShowToolPanel,
+                    isPortable = p.Portable,
+
+                    // string
+                    ImportUrls = p.ImportUrls,
+                    DecodeCache = p.DecodeCache,
+                    SubscribeUrls = p.SubscribeUrls,
+                    Culture = p.Culture,
+                    ServerList = p.ServerList,
+                    PacServerSettings = p.PacServerSettings,
+                    SysProxySetting = p.SysProxySetting,
+                    ServerTracker = p.ServerTracker,
+                    WinFormPosList = p.WinFormPosList
+                };
+                return result;
+            }
+            catch { }
+            return empty;
+        }
+
+        Model.Data.UserSettings LoadUserSettingsFromFile()
+        {
+            var filename = Properties.Resources.PortableUserSettingsFilename;
+            if (!File.Exists(filename))
+            {
+                try
+                {
+                    var result = JsonConvert
+                        .DeserializeObject<Model.Data.UserSettings>(
+                            File.ReadAllText(filename));
+                    return result.isPortable ? result : null;
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        Model.Data.UserSettings LoadUserSettings()
+        {
+            return LoadUserSettingsFromFile() ?? LoadUserSettingsFromPorperties();
+        }
+
+        Lib.Sys.CancelableTimeout lazySaveUserSettingsTimer = null;
+        void LazySaveUserSettings()
+        {
+            if (lazySaveUserSettingsTimer == null)
+            {
+                lazySaveUserSettingsTimer = new Lib.Sys.CancelableTimeout(
+                    SaveUserSettingsWorker,
+                    1000 * Lib.Utils.Str2Int(StrConst.LazySaveUserSettingsDelay));
+            }
+
+            lazySaveUserSettingsTimer.Start();
+        }
 
         Dictionary<string, Rectangle> winFormRectListCache = null;
         Dictionary<string, Rectangle> GetWinFormRectList()

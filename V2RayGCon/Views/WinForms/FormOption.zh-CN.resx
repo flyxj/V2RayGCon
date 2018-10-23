@@ -153,6 +153,18 @@
   <data name="tabPageSubscribe.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="chkSetSysPortable.Text" xml:space="preserve">
+    <value>便携模式</value>
+  </data>
+  <data name="chkSetSysPortable.ToolTip" xml:space="preserve">
+    <value>将配置信息保存到软件运行目录内</value>
+  </data>
+  <data name="groupBox6.Text" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="groupBox6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="chkSetServAutotrack.Text" xml:space="preserve">
     <value>自动追踪</value>
   </data>

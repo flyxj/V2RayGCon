@@ -1138,6 +1138,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Save settings to file fail!
+        ///Try move this app to writeable folder or disable portable mode. 的本地化字符串。
+        /// </summary>
+        internal static string SaveUserSettingsToFileFail {
+            get {
+                return ResourceManager.GetString("SaveUserSettingsToFileFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan QR code 的本地化字符串。
         /// </summary>
         internal static string ScanQRCode {

@@ -606,4 +606,8 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="VisitWebPage" xml:space="preserve">
     <value>访问以下网址？</value>
   </data>
+  <data name="SaveUserSettingsToFileFail" xml:space="preserve">
+    <value>保存配置失败!
+请将本软件移至可写入目录或禁用便携模式。</value>
+  </data>
 </root>

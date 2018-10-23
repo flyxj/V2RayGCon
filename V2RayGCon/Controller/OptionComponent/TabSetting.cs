@@ -7,26 +7,36 @@ namespace V2RayGCon.Controller.OptionComponent
         Service.Setting setting;
 
         ComboBox cboxLanguage = null, cboxPageSize = null;
-        CheckBox chkServAutoTrack = null;
+        CheckBox chkServAutoTrack = null, chkPortableMode = null;
 
         public TabSetting(
             ComboBox cboxLanguage,
             ComboBox cboxPageSize,
-            CheckBox chkServAutoTrack)
+            CheckBox chkServAutoTrack,
+            CheckBox chkPortableMode)
         {
             this.setting = Service.Setting.Instance;
+
+            // Do not put these lines of code into InitElement.
             this.cboxLanguage = cboxLanguage;
             this.cboxPageSize = cboxPageSize;
             this.chkServAutoTrack = chkServAutoTrack;
+            this.chkPortableMode = chkPortableMode;
 
-            InitElement(cboxLanguage, cboxPageSize, chkServAutoTrack);
+            InitElement(
+                cboxLanguage,
+                cboxPageSize,
+                chkServAutoTrack,
+                chkPortableMode);
         }
 
         private void InitElement(
             ComboBox cboxLanguage,
             ComboBox cboxPageSize,
-            CheckBox chkServAutoTrack)
+            CheckBox chkServAutoTrack,
+            CheckBox chkPortableMode)
         {
+            chkPortableMode.Checked = setting.isPortable;
             cboxLanguage.SelectedIndex = (int)setting.culture;
             cboxPageSize.Text = setting.serverPanelPageSize.ToString();
             var tracker = setting.GetServerTrackerSetting();
@@ -62,12 +72,18 @@ namespace V2RayGCon.Controller.OptionComponent
             trackerSetting.isTrackerOn = chkServAutoTrack.Checked;
             setting.SaveServerTrackerSetting(trackerSetting);
             setting.isServerTrackerOn = trackerSetting.isTrackerOn;
+            setting.isPortable = chkPortableMode.Checked;
 
             return true;
         }
 
         public override bool IsOptionsChanged()
         {
+            if (setting.isPortable != chkPortableMode.Checked)
+            {
+                return true;
+            }
+
             if (Lib.Utils.Str2Int(cboxPageSize.Text) != setting.serverPanelPageSize)
             {
                 return true;
@@ -98,7 +114,6 @@ namespace V2RayGCon.Controller.OptionComponent
             }
             return true;
         }
-
         #endregion
     }
 }

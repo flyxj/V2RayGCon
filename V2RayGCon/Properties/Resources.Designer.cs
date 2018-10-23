@@ -198,6 +198,15 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找类似 userSetting.json 的本地化字符串。
+        /// </summary>
+        internal static string PortableUserSettingsFilename {
+            get {
+                return ResourceManager.GetString("PortableUserSettingsFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 https://github.com/nobody3u/V2RayGCon 的本地化字符串。
         /// </summary>
         internal static string ProjectLink {

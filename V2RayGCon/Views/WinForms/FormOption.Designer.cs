@@ -39,6 +39,8 @@
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSetting = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.chkSetSysPortable = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.chkSetServAutotrack = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -70,6 +72,7 @@
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
             this.tabPageSetting.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPagePACServ.SuspendLayout();
@@ -144,11 +147,26 @@
             // 
             // tabPageSetting
             // 
+            this.tabPageSetting.Controls.Add(this.groupBox6);
             this.tabPageSetting.Controls.Add(this.groupBox5);
             this.tabPageSetting.Controls.Add(this.groupBox1);
             resources.ApplyResources(this.tabPageSetting, "tabPageSetting");
             this.tabPageSetting.Name = "tabPageSetting";
             this.tabPageSetting.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.chkSetSysPortable);
+            resources.ApplyResources(this.groupBox6, "groupBox6");
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.TabStop = false;
+            // 
+            // chkSetSysPortable
+            // 
+            resources.ApplyResources(this.chkSetSysPortable, "chkSetSysPortable");
+            this.chkSetSysPortable.Name = "chkSetSysPortable";
+            this.toolTip1.SetToolTip(this.chkSetSysPortable, resources.GetString("chkSetSysPortable.ToolTip"));
+            this.chkSetSysPortable.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
@@ -354,6 +372,8 @@
             this.tabPageImport.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
             this.tabPageSetting.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -407,5 +427,7 @@
         private System.Windows.Forms.Button btnPacBrowseFile;
         private System.Windows.Forms.TextBox tboxPacFilePath;
         private System.Windows.Forms.CheckBox chkPacCustomFile;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.CheckBox chkSetSysPortable;
     }
 }
