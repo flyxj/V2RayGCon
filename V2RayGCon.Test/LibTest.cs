@@ -17,6 +17,7 @@ namespace V2RayGCon.Test
         [DataRow(0.000000001, 0.00000002, true)]
         [DataRow(0.001, 0.002, false)]
         [DataRow(-0.1, 0.1, false)]
+        [DataRow(2, 2, true)]
         public void AreEqualTest(double a, double b, bool expect)
         {
             Assert.AreEqual(expect, Lib.Utils.AreEqual(a, b));
