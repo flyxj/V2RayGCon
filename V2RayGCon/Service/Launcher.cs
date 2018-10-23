@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -8,26 +9,90 @@ namespace V2RayGCon.Service
 {
     class Launcher : Model.BaseClass.SingletonService<Launcher>
     {
-        Service.Setting setting;
-        Service.PacServer pacServer;
-        Service.Notifier notifier;
-        Service.Servers servers;
+        Setting setting;
+        Servers servers;
+        Notifier notifier;
+        PacServer pacServer;
+        Model.Data.ProxyRegKeyValue orgSysProxySetting;
+
+        bool isCleanup = false;
 
         Launcher()
         {
-            Lib.Utils.SupportProtocolTLS12();
+            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
+            // warn-up
+            var cache = Cache.Instance;
+            var cmder = Cmder.Instance;
 
             setting = Setting.Instance;
             pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
 
-            Application.ApplicationExit += Cleanup;
-            Microsoft.Win32.SystemEvents.SessionEnding += (s, a) => Application.Exit();
+            SetCulture(setting.culture);
 
-            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            // dependency injection
+            pacServer.Run(setting);
+            servers.Run(setting, pacServer, cache);
+            cmder.Run(setting, servers, pacServer);
+            notifier.Run(setting, servers);
+
+            Application.ApplicationExit += OnApplicationExitHandler;
+            Microsoft.Win32.SystemEvents.SessionEnding += OnApplicationExitHandler;
+
+            Application.ThreadException +=
+                (s, a) => SaveUnHandledException(
+                    a.Exception.ToString());
+
+            AppDomain.CurrentDomain.UnhandledException +=
+                (s, a) => SaveUnHandledException(
+                    (a.ExceptionObject as Exception).ToString());
         }
+
+        private void OnApplicationExitHandler(object sender, EventArgs args)
+        {
+            if (isCleanup)
+            {
+                return;
+            }
+
+            isCleanup = true;
+
+            notifier.Cleanup();
+            servers.Cleanup();
+            pacServer.Cleanup();
+            setting.Cleanup();
+            Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
+        }
+
+        #region private method
+        void SetCulture(Model.Data.Enum.Cultures culture)
+        {
+            string cultureString = null;
+
+            switch (culture)
+            {
+                case Model.Data.Enum.Cultures.enUS:
+                    cultureString = "";
+                    break;
+                case Model.Data.Enum.Cultures.zhCN:
+                    cultureString = "zh-CN";
+                    break;
+                case Model.Data.Enum.Cultures.auto:
+                    return;
+            }
+
+            var ci = new CultureInfo(cultureString);
+
+            Thread.CurrentThread.CurrentCulture.GetType()
+                .GetProperty("DefaultThreadCurrentCulture")
+                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
+
+            Thread.CurrentThread.CurrentCulture.GetType()
+                .GetProperty("DefaultThreadCurrentUICulture")
+                .SetValue(Thread.CurrentThread.CurrentCulture, ci, null);
+        }
+        #endregion
 
         #region debug
 #if DEBUG
@@ -56,7 +121,7 @@ namespace V2RayGCon.Service
         #region public method
         public void run()
         {
-            servers.Prepare(setting);
+            Lib.Utils.SupportProtocolTLS12();
 
             if (servers.IsEmpty())
             {
@@ -75,16 +140,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region unhandled exception
-        void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            SaveUnHandledException(e.Exception.ToString());
-        }
-
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            SaveUnHandledException((e.ExceptionObject as Exception).ToString());
-        }
-
         void ShowExceptionDetails()
         {
             System.Diagnostics.Process.Start(GetBugLogFileName());
@@ -123,15 +178,6 @@ namespace V2RayGCon.Service
                 File.WriteAllText(bugFileName, content);
             }
             catch { }
-        }
-        #endregion
-
-        #region private method
-        void Cleanup(object sender, EventArgs args)
-        {
-            notifier.Cleanup();
-            servers.Cleanup();
-            pacServer.Cleanup();
         }
         #endregion
     }

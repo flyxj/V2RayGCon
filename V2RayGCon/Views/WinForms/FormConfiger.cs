@@ -88,7 +88,7 @@ namespace V2RayGCon.Views.WinForms
                 servers.OnRequireMenuUpdate -= MenuUpdateHandler;
                 setting.SaveFormRect(this);
                 toolsPanelController.Dispose();
-                servers.LazyGC();
+                setting.LazyGC();
             };
         }
 
@@ -208,7 +208,7 @@ namespace V2RayGCon.Views.WinForms
             }
         }
 
-        private void tabCtrlToolPanel_MouseLeave(object sender, EventArgs e)
+        private void TabCtrlToolPanel_MouseLeave(object sender, EventArgs e)
         {
             toolsPanelController.timerShow.Cancel();
         }

@@ -39,6 +39,8 @@
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSetting = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.chkSetSysPortable = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.chkSetServAutotrack = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -70,6 +72,7 @@
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
             this.tabPageSetting.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPagePACServ.SuspendLayout();
@@ -89,15 +92,13 @@
             this.tabControl1.Controls.Add(this.tabPagePACServ);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.toolTip1.SetToolTip(this.tabControl1, resources.GetString("tabControl1.ToolTip"));
             // 
             // tabPageImport
             // 
-            resources.ApplyResources(this.tabPageImport, "tabPageImport");
             this.tabPageImport.Controls.Add(this.btnImportAdd);
             this.tabPageImport.Controls.Add(this.flyImportPanel);
+            resources.ApplyResources(this.tabPageImport, "tabPageImport");
             this.tabPageImport.Name = "tabPageImport";
-            this.toolTip1.SetToolTip(this.tabPageImport, resources.GetString("tabPageImport.ToolTip"));
             this.tabPageImport.UseVisualStyleBackColor = true;
             // 
             // btnImportAdd
@@ -109,20 +110,18 @@
             // 
             // flyImportPanel
             // 
-            resources.ApplyResources(this.flyImportPanel, "flyImportPanel");
             this.flyImportPanel.AllowDrop = true;
+            resources.ApplyResources(this.flyImportPanel, "flyImportPanel");
             this.flyImportPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flyImportPanel.Name = "flyImportPanel";
-            this.toolTip1.SetToolTip(this.flyImportPanel, resources.GetString("flyImportPanel.ToolTip"));
             // 
             // tabPageSubscribe
             // 
-            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Controls.Add(this.btnUpdateViaSubscription);
             this.tabPageSubscribe.Controls.Add(this.btnAddSubsUrl);
             this.tabPageSubscribe.Controls.Add(this.flySubsUrlContainer);
+            resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
             this.tabPageSubscribe.Name = "tabPageSubscribe";
-            this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
             this.tabPageSubscribe.UseVisualStyleBackColor = true;
             // 
             // btnUpdateViaSubscription
@@ -141,20 +140,33 @@
             // 
             // flySubsUrlContainer
             // 
-            resources.ApplyResources(this.flySubsUrlContainer, "flySubsUrlContainer");
             this.flySubsUrlContainer.AllowDrop = true;
+            resources.ApplyResources(this.flySubsUrlContainer, "flySubsUrlContainer");
             this.flySubsUrlContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flySubsUrlContainer.Name = "flySubsUrlContainer";
-            this.toolTip1.SetToolTip(this.flySubsUrlContainer, resources.GetString("flySubsUrlContainer.ToolTip"));
             // 
             // tabPageSetting
             // 
-            resources.ApplyResources(this.tabPageSetting, "tabPageSetting");
+            this.tabPageSetting.Controls.Add(this.groupBox6);
             this.tabPageSetting.Controls.Add(this.groupBox5);
             this.tabPageSetting.Controls.Add(this.groupBox1);
+            resources.ApplyResources(this.tabPageSetting, "tabPageSetting");
             this.tabPageSetting.Name = "tabPageSetting";
-            this.toolTip1.SetToolTip(this.tabPageSetting, resources.GetString("tabPageSetting.ToolTip"));
             this.tabPageSetting.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.chkSetSysPortable);
+            resources.ApplyResources(this.groupBox6, "groupBox6");
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.TabStop = false;
+            // 
+            // chkSetSysPortable
+            // 
+            resources.ApplyResources(this.chkSetSysPortable, "chkSetSysPortable");
+            this.chkSetSysPortable.Name = "chkSetSysPortable";
+            this.toolTip1.SetToolTip(this.chkSetSysPortable, resources.GetString("chkSetSysPortable.ToolTip"));
+            this.chkSetSysPortable.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
@@ -162,7 +174,6 @@
             this.groupBox5.Controls.Add(this.chkSetServAutotrack);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox5, resources.GetString("groupBox5.ToolTip"));
             // 
             // chkSetServAutotrack
             // 
@@ -181,11 +192,9 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
             // 
             // cboxSettingPageSize
             // 
-            resources.ApplyResources(this.cboxSettingPageSize, "cboxSettingPageSize");
             this.cboxSettingPageSize.FormattingEnabled = true;
             this.cboxSettingPageSize.Items.AddRange(new object[] {
             resources.GetString("cboxSettingPageSize.Items"),
@@ -193,14 +202,13 @@
             resources.GetString("cboxSettingPageSize.Items2"),
             resources.GetString("cboxSettingPageSize.Items3"),
             resources.GetString("cboxSettingPageSize.Items4")});
+            resources.ApplyResources(this.cboxSettingPageSize, "cboxSettingPageSize");
             this.cboxSettingPageSize.Name = "cboxSettingPageSize";
-            this.toolTip1.SetToolTip(this.cboxSettingPageSize, resources.GetString("cboxSettingPageSize.ToolTip"));
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // label2
             // 
@@ -210,29 +218,26 @@
             // 
             // cboxSettingLanguage
             // 
-            resources.ApplyResources(this.cboxSettingLanguage, "cboxSettingLanguage");
             this.cboxSettingLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxSettingLanguage.FormattingEnabled = true;
             this.cboxSettingLanguage.Items.AddRange(new object[] {
             resources.GetString("cboxSettingLanguage.Items"),
             resources.GetString("cboxSettingLanguage.Items1"),
             resources.GetString("cboxSettingLanguage.Items2")});
+            resources.ApplyResources(this.cboxSettingLanguage, "cboxSettingLanguage");
             this.cboxSettingLanguage.Name = "cboxSettingLanguage";
-            this.toolTip1.SetToolTip(this.cboxSettingLanguage, resources.GetString("cboxSettingLanguage.ToolTip"));
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // tabPagePACServ
             // 
-            resources.ApplyResources(this.tabPagePACServ, "tabPagePACServ");
             this.tabPagePACServ.Controls.Add(this.panel1);
             this.tabPagePACServ.Controls.Add(this.groupBox2);
+            resources.ApplyResources(this.tabPagePACServ, "tabPagePACServ");
             this.tabPagePACServ.Name = "tabPagePACServ";
-            this.toolTip1.SetToolTip(this.tabPagePACServ, resources.GetString("tabPagePACServ.ToolTip"));
             this.tabPagePACServ.UseVisualStyleBackColor = true;
             // 
             // panel1
@@ -240,7 +245,6 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Name = "panel1";
-            this.toolTip1.SetToolTip(this.panel1, resources.GetString("panel1.ToolTip"));
             // 
             // tableLayoutPanel1
             // 
@@ -248,21 +252,18 @@
             this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox4, 1, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.toolTip1.SetToolTip(this.tableLayoutPanel1, resources.GetString("tableLayoutPanel1.ToolTip"));
             // 
             // groupBox3
             // 
-            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Controls.Add(this.rtboxPacServWhiteList);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox3, resources.GetString("groupBox3.ToolTip"));
             // 
             // rtboxPacServWhiteList
             // 
             resources.ApplyResources(this.rtboxPacServWhiteList, "rtboxPacServWhiteList");
             this.rtboxPacServWhiteList.Name = "rtboxPacServWhiteList";
-            this.toolTip1.SetToolTip(this.rtboxPacServWhiteList, resources.GetString("rtboxPacServWhiteList.ToolTip"));
             // 
             // groupBox4
             // 
@@ -270,13 +271,11 @@
             this.groupBox4.Controls.Add(this.rtboxPacServBlackList);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox4, resources.GetString("groupBox4.ToolTip"));
             // 
             // rtboxPacServBlackList
             // 
             resources.ApplyResources(this.rtboxPacServBlackList, "rtboxPacServBlackList");
             this.rtboxPacServBlackList.Name = "rtboxPacServBlackList";
-            this.toolTip1.SetToolTip(this.rtboxPacServBlackList, resources.GetString("rtboxPacServBlackList.ToolTip"));
             // 
             // groupBox2
             // 
@@ -289,7 +288,6 @@
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
-            this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
             // 
             // btnPacBrowseFile
             // 
@@ -322,13 +320,11 @@
             // 
             resources.ApplyResources(this.tboxPacServPort, "tboxPacServPort");
             this.tboxPacServPort.Name = "tboxPacServPort";
-            this.toolTip1.SetToolTip(this.tboxPacServPort, resources.GetString("tboxPacServPort.ToolTip"));
             // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            this.toolTip1.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // btnBakBackup
             // 
@@ -358,7 +354,6 @@
             // 
             resources.ApplyResources(this.btnOptionExit, "btnOptionExit");
             this.btnOptionExit.Name = "btnOptionExit";
-            this.toolTip1.SetToolTip(this.btnOptionExit, resources.GetString("btnOptionExit.ToolTip"));
             this.btnOptionExit.UseVisualStyleBackColor = true;
             this.btnOptionExit.Click += new System.EventHandler(this.btnOptionExit_Click);
             // 
@@ -372,12 +367,13 @@
             this.Controls.Add(this.btnOptionSave);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormOption";
-            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Shown += new System.EventHandler(this.FormOption_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
             this.tabPageSetting.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -431,5 +427,7 @@
         private System.Windows.Forms.Button btnPacBrowseFile;
         private System.Windows.Forms.TextBox tboxPacFilePath;
         private System.Windows.Forms.CheckBox chkPacCustomFile;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.CheckBox chkSetSysPortable;
     }
 }

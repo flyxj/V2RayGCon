@@ -6,7 +6,7 @@ namespace V2RayGCon.Lib.Sys
     class CancelableTimeout
     {
         Timer timer;
-        int TIMEOUT;
+        readonly int TIMEOUT;
         Action worker;
 
         public CancelableTimeout(Action worker, int timeout)
@@ -19,9 +19,12 @@ namespace V2RayGCon.Lib.Sys
             this.TIMEOUT = timeout;
             this.worker = worker;
 
-            timer = new Timer();
-            timer.Enabled = false;
-            timer.AutoReset = false;
+            timer = new Timer
+            {
+                Enabled = false,
+                AutoReset = false
+            };
+
             timer.Elapsed += OnTimeout;
         }
 

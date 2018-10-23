@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows.Forms;
 
 
@@ -147,7 +148,7 @@ namespace V2RayGCon.Lib.QRCode
         }
     }
 
-
+    [SuppressUnmanagedCodeSecurityAttribute]
     // class that exposes needed win32 gdi functions.
     class Win32
     {

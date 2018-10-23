@@ -166,5 +166,17 @@ namespace V2RayGCon.Properties {
                 this["ServerTracker"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Portable {
+            get {
+                return ((bool)(this["Portable"]));
+            }
+            set {
+                this["Portable"] = value;
+            }
+        }
     }
 }

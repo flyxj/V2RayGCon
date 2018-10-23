@@ -11,13 +11,15 @@ namespace V2RayGCon.Service
         Setting setting;
         Servers servers;
 
-        Notifier()
+        Notifier() { }
+
+        public void Run(Setting setting, Servers servers)
         {
-            setting = Setting.Instance;
-            servers = Servers.Instance;
+            this.setting = setting;
+            this.servers = servers;
 
             CreateNotifyIcon();
-            setting.OnUpdateNotifierText += UpdateNotifierTextHandler;
+            servers.OnRequireNotifierUpdate += UpdateNotifierTextHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -40,6 +42,7 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             ni.Visible = false;
+            servers.OnRequireNotifierUpdate -= UpdateNotifierTextHandler;
         }
         #endregion
 
@@ -62,17 +65,19 @@ namespace V2RayGCon.Service
 
         void CreateNotifyIcon()
         {
-            ni = new NotifyIcon();
-            ni.Text = I18N.Description;
+            ni = new NotifyIcon
+            {
+                Text = I18N.Description,
 #if DEBUG
-            ni.Icon = Properties.Resources.icon_light;
+                Icon = Properties.Resources.icon_light,
 #else
-            ni.Icon = Properties.Resources.icon_dark;
+                Icon = Properties.Resources.icon_dark,
 #endif
-            ni.BalloonTipTitle = Properties.Resources.AppName;
+                BalloonTipTitle = Properties.Resources.AppName,
 
-            ni.ContextMenuStrip = CreateMenu();
-            ni.Visible = true;
+                ContextMenuStrip = CreateMenu(),
+                Visible = true
+            };
         }
 
         ContextMenuStrip CreateMenu()
@@ -121,6 +126,13 @@ namespace V2RayGCon.Service
                     (s,a)=>{
                         void Success(string link)
                         {
+                            // no comment ^v^
+                            if (link == StrConst.Nobody3uVideoUrl)
+                            {
+                                Lib.UI.VisitUrl(I18N.VisitWebPage, StrConst.Nobody3uVideoUrl);
+                                return;
+                            }
+
                             var msg=Lib.Utils.CutStr(link,90);
                             setting.SendLog($"QRCode: {msg}");
                             servers.ImportLinks(link);

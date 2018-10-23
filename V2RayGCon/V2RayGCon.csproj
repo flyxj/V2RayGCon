@@ -36,6 +36,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +47,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon_dark.ico</ApplicationIcon>
@@ -117,6 +121,7 @@
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\FormOptionCtrl.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
     <Compile Include="Lib\Nets\WebServer.cs" />
@@ -126,8 +131,8 @@
     <Compile Include="Lib\Nets\TimedWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Lib\Sys\SafeNativeMethods.cs" />
     <Compile Include="Lib\UI.cs" />
-    <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Lib\Sys\CancelableTimeout.cs" />
     <Compile Include="Model\BaseClass\IFormMainFlyPanelComponent.cs" />
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
@@ -138,6 +143,8 @@
     <Compile Include="Model\Data\ProxyRegKeyValue.cs" />
     <Compile Include="Model\Data\PacServerSettings.cs" />
     <Compile Include="Model\Data\ServerTracker.cs" />
+    <Compile Include="Model\Data\UserSettings.cs" />
+    <Compile Include="Service\Cmder.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
@@ -428,7 +435,6 @@
     <None Include="Resource\Icon\TaskTray\CPPWin32Project_16x.png" />
     <None Include="Resource\Icon\TaskTray\CopyLongTextToClipboard_16x.png" />
     <None Include="Resource\Icon\TaskTray\CloseSolution_16x.png" />
-    <None Include="Resource\Icon\TaskTray\BorderElement_16x.png" />
     <None Include="Resource\Icon\TaskTray\AzureVirtualMachineExtension_16x.png" />
     <None Include="Resource\Icon\TaskTray\ASX_TransferDownload_blue_16x.png" />
     <None Include="Resource\Config\config_example.txt" />

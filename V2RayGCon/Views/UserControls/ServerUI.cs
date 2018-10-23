@@ -10,6 +10,7 @@ namespace V2RayGCon.Views.UserControls
     public partial class ServerUI : UserControl, Model.BaseClass.IFormMainFlyPanelComponent
     {
         Service.Setting setting;
+        Service.Servers servers;
         Service.PacServer pacServer;
         Controller.CoreServerCtrl serverItem;
 
@@ -21,6 +22,7 @@ namespace V2RayGCon.Views.UserControls
         {
             setting = Service.Setting.Instance;
             pacServer = Service.PacServer.Instance;
+            servers = Service.Servers.Instance;
 
             this.serverItem = serverItem;
             InitializeComponent();
@@ -138,7 +140,7 @@ namespace V2RayGCon.Views.UserControls
         void RestartServer()
         {
             var server = this.serverItem;
-            server.parent.StopAllServersThen(
+            servers.StopAllServersThen(
                 () => server.RestartCoreThen());
         }
 
@@ -180,6 +182,11 @@ namespace V2RayGCon.Views.UserControls
 
         void UpdateInboundAddrOndemand()
         {
+            if (!Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port))
+            {
+                return;
+            }
+
             var text = serverItem.inboundIP + ":" + serverItem.inboundPort.ToString();
             if (tboxInboundAddr.Text != text)
             {
@@ -384,9 +391,23 @@ namespace V2RayGCon.Views.UserControls
 
         private void tboxInboundAddr_TextChanged(object sender, EventArgs e)
         {
-            Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
-            serverItem.SetPropertyOnDemand(ref serverItem.inboundIP, ip, true);
-            serverItem.SetPropertyOnDemand(ref serverItem.inboundPort, port, true);
+            if (Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port))
+            {
+                if (tboxInboundAddr.ForeColor != Color.Black)
+                {
+                    tboxInboundAddr.ForeColor = Color.Black;
+                }
+                serverItem.SetIPandPortOnDemand(ip, port);
+            }
+            else
+            {
+                // UI operation is expansive
+                if (tboxInboundAddr.ForeColor != Color.Red)
+                {
+                    tboxInboundAddr.ForeColor = Color.Red;
+                }
+            }
+
         }
 
         private void lbSummary_Click(object sender, EventArgs e)
@@ -440,8 +461,7 @@ namespace V2RayGCon.Views.UserControls
                 return;
             }
             Cleanup();
-            serverItem.parent.DeleteServerByConfig(serverItem.config);
-
+            servers.DeleteServerByConfig(serverItem.config);
         }
 
         private void speedTestToolStripMenuItem_Click(object sender, EventArgs e)
@@ -572,7 +592,6 @@ namespace V2RayGCon.Views.UserControls
             MessageBox.Show(I18N.SetSysProxyDone);
         }
         #endregion
-
 
     }
 }

@@ -49,7 +49,7 @@ namespace V2RayGCon.Views.WinForms
                 setting.SaveFormRect(this);
                 // ToolStripManager.SaveSettings(this);
                 formMainCtrl.Cleanup();
-                servers.LazyGC();
+                setting.LazyGC();
             };
 
             this.Text = string.Format(
@@ -67,21 +67,27 @@ namespace V2RayGCon.Views.WinForms
         {
             void bind(ToolStripButton button, ToolStripMenuItem menu)
             {
-                button.Click += (s, a) => menu.PerformClick();
+                button.Click += (s, a) =>
+                {
+                    menu.PerformClick();
+
+                    // Do not know why, form main will lost focus sometime.
+                    this.Activate();
+                };
             }
 
             bind(toolStripButtonSelectAllCurPage, selectAllCurPageToolStripMenuItem);
             bind(toolStripButtonInverseSelectionCurPage, invertSelectionCurPageToolStripMenuItem);
             bind(toolStripButtonSelectNoneCurPage, selectNoneCurPageToolStripMenuItem1);
 
-            bind(toolStripButtonCollapseSelected, toolStripMenuItemFoldingPanel);
-            bind(toolStripButtonExpanSelected, toolStripMenuItemExpansePanel);
+            bind(toolStripButtonAllServerSelectAll, selectAllAllServersToolStripMenuItem);
+            bind(toolStripButtonAllServerSelectNone, selectNoneAllServersToolStripMenuItem);
 
             bind(toolStripButtonRestartSelected, toolStripMenuItemRestartSelected);
             bind(toolStripButtonStopSelected, toolStripMenuItemStopSelected);
 
             bind(toolStripButtonModifySelected, toolStripMenuItemModifySettings);
-            bind(toolStripButtonSortSelectedBySummary, toolStripMenuItemSortBySummary);
+            bind(toolStripButtonRunSpeedTest, toolStripMenuItemSpeedTestOnSelected);
             bind(toolStripButtonSortSelectedBySpeedTestResult, toolStripMenuItemSortBySpeedTest);
 
             bind(toolStripButtonFormOption, toolMenuItemOptions);
@@ -92,6 +98,7 @@ namespace V2RayGCon.Views.WinForms
             var ctrl = new Controller.FormMainCtrl();
 
             ctrl.Plug(new Controller.FormMainComponent.FlyServer(
+                this,
                 flyServerListContainer,
                 toolStripLabelMarkFilter,
                 toolStripComboBoxMarkFilter,

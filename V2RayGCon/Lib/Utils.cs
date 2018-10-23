@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -193,6 +194,61 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Json
+        public static JObject ParseImportRecursively(
+          Func<List<string>, List<string>> fetcher,
+          JObject config,
+          int depth)
+        {
+            var empty = JObject.Parse(@"{}");
+
+            if (depth <= 0)
+            {
+                return empty;
+            }
+
+            // var config = JObject.Parse(configString);
+
+            var urls = Lib.Utils.ExtractImportUrlsFrom(config);
+            var contents = fetcher(urls);
+
+            if (contents.Count <= 0)
+            {
+                return config;
+            }
+
+            var configList =
+                Lib.Utils.ExecuteInParallel<string, JObject>(
+                    contents,
+                    (content) =>
+                    {
+                        return ParseImportRecursively(
+                            fetcher,
+                            JObject.Parse(content),
+                            depth - 1);
+                    });
+
+            var result = empty;
+            foreach (var c in configList)
+            {
+                Lib.Utils.CombineConfig(ref result, c);
+            }
+            Lib.Utils.CombineConfig(ref result, config);
+
+            return result;
+        }
+
+        public static List<string> ExtractImportUrlsFrom(JObject config)
+        {
+            List<string> urls = null;
+            var empty = new List<string>();
+            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
+            if (import != null && import is JObject)
+            {
+                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
+            }
+            return urls ?? new List<string>();
+        }
+
         public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
         {
             var empty = new Dictionary<string, string>();
@@ -221,20 +277,21 @@ namespace V2RayGCon.Lib
 
         public static string GetSummaryFromConfig(JObject config)
         {
-            var protocol = GetValue<string>(config, "outbound.protocol");
-            var ip = string.Empty;
-            if (protocol == "vmess" || protocol == "shadowsocks")
+            var protocol = GetValue<string>(config, "outbound.protocol")?.ToLower();
+            string ipKey = null;
+            switch (protocol)
             {
-                var keys = Model.Data.Table.servInfoKeys[protocol];
-                ip = GetValue<string>(config, keys[0]); // ip
+                case "vmess":
+                    ipKey = "outbound.settings.vnext.0.address";
+                    break;
+                case "shadowsocks":
+                    ipKey = "outbound.settings.servers.0.address";
+                    protocol = "ss";
+                    break;
             }
 
-            var summary = protocol;
-            if (!string.IsNullOrEmpty(ip))
-            {
-                summary += "@" + ip;
-            }
-            return summary;
+            string ip = GetValue<string>(config, ipKey);
+            return protocol + (ip == null ? string.Empty : "@" + ip);
         }
 
         static bool Contains(JProperty main, JProperty sub)
@@ -492,17 +549,6 @@ namespace V2RayGCon.Lib
             ConcatJson(ref mixin, backup);
         }
 
-        public static string InjectGlobalImport(string config, bool isIncludeSpeedTest, bool isIncludeActivate)
-        {
-            JObject import = ImportItemList2JObject(
-                Service.Setting.Instance.GetGlobalImportItems(),
-                isIncludeSpeedTest,
-                isIncludeActivate);
-
-            MergeJson(ref import, JObject.Parse(config));
-            return import.ToString();
-        }
-
         public static JObject ImportItemList2JObject(
             List<Model.Data.ImportItem> items,
             bool isIncludeSpeedTest,
@@ -536,6 +582,11 @@ namespace V2RayGCon.Lib
 
         public static JToken GetKey(JToken json, string path)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
             var curPos = json;
             var keys = path.Split('.');
 
@@ -565,6 +616,13 @@ namespace V2RayGCon.Lib
             return GetValue<T>(json, $"{prefix}.{key}");
         }
 
+        /// <summary>
+        /// return null if not exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static T GetValue<T>(JToken json, string path)
         {
             var key = GetKey(json, path);
@@ -617,7 +675,6 @@ namespace V2RayGCon.Lib
         {
             return config.ToString(Formatting.None);
         }
-
 
         public static string Config2Base64String(JObject config)
         {
@@ -704,28 +761,7 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-        public static JObject SSLink2Config(string ssLink)
-        {
-            var cache = Service.Cache.Instance;
 
-            Model.Data.Shadowsocks ss = SSLink2SS(ssLink);
-            if (ss == null)
-            {
-                return null;
-            }
-
-            TryParseIPAddr(ss.addr, out string ip, out int port);
-
-            var config = cache.tpl.LoadTemplate("tplImportSS");
-
-            var setting = config["outbound"]["settings"]["servers"][0];
-            setting["address"] = ip;
-            setting["port"] = port;
-            setting["method"] = ss.method;
-            setting["password"] = ss.pass;
-
-            return config.DeepClone() as JObject;
-        }
 
         public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
@@ -774,70 +810,6 @@ namespace V2RayGCon.Lib
             }
 
             return vmess;
-        }
-
-        public static JObject Vmess2Config(Model.Data.Vmess vmess)
-        {
-            var cache = Service.Cache.Instance;
-
-            if (vmess == null)
-            {
-                return null;
-            }
-
-            // prepare template
-            var config = cache.tpl.LoadTemplate("tplImportVmess");
-            config["v2raygcon"]["alias"] = vmess.ps;
-
-            var cPos = config["outbound"]["settings"]["vnext"][0];
-            cPos["address"] = vmess.add;
-            cPos["port"] = Lib.Utils.Str2Int(vmess.port);
-            cPos["users"][0]["id"] = vmess.id;
-            cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
-
-            // insert stream type
-            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
-            string streamType = vmess.net.ToLower();
-
-            if (!streamTypes.Contains(streamType))
-            {
-                return config.DeepClone() as JObject;
-            }
-
-            config["outbound"]["streamSettings"] =
-                cache.tpl.LoadTemplate(streamType);
-
-            try
-            {
-                switch (streamType)
-                {
-                    case "kcp":
-                        config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
-                        break;
-                    case "ws":
-                        config["outbound"]["streamSettings"]["wsSettings"]["path"] =
-                            string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
-                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
-                        {
-                            config["outbound"]["streamSettings"]["wsSettings"]["headers"]["Host"] = vmess.host;
-                        }
-                        break;
-                    case "h2":
-                        config["outbound"]["streamSettings"]["httpSettings"]["path"] = vmess.path;
-                        config["outbound"]["streamSettings"]["httpSettings"]["host"] = Str2JArray(vmess.host);
-                        break;
-                }
-
-            }
-            catch { }
-
-            try
-            {
-                // must place at the end. cos this key is add by streamSettings
-                config["outbound"]["streamSettings"]["security"] = vmess.tls;
-            }
-            catch { }
-            return config.DeepClone() as JObject;
         }
 
         public static JArray Str2JArray(string content)
@@ -909,31 +881,54 @@ namespace V2RayGCon.Lib
         #region net
         public static long VisitWebPageSpeedTest(string url = "https://www.google.com", int port = -1)
         {
-            var timeout = Str2Int(StrConst.SpeedTestTimeout);
+            var timeout = Str2Int(StrConst.SpeedTestTimeout) * 1000;
 
             long elasped = long.MaxValue;
-            using (WebClient wc = new Lib.Nets.TimedWebClient
+            try
             {
-                Encoding = System.Text.Encoding.UTF8,
-                Timeout = timeout * 1000,
-            })
-            {
-                try
+                using (WebClient wc = new Lib.Nets.TimedWebClient
                 {
+                    Encoding = System.Text.Encoding.UTF8,
+                    Timeout = timeout,
+                })
+                {
+
                     if (port > 0)
                     {
                         wc.Proxy = new WebProxy("127.0.0.1", port);
                     }
+
+                    var result = string.Empty;
+                    AutoResetEvent speedTestCompleted = new AutoResetEvent(false);
+                    wc.DownloadStringCompleted += (s, a) =>
+                    {
+                        try
+                        {
+                            result = a.Result;
+                        }
+                        catch { }
+                        speedTestCompleted.Set();
+                    };
+
                     Stopwatch sw = new Stopwatch();
                     sw.Reset();
                     sw.Start();
-                    wc.DownloadString(url);
-                    sw.Stop();
-                    elasped = sw.ElapsedMilliseconds;
-                }
-                catch { }
-            }
+                    wc.DownloadStringAsync(new Uri(url));
 
+                    // 收到信号为True
+                    if (!speedTestCompleted.WaitOne(timeout))
+                    {
+                        wc.CancelAsync();
+                        return elasped;
+                    }
+                    sw.Stop();
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        elasped = sw.ElapsedMilliseconds;
+                    }
+                }
+            }
+            catch { }
             return elasped;
         }
 
@@ -1043,6 +1038,23 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static bool AreEqual(double a, double b)
+        {
+            return Math.Abs(a - b) < 0.000001;
+        }
+
+        public static string SHA256(string randomString)
+        {
+            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
+        }
+
         public static bool PartialMatch(string source, string partial)
         {
             var s = source.ToLower();
@@ -1126,7 +1138,7 @@ namespace V2RayGCon.Lib
             ip = "127.0.0.1";
             port = 1080;
 
-            string[] parts = address.Split(':');
+            string[] parts = address.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 2)
             {
                 return false;
@@ -1288,7 +1300,7 @@ namespace V2RayGCon.Lib
             };
         }
 
-        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lamda)
+        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lambda)
         {
             var result = new List<TResult>();
 
@@ -1300,7 +1312,7 @@ namespace V2RayGCon.Lib
             var taskList = new List<Task<TResult>>();
             foreach (var value in values)
             {
-                var task = new Task<TResult>(() => lamda(value));
+                var task = new Task<TResult>(() => lambda(value));
                 taskList.Add(task);
                 task.Start();
             }
@@ -1325,14 +1337,14 @@ namespace V2RayGCon.Lib
             return result;
         }
 
-        public static void RunAsSTAThread(Action lamda)
+        public static void RunAsSTAThread(Action lambda)
         {
             // https://www.codeproject.com/Questions/727531/ThreadStateException-cant-handeled-in-ClipBoard-Se
             AutoResetEvent @event = new AutoResetEvent(false);
             Thread thread = new Thread(
                 () =>
                 {
-                    lamda();
+                    lambda();
                     @event.Set();
                 });
             thread.SetApartmentState(ApartmentState.STA);

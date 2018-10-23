@@ -44,14 +44,9 @@ namespace V2RayGCon.Lib.Nets
             // "http://localhost:8080/index/".
             if (string.IsNullOrEmpty(prefix))
                 throw new ArgumentException("prefix");
-
-            // A responder method is required
-            if (method == null)
-                throw new ArgumentException("method");
-
             _listener.Prefixes.Add(prefix);
             // Debug.WriteLine("Prefix:" + prefix);
-            _responderMethod = method;
+            _responderMethod = method ?? throw new ArgumentException("method");
             _listener.Start();
         }
 

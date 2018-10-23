@@ -10,22 +10,26 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
-    class PacServer : Model.BaseClass.SingletonService<PacServer>
+    public class PacServer : Model.BaseClass.SingletonService<PacServer>
     {
+        Setting setting;
+
         public event EventHandler OnPACServerStatusChanged;
 
-        Model.Data.ProxyRegKeyValue orgSysProxySetting;
         Lib.Nets.SimpleWebServer webServer = null;
         object webServerLock = new object();
-        Setting setting;
+
         Dictionary<bool, string[]> defaultPacCache = null;
         string customPacCache = string.Empty;
         FileSystemWatcher customPacFileWatcher = null;
+        Func<HttpListenerRequest, string> postRequestHandler = null;
 
-        PacServer()
+        PacServer() { }
+
+        public void Run(Setting setting)
         {
-            setting = Setting.Instance;
-            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
+            this.setting = setting;
+
             ClearCache();
             var pacSetting = setting.GetPacServerSettings();
             var proxySetting = setting.GetSysProxySetting();
@@ -141,7 +145,10 @@ namespace V2RayGCon.Service
         {
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.proxyEnable = true;
-            proxy.proxyServer = string.Format("{0}:{1}", ip, port.ToString());
+            proxy.proxyServer = string.Format(
+                "{0}:{1}",
+                ip == "0.0.0.0" ? "127.0.0.1" : ip,
+                port.ToString());
             Lib.Sys.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
             InvokeOnPACServerStatusChanged();
@@ -198,9 +205,11 @@ namespace V2RayGCon.Service
                 return;
             }
 
+            var path = Path.GetDirectoryName(filename);
+
             customPacFileWatcher = new FileSystemWatcher
             {
-                Path = Path.GetDirectoryName(filename),
+                Path = (string.IsNullOrEmpty(path) ? Lib.Utils.GetAppDir() : path),
                 Filter = Path.GetFileName(filename),
             };
 
@@ -241,10 +250,15 @@ namespace V2RayGCon.Service
             // Debug.WriteLine("content: " + customPacCache);
         }
 
+        public void RegistPostRequestHandler(Func<HttpListenerRequest, string> handler)
+        {
+            this.postRequestHandler = handler;
+        }
+
         public void Cleanup()
         {
+            postRequestHandler = null;
             StopPacServer();
-            Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
             lazyCustomPacFileCacheUpdateTimer?.Release();
         }
 
@@ -257,7 +271,7 @@ namespace V2RayGCon.Service
                 GenPrefix(pacSetting.port),
                 param.isWhiteList ? "whitelist" : "blacklist",
                 param.isSocks ? "socks" : "http",
-                param.ip,
+                param.ip == "0.0.0.0" ? "127.0.0.1" : param.ip,
                 param.port.ToString(),
                 Lib.Utils.RandomHex(16));
         }
@@ -314,6 +328,12 @@ namespace V2RayGCon.Service
 
         Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
+            if (request.HttpMethod.ToLower() == "post")
+            {
+                var result = postRequestHandler?.Invoke(request);
+                return new Tuple<string, string>(result ?? "no handler", "application/json");
+            }
+
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri);
             if (urlParam == null)
@@ -344,7 +364,10 @@ namespace V2RayGCon.Service
         private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
         {
             var tpl = StrConst.PacDebuggerTpl;
-            var html = tpl.Replace("__PacServerUrl__", GenPacUrl(urlParam));
+            var url = GenPacUrl(urlParam);
+            var prefix = url.Split('?')[0];
+            var html = tpl.Replace("__PacServerUrl__", url)
+                .Replace("__PacPrefixUrl__", prefix);
             var mime = "text/html; charset=utf-8";
             return new Tuple<string, string>(html, mime);
         }

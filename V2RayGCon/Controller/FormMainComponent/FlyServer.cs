@@ -8,8 +8,10 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.FormMainComponent
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     class FlyServer : FormMainComponentController
     {
+        Form formMain;
         FlowLayoutPanel flyPanel;
         Service.Servers servers;
         Service.Setting setting;
@@ -17,10 +19,12 @@ namespace V2RayGCon.Controller.FormMainComponent
         ToolStripStatusLabel tslbTotal, tslbPrePage, tslbNextPage;
         ToolStripDropDownButton tsdbtnPager;
         Lib.Sys.CancelableTimeout lazyStatusBarUpdateTimer = null;
-        Views.UserControls.WelcomeUI welcomeItem = null;
-        int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
+        readonly Views.UserControls.WelcomeUI welcomeItem = null;
+        readonly int[] paging = new int[] { 0, 1 }; // 0: current page 1: total page
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FlyServer(
+            Form formMain,
             FlowLayoutPanel panel,
             ToolStripLabel lbMarkFilter,
             ToolStripComboBox cboxMarkeFilter,
@@ -32,6 +36,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.servers = Service.Servers.Instance;
             this.setting = Service.Setting.Instance;
 
+            this.formMain = formMain;
             this.flyPanel = panel;
             this.cboxMarkFilter = cboxMarkeFilter;
             this.tsdbtnPager = tsdbtnPager;
@@ -257,6 +262,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                         // servers.ClearSelection();
 
                         RefreshUI();
+                        formMain.Activate();
                     });
                 tsdbtnPager.DropDownItems.Add(item);
             }
@@ -296,12 +302,14 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 paging[0]--;
                 RefreshUI();
+                formMain.Activate();
             };
 
             tslbNextPage.Click += (s, a) =>
             {
                 paging[0]++;
                 RefreshUI();
+                formMain.Activate();
             };
 
             lbMarkFilter.Click +=
@@ -451,10 +459,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             {
                 // https://www.codeproject.com/Articles/48411/Using-the-FlowLayoutPanel-and-Reordering-with-Drag
 
-                var serverItemMoving = a.Data.GetData(typeof(Views.UserControls.ServerUI))
-                    as Views.UserControls.ServerUI;
 
-                if (serverItemMoving == null)
+                if (!(a.Data.GetData(typeof(Views.UserControls.ServerUI)) is Views.UserControls.ServerUI serverItemMoving))
                 {
                     return;
                 }

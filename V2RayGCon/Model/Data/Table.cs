@@ -5,21 +5,21 @@ namespace V2RayGCon.Model.Data
 {
     class Table
     {
-        public static Dictionary<Model.Data.Enum.Cultures, string> Cultures = new Dictionary<Enum.Cultures, string>
+        public static readonly Dictionary<Model.Data.Enum.Cultures, string> Cultures = new Dictionary<Enum.Cultures, string>
         {
             { Enum.Cultures.auto,"auto" },
             { Enum.Cultures.enUS,"en" },
             { Enum.Cultures.zhCN,"cn" },
         };
 
-        public static string[] EnviromentVariablesName = new string[] {
+        public static readonly string[] EnviromentVariablesName = new string[] {
             "V2RAY_RAY_BUFFER_SIZE",
             "V2RAY_LOCATION_ASSET",
             "V2RAY_LOCATION_CONFIG",
             "V2RAY_BUF_READV",
         };
 
-        public static Dictionary<int, string> configSections = new Dictionary<int, string>
+        public static readonly Dictionary<int, string> configSections = new Dictionary<int, string>
         {
                 { 0, "config.json"},
                 { 1, "log"},
@@ -41,21 +41,21 @@ namespace V2RayGCon.Model.Data
         public const int inboundIndex = 7;
         public const int outboundIndex = 8;
 
-        public static string[] inboundOverwriteTypesName = new string[] {
+        public static readonly string[] inboundOverwriteTypesName = new string[] {
             "config",
             "http",
             "socks"
         };
 
 
-        public static Dictionary<int, string> linkPrefix = new Dictionary<int, string>
+        public static readonly Dictionary<int, string> linkPrefix = new Dictionary<int, string>
         {
             {0,"vmess://" },
             {1,"v2ray://" },
             {2,"ss://" },
         };
 
-        public static Dictionary<int, string> ssMethods = new Dictionary<int, string>
+        public static readonly Dictionary<int, string> ssMethods = new Dictionary<int, string>
         {
             { 0,"aes-128-cfb"},
             { 1,"aes-128-gcm"},
@@ -67,7 +67,7 @@ namespace V2RayGCon.Model.Data
             { 7,"chacha20-ietf-poly1305"},
         };
 
-        public static Dictionary<int, string> kcpTypes = new Dictionary<int, string> {
+        public static readonly Dictionary<int, string> kcpTypes = new Dictionary<int, string> {
             {0, "none" },
             {1, "srtp" },
             {2, "utp" },
@@ -76,7 +76,7 @@ namespace V2RayGCon.Model.Data
             {5, "wireguard" },
         };
 
-        public static Dictionary<int, StreamComponent> streamSettings = new Dictionary<int, Model.Data.StreamComponent>
+        public static readonly Dictionary<int, StreamComponent> streamSettings = new Dictionary<int, Model.Data.StreamComponent>
         {
             //public bool dropDownStyle;
             //public string name;
@@ -143,7 +143,7 @@ namespace V2RayGCon.Model.Data
         };
 
         // editor examples
-        public static Dictionary<int, List<string[]>> examples = ExampleHelper();
+        public static readonly Dictionary<int, List<string[]>> examples = ExampleHelper();
         static Dictionary<int, List<string[]>> ExampleHelper()
         {
             string[] SS(string description, string key)
@@ -247,33 +247,6 @@ namespace V2RayGCon.Model.Data
             d.Add(12, list);
 
             return d;
-        }
-
-        // servers summary
-        public static Dictionary<string, string[]> servInfoKeys = ServInfoKeysHelper();
-        static Dictionary<string, string[]> ServInfoKeysHelper()
-        {
-            var streamType = "outbound.streamSettings.network";
-            var type = "outbound.streamSettings.kcpSettings.header.type";
-            var path = "outbound.streamSettings.wsSettings.path";
-            var tls = "outbound.streamSettings.security";
-
-            var ssIP = "outbound.settings.servers.0.address";
-            var ssPort = "outbound.settings.servers.0.port";
-
-            var vmessIP = "outbound.settings.vnext.0.address";
-            var vmessPort = "outbound.settings.vnext.0.port";
-
-            var keys = new Dictionary<string, string[]>();
-
-            // ip,port,tls, path,streamType,type
-            keys.Add("shadowsocks", new string[] {
-                ssIP,ssPort,tls,path,streamType,type});
-
-            keys.Add("vmess", new string[] {
-                vmessIP,vmessPort,tls,path,streamType,type});
-
-            return keys;
         }
     }
 }

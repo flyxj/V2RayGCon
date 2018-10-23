@@ -20,12 +20,15 @@ namespace V2RayGCon.Views.WinForms
         #endregion
 
         Service.Servers servers;
+        Service.Setting setting;
 
         FormSimAddVmessClient()
         {
             InitializeComponent();
             Fill(cboxKCP, Model.Data.Table.kcpTypes);
+
             servers = Service.Servers.Instance;
+            setting = Service.Setting.Instance;
 
 #if DEBUG
             this.Icon = Properties.Resources.icon_light;
@@ -34,7 +37,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.FormClosed += (s, a) =>
             {
-                servers.LazyGC();
+                setting.LazyGC();
             };
         }
 

@@ -13,6 +13,17 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow(0.1, 0.2, false)]
+        [DataRow(0.000000001, 0.00000002, true)]
+        [DataRow(0.001, 0.002, false)]
+        [DataRow(-0.1, 0.1, false)]
+        [DataRow(2, 2, true)]
+        public void AreEqualTest(double a, double b, bool expect)
+        {
+            Assert.AreEqual(expect, Lib.Utils.AreEqual(a, b));
+        }
+
+        [DataTestMethod]
         [DataRow(null, null)]
         [DataRow(
             "port=4321&ip=8.7.6.5&proto=http&type=blacklist",

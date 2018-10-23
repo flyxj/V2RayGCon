@@ -45,7 +45,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.FormClosed += (s, a) =>
             {
-                Service.Servers.Instance.LazyGC();
+                Service.Setting.Instance.LazyGC();
             };
         }
 
@@ -74,7 +74,8 @@ namespace V2RayGCon.Views.WinForms
                 new Controller.OptionComponent.TabSetting(
                     cboxSettingLanguage,
                     cboxSettingPageSize,
-                    chkSetServAutotrack));
+                    chkSetServAutotrack,
+                    chkSetSysPortable));
 
             ctrl.Plug(
                 new Controller.OptionComponent.PacServer(

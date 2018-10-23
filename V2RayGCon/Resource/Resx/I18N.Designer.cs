@@ -966,6 +966,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 No server capable of system proxy. 的本地化字符串。
+        /// </summary>
+        internal static string NoServerCapableOfSysProxy {
+            get {
+                return ResourceManager.GetString("NoServerCapableOfSysProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No subscription links available. 的本地化字符串。
         /// </summary>
         internal static string NoSubsUrlAvailable {
@@ -1129,6 +1138,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Save settings to file fail!
+        ///Try move this app to writeable folder or disable portable mode. 的本地化字符串。
+        /// </summary>
+        internal static string SaveUserSettingsToFileFail {
+            get {
+                return ResourceManager.GetString("SaveUserSettingsToFileFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan QR code 的本地化字符串。
         /// </summary>
         internal static string ScanQRCode {
@@ -1161,6 +1180,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ServersAreRunning {
             get {
                 return ResourceManager.GetString("ServersAreRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please set any server as PAC proxy first. 的本地化字符串。
+        /// </summary>
+        internal static string SetAnyServerAsPacServerFirst {
+            get {
+                return ResourceManager.GetString("SetAnyServerAsPacServerFirst", resourceCulture);
             }
         }
         
@@ -1378,6 +1406,16 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Unset partable mode fail!
+        ///Please delete {0} in app folder. 的本地化字符串。
+        /// </summary>
+        internal static string UnsetPortableModeFail {
+            get {
+                return ResourceManager.GetString("UnsetPortableModeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Use decode cache. 的本地化字符串。
         /// </summary>
         internal static string UsingDecodeCache {
@@ -1437,6 +1475,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string VisitVlinkPage {
             get {
                 return ResourceManager.GetString("VisitVlinkPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visit the following web page? 的本地化字符串。
+        /// </summary>
+        internal static string VisitWebPage {
+            get {
+                return ResourceManager.GetString("VisitWebPage", resourceCulture);
             }
         }
         

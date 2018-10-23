@@ -5,14 +5,6 @@ namespace V2RayGCon.Lib.Sys
 {
     static class DllLoader
     {
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr LoadLibrary(string dllToLoad);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool FreeLibrary(IntPtr hModule);
 
         /*
          * Suppose we call SetProcessDpiAwareness from Shcore.dll.
@@ -21,15 +13,15 @@ namespace V2RayGCon.Lib.Sys
          * [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
          * private delegate int SetProcessDpiAwareness(int PROCESS_DPI_AWARENESS);
          * 
-         * Then parameter lamda should look like this:
+         * Then parameter lambda should look like this:
          * (method) => ((SetProcessDpiAwareness)method).Invoke(0);  // PROCESS_DPI_AWARENESS=0
          */
-        public static bool CallMethod(IntPtr pDll, string methodName, Type methodType, Action<Delegate> lamda)
+        public static bool CallMethod(IntPtr pDll, string methodName, Type methodType, Action<Delegate> lambda)
         {
             var method = GetMethod(pDll, methodName, methodType);
             if (method != null)
             {
-                lamda(method);
+                lambda(method);
                 return true;
             }
             return false;
@@ -42,7 +34,7 @@ namespace V2RayGCon.Lib.Sys
                 return null;
             }
 
-            IntPtr pMethod = GetProcAddress(pDll, methodName);
+            IntPtr pMethod = Lib.Sys.SafeNativeMethods.GetProcAddress(pDll, methodName);
             if (pMethod != IntPtr.Zero)
             {
                 return Marshal.GetDelegateForFunctionPointer(pMethod, methodType);
