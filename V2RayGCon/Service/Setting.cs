@@ -28,12 +28,12 @@ namespace V2RayGCon.Service
         {
             get
             {
-                return Properties.Settings.Default.Portable;
+                return userSettings.isPortable;
             }
             set
             {
-                Properties.Settings.Default.Portable = value;
-                Properties.Settings.Default.Save();
+                userSettings.isPortable = value;
+                LazySaveUserSettings();
             }
         }
 
@@ -43,14 +43,13 @@ namespace V2RayGCon.Service
         {
             get
             {
-                var size = Properties.Settings.Default.ServerPanelPageSize;
+                var size = userSettings.ServerPanelPageSize;
                 return Lib.Utils.Clamp(size, 1, 101);
             }
             set
             {
-                Properties.Settings.Default.ServerPanelPageSize =
-                    Lib.Utils.Clamp(value, 1, 101);
-                Properties.Settings.Default.Save();
+                userSettings.ServerPanelPageSize = Lib.Utils.Clamp(value, 1, 101);
+                LazySaveUserSettings();
             }
         }
 
@@ -84,7 +83,7 @@ namespace V2RayGCon.Service
             get
             {
                 var cultures = Model.Data.Table.Cultures;
-                var c = Properties.Settings.Default.Culture;
+                var c = userSettings.Culture;
 
                 if (!cultures.ContainsValue(c))
                 {
@@ -102,23 +101,21 @@ namespace V2RayGCon.Service
                 {
                     c = value;
                 }
-                Properties.Settings.Default.Culture =
-                    Model.Data.Table.Cultures[c];
-                Properties.Settings.Default.Save();
+                userSettings.Culture = Model.Data.Table.Cultures[c];
+                LazySaveUserSettings();
             }
-
         }
 
         public bool isShowConfigerToolsPanel
         {
             get
             {
-                return Properties.Settings.Default.CfgShowToolPanel == true;
+                return userSettings.CfgShowToolPanel == true;
             }
             set
             {
-                Properties.Settings.Default.CfgShowToolPanel = value;
-                Properties.Settings.Default.Save();
+                userSettings.CfgShowToolPanel = value;
+                LazySaveUserSettings();
             }
         }
 
@@ -126,7 +123,7 @@ namespace V2RayGCon.Service
         {
             get
             {
-                int n = Properties.Settings.Default.MaxLogLine;
+                int n = userSettings.MaxLogLine;
                 return Lib.Utils.Clamp(n, 10, 1000);
             }
             private set { }
@@ -138,6 +135,8 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             lazyGCTimer?.Release();
+            lazySaveUserSettingsTimer?.Release();
+            SaveUserSettingsWorker();
         }
 
         readonly object saveUserSettingsLocker = new object();
@@ -145,15 +144,16 @@ namespace V2RayGCon.Service
         {
             lock (saveUserSettingsLocker)
             {
-                // do something
                 if (userSettings.isPortable)
                 {
+                    DebugSendLog("Try save to setting file");
                     SaveUserSettingsToFile();
                     return;
                 }
 
-                // make sure usersetting.config.isPortable is set to false
+                DebugSendLog("Try save to properties");
                 SetUserSettingFileIsPortableToFalse();
+                SaveUserSettingsToProperties();
             }
         }
 
@@ -177,9 +177,9 @@ namespace V2RayGCon.Service
 
         public void SaveServerTrackerSetting(Model.Data.ServerTracker serverTrackerSetting)
         {
-            Properties.Settings.Default.ServerTracker =
+            userSettings.ServerTracker =
                 JsonConvert.SerializeObject(serverTrackerSetting);
-            Properties.Settings.Default.Save();
+            LazySaveUserSettings();
         }
 
         public Model.Data.ServerTracker GetServerTrackerSetting()
@@ -188,7 +188,10 @@ namespace V2RayGCon.Service
             Model.Data.ServerTracker r = null;
             try
             {
-                r = JsonConvert.DeserializeObject<Model.Data.ServerTracker>(Properties.Settings.Default.ServerTracker);
+                r = JsonConvert
+                    .DeserializeObject<Model.Data.ServerTracker>(
+                        userSettings.ServerTracker);
+
                 if (r.serverList == null)
                 {
                     r.serverList = new List<string>();
@@ -203,9 +206,9 @@ namespace V2RayGCon.Service
 
         public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
         {
-            Properties.Settings.Default.SysProxySetting =
+            userSettings.SysProxySetting =
                 JsonConvert.SerializeObject(proxy);
-            Properties.Settings.Default.Save();
+            LazySaveUserSettings();
         }
 
         public Model.Data.ProxyRegKeyValue GetSysProxySetting()
@@ -214,8 +217,9 @@ namespace V2RayGCon.Service
             Model.Data.ProxyRegKeyValue proxy = null;
             try
             {
-                proxy = JsonConvert.DeserializeObject<Model.Data.ProxyRegKeyValue>(
-                    Properties.Settings.Default.SysProxySetting);
+                proxy = JsonConvert
+                    .DeserializeObject<Model.Data.ProxyRegKeyValue>(
+                        userSettings.SysProxySetting);
             }
             catch
             {
@@ -224,11 +228,12 @@ namespace V2RayGCon.Service
             return proxy ?? empty;
         }
 
-        public void SavePacServerSettings(Model.Data.PacServerSettings pacSetting)
+        public void SavePacServerSettings(
+            Model.Data.PacServerSettings pacSetting)
         {
-            Properties.Settings.Default.PacServerSettings =
+            userSettings.PacServerSettings =
                 JsonConvert.SerializeObject(pacSetting);
-            Properties.Settings.Default.Save();
+            LazySaveUserSettings();
         }
 
         public Model.Data.PacServerSettings GetPacServerSettings()
@@ -238,8 +243,9 @@ namespace V2RayGCon.Service
             var empty = new Model.Data.PacServerSettings();
             try
             {
-                result = JsonConvert.DeserializeObject<Model.Data.PacServerSettings>(
-                    Properties.Settings.Default.PacServerSettings);
+                result = JsonConvert
+                    .DeserializeObject<Model.Data.PacServerSettings>(
+                        userSettings.PacServerSettings);
             }
             catch
             {
@@ -256,55 +262,42 @@ namespace V2RayGCon.Service
             List<Controller.CoreServerCtrl> list = null;
             try
             {
-                list = JsonConvert.DeserializeObject
-                    <List<Controller.CoreServerCtrl>>(
-                    Properties.Settings.Default.ServerList);
-
-                if (list == null)
-                {
-                    return empty;
-                }
+                list = JsonConvert
+                    .DeserializeObject<List<Controller.CoreServerCtrl>>(
+                        userSettings.ServerList);
             }
-            catch
+            catch { }
+
+            if (list == null)
             {
                 return empty;
             }
 
             // make sure every config of server can be parsed correctly
-            for (var i = list.Count - 1; i >= 0; i--)
+            return list.Where(s =>
             {
                 try
                 {
-                    if (JObject.Parse(list[i].config) == null)
-                    {
-                        list.RemoveAt(i);
-                    }
+                    return JObject.Parse(s.config) != null;
                 }
-                catch
-                {
-                    list.RemoveAt(i);
-                }
-            }
-
-            return list;
+                catch { }
+                return false;
+            }).ToList();
         }
 
         public void SaveFormRect(Form form)
         {
             var key = form.GetType().Name;
-
             var list = GetWinFormRectList();
-            list[key] = new Rectangle(
-                form.Left, form.Top, form.Width, form.Height);
-            Properties.Settings.Default.WinFormPosList =
-                JsonConvert.SerializeObject(list);
-            Properties.Settings.Default.Save();
+
+            list[key] = new Rectangle(form.Left, form.Top, form.Width, form.Height);
+            userSettings.WinFormPosList = JsonConvert.SerializeObject(list);
+            LazySaveUserSettings();
         }
 
         public void RestoreFormRect(Form form)
         {
             var key = form.GetType().Name;
-
             var list = GetWinFormRectList();
 
             if (!list.ContainsKey(key))
@@ -335,9 +328,9 @@ namespace V2RayGCon.Service
         {
             try
             {
-                var items = JsonConvert.DeserializeObject
-                    <List<Model.Data.ImportItem>>(
-                    Properties.Settings.Default.ImportUrls);
+                var items = JsonConvert
+                    .DeserializeObject<List<Model.Data.ImportItem>>(
+                        userSettings.ImportUrls);
 
                 if (items != null)
                 {
@@ -350,17 +343,17 @@ namespace V2RayGCon.Service
 
         public void SaveGlobalImportItems(string options)
         {
-            Properties.Settings.Default.ImportUrls = options;
-            Properties.Settings.Default.Save();
+            userSettings.ImportUrls = options;
+            LazySaveUserSettings();
         }
 
         public List<Model.Data.SubscriptionItem> GetSubscriptionItems()
         {
             try
             {
-                var items = JsonConvert.DeserializeObject
-                    <List<Model.Data.SubscriptionItem>>(
-                    Properties.Settings.Default.SubscribeUrls);
+                var items = JsonConvert
+                    .DeserializeObject<List<Model.Data.SubscriptionItem>>(
+                        userSettings.SubscribeUrls);
 
                 if (items != null)
                 {
@@ -373,36 +366,50 @@ namespace V2RayGCon.Service
 
         public void SaveSubscriptionItems(string options)
         {
-            Properties.Settings.Default.SubscribeUrls = options;
-            Properties.Settings.Default.Save();
+            userSettings.SubscribeUrls = options;
+            LazySaveUserSettings();
         }
 
         public void SaveServerList(List<Controller.CoreServerCtrl> serverList)
         {
             string json = JsonConvert.SerializeObject(serverList);
-            Properties.Settings.Default.ServerList = json;
-            Properties.Settings.Default.Save();
+            userSettings.ServerList = json;
+            LazySaveUserSettings();
         }
         #endregion
 
         #region private method
-        static void SetUserSettingFileIsPortableToFalse()
+        void SetUserSettingFileIsPortableToFalse()
         {
             var filename = Properties.Resources.PortableUserSettingsFilename;
-            if (File.Exists(filename))
+            if (!File.Exists(filename))
             {
-                try
+                DebugSendLog("setting file not exists");
+                return;
+            }
+
+            try
+            {
+                var s = JsonConvert
+                    .DeserializeObject<Model.Data.UserSettings>(
+                    File.ReadAllText(filename));
+
+                DebugSendLog("Read setting file for unset portable");
+
+                if (s.isPortable)
                 {
-                    var s = JsonConvert
-                        .DeserializeObject<Model.Data.UserSettings>(
-                        File.ReadAllText(filename));
-                    if (s.isPortable)
-                    {
-                        s.isPortable = false;
-                        File.WriteAllText(filename, JsonConvert.SerializeObject(s));
-                    }
+                    s.isPortable = false;
+                    DebugSendLog("Write setting file for unset portable");
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(s));
                 }
-                catch { }
+
+                DebugSendLog("unset portable done");
+            }
+            catch
+            {
+                // this is important do not use task
+                var msg = string.Format(I18N.UnsetPortableModeFail, filename);
+                MessageBox.Show(msg);
             }
         }
 
@@ -443,13 +450,15 @@ namespace V2RayGCon.Service
             }
             catch
             {
+                // this is important do not use task!
                 MessageBox.Show(I18N.SaveUserSettingsToFileFail);
             }
         }
 
         Model.Data.UserSettings LoadUserSettingsFromPorperties()
         {
-            var empty = new Model.Data.UserSettings();
+            DebugSendLog("Try read setting from properties");
+
             try
             {
                 var p = Properties.Settings.Default;
@@ -478,13 +487,14 @@ namespace V2RayGCon.Service
                 return result;
             }
             catch { }
-            return empty;
+            return new Model.Data.UserSettings();
         }
 
         Model.Data.UserSettings LoadUserSettingsFromFile()
         {
+            DebugSendLog("Try read setting from file");
             var filename = Properties.Resources.PortableUserSettingsFilename;
-            if (!File.Exists(filename))
+            if (File.Exists(filename))
             {
                 try
                 {
@@ -510,7 +520,8 @@ namespace V2RayGCon.Service
             {
                 lazySaveUserSettingsTimer = new Lib.Sys.CancelableTimeout(
                     SaveUserSettingsWorker,
-                    1000 * Lib.Utils.Str2Int(StrConst.LazySaveUserSettingsDelay));
+                    1000 * Lib.Utils.Str2Int(
+                        StrConst.LazySaveUserSettingsDelay));
             }
 
             lazySaveUserSettingsTimer.Start();
@@ -526,9 +537,9 @@ namespace V2RayGCon.Service
 
             try
             {
-                winFormRectListCache = JsonConvert.DeserializeObject<
-                    Dictionary<string, Rectangle>>(
-                    Properties.Settings.Default.WinFormPosList);
+                winFormRectListCache = JsonConvert
+                    .DeserializeObject<Dictionary<string, Rectangle>>(
+                        userSettings.WinFormPosList);
             }
             catch { }
 
@@ -538,6 +549,15 @@ namespace V2RayGCon.Service
             }
 
             return winFormRectListCache;
+        }
+        #endregion
+
+        #region debug
+        void DebugSendLog(string content)
+        {
+#if DEBUG
+            SendLog(content);
+#endif
         }
         #endregion
     }

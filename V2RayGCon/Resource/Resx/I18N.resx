@@ -623,4 +623,8 @@ Please check port setting in form option.</value>
     <value>Save settings to file fail!
 Try move this app to writeable folder or disable portable mode.</value>
   </data>
+  <data name="UnsetPortableModeFail" xml:space="preserve">
+    <value>Unset partable mode fail!
+Please delete {0} in app folder.</value>
+  </data>
 </root>

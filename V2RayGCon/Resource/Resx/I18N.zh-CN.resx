@@ -610,4 +610,7 @@ https://github.com/v2ray/v2ray-core</value>
     <value>保存配置失败!
 请将本软件移至可写入目录或禁用便携模式。</value>
   </data>
+  <data name="UnsetPortableModeFail" xml:space="preserve">
+    <value>取消便携模式失败，请删除本软件目录中的{0}。</value>
+  </data>
 </root>

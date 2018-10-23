@@ -205,9 +205,11 @@ namespace V2RayGCon.Service
                 return;
             }
 
+            var path = Path.GetDirectoryName(filename);
+
             customPacFileWatcher = new FileSystemWatcher
             {
-                Path = Path.GetDirectoryName(filename),
+                Path = (string.IsNullOrEmpty(path) ? Lib.Utils.GetAppDir() : path),
                 Filter = Path.GetFileName(filename),
             };
 

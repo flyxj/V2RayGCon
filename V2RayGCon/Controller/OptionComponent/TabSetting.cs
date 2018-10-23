@@ -74,6 +74,7 @@ namespace V2RayGCon.Controller.OptionComponent
             setting.isServerTrackerOn = trackerSetting.isTrackerOn;
             setting.isPortable = chkPortableMode.Checked;
 
+            setting.SaveUserSettingsWorker();
             return true;
         }
 
