@@ -49,6 +49,6 @@ steps:
 #    targetFolder: $(Build.ArtifactStagingDirectory)
 #    cleanTargetFolder: false # Optional
 #    overWrite: true # Optional
-#    # flattenFolders: false # Optional
+#    flattenFolders: false # Optional
 
 - task: PublishBuildArtifacts@1
