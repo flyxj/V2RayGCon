@@ -49,6 +49,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             BindDragDropEvent();
             RefreshUI();
             servers.OnRequireFlyPanelUpdate += OnRequireFlyPanelUpdateHandler;
+            servers.OnRequireFlyPanelReload += OnRequireFlyPanelReloadHandler;
             servers.OnRequireStatusBarUpdate += OnRequireStatusBarUpdateHandler;
         }
 
@@ -91,6 +92,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
+            servers.OnRequireFlyPanelReload -= OnRequireFlyPanelReloadHandler;
             servers.OnRequireFlyPanelUpdate -= OnRequireFlyPanelUpdateHandler;
             servers.OnRequireStatusBarUpdate -= OnRequireStatusBarUpdateHandler;
             lazyStatusBarUpdateTimer?.Release();
@@ -417,6 +419,12 @@ namespace V2RayGCon.Controller.FormMainComponent
             return flyPanel.Controls
                 .OfType<Views.UserControls.ServerUI>()
                 .ToList();
+        }
+
+        void OnRequireFlyPanelReloadHandler(object sender, EventArgs args)
+        {
+            RemoveAllServersConrol();
+            RefreshUI();
         }
 
         void OnRequireFlyPanelUpdateHandler(object sender, EventArgs args)
