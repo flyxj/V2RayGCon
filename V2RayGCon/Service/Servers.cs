@@ -23,7 +23,8 @@ namespace V2RayGCon.Service
         public event EventHandler
             OnRequireMenuUpdate,
             OnRequireStatusBarUpdate,
-            OnRequireFlyPanelUpdate;
+            OnRequireFlyPanelUpdate,
+            OnRequireFlyPanelReload;
 
 
         List<Controller.CoreServerCtrl> serverList = null;
@@ -100,7 +101,7 @@ namespace V2RayGCon.Service
             var tracked = trackerSetting.serverList;
 
             var running = GetServerList()
-                .Where(s => s.isServerOn)
+                .Where(s => s.isServerOn && !s.isUntrack)
                 .Select(s => s.config)
                 .ToList();
 
@@ -125,10 +126,14 @@ namespace V2RayGCon.Service
                 return;
             }
 
+            var server = sender as Controller.CoreServerCtrl;
+            if (server.isUntrack)
+            {
+                return;
+            }
+
             SetLazyServerTrackerUpdater(() =>
-                LazyServerTrackUpdateWorker(
-                    sender as Controller.CoreServerCtrl,
-                    isServerStart.Data));
+                LazyServerTrackUpdateWorker(server, isServerStart.Data));
         }
 
         void LazyServerTrackUpdateWorker(
@@ -174,7 +179,7 @@ namespace V2RayGCon.Service
             if (curTrackerSetting.curServer == null)
             {
                 OnSendLogHandler(this, new Model.Data.StrEvent(I18N.NoServerCapableOfSysProxy));
-                if (serverList.Count(s => s.isServerOn) > 0)
+                if (serverList.Count(s => s.isServerOn && !s.isUntrack) > 0)
                 {
                     Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
                 }
@@ -609,11 +614,20 @@ namespace V2RayGCon.Service
             return serverList.Count;
         }
 
-        public void InvokeEventOnRequireFlyPanelUpdate(object sender, EventArgs args)
+        public void InvokeEventOnRequireFlyPanelUpdate()
         {
             try
             {
                 OnRequireFlyPanelUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
+        public void InvokeEventOnRequireFlyPanelReload()
+        {
+            try
+            {
+                OnRequireFlyPanelReload?.Invoke(this, EventArgs.Empty);
             }
             catch { }
         }
@@ -872,33 +886,31 @@ namespace V2RayGCon.Service
 
         private List<Controller.CoreServerCtrl> GenBootServerList()
         {
-            List<Controller.CoreServerCtrl> result = null;
-
             var trackerSetting = setting.GetServerTrackerSetting();
-            if (trackerSetting.isTrackerOn)
+            if (!trackerSetting.isTrackerOn)
             {
-                setting.isServerTrackerOn = true;
-
-                var trackList = trackerSetting.serverList;
-                result = serverList.Where(
-                    s => s.isAutoRun || trackList.Contains(s.config))
-                    .ToList();
-
-                if (trackerSetting.curServer != null)
-                {
-                    result.RemoveAll(s => s.config == trackerSetting.curServer);
-                    var lastServer = serverList.FirstOrDefault(s => s.config == trackerSetting.curServer);
-                    if (lastServer != null)
-                    {
-                        result.Insert(0, lastServer);
-                    }
-                }
-            }
-            else
-            {
-                result = serverList.Where(s => s.isAutoRun).ToList();
+                return serverList.Where(s => s.isAutoRun).ToList();
             }
 
+            setting.isServerTrackerOn = true;
+            var trackList = trackerSetting.serverList;
+
+            var result = serverList
+                .Where(s => s.isAutoRun || trackList.Contains(s.config))
+                .ToList();
+
+            if (string.IsNullOrEmpty(trackerSetting.curServer))
+            {
+                return result;
+            }
+
+            result.RemoveAll(s => s.config == trackerSetting.curServer);
+            var lastServer = serverList.FirstOrDefault(
+                    s => s.config == trackerSetting.curServer);
+            if (lastServer != null && !lastServer.isUntrack)
+            {
+                result.Insert(0, lastServer);
+            }
             return result;
         }
 
@@ -976,7 +988,7 @@ namespace V2RayGCon.Service
             {
                 LazySaveServerList();
                 UpdateMarkList();
-                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate();
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
             };
@@ -996,7 +1008,7 @@ namespace V2RayGCon.Service
             {
                 LazySaveServerList();
                 UpdateMarkList();
-                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate();
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
             };
@@ -1026,7 +1038,7 @@ namespace V2RayGCon.Service
             {
                 setting.LazyGC();
                 LazySaveServerList();
-                InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                InvokeEventOnRequireFlyPanelUpdate();
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
             };
 
@@ -1054,7 +1066,7 @@ namespace V2RayGCon.Service
                     LazySaveServerList();
                     UpdateMarkList();
                     InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);
-                    InvokeEventOnRequireFlyPanelUpdate(serverList, EventArgs.Empty);
+                    InvokeEventOnRequireFlyPanelUpdate();
                 }));
         }
 
@@ -1110,7 +1122,7 @@ namespace V2RayGCon.Service
                 newServer.UpdateSummaryThen(() =>
                 {
                     InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
-                    InvokeEventOnRequireFlyPanelUpdate(this, EventArgs.Empty);
+                    InvokeEventOnRequireFlyPanelUpdate();
                 });
             }
 

@@ -55,8 +55,7 @@ namespace V2RayGCon.Controller.OptionComponent
             if (pageSize != setting.serverPanelPageSize)
             {
                 setting.serverPanelPageSize = pageSize;
-                Service.Servers.Instance.InvokeEventOnRequireFlyPanelUpdate(
-                    this, System.EventArgs.Empty);
+                Service.Servers.Instance.InvokeEventOnRequireFlyPanelUpdate();
             }
 
 

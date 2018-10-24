@@ -34,7 +34,7 @@ namespace V2RayGCon.Controller
         public event EventHandler<Model.Data.BoolEvent> OnRequireKeepTrack;
 
         public string config; // plain text of config.json
-        public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite;
+        public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite, isUntrack;
         public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort, foldingLevel;
         public double index;
@@ -45,6 +45,7 @@ namespace V2RayGCon.Controller
             index = double.MaxValue;
 
             isSelected = false;
+            isUntrack = false;
             isServerOn = false;
             isAutoRun = false;
             isInjectImport = false;
@@ -256,24 +257,18 @@ namespace V2RayGCon.Controller
             SetPropertyOnDemand<bool>(ref property, value, isNeedCoreStopped);
         }
 
-        public void ToggleIsInjectSkipCNSite()
+        public void ToggleBoolPropertyOnDemand(ref bool property, bool requireRestart = false)
         {
-            this.isInjectSkipCNSite = !this.isInjectSkipCNSite;
+            property = !property;
 
             // refresh UI immediately
             InvokeEventOnPropertyChange();
 
             // time consuming things
-            if (isServerOn)
+            if (requireRestart && isServerOn)
             {
                 RestartCoreThen();
             }
-        }
-
-        public void ToggleIsAutorun()
-        {
-            this.isAutoRun = !this.isAutoRun;
-            InvokeEventOnPropertyChange();
         }
 
         public void ToggleIsInjectImport()
@@ -593,8 +588,8 @@ namespace V2RayGCon.Controller
                 cfg.ToString(),
                 () =>
                 {
-                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(true));
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
+                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(true));
                     next?.Invoke();
                 },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));

@@ -21,9 +21,12 @@ namespace V2RayGCon.Service
         Setting()
         {
             userSettings = LoadUserSettings();
+            isShutdown = false;
         }
 
         #region Properties
+        public bool isShutdown { get; set; }
+
         public bool isPortable
         {
             get
@@ -407,9 +410,12 @@ namespace V2RayGCon.Service
             }
             catch
             {
-                // this is important do not use task
-                var msg = string.Format(I18N.UnsetPortableModeFail, filename);
-                MessageBox.Show(msg);
+                if (!isShutdown)
+                {
+                    // this is important do not use task
+                    var msg = string.Format(I18N.UnsetPortableModeFail, filename);
+                    MessageBox.Show(msg);
+                }
             }
         }
 
@@ -450,8 +456,11 @@ namespace V2RayGCon.Service
             }
             catch
             {
-                // this is important do not use task!
-                MessageBox.Show(I18N.SaveUserSettingsToFileFail);
+                if (!isShutdown)
+                {
+                    // this is important do not use task!
+                    MessageBox.Show(I18N.SaveUserSettingsToFileFail);
+                }
             }
         }
 

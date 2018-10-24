@@ -146,7 +146,6 @@ namespace V2RayGCon.Views.UserControls
 
         void RefreshUI(object sender, EventArgs arg)
         {
-
             rtboxServerTitle.Invoke((MethodInvoker)delegate
             {
                 Lib.UI.UpdateControlOnDemand(
@@ -158,26 +157,34 @@ namespace V2RayGCon.Views.UserControls
                 Lib.UI.UpdateControlOnDemand(
                     lbStatus, serverItem.status);
 
-                Lib.UI.UpdateControlOnDemand(
-                    toolStripMenuItemIsInjectImport,
-                    serverItem.isInjectImport);
-
-                Lib.UI.UpdateControlOnDemand(
-                    toolStripMenuItemSkipCNSite,
-                    serverItem.isInjectSkipCNSite);
-
-                Lib.UI.UpdateControlOnDemand(
-                    toolStripMenuItemIsAutorun,
-                    serverItem.isAutoRun);
-
+                UpdateServerOptionTickStat();
                 UpdateInboundAddrOndemand();
-                UpdateAicLable();
-                UpdateChkSelected();
+                UpdateMarkLable();
+                UpdateSelectedTickStat();
                 UpdateOnOffLabel(serverItem.server.isRunning);
-                UpdateServerMark();
-                UpdateFormFoldingMode();
+                UpdateFilterMarkBox();
+                UpdateBorderFoldingStat();
                 UpdateToolsTip();
             });
+        }
+
+        private void UpdateServerOptionTickStat()
+        {
+            Lib.UI.UpdateControlOnDemand(
+                globalImportToolStripMenuItem,
+                serverItem.isInjectImport);
+
+            Lib.UI.UpdateControlOnDemand(
+                skipCNWebsiteToolStripMenuItem,
+                serverItem.isInjectSkipCNSite);
+
+            Lib.UI.UpdateControlOnDemand(
+                autorunToolStripMenuItem,
+                serverItem.isAutoRun);
+
+            Lib.UI.UpdateControlOnDemand(
+                untrackToolStripMenuItem,
+                serverItem.isUntrack);
         }
 
         void UpdateInboundAddrOndemand()
@@ -209,11 +216,12 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        private void UpdateAicLable()
+        private void UpdateMarkLable()
         {
-            var text = serverItem.isAutoRun ? "A" : "";
-            text += serverItem.isInjectImport ? "I" : "";
-            text += serverItem.isInjectSkipCNSite ? "C" : "";
+            var text = (serverItem.isAutoRun ? "A" : "")
+                + (serverItem.isInjectSkipCNSite ? "C" : "")
+                + (serverItem.isInjectImport ? "I" : "")
+                + (serverItem.isUntrack ? "U" : "");
 
             if (lbIsAutorun.Text != text)
             {
@@ -221,7 +229,7 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        void UpdateFormFoldingMode()
+        void UpdateBorderFoldingStat()
         {
             var level = Lib.Utils.Clamp(serverItem.foldingLevel, 0, foldingButtonIcons.Length);
 
@@ -237,7 +245,7 @@ namespace V2RayGCon.Views.UserControls
             }
         }
 
-        void UpdateServerMark()
+        void UpdateFilterMarkBox()
         {
             if (cboxMark.Text == serverItem.mark)
             {
@@ -247,7 +255,7 @@ namespace V2RayGCon.Views.UserControls
             cboxMark.Text = serverItem.mark;
         }
 
-        void UpdateChkSelected()
+        void UpdateSelectedTickStat()
         {
             if (serverItem.isSelected == chkSelected.Checked)
             {
@@ -361,7 +369,8 @@ namespace V2RayGCon.Views.UserControls
         #region UI event
         private void ServerListItem_MouseDown(object sender, MouseEventArgs e)
         {
-            Cursor.Current = Lib.UI.CreateCursorIconFromUserControl(this);
+            // this effect is ugly and useless
+            // Cursor.Current = Lib.UI.CreateCursorIconFromUserControl(this);
             DoDragDrop((ServerUI)sender, DragDropEffects.Move);
         }
 
@@ -420,11 +429,6 @@ namespace V2RayGCon.Views.UserControls
             RestartServer();
         }
 
-        private void multiboxingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            serverItem.RestartCoreThen();
-        }
-
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var item = this.serverItem;
@@ -464,20 +468,9 @@ namespace V2RayGCon.Views.UserControls
             servers.DeleteServerByConfig(serverItem.config);
         }
 
-        private void speedTestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Task.Factory.StartNew(
-                        () => serverItem.RunSpeedTest());
-        }
-
         private void logOfThisServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             serverItem.ShowLogForm();
-        }
-
-        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            serverItem.StopCoreThen();
         }
 
         private void cboxMark_TextChanged(object sender, EventArgs e)
@@ -509,26 +502,6 @@ namespace V2RayGCon.Views.UserControls
         private void lbRunning_MouseDown(object sender, MouseEventArgs e)
         {
             ServerListItem_MouseDown(this, e);
-        }
-
-        private void toolStripMenuItemStart_Click(object sender, EventArgs e)
-        {
-            RestartServer();
-        }
-
-        private void toolStripMenuItemIsAutorun_Click(object sender, EventArgs e)
-        {
-            serverItem.ToggleIsAutorun();
-        }
-
-        private void toolStripMenuItemIsInjectImport_Click(object sender, EventArgs e)
-        {
-            serverItem.ToggleIsInjectImport();
-        }
-
-        private void toolStripMenuItemSkipCNSite_Click(object sender, EventArgs e)
-        {
-            serverItem.ToggleIsInjectSkipCNSite();
         }
 
         private void btnMultiboxing_Click(object sender, EventArgs e)
@@ -591,7 +564,61 @@ namespace V2RayGCon.Views.UserControls
             // issue #9
             MessageBox.Show(I18N.SetSysProxyDone);
         }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RestartServer();
+        }
+
+        private void multiboxingToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            serverItem.RestartCoreThen();
+        }
+
+        private void stopToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            serverItem.StopCoreThen();
+        }
+
+        private void untrackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleBoolPropertyOnDemand(ref serverItem.isUntrack);
+        }
+
+        private void autorunToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleBoolPropertyOnDemand(ref serverItem.isAutoRun);
+        }
+
+        private void globalImportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleIsInjectImport();
+        }
+
+        private void skipCNWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ToggleBoolPropertyOnDemand(ref serverItem.isInjectSkipCNSite, true);
+        }
+
+        private void runSpeedTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(
+                    () => serverItem.RunSpeedTest());
+        }
+
+        private void moveToTopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ChangeIndex(0);
+            servers.InvokeEventOnRequireFlyPanelReload();
+        }
+
+        private void moveToBottomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            serverItem.ChangeIndex(double.MaxValue);
+            servers.InvokeEventOnRequireFlyPanelReload();
+        }
         #endregion
+
 
     }
 }
