@@ -177,7 +177,7 @@ namespace V2RayGCon.Service
                 try
                 {
                     webServer = new Lib.Nets.SimpleWebServer(WebRequestDispatcher, prefix);
-                    webServer.Run();
+                    webServer.Start();
                     isWebServRunning = true;
                 }
                 catch
@@ -368,14 +368,14 @@ namespace V2RayGCon.Service
             var prefix = url.Split('?')[0];
             var html = tpl.Replace("__PacServerUrl__", url)
                 .Replace("__PacPrefixUrl__", prefix);
-            var mime = "text/html; charset=utf-8";
+            var mime = "text/html; charset=UTF-8";
             return new Tuple<string, string>(html, mime);
         }
 
         private Tuple<string, string> ResponseWithPacFile(Model.Data.PacUrlParams urlParam)
         {
             // ie require this header
-            var mime = "application/x-ns-proxy-autoconfig";
+            var mime = "application/x-ns-proxy-autoconfig; charset=UTF-8";
 
             var pacSetting = setting.GetPacServerSettings();
             StringBuilder content;

@@ -1,96 +1,96 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
 
 namespace V2RayGCon.Lib.Nets
 {
-    // https://codehosting.net/blog/BlogEngine/post/Simple-C-Web-Server
-
-    /* usage
-     class Program
+    // 由v2rayP的代码魔改而成
+    // https://raw.githubusercontent.com/PoseidonM4A4/v2rayP/master/v2rayP/Manager/PacManager.cs
+    class SimpleWebServer
     {
-        static void Main(string[] args)
+        Thread ThreadPacServer = null;
+        HttpListener PacListener = null;
+
+        private readonly Func<HttpListenerRequest, Tuple<string, string>> GenResponse;
+        string prefix;
+
+        public SimpleWebServer(
+            Func<HttpListenerRequest, Tuple<string, string>> genResponsMethod,
+            string prefix)
         {
-            WebServer ws = new WebServer(SendResponse, "http://localhost:8080/test/");
-            ws.Run();
-            Console.WriteLine("A simple webserver. Press a key to quit.");
-            Console.ReadKey();
-            ws.Stop();
-        }
- 
-        public static string SendResponse(HttpListenerRequest request)
-        {
-            return string.Format("<HTML><BODY>My web page.<br>{0}</BODY></HTML>", DateTime.Now);    
-        }
-    }
-    */
+            this.GenResponse = genResponsMethod;
+            this.prefix = prefix;
 
-    public class SimpleWebServer
-    {
-
-        private readonly HttpListener _listener = new HttpListener();
-
-        // tuple<string content, string mimeType>
-        private readonly Func<HttpListenerRequest, Tuple<string, string>> _responderMethod;
-
-        public SimpleWebServer(Func<HttpListenerRequest, Tuple<string, string>> method, string prefix)
-        {
-            if (!HttpListener.IsSupported)
-                throw new NotSupportedException(
-                    "Needs Windows XP SP2, Server 2003 or later.");
-
-            // URI prefixes are required, for example 
-            // "http://localhost:8080/index/".
-            if (string.IsNullOrEmpty(prefix))
-                throw new ArgumentException("prefix");
-            _listener.Prefixes.Add(prefix);
-            // Debug.WriteLine("Prefix:" + prefix);
-            _responderMethod = method ?? throw new ArgumentException("method");
-            _listener.Start();
         }
 
-        public void Run()
+        #region public method
+        public void Start()
         {
-            ThreadPool.QueueUserWorkItem((o) =>
+            Stop();
+
+            PacListener = new HttpListener()
             {
-                // Debug.WriteLine("Webserver running...");
-                try
-                {
-                    while (_listener.IsListening)
-                    {
-                        ThreadPool.QueueUserWorkItem((c) =>
-                        {
-                            var ctx = c as HttpListenerContext;
-                            try
-                            {
-                                // tuple<content,mime>
-                                Tuple<string, string> rsp = _responderMethod(ctx.Request);
-                                byte[] buf = Encoding.UTF8.GetBytes(rsp.Item1);
-                                if (!string.IsNullOrEmpty(rsp.Item2))
-                                {
-                                    ctx.Response.ContentType = rsp.Item2;
-                                }
-                                ctx.Response.ContentLength64 = buf.Length;
-                                ctx.Response.OutputStream.Write(buf, 0, buf.Length);
-                            }
-                            catch { } // suppress any exceptions
-                            finally
-                            {
-                                // always close the stream
-                                ctx.Response.OutputStream.Close();
-                            }
-                        }, _listener.GetContext());
-                    }
-                }
-                catch { } // suppress any exceptions
-            });
+                Prefixes = { prefix }
+            };
+
+            ThreadPacServer = new Thread(new ThreadStart(PacServerThreadWorker));
+            ThreadPacServer.Start();
         }
 
         public void Stop()
         {
-            _listener.Stop();
-            _listener.Close();
+            if (PacListener != null)
+            {
+                PacListener.Abort();
+                PacListener = null;
+            }
+
+            if (ThreadPacServer != null)
+            {
+                ThreadPacServer.Abort();
+                ThreadPacServer = null;
+            }
         }
+        #endregion
+
+        #region private method
+        private void PacServerThreadWorker()
+        {
+            PacListener.Start();
+
+            try
+            {
+                while (true)
+                {
+                    var context = PacListener.GetContext();
+                    var request = context.Request;
+                    var response = context.Response;
+
+                    // tuple<content,mime>
+                    var result = GenResponse(request);
+
+                    var mime = result.Item2;
+                    if (!string.IsNullOrEmpty(mime))
+                    {
+                        response.ContentType = mime;
+                    }
+                    var html = result.Item1;
+                    response.ContentLength64 = Encoding.UTF8.GetByteCount(html);
+                    using (var writer = new StreamWriter(response.OutputStream))
+                    {
+                        writer.Write(html);
+                    }
+                }
+            }
+            catch (HttpListenerException ex)
+            {
+                // listener is stopped 
+                if (ex.NativeErrorCode == 995) return;
+                else throw;
+            }
+        }
+        #endregion
     }
 }

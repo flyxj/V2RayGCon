@@ -125,6 +125,7 @@
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
     <Compile Include="Lib\Nets\WebServer.cs" />
+    <Compile Include="Lib\Sys\Log.cs" />
     <Compile Include="Lib\Sys\ProxySetter.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
