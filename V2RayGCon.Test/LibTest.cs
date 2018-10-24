@@ -153,7 +153,7 @@ namespace V2RayGCon.Test
         }
 
         [DataTestMethod]
-        [DataRow("https://www.baidu.com")]
+        [DataRow("http://www.baidu.com")]
         public void VisitWebPageSpeedTestTest(string url)
         {
             var time = Lib.Utils.VisitWebPageSpeedTest(url);

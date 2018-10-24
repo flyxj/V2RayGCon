@@ -263,4 +263,7 @@
     <value>30</value>
     <comment>seconds</comment>
   </data>
+  <data name="LogFileName" xml:space="preserve">
+    <value>log.txt</value>
+  </data>
 </root>

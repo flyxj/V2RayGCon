@@ -20,6 +20,7 @@ namespace V2RayGCon.Service
         // Singleton need this private ctor.
         Setting()
         {
+
             userSettings = LoadUserSettings();
             isShutdown = false;
         }
