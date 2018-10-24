@@ -285,13 +285,16 @@ namespace V2RayGCon.Lib
                     ipKey = "outbound.settings.vnext.0.address";
                     break;
                 case "shadowsocks":
-                    ipKey = "outbound.settings.servers.0.address";
                     protocol = "ss";
+                    ipKey = "outbound.settings.servers.0.address";
+                    break;
+                case "socks":
+                    ipKey = "outbound.settings.servers.0.address";
                     break;
             }
 
             string ip = GetValue<string>(config, ipKey);
-            return protocol + (ip == null ? string.Empty : "@" + ip);
+            return protocol + (string.IsNullOrEmpty(ip) ? "" : @"@" + ip);
         }
 
         static bool Contains(JProperty main, JProperty sub)
