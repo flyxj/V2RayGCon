@@ -194,6 +194,61 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Json
+        public static JObject ParseImportRecursively(
+          Func<List<string>, List<string>> fetcher,
+          JObject config,
+          int depth)
+        {
+            var empty = JObject.Parse(@"{}");
+
+            if (depth <= 0)
+            {
+                return empty;
+            }
+
+            // var config = JObject.Parse(configString);
+
+            var urls = Lib.Utils.ExtractImportUrlsFrom(config);
+            var contents = fetcher(urls);
+
+            if (contents.Count <= 0)
+            {
+                return config;
+            }
+
+            var configList =
+                Lib.Utils.ExecuteInParallel<string, JObject>(
+                    contents,
+                    (content) =>
+                    {
+                        return ParseImportRecursively(
+                            fetcher,
+                            JObject.Parse(content),
+                            depth - 1);
+                    });
+
+            var result = empty;
+            foreach (var c in configList)
+            {
+                Lib.Utils.CombineConfig(ref result, c);
+            }
+            Lib.Utils.CombineConfig(ref result, config);
+
+            return result;
+        }
+
+        public static List<string> ExtractImportUrlsFrom(JObject config)
+        {
+            List<string> urls = null;
+            var empty = new List<string>();
+            var import = Lib.Utils.GetKey(config, "v2raygcon.import");
+            if (import != null && import is JObject)
+            {
+                urls = (import as JObject).Properties().Select(p => p.Name).ToList();
+            }
+            return urls ?? new List<string>();
+        }
+
         public static Dictionary<string, string> GetEnvVarsFromConfig(JObject config)
         {
             var empty = new Dictionary<string, string>();
@@ -230,13 +285,16 @@ namespace V2RayGCon.Lib
                     ipKey = "outbound.settings.vnext.0.address";
                     break;
                 case "shadowsocks":
-                    ipKey = "outbound.settings.servers.0.address";
                     protocol = "ss";
+                    ipKey = "outbound.settings.servers.0.address";
+                    break;
+                case "socks":
+                    ipKey = "outbound.settings.servers.0.address";
                     break;
             }
 
             string ip = GetValue<string>(config, ipKey);
-            return protocol + (ip == null ? string.Empty : "@" + ip);
+            return protocol + (string.IsNullOrEmpty(ip) ? "" : @"@" + ip);
         }
 
         static bool Contains(JProperty main, JProperty sub)
@@ -621,7 +679,6 @@ namespace V2RayGCon.Lib
             return config.ToString(Formatting.None);
         }
 
-
         public static string Config2Base64String(JObject config)
         {
             return Base64Encode(config.ToString(Formatting.None));
@@ -984,6 +1041,11 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static bool AreEqual(double a, double b)
+        {
+            return Math.Abs(a - b) < 0.000001;
+        }
+
         public static string SHA256(string randomString)
         {
             var crypt = new System.Security.Cryptography.SHA256Managed();
@@ -1241,7 +1303,7 @@ namespace V2RayGCon.Lib
             };
         }
 
-        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lamda)
+        public static List<TResult> ExecuteInParallel<TParam, TResult>(List<TParam> values, Func<TParam, TResult> lambda)
         {
             var result = new List<TResult>();
 
@@ -1253,7 +1315,7 @@ namespace V2RayGCon.Lib
             var taskList = new List<Task<TResult>>();
             foreach (var value in values)
             {
-                var task = new Task<TResult>(() => lamda(value));
+                var task = new Task<TResult>(() => lambda(value));
                 taskList.Add(task);
                 task.Start();
             }
@@ -1278,14 +1340,14 @@ namespace V2RayGCon.Lib
             return result;
         }
 
-        public static void RunAsSTAThread(Action lamda)
+        public static void RunAsSTAThread(Action lambda)
         {
             // https://www.codeproject.com/Questions/727531/ThreadStateException-cant-handeled-in-ClipBoard-Se
             AutoResetEvent @event = new AutoResetEvent(false);
             Thread thread = new Thread(
                 () =>
                 {
-                    lamda();
+                    lambda();
                     @event.Set();
                 });
             thread.SetApartmentState(ApartmentState.STA);

@@ -410,6 +410,33 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 30 的本地化字符串。
+        /// </summary>
+        internal static string LazySaveUserSettingsDelay {
+            get {
+                return ResourceManager.GetString("LazySaveUserSettingsDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 log.txt 的本地化字符串。
+        /// </summary>
+        internal static string LogFileName {
+            get {
+                return ResourceManager.GetString("LogFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://www.youtube.com/watch?v=BA7fdSkp8ds 的本地化字符串。
+        /// </summary>
+        internal static string Nobody3uVideoUrl {
+            get {
+                return ResourceManager.GetString("Nobody3uVideoUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 &lt;!DOCTYPE html&gt;
         ///&lt;html&gt;
         ///
@@ -613,7 +640,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 v3.45,v3.43,v3.41 的本地化字符串。
+        ///   查找类似 v3.48,v3.47,v3.46 的本地化字符串。
         /// </summary>
         internal static string VerList {
             get {

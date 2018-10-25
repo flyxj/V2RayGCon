@@ -36,6 +36,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +47,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon_dark.ico</ApplicationIcon>
@@ -121,6 +125,7 @@
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
     <Compile Include="Lib\Nets\WebServer.cs" />
+    <Compile Include="Lib\Sys\Log.cs" />
     <Compile Include="Lib\Sys\ProxySetter.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
@@ -129,7 +134,6 @@
     </Compile>
     <Compile Include="Lib\Sys\SafeNativeMethods.cs" />
     <Compile Include="Lib\UI.cs" />
-    <Compile Include="Lib\ImportParser.cs" />
     <Compile Include="Lib\Sys\CancelableTimeout.cs" />
     <Compile Include="Model\BaseClass\IFormMainFlyPanelComponent.cs" />
     <Compile Include="Model\BaseClass\IFormComponentController.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="Model\Data\ProxyRegKeyValue.cs" />
     <Compile Include="Model\Data\PacServerSettings.cs" />
     <Compile Include="Model\Data\ServerTracker.cs" />
+    <Compile Include="Model\Data\UserSettings.cs" />
     <Compile Include="Service\Cmder.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />

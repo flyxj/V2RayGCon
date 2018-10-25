@@ -493,13 +493,13 @@
     <value>14</value>
   </data>
   <data name="lbIsAutorun.Text" xml:space="preserve">
-    <value>AIC</value>
+    <value>ACIU</value>
   </data>
   <data name="lbIsAutorun.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
   <data name="lbIsAutorun.ToolTip" xml:space="preserve">
-    <value>(A)utorun / Global (I)mport / Skip (C)N website</value>
+    <value>(A)utorun / Global (I)mport / Skip (C)N website / (U)ntrack</value>
   </data>
   <data name="&gt;&gt;lbIsAutorun.Name" xml:space="preserve">
     <value>lbIsAutorun</value>
@@ -595,8 +595,56 @@
   <metadata name="ctxMenuStripMore.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
   </metadata>
+  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="toolStripMenuItem3.Text" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="toolStripMenuItem4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="toolStripMenuItem4.Text" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 6</value>
+  </data>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>237, 6</value>
+  </data>
+  <data name="logOfThisServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Log of this server</value>
+  </data>
+  <data name="setAsSystemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 28</value>
+  </data>
+  <data name="setAsSystemProxyToolStripMenuItem.Text" xml:space="preserve">
+    <value>System proxy</value>
+  </data>
   <data name="ctxMenuStripMore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 358</value>
+    <value>227, 212</value>
   </data>
   <data name="&gt;&gt;ctxMenuStripMore.Name" xml:space="preserve">
     <value>ctxMenuStripMore</value>
@@ -604,71 +652,95 @@
   <data name="&gt;&gt;ctxMenuStripMore.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItemStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="startToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="toolStripMenuItemStart.Text" xml:space="preserve">
+  <data name="startToolStripMenuItem.Text" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="toolStripMenuItemStart.ToolTipText" xml:space="preserve">
+  <data name="startToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Stop all running servers and start this server.</value>
   </data>
-  <data name="multiboxingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="multiboxingToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="multiboxingToolStripMenuItem.Text" xml:space="preserve">
+  <data name="multiboxingToolStripMenuItem1.Text" xml:space="preserve">
     <value>Multiboxing</value>
   </data>
-  <data name="multiboxingToolStripMenuItem.ToolTipText" xml:space="preserve">
+  <data name="multiboxingToolStripMenuItem1.ToolTipText" xml:space="preserve">
     <value>Start this server along with other started server. Inbound port should not duplicate.</value>
   </data>
-  <data name="stopToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="stopToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="stopToolStripMenuItem.Text" xml:space="preserve">
+  <data name="stopToolStripMenuItem1.Text" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="stopToolStripMenuItem.ToolTipText" xml:space="preserve">
+  <data name="stopToolStripMenuItem1.ToolTipText" xml:space="preserve">
     <value>Stop this server.</value>
   </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 6</value>
+  <data name="toolStripMenuItem5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 6</value>
   </data>
-  <data name="toolStripMenuItemIsAutorun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="moveToTopToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="toolStripMenuItemIsAutorun.Text" xml:space="preserve">
+  <data name="moveToTopToolStripMenuItem.Text" xml:space="preserve">
+    <value>Move to top</value>
+  </data>
+  <data name="moveToBottomToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="moveToBottomToolStripMenuItem.Text" xml:space="preserve">
+    <value>Move to bottom</value>
+  </data>
+  <data name="toolStripMenuItem6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 6</value>
+  </data>
+  <data name="runSpeedTestToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="runSpeedTestToolStripMenuItem.Text" xml:space="preserve">
+    <value>Run speed test</value>
+  </data>
+  <data name="runSpeedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>The time it took to download webpage https://www.google.com.</value>
+  </data>
+  <data name="autorunToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
+  </data>
+  <data name="autorunToolStripMenuItem.Text" xml:space="preserve">
     <value>Autorun</value>
   </data>
-  <data name="toolStripMenuItemIsAutorun.ToolTipText" xml:space="preserve">
+  <data name="autorunToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Start this server along with this software.</value>
   </data>
-  <data name="toolStripMenuItemIsInjectImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="globalImportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="toolStripMenuItemIsInjectImport.Text" xml:space="preserve">
+  <data name="globalImportToolStripMenuItem.Text" xml:space="preserve">
     <value>Global import</value>
   </data>
-  <data name="toolStripMenuItemIsInjectImport.ToolTipText" xml:space="preserve">
+  <data name="globalImportToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Inject global import when this server start.</value>
   </data>
-  <data name="toolStripMenuItemSkipCNSite.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="skipCNWebsiteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="toolStripMenuItemSkipCNSite.Text" xml:space="preserve">
+  <data name="skipCNWebsiteToolStripMenuItem.Text" xml:space="preserve">
     <value>Skip CN website</value>
   </data>
-  <data name="toolStripMenuItemSkipCNSite.ToolTipText" xml:space="preserve">
+  <data name="skipCNWebsiteToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Do not proxy CN website. For beginners only. Advanced users please edit section routing.</value>
   </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 6</value>
+  <data name="untrackToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>252, 30</value>
   </data>
-  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
+  <data name="untrackToolStripMenuItem.Text" xml:space="preserve">
+    <value>Untrack</value>
   </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy</value>
+  <data name="untrackToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Do not track this server.</value>
   </data>
   <data name="vmessToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>181, 30</value>
@@ -687,42 +759,6 @@
   </data>
   <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Contain all config information.</value>
-  </data>
-  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
-  </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 6</value>
-  </data>
-  <data name="speedTestToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
-  </data>
-  <data name="speedTestToolStripMenuItem.Text" xml:space="preserve">
-    <value>Speed test</value>
-  </data>
-  <data name="speedTestToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>The time it took to download webpage https://www.google.com.</value>
-  </data>
-  <data name="logOfThisServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
-  </data>
-  <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Log of this server</value>
-  </data>
-  <data name="setAsSystemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 28</value>
-  </data>
-  <data name="setAsSystemProxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>System proxy</value>
   </data>
   <data name="globalProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>296, 30</value>
@@ -782,7 +818,7 @@
     <value>16</value>
   </data>
   <data name="rtboxServerTitle.Text" xml:space="preserve">
-    <value>1.[服务器名] vmess@1.2.3.4 very loooong</value>
+    <value>1.[lovely] vmess@1.2.3.4 very loooong</value>
   </data>
   <data name="&gt;&gt;rtboxServerTitle.Name" xml:space="preserve">
     <value>rtboxServerTitle</value>
@@ -817,46 +853,88 @@
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemStart.Name" xml:space="preserve">
-    <value>toolStripMenuItemStart</value>
+  <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">
+    <value>toolStripMenuItem3</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemStart.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItem3.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;multiboxingToolStripMenuItem.Name" xml:space="preserve">
-    <value>multiboxingToolStripMenuItem</value>
+  <data name="&gt;&gt;startToolStripMenuItem.Name" xml:space="preserve">
+    <value>startToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;multiboxingToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;startToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;stopToolStripMenuItem.Name" xml:space="preserve">
-    <value>stopToolStripMenuItem</value>
+  <data name="&gt;&gt;multiboxingToolStripMenuItem1.Name" xml:space="preserve">
+    <value>multiboxingToolStripMenuItem1</value>
   </data>
-  <data name="&gt;&gt;stopToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;multiboxingToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
+  <data name="&gt;&gt;stopToolStripMenuItem1.Name" xml:space="preserve">
+    <value>stopToolStripMenuItem1</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+  <data name="&gt;&gt;stopToolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem5.Name" xml:space="preserve">
+    <value>toolStripMenuItem5</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem5.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemIsAutorun.Name" xml:space="preserve">
-    <value>toolStripMenuItemIsAutorun</value>
+  <data name="&gt;&gt;moveToTopToolStripMenuItem.Name" xml:space="preserve">
+    <value>moveToTopToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemIsAutorun.Type" xml:space="preserve">
+  <data name="&gt;&gt;moveToTopToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemIsInjectImport.Name" xml:space="preserve">
-    <value>toolStripMenuItemIsInjectImport</value>
+  <data name="&gt;&gt;moveToBottomToolStripMenuItem.Name" xml:space="preserve">
+    <value>moveToBottomToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemIsInjectImport.Type" xml:space="preserve">
+  <data name="&gt;&gt;moveToBottomToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemSkipCNSite.Name" xml:space="preserve">
-    <value>toolStripMenuItemSkipCNSite</value>
+  <data name="&gt;&gt;toolStripMenuItem6.Name" xml:space="preserve">
+    <value>toolStripMenuItem6</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemSkipCNSite.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripMenuItem6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;runSpeedTestToolStripMenuItem.Name" xml:space="preserve">
+    <value>runSpeedTestToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;runSpeedTestToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem4.Name" xml:space="preserve">
+    <value>toolStripMenuItem4</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;autorunToolStripMenuItem.Name" xml:space="preserve">
+    <value>autorunToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;autorunToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;globalImportToolStripMenuItem.Name" xml:space="preserve">
+    <value>globalImportToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;globalImportToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;skipCNWebsiteToolStripMenuItem.Name" xml:space="preserve">
+    <value>skipCNWebsiteToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;skipCNWebsiteToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;untrackToolStripMenuItem.Name" xml:space="preserve">
+    <value>untrackToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;untrackToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
@@ -900,12 +978,6 @@
   </data>
   <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;speedTestToolStripMenuItem.Name" xml:space="preserve">
-    <value>speedTestToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;speedTestToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;logOfThisServerToolStripMenuItem.Name" xml:space="preserve">
     <value>logOfThisServerToolStripMenuItem</value>

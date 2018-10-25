@@ -15,7 +15,7 @@ namespace V2RayGCon.Service
         Setting setting;
 
         public event EventHandler OnPACServerStatusChanged;
-        Model.Data.ProxyRegKeyValue orgSysProxySetting;
+
         Lib.Nets.SimpleWebServer webServer = null;
         object webServerLock = new object();
 
@@ -29,7 +29,7 @@ namespace V2RayGCon.Service
         public void Run(Setting setting)
         {
             this.setting = setting;
-            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
+
             ClearCache();
             var pacSetting = setting.GetPacServerSettings();
             var proxySetting = setting.GetSysProxySetting();
@@ -177,7 +177,7 @@ namespace V2RayGCon.Service
                 try
                 {
                     webServer = new Lib.Nets.SimpleWebServer(WebRequestDispatcher, prefix);
-                    webServer.Run();
+                    webServer.Start();
                     isWebServRunning = true;
                 }
                 catch
@@ -205,9 +205,11 @@ namespace V2RayGCon.Service
                 return;
             }
 
+            var path = Path.GetDirectoryName(filename);
+
             customPacFileWatcher = new FileSystemWatcher
             {
-                Path = Path.GetDirectoryName(filename),
+                Path = (string.IsNullOrEmpty(path) ? Lib.Utils.GetAppDir() : path),
                 Filter = Path.GetFileName(filename),
             };
 
@@ -257,7 +259,6 @@ namespace V2RayGCon.Service
         {
             postRequestHandler = null;
             StopPacServer();
-            Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
             lazyCustomPacFileCacheUpdateTimer?.Release();
         }
 
@@ -367,14 +368,14 @@ namespace V2RayGCon.Service
             var prefix = url.Split('?')[0];
             var html = tpl.Replace("__PacServerUrl__", url)
                 .Replace("__PacPrefixUrl__", prefix);
-            var mime = "text/html; charset=utf-8";
+            var mime = "text/html; charset=UTF-8";
             return new Tuple<string, string>(html, mime);
         }
 
         private Tuple<string, string> ResponseWithPacFile(Model.Data.PacUrlParams urlParam)
         {
             // ie require this header
-            var mime = "application/x-ns-proxy-autoconfig";
+            var mime = "application/x-ns-proxy-autoconfig; charset=UTF-8";
 
             var pacSetting = setting.GetPacServerSettings();
             StringBuilder content;

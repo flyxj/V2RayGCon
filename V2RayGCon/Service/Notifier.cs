@@ -126,6 +126,13 @@ namespace V2RayGCon.Service
                     (s,a)=>{
                         void Success(string link)
                         {
+                            // no comment ^v^
+                            if (link == StrConst.Nobody3uVideoUrl)
+                            {
+                                Lib.UI.VisitUrl(I18N.VisitWebPage, StrConst.Nobody3uVideoUrl);
+                                return;
+                            }
+
                             var msg=Lib.Utils.CutStr(link,90);
                             setting.SendLog($"QRCode: {msg}");
                             servers.ImportLinks(link);

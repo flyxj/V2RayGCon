@@ -12,45 +12,66 @@ namespace V2RayGCon.Service
         Setting setting;
         Servers servers;
         Notifier notifier;
+        PacServer pacServer;
+        Model.Data.ProxyRegKeyValue orgSysProxySetting;
+
+        bool isCleanupDone = false;
 
         Launcher()
         {
+            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
-            var pacServer = PacServer.Instance;
             var cmder = Cmder.Instance;
 
             setting = Setting.Instance;
+            pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
 
             SetCulture(setting.culture);
 
             // dependency injection
-            Lib.ImportParser.Run(cache);
             pacServer.Run(setting);
             servers.Run(setting, pacServer, cache);
             cmder.Run(setting, servers, pacServer);
             notifier.Run(setting, servers);
 
-            Application.ApplicationExit += (s, a) =>
+            Application.ApplicationExit +=
+                (s, a) => OnApplicationExitHandler(false);
+
+            Microsoft.Win32.SystemEvents.SessionEnding +=
+                (s, a) => OnApplicationExitHandler(true);
+
+            Application.ThreadException +=
+                (s, a) => SaveExceptionAndExit(
+                    a.Exception.ToString());
+
+            AppDomain.CurrentDomain.UnhandledException +=
+                (s, a) => SaveExceptionAndExit(
+                    (a.ExceptionObject as Exception).ToString());
+        }
+
+        readonly object cleanupLocker = new object();
+        void OnApplicationExitHandler(bool isShutdown)
+        {
+            lock (cleanupLocker)
             {
+                if (isCleanupDone)
+                {
+                    return;
+                }
+
+                setting.isShutdown = isShutdown;
+
                 notifier.Cleanup();
                 servers.Cleanup();
                 pacServer.Cleanup();
                 setting.Cleanup();
-            };
+                Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
 
-            Microsoft.Win32.SystemEvents.SessionEnding +=
-                (s, a) => Application.Exit();
-
-            Application.ThreadException +=
-                (s, a) => SaveUnHandledException(
-                    a.Exception.ToString());
-
-            AppDomain.CurrentDomain.UnhandledException +=
-                (s, a) => SaveUnHandledException(
-                    (a.ExceptionObject as Exception).ToString());
+                isCleanupDone = true;
+            }
         }
 
         #region private method
@@ -136,7 +157,7 @@ namespace V2RayGCon.Service
                 + GetBugLogFileName());
         }
 
-        void SaveUnHandledException(string msg)
+        void SaveExceptionAndExit(string msg)
         {
             var log = msg;
             try

@@ -45,13 +45,20 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.btnMultiboxing = new System.Windows.Forms.Button();
             this.ctxMenuStripMore = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemStart = new System.Windows.Forms.ToolStripMenuItem();
-            this.multiboxingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemIsAutorun = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemIsInjectImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemSkipCNSite = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.multiboxingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.moveToTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.runSpeedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.autorunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalImportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skipCNWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.untrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vmessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +66,6 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.speedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOfThisServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsSystemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -169,7 +175,7 @@
             // 
             // lbIsAutorun
             // 
-            this.lbIsAutorun.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lbIsAutorun.Cursor = System.Windows.Forms.Cursors.SizeAll;
             resources.ApplyResources(this.lbIsAutorun, "lbIsAutorun");
             this.lbIsAutorun.Name = "lbIsAutorun";
             this.toolTip1.SetToolTip(this.lbIsAutorun, resources.GetString("lbIsAutorun.ToolTip"));
@@ -197,64 +203,111 @@
             // 
             this.ctxMenuStripMore.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxMenuStripMore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemStart,
-            this.multiboxingToolStripMenuItem,
-            this.stopToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.toolStripMenuItemIsAutorun,
-            this.toolStripMenuItemIsInjectImport,
-            this.toolStripMenuItemSkipCNSite,
+            this.toolStripMenuItem3,
+            this.toolStripMenuItem4,
             this.toolStripMenuItem1,
             this.copyToolStripMenuItem,
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.speedTestToolStripMenuItem,
             this.logOfThisServerToolStripMenuItem,
             this.setAsSystemProxyToolStripMenuItem});
             this.ctxMenuStripMore.Name = "ctxMenuStripMore";
             resources.ApplyResources(this.ctxMenuStripMore, "ctxMenuStripMore");
             // 
-            // toolStripMenuItemStart
+            // toolStripMenuItem3
             // 
-            this.toolStripMenuItemStart.Name = "toolStripMenuItemStart";
-            resources.ApplyResources(this.toolStripMenuItemStart, "toolStripMenuItemStart");
-            this.toolStripMenuItemStart.Click += new System.EventHandler(this.toolStripMenuItemStart_Click);
+            this.toolStripMenuItem3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startToolStripMenuItem,
+            this.multiboxingToolStripMenuItem1,
+            this.stopToolStripMenuItem1,
+            this.toolStripMenuItem5,
+            this.moveToTopToolStripMenuItem,
+            this.moveToBottomToolStripMenuItem,
+            this.toolStripMenuItem6,
+            this.runSpeedTestToolStripMenuItem});
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
             // 
-            // multiboxingToolStripMenuItem
+            // startToolStripMenuItem
             // 
-            this.multiboxingToolStripMenuItem.Name = "multiboxingToolStripMenuItem";
-            resources.ApplyResources(this.multiboxingToolStripMenuItem, "multiboxingToolStripMenuItem");
-            this.multiboxingToolStripMenuItem.Click += new System.EventHandler(this.multiboxingToolStripMenuItem_Click);
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            resources.ApplyResources(this.startToolStripMenuItem, "startToolStripMenuItem");
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
-            // stopToolStripMenuItem
+            // multiboxingToolStripMenuItem1
             // 
-            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            resources.ApplyResources(this.stopToolStripMenuItem, "stopToolStripMenuItem");
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+            this.multiboxingToolStripMenuItem1.Name = "multiboxingToolStripMenuItem1";
+            resources.ApplyResources(this.multiboxingToolStripMenuItem1, "multiboxingToolStripMenuItem1");
+            this.multiboxingToolStripMenuItem1.Click += new System.EventHandler(this.multiboxingToolStripMenuItem1_Click);
             // 
-            // toolStripSeparator1
+            // stopToolStripMenuItem1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            this.stopToolStripMenuItem1.Name = "stopToolStripMenuItem1";
+            resources.ApplyResources(this.stopToolStripMenuItem1, "stopToolStripMenuItem1");
+            this.stopToolStripMenuItem1.Click += new System.EventHandler(this.stopToolStripMenuItem1_Click);
             // 
-            // toolStripMenuItemIsAutorun
+            // toolStripMenuItem5
             // 
-            this.toolStripMenuItemIsAutorun.Name = "toolStripMenuItemIsAutorun";
-            resources.ApplyResources(this.toolStripMenuItemIsAutorun, "toolStripMenuItemIsAutorun");
-            this.toolStripMenuItemIsAutorun.Click += new System.EventHandler(this.toolStripMenuItemIsAutorun_Click);
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            resources.ApplyResources(this.toolStripMenuItem5, "toolStripMenuItem5");
             // 
-            // toolStripMenuItemIsInjectImport
+            // moveToTopToolStripMenuItem
             // 
-            this.toolStripMenuItemIsInjectImport.Name = "toolStripMenuItemIsInjectImport";
-            resources.ApplyResources(this.toolStripMenuItemIsInjectImport, "toolStripMenuItemIsInjectImport");
-            this.toolStripMenuItemIsInjectImport.Click += new System.EventHandler(this.toolStripMenuItemIsInjectImport_Click);
+            this.moveToTopToolStripMenuItem.Name = "moveToTopToolStripMenuItem";
+            resources.ApplyResources(this.moveToTopToolStripMenuItem, "moveToTopToolStripMenuItem");
+            this.moveToTopToolStripMenuItem.Click += new System.EventHandler(this.moveToTopToolStripMenuItem_Click);
             // 
-            // toolStripMenuItemSkipCNSite
+            // moveToBottomToolStripMenuItem
             // 
-            this.toolStripMenuItemSkipCNSite.Name = "toolStripMenuItemSkipCNSite";
-            resources.ApplyResources(this.toolStripMenuItemSkipCNSite, "toolStripMenuItemSkipCNSite");
-            this.toolStripMenuItemSkipCNSite.Click += new System.EventHandler(this.toolStripMenuItemSkipCNSite_Click);
+            this.moveToBottomToolStripMenuItem.Name = "moveToBottomToolStripMenuItem";
+            resources.ApplyResources(this.moveToBottomToolStripMenuItem, "moveToBottomToolStripMenuItem");
+            this.moveToBottomToolStripMenuItem.Click += new System.EventHandler(this.moveToBottomToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            resources.ApplyResources(this.toolStripMenuItem6, "toolStripMenuItem6");
+            // 
+            // runSpeedTestToolStripMenuItem
+            // 
+            this.runSpeedTestToolStripMenuItem.Name = "runSpeedTestToolStripMenuItem";
+            resources.ApplyResources(this.runSpeedTestToolStripMenuItem, "runSpeedTestToolStripMenuItem");
+            this.runSpeedTestToolStripMenuItem.Click += new System.EventHandler(this.runSpeedTestToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autorunToolStripMenuItem,
+            this.globalImportToolStripMenuItem,
+            this.skipCNWebsiteToolStripMenuItem,
+            this.untrackToolStripMenuItem});
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            resources.ApplyResources(this.toolStripMenuItem4, "toolStripMenuItem4");
+            // 
+            // autorunToolStripMenuItem
+            // 
+            this.autorunToolStripMenuItem.Name = "autorunToolStripMenuItem";
+            resources.ApplyResources(this.autorunToolStripMenuItem, "autorunToolStripMenuItem");
+            this.autorunToolStripMenuItem.Click += new System.EventHandler(this.autorunToolStripMenuItem_Click);
+            // 
+            // globalImportToolStripMenuItem
+            // 
+            this.globalImportToolStripMenuItem.Name = "globalImportToolStripMenuItem";
+            resources.ApplyResources(this.globalImportToolStripMenuItem, "globalImportToolStripMenuItem");
+            this.globalImportToolStripMenuItem.Click += new System.EventHandler(this.globalImportToolStripMenuItem_Click);
+            // 
+            // skipCNWebsiteToolStripMenuItem
+            // 
+            this.skipCNWebsiteToolStripMenuItem.Name = "skipCNWebsiteToolStripMenuItem";
+            resources.ApplyResources(this.skipCNWebsiteToolStripMenuItem, "skipCNWebsiteToolStripMenuItem");
+            this.skipCNWebsiteToolStripMenuItem.Click += new System.EventHandler(this.skipCNWebsiteToolStripMenuItem_Click);
+            // 
+            // untrackToolStripMenuItem
+            // 
+            this.untrackToolStripMenuItem.Name = "untrackToolStripMenuItem";
+            resources.ApplyResources(this.untrackToolStripMenuItem, "untrackToolStripMenuItem");
+            this.untrackToolStripMenuItem.Click += new System.EventHandler(this.untrackToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -297,12 +350,6 @@
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
-            // 
-            // speedTestToolStripMenuItem
-            // 
-            this.speedTestToolStripMenuItem.Name = "speedTestToolStripMenuItem";
-            resources.ApplyResources(this.speedTestToolStripMenuItem, "speedTestToolStripMenuItem");
-            this.speedTestToolStripMenuItem.Click += new System.EventHandler(this.speedTestToolStripMenuItem_Click);
             // 
             // logOfThisServerToolStripMenuItem
             // 
@@ -408,7 +455,6 @@
         private System.Windows.Forms.CheckBox chkSelected;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.ContextMenuStrip ctxMenuStripMore;
-        private System.Windows.Forms.ToolStripMenuItem multiboxingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vmessToolStripMenuItem;
@@ -416,19 +462,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem speedTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logOfThisServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setAsSystemProxyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ComboBox cboxMark;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemStart;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemIsAutorun;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemIsInjectImport;
         private System.Windows.Forms.Button btnIsCollapse;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label lbIsAutorun;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSkipCNSite;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnMultiboxing;
         private System.Windows.Forms.ToolStripMenuItem globalProxyToolStripMenuItem;
@@ -438,5 +477,19 @@
         private System.Windows.Forms.ToolStripMenuItem copyPACBlackListLinkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyPACWhiteListLinkToolStripMenuItem;
         private System.Windows.Forms.RichTextBox rtboxServerTitle;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem multiboxingToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem moveToTopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToBottomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem runSpeedTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem autorunToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem globalImportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem skipCNWebsiteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem untrackToolStripMenuItem;
     }
 }
