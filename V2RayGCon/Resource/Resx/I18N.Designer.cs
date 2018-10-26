@@ -1075,6 +1075,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Portable mode 的本地化字符串。
+        /// </summary>
+        internal static string Portable {
+            get {
+                return ResourceManager.GetString("Portable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Proxy all website 的本地化字符串。
         /// </summary>
         internal static string ProxyModeAll {

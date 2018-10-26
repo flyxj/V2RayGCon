@@ -23,12 +23,14 @@ namespace V2RayGCon.Service
 
         Process v2rayCore;
         static object coreLock = new object();
+        Service.Setting setting;
 
-        public Core()
+        public Core(Service.Setting setting)
         {
             isRunning = false;
             isCheckCoreReady = false;
             v2rayCore = null;
+            this.setting = setting;
         }
 
         #region property
@@ -96,12 +98,17 @@ namespace V2RayGCon.Service
 
         public string GetExecutablePath()
         {
-            var folders = new string[]{
-                Lib.Utils.GetAppDataFolder(), //piror
-                Lib.Utils.GetAppDir(),  // fallback
+            var folders = new List<string>{
+                Lib.Utils.GetSysAppDataFolder(), // %appdata%
+                Lib.Utils.GetAppDir(),
             };
 
-            for (var i = 0; i < folders.Length; i++)
+            if (setting.isPortable)
+            {
+                folders.Reverse();
+            }
+
+            for (var i = 0; i < folders.Count; i++)
             {
                 var file = Path.Combine(folders[i], StrConst.Executable);
                 if (File.Exists(file))

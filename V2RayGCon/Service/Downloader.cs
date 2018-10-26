@@ -15,8 +15,12 @@ namespace V2RayGCon.Service
         string _version;
         WebClient client;
 
-        public Downloader()
+        Service.Setting setting;
+
+        public Downloader(Service.Setting setting)
         {
+            this.setting = setting;
+
             SetArchitecture(false);
             _version = StrConst.DefCoreVersion;
             client = null;
@@ -50,11 +54,14 @@ namespace V2RayGCon.Service
             {
                 Lib.Utils.ZipFileDecompress(
                     GetLocalFilePath(),
-                    Lib.Utils.GetAppDataFolder());
-                return true;
+                    GetLocalFolderPath());
             }
-            catch { }
-            return false;
+            catch
+            {
+                // some code analizers may complain about empty catch block.
+                return false;
+            }
+            return true;
         }
 
         public void Cleanup()
@@ -70,11 +77,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        static void SendLog(string message)
-        {
-            Service.Setting.Instance.SendLog(message);
-        }
-
         void SendProgress(int percentage)
         {
             try
@@ -133,15 +135,21 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            SendLog(string.Format("{0}", I18N.DownloadCompleted));
+            setting.SendLog(string.Format("{0}", I18N.DownloadCompleted));
 
             UpdateCore();
         }
 
+        string GetLocalFolderPath()
+        {
+            return setting.isPortable ?
+                Lib.Utils.GetAppDir() :
+                Lib.Utils.GetSysAppDataFolder();
+        }
+
         string GetLocalFilePath()
         {
-            var appData = Lib.Utils.GetAppDataFolder();
-            return Path.Combine(appData, _packageName);
+            return Path.Combine(GetLocalFolderPath(), _packageName);
         }
 
         void Download()
@@ -162,7 +170,7 @@ namespace V2RayGCon.Service
             };
 
             Lib.Utils.CreateAppDataFolder();
-            SendLog(string.Format("{0}:{1}", I18N.Download, url));
+            setting.SendLog(string.Format("{0}:{1}", I18N.Download, url));
             client.DownloadFileAsync(new Uri(url), GetLocalFilePath());
         }
 

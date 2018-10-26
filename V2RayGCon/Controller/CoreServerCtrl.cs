@@ -17,9 +17,9 @@ namespace V2RayGCon.Controller
         [JsonIgnore]
         Service.PacServer pacServer;
         [JsonIgnore]
-        public Service.Servers servers;
+        Service.Servers servers;
         [JsonIgnore]
-        public Service.Setting setting;
+        Service.Setting setting;
 
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler
@@ -68,14 +68,14 @@ namespace V2RayGCon.Controller
              Service.Cache cache,
              Service.Setting setting,
              Service.PacServer pacServer,
-            Service.Servers servers)
+             Service.Servers servers)
         {
             this.cache = cache;
             this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
-            server = new Service.Core();
+            server = new Service.Core(setting);
             server.OnLog += OnLogHandler;
             server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
@@ -221,7 +221,7 @@ namespace V2RayGCon.Controller
             log(text);
             SendLog(url);
 
-            var speedTester = new Service.Core();
+            var speedTester = new Service.Core(setting);
             speedTester.OnLog += OnLogHandler;
             speedTester.RestartCore(config);
 

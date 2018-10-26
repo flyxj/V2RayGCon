@@ -613,4 +613,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="UnsetPortableModeFail" xml:space="preserve">
     <value>取消便携模式失败，请删除本软件目录中的{0}。</value>
   </data>
+  <data name="Portable" xml:space="preserve">
+    <value>便携模式</value>
+  </data>
 </root>

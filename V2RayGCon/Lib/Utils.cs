@@ -1017,7 +1017,7 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region files
-        public static string GetAppDataFolder()
+        public static string GetSysAppDataFolder()
         {
             var appData = System.Environment.GetFolderPath(
                 Environment.SpecialFolder.CommonApplicationData);
@@ -1026,7 +1026,7 @@ namespace V2RayGCon.Lib
 
         public static void CreateAppDataFolder()
         {
-            var path = GetAppDataFolder();
+            var path = GetSysAppDataFolder();
 
             if (!Directory.Exists(path))
             {
@@ -1036,7 +1036,7 @@ namespace V2RayGCon.Lib
 
         public static void DeleteAppDataFolder()
         {
-            Directory.Delete(GetAppDataFolder(), recursive: true);
+            Directory.Delete(GetSysAppDataFolder(), recursive: true);
         }
         #endregion
 

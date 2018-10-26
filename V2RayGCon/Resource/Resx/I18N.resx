@@ -627,4 +627,7 @@ Try move this app to writeable folder or disable portable mode.</value>
     <value>Unset partable mode fail!
 Please delete {0} in app folder.</value>
   </data>
+  <data name="Portable" xml:space="preserve">
+    <value>Portable mode</value>
+  </data>
 </root>

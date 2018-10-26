@@ -12,32 +12,26 @@ namespace V2RayGCon.Controller
         {
             foreach (var component in GetAllComponents())
             {
-                if ((component.Value
-                    as OptionComponent.OptionComponentController)
-                    .IsOptionsChanged())
+                var optCtrl = component.Value as OptionComponent.OptionComponentController;
+                if (optCtrl.IsOptionsChanged())
                 {
                     return false;
                 }
             }
-
             return true;
         }
 
         public bool SaveAllOptions()
         {
             var changed = false;
-
             foreach (var kvPair in GetAllComponents())
             {
-                var component = kvPair.Value
-                    as OptionComponent.OptionComponentController;
-
+                var component = kvPair.Value as OptionComponent.OptionComponentController;
                 if (component.SaveOptions())
                 {
                     changed = true;
                 }
             }
-
             return changed;
         }
 

@@ -191,7 +191,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void CreateDeleteAppFolderTest()
         {
-            var appFolder = Lib.Utils.GetAppDataFolder();
+            var appFolder = Lib.Utils.GetSysAppDataFolder();
             Assert.AreEqual(false, string.IsNullOrEmpty(appFolder));
 
             // do not run these tests 
@@ -282,8 +282,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void GetLocalCoreVersion()
         {
-
-            var core = new Service.Core();
+            var core = new Service.Core(Service.Setting.Instance);
             var version = core.GetCoreVersion();
 
             if (core.IsExecutableExist())

@@ -142,7 +142,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 return;
             }
 
-            if (!Directory.Exists(Lib.Utils.GetAppDataFolder()))
+            if (!Directory.Exists(Lib.Utils.GetSysAppDataFolder()))
             {
                 MessageBox.Show(I18N.Done);
                 return;
