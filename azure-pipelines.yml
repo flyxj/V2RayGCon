@@ -44,8 +44,8 @@ steps:
 # Extract a variety of archive and compression files such as .7z, .rar, .tar.gz, and .zip.
 - task: ExtractFiles@1
   inputs:
-    archiveFilePatterns:'$(Build.SourcesDirectory)/V2RayGCon/Resource/Core/v2ray-windows-32.zip'
-    destinationFolder: '$(Build.SourcesDirectory)/V2RayGCon/bin/Release/core/'
+    archiveFilePatterns: '$(Build.SourcesDirectory)/V2RayGCon/Resource/Core/v2ray-windows-32.zip'
+    destinationFolder: '$(Build.SourcesDirectory)/V2RayGCon/bin/Release/core'
     cleanDestinationFolder: true 	
 
 # Archive Files
