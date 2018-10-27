@@ -986,6 +986,7 @@ namespace V2RayGCon.Service
 
             Action finish = () =>
             {
+                LazyUpdateNotifyTextHandler(this, EventArgs.Empty);
                 LazySaveServerList();
                 UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate();
@@ -1063,6 +1064,7 @@ namespace V2RayGCon.Service
             Task.Factory.StartNew(
                 () => RemoveServerItemFromListThen(index, () =>
                 {
+                    LazyUpdateNotifyTextHandler(this, EventArgs.Empty);
                     LazySaveServerList();
                     UpdateMarkList();
                     InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);

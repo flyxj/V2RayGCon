@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
@@ -50,11 +52,16 @@ namespace V2RayGCon.Service
 
         public bool UnzipPackage()
         {
+            var path = GetLocalFolderPath();
+            var filename = GetLocalFilename();
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(filename))
+            {
+                return false;
+            }
+
             try
             {
-                Lib.Utils.ZipFileDecompress(
-                    GetLocalFilePath(),
-                    GetLocalFolderPath());
+                Lib.Utils.ZipFileDecompress(filename, path);
             }
             catch
             {
@@ -136,26 +143,46 @@ namespace V2RayGCon.Service
             }
 
             setting.SendLog(string.Format("{0}", I18N.DownloadCompleted));
-
             UpdateCore();
         }
 
         string GetLocalFolderPath()
         {
-            return setting.isPortable ?
-                Lib.Utils.GetAppDir() :
+            var path = setting.isPortable ?
+                StrConst.V2RayCoreFolder :
                 Lib.Utils.GetSysAppDataFolder();
+
+            if (!Directory.Exists(path))
+            {
+                try
+                {
+                    Directory.CreateDirectory(path);
+                }
+                catch
+                {
+                    Task.Factory.StartNew(
+                        () => MessageBox.Show(I18N.CreateFolderFail));
+                    return null;
+                }
+            }
+            return path;
         }
 
-        string GetLocalFilePath()
+        string GetLocalFilename()
         {
-            return Path.Combine(GetLocalFolderPath(), _packageName);
+            var path = GetLocalFolderPath();
+            return string.IsNullOrEmpty(path) ? null : Path.Combine(path, _packageName);
         }
 
         void Download()
         {
             string tpl = StrConst.DownloadLinkTpl;
             string url = string.Format(tpl, _version, _packageName);
+            var filename = GetLocalFilename();
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
 
             client = new WebClient();
 
@@ -169,9 +196,8 @@ namespace V2RayGCon.Service
                 DownloadCompleted(a.Cancelled);
             };
 
-            Lib.Utils.CreateAppDataFolder();
             setting.SendLog(string.Format("{0}:{1}", I18N.Download, url));
-            client.DownloadFileAsync(new Uri(url), GetLocalFilePath());
+            client.DownloadFileAsync(new Uri(url), filename);
         }
 
         #endregion

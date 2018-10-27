@@ -632,4 +632,7 @@ Please delete {0} in app folder.</value>
   <data name="Portable" xml:space="preserve">
     <value>Portable mode</value>
   </data>
+  <data name="CreateFolderFail" xml:space="preserve">
+    <value>Create folder fail!</value>
+  </data>
 </root>

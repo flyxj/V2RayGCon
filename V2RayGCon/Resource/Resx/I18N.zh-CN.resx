@@ -617,4 +617,7 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Portable" xml:space="preserve">
     <value>便携模式</value>
   </data>
+  <data name="CreateFolderFail" xml:space="preserve">
+    <value>创建文件夹失败!</value>
+  </data>
 </root>

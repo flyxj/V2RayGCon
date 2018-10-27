@@ -101,16 +101,7 @@ namespace V2RayGCon.Service
 
         public string GetExecutablePath()
         {
-            var folders = new List<string>{
-                Lib.Utils.GetSysAppDataFolder(), // %appdata%
-                Lib.Utils.GetAppDir(),
-            };
-
-            if (setting.isPortable)
-            {
-                folders.Reverse();
-            }
-
+            List<string> folders = GenV2RayCoreSearchPaths(setting.isPortable);
             for (var i = 0; i < folders.Count; i++)
             {
                 var file = Path.Combine(folders[i], StrConst.Executable);
@@ -119,8 +110,23 @@ namespace V2RayGCon.Service
                     return file;
                 }
             }
-
             return string.Empty;
+        }
+
+        private static List<string> GenV2RayCoreSearchPaths(bool isPortable)
+        {
+            var folders = new List<string>{
+                Lib.Utils.GetSysAppDataFolder(), // %appdata%
+                Lib.Utils.GetAppDir(),
+                StrConst.V2RayCoreFolder,
+            };
+
+            if (isPortable)
+            {
+                folders.Reverse();
+            }
+
+            return folders;
         }
 
         // blocking

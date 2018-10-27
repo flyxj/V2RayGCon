@@ -433,6 +433,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Create folder fail! 的本地化字符串。
+        /// </summary>
+        internal static string CreateFolderFail {
+            get {
+                return ResourceManager.GetString("CreateFolderFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Current v2ray-core version is v{0} 的本地化字符串。
         /// </summary>
         internal static string CurrentCoreVerIs {
