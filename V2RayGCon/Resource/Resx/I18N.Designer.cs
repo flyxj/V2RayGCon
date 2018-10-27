@@ -1229,7 +1229,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Set system proxy fail! 的本地化字符串。
+        ///   查找类似 Set system proxy fail! 
+        ///Please take a look at log. 的本地化字符串。
         /// </summary>
         internal static string SetSysProxyFail {
             get {
@@ -1434,7 +1435,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2ray-core exit abnormally. 的本地化字符串。
+        ///   查找类似 exit abnormally.
+        ///Please check server configuration and log. 的本地化字符串。
         /// </summary>
         internal static string V2rayCoreExitAbnormally {
             get {
