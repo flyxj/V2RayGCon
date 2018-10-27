@@ -28,7 +28,7 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-	
+
 # Archive Files
 # Archive files using compression formats such as .7z, .rar, .tar.gz, and .zip.
 - task: ArchiveFiles@2
