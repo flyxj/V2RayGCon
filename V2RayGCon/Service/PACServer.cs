@@ -184,6 +184,7 @@ namespace V2RayGCon.Service
                 {
                     Task.Factory.StartNew(
                         () => MessageBox.Show(I18N.StartPacServFail));
+                    return;
                 }
 
                 StartFileWatcher(pacSetting);

@@ -35,6 +35,16 @@ namespace V2RayGCon.Lib.Nets
                 Prefixes = { prefix }
             };
 
+            try
+            {
+                PacListener.Start();
+            }
+            catch
+            {
+                PacListener = null;
+                throw;
+            }
+
             ThreadPacServer = new Thread(new ThreadStart(PacServerThreadWorker));
             ThreadPacServer.Start();
         }
@@ -58,8 +68,6 @@ namespace V2RayGCon.Lib.Nets
         #region private method
         private void PacServerThreadWorker()
         {
-            PacListener.Start();
-
             try
             {
                 while (true)
