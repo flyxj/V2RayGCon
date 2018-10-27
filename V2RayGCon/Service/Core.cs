@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,12 +24,16 @@ namespace V2RayGCon.Service
 
         Process v2rayCore;
         static object coreLock = new object();
+        Service.Setting setting;
+        string config;
 
-        public Core()
+        public Core(Service.Setting setting)
         {
             isRunning = false;
             isCheckCoreReady = false;
             v2rayCore = null;
+            config = string.Empty;
+            this.setting = setting;
         }
 
         #region property
@@ -96,12 +101,8 @@ namespace V2RayGCon.Service
 
         public string GetExecutablePath()
         {
-            var folders = new string[]{
-                Lib.Utils.GetAppDataFolder(), //piror
-                Lib.Utils.GetAppDir(),  // fallback
-            };
-
-            for (var i = 0; i < folders.Length; i++)
+            List<string> folders = GenV2RayCoreSearchPaths(setting.isPortable);
+            for (var i = 0; i < folders.Count; i++)
             {
                 var file = Path.Combine(folders[i], StrConst.Executable);
                 if (File.Exists(file))
@@ -109,8 +110,23 @@ namespace V2RayGCon.Service
                     return file;
                 }
             }
-
             return string.Empty;
+        }
+
+        private static List<string> GenV2RayCoreSearchPaths(bool isPortable)
+        {
+            var folders = new List<string>{
+                Lib.Utils.GetSysAppDataFolder(), // %appdata%
+                Lib.Utils.GetAppDir(),
+                StrConst.V2RayCoreFolder,
+            };
+
+            if (isPortable)
+            {
+                folders.Reverse();
+            }
+
+            return folders;
         }
 
         // blocking
@@ -295,7 +311,19 @@ namespace V2RayGCon.Service
                 procEnv[env.Key] = env.Value;
             }
         }
-
+        void ShowExitErrorMessage()
+        {
+            var title = "V2ray-core";
+            try
+            {
+                var c = JObject.Parse(this.config);
+                var alias = Lib.Utils.GetAliasFromConfig(c);
+                var summary = Lib.Utils.GetSummaryFromConfig(c);
+                title = string.Format($"[{alias}] {summary}");
+            }
+            catch { }
+            MessageBox.Show(Lib.Utils.CutStr(title, 46) + I18N.V2rayCoreExitAbnormally);
+        }
         void OnCoreExisted(object sender, EventArgs args)
         {
             SendLog(I18N.CoreExit);
@@ -305,8 +333,7 @@ namespace V2RayGCon.Service
             if (err != 0)
             {
                 v2rayCore.Close();
-                Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N.V2rayCoreExitAbnormally));
+                Task.Factory.StartNew(ShowExitErrorMessage);
             }
 
             // SendLog("Exit code: " + err);
@@ -331,6 +358,7 @@ namespace V2RayGCon.Service
         void StartCore(string config,
             Dictionary<string, string> envs = null)
         {
+            this.config = config;
             v2rayCore = CreateProcess();
             InjectEnv(v2rayCore, envs);
             BindEvents(v2rayCore);
@@ -354,8 +382,8 @@ namespace V2RayGCon.Service
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
 
-            // Assume core ready after 2.5 seconds, in case log set to none.
-            ready.WaitOne(2500);
+            // Assume core ready after 3.5 seconds, in case log set to none.
+            ready.WaitOne(3500);
             OnCoreReady -= onCoreReady;
             isCheckCoreReady = false;
         }

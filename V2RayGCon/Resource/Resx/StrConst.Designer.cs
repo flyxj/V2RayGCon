@@ -640,6 +640,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 core 的本地化字符串。
+        /// </summary>
+        internal static string V2RayCoreFolder {
+            get {
+                return ResourceManager.GetString("V2RayCoreFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 v3.48,v3.47,v3.46 的本地化字符串。
         /// </summary>
         internal static string VerList {

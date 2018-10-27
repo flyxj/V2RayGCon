@@ -10,7 +10,7 @@ namespace V2RayGCon.Test
 
         public CoreServerTest()
         {
-            core = new Service.Core();
+            core = new Service.Core(Service.Setting.Instance);
         }
 
         [TestMethod]

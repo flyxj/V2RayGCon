@@ -419,7 +419,8 @@ Please use [Add new server] or [Replace server].</value>
     <value>Attach to v2ray-core process fail!</value>
   </data>
   <data name="V2rayCoreExitAbnormally" xml:space="preserve">
-    <value>V2ray-core exit abnormally.</value>
+    <value>exit abnormally.
+Please check server configuration and log.</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
@@ -596,7 +597,8 @@ Please check port setting in form option.</value>
     <value>Auto tracker</value>
   </data>
   <data name="SetSysProxyFail" xml:space="preserve">
-    <value>Set system proxy fail!</value>
+    <value>Set system proxy fail! 
+Please take a look at log.</value>
   </data>
   <data name="GetInboundInfoFail" xml:space="preserve">
     <value>Get inbound information fail!</value>
@@ -626,5 +628,11 @@ Try move this app to writeable folder or disable portable mode.</value>
   <data name="UnsetPortableModeFail" xml:space="preserve">
     <value>Unset partable mode fail!
 Please delete {0} in app folder.</value>
+  </data>
+  <data name="Portable" xml:space="preserve">
+    <value>Portable mode</value>
+  </data>
+  <data name="CreateFolderFail" xml:space="preserve">
+    <value>Create folder fail!</value>
   </data>
 </root>

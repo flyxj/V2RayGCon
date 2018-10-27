@@ -174,7 +174,7 @@ namespace V2RayGCon.Service
 
         string GetBugLogFileName()
         {
-            var appData = Lib.Utils.GetAppDataFolder();
+            var appData = Lib.Utils.GetSysAppDataFolder();
             return Path.Combine(appData, StrConst.BugFileName);
         }
 

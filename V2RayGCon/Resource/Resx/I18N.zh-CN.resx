@@ -417,7 +417,8 @@ https://github.com/v2ray/v2ray-core</value>
     <value>附加到v2ray-core进程失败！</value>
   </data>
   <data name="V2rayCoreExitAbnormally" xml:space="preserve">
-    <value>V2ray-core非正常终止！</value>
+    <value>非正常终止！
+请检查服务器配置及日志。</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>选项</value>
@@ -583,7 +584,7 @@ https://github.com/v2ray/v2ray-core</value>
     <value>自动追踪</value>
   </data>
   <data name="SetSysProxyFail" xml:space="preserve">
-    <value>设置系统代理失败！</value>
+    <value>设置系统代理失败！详见日志。</value>
   </data>
   <data name="GetInboundInfoFail" xml:space="preserve">
     <value>获取Inbound信息失败!</value>
@@ -612,5 +613,11 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="UnsetPortableModeFail" xml:space="preserve">
     <value>取消便携模式失败，请删除本软件目录中的{0}。</value>
+  </data>
+  <data name="Portable" xml:space="preserve">
+    <value>便携模式</value>
+  </data>
+  <data name="CreateFolderFail" xml:space="preserve">
+    <value>创建文件夹失败!</value>
   </data>
 </root>

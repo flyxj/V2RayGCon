@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
@@ -15,8 +17,12 @@ namespace V2RayGCon.Service
         string _version;
         WebClient client;
 
-        public Downloader()
+        Service.Setting setting;
+
+        public Downloader(Service.Setting setting)
         {
+            this.setting = setting;
+
             SetArchitecture(false);
             _version = StrConst.DefCoreVersion;
             client = null;
@@ -46,15 +52,23 @@ namespace V2RayGCon.Service
 
         public bool UnzipPackage()
         {
+            var path = GetLocalFolderPath();
+            var filename = GetLocalFilename();
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(filename))
+            {
+                return false;
+            }
+
             try
             {
-                Lib.Utils.ZipFileDecompress(
-                    GetLocalFilePath(),
-                    Lib.Utils.GetAppDataFolder());
-                return true;
+                Lib.Utils.ZipFileDecompress(filename, path);
             }
-            catch { }
-            return false;
+            catch
+            {
+                // some code analizers may complain about empty catch block.
+                return false;
+            }
+            return true;
         }
 
         public void Cleanup()
@@ -70,11 +84,6 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
-        static void SendLog(string message)
-        {
-            Service.Setting.Instance.SendLog(message);
-        }
-
         void SendProgress(int percentage)
         {
             try
@@ -133,21 +142,47 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            SendLog(string.Format("{0}", I18N.DownloadCompleted));
-
+            setting.SendLog(string.Format("{0}", I18N.DownloadCompleted));
             UpdateCore();
         }
 
-        string GetLocalFilePath()
+        string GetLocalFolderPath()
         {
-            var appData = Lib.Utils.GetAppDataFolder();
-            return Path.Combine(appData, _packageName);
+            var path = setting.isPortable ?
+                StrConst.V2RayCoreFolder :
+                Lib.Utils.GetSysAppDataFolder();
+
+            if (!Directory.Exists(path))
+            {
+                try
+                {
+                    Directory.CreateDirectory(path);
+                }
+                catch
+                {
+                    Task.Factory.StartNew(
+                        () => MessageBox.Show(I18N.CreateFolderFail));
+                    return null;
+                }
+            }
+            return path;
+        }
+
+        string GetLocalFilename()
+        {
+            var path = GetLocalFolderPath();
+            return string.IsNullOrEmpty(path) ? null : Path.Combine(path, _packageName);
         }
 
         void Download()
         {
             string tpl = StrConst.DownloadLinkTpl;
             string url = string.Format(tpl, _version, _packageName);
+            var filename = GetLocalFilename();
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
 
             client = new WebClient();
 
@@ -161,9 +196,8 @@ namespace V2RayGCon.Service
                 DownloadCompleted(a.Cancelled);
             };
 
-            Lib.Utils.CreateAppDataFolder();
-            SendLog(string.Format("{0}:{1}", I18N.Download, url));
-            client.DownloadFileAsync(new Uri(url), GetLocalFilePath());
+            setting.SendLog(string.Format("{0}:{1}", I18N.Download, url));
+            client.DownloadFileAsync(new Uri(url), filename);
         }
 
         #endregion

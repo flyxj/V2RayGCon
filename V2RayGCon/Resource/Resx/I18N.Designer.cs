@@ -433,6 +433,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Create folder fail! 的本地化字符串。
+        /// </summary>
+        internal static string CreateFolderFail {
+            get {
+                return ResourceManager.GetString("CreateFolderFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Current v2ray-core version is v{0} 的本地化字符串。
         /// </summary>
         internal static string CurrentCoreVerIs {
@@ -1075,6 +1084,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Portable mode 的本地化字符串。
+        /// </summary>
+        internal static string Portable {
+            get {
+                return ResourceManager.GetString("Portable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Proxy all website 的本地化字符串。
         /// </summary>
         internal static string ProxyModeAll {
@@ -1220,7 +1238,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Set system proxy fail! 的本地化字符串。
+        ///   查找类似 Set system proxy fail! 
+        ///Please take a look at log. 的本地化字符串。
         /// </summary>
         internal static string SetSysProxyFail {
             get {
@@ -1425,7 +1444,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 V2ray-core exit abnormally. 的本地化字符串。
+        ///   查找类似 exit abnormally.
+        ///Please check server configuration and log. 的本地化字符串。
         /// </summary>
         internal static string V2rayCoreExitAbnormally {
             get {
