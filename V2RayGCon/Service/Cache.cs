@@ -14,6 +14,11 @@
             core = new Caches.CoreCache();
         }
 
+        public void Run(Service.Setting setting)
+        {
+            core.Run(setting);
+        }
+
         #region public method
 
         #endregion

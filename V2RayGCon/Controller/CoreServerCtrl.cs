@@ -542,8 +542,7 @@ namespace V2RayGCon.Controller
         static string GetInProtocolNameByNumber(int typeNumber)
         {
             var table = Model.Data.Table.inboundOverwriteTypesName;
-            return table[Lib.Utils.Clamp(
-                typeNumber, 0, table.Length)];
+            return table[Lib.Utils.Clamp(typeNumber, 0, table.Length)];
         }
 
         bool IsSuitableForProxy(bool isGlobalProxy, string protocol)
@@ -718,19 +717,20 @@ namespace V2RayGCon.Controller
             var part = protocol + "In";
             try
             {
-                var o = Lib.Utils.CreateJObject("inbound");
-                o["inbound"]["protocol"] = protocol;
-                o["inbound"]["listen"] = ip;
-                o["inbound"]["port"] = port;
-                o["inbound"]["settings"] = cache.tpl.LoadTemplate(part);
+                var o = JObject.Parse(@"{}");
+                o["protocol"] = protocol;
+                o["listen"] = ip;
+                o["port"] = port;
+                o["settings"] = cache.tpl.LoadTemplate(part);
 
                 if (inboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
                 {
-                    o["inbound"]["settings"]["ip"] = ip;
+                    o["settings"]["ip"] = ip;
                 }
 
-                Lib.Utils.MergeJson(ref config, o);
-
+                // Bug. Stream setting will mess things up.
+                // Lib.Utils.MergeJson(ref config, o);
+                config["inbound"] = o;
                 return true;
             }
             catch

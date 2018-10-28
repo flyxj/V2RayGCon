@@ -16,7 +16,10 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 container.InjectConfigHelper(() =>
                 {
-                    container.config["v2raygcon"] = GetSettings();
+                    var key = "v2raygcon";
+                    var mixin = Lib.Utils.CreateJObject(key);
+                    mixin[key] = GetSettings();
+                    Lib.Utils.MergeJson(ref container.config, mixin);
                 });
             };
         }

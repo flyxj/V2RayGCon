@@ -48,9 +48,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
         public void Reload(string rawSetting)
         {
-            Properties.Settings.Default.ImportUrls = rawSetting;
-            Properties.Settings.Default.Save();
-
+            setting.SaveGlobalImportItems(rawSetting);
             Lib.UI.ClearFlowLayoutPanel(this.flyPanel);
             InitPanel();
         }

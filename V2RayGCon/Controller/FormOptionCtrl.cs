@@ -8,6 +8,13 @@ namespace V2RayGCon.Controller
 {
     class FormOptionCtrl : Model.BaseClass.FormController
     {
+        Service.Setting setting;
+
+        public FormOptionCtrl()
+        {
+            this.setting = Service.Setting.Instance;
+        }
+
         public bool IsOptionsSaved()
         {
             foreach (var component in GetAllComponents())
@@ -53,9 +60,9 @@ namespace V2RayGCon.Controller
             }
 
             var data = new Dictionary<string, string> {
-                    { "import", Properties.Settings.Default.ImportUrls },
-                    { "subscription",Properties.Settings.Default.SubscribeUrls },
-                    { "pacserv",Properties.Settings.Default.PacServerSettings },
+                    { "import", JsonConvert.SerializeObject(setting.GetGlobalImportItems())},
+                    { "subscription",JsonConvert.SerializeObject(setting.GetSubscriptionItems()) },
+                    { "pacserv",JsonConvert.SerializeObject(setting.GetPacServerSettings() ) },
                     { "servers" ,serverString},
                 };
 
