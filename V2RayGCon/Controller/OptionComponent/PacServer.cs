@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using Newtonsoft.Json;
+using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.OptionComponent
@@ -44,8 +45,17 @@ namespace V2RayGCon.Controller.OptionComponent
         #region public method
         public void Reload(string rawPacServSetting)
         {
-            Properties.Settings.Default.PacServerSettings = rawPacServSetting;
-            Properties.Settings.Default.Save();
+            try
+            {
+                var pacServSetting = JsonConvert
+                    .DeserializeObject<Model.Data.PacServerSettings>(
+                    rawPacServSetting);
+                setting.SavePacServerSettings(pacServSetting);
+            }
+            catch
+            {
+                setting.SavePacServerSettings(new Model.Data.PacServerSettings());
+            }
 
             InitControls();
             if (pacServer.isWebServRunning)

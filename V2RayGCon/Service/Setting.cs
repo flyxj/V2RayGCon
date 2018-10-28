@@ -20,13 +20,25 @@ namespace V2RayGCon.Service
         // Singleton need this private ctor.
         Setting()
         {
-
             userSettings = LoadUserSettings();
             isShutdown = false;
         }
 
         #region Properties
         public bool isShutdown { get; set; }
+
+        public string decodeCache
+        {
+            get
+            {
+                return userSettings.DecodeCache;
+            }
+            set
+            {
+                userSettings.DecodeCache = value;
+                LazySaveUserSettings();
+            }
+        }
 
         public bool isPortable
         {
