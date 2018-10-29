@@ -52,8 +52,6 @@
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.moveToTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
-            this.runSpeedTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.autorunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalImportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,6 +72,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.copyPACBlackListLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyPACWhiteListLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runSpeedTestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.rtboxServerTitle = new System.Windows.Forms.RichTextBox();
             this.ctxMenuStripMore.SuspendLayout();
             this.SuspendLayout();
@@ -211,7 +210,8 @@
             this.deleteToolStripMenuItem,
             this.toolStripMenuItem2,
             this.logOfThisServerToolStripMenuItem,
-            this.setAsSystemProxyToolStripMenuItem});
+            this.setAsSystemProxyToolStripMenuItem,
+            this.runSpeedTestToolStripMenuItem1});
             this.ctxMenuStripMore.Name = "ctxMenuStripMore";
             resources.ApplyResources(this.ctxMenuStripMore, "ctxMenuStripMore");
             // 
@@ -223,9 +223,7 @@
             this.stopToolStripMenuItem1,
             this.toolStripMenuItem5,
             this.moveToTopToolStripMenuItem,
-            this.moveToBottomToolStripMenuItem,
-            this.toolStripMenuItem6,
-            this.runSpeedTestToolStripMenuItem});
+            this.moveToBottomToolStripMenuItem});
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
             // 
@@ -263,17 +261,6 @@
             this.moveToBottomToolStripMenuItem.Name = "moveToBottomToolStripMenuItem";
             resources.ApplyResources(this.moveToBottomToolStripMenuItem, "moveToBottomToolStripMenuItem");
             this.moveToBottomToolStripMenuItem.Click += new System.EventHandler(this.moveToBottomToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            resources.ApplyResources(this.toolStripMenuItem6, "toolStripMenuItem6");
-            // 
-            // runSpeedTestToolStripMenuItem
-            // 
-            this.runSpeedTestToolStripMenuItem.Name = "runSpeedTestToolStripMenuItem";
-            resources.ApplyResources(this.runSpeedTestToolStripMenuItem, "runSpeedTestToolStripMenuItem");
-            this.runSpeedTestToolStripMenuItem.Click += new System.EventHandler(this.runSpeedTestToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -404,6 +391,12 @@
             resources.ApplyResources(this.copyPACWhiteListLinkToolStripMenuItem, "copyPACWhiteListLinkToolStripMenuItem");
             this.copyPACWhiteListLinkToolStripMenuItem.Click += new System.EventHandler(this.copyPACWhiteListLinkToolStripMenuItem_Click);
             // 
+            // runSpeedTestToolStripMenuItem1
+            // 
+            this.runSpeedTestToolStripMenuItem1.Name = "runSpeedTestToolStripMenuItem1";
+            resources.ApplyResources(this.runSpeedTestToolStripMenuItem1, "runSpeedTestToolStripMenuItem1");
+            this.runSpeedTestToolStripMenuItem1.Click += new System.EventHandler(this.runSpeedTestToolStripMenuItem1_Click);
+            // 
             // rtboxServerTitle
             // 
             this.rtboxServerTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -484,12 +477,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem moveToTopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveToBottomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
-        private System.Windows.Forms.ToolStripMenuItem runSpeedTestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem autorunToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem globalImportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipCNWebsiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem untrackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runSpeedTestToolStripMenuItem1;
     }
 }
