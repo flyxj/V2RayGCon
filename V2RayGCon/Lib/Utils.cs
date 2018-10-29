@@ -36,6 +36,11 @@ namespace V2RayGCon.Lib
             return true;
         }
 
+        /// <summary>
+        /// return null if fail
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
         {
             // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri

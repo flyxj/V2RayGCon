@@ -10,16 +10,19 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
+        PacServer pacServer;
 
         Notifier() { }
 
-        public void Run(Setting setting, Servers servers)
+        public void Run(Setting setting, Servers servers, PacServer pacServer)
         {
             this.setting = setting;
             this.servers = servers;
+            this.pacServer = pacServer;
 
             CreateNotifyIcon();
-            servers.OnRequireNotifierUpdate += UpdateNotifierTextHandler;
+            setting.OnRequireNotifyTextUpdate += OnRequireNotifyTextUpdateHandler;
+            pacServer.OnPACServerStatusChanged += OnRequireNotifyTextUpdateHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -28,6 +31,8 @@ namespace V2RayGCon.Service
                     Views.WinForms.FormMain.GetForm();
                 }
             };
+
+            OnRequireNotifyTextUpdateHandler(this, EventArgs.Empty);
         }
 
         #region public method
@@ -42,15 +47,73 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             ni.Visible = false;
-            servers.OnRequireNotifierUpdate -= UpdateNotifierTextHandler;
+            setting.OnRequireNotifyTextUpdate -= OnRequireNotifyTextUpdateHandler;
+            pacServer.OnPACServerStatusChanged -= OnRequireNotifyTextUpdateHandler;
         }
         #endregion
 
         #region private method
-        void UpdateNotifierTextHandler(object sender, Model.Data.StrEvent args)
+        string GetterSysProxyInfo()
+        {
+            var proxy = Lib.Sys.ProxySetter.GetProxySetting();
+            var pacUrl = proxy.autoConfigUrl;
+
+            if (!string.IsNullOrEmpty(pacUrl))
+            {
+
+                var param = Lib.Utils.GetProxyParamsFromUrl(pacUrl);
+                if (param == null)
+                {
+                    return string.Format("{0} {1}",
+                        I18N.PacProxy,
+                        Lib.Utils.CutStr(pacUrl, 32));
+                }
+
+                return string.Format(
+                    "{0} {1}://{2}:{3}",
+                    I18N.PacProxy,
+                    (param.isSocks ? "socks5" : "http"),
+                    param.ip,
+                    param.port.ToString());
+            }
+
+            if (proxy.proxyEnable)
+            {
+                return string.Format(
+                    "{0} http://{1}",
+                    I18N.GlobalProxy,
+                    proxy.proxyServer);
+            }
+
+            return string.Empty;
+        }
+
+        void OnRequireNotifyTextUpdateHandler(object sender, EventArgs args)
+        {
+            var proxyInfo = GetterSysProxyInfo();
+            var servInfo = setting.runningServerSummary;
+            var text = string.Empty;
+
+            if (!string.IsNullOrEmpty(proxyInfo))
+            {
+                text += proxyInfo + Environment.NewLine;
+            }
+
+            if (!string.IsNullOrEmpty(servInfo))
+            {
+                text += servInfo;
+            }
+
+            UpdateNotifyText(text);
+        }
+
+        private void UpdateNotifyText(string rawText)
         {
             // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
-            var text = Lib.Utils.CutStr(args.Data, 127);
+            var text = string.IsNullOrEmpty(rawText) ?
+                I18N.Description :
+                Lib.Utils.CutStr(rawText, 127);
+
             if (ni.Text == text)
             {
                 return;

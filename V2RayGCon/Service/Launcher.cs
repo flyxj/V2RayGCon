@@ -36,7 +36,7 @@ namespace V2RayGCon.Service
             pacServer.Run(setting);
             servers.Run(setting, pacServer, cache);
             cmder.Run(setting, servers, pacServer);
-            notifier.Run(setting, servers);
+            notifier.Run(setting, servers, pacServer);
 
             Application.ApplicationExit +=
                 (s, a) => OnApplicationExitHandler(false);

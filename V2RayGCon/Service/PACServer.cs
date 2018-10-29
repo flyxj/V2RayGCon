@@ -13,7 +13,6 @@ namespace V2RayGCon.Service
     public class PacServer : Model.BaseClass.SingletonService<PacServer>
     {
         Setting setting;
-
         public event EventHandler OnPACServerStatusChanged;
 
         Lib.Nets.SimpleWebServer webServer = null;

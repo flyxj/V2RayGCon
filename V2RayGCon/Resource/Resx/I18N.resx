@@ -465,9 +465,6 @@ Are you sure want to continue?</value>
   <data name="VmessLink" xml:space="preserve">
     <value>vmess:// ...</value>
   </data>
-  <data name="CurSysProxy" xml:space="preserve">
-    <value>Current</value>
-  </data>
   <data name="NotSet" xml:space="preserve">
     <value>not set</value>
   </data>
@@ -634,5 +631,11 @@ Please delete {0} in app folder.</value>
   </data>
   <data name="CreateFolderFail" xml:space="preserve">
     <value>Create folder fail!</value>
+  </data>
+  <data name="GlobalProxy" xml:space="preserve">
+    <value>Global proxy</value>
+  </data>
+  <data name="PacProxy" xml:space="preserve">
+    <value>PAC proxy</value>
   </data>
 </root>

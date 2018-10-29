@@ -456,9 +456,6 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="Copy" xml:space="preserve">
     <value>复制</value>
   </data>
-  <data name="CurSysProxy" xml:space="preserve">
-    <value>当前</value>
-  </data>
   <data name="NotSet" xml:space="preserve">
     <value>未设置</value>
   </data>
@@ -619,5 +616,11 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="CreateFolderFail" xml:space="preserve">
     <value>创建文件夹失败!</value>
+  </data>
+  <data name="GlobalProxy" xml:space="preserve">
+    <value>全局代理</value>
+  </data>
+  <data name="PacProxy" xml:space="preserve">
+    <value>PAC代理</value>
   </data>
 </root>

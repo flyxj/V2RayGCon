@@ -15,16 +15,19 @@ namespace V2RayGCon.Service
     public class Setting : Model.BaseClass.SingletonService<Setting>
     {
         public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler OnRequireNotifyTextUpdate;
         Model.Data.UserSettings userSettings;
 
         // Singleton need this private ctor.
         Setting()
         {
             userSettings = LoadUserSettings();
+            runningServerSummary = string.Empty;
             isShutdown = false;
         }
-
         #region Properties
+        public string runningServerSummary { get; set; }
+
         public bool isShutdown { get; set; }
 
         public string decodeCache
@@ -148,6 +151,15 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        public void InvokeEventIgnoreErrorOnRequireNotifyTextUpdate()
+        {
+            try
+            {
+                OnRequireNotifyTextUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         public void Cleanup()
         {
             lazyGCTimer?.Release();
