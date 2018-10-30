@@ -328,25 +328,7 @@ namespace V2RayGCon.Service
                 return new Tuple<string, string>("Bad request params.", null);
             }
 
-            if (urlParam.isDebug)
-            {
-                return ResponsWithDebugger(urlParam);
-            }
-
             return ResponseWithPacFile(urlParam);
-        }
-
-        private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
-        {
-            var tpl = StrConst.PacDebuggerTpl;
-            var url = GenPacUrl(urlParam);
-            var pacContent = ResponseWithPacFile(urlParam);
-
-            var html = tpl.Replace("__PacServerUrl__", url)
-                .Replace("__PACFileContent__", pacContent.Item1);
-
-            var mime = "text/html; charset=UTF-8";
-            return new Tuple<string, string>(html, mime);
         }
 
         private Tuple<string, string> ResponseWithPacFile(Model.Data.PacUrlParams urlParam)

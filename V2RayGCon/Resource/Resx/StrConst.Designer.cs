@@ -437,35 +437,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 &lt;!DOCTYPE html&gt;
-        ///&lt;html&gt;
-        ///
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
-        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///    &lt;title&gt;Page Title&lt;/title&gt;
-        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-        ///    &lt;script src=&quot;__PacServerUrl__&amp;mime=js&quot;&gt;&lt;/script&gt;
-        ///    &lt;style&gt;
-        ///        .main-wrapper {
-        ///            margin: 8px auto;
-        ///            width: 100%;
-        ///            max-width: 500px;
-        ///        }
-        ///        
-        ///        .inline-block {
-        ///            display: inline-block;
-        ///        }
-        ///        
-        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string PacDebuggerTpl {
-            get {
-                return ResourceManager.GetString("PacDebuggerTpl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 var proxy = &apos;__PROXY__&apos;,
         ///    mode = &apos;__MODE__&apos;,
         ///    domains = { __DOMAINS__ },

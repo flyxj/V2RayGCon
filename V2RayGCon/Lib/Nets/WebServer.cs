@@ -92,12 +92,7 @@ namespace V2RayGCon.Lib.Nets
                     }
                 }
             }
-            catch (HttpListenerException ex)
-            {
-                // listener is stopped 
-                if (ex.NativeErrorCode == 995) return;
-                else throw;
-            }
+            catch { }
         }
         #endregion
     }

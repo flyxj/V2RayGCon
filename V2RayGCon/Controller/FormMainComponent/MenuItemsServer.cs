@@ -23,7 +23,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             // system proxy
             ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem visitCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer,
@@ -65,7 +64,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(copyCurPacUrl, visitCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
+            InitCtrlSysProxy(copyCurPacUrl, clearSysProxy, restartPACServer, stopPACServer);
 
             OnPACServerStatusChangedHandler(this, EventArgs.Empty);
         }
@@ -329,7 +328,6 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         private void InitCtrlSysProxy(
             ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem visitCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
             ToolStripMenuItem restartPACServer,
             ToolStripMenuItem stopPACServer)
@@ -356,18 +354,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 {
                     pacServer.ClearSysProxy();
                 }
-            };
-
-            visitCurPacDebuggerUrl.Click += (s, a) =>
-            {
-                var p = setting.GetSysProxySetting();
-                var url = p.autoConfigUrl;
-                if (string.IsNullOrEmpty(url))
-                {
-                    MessageBox.Show(I18N.SetAnyServerAsPacServerFirst);
-                    return;
-                }
-                Lib.UI.VisitUrl(I18N.VisitPacDebugger, url + "&debug=true");
             };
 
             copyCurPacUrl.Click += (s, a) =>

@@ -112,12 +112,11 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyPACURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.visitPACDebuggerURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.startPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyPACURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemConfigEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemQRCode = new System.Windows.Forms.ToolStripMenuItem();
@@ -664,20 +663,19 @@ namespace V2RayGCon.Views.WinForms
             this.stopPACServerToolStripMenuItem,
             this.toolStripSeparator11,
             this.toolMenuItemClearSysProxy,
-            this.copyPACURLToolStripMenuItem,
-            this.visitPACDebuggerURLToolStripMenuItem});
+            this.copyPACURLToolStripMenuItem});
             this.systemProxyToolStripMenuItem.Name = "systemProxyToolStripMenuItem";
             resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
             // 
-            // copyPACURLToolStripMenuItem
+            // startPACServerToolStripMenuItem
             // 
-            this.copyPACURLToolStripMenuItem.Name = "copyPACURLToolStripMenuItem";
-            resources.ApplyResources(this.copyPACURLToolStripMenuItem, "copyPACURLToolStripMenuItem");
+            this.startPACServerToolStripMenuItem.Name = "startPACServerToolStripMenuItem";
+            resources.ApplyResources(this.startPACServerToolStripMenuItem, "startPACServerToolStripMenuItem");
             // 
-            // visitPACDebuggerURLToolStripMenuItem
+            // stopPACServerToolStripMenuItem
             // 
-            this.visitPACDebuggerURLToolStripMenuItem.Name = "visitPACDebuggerURLToolStripMenuItem";
-            resources.ApplyResources(this.visitPACDebuggerURLToolStripMenuItem, "visitPACDebuggerURLToolStripMenuItem");
+            this.stopPACServerToolStripMenuItem.Name = "stopPACServerToolStripMenuItem";
+            resources.ApplyResources(this.stopPACServerToolStripMenuItem, "stopPACServerToolStripMenuItem");
             // 
             // toolStripSeparator11
             // 
@@ -689,15 +687,10 @@ namespace V2RayGCon.Views.WinForms
             this.toolMenuItemClearSysProxy.Name = "toolMenuItemClearSysProxy";
             resources.ApplyResources(this.toolMenuItemClearSysProxy, "toolMenuItemClearSysProxy");
             // 
-            // startPACServerToolStripMenuItem
+            // copyPACURLToolStripMenuItem
             // 
-            this.startPACServerToolStripMenuItem.Name = "startPACServerToolStripMenuItem";
-            resources.ApplyResources(this.startPACServerToolStripMenuItem, "startPACServerToolStripMenuItem");
-            // 
-            // stopPACServerToolStripMenuItem
-            // 
-            this.stopPACServerToolStripMenuItem.Name = "stopPACServerToolStripMenuItem";
-            resources.ApplyResources(this.stopPACServerToolStripMenuItem, "stopPACServerToolStripMenuItem");
+            this.copyPACURLToolStripMenuItem.Name = "copyPACURLToolStripMenuItem";
+            resources.ApplyResources(this.copyPACURLToolStripMenuItem, "copyPACURLToolStripMenuItem");
             // 
             // windowToolStripMenuItem
             // 
@@ -932,7 +925,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem stopPACServerToolStripMenuItem;
         private ToolStripMenuItem refreshSummaryToolStripMenuItem;
         private ToolStripMenuItem copyPACURLToolStripMenuItem;
-        private ToolStripMenuItem visitPACDebuggerURLToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator11;
     }
 }
