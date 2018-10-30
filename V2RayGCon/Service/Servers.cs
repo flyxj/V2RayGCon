@@ -14,7 +14,6 @@ namespace V2RayGCon.Service
     public class Servers : Model.BaseClass.SingletonService<Servers>
     {
         Setting setting = null;
-        PacServer pacServer = null;
         Cache cache = null;
 
         public event EventHandler
@@ -40,17 +39,15 @@ namespace V2RayGCon.Service
 
         public void Run(
            Setting setting,
-           PacServer pacServer,
            Cache cache)
         {
             this.cache = cache;
             this.setting = setting;
-            this.pacServer = pacServer;
             this.serverList = setting.LoadServerList();
 
             foreach (var server in serverList)
             {
-                server.Run(cache, setting, pacServer, this);
+                server.Run(cache, setting, this);
                 BindEventsTo(server);
             }
         }
@@ -138,21 +135,13 @@ namespace V2RayGCon.Service
             bool isStart)
         {
             var curTrackerSetting = GenCurTrackerSetting(servCtrl.config, isStart);
-            var isGlobal = false;
             curTrackerSetting.curServer = null;
             var proxySetting = setting.GetSysProxySetting();
 
-            switch (PacServer.DetectSystemProxyMode(proxySetting))
+            if (Lib.Sys.ProxySetter.DetectSystemProxyMode(proxySetting) == Model.Data.Enum.SystemProxyMode.None)
             {
-                case Model.Data.Enum.SystemProxyMode.None:
-                    setting.SaveServerTrackerSetting(curTrackerSetting);
-                    return;
-                case Model.Data.Enum.SystemProxyMode.Global:
-                    isGlobal = true;
-                    break;
-                case Model.Data.Enum.SystemProxyMode.PAC:
-                    isGlobal = false;
-                    break;
+                setting.SaveServerTrackerSetting(curTrackerSetting);
+                return;
             }
 
             foreach (var c in curTrackerSetting.serverList)
@@ -164,7 +153,7 @@ namespace V2RayGCon.Service
                     continue;
                 }
 
-                if (serv.BecomeSystemProxy(isGlobal))
+                if (serv.BecomeSystemProxy())
                 {
                     curTrackerSetting.curServer = serv.config;
                     break;
@@ -555,6 +544,14 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public void ClearSysProxy()
+        {
+            var proxy = new Model.Data.ProxyRegKeyValue();
+            setting.SaveSysProxySetting(proxy);
+            Lib.Sys.ProxySetter.SetProxy(proxy);
+            LazyUpdateNotifyTextHandler(this, EventArgs.Empty);
+        }
+
         /*
          * exceptions  
          * test<FormatException> base64 decode fail
@@ -1105,7 +1102,7 @@ namespace V2RayGCon.Service
                 serverList.Add(newServer);
             }
 
-            newServer.Run(cache, setting, pacServer, this);
+            newServer.Run(cache, setting, this);
             BindEventsTo(newServer);
 
             if (!quiet)

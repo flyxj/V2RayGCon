@@ -15,8 +15,6 @@ namespace V2RayGCon.Controller
         [JsonIgnore]
         Service.Cache cache;
         [JsonIgnore]
-        Service.PacServer pacServer;
-        [JsonIgnore]
         Service.Servers servers;
         [JsonIgnore]
         Service.Setting setting;
@@ -67,11 +65,9 @@ namespace V2RayGCon.Controller
         public void Run(
              Service.Cache cache,
              Service.Setting setting,
-             Service.PacServer pacServer,
              Service.Servers servers)
         {
             this.cache = cache;
-            this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
@@ -148,7 +144,20 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public bool BecomeSystemProxy(bool isGlobal)
+        public void SetGlobalProxy(string ip, int port)
+        {
+            var proxy = new Model.Data.ProxyRegKeyValue();
+            proxy.proxyEnable = true;
+            proxy.proxyServer = string.Format(
+                "{0}:{1}",
+                ip == "0.0.0.0" ? "127.0.0.1" : ip,
+                port.ToString());
+            Lib.Sys.ProxySetter.SetProxy(proxy);
+            setting.SaveSysProxySetting(proxy);
+            OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        public bool BecomeSystemProxy()
         {
             var inboundInfo = GetParsedInboundInfo();
             if (inboundInfo == null)
@@ -161,14 +170,14 @@ namespace V2RayGCon.Controller
             var ip = inboundInfo.Item2;
             var port = inboundInfo.Item3;
 
-            if (!IsSuitableForProxy(isGlobal, protocol))
+            if (!IsSuitableForProxy(true, protocol))
             {
                 return false;
             }
 
-            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
-            SendLog(I18N.SetAsSysProxy);
+            SetGlobalProxy(ip, port);
 
+            SendLog(I18N.SetAsSysProxy);
             return true;
         }
 

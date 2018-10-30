@@ -67,11 +67,6 @@
             this.logOfThisServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setAsSystemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pACBlackListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pACWhiteListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.copyPACBlackListLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyPACWhiteListLinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runSpeedTestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.rtboxServerTitle = new System.Windows.Forms.RichTextBox();
             this.ctxMenuStripMore.SuspendLayout();
@@ -347,12 +342,7 @@
             // setAsSystemProxyToolStripMenuItem
             // 
             this.setAsSystemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.globalProxyToolStripMenuItem,
-            this.pACBlackListToolStripMenuItem,
-            this.pACWhiteListToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.copyPACBlackListLinkToolStripMenuItem,
-            this.copyPACWhiteListLinkToolStripMenuItem});
+            this.globalProxyToolStripMenuItem});
             this.setAsSystemProxyToolStripMenuItem.Name = "setAsSystemProxyToolStripMenuItem";
             resources.ApplyResources(this.setAsSystemProxyToolStripMenuItem, "setAsSystemProxyToolStripMenuItem");
             // 
@@ -361,35 +351,6 @@
             this.globalProxyToolStripMenuItem.Name = "globalProxyToolStripMenuItem";
             resources.ApplyResources(this.globalProxyToolStripMenuItem, "globalProxyToolStripMenuItem");
             this.globalProxyToolStripMenuItem.Click += new System.EventHandler(this.globalProxyToolStripMenuItem_Click);
-            // 
-            // pACBlackListToolStripMenuItem
-            // 
-            this.pACBlackListToolStripMenuItem.Name = "pACBlackListToolStripMenuItem";
-            resources.ApplyResources(this.pACBlackListToolStripMenuItem, "pACBlackListToolStripMenuItem");
-            this.pACBlackListToolStripMenuItem.Click += new System.EventHandler(this.pACBlackListToolStripMenuItem_Click);
-            // 
-            // pACWhiteListToolStripMenuItem
-            // 
-            this.pACWhiteListToolStripMenuItem.Name = "pACWhiteListToolStripMenuItem";
-            resources.ApplyResources(this.pACWhiteListToolStripMenuItem, "pACWhiteListToolStripMenuItem");
-            this.pACWhiteListToolStripMenuItem.Click += new System.EventHandler(this.pACWhiteListToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
-            // 
-            // copyPACBlackListLinkToolStripMenuItem
-            // 
-            this.copyPACBlackListLinkToolStripMenuItem.Name = "copyPACBlackListLinkToolStripMenuItem";
-            resources.ApplyResources(this.copyPACBlackListLinkToolStripMenuItem, "copyPACBlackListLinkToolStripMenuItem");
-            this.copyPACBlackListLinkToolStripMenuItem.Click += new System.EventHandler(this.copyPACBlackListLinkToolStripMenuItem_Click);
-            // 
-            // copyPACWhiteListLinkToolStripMenuItem
-            // 
-            this.copyPACWhiteListLinkToolStripMenuItem.Name = "copyPACWhiteListLinkToolStripMenuItem";
-            resources.ApplyResources(this.copyPACWhiteListLinkToolStripMenuItem, "copyPACWhiteListLinkToolStripMenuItem");
-            this.copyPACWhiteListLinkToolStripMenuItem.Click += new System.EventHandler(this.copyPACWhiteListLinkToolStripMenuItem_Click);
             // 
             // runSpeedTestToolStripMenuItem1
             // 
@@ -464,11 +425,6 @@
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnMultiboxing;
         private System.Windows.Forms.ToolStripMenuItem globalProxyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pACBlackListToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pACWhiteListToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem copyPACBlackListLinkToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem copyPACWhiteListLinkToolStripMenuItem;
         private System.Windows.Forms.RichTextBox rtboxServerTitle;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;

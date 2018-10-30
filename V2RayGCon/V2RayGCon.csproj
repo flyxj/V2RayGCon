@@ -117,7 +117,6 @@
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
-    <Compile Include="Controller\OptionComponent\PacServer.cs" />
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\FormOptionCtrl.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\ImportItem.cs" />
     <Compile Include="Service\Launcher.cs" />
-    <Compile Include="Service\PacServer.cs" />
     <Compile Include="Views\UserControls\ImportUI.cs">
       <SubType>UserControl</SubType>
     </Compile>

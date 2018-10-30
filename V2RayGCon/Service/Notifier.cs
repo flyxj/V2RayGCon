@@ -10,19 +10,16 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
-        PacServer pacServer;
 
         Notifier() { }
 
-        public void Run(Setting setting, Servers servers, PacServer pacServer)
+        public void Run(Setting setting, Servers servers)
         {
             this.setting = setting;
             this.servers = servers;
-            this.pacServer = pacServer;
 
             CreateNotifyIcon();
             setting.OnRequireNotifyTextUpdate += OnRequireNotifyTextUpdateHandler;
-            pacServer.OnPACServerStatusChanged += OnRequireNotifyTextUpdateHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -48,7 +45,6 @@ namespace V2RayGCon.Service
         {
             ni.Visible = false;
             setting.OnRequireNotifyTextUpdate -= OnRequireNotifyTextUpdateHandler;
-            pacServer.OnPACServerStatusChanged -= OnRequireNotifyTextUpdateHandler;
         }
         #endregion
 

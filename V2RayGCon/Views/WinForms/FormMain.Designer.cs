@@ -112,11 +112,7 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopPACServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolMenuItemClearSysProxy = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyPACURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemConfigEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMenuItemQRCode = new System.Windows.Forms.ToolStripMenuItem();
@@ -659,38 +655,14 @@ namespace V2RayGCon.Views.WinForms
             // systemProxyToolStripMenuItem
             // 
             this.systemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startPACServerToolStripMenuItem,
-            this.stopPACServerToolStripMenuItem,
-            this.toolStripSeparator11,
-            this.toolMenuItemClearSysProxy,
-            this.copyPACURLToolStripMenuItem});
+            this.toolMenuItemClearSysProxy});
             this.systemProxyToolStripMenuItem.Name = "systemProxyToolStripMenuItem";
             resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
-            // 
-            // startPACServerToolStripMenuItem
-            // 
-            this.startPACServerToolStripMenuItem.Name = "startPACServerToolStripMenuItem";
-            resources.ApplyResources(this.startPACServerToolStripMenuItem, "startPACServerToolStripMenuItem");
-            // 
-            // stopPACServerToolStripMenuItem
-            // 
-            this.stopPACServerToolStripMenuItem.Name = "stopPACServerToolStripMenuItem";
-            resources.ApplyResources(this.stopPACServerToolStripMenuItem, "stopPACServerToolStripMenuItem");
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
             // 
             // toolMenuItemClearSysProxy
             // 
             this.toolMenuItemClearSysProxy.Name = "toolMenuItemClearSysProxy";
             resources.ApplyResources(this.toolMenuItemClearSysProxy, "toolMenuItemClearSysProxy");
-            // 
-            // copyPACURLToolStripMenuItem
-            // 
-            this.copyPACURLToolStripMenuItem.Name = "copyPACURLToolStripMenuItem";
-            resources.ApplyResources(this.copyPACURLToolStripMenuItem, "copyPACURLToolStripMenuItem");
             // 
             // windowToolStripMenuItem
             // 
@@ -921,10 +893,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem selectNoMarkAllServersToolStripMenuItem;
         private ToolStripMenuItem selectAutorunAllServersToolStripMenuItem;
         private ToolStripMenuItem selectRunningAllServersToolStripMenuItem;
-        private ToolStripMenuItem startPACServerToolStripMenuItem;
-        private ToolStripMenuItem stopPACServerToolStripMenuItem;
         private ToolStripMenuItem refreshSummaryToolStripMenuItem;
-        private ToolStripMenuItem copyPACURLToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator11;
     }
 }

@@ -31,6 +31,21 @@ namespace V2RayGCon.Lib.Sys
         #endregion
 
         #region public method
+        public static Model.Data.Enum.SystemProxyMode DetectSystemProxyMode(Model.Data.ProxyRegKeyValue proxySetting)
+        {
+            if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
+            {
+                return Model.Data.Enum.SystemProxyMode.PAC;
+            }
+
+            if (proxySetting.proxyEnable)
+            {
+                return Model.Data.Enum.SystemProxyMode.Global;
+            }
+
+            return Model.Data.Enum.SystemProxyMode.None;
+        }
+
         public static Model.Data.ProxyRegKeyValue GetProxySetting()
         {
             var proxy = new Model.Data.ProxyRegKeyValue();

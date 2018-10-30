@@ -596,7 +596,7 @@
     <value>152, 17</value>
   </metadata>
   <data name="startToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="startToolStripMenuItem.Text" xml:space="preserve">
     <value>Start</value>
@@ -605,7 +605,7 @@
     <value>Stop all running servers and start this server.</value>
   </data>
   <data name="multiboxingToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="multiboxingToolStripMenuItem1.Text" xml:space="preserve">
     <value>Multiboxing</value>
@@ -614,7 +614,7 @@
     <value>Start this server along with other started server. Inbound port should not duplicate.</value>
   </data>
   <data name="stopToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="stopToolStripMenuItem1.Text" xml:space="preserve">
     <value>Stop</value>
@@ -623,16 +623,16 @@
     <value>Stop this server.</value>
   </data>
   <data name="toolStripMenuItem5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>230, 6</value>
+    <value>249, 6</value>
   </data>
   <data name="moveToTopToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="moveToTopToolStripMenuItem.Text" xml:space="preserve">
     <value>Move to top</value>
   </data>
   <data name="moveToBottomToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="moveToBottomToolStripMenuItem.Text" xml:space="preserve">
     <value>Move to bottom</value>
@@ -644,7 +644,7 @@
     <value>Action</value>
   </data>
   <data name="autorunToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="autorunToolStripMenuItem.Text" xml:space="preserve">
     <value>Autorun</value>
@@ -653,7 +653,7 @@
     <value>Start this server along with this software.</value>
   </data>
   <data name="globalImportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="globalImportToolStripMenuItem.Text" xml:space="preserve">
     <value>Global import</value>
@@ -662,7 +662,7 @@
     <value>Inject global import when this server start.</value>
   </data>
   <data name="skipCNWebsiteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="skipCNWebsiteToolStripMenuItem.Text" xml:space="preserve">
     <value>Skip CN website</value>
@@ -671,7 +671,7 @@
     <value>Do not proxy CN website. For beginners only. Advanced users please edit section routing.</value>
   </data>
   <data name="untrackToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="untrackToolStripMenuItem.Text" xml:space="preserve">
     <value>Untrack</value>
@@ -689,7 +689,7 @@
     <value>223, 6</value>
   </data>
   <data name="vmessToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="vmessToolStripMenuItem.Text" xml:space="preserve">
     <value>vmess:// ...</value>
@@ -698,7 +698,7 @@
     <value>Contain main config information.</value>
   </data>
   <data name="v2rayToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="v2rayToolStripMenuItem.Text" xml:space="preserve">
     <value>v2ray:// ...</value>
@@ -734,46 +734,13 @@
     <value>Log of this server</value>
   </data>
   <data name="globalProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>296, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="globalProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>Global proxy</value>
   </data>
   <data name="globalProxyToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Mode must be HTTP.</value>
-  </data>
-  <data name="pACBlackListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>296, 30</value>
-  </data>
-  <data name="pACBlackListToolStripMenuItem.Text" xml:space="preserve">
-    <value>PAC black list</value>
-  </data>
-  <data name="pACBlackListToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Mode can not be Config.</value>
-  </data>
-  <data name="pACWhiteListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>296, 30</value>
-  </data>
-  <data name="pACWhiteListToolStripMenuItem.Text" xml:space="preserve">
-    <value>PAC white list</value>
-  </data>
-  <data name="pACWhiteListToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Mode can not be Config.</value>
-  </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>293, 6</value>
-  </data>
-  <data name="copyPACBlackListLinkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>296, 30</value>
-  </data>
-  <data name="copyPACBlackListLinkToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy PAC black list link</value>
-  </data>
-  <data name="copyPACWhiteListLinkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>296, 30</value>
-  </data>
-  <data name="copyPACWhiteListLinkToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy PAC white list link</value>
   </data>
   <data name="setAsSystemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>226, 28</value>
@@ -839,7 +806,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>616, 84</value>
+    <value>618, 86</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Drag and drop to adjust order.</value>
@@ -980,36 +947,6 @@
     <value>globalProxyToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;globalProxyToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pACBlackListToolStripMenuItem.Name" xml:space="preserve">
-    <value>pACBlackListToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;pACBlackListToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pACWhiteListToolStripMenuItem.Name" xml:space="preserve">
-    <value>pACWhiteListToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;pACWhiteListToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
-    <value>toolStripSeparator2</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;copyPACBlackListLinkToolStripMenuItem.Name" xml:space="preserve">
-    <value>copyPACBlackListLinkToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;copyPACBlackListLinkToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;copyPACWhiteListLinkToolStripMenuItem.Name" xml:space="preserve">
-    <value>copyPACWhiteListLinkToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;copyPACWhiteListLinkToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;runSpeedTestToolStripMenuItem1.Name" xml:space="preserve">
