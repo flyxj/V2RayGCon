@@ -54,7 +54,7 @@
 
 <body>
     <div class="main-wrapper">
-        <br/>
+        <br />
         <div class="title">PAC debugger</div>
         <div>
             <div class="inline-block tag">Keyword:</div>
@@ -67,69 +67,30 @@
         <div>
             <div class="inline-block tag">URL:</div>
             <div class="inline-block content">
-                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input" onchange="Search();" onClick="this.select();">
+                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input"
+                    onchange="Search();" onClick="this.select();">
             </div>
         </div>
-        <div><br/></div>
+        <div><br /></div>
         <div class="download">
             <a target="_blank" href="__PacServerUrl__&mime=js">View PAC source code</a>
         </div>
         <div class="download">
             <a target="_blank" href="__PacServerUrl__&mime=js" download="pac.txt">Download PAC file</a>
         </div>
-        <br/>
-        <div class="title">Cmd debugger</div>
-        <div>
-            <div class="inline-block tag">Cmd:</div>
-            <div class="inline-block content">
-                <input class="inline-block fill searcher" placeholder="ShowAllCmd <Enter>" type="text" id="cmd" onchange="SendPost();" onClick="this.select();">
-            </div>
-            <div class="inline-block tag">Param:</div>
-            <div class="inline-block content">
-                <input class="inline-block fill searcher" placeholder="" type="text" id="param" onchange="SendPost();" onClick="this.select();">
-            </div>
-            <div class="inline-block tag">Response:</div>
-            <div class="inline-block content"><span id="response"></span></div>
-        </div>
+        <br />
     </div>
 
     <script>
-        var urlReq = "__PacPrefixUrl__";
-
-        var isPlainHostName = isPlainHostName || function(c) {
+        var isPlainHostName = isPlainHostName || function (c) {
             return c.indexOf(".") < 0;
         };
 
         var output = document.getElementById("output");
         var input = document.getElementById("input");
         var keyword = document.getElementById("keyword");
-        var cmd = document.getElementById("cmd");
-        var param = document.getElementById("param");
-        var response = document.getElementById("response");
 
-        var post = function(req) {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", urlReq, true);
-            xmlhttp.setRequestHeader("Content-type", "text/plain");
-            xmlhttp.send(JSON.stringify(req));
-            xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    response.innerHTML = xmlhttp.responseText;
-                }
-            }
-        };
-
-        var SendPost = function() {
-            var c = cmd.value;
-            var p = param.value;
-
-            post({
-                "cmd": c,
-                "param": p
-            });
-        };
-
-        var Search = function() {
+        var Search = function () {
             var kw = input.value;
             try {
                 var result = FindProxyForURL("", kw);
@@ -140,7 +101,7 @@
             keyword.innerHTML = kw;
         };
 
-        (function() {
+        (function () {
             input.value = "google.com";
             Search();
         })();
