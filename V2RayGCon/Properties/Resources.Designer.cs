@@ -265,7 +265,7 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
-        ///   查找类似 1.1.1.5 的本地化字符串。
+        ///   查找类似 1.1.1.6 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {

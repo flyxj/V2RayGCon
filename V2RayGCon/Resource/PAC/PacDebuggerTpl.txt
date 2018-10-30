@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="__PacServerUrl__&mime=js"></script>
+    <script >__PACFileContent__</script>
     <style>
         .main-wrapper {
             margin: 8px auto;
@@ -73,10 +73,7 @@
         </div>
         <div><br /></div>
         <div class="download">
-            <a target="_blank" href="__PacServerUrl__&mime=js">View PAC source code</a>
-        </div>
-        <div class="download">
-            <a target="_blank" href="__PacServerUrl__&mime=js" download="pac.txt">Download PAC file</a>
+            <a target="_blank" href="__PacServerUrl__">Download PAC file</a>
         </div>
         <br />
     </div>

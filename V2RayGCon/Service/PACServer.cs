@@ -333,28 +333,18 @@ namespace V2RayGCon.Service
                 return ResponsWithDebugger(urlParam);
             }
 
-            if (urlParam.mime == "js")
-            {
-                return ResponseWithJsFile(urlParam);
-            }
-
             return ResponseWithPacFile(urlParam);
-        }
-
-        private Tuple<string, string> ResponseWithJsFile(Model.Data.PacUrlParams urlParam)
-        {
-            var response = ResponseWithPacFile(urlParam);
-            var mime = "application/javascript";
-            return new Tuple<string, string>(response.Item1, mime);
         }
 
         private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
         {
             var tpl = StrConst.PacDebuggerTpl;
             var url = GenPacUrl(urlParam);
-            var prefix = url.Split('?')[0];
+            var pacContent = ResponseWithPacFile(urlParam);
+
             var html = tpl.Replace("__PacServerUrl__", url)
-                .Replace("__PacPrefixUrl__", prefix);
+                .Replace("__PACFileContent__", pacContent.Item1);
+
             var mime = "text/html; charset=UTF-8";
             return new Tuple<string, string>(html, mime);
         }
