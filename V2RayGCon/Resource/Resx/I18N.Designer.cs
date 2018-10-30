@@ -451,15 +451,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Current 的本地化字符串。
-        /// </summary>
-        internal static string CurSysProxy {
-            get {
-                return ResourceManager.GetString("CurSysProxy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Data too big. Please trim down the config file. 的本地化字符串。
         /// </summary>
         internal static string DataTooBig {
@@ -794,6 +785,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Global proxy 的本地化字符串。
+        /// </summary>
+        internal static string GlobalProxy {
+            get {
+                return ResourceManager.GetString("GlobalProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Global proxy require http server! 的本地化字符串。
         /// </summary>
         internal static string GlobalProxyRequireHttpServer {
@@ -1062,6 +1062,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PackageSuccess {
             get {
                 return ResourceManager.GetString("PackageSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PAC proxy 的本地化字符串。
+        /// </summary>
+        internal static string PacProxy {
+            get {
+                return ResourceManager.GetString("PacProxy", resourceCulture);
             }
         }
         

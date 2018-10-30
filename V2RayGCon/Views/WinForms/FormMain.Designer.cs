@@ -112,7 +112,6 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemDeleteAllServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDeleteSelectedServers = new System.Windows.Forms.ToolStripMenuItem();
             this.systemProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolMenuItemCurrentSysProxy = new System.Windows.Forms.ToolStripMenuItem();
             this.copyPACURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitPACDebuggerURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
@@ -661,20 +660,14 @@ namespace V2RayGCon.Views.WinForms
             // systemProxyToolStripMenuItem
             // 
             this.systemProxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolMenuItemCurrentSysProxy,
-            this.copyPACURLToolStripMenuItem,
-            this.visitPACDebuggerURLToolStripMenuItem,
+            this.startPACServerToolStripMenuItem,
+            this.stopPACServerToolStripMenuItem,
             this.toolStripSeparator11,
             this.toolMenuItemClearSysProxy,
-            this.startPACServerToolStripMenuItem,
-            this.stopPACServerToolStripMenuItem});
+            this.copyPACURLToolStripMenuItem,
+            this.visitPACDebuggerURLToolStripMenuItem});
             this.systemProxyToolStripMenuItem.Name = "systemProxyToolStripMenuItem";
             resources.ApplyResources(this.systemProxyToolStripMenuItem, "systemProxyToolStripMenuItem");
-            // 
-            // toolMenuItemCurrentSysProxy
-            // 
-            resources.ApplyResources(this.toolMenuItemCurrentSysProxy, "toolMenuItemCurrentSysProxy");
-            this.toolMenuItemCurrentSysProxy.Name = "toolMenuItemCurrentSysProxy";
             // 
             // copyPACURLToolStripMenuItem
             // 
@@ -862,7 +855,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem toolStripMenuItemRestartSelected;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem systemProxyToolStripMenuItem;
-        private ToolStripMenuItem toolMenuItemCurrentSysProxy;
         private ToolStripMenuItem toolMenuItemClearSysProxy;
         private ToolStripMenuItem toolStripMenuItemSpeedTestOnSelected;
         private ToolStripMenuItem toolStripMenuItemDeleteServers;

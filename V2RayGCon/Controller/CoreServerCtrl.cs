@@ -59,7 +59,7 @@ namespace V2RayGCon.Controller
             config = string.Empty;
             speedTestResult = -1;
 
-            overwriteInboundType = 0;
+            overwriteInboundType = 1;
             inboundIP = "127.0.0.1";
             inboundPort = 1080;
         }

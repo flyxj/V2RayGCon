@@ -13,7 +13,6 @@ namespace V2RayGCon.Service
     public class PacServer : Model.BaseClass.SingletonService<PacServer>
     {
         Setting setting;
-
         public event EventHandler OnPACServerStatusChanged;
 
         Lib.Nets.SimpleWebServer webServer = null;
@@ -22,7 +21,6 @@ namespace V2RayGCon.Service
         Dictionary<bool, string[]> defaultPacCache = null;
         string customPacCache = string.Empty;
         FileSystemWatcher customPacFileWatcher = null;
-        Func<HttpListenerRequest, string> postRequestHandler = null;
 
         PacServer() { }
 
@@ -251,14 +249,8 @@ namespace V2RayGCon.Service
             // Debug.WriteLine("content: " + customPacCache);
         }
 
-        public void RegistPostRequestHandler(Func<HttpListenerRequest, string> handler)
-        {
-            this.postRequestHandler = handler;
-        }
-
         public void Cleanup()
         {
-            postRequestHandler = null;
             StopPacServer();
             lazyCustomPacFileCacheUpdateTimer?.Release();
         }
@@ -329,12 +321,6 @@ namespace V2RayGCon.Service
 
         Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
-            if (request.HttpMethod.ToLower() == "post")
-            {
-                var result = postRequestHandler?.Invoke(request);
-                return new Tuple<string, string>(result ?? "no handler", "application/json");
-            }
-
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
             var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri);
             if (urlParam == null)

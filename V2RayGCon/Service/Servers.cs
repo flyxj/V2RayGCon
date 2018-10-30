@@ -17,9 +17,6 @@ namespace V2RayGCon.Service
         PacServer pacServer = null;
         Cache cache = null;
 
-        public event EventHandler<Model.Data.StrEvent>
-            OnRequireNotifierUpdate;
-
         public event EventHandler
             OnRequireMenuUpdate,
             OnRequireStatusBarUpdate,
@@ -442,15 +439,6 @@ namespace V2RayGCon.Service
             lazyUpdateNotifyTextTimer.Start();
         }
 
-        void InvokeEventOnRequireNotifierUpdate(string text)
-        {
-            try
-            {
-                OnRequireNotifierUpdate?.Invoke(this, new Model.Data.StrEvent(text));
-            }
-            catch { }
-        }
-
         void UpdateNotifierText()
         {
             var list = serverList
@@ -460,12 +448,13 @@ namespace V2RayGCon.Service
 
             var count = list.Count;
 
-            if (count <= 0 || count > 3)
+            if (count <= 0 || count > 2)
             {
-                InvokeEventOnRequireNotifierUpdate(
-                    count <= 0 ?
+                setting.runningServerSummary = count <= 0 ?
                     I18N.Description :
-                    count.ToString() + I18N.ServersAreRunning);
+                    count.ToString() + I18N.ServersAreRunning;
+
+                setting.InvokeEventIgnoreErrorOnRequireNotifyTextUpdate();
                 return;
             }
 
@@ -473,8 +462,8 @@ namespace V2RayGCon.Service
 
             Action done = () =>
             {
-                InvokeEventOnRequireNotifierUpdate(
-                    string.Join(Environment.NewLine, texts));
+                setting.runningServerSummary = string.Join(Environment.NewLine, texts);
+                setting.InvokeEventIgnoreErrorOnRequireNotifyTextUpdate();
             };
 
             Action<int, Action> worker = (index, next) =>

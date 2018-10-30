@@ -22,7 +22,6 @@ namespace V2RayGCon.Service
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
-            var cmder = Cmder.Instance;
 
             setting = Setting.Instance;
             pacServer = PacServer.Instance;
@@ -35,8 +34,7 @@ namespace V2RayGCon.Service
             cache.Run(setting);
             pacServer.Run(setting);
             servers.Run(setting, pacServer, cache);
-            cmder.Run(setting, servers, pacServer);
-            notifier.Run(setting, servers);
+            notifier.Run(setting, servers, pacServer);
 
             Application.ApplicationExit +=
                 (s, a) => OnApplicationExitHandler(false);

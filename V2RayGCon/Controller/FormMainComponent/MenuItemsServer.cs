@@ -14,7 +14,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         Service.PacServer pacServer;
         Service.Setting setting;
 
-        ToolStripMenuItem restartPACServer, stopPACServer, curSysProxySummary;
+        ToolStripMenuItem restartPACServer, stopPACServer;
         MenuStrip menuContainer;
 
         public MenuItemsServer(
@@ -22,7 +22,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             MenuStrip menuContainer,
 
             // system proxy
-            ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem copyCurPacUrl,
             ToolStripMenuItem visitCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
@@ -66,7 +65,9 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, visitCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
+            InitCtrlSysProxy(copyCurPacUrl, visitCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
+
+            OnPACServerStatusChangedHandler(this, EventArgs.Empty);
         }
 
         #region public method
@@ -82,25 +83,15 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        string GenCurSysProxySettingString()
+        void OnPACServerStatusChangedHandler(object sender, EventArgs args)
         {
-            var strCurProxy = I18N.CurSysProxy;
-            var proxy = Lib.Sys.ProxySetter.GetProxySetting();
+            var isRunning = pacServer.isWebServRunning;
 
-            if (!string.IsNullOrEmpty(proxy.autoConfigUrl))
+            this.menuContainer?.Invoke((MethodInvoker)delegate
             {
-                return string.Format("{0} {1}", strCurProxy, proxy.autoConfigUrl);
-            }
-
-            if (proxy.proxyEnable)
-            {
-                return string.Format(
-                    "{0} http://{1}",
-                    strCurProxy,
-                    proxy.proxyServer);
-            }
-
-            return string.Format("{0}:{1}", strCurProxy, I18N.NotSet);
+                this.restartPACServer.Checked = isRunning;
+                this.stopPACServer.Checked = !isRunning;
+            });
         }
 
         EventHandler GenSelectedServerHandler(Action lambda)
@@ -336,23 +327,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        void OnPACServerStatusChangedHandler(object sender, EventArgs args)
-        {
-            var isRunning = pacServer.isWebServRunning;
-            var curSetting = GenCurSysProxySettingString();
-
-            this.menuContainer?.Invoke((MethodInvoker)delegate
-            {
-                this.curSysProxySummary.Text =
-                Lib.Utils.CutStr(curSetting, 32);
-                this.restartPACServer.Checked = isRunning;
-                this.stopPACServer.Checked = !isRunning;
-
-            });
-        }
-
         private void InitCtrlSysProxy(
-            ToolStripMenuItem curSysProxySummary,
             ToolStripMenuItem copyCurPacUrl,
             ToolStripMenuItem visitCurPacDebuggerUrl,
             ToolStripMenuItem clearSysProxy,
@@ -361,10 +336,6 @@ namespace V2RayGCon.Controller.FormMainComponent
         {
             this.restartPACServer = restartPACServer;
             this.stopPACServer = stopPACServer;
-            this.curSysProxySummary = curSysProxySummary;
-
-            // refresh check status
-            OnPACServerStatusChangedHandler(this, EventArgs.Empty);
 
             pacServer.OnPACServerStatusChanged += OnPACServerStatusChangedHandler;
 
