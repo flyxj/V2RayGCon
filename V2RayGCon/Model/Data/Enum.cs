@@ -3,6 +3,18 @@
     public class Enum
     {
         /// <summary>
+        /// Determine if the two ranges overlap
+        /// </summary>
+        public enum Overlaps
+        {
+            None,
+            All,
+            Left,
+            Middle,
+            Right,
+        }
+
+        /// <summary>
         /// None,PAC,Global
         /// </summary>
         public enum SystemProxyMode

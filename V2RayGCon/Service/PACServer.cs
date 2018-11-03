@@ -401,6 +401,7 @@ namespace V2RayGCon.Service
                             "SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT" :
                             "PROXY {0}:{1}; DIRECT";
             var mode = urlParam.isWhiteList ? "white" : "black";
+
             var domainAndCidrs = GenDomainAndCidrContent(
                 urlParam.isWhiteList,
                 customWhiteList,
@@ -423,6 +424,7 @@ namespace V2RayGCon.Service
                 new char[] { '\n', '\r' },
                 StringSplitOptions.RemoveEmptyEntries);
 
+            var isRemove = false;
             foreach (var line in list)
             {
                 var item = line.Trim();
@@ -433,23 +435,76 @@ namespace V2RayGCon.Service
                     continue;
                 }
 
-                if (Lib.Utils.IsIP(item))
+                isRemove = false;
+                if (item.StartsWith("-"))
                 {
-                    var v = Lib.Utils.IP2Long(item);
-                    cidrList.Add(new long[] { v, v });
-                    continue;
+                    isRemove = true;
+                    item = item.Substring(1);
                 }
+                ParseCustomPacSettings(ref domainList, ref cidrList, item, isRemove);
+            }
+        }
 
-                if (Lib.Utils.IsCidr(item))
-                {
-                    cidrList.Add(Lib.Utils.Cidr2RangeArray(item));
-                    continue;
-                }
+        void ModifyCidrList(ref List<long[]> cidrList, long[] range, bool isRemove)
+        {
+            if (!isRemove)
+            {
+                cidrList.Add(range);
+                return;
+            }
 
-                if (!domainList.Contains(item))
+            // 跑两次少写点代码
+            cidrList.RemoveAll(e => Lib.Utils.Overlaps(e, range) == Model.Data.Enum.Overlaps.All);
+
+            for (int i = 0; i < cidrList.Count; i++)
+            {
+                var element = cidrList[i];
+                switch (Lib.Utils.Overlaps(element, range))
                 {
-                    domainList.Add(item);
+                    case Model.Data.Enum.Overlaps.Left:
+                        element[0] = range[1] + 1;
+                        break;
+                    case Model.Data.Enum.Overlaps.Right:
+                        element[1] = range[0] - 1;
+                        break;
+                    case Model.Data.Enum.Overlaps.Middle:
+                        cidrList.Add(new long[] { range[1] + 1, element[1] });
+                        element[1] = range[0] - 1;
+                        break;
+                    default:
+                        break;
                 }
+            }
+        }
+
+        void ParseCustomPacSettings(
+            ref List<string> domainList,
+            ref List<long[]> cidrList,
+            string item,
+            bool isRemove)
+        {
+            if (Lib.Utils.IsIP(item))
+            {
+                var v = Lib.Utils.IP2Long(item);
+                ModifyCidrList(ref cidrList, new long[] { v, v }, isRemove);
+                return;
+            }
+
+            if (Lib.Utils.IsCidr(item))
+            {
+                ModifyCidrList(ref cidrList, Lib.Utils.Cidr2RangeArray(item), isRemove);
+                return;
+            }
+
+            if (isRemove)
+            {
+                domainList.RemoveAll(e => e == item);
+                return;
+            }
+
+            if (!domainList.Contains(item))
+            {
+                domainList.Add(item);
             }
         }
 

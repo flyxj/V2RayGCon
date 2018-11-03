@@ -13,6 +13,24 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow(1, 1, 3, 3, Model.Data.Enum.Overlaps.None)]
+        [DataRow(1, 3, 2, 3, Model.Data.Enum.Overlaps.Right)]
+        [DataRow(1, 3, 0, 2, Model.Data.Enum.Overlaps.Left)]
+        [DataRow(-1, 1, 2, 10, Model.Data.Enum.Overlaps.None)]
+        [DataRow(3, 4, -1, 1, Model.Data.Enum.Overlaps.None)]
+        [DataRow(1, 1, 1, 1, Model.Data.Enum.Overlaps.All)]
+        [DataRow(-10, -1, -5, -3, Model.Data.Enum.Overlaps.Middle)]
+        [DataRow(1, 4, 3, 3, Model.Data.Enum.Overlaps.Middle)]
+        [DataRow(1, 2, 3, 4, Model.Data.Enum.Overlaps.None)]
+        public void OverlapsTest(long aStart, long aEnd, long bStart, long bEnd, Model.Data.Enum.Overlaps expect)
+        {
+            var a = new long[] { aStart, aEnd };
+            var b = new long[] { bStart, bEnd };
+            var result = Lib.Utils.Overlaps(a, b);
+            Assert.AreEqual(expect, result);
+        }
+
+        [DataTestMethod]
         [DataRow(0.1, 0.2, false)]
         [DataRow(0.000000001, 0.00000002, true)]
         [DataRow(0.001, 0.002, false)]

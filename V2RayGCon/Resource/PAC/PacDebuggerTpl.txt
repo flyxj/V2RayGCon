@@ -67,8 +67,15 @@
         <div>
             <div class="inline-block tag">URL:</div>
             <div class="inline-block content">
-                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="input"
-                    onchange="Search();" onClick="this.select();">
+                <input class="inline-block fill searcher" placeholder="google.com <Enter>" type="text" id="inUrl"
+                    onchange="SearchUrl();" onClick="this.select();">
+            </div>
+        </div>
+        <div>
+            <div class="inline-block tag">IP:</div>
+            <div class="inline-block content">
+                <input class="inline-block fill searcher" placeholder="192.168.1.1 <Enter>" type="text" id="inIp"
+                    onchange="SearchIp();" onClick="this.select();">
             </div>
         </div>
         <div><br /></div>
@@ -84,11 +91,12 @@
         };
 
         var output = document.getElementById("output");
-        var input = document.getElementById("input");
+        var inUrl = document.getElementById("inUrl");
+        var inIp=document.getElementById("inIp");
         var keyword = document.getElementById("keyword");
 
-        var Search = function () {
-            var kw = input.value;
+        var SearchUrl = function () {
+            var kw = inUrl.value;
             try {
                 var result = FindProxyForURL("", kw);
                 output.innerHTML = result;
@@ -98,9 +106,40 @@
             keyword.innerHTML = kw;
         };
 
+        var SearchIp=function(){
+            var kw=inIp.value;
+            keyword.innerHTML=kw;
+
+            try{
+                for (var m = ip2decimal(kw), n = 0, a = cidrs.length; !(a < n + 1);) {
+                    var i = Math.floor(n + (a - n) / 2);
+
+                    // found
+                    if (m >= cidrs[i][0] && m <= cidrs[i][1]) {
+                        if ("white" == mode) {
+                            output.innerHTML="DIRECT";
+                        }else{
+                            output.innerHTML=proxy;
+                        }
+                        return;
+                    } else m < cidrs[i][0] ? a = i : n = i + 1
+                }
+            }catch(err){
+                output.innerHTML = err;
+                return;
+            }
+
+            // not found
+            if ("white" == mode) {
+                output.innerHTML=proxy;
+            }else{
+                output.innerHTML="DIRECT";
+            }
+        };
+
         (function () {
-            input.value = "google.com";
-            Search();
+            inUrl.value = "google.com";
+            SearchUrl();
         })();
     </script>
 </body>
