@@ -246,45 +246,55 @@ namespace V2RayGCon.Views.WinForms
                     cboxEnvName,
                     tboxEnvValue,
                     btnInsertEnv))
+
                 .Plug(new Controller.ConfigerComponet.Editor(
                     panelScintilla,
                     cboxConfigSection,
                     cboxExamples,
                     btnFormat,
                     btnClearModify))
+
                 .Plug(new Controller.ConfigerComponet.Vmess(
                     tboxVMessID,
                     tboxVMessLevel,
                     tboxVMessAid,
                     tboxVMessIPaddr,
                     rbtnIsServerMode,
+                    chkIsV4,
                     btnVMessGenUUID,
                     btnVMessInsertClient))
+
                 .Plug(new Controller.ConfigerComponet.VGC(
                     tboxVGCAlias,
                     tboxVGCDesc,
                     btnInsertVGC))
+
                 .Plug(new Controller.ConfigerComponet.StreamSettings(
                     cboxStreamType,
                     cboxStreamParam,
                     rbtnIsServerMode,
+                    chkIsV4,
                     btnInsertStream,
                     chkStreamUseTls,
                     chkStreamUseSockopt))
+
                 .Plug(new Controller.ConfigerComponet.Shadowsocks(
                     rbtnIsServerMode,
+                    chkIsV4,
                     tboxSSAddr,
                     tboxSSPassword,
                     chkSSIsShowPassword,
                     cboxSSMethod,
                     chkSSIsUseOTA,
                     btnInsertSSSettings))
+
                 .Plug(new Controller.ConfigerComponet.Import(
                     panelExpandConfig,
                     cboxGlobalImport,
                     btnExpandImport,
                     btnImportClearCache,
                     btnCopyExpansedConfig))
+
                 .Plug(new Controller.ConfigerComponet.Quick(
                     btnQConSkipCN,
                     btnQConMTProto));

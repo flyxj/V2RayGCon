@@ -159,6 +159,39 @@
   <data name="tabCtrlToolPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="chkIsV4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkIsV4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>512, 15</value>
+  </data>
+  <data name="chkIsV4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 22</value>
+  </data>
+  <data name="chkIsV4.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="chkIsV4.Text" xml:space="preserve">
+    <value>v4</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>75, 19</value>
+  </metadata>
+  <data name="chkIsV4.ToolTip" xml:space="preserve">
+    <value>V2Ray 4.0+</value>
+  </data>
+  <data name="&gt;&gt;chkIsV4.Name" xml:space="preserve">
+    <value>chkIsV4</value>
+  </data>
+  <data name="&gt;&gt;chkIsV4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkIsV4.Parent" xml:space="preserve">
+    <value>tabPageProtocol</value>
+  </data>
+  <data name="&gt;&gt;chkIsV4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="radioButton1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -190,7 +223,7 @@
     <value>tabPageProtocol</value>
   </data>
   <data name="&gt;&gt;radioButton1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnInsertSSSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>477, 28</value>
@@ -240,9 +273,6 @@
   <data name="chkSSIsShowPassword.Text" xml:space="preserve">
     <value>Show</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>75, 19</value>
-  </metadata>
   <data name="chkSSIsShowPassword.ToolTip" xml:space="preserve">
     <value>Show password.</value>
   </data>
@@ -490,7 +520,7 @@
     <value>tabPageProtocol</value>
   </data>
   <data name="&gt;&gt;groupBox10.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rbtnIsServerMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -523,7 +553,7 @@
     <value>tabPageProtocol</value>
   </data>
   <data name="&gt;&gt;rbtnIsServerMode.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="chkStreamUseSockopt.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -763,7 +793,7 @@
     <value>tabPageProtocol</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btnVMessInsertClient.Location" type="System.Drawing.Point, System.Drawing">
     <value>477, 28</value>
@@ -1078,7 +1108,7 @@
     <value>tabPageProtocol</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="tabPageProtocol.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 4</value>

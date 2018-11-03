@@ -110,17 +110,20 @@
     }
   },
   "ssClient": {
-    "servers": [
-      {
-        "email": "love@v2ray.com",
-        "address": "127.0.0.1",
-        "port": 1234,
-        "method": "aes-256-gcm",
-        "password": "pass",
-        "ota": false,
-        "level": 0
-      }
-    ]
+    "protocol": "shadowsocks",
+    "settings": {
+      "servers": [
+        {
+          "email": "love@v2ray.com",
+          "address": "127.0.0.1",
+          "port": 1234,
+          "method": "aes-256-gcm",
+          "password": "pass",
+          "ota": false,
+          "level": 0
+        }
+      ]
+    }
   },
   "tplImportVmess": {
     "log": {

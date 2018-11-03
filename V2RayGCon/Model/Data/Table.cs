@@ -34,12 +34,16 @@ namespace V2RayGCon.Model.Data
                 { 10,"v2raygcon" },
                 { 11,"inboundDetour"},
                 { 12,"outboundDetour"},
+                { 13,"inbounds"},
+                { 14,"outbounds"},
         };
 
         // separate between dictionary or array
         public const int sectionSeparator = 11;
         public const int inboundIndex = 7;
         public const int outboundIndex = 8;
+        public const int inboundsIndex = 13;
+        public const int outboundsIndex = 14;
 
         public static readonly string[] inboundOverwriteTypesName = new string[] {
             "config",
@@ -213,7 +217,10 @@ namespace V2RayGCon.Model.Data
             list.Add(SSS("Shadowsocks", "inSS", "shadowsocks"));
             list.Add(SSS("VMess", "inVmess", "vmess"));
             list.Add(SSS("Dokodemo-door", "inDoko", "dokodemo-door"));
-            d.Add(7, list);
+            d.Add(inboundIndex, list);
+
+            // 13 inbounds
+            d.Add(inboundsIndex, list);
 
             //{ 8, "outbound"},
             list = NewList();
@@ -222,7 +229,10 @@ namespace V2RayGCon.Model.Data
             list.Add(SSS("SOCKS", "outSocks", "socks"));
             list.Add(SSS("Freedom", "outFree", "freedom"));
             list.Add(SSS("Black hole", "outBlackHole", "blackhole"));
-            d.Add(8, list);
+            d.Add(outboundIndex, list);
+
+            // 14 outbounds
+            d.Add(outboundsIndex, list);
 
             //{ 9, "transport"},
             list = NewList();

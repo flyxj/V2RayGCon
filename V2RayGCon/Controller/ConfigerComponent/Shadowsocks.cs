@@ -9,6 +9,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         Service.Cache cache;
         public Shadowsocks(
             RadioButton rbtnInboundMode,
+            CheckBox chkV4Mode,
             TextBox tboxAddress,
             TextBox tboxPassword,
             CheckBox chkIsShowPassword,
@@ -18,17 +19,19 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             cache = Service.Cache.Instance;
             isServerMode = false;
+            isV4Mode = false;
 
             Lib.UI.FillComboBox(cboxMethods, Model.Data.Table.ssMethods);
             Lib.UI.ResetComboBoxDropdownMenuWidth(cboxMethods);
 
-            AttachEvents(tboxPassword, chkIsShowPassword, btnInsert, rbtnInboundMode);
+            AttachEvents(tboxPassword, chkIsShowPassword, btnInsert, rbtnInboundMode, chkV4Mode);
             DataBinding(tboxAddress, tboxPassword, cboxMethods, chkIsUseOTA);
         }
 
 
         #region properties
         private bool isServerMode { get; set; }
+        private bool isV4Mode { get; set; }
 
         private int _methodTypeIndex;
         public int methodTypeIndex
@@ -64,22 +67,21 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
 
-            var protocal = GetStr(
-                this.isServerMode ? "inbound" : "outbound",
-                "protocol");
+            var root = Lib.Utils.GetConfigRoot(isServerMode, isV4Mode);
 
-            if (protocal.ToLower() != "shadowsocks")
+            var protocol = Lib.Utils.GetValue<string>(config, root, "protocol");
+            if (protocol.ToLower() != "shadowsocks")
             {
                 EmptyAllControl();
                 return;
             }
 
+            var prefix = root + ".settings" + (isServerMode ? "" : ".servers.0");
 
-            var prefix = this.isServerMode ? "inbound.settings" : "outbound.settings.servers.0";
             this.isUseOTA = Lib.Utils.GetValue<bool>(config, prefix, "ota");
             this.password = GetStr(prefix, "password");
             this.address = isServerMode ?
-                Lib.Utils.GetAddr(config, "inbound", "listen", "port") :
+                Lib.Utils.GetAddr(config, root, "listen", "port") :
                 Lib.Utils.GetAddr(config, prefix, "address", "port");
             SetMethodTypeIndex(GetStr(prefix, "method"));
         }
@@ -124,9 +126,19 @@ namespace V2RayGCon.Controller.ConfigerComponet
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private void AttachEvents(TextBox tboxPassword, CheckBox chkIsShowPassword, Button btnInsert,
-            RadioButton rbtnIsServerMode)
+        private void AttachEvents(
+            TextBox tboxPassword,
+            CheckBox chkIsShowPassword,
+            Button btnInsert,
+            RadioButton rbtnIsServerMode,
+            CheckBox chkV4Mode)
         {
+            chkV4Mode.CheckedChanged += (s, a) =>
+            {
+                this.isV4Mode = chkV4Mode.Checked;
+                this.Update(container.config);
+            };
+
             rbtnIsServerMode.CheckedChanged += (s, a) =>
             {
                 this.isServerMode = rbtnIsServerMode.Checked;
@@ -149,27 +161,14 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         void Inject(ref JObject config)
         {
-
-            var keyName = isServerMode ? "inbound.settings" : "outbound.settings";
-            var tpl = Lib.Utils.CreateJObject(keyName);
-
-            if (isServerMode)
-            {
-                tpl["inbound"] = GetSettings();
-            }
-            else
-            {
-                tpl["outbound"]["settings"] = GetSettings();
-                tpl["outbound"]["protocol"] = "shadowsocks";
-            }
-
+            var root = Lib.Utils.GetConfigRoot(isServerMode, isV4Mode);
+            var ss = Lib.Utils.CreateJObject(root, GetSettings());
             try
             {
-                Lib.Utils.RemoveKeyFromJObject(config, keyName);
+                Lib.Utils.RemoveKeyFromJObject(config, root + ".settings");
             }
             catch (KeyNotFoundException) { }
-
-            Lib.Utils.CombineConfig(ref config, tpl);
+            Lib.Utils.CombineConfig(ref config, ss);
         }
 
         JToken GetSettings()
@@ -190,11 +189,11 @@ namespace V2RayGCon.Controller.ConfigerComponet
             }
             else
             {
-                tpl["servers"][0]["address"] = ip;
-                tpl["servers"][0]["port"] = port;
-                tpl["servers"][0]["method"] = methodName;
-                tpl["servers"][0]["password"] = this.password;
-                tpl["servers"][0]["ota"] = this.isUseOTA;
+                tpl["settings"]["servers"][0]["address"] = ip;
+                tpl["settings"]["servers"][0]["port"] = port;
+                tpl["settings"]["servers"][0]["method"] = methodName;
+                tpl["settings"]["servers"][0]["password"] = this.password;
+                tpl["settings"]["servers"][0]["ota"] = this.isUseOTA;
             }
 
             return tpl;

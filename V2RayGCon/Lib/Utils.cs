@@ -235,6 +235,12 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Json
+        public static string GetConfigRoot(bool isInbound, bool isV4)
+        {
+            return (isInbound ? "inbound" : "outbound")
+                + (isV4 ? "s.0" : "");
+        }
+
         public static JObject ParseImportRecursively(
           Func<List<string>, List<string>> fetcher,
           JObject config,
@@ -426,14 +432,29 @@ namespace V2RayGCon.Lib
 
         public static JObject CreateJObject(string path)
         {
-            var result = JObject.Parse(@"{}");
+            return CreateJObject(path, null);
+        }
+
+        public static JObject CreateJObject(string path, JToken child)
+        {
+            JToken result;
+            if (child == null)
+            {
+                result = JToken.Parse(@"{}");
+            }
+            else
+            {
+                result = child;
+            }
+
 
             if (string.IsNullOrEmpty(path))
             {
-                return result;
+                return JObject.Parse(@"{}");
             }
-            var curNode = result as JToken;
-            foreach (var p in path.Split('.'))
+
+            JToken tempNode;
+            foreach (var p in path.Split('.').Reverse())
             {
                 if (string.IsNullOrEmpty(p))
                 {
@@ -442,14 +463,22 @@ namespace V2RayGCon.Lib
 
                 if (int.TryParse(p, out int num))
                 {
-                    throw new KeyNotFoundException("All parents must be JObject");
+                    if (num != 0)
+                    {
+                        throw new KeyNotFoundException("All parents must be JObject");
+                    }
+                    tempNode = JArray.Parse(@"[{}]");
+                    tempNode[0] = result;
                 }
-
-                curNode[p] = JObject.Parse(@"{}");
-                curNode = curNode[p];
+                else
+                {
+                    tempNode = JObject.Parse(@"{}");
+                    tempNode[p] = result;
+                }
+                result = tempNode;
             }
 
-            return result;
+            return result as JObject;
         }
 
         public static bool SetValue<T>(JObject json, string path, T value)

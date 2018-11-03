@@ -258,6 +258,14 @@ namespace V2RayGCon.Controller.ConfigerComponet
                     case Model.Data.Table.outboundIndex:
                         this.content = LoadInOutBoundExample(example, false);
                         break;
+                    case Model.Data.Table.inboundsIndex:
+                        this.content = string.Format("[{0}]",
+                            LoadInOutBoundExample(example, true));
+                        break;
+                    case Model.Data.Table.outboundsIndex:
+                        this.content = string.Format("[{0}]",
+                            LoadInOutBoundExample(example, false));
+                        break;
                     default:
                         this.content = cache.tpl.LoadExample(example[1]).ToString();
                         break;
