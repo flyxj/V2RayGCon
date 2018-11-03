@@ -380,35 +380,25 @@ namespace V2RayGCon.Controller
 
         public void GetterInboundInfoFor(Action<string> next)
         {
-            var inType = overwriteInboundType;
-            switch (inType)
-            {
-                case (int)Model.Data.Enum.ProxyTypes.HTTP:
-                case (int)Model.Data.Enum.ProxyTypes.SOCKS:
-                    next(string.Format(
-                    "[{0}] {1}://{2}:{3}",
-                    this.name,
-                    GetInProtocolNameByNumber(inType),
-                    this.inboundIP,
-                    this.inboundPort));
-                    return;
-            }
-
             var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
-                var cfg = GetDecodedConfig(true, false, true);
-                var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
-                var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
-                var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
-
-                if (string.IsNullOrEmpty(listen))
+                var inInfo = GetParsedInboundInfo();
+                if (inInfo == null)
                 {
-                    next(string.Format("[{0}] {1}", serverName, protocol));
+                    next(string.Format("[{0}]", serverName));
                     return;
                 }
-
-                next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
+                if (string.IsNullOrEmpty(inInfo.Item2))
+                {
+                    next(string.Format("[{0}] {1}", serverName, inInfo.Item1));
+                    return;
+                }
+                next(string.Format("[{0}] {1}://{2}:{3}",
+                    serverName,
+                    inInfo.Item1,
+                    inInfo.Item2,
+                    inInfo.Item3));
             });
         }
 
@@ -524,18 +514,30 @@ namespace V2RayGCon.Controller
             var ip = inboundIP;
             var port = inboundPort;
 
-            if (protocol == "config")
+            if (protocol != "config")
             {
-                var parsedConfig = GetDecodedConfig(true, false, true);
-                if (parsedConfig == null)
-                {
-                    return null;
-                }
-                protocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
-                ip = Lib.Utils.GetValue<string>(parsedConfig, "inbound.listen");
-                port = Lib.Utils.GetValue<int>(parsedConfig, "inbound.port");
+                return new Tuple<string, string, int>(protocol, ip, port);
             }
 
+            var parsedConfig = GetDecodedConfig(true, false, true);
+            if (parsedConfig == null)
+            {
+                return null;
+            }
+
+            string prefix = "inbound";
+            foreach (var p in new string[] { "inbound", "inbounds.0" })
+            {
+                prefix = p;
+                protocol = Lib.Utils.GetValue<string>(parsedConfig, prefix, "protocol");
+                if (!string.IsNullOrEmpty(protocol))
+                {
+                    break;
+                }
+            }
+
+            ip = Lib.Utils.GetValue<string>(parsedConfig, prefix, "listen");
+            port = Lib.Utils.GetValue<int>(parsedConfig, prefix, "port");
             return new Tuple<string, string, int>(protocol, ip, port);
         }
 
@@ -730,7 +732,20 @@ namespace V2RayGCon.Controller
 
                 // Bug. Stream setting will mess things up.
                 // Lib.Utils.MergeJson(ref config, o);
-                config["inbound"] = o;
+                var hasInbound = Lib.Utils.GetKey(config, "inbound") != null;
+                var hasInbounds = Lib.Utils.GetKey(config, "inbounds.0") != null;
+
+                if (hasInbounds && !hasInbound)
+                {
+                    config["inbounds"][0] = o;
+                }
+                else
+                {
+                    config["inbound"] = o;
+                }
+
+                var debug = config.ToString(Formatting.Indented);
+
                 return true;
             }
             catch

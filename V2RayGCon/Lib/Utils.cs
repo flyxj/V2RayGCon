@@ -324,19 +324,36 @@ namespace V2RayGCon.Lib
 
         public static string GetSummaryFromConfig(JObject config)
         {
-            var protocol = GetValue<string>(config, "outbound.protocol")?.ToLower();
-            string ipKey = null;
+            var result = GetSummaryFromConfig(config, "outbound");
+
+            if (string.IsNullOrEmpty(result))
+            {
+                return GetSummaryFromConfig(config, "outbounds.0");
+            }
+
+            return result;
+        }
+
+        public static string GetSummaryFromConfig(JObject config, string root)
+        {
+            var protocol = GetValue<string>(config, root + ".protocol")?.ToLower();
+            if (protocol == null)
+            {
+                return string.Empty;
+            }
+
+            string ipKey = root;
             switch (protocol)
             {
                 case "vmess":
-                    ipKey = "outbound.settings.vnext.0.address";
+                    ipKey += ".settings.vnext.0.address";
                     break;
                 case "shadowsocks":
                     protocol = "ss";
-                    ipKey = "outbound.settings.servers.0.address";
+                    ipKey += ".settings.servers.0.address";
                     break;
                 case "socks":
-                    ipKey = "outbound.settings.servers.0.address";
+                    ipKey += ".settings.servers.0.address";
                     break;
             }
 
@@ -653,6 +670,12 @@ namespace V2RayGCon.Lib
             });
         }
 
+        /// <summary>
+        /// return null if path is null or path not exists.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static JToken GetKey(JToken json, string path)
         {
             if (string.IsNullOrEmpty(path))
