@@ -145,7 +145,7 @@ namespace V2RayGCon.Lib
                 return false;
             }
             var mask = Str2Int(parts[1]);
-            return mask > 0 && mask < 32;
+            return mask >= 0 && mask <= 32;
         }
 
         public static List<string> GetPacDomainList(bool isWhiteList)
@@ -155,12 +155,29 @@ namespace V2RayGCon.Lib
                 .ToList();
         }
 
+        public static string Long2Ip(long number)
+        {
+            if (number < 0 || number >= 1L << 32)
+            {
+                return "0.0.0.0";
+            }
+
+            var ips = new List<long>();
+            for (int i = 0; i < 4; i++)
+            {
+                ips.Add(number % 256);
+                number /= 256;
+            }
+            ips.Reverse();
+            return string.Join(".", ips);
+        }
+
         public static long[] Cidr2RangeArray(string cidrString)
         {
             var cidr = cidrString.Split('/');
             var begin = IP2Long(cidr[0]);
-            var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
-            return new long[] { begin, Math.Max(end - 1, begin) };
+            var end = (1L << (32 - Str2Int(cidr[1]))) + begin;
+            return new long[] { begin, Math.Max(Math.Min(end - 1, (1L << 32) - 1), begin) };
         }
 
         public static List<long[]> GetPacCidrList(bool isWhiteList)
@@ -180,7 +197,8 @@ namespace V2RayGCon.Lib
         {
             if (cidrList == null || cidrList.Count <= 0)
             {
-                throw new System.ArgumentException("Range list is empty!");
+                return new List<long[]>();
+                // throw new System.ArgumentException("Range list is empty!");
             }
 
             cidrList.Sort((a, b) => a[0].CompareTo(b[0]));

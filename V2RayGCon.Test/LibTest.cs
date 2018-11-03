@@ -13,6 +13,33 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow("0.0.0.0/32", "0.0.0.0,0.0.0.0")]
+        [DataRow("0.0.0.0/-1", "0.0.0.0,255.255.255.255")]
+        [DataRow("0.0.0.0/0", "0.0.0.0,255.255.255.255")]
+        [DataRow("0.0.0.0/1", "0.0.0.0,127.255.255.255")]
+        [DataRow("0.0.0.0/2", "0.0.0.0,63.255.255.255")]
+        public void CidrRangeArrayTest(string cidr, string expect)
+        {
+            var c = Lib.Utils.Cidr2RangeArray(cidr);
+            var a = Lib.Utils.Long2Ip(c[0]);
+            var b = Lib.Utils.Long2Ip(c[1]);
+            Assert.AreEqual(expect, a + "," + b);
+        }
+
+        [DataTestMethod]
+        [DataRow((1L << 32) - 1, "255.255.255.255")]
+        [DataRow(1, "0.0.0.1")]
+        [DataRow(0, "0.0.0.0")]
+        [DataRow(-1, "0.0.0.0")]
+        [DataRow(1L << 32, "0.0.0.0")]
+        [DataRow(255 + 123 * 256 + 12 * 256 * 256 + 192L * 256 * 256 * 256, "192.12.123.255")]
+        public void Long2IpTest(long number, string expect)
+        {
+            var ip = Lib.Utils.Long2Ip(number);
+            Assert.AreEqual(expect, ip);
+        }
+
+        [DataTestMethod]
         [DataRow(1, 1, 3, 3, Model.Data.Enum.Overlaps.None)]
         [DataRow(1, 3, 2, 3, Model.Data.Enum.Overlaps.Right)]
         [DataRow(1, 3, 0, 2, Model.Data.Enum.Overlaps.Left)]
@@ -411,8 +438,6 @@ namespace V2RayGCon.Test
         {
             var version = Lib.Utils.GetLatestVGCVersion();
             Assert.AreNotEqual(string.Empty, version);
-
         }
-
     }
 }

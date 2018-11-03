@@ -21,29 +21,27 @@ namespace V2RayGCon.Model.Data
 
         public static readonly Dictionary<int, string> configSections = new Dictionary<int, string>
         {
-                { 0, "config.json"},
-                { 1, "log"},
-                { 2, "api"},
-                { 3, "dns"},
-                { 4, "stats"},
-                { 5, "routing"},
-                { 6, "policy"},
-                { 7, "inbound"},
-                { 8, "outbound"},
-                { 9, "transport"},
-                { 10,"v2raygcon" },
-                { 11,"inboundDetour"},
-                { 12,"outboundDetour"},
-                { 13,"inbounds"},
-                { 14,"outbounds"},
-        };
+            // JObject
+            { (int)Model.Data.Enum.Sections.Config, "config.json"},
+            { (int)Model.Data.Enum.Sections.Log, "log"},
+            { (int)Model.Data.Enum.Sections.Inbound, "inbound"},
+            { (int)Model.Data.Enum.Sections.Outbound, "outbound"},
+            { (int)Model.Data.Enum.Sections.Routing, "routing"},
+            { (int)Model.Data.Enum.Sections.Policy, "policy"},
+            { (int)Model.Data.Enum.Sections.V2raygcon, "v2raygcon" },
+            { (int)Model.Data.Enum.Sections.Api, "api"},
+            { (int)Model.Data.Enum.Sections.Dns, "dns"},
+            { (int)Model.Data.Enum.Sections.Stats, "stats"},
+            { (int)Model.Data.Enum.Sections.Transport, "transport"},
+            { (int)Model.Data.Enum.Sections.Reverse, "reverse"},
 
-        // separate between dictionary or array
-        public const int sectionSeparator = 11;
-        public const int inboundIndex = 7;
-        public const int outboundIndex = 8;
-        public const int inboundsIndex = 13;
-        public const int outboundsIndex = 14;
+
+            // JArray
+            { (int)Model.Data.Enum.Sections.Inbounds, "inbounds"},
+            { (int)Model.Data.Enum.Sections.Outbounds, "outbounds"},
+            { (int)Model.Data.Enum.Sections.InboundDetour, "inboundDetour"},
+            { (int)Model.Data.Enum.Sections.OutboundDetour, "outboundDetour"},
+        };
 
         public static readonly string[] inboundOverwriteTypesName = new string[] {
             "config",
@@ -173,7 +171,7 @@ namespace V2RayGCon.Model.Data
             list = NewList();
             list.Add(SS(I18N.Default, "cfgMin"));
             list.Add(SS("Empty", "cfgEmpty"));
-            d.Add(0, list);
+            d.Add((int)Enum.Sections.Config, list);
 
             //{ 1, "log"},
             list = NewList();
@@ -183,78 +181,83 @@ namespace V2RayGCon.Model.Data
             list.Add(SS("Warning", "logWarning"));
             list.Add(SS("Info", "logInfo"));
             list.Add(SS("Debug", "logDebug"));
-            d.Add(1, list);
+            d.Add((int)Enum.Sections.Log, list);
 
-            //{ 2, "api"},
-            list = NewList();
-            list.Add(SS(I18N.Default, "apiDefault"));
-            d.Add(2, list);
-
-            //{ 3, "dns"},
-            list = NewList();
-            list.Add(SS(I18N.Default, "dnsDefault"));
-            list.Add(SS(I18N.CFnGoogle, "dnsCFnGoogle"));
-            d.Add(3, list);
-
-            //{ 4, "stats"},
-
-            //{ 5, "routing"},
-            list = NewList();
-            list.Add(SS(I18N.Default, "routeAll"));
-            list.Add(SS("skip CN web site", "routeCNIP"));
-            list.Add(SS("Inbound to Outbound", "routeIn2Out"));
-            d.Add(5, list);
-
-            //{ 6, "policy"},
-            list = NewList();
-            list.Add(SS(I18N.Default, "policyDefault"));
-            d.Add(6, list);
-
-            //{ 7, "inbound"},
+            //{ 2, "inbound"},
             list = NewList();
             list.Add(SSS("HTTP", "inHTTP", "http"));
             list.Add(SSS("SOCKS", "inSocks", "socks"));
             list.Add(SSS("Shadowsocks", "inSS", "shadowsocks"));
             list.Add(SSS("VMess", "inVmess", "vmess"));
             list.Add(SSS("Dokodemo-door", "inDoko", "dokodemo-door"));
-            d.Add(inboundIndex, list);
+            d.Add((int)Enum.Sections.Inbound, list);
 
-            // 13 inbounds
-            d.Add(inboundsIndex, list);
+            // 20 inbounds
+            d.Add((int)Enum.Sections.Inbounds, list);
 
-            //{ 8, "outbound"},
+            //{ 3, "outbound"},
             list = NewList();
             list.Add(SSS("VMess", "outVmess", "vmess"));
             list.Add(SSS("Shadowsocks", "outSS", "shadowsocks"));
             list.Add(SSS("SOCKS", "outSocks", "socks"));
             list.Add(SSS("Freedom", "outFree", "freedom"));
             list.Add(SSS("Black hole", "outBlackHole", "blackhole"));
-            d.Add(outboundIndex, list);
+            d.Add((int)Enum.Sections.Outbound, list);
 
-            // 14 outbounds
-            d.Add(outboundsIndex, list);
+            // 21 outbounds
+            d.Add((int)Enum.Sections.Outbounds, list);
 
-            //{ 9, "transport"},
+            //{ 4, "routing"},
             list = NewList();
-            list.Add(SS(I18N.Default, "transDefault"));
-            d.Add(9, list);
+            list.Add(SS(I18N.Default, "routeAll"));
+            list.Add(SS("skip CN web site", "routeCNIP"));
+            list.Add(SS("Inbound to Outbound", "routeIn2Out"));
+            d.Add((int)Enum.Sections.Routing, list);
 
-            //{ 10,"v2raygcon" },
+            //{ 5, "policy"},
+            list = NewList();
+            list.Add(SS(I18N.Default, "policyDefault"));
+            d.Add((int)Enum.Sections.Policy, list);
+
+            //{ 6,"v2raygcon" },
             list = NewList();
             list.Add(SS(I18N.Default, "v2raygcon"));
             list.Add(SS(I18N.Import, "vgcImport"));
-            d.Add(10, list);
+            d.Add((int)Enum.Sections.V2raygcon, list);
 
-            //{ 11,"inboundDetour"}, 
+            //{ 7, "api"},
+            list = NewList();
+            list.Add(SS(I18N.Default, "apiDefault"));
+            d.Add((int)Enum.Sections.Api, list);
+
+            //{ 8, "dns"},
+            list = NewList();
+            list.Add(SS(I18N.Default, "dnsDefault"));
+            list.Add(SS(I18N.CFnGoogle, "dnsCFnGoogle"));
+            d.Add((int)Enum.Sections.Dns, list);
+
+            //{ 9, "stats"},
+
+            //{ 10, "transport"},
+            list = NewList();
+            list.Add(SS(I18N.Default, "transDefault"));
+            d.Add((int)Enum.Sections.Transport, list);
+
+            // { 11, "reverse" }
+            list = NewList();
+            list.Add(SS(I18N.Default, "reverseDefault"));
+            d.Add((int)Enum.Sections.Reverse, list);
+
+            //{ 22,"inboundDetour"}, 
             list = NewList();
             list.Add(SS(I18N.Default, "inDtrDefault"));
-            d.Add(11, list);
+            d.Add((int)Enum.Sections.InboundDetour, list);
 
-            //{ 12,"outboundDetour"}, outDtrDefault
+            //{ 23,"outboundDetour"}, outDtrDefault
             list = NewList();
             list.Add(SS(I18N.Default, "outDtrDefault"));
             list.Add(SS("Freedom", "outDtrFreedom"));
-            d.Add(12, list);
+            d.Add((int)Enum.Sections.OutboundDetour, list);
 
             return d;
         }

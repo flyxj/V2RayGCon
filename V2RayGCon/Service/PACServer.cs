@@ -526,21 +526,22 @@ namespace V2RayGCon.Service
 
             var domainList = Lib.Utils.GetPacDomainList(isWhiteList);
             var cidrList = Lib.Utils.GetPacCidrList(isWhiteList);
-
-            // merge user settings
             var customUrlList = isWhiteList ? customWhiteList : customBlackList;
             MergeCustomPacSetting(ref domainList, ref cidrList, customUrlList);
-
             var cidrSimList = Lib.Utils.CompactCidrList(ref cidrList);
-            var domainSB = new StringBuilder();
-            foreach (var url in domainList)
-            {
-                domainSB.Append("'")
-                    .Append(url)
-                    .Append("':1,");
-            }
-            domainSB.Length--;
+            StringBuilder domainSB = ConvertDomainListIntoJsDict(domainList);
+            StringBuilder cidrSB = ConvertCidrListIntoJsRangeArray(cidrSimList);
 
+            defaultPacCache[isWhiteList] = new string[] {
+                domainSB.ToString(),
+                cidrSB.ToString(),
+            };
+
+            return defaultPacCache[isWhiteList];
+        }
+
+        private static StringBuilder ConvertCidrListIntoJsRangeArray(List<long[]> cidrSimList)
+        {
             var cidrSB = new StringBuilder();
             foreach (var cidr in cidrSimList)
             {
@@ -550,14 +551,29 @@ namespace V2RayGCon.Service
                     .Append(cidr[1])
                     .Append("],");
             }
-            cidrSB.Length--;
+            if (cidrSimList.Count > 0)
+            {
+                cidrSB.Length--;
+            }
 
-            defaultPacCache[isWhiteList] = new string[] {
-                domainSB.ToString(),
-                cidrSB.ToString(),
-            };
+            return cidrSB;
+        }
 
-            return defaultPacCache[isWhiteList];
+        private static StringBuilder ConvertDomainListIntoJsDict(List<string> domainList)
+        {
+            var domainSB = new StringBuilder();
+            foreach (var url in domainList)
+            {
+                domainSB.Append("'")
+                    .Append(url)
+                    .Append("':1,");
+            }
+            if (domainList.Count > 0)
+            {
+                domainSB.Length--;
+            }
+
+            return domainSB;
         }
         #endregion
     }

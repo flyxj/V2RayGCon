@@ -1,4 +1,18 @@
 {
+  "reverseDefault": {
+    "bridges": [
+      {
+        "tag": "bridge",
+        "domain": "test.v2ray.com"
+      }
+    ],
+    "portals": [
+      {
+        "tag": "portal",
+        "domain": "test.v2ray.com"
+      }
+    ]
+  },
   "inTpl": {
     "port": 1080,
     "listen": "127.0.0.1",
