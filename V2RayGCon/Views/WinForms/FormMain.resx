@@ -408,12 +408,12 @@
   <data name="toolStripButtonRunSpeedTest.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAEySURBVDhPnZGxToNQFIY7+x6+gYkmbhASwbCQEAZmEtnr
-        C0BcSnHzFdyrDiaudrOxLDoK2kapSaEkEJx+OaS3gWgBPcmXe3LPvV/OubeXZRmSJAnSNFV6/wkSnFwa
-        eJ49ochv8zzfXZe6BQkOBns4HO7j/G6IcBF+Fd2cAdhZH2kOJmAcXxzhxrvuPtY2Ae134ccIwTyA67rg
-        eR4cxzWyEbBHHI1GiKIYcbRqpSageWmlTSpqmgZZlms4AweO45R5TcBevCqgQ5QzDMNAtIyxXEbQdb0u
-        YFEVqKpajHMFQRAgiiI+3kN4Uw+Thwn8F79dMHubl+v4fozpo1cKSCRJEhbhZ7sg8F9hmmbRdlS2TiNQ
-        jej3T9sFiqKUuWVZsG17c5nRKujCVkH165r4VfB3MnwDu85Ygvj101UAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAAExSURBVDhPnZHBSoRQFIZn3Xv0BkFBO0VIw40gLlwLuZ9e
+        QGkzzrTrFdpbLYK2za6hcVPLtGYoC9QExVZ/Hpk7KDVqHfi4h3vu/Tjn3kGe50jTNMiyTBn8J0hwdG7g
+        cfGAMr8uimJ7VeoXJNgb7WB/vIvTmzHCMPwquzkBsLU60h5MwDg8O8CVd9l/rE0C2u/DjxGCZYDJZAKe
+        58FxXCtrAXtE13URxwmS+LOThoDmpZU2qahpGmRZbuCMHDiOU+UNAXvxuoAOUc4wDANxlCCKYui63hSw
+        qAtUVS3HuYAgCBBFEW+vIby5h9ndDP6T3y1YvCyrdXo7xfzeqwQkkiQJ7+FHtyDwn2GaZtl2XLVOI1CN
+        GA6PuwWKolS5ZVmwbXt9mdEp6MNGQf3r2vhV8HdyfAO4UliB5t9auQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="toolStripButtonRunSpeedTest.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -666,6 +666,12 @@
   <data name="selectRunningAllPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>Select running</value>
   </data>
+  <data name="selectUntrackAllPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 30</value>
+  </data>
+  <data name="selectUntrackAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Select untrack</value>
+  </data>
   <data name="allPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 30</value>
   </data>
@@ -722,6 +728,12 @@
   </data>
   <data name="selectRunningAllServersToolStripMenuItem.Text" xml:space="preserve">
     <value>Select running</value>
+  </data>
+  <data name="selectUntrackAllServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 30</value>
+  </data>
+  <data name="selectUntrackAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Select untrack</value>
   </data>
   <data name="allServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 30</value>
@@ -946,25 +958,25 @@
     <value>Server</value>
   </data>
   <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>205, 30</value>
   </data>
   <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
     <value>Config editor</value>
   </data>
   <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>205, 30</value>
   </data>
   <data name="toolMenuItemQRCode.Text" xml:space="preserve">
     <value>QRCode</value>
   </data>
   <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>205, 30</value>
   </data>
   <data name="toolMenuItemLog.Text" xml:space="preserve">
     <value>Log</value>
   </data>
   <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+    <value>205, 30</value>
   </data>
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>Options</value>
@@ -7601,6 +7613,12 @@
   <data name="&gt;&gt;selectRunningAllPagesToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;selectUntrackAllPagesToolStripMenuItem.Name" xml:space="preserve">
+    <value>selectUntrackAllPagesToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;selectUntrackAllPagesToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;allServersToolStripMenuItem.Name" xml:space="preserve">
     <value>allServersToolStripMenuItem</value>
   </data>
@@ -7659,6 +7677,12 @@
     <value>selectRunningAllServersToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;selectRunningAllServersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;selectUntrackAllServersToolStripMenuItem.Name" xml:space="preserve">
+    <value>selectUntrackAllServersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;selectUntrackAllServersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolMenuItemServer.Name" xml:space="preserve">
@@ -7811,16 +7835,16 @@
   <data name="&gt;&gt;systemProxyToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Name" xml:space="preserve">
-    <value>copyPACURLToolStripMenuItem</value>
+  <data name="&gt;&gt;startPACServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>startPACServerToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;startPACServerToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Name" xml:space="preserve">
-    <value>visitPACDebuggerURLToolStripMenuItem</value>
+  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>stopPACServerToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
@@ -7835,16 +7859,16 @@
   <data name="&gt;&gt;toolMenuItemClearSysProxy.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;startPACServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>startPACServerToolStripMenuItem</value>
+  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>copyPACURLToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;startPACServerToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>stopPACServerToolStripMenuItem</value>
+  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPACDebuggerURLToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">

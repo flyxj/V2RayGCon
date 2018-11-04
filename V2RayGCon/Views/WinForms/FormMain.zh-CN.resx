@@ -234,6 +234,9 @@
   <data name="selectRunningAllPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>选中运行中</value>
   </data>
+  <data name="selectUntrackAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中不追踪</value>
+  </data>
   <data name="allPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>全部页面</value>
   </data>
@@ -263,6 +266,9 @@
   </data>
   <data name="selectRunningAllServersToolStripMenuItem.Text" xml:space="preserve">
     <value>选中运行中</value>
+  </data>
+  <data name="selectUntrackAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>选中不追踪</value>
   </data>
   <data name="allServersToolStripMenuItem.Text" xml:space="preserve">
     <value>全部服务器</value>
@@ -366,6 +372,15 @@
   <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
     <value>删除服务器</value>
   </data>
+  <data name="startPACServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>启动PAC服务器</value>
+  </data>
+  <data name="stopPACServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>关闭PAC服务器</value>
+  </data>
+  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
+    <value>清除代理设置</value>
+  </data>
   <data name="copyPACURLToolStripMenuItem.Text" xml:space="preserve">
     <value>复制PAC链接</value>
   </data>
@@ -374,15 +389,6 @@
   </data>
   <data name="visitPACDebuggerURLToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>访问PAC调试器页面</value>
-  </data>
-  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
-    <value>清除代理设置</value>
-  </data>
-  <data name="startPACServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>启动PAC服务器</value>
-  </data>
-  <data name="stopPACServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>关闭PAC服务器</value>
   </data>
   <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
     <value>系统代理</value>
