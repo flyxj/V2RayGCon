@@ -22,6 +22,8 @@ namespace V2RayGCon.Service
         string customPacCache = string.Empty;
         FileSystemWatcher customPacFileWatcher = null;
 
+        Model.Data.PacUrlParams curUrlParam = null;
+
         PacServer() { }
 
         public void Run(Setting setting)
@@ -131,6 +133,7 @@ namespace V2RayGCon.Service
 
         public void SetPACProx(Model.Data.PacUrlParams param)
         {
+            curUrlParam = param;
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.autoConfigUrl = GenPacUrl(param);
             Lib.Sys.ProxySetter.SetProxy(proxy);
@@ -141,6 +144,7 @@ namespace V2RayGCon.Service
 
         public void SetGlobalProxy(string ip, int port)
         {
+            curUrlParam = null;
             var proxy = new Model.Data.ProxyRegKeyValue();
             proxy.proxyEnable = true;
             proxy.proxyServer = string.Format(
@@ -282,6 +286,7 @@ namespace V2RayGCon.Service
 
                 StopCustomPacFileWatcher();
             }
+            curUrlParam = null;
             InvokeOnPACServerStatusChanged();
         }
         #endregion
@@ -322,7 +327,8 @@ namespace V2RayGCon.Service
         Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
-            var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri);
+            var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri) ?? curUrlParam;
+
             if (urlParam == null)
             {
                 return new Tuple<string, string>("Bad request params.", null);
@@ -402,7 +408,7 @@ namespace V2RayGCon.Service
                             "PROXY {0}:{1}; DIRECT";
             var mode = urlParam.isWhiteList ? "white" : "black";
 
-            var domainAndCidrs = GenDomainAndCidrContent(
+            var domainAndCidrs = GetDomainAndCidrFromCache(
                 urlParam.isWhiteList,
                 customWhiteList,
                 customBlackList);
@@ -441,11 +447,11 @@ namespace V2RayGCon.Service
                     isRemove = true;
                     item = item.Substring(1);
                 }
-                ParseCustomPacSettings(ref domainList, ref cidrList, item, isRemove);
+                ParseCustomPacSetting(ref domainList, ref cidrList, item, isRemove);
             }
         }
 
-        void ModifyCidrList(ref List<long[]> cidrList, long[] range, bool isRemove)
+        void RemoveRangeFromCidrList(ref List<long[]> cidrList, long[] range, bool isRemove)
         {
             if (!isRemove)
             {
@@ -477,7 +483,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        void ParseCustomPacSettings(
+        void ParseCustomPacSetting(
             ref List<string> domainList,
             ref List<long[]> cidrList,
             string item,
@@ -486,13 +492,13 @@ namespace V2RayGCon.Service
             if (Lib.Utils.IsIP(item))
             {
                 var v = Lib.Utils.IP2Long(item);
-                ModifyCidrList(ref cidrList, new long[] { v, v }, isRemove);
+                RemoveRangeFromCidrList(ref cidrList, new long[] { v, v }, isRemove);
                 return;
             }
 
             if (Lib.Utils.IsCidr(item))
             {
-                ModifyCidrList(ref cidrList, Lib.Utils.Cidr2RangeArray(item), isRemove);
+                RemoveRangeFromCidrList(ref cidrList, Lib.Utils.Cidr2RangeArray(item), isRemove);
                 return;
             }
 
@@ -514,7 +520,7 @@ namespace V2RayGCon.Service
         /// </summary>
         /// <param name="isWhiteList"></param>
         /// <returns></returns>
-        string[] GenDomainAndCidrContent(
+        string[] GetDomainAndCidrFromCache(
             bool isWhiteList,
             string customWhiteList,
             string customBlackList)
@@ -524,6 +530,7 @@ namespace V2RayGCon.Service
                 return defaultPacCache[isWhiteList];
             }
 
+            // generate if not in cache
             var domainList = Lib.Utils.GetPacDomainList(isWhiteList);
             var cidrList = Lib.Utils.GetPacCidrList(isWhiteList);
             var customUrlList = isWhiteList ? customWhiteList : customBlackList;

@@ -118,7 +118,6 @@ namespace V2RayGCon.Views.UserControls
                 return;
             }
 
-
             Lib.Utils.TryParseIPAddr(tboxInboundAddr.Text, out string ip, out int port);
             var p = new Model.Data.PacUrlParams
             {

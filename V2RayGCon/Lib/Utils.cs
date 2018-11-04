@@ -77,23 +77,37 @@ namespace V2RayGCon.Lib
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        public static Dictionary<string, string> ParseUrlQueryIntoParams(string url)
         {
-            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
-
             if (string.IsNullOrEmpty(url))
             {
                 return null;
             }
 
-            Uri uri = null;
-            uri = new Uri(url);
+            Dictionary<string, string> arguments = null;
+            try
+            {
+                var query = new Uri(url).Query;
+                arguments = query
+                 .Substring(1) // Remove '?'
+                 .Split('&')
+                 .Select(q => q.Split('='))
+                 .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+            }
+            catch { }
 
-            var arguments = uri.Query
-                .Substring(1) // Remove '?'
-                .Split('&')
-                .Select(q => q.Split('='))
-                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+            return arguments;
+        }
+
+        /// <summary>
+        /// return null if fail
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        {
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+            var arguments = ParseUrlQueryIntoParams(url);
 
             if (arguments == null)
             {
@@ -247,6 +261,11 @@ namespace V2RayGCon.Lib
 
         public static bool IsIP(string address)
         {
+            if (string.IsNullOrEmpty(address))
+            {
+                return false;
+            }
+
             return Regex.IsMatch(address, @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
         }
 

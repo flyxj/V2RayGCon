@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -37,6 +36,21 @@ namespace V2RayGCon.Service
         }
 
         #region property
+        string _title;
+        public string title
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_title) ?
+                    string.Empty :
+                    Lib.Utils.CutStr(_title, 46);
+            }
+            set
+            {
+                _title = value;
+            }
+        }
+
         public bool isRunning
         {
             get;
@@ -311,20 +325,13 @@ namespace V2RayGCon.Service
                 procEnv[env.Key] = env.Value;
             }
         }
+
         void ShowExitErrorMessage()
         {
-            var title = "V2ray-core";
-            try
-            {
-                var c = JObject.Parse(this.config);
-                var alias = Lib.Utils.GetAliasFromConfig(c);
-                var summary = Lib.Utils.GetSummaryFromConfig(c);
-                title = string.Format($"[{alias}] {summary}");
-            }
-            catch { }
-            MessageBox.Show(Lib.Utils.CutStr(title, 46) + I18N.V2rayCoreExitAbnormally);
+            MessageBox.Show(title + I18N.V2rayCoreExitAbnormally);
         }
-        void OnCoreExisted(object sender, EventArgs args)
+
+        void OnCoreExited(object sender, EventArgs args)
         {
             SendLog(I18N.CoreExit);
             ReleaseEvents(v2rayCore);
@@ -343,14 +350,14 @@ namespace V2RayGCon.Service
 
         void BindEvents(Process proc)
         {
-            proc.Exited += OnCoreExisted;
+            proc.Exited += OnCoreExited;
             proc.ErrorDataReceived += SendLogHandler;
             proc.OutputDataReceived += SendLogHandler;
         }
 
         void ReleaseEvents(Process proc)
         {
-            proc.Exited -= OnCoreExisted;
+            proc.Exited -= OnCoreExited;
             proc.ErrorDataReceived -= SendLogHandler;
             proc.OutputDataReceived -= SendLogHandler;
         }

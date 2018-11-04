@@ -222,6 +222,7 @@ namespace V2RayGCon.Controller
             SendLog(url);
 
             var speedTester = new Service.Core(setting);
+            speedTester.title = GetTitle();
             speedTester.OnLog += OnLogHandler;
             speedTester.RestartCore(config);
 
@@ -436,6 +437,7 @@ namespace V2RayGCon.Controller
             }
 
             this.index = index;
+            this.server.title = GetTitle();
             InvokeEventOnPropertyChange();
         }
 
@@ -585,6 +587,7 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
+            server.title = GetTitle();
             server.RestartCoreThen(
                 cfg.ToString(),
                 () =>
