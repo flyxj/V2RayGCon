@@ -78,14 +78,14 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
-            pacServer.OnPACServerStatusChanged -= OnPACServerStatusChangedHandler;
+            pacServer.OnPACServerStateChanged -= OnPACServerStatusChangedHandler;
         }
         #endregion
 
         #region private method
         void OnPACServerStatusChangedHandler(object sender, EventArgs args)
         {
-            var isRunning = pacServer.isWebServRunning;
+            var isRunning = pacServer.IsPacServerRunning();
 
             this.menuContainer?.Invoke((MethodInvoker)delegate
             {
@@ -337,7 +337,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             this.restartPACServer = restartPACServer;
             this.stopPACServer = stopPACServer;
 
-            pacServer.OnPACServerStatusChanged += OnPACServerStatusChangedHandler;
+            pacServer.OnPACServerStateChanged += OnPACServerStatusChangedHandler;
 
             restartPACServer.Click += (s, a) =>
             {

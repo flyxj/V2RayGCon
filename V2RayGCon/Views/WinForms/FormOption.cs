@@ -78,7 +78,7 @@ namespace V2RayGCon.Views.WinForms
                     chkSetSysPortable));
 
             ctrl.Plug(
-                new Controller.OptionComponent.PacServer(
+                new Controller.OptionComponent.TabPac(
                     tboxPacServPort,
                     chkPacServIsAutorun,
                     rtboxPacServWhiteList,

@@ -117,11 +117,12 @@
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
-    <Compile Include="Controller\OptionComponent\PacServer.cs" />
+    <Compile Include="Controller\OptionComponent\TabPac.cs" />
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\FormOptionCtrl.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Lib\Nets\PacGenerator.cs" />
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
     <Compile Include="Lib\Nets\WebServer.cs" />

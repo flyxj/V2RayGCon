@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -13,24 +10,27 @@ namespace V2RayGCon.Service
     public class PacServer : Model.BaseClass.SingletonService<PacServer>
     {
         Setting setting;
-        public event EventHandler OnPACServerStatusChanged;
+        public event EventHandler OnPACServerStateChanged;
 
-        Lib.Nets.SimpleWebServer webServer = null;
+        Lib.Nets.WebServer webServer = null;
         object webServerLock = new object();
 
-        Dictionary<bool, string[]> defaultPacCache = null;
-        string customPacCache = string.Empty;
+        string customPacFileCache = string.Empty;
         FileSystemWatcher customPacFileWatcher = null;
 
         Model.Data.PacUrlParams curUrlParam = null;
 
-        PacServer() { }
+        PacServer()
+        {
+            webServer = new Lib.Nets.WebServer(WebRequestDispatcher);
+            webServer.OnWebServerStateChange += OnWebServerStateChangeHandler;
+        }
 
         public void Run(Setting setting)
         {
             this.setting = setting;
 
-            ClearCache();
+            ClearDefaultPacCache();
             var pacSetting = setting.GetPacServerSettings();
             var proxySetting = setting.GetSysProxySetting();
 
@@ -45,21 +45,6 @@ namespace V2RayGCon.Service
                 Lib.Sys.ProxySetter.SetProxy(proxySetting);
             }
         }
-
-        #region properties method
-        bool _isWebServRunning = false;
-        public bool isWebServRunning
-        {
-            get
-            {
-                return _isWebServRunning;
-            }
-            private set
-            {
-                _isWebServRunning = value;
-            }
-        }
-        #endregion
 
         #region static method
         public static Model.Data.Enum.SystemProxyMode DetectSystemProxyMode(Model.Data.ProxyRegKeyValue proxySetting)
@@ -79,6 +64,10 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        public bool IsPacServerRunning()
+        {
+            return webServer.isRunning;
+        }
 
         Lib.Sys.CancelableTimeout lazySysProxyUpdaterTimer = null;
         public void LazySysProxyUpdater(bool isSocks, string ip, int port)
@@ -95,11 +84,9 @@ namespace V2RayGCon.Service
                     return;
                 case Model.Data.Enum.SystemProxyMode.PAC:
                     // get current pac mode (white list or black list)
-                    var p = Lib.Utils.GetProxyParamsFromUrl(proxySetting.autoConfigUrl);
-                    if (p == null)
-                    {
-                        p = new Model.Data.PacUrlParams();
-                    }
+                    var p = Lib.Utils.GetProxyParamsFromUrl(proxySetting.autoConfigUrl)
+                        ?? new Model.Data.PacUrlParams();
+
                     p.ip = ip;
                     p.port = port;
                     p.isSocks = isSocks;
@@ -123,7 +110,7 @@ namespace V2RayGCon.Service
         {
             lock (webServerLock)
             {
-                if (isWebServRunning)
+                if (IsPacServerRunning())
                 {
                     return;
                 }
@@ -139,7 +126,7 @@ namespace V2RayGCon.Service
             Lib.Sys.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
             StartPacServer();
-            InvokeOnPACServerStatusChanged();
+            LazyInvokeOnPacServerStateChange();
         }
 
         public void SetGlobalProxy(string ip, int port)
@@ -153,7 +140,7 @@ namespace V2RayGCon.Service
                 port.ToString());
             Lib.Sys.ProxySetter.SetProxy(proxy);
             setting.SaveSysProxySetting(proxy);
-            InvokeOnPACServerStatusChanged();
+            LazyInvokeOnPacServerStateChange();
         }
 
         public void ClearSysProxy()
@@ -161,7 +148,7 @@ namespace V2RayGCon.Service
             var proxy = new Model.Data.ProxyRegKeyValue();
             setting.SaveSysProxySetting(proxy);
             Lib.Sys.ProxySetter.SetProxy(proxy);
-            InvokeOnPACServerStatusChanged();
+            LazyInvokeOnPacServerStateChange();
         }
 
         public void RestartPacServer()
@@ -171,16 +158,14 @@ namespace V2RayGCon.Service
 
             lock (webServerLock)
             {
-                if (isWebServRunning)
+                if (IsPacServerRunning())
                 {
                     StopPacServer();
                 }
 
                 try
                 {
-                    webServer = new Lib.Nets.SimpleWebServer(WebRequestDispatcher, prefix);
-                    webServer.Start();
-                    isWebServRunning = true;
+                    webServer.Start(prefix);
                 }
                 catch
                 {
@@ -191,7 +176,7 @@ namespace V2RayGCon.Service
 
                 StartFileWatcher(pacSetting);
             }
-            InvokeOnPACServerStatusChanged();
+            LazyInvokeOnPacServerStateChange();
         }
 
         void StartFileWatcher(Model.Data.PacServerSettings pacSetting)
@@ -240,13 +225,13 @@ namespace V2RayGCon.Service
         {
             var pacSetting = setting.GetPacServerSettings();
             var filename = pacSetting.customPacFilePath;
-            customPacCache = string.Empty;
+            customPacFileCache = string.Empty;
             if (File.Exists(filename))
             {
                 try
                 {
                     var content = File.ReadAllText(filename);
-                    customPacCache = content ?? string.Empty;
+                    customPacFileCache = content ?? string.Empty;
                 }
                 catch { }
             }
@@ -255,7 +240,9 @@ namespace V2RayGCon.Service
 
         public void Cleanup()
         {
+            webServer.OnWebServerStateChange -= OnWebServerStateChangeHandler;
             StopPacServer();
+            lazyStateChangeTimer?.Release();
             lazyCustomPacFileCacheUpdateTimer?.Release();
         }
 
@@ -277,21 +264,24 @@ namespace V2RayGCon.Service
         {
             lock (webServerLock)
             {
-                if (isWebServRunning)
+                if (IsPacServerRunning())
                 {
                     webServer.Stop();
-                    ClearCache();
-                    isWebServRunning = false;
+                    ClearDefaultPacCache();
                 }
-
                 StopCustomPacFileWatcher();
             }
             curUrlParam = null;
-            InvokeOnPACServerStatusChanged();
+            LazyInvokeOnPacServerStateChange();
         }
         #endregion
 
         #region private method
+        void OnWebServerStateChangeHandler(object sender, EventArgs args)
+        {
+            LazyInvokeOnPacServerStateChange();
+        }
+
         void StopCustomPacFileWatcher()
         {
             if (customPacFileWatcher == null)
@@ -302,21 +292,30 @@ namespace V2RayGCon.Service
             customPacFileWatcher.Dispose();
             customPacFileWatcher = null;
         }
-        void InvokeOnPACServerStatusChanged()
+
+        Lib.Sys.CancelableTimeout lazyStateChangeTimer = null;
+        void LazyInvokeOnPacServerStateChange()
         {
-            try
+            // Create on demand.
+            if (lazyStateChangeTimer == null)
             {
-                OnPACServerStatusChanged?.Invoke(this, EventArgs.Empty);
+                lazyStateChangeTimer = new Lib.Sys.CancelableTimeout(
+                    () =>
+                    {
+                        try
+                        {
+                            OnPACServerStateChanged?.Invoke(this, EventArgs.Empty);
+                        }
+                        catch { }
+                    },
+                    1000);
             }
-            catch { }
+            lazyStateChangeTimer.Start();
         }
 
-        void ClearCache()
+        void ClearDefaultPacCache()
         {
-            defaultPacCache = new Dictionary<bool, string[]> {
-                { true,null },
-                { false,null },
-            };
+            Lib.Nets.PacGenerator.ClearCache();
         }
 
         string GenPrefix(int port)
@@ -327,260 +326,33 @@ namespace V2RayGCon.Service
         Tuple<string, string> WebRequestDispatcher(HttpListenerRequest request)
         {
             // e.g. http://localhost:3000/pac/?&port=5678&ip=1.2.3.4&proto=socks&type=whitelist&key=rnd
-            var urlParam = Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri) ?? curUrlParam;
+            var urlParam =
+                Lib.Utils.GetProxyParamsFromUrl(request.Url.AbsoluteUri)
+                ?? curUrlParam;  // fall back
 
             if (urlParam == null)
             {
-                return new Tuple<string, string>("Bad request params.", null);
+                return new Tuple<string, string>("Bad request.", null);
             }
-
-            if (urlParam.isDebug)
-            {
-                return ResponsWithDebugger(urlParam);
-            }
-
-            return ResponseWithPacFile(urlParam);
-        }
-
-        private Tuple<string, string> ResponsWithDebugger(Model.Data.PacUrlParams urlParam)
-        {
-            var tpl = StrConst.PacDebuggerTpl;
-            var url = GenPacUrl(urlParam);
-            var pacContent = ResponseWithPacFile(urlParam);
-
-            var html = tpl.Replace("__PacServerUrl__", url)
-                .Replace("__PACFileContent__", pacContent.Item1);
-
-            var mime = "text/html; charset=UTF-8";
-            return new Tuple<string, string>(html, mime);
-        }
-
-        private Tuple<string, string> ResponseWithPacFile(Model.Data.PacUrlParams urlParam)
-        {
-            // ie require this header
-            var mime = "application/x-ns-proxy-autoconfig; charset=UTF-8";
 
             var pacSetting = setting.GetPacServerSettings();
-            StringBuilder content;
-            if (pacSetting.isUseCustomPac)
-            {
-                content = GenCustomPacFile(urlParam, pacSetting);
-            }
-            else
-            {
-                content = GenDefaultPacFile(
-                    urlParam,
-                    pacSetting.customWhiteList,
-                    pacSetting.customBlackList);
-            }
+            var pacFileResponse =
+                Lib.Nets.PacGenerator.GenPacFileResponse(
+                    urlParam, pacSetting, customPacFileCache);
 
-            return new Tuple<string, string>(content.ToString(), mime);
+            return urlParam.isDebug ?
+                GenPacDebuggerResponse(GenPacUrl(urlParam), pacFileResponse.Item1) :
+                pacFileResponse;
         }
 
-        StringBuilder GenCustomPacFile(
-            Model.Data.PacUrlParams urlParam,
-            Model.Data.PacServerSettings pacSetting)
+        Tuple<string, string> GenPacDebuggerResponse(
+            string url, string pacContent)
         {
-            var header = new Model.Data.PacCustomHeader(
-                urlParam,
-                pacSetting.customWhiteList,
-                pacSetting.customBlackList);
-
-            if (string.IsNullOrEmpty(customPacCache))
-            {
-                // 抢救一下，还不行就算了
-                UpdateCustomPacCache();
-            }
-
-            return new StringBuilder("var customSettings = ")
-                .Append(JsonConvert.SerializeObject(header))
-                .Append(";")
-                .Append(customPacCache);
-        }
-
-        private StringBuilder GenDefaultPacFile(
-            Model.Data.PacUrlParams urlParam,
-            string customWhiteList,
-            string customBlackList)
-        {
-            var proxy = urlParam.isSocks ?
-                            "SOCKS5 {0}:{1}; SOCKS {0}:{1}; DIRECT" :
-                            "PROXY {0}:{1}; DIRECT";
-            var mode = urlParam.isWhiteList ? "white" : "black";
-
-            var domainAndCidrs = GetDomainAndCidrFromCache(
-                urlParam.isWhiteList,
-                customWhiteList,
-                customBlackList);
-
-            var content = new StringBuilder(StrConst.PacJsTpl)
-                .Replace("__PROXY__", string.Format(proxy, urlParam.ip, urlParam.port))
-                .Replace("__MODE__", mode)
-                .Replace("__DOMAINS__", domainAndCidrs[0])
-                .Replace("__CIDRS__", domainAndCidrs[1]);
-            return content;
-        }
-
-        void MergeCustomPacSetting(
-            ref List<string> domainList,
-            ref List<long[]> cidrList,
-            string customList)
-        {
-            var list = customList.Split(
-                new char[] { '\n', '\r' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            var isRemove = false;
-            foreach (var line in list)
-            {
-                var item = line.Trim();
-
-                // ignore single line comment
-                if (item.StartsWith("//"))
-                {
-                    continue;
-                }
-
-                isRemove = false;
-                if (item.StartsWith("-"))
-                {
-                    isRemove = true;
-                    item = item.Substring(1);
-                }
-                ParseCustomPacSetting(ref domainList, ref cidrList, item, isRemove);
-            }
-        }
-
-        void RemoveRangeFromCidrList(ref List<long[]> cidrList, long[] range, bool isRemove)
-        {
-            if (!isRemove)
-            {
-                cidrList.Add(range);
-                return;
-            }
-
-            // 跑两次少写点代码
-            cidrList.RemoveAll(e => Lib.Utils.Overlaps(e, range) == Model.Data.Enum.Overlaps.All);
-
-            for (int i = 0; i < cidrList.Count; i++)
-            {
-                var element = cidrList[i];
-                switch (Lib.Utils.Overlaps(element, range))
-                {
-                    case Model.Data.Enum.Overlaps.Left:
-                        element[0] = range[1] + 1;
-                        break;
-                    case Model.Data.Enum.Overlaps.Right:
-                        element[1] = range[0] - 1;
-                        break;
-                    case Model.Data.Enum.Overlaps.Middle:
-                        cidrList.Add(new long[] { range[1] + 1, element[1] });
-                        element[1] = range[0] - 1;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        void ParseCustomPacSetting(
-            ref List<string> domainList,
-            ref List<long[]> cidrList,
-            string item,
-            bool isRemove)
-        {
-            if (Lib.Utils.IsIP(item))
-            {
-                var v = Lib.Utils.IP2Long(item);
-                RemoveRangeFromCidrList(ref cidrList, new long[] { v, v }, isRemove);
-                return;
-            }
-
-            if (Lib.Utils.IsCidr(item))
-            {
-                RemoveRangeFromCidrList(ref cidrList, Lib.Utils.Cidr2RangeArray(item), isRemove);
-                return;
-            }
-
-            if (isRemove)
-            {
-                domainList.RemoveAll(e => e == item);
-                return;
-            }
-
-            if (!domainList.Contains(item))
-            {
-                domainList.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// string[0] domain list
-        /// string[1] cidr list
-        /// </summary>
-        /// <param name="isWhiteList"></param>
-        /// <returns></returns>
-        string[] GetDomainAndCidrFromCache(
-            bool isWhiteList,
-            string customWhiteList,
-            string customBlackList)
-        {
-            if (defaultPacCache[isWhiteList] != null)
-            {
-                return defaultPacCache[isWhiteList];
-            }
-
-            // generate if not in cache
-            var domainList = Lib.Utils.GetPacDomainList(isWhiteList);
-            var cidrList = Lib.Utils.GetPacCidrList(isWhiteList);
-            var customUrlList = isWhiteList ? customWhiteList : customBlackList;
-            MergeCustomPacSetting(ref domainList, ref cidrList, customUrlList);
-            var cidrSimList = Lib.Utils.CompactCidrList(ref cidrList);
-            StringBuilder domainSB = ConvertDomainListIntoJsDict(domainList);
-            StringBuilder cidrSB = ConvertCidrListIntoJsRangeArray(cidrSimList);
-
-            defaultPacCache[isWhiteList] = new string[] {
-                domainSB.ToString(),
-                cidrSB.ToString(),
-            };
-
-            return defaultPacCache[isWhiteList];
-        }
-
-        private static StringBuilder ConvertCidrListIntoJsRangeArray(List<long[]> cidrSimList)
-        {
-            var cidrSB = new StringBuilder();
-            foreach (var cidr in cidrSimList)
-            {
-                cidrSB.Append("[")
-                    .Append(cidr[0])
-                    .Append(",")
-                    .Append(cidr[1])
-                    .Append("],");
-            }
-            if (cidrSimList.Count > 0)
-            {
-                cidrSB.Length--;
-            }
-
-            return cidrSB;
-        }
-
-        private static StringBuilder ConvertDomainListIntoJsDict(List<string> domainList)
-        {
-            var domainSB = new StringBuilder();
-            foreach (var url in domainList)
-            {
-                domainSB.Append("'")
-                    .Append(url)
-                    .Append("':1,");
-            }
-            if (domainList.Count > 0)
-            {
-                domainSB.Length--;
-            }
-
-            return domainSB;
+            var tpl = StrConst.PacDebuggerTpl;
+            var html = tpl.Replace("__PacServerUrl__", url)
+                .Replace("__PACFileContent__", pacContent);
+            var mime = "text/html; charset=UTF-8";
+            return new Tuple<string, string>(html, mime);
         }
         #endregion
     }

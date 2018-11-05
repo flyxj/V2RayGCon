@@ -4,7 +4,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
-    class PacServer : OptionComponentController
+    class TabPac : OptionComponentController
     {
         Service.Setting setting;
         Service.PacServer pacServer;
@@ -14,7 +14,7 @@ namespace V2RayGCon.Controller.OptionComponent
         RichTextBox rtboxCustomWhiteList, rtboxCustomBlackList;
         Button btnBrowseCustomPacFile;
 
-        public PacServer(
+        public TabPac(
             TextBox port,
             CheckBox isAutorun,
             RichTextBox customWhiteList,
@@ -58,7 +58,7 @@ namespace V2RayGCon.Controller.OptionComponent
             }
 
             InitControls();
-            if (pacServer.isWebServRunning)
+            if (pacServer.IsPacServerRunning())
             {
                 pacServer.RestartPacServer();
             }
@@ -82,7 +82,7 @@ namespace V2RayGCon.Controller.OptionComponent
             };
 
             setting.SavePacServerSettings(pacSetting);
-            if (pacServer.isWebServRunning)
+            if (pacServer.IsPacServerRunning())
             {
                 pacServer.RestartPacServer();
             }

@@ -22,7 +22,7 @@ namespace V2RayGCon.Service
 
             CreateNotifyIcon();
             setting.OnRequireNotifyTextUpdate += OnRequireNotifyTextUpdateHandler;
-            pacServer.OnPACServerStatusChanged += OnRequireNotifyTextUpdateHandler;
+            pacServer.OnPACServerStateChanged += OnRequireNotifyTextUpdateHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -48,7 +48,7 @@ namespace V2RayGCon.Service
         {
             ni.Visible = false;
             setting.OnRequireNotifyTextUpdate -= OnRequireNotifyTextUpdateHandler;
-            pacServer.OnPACServerStatusChanged -= OnRequireNotifyTextUpdateHandler;
+            pacServer.OnPACServerStateChanged -= OnRequireNotifyTextUpdateHandler;
         }
         #endregion
 
@@ -60,7 +60,6 @@ namespace V2RayGCon.Service
 
             if (!string.IsNullOrEmpty(pacUrl))
             {
-
                 var param = Lib.Utils.GetProxyParamsFromUrl(pacUrl);
                 if (param == null)
                 {

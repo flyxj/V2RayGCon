@@ -122,7 +122,7 @@ namespace V2RayGCon.Controller
 
             if (options.ContainsKey("pacserv"))
             {
-                GetComponent<Controller.OptionComponent.PacServer>()
+                GetComponent<Controller.OptionComponent.TabPac>()
                     .Reload(options["pacserv"]);
             }
 
