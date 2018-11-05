@@ -49,20 +49,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cboxSettingLanguage = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabPagePACServ = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rtboxPacServWhiteList = new System.Windows.Forms.RichTextBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.rtboxPacServBlackList = new System.Windows.Forms.RichTextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnPacBrowseFile = new System.Windows.Forms.Button();
-            this.tboxPacFilePath = new System.Windows.Forms.TextBox();
-            this.chkPacCustomFile = new System.Windows.Forms.CheckBox();
-            this.chkPacServIsAutorun = new System.Windows.Forms.CheckBox();
-            this.tboxPacServPort = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnOptionSave = new System.Windows.Forms.Button();
@@ -75,12 +61,6 @@
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPagePACServ.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -89,7 +69,6 @@
             this.tabControl1.Controls.Add(this.tabPageImport);
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
             this.tabControl1.Controls.Add(this.tabPageSetting);
-            this.tabControl1.Controls.Add(this.tabPagePACServ);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -232,100 +211,6 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // tabPagePACServ
-            // 
-            this.tabPagePACServ.Controls.Add(this.panel1);
-            this.tabPagePACServ.Controls.Add(this.groupBox2);
-            resources.ApplyResources(this.tabPagePACServ, "tabPagePACServ");
-            this.tabPagePACServ.Name = "tabPagePACServ";
-            this.tabPagePACServ.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.tableLayoutPanel1);
-            this.panel1.Name = "panel1";
-            // 
-            // tableLayoutPanel1
-            // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox4, 1, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.rtboxPacServWhiteList);
-            resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.TabStop = false;
-            // 
-            // rtboxPacServWhiteList
-            // 
-            resources.ApplyResources(this.rtboxPacServWhiteList, "rtboxPacServWhiteList");
-            this.rtboxPacServWhiteList.Name = "rtboxPacServWhiteList";
-            // 
-            // groupBox4
-            // 
-            resources.ApplyResources(this.groupBox4, "groupBox4");
-            this.groupBox4.Controls.Add(this.rtboxPacServBlackList);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.TabStop = false;
-            // 
-            // rtboxPacServBlackList
-            // 
-            resources.ApplyResources(this.rtboxPacServBlackList, "rtboxPacServBlackList");
-            this.rtboxPacServBlackList.Name = "rtboxPacServBlackList";
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.btnPacBrowseFile);
-            this.groupBox2.Controls.Add(this.tboxPacFilePath);
-            this.groupBox2.Controls.Add(this.chkPacCustomFile);
-            this.groupBox2.Controls.Add(this.chkPacServIsAutorun);
-            this.groupBox2.Controls.Add(this.tboxPacServPort);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // btnPacBrowseFile
-            // 
-            resources.ApplyResources(this.btnPacBrowseFile, "btnPacBrowseFile");
-            this.btnPacBrowseFile.Name = "btnPacBrowseFile";
-            this.toolTip1.SetToolTip(this.btnPacBrowseFile, resources.GetString("btnPacBrowseFile.ToolTip"));
-            this.btnPacBrowseFile.UseVisualStyleBackColor = true;
-            // 
-            // tboxPacFilePath
-            // 
-            resources.ApplyResources(this.tboxPacFilePath, "tboxPacFilePath");
-            this.tboxPacFilePath.Name = "tboxPacFilePath";
-            this.toolTip1.SetToolTip(this.tboxPacFilePath, resources.GetString("tboxPacFilePath.ToolTip"));
-            // 
-            // chkPacCustomFile
-            // 
-            resources.ApplyResources(this.chkPacCustomFile, "chkPacCustomFile");
-            this.chkPacCustomFile.Name = "chkPacCustomFile";
-            this.toolTip1.SetToolTip(this.chkPacCustomFile, resources.GetString("chkPacCustomFile.ToolTip"));
-            this.chkPacCustomFile.UseVisualStyleBackColor = true;
-            // 
-            // chkPacServIsAutorun
-            // 
-            resources.ApplyResources(this.chkPacServIsAutorun, "chkPacServIsAutorun");
-            this.chkPacServIsAutorun.Name = "chkPacServIsAutorun";
-            this.toolTip1.SetToolTip(this.chkPacServIsAutorun, resources.GetString("chkPacServIsAutorun.ToolTip"));
-            this.chkPacServIsAutorun.UseVisualStyleBackColor = true;
-            // 
-            // tboxPacServPort
-            // 
-            resources.ApplyResources(this.tboxPacServPort, "tboxPacServPort");
-            this.tboxPacServPort.Name = "tboxPacServPort";
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
             // btnBakBackup
             // 
             resources.ApplyResources(this.btnBakBackup, "btnBakBackup");
@@ -378,13 +263,6 @@
             this.groupBox5.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPagePACServ.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -411,22 +289,8 @@
         private System.Windows.Forms.ComboBox cboxSettingPageSize;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TabPage tabPagePACServ;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.RichTextBox rtboxPacServBlackList;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RichTextBox rtboxPacServWhiteList;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox chkPacServIsAutorun;
-        private System.Windows.Forms.TextBox tboxPacServPort;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox chkSetServAutotrack;
-        private System.Windows.Forms.Button btnPacBrowseFile;
-        private System.Windows.Forms.TextBox tboxPacFilePath;
-        private System.Windows.Forms.CheckBox chkPacCustomFile;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.CheckBox chkSetSysPortable;
     }

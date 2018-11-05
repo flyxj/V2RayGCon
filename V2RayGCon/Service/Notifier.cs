@@ -10,19 +10,16 @@ namespace V2RayGCon.Service
         NotifyIcon ni;
         Setting setting;
         Servers servers;
-        PacServer pacServer;
 
         Notifier() { }
 
-        public void Run(Setting setting, Servers servers, PacServer pacServer)
+        public void Run(Setting setting, Servers servers)
         {
             this.setting = setting;
             this.servers = servers;
-            this.pacServer = pacServer;
 
             CreateNotifyIcon();
             setting.OnRequireNotifyTextUpdate += OnRequireNotifyTextUpdateHandler;
-            pacServer.OnPACServerStateChanged += OnRequireNotifyTextUpdateHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -48,55 +45,14 @@ namespace V2RayGCon.Service
         {
             ni.Visible = false;
             setting.OnRequireNotifyTextUpdate -= OnRequireNotifyTextUpdateHandler;
-            pacServer.OnPACServerStateChanged -= OnRequireNotifyTextUpdateHandler;
         }
         #endregion
 
         #region private method
-        string GetterSysProxyInfo()
-        {
-            var proxy = Lib.Sys.ProxySetter.GetProxySetting();
-            var pacUrl = proxy.autoConfigUrl;
-
-            if (!string.IsNullOrEmpty(pacUrl))
-            {
-                var param = Lib.Utils.GetProxyParamsFromUrl(pacUrl);
-                if (param == null)
-                {
-                    return string.Format("{0} {1}",
-                        I18N.PacProxy,
-                        Lib.Utils.CutStr(pacUrl, 32));
-                }
-
-                return string.Format(
-                    "{0} {1}://{2}:{3}",
-                    I18N.PacProxy,
-                    (param.isSocks ? "socks5" : "http"),
-                    param.ip,
-                    param.port.ToString());
-            }
-
-            if (proxy.proxyEnable)
-            {
-                return string.Format(
-                    "{0} http://{1}",
-                    I18N.GlobalProxy,
-                    proxy.proxyServer);
-            }
-
-            return string.Empty;
-        }
-
         void OnRequireNotifyTextUpdateHandler(object sender, EventArgs args)
         {
-            var proxyInfo = GetterSysProxyInfo();
             var servInfo = setting.runningServerSummary;
             var text = string.Empty;
-
-            if (!string.IsNullOrEmpty(proxyInfo))
-            {
-                text += proxyInfo + Environment.NewLine;
-            }
 
             if (!string.IsNullOrEmpty(servInfo))
             {

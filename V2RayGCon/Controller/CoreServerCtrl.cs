@@ -15,8 +15,6 @@ namespace V2RayGCon.Controller
         [JsonIgnore]
         Service.Cache cache;
         [JsonIgnore]
-        Service.PacServer pacServer;
-        [JsonIgnore]
         Service.Servers servers;
         [JsonIgnore]
         Service.Setting setting;
@@ -67,11 +65,9 @@ namespace V2RayGCon.Controller
         public void Run(
              Service.Cache cache,
              Service.Setting setting,
-             Service.PacServer pacServer,
              Service.Servers servers)
         {
             this.cache = cache;
-            this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
@@ -146,30 +142,6 @@ namespace V2RayGCon.Controller
                 InvokeEventOnPropertyChange();
 
             }
-        }
-
-        public bool BecomeSystemProxy(bool isGlobal)
-        {
-            var inboundInfo = GetParsedInboundInfo();
-            if (inboundInfo == null)
-            {
-                SendLog(I18N.GetInboundInfoFail);
-                return false;
-            }
-
-            var protocol = inboundInfo.Item1;
-            var ip = inboundInfo.Item2;
-            var port = inboundInfo.Item3;
-
-            if (!IsSuitableForProxy(isGlobal, protocol))
-            {
-                return false;
-            }
-
-            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
-            SendLog(I18N.SetAsSysProxy);
-
-            return true;
         }
 
         public void SetIsSelected(bool selected)

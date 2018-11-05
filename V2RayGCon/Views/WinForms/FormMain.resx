@@ -502,7 +502,7 @@
     <value>3, 0</value>
   </data>
   <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 32</value>
+    <value>451, 32</value>
   </data>
   <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -610,7 +610,7 @@
     <value>Select none</value>
   </data>
   <data name="currentPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="currentPageToolStripMenuItem.Text" xml:space="preserve">
     <value>Current page</value>
@@ -673,7 +673,7 @@
     <value>Select untrack</value>
   </data>
   <data name="allPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="allPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>All pages</value>
@@ -736,7 +736,7 @@
     <value>Select untrack</value>
   </data>
   <data name="allServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="allServersToolStripMenuItem.Text" xml:space="preserve">
     <value>All servers</value>
@@ -748,34 +748,34 @@
     <value>Select</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Text" xml:space="preserve">
     <value>Move to top</value>
   </data>
   <data name="toolStripMenuItemMoveToBottom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemMoveToBottom.Text" xml:space="preserve">
     <value>Move to bottom</value>
   </data>
   <data name="toolStripMenuItemSortBySpeedTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemSortBySpeedTest.Text" xml:space="preserve">
     <value>Sort by speed test</value>
   </data>
   <data name="toolStripMenuItemSortBySummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemSortBySummary.Text" xml:space="preserve">
     <value>Sort by summary</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 6</value>
+    <value>249, 6</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemModifySettings.Text" xml:space="preserve">
     <value>Modify settings</value>
@@ -784,10 +784,10 @@
     <value>Batch modify servers settings. Selected servers which are running will reboot.</value>
   </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 6</value>
+    <value>249, 6</value>
   </data>
   <data name="toolStripMenuItemFoldingPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemFoldingPanel.Text" xml:space="preserve">
     <value>Folding panel</value>
@@ -796,7 +796,7 @@
     <value>Fold server panel into a single line mode.</value>
   </data>
   <data name="toolStripMenuItemExpansePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolStripMenuItemExpansePanel.Text" xml:space="preserve">
     <value>Expand panel</value>
@@ -909,48 +909,6 @@
   <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
     <value>Delete servers</value>
   </data>
-  <data name="startPACServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="startPACServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Start PAC server</value>
-  </data>
-  <data name="stopPACServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="stopPACServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Stop PAC server</value>
-  </data>
-  <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 6</value>
-  </data>
-  <data name="toolMenuItemClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
-    <value>Clear proxy setting</value>
-  </data>
-  <data name="copyPACURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="copyPACURLToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy PAC URL</value>
-  </data>
-  <data name="visitPACDebuggerURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="visitPACDebuggerURLToolStripMenuItem.Text" xml:space="preserve">
-    <value>PAC debugger</value>
-  </data>
-  <data name="visitPACDebuggerURLToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Visit PAC debugger webpage.</value>
-  </data>
-  <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>System proxy</value>
-  </data>
   <data name="toolMenuItemServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 22</value>
   </data>
@@ -958,25 +916,25 @@
     <value>Server</value>
   </data>
   <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolMenuItemConfigEditor.Text" xml:space="preserve">
     <value>Config editor</value>
   </data>
   <data name="toolMenuItemQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolMenuItemQRCode.Text" xml:space="preserve">
     <value>QRCode</value>
   </data>
   <data name="toolMenuItemLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolMenuItemLog.Text" xml:space="preserve">
     <value>Log</value>
   </data>
   <data name="toolMenuItemOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 30</value>
+    <value>252, 30</value>
   </data>
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>Options</value>
@@ -7827,48 +7785,6 @@
     <value>toolStripMenuItemDeleteSelectedServers</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemDeleteSelectedServers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;systemProxyToolStripMenuItem.Name" xml:space="preserve">
-    <value>systemProxyToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;systemProxyToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;startPACServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>startPACServerToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;startPACServerToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>stopPACServerToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
-    <value>toolStripSeparator11</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolMenuItemClearSysProxy.Name" xml:space="preserve">
-    <value>toolMenuItemClearSysProxy</value>
-  </data>
-  <data name="&gt;&gt;toolMenuItemClearSysProxy.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Name" xml:space="preserve">
-    <value>copyPACURLToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Name" xml:space="preserve">
-    <value>visitPACDebuggerURLToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">

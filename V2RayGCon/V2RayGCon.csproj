@@ -117,17 +117,13 @@
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
-    <Compile Include="Controller\OptionComponent\TabPac.cs" />
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />
     <Compile Include="Controller\FormOptionCtrl.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Lib\Nets\PacGenerator.cs" />
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
-    <Compile Include="Lib\Nets\WebServer.cs" />
     <Compile Include="Lib\Sys\Log.cs" />
-    <Compile Include="Lib\Sys\ProxySetter.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
     <Compile Include="Lib\Nets\TimedWebClient.cs">
@@ -146,6 +142,11 @@
     <Compile Include="Model\Data\PacServerSettings.cs" />
     <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Model\Data\UserSettings.cs" />
+    <Compile Include="Resource\Resx\StrConst.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StrConst.resx</DependentUpon>
+    </Compile>
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
@@ -153,7 +154,6 @@
     <Compile Include="Model\BaseClass\SingletonService.cs" />
     <Compile Include="Model\Data\ImportItem.cs" />
     <Compile Include="Service\Launcher.cs" />
-    <Compile Include="Service\PacServer.cs" />
     <Compile Include="Views\UserControls\ImportUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -190,11 +190,6 @@
     <Compile Include="Model\Data\Enum.cs" />
     <Compile Include="Model\Data\Shadowsocks.cs" />
     <Compile Include="Model\Data\Table.cs" />
-    <Compile Include="Resource\Resx\StrConst.Designer.cs">
-      <DependentUpon>StrConst.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Resource\Resx\I18N.zh-CN.Designer.cs">
       <DependentUpon>I18N.zh-CN.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -320,8 +315,8 @@
     </Compile>
     <EmbeddedResource Include="Resource\Resx\StrConst.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>StrConst.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>StrConst.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Resx\I18N.zh-CN.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -418,12 +413,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
-    <None Include="Resource\PAC\white_cidr.txt" />
-    <None Include="Resource\PAC\white.txt" />
-    <None Include="Resource\PAC\black.txt" />
-    <None Include="Resource\PAC\black_cidr.txt" />
-    <Content Include="Resource\PAC\PacDebuggerTpl.txt" />
-    <Content Include="Resource\PAC\PacJsTpl.txt" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\GlyphUp_16x.png" />

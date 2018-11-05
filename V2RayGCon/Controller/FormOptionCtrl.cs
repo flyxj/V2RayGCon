@@ -120,12 +120,6 @@ namespace V2RayGCon.Controller
                     .Reload(options["subscription"]);
             }
 
-            if (options.ContainsKey("pacserv"))
-            {
-                GetComponent<Controller.OptionComponent.TabPac>()
-                    .Reload(options["pacserv"]);
-            }
-
             if (options.ContainsKey("servers")
                 && Lib.UI.Confirm(I18N.ConfirmImportServers))
             {

@@ -18,7 +18,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
-    public class Utils
+    public static class Utils
     {
         #region pac
         public static Model.Data.Enum.Overlaps Overlaps(long[] a, long[] b)
@@ -162,12 +162,7 @@ namespace V2RayGCon.Lib
             return mask >= 0 && mask <= 32;
         }
 
-        public static List<string> GetPacDomainList(bool isWhiteList)
-        {
-            return (isWhiteList ? StrConst.white : StrConst.black)
-                .Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
-                .ToList();
-        }
+
 
         public static string Long2Ip(long number)
         {
@@ -192,19 +187,6 @@ namespace V2RayGCon.Lib
             var begin = IP2Long(cidr[0]);
             var end = (1L << (32 - Str2Int(cidr[1]))) + begin;
             return new long[] { begin, Math.Max(Math.Min(end - 1, (1L << 32) - 1), begin) };
-        }
-
-        public static List<long[]> GetPacCidrList(bool isWhiteList)
-        {
-            var result = new List<long[]>();
-            foreach (var item in
-                (isWhiteList ? StrConst.white_cidr : StrConst.black_cidr)
-                .Split(new char[] { '\n', '\r' },
-                    StringSplitOptions.RemoveEmptyEntries))
-            {
-                result.Add(Cidr2RangeArray(item));
-            }
-            return result;
         }
 
         public static List<long[]> CompactCidrList(ref List<long[]> cidrList)

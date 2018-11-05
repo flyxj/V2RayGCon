@@ -14,7 +14,6 @@ namespace V2RayGCon.Service
     public class Servers : Model.BaseClass.SingletonService<Servers>
     {
         Setting setting = null;
-        PacServer pacServer = null;
         Cache cache = null;
 
         public event EventHandler
@@ -40,17 +39,15 @@ namespace V2RayGCon.Service
 
         public void Run(
            Setting setting,
-           PacServer pacServer,
            Cache cache)
         {
             this.cache = cache;
             this.setting = setting;
-            this.pacServer = pacServer;
             this.serverList = setting.LoadServerList();
 
             foreach (var server in serverList)
             {
-                server.Run(cache, setting, pacServer, this);
+                server.Run(cache, setting, this);
                 BindEventsTo(server);
             }
         }
@@ -138,50 +135,7 @@ namespace V2RayGCon.Service
             bool isStart)
         {
             var curTrackerSetting = GenCurTrackerSetting(servCtrl.config, isStart);
-            var isGlobal = false;
             curTrackerSetting.curServer = null;
-            var proxySetting = setting.GetSysProxySetting();
-
-            switch (PacServer.DetectSystemProxyMode(proxySetting))
-            {
-                case Model.Data.Enum.SystemProxyMode.None:
-                    setting.SaveServerTrackerSetting(curTrackerSetting);
-                    return;
-                case Model.Data.Enum.SystemProxyMode.Global:
-                    isGlobal = true;
-                    break;
-                case Model.Data.Enum.SystemProxyMode.PAC:
-                    isGlobal = false;
-                    break;
-            }
-
-            foreach (var c in curTrackerSetting.serverList)
-            {
-                // 按trackerList的顺序来试
-                var serv = serverList.FirstOrDefault(s => s.config == c);
-                if (serv == null)
-                {
-                    continue;
-                }
-
-                if (serv.BecomeSystemProxy(isGlobal))
-                {
-                    curTrackerSetting.curServer = serv.config;
-                    break;
-                }
-            }
-
-            // 没有可用服务器时不要清空代理设置
-            // 否则全部重启时会丢失代理设置
-            if (curTrackerSetting.curServer == null)
-            {
-                OnSendLogHandler(this, new Model.Data.StrEvent(I18N.NoServerCapableOfSysProxy));
-                if (serverList.Count(s => s.isServerOn && !s.isUntrack) > 0)
-                {
-                    Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
-                }
-            }
-
             setting.SaveServerTrackerSetting(curTrackerSetting);
         }
 
@@ -1105,7 +1059,7 @@ namespace V2RayGCon.Service
                 serverList.Add(newServer);
             }
 
-            newServer.Run(cache, setting, pacServer, this);
+            newServer.Run(cache, setting, this);
             BindEventsTo(newServer);
 
             if (!quiet)
