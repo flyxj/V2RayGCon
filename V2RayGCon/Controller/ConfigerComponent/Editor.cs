@@ -27,7 +27,7 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             cache = Service.Cache.Instance;
 
-            separator = Model.Data.Table.sectionSeparator;
+            separator = (int)Model.Data.Enum.Sections.Seperator;
             sections = Model.Data.Table.configSections;
             preSection = 0;
 
@@ -252,11 +252,19 @@ namespace V2RayGCon.Controller.ConfigerComponet
             {
                 switch (preSection)
                 {
-                    case Model.Data.Table.inboundIndex:
+                    case (int)Model.Data.Enum.Sections.Inbound:
                         this.content = LoadInOutBoundExample(example, true);
                         break;
-                    case Model.Data.Table.outboundIndex:
+                    case (int)Model.Data.Enum.Sections.Outbound:
                         this.content = LoadInOutBoundExample(example, false);
+                        break;
+                    case (int)Model.Data.Enum.Sections.Inbounds:
+                        this.content = string.Format("[{0}]",
+                            LoadInOutBoundExample(example, true));
+                        break;
+                    case (int)Model.Data.Enum.Sections.Outbounds:
+                        this.content = string.Format("[{0}]",
+                            LoadInOutBoundExample(example, false));
                         break;
                     default:
                         this.content = cache.tpl.LoadExample(example[1]).ToString();

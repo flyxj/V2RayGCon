@@ -240,7 +240,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonSelectAllCurPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonSelectAllCurPage.Text" xml:space="preserve">
     <value>toolStripButton1</value>
@@ -260,7 +260,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonInverseSelectionCurPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonInverseSelectionCurPage.Text" xml:space="preserve">
     <value>toolStripButton2</value>
@@ -280,7 +280,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonSelectNoneCurPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonSelectNoneCurPage.Text" xml:space="preserve">
     <value>toolStripButton3</value>
@@ -305,7 +305,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonAllServerSelectAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonAllServerSelectAll.Text" xml:space="preserve">
     <value>toolStripButton4</value>
@@ -327,7 +327,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonAllServerSelectNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonAllServerSelectNone.Text" xml:space="preserve">
     <value>toolStripButton5</value>
@@ -354,7 +354,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonRestartSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonRestartSelected.Text" xml:space="preserve">
     <value>toolStripButton6</value>
@@ -373,7 +373,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonStopSelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonStopSelected.Text" xml:space="preserve">
     <value>toolStripButton7</value>
@@ -397,7 +397,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonModifySelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonModifySelected.Text" xml:space="preserve">
     <value>toolStripButton8</value>
@@ -420,7 +420,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonRunSpeedTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonRunSpeedTest.Text" xml:space="preserve">
     <value>toolStripButton9</value>
@@ -442,7 +442,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonSortSelectedBySpeedTestResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonSortSelectedBySpeedTestResult.Text" xml:space="preserve">
     <value>toolStripButton10</value>
@@ -468,7 +468,7 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButtonFormOption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 29</value>
+    <value>23, 29</value>
   </data>
   <data name="toolStripButtonFormOption.Text" xml:space="preserve">
     <value>toolStripButton11</value>
@@ -490,7 +490,7 @@
 </value>
   </data>
   <data name="toolStripLabelMarkFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 29</value>
+    <value>16, 29</value>
   </data>
   <data name="toolStripLabelMarkFilter.ToolTipText" xml:space="preserve">
     <value>Filter servers list. Click this to clear filter keywords.</value>
@@ -549,39 +549,6 @@
   <data name="mainMneuStrip.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 9pt</value>
   </data>
-  <data name="mainMneuStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="mainMneuStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>9, 3, 0, 3</value>
-  </data>
-  <data name="mainMneuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>615, 28</value>
-  </data>
-  <data name="mainMneuStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="mainMneuStrip.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;mainMneuStrip.Name" xml:space="preserve">
-    <value>mainMneuStrip</value>
-  </data>
-  <data name="&gt;&gt;mainMneuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mainMneuStrip.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;mainMneuStrip.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 22</value>
-  </data>
-  <data name="operationToolStripMenuItem.Text" xml:space="preserve">
-    <value>File</value>
-  </data>
   <data name="toolMenuItemSimAddVmessServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 30</value>
   </data>
@@ -618,17 +585,11 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="selectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 22</value>
+  <data name="operationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 22</value>
   </data>
-  <data name="selectToolStripMenuItem.Text" xml:space="preserve">
-    <value>Select</value>
-  </data>
-  <data name="currentPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
-  </data>
-  <data name="currentPageToolStripMenuItem.Text" xml:space="preserve">
-    <value>Current page</value>
+  <data name="operationToolStripMenuItem.Text" xml:space="preserve">
+    <value>File</value>
   </data>
   <data name="selectAllCurPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 30</value>
@@ -648,11 +609,11 @@
   <data name="selectNoneCurPageToolStripMenuItem1.Text" xml:space="preserve">
     <value>Select none</value>
   </data>
-  <data name="allPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+  <data name="currentPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 30</value>
   </data>
-  <data name="allPagesToolStripMenuItem.Text" xml:space="preserve">
-    <value>All pages</value>
+  <data name="currentPageToolStripMenuItem.Text" xml:space="preserve">
+    <value>Current page</value>
   </data>
   <data name="selectAllAllPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>268, 30</value>
@@ -705,11 +666,17 @@
   <data name="selectRunningAllPagesToolStripMenuItem.Text" xml:space="preserve">
     <value>Select running</value>
   </data>
-  <data name="allServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>252, 30</value>
+  <data name="selectUntrackAllPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 30</value>
   </data>
-  <data name="allServersToolStripMenuItem.Text" xml:space="preserve">
-    <value>All servers</value>
+  <data name="selectUntrackAllPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Select untrack</value>
+  </data>
+  <data name="allPagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 30</value>
+  </data>
+  <data name="allPagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>All pages</value>
   </data>
   <data name="selectAllAllServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>268, 30</value>
@@ -762,17 +729,23 @@
   <data name="selectRunningAllServersToolStripMenuItem.Text" xml:space="preserve">
     <value>Select running</value>
   </data>
-  <data name="toolMenuItemServer.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="selectUntrackAllServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 30</value>
+  </data>
+  <data name="selectUntrackAllServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Select untrack</value>
+  </data>
+  <data name="allServersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 30</value>
+  </data>
+  <data name="allServersToolStripMenuItem.Text" xml:space="preserve">
+    <value>All servers</value>
+  </data>
+  <data name="selectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 22</value>
   </data>
-  <data name="toolMenuItemServer.Text" xml:space="preserve">
-    <value>Server</value>
-  </data>
-  <data name="toolStripMenuItemModifySelected.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
-    <value>Adjust selected</value>
+  <data name="selectToolStripMenuItem.Text" xml:space="preserve">
+    <value>Select</value>
   </data>
   <data name="toolStripMenuItemMoveToTop.Size" type="System.Drawing.Size, System.Drawing">
     <value>250, 30</value>
@@ -831,11 +804,11 @@
   <data name="toolStripMenuItemExpansePanel.ToolTipText" xml:space="preserve">
     <value>Full server panel</value>
   </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripMenuItemModifySelected.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
   </data>
-  <data name="toolStripMenuItem1.Text" xml:space="preserve">
-    <value>Copy selected</value>
+  <data name="toolStripMenuItemModifySelected.Text" xml:space="preserve">
+    <value>Adjust selected</value>
   </data>
   <data name="toolStripMenuItemCopyAsV2rayLink.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 30</value>
@@ -863,6 +836,12 @@
   </data>
   <data name="toolStripMenuItemCopyAsSubscription.ToolTipText" xml:space="preserve">
     <value>Encode selected servers as subscription content. (vmess server only)</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>Copy selected</value>
   </data>
   <data name="toolStripMenuItemRestartSelected.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
@@ -912,12 +891,6 @@
   <data name="refreshSummaryToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Refresh summary of all servers.</value>
   </data>
-  <data name="toolStripMenuItemDeleteServers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 30</value>
-  </data>
-  <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
-    <value>Delete servers</value>
-  </data>
   <data name="toolStripMenuItemDeleteAllServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>304, 30</value>
   </data>
@@ -930,11 +903,26 @@
   <data name="toolStripMenuItemDeleteSelectedServers.Text" xml:space="preserve">
     <value>Delete selected servers.</value>
   </data>
-  <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripMenuItemDeleteServers.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
   </data>
-  <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
-    <value>System proxy</value>
+  <data name="toolStripMenuItemDeleteServers.Text" xml:space="preserve">
+    <value>Delete servers</value>
+  </data>
+  <data name="startPACServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="startPACServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Start PAC server</value>
+  </data>
+  <data name="stopPACServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="stopPACServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Stop PAC server</value>
+  </data>
+  <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>256, 6</value>
   </data>
   <data name="toolMenuItemClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
     <value>259, 30</value>
@@ -942,11 +930,32 @@
   <data name="toolMenuItemClearSysProxy.Text" xml:space="preserve">
     <value>Clear proxy setting</value>
   </data>
-  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="copyPACURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="copyPACURLToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy PAC URL</value>
+  </data>
+  <data name="visitPACDebuggerURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="visitPACDebuggerURLToolStripMenuItem.Text" xml:space="preserve">
+    <value>PAC debugger</value>
+  </data>
+  <data name="visitPACDebuggerURLToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Visit PAC debugger webpage.</value>
+  </data>
+  <data name="systemProxyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 30</value>
+  </data>
+  <data name="systemProxyToolStripMenuItem.Text" xml:space="preserve">
+    <value>System proxy</value>
+  </data>
+  <data name="toolMenuItemServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 22</value>
   </data>
-  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
-    <value>Window</value>
+  <data name="toolMenuItemServer.Text" xml:space="preserve">
+    <value>Server</value>
   </data>
   <data name="toolMenuItemConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 30</value>
@@ -972,11 +981,11 @@
   <data name="toolMenuItemOptions.Text" xml:space="preserve">
     <value>Options</value>
   </data>
-  <data name="aboutToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 22</value>
+  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 22</value>
   </data>
-  <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
-    <value>About</value>
+  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
+    <value>Window</value>
   </data>
   <data name="toolStripMenuItemDownLoadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
     <value>286, 30</value>
@@ -1010,6 +1019,39 @@
   </data>
   <data name="toolMenuItemHelp.Text" xml:space="preserve">
     <value>Help</value>
+  </data>
+  <data name="aboutToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 22</value>
+  </data>
+  <data name="aboutToolStripMenuItem1.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="mainMneuStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="mainMneuStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>9, 3, 0, 3</value>
+  </data>
+  <data name="mainMneuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>615, 28</value>
+  </data>
+  <data name="mainMneuStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="mainMneuStrip.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;mainMneuStrip.Name" xml:space="preserve">
+    <value>mainMneuStrip</value>
+  </data>
+  <data name="&gt;&gt;mainMneuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mainMneuStrip.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;mainMneuStrip.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>215, 17</value>
@@ -7571,6 +7613,12 @@
   <data name="&gt;&gt;selectRunningAllPagesToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;selectUntrackAllPagesToolStripMenuItem.Name" xml:space="preserve">
+    <value>selectUntrackAllPagesToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;selectUntrackAllPagesToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;allServersToolStripMenuItem.Name" xml:space="preserve">
     <value>allServersToolStripMenuItem</value>
   </data>
@@ -7629,6 +7677,12 @@
     <value>selectRunningAllServersToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;selectRunningAllServersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;selectUntrackAllServersToolStripMenuItem.Name" xml:space="preserve">
+    <value>selectUntrackAllServersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;selectUntrackAllServersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolMenuItemServer.Name" xml:space="preserve">
@@ -7781,10 +7835,40 @@
   <data name="&gt;&gt;systemProxyToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;startPACServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>startPACServerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;startPACServerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>stopPACServerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;stopPACServerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
+    <value>toolStripSeparator11</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;toolMenuItemClearSysProxy.Name" xml:space="preserve">
     <value>toolMenuItemClearSysProxy</value>
   </data>
   <data name="&gt;&gt;toolMenuItemClearSysProxy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>copyPACURLToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;copyPACURLToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPACDebuggerURLToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;visitPACDebuggerURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">

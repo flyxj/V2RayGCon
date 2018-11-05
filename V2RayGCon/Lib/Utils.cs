@@ -21,6 +21,42 @@ namespace V2RayGCon.Lib
     public class Utils
     {
         #region pac
+        public static Model.Data.Enum.Overlaps Overlaps(long[] a, long[] b)
+        {
+            if (a.Length != b.Length
+                || a.Length != 2
+                || a[0] > a[1]
+                || b[0] > b[1]
+                || b[0] > a[1])
+            {
+                // skip if error happened
+                return Model.Data.Enum.Overlaps.None;
+            }
+
+            if (b[0] > a[0])
+            {
+                if (b[1] >= a[1])
+                {
+                    return Model.Data.Enum.Overlaps.Right;
+                }
+                return Model.Data.Enum.Overlaps.Middle;
+            }
+
+            // b[0] <= a[0]
+
+            if (b[1] >= a[1])
+            {
+                return Model.Data.Enum.Overlaps.All;
+            }
+
+            if (b[1] >= a[0])
+            {
+                return Model.Data.Enum.Overlaps.Left;
+            }
+
+            return Model.Data.Enum.Overlaps.None;
+        }
+
         public static bool IsProxyNotSet(Model.Data.ProxyRegKeyValue proxySetting)
         {
             if (!string.IsNullOrEmpty(proxySetting.autoConfigUrl))
@@ -41,23 +77,37 @@ namespace V2RayGCon.Lib
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        public static Dictionary<string, string> ParseUrlQueryIntoParams(string url)
         {
-            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
-
             if (string.IsNullOrEmpty(url))
             {
                 return null;
             }
 
-            Uri uri = null;
-            uri = new Uri(url);
+            Dictionary<string, string> arguments = null;
+            try
+            {
+                var query = new Uri(url).Query;
+                arguments = query
+                 .Substring(1) // Remove '?'
+                 .Split('&')
+                 .Select(q => q.Split('='))
+                 .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+            }
+            catch { }
 
-            var arguments = uri.Query
-                .Substring(1) // Remove '?'
-                .Split('&')
-                .Select(q => q.Split('='))
-                .ToDictionary(q => q.FirstOrDefault(), q => q.Skip(1).FirstOrDefault());
+            return arguments;
+        }
+
+        /// <summary>
+        /// return null if fail
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static Model.Data.PacUrlParams GetProxyParamsFromUrl(string url)
+        {
+            // https://stackoverflow.com/questions/2884551/get-individual-query-parameters-from-uri
+            var arguments = ParseUrlQueryIntoParams(url);
 
             if (arguments == null)
             {
@@ -109,7 +159,7 @@ namespace V2RayGCon.Lib
                 return false;
             }
             var mask = Str2Int(parts[1]);
-            return mask > 0 && mask < 32;
+            return mask >= 0 && mask <= 32;
         }
 
         public static List<string> GetPacDomainList(bool isWhiteList)
@@ -119,12 +169,29 @@ namespace V2RayGCon.Lib
                 .ToList();
         }
 
+        public static string Long2Ip(long number)
+        {
+            if (number < 0 || number >= 1L << 32)
+            {
+                return "0.0.0.0";
+            }
+
+            var ips = new List<long>();
+            for (int i = 0; i < 4; i++)
+            {
+                ips.Add(number % 256);
+                number /= 256;
+            }
+            ips.Reverse();
+            return string.Join(".", ips);
+        }
+
         public static long[] Cidr2RangeArray(string cidrString)
         {
             var cidr = cidrString.Split('/');
             var begin = IP2Long(cidr[0]);
-            var end = (1 << (32 - Str2Int(cidr[1]))) + begin;
-            return new long[] { begin, end };
+            var end = (1L << (32 - Str2Int(cidr[1]))) + begin;
+            return new long[] { begin, Math.Max(Math.Min(end - 1, (1L << 32) - 1), begin) };
         }
 
         public static List<long[]> GetPacCidrList(bool isWhiteList)
@@ -144,7 +211,8 @@ namespace V2RayGCon.Lib
         {
             if (cidrList == null || cidrList.Count <= 0)
             {
-                throw new System.ArgumentException("Range list is empty!");
+                return new List<long[]>();
+                // throw new System.ArgumentException("Range list is empty!");
             }
 
             cidrList.Sort((a, b) => a[0].CompareTo(b[0]));
@@ -193,12 +261,23 @@ namespace V2RayGCon.Lib
 
         public static bool IsIP(string address)
         {
+            if (string.IsNullOrEmpty(address))
+            {
+                return false;
+            }
+
             return Regex.IsMatch(address, @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
         }
 
         #endregion
 
         #region Json
+        public static string GetConfigRoot(bool isInbound, bool isV4)
+        {
+            return (isInbound ? "inbound" : "outbound")
+                + (isV4 ? "s.0" : "");
+        }
+
         public static JObject ParseImportRecursively(
           Func<List<string>, List<string>> fetcher,
           JObject config,
@@ -282,19 +361,36 @@ namespace V2RayGCon.Lib
 
         public static string GetSummaryFromConfig(JObject config)
         {
-            var protocol = GetValue<string>(config, "outbound.protocol")?.ToLower();
-            string ipKey = null;
+            var result = GetSummaryFromConfig(config, "outbound");
+
+            if (string.IsNullOrEmpty(result))
+            {
+                return GetSummaryFromConfig(config, "outbounds.0");
+            }
+
+            return result;
+        }
+
+        public static string GetSummaryFromConfig(JObject config, string root)
+        {
+            var protocol = GetValue<string>(config, root + ".protocol")?.ToLower();
+            if (protocol == null)
+            {
+                return string.Empty;
+            }
+
+            string ipKey = root;
             switch (protocol)
             {
                 case "vmess":
-                    ipKey = "outbound.settings.vnext.0.address";
+                    ipKey += ".settings.vnext.0.address";
                     break;
                 case "shadowsocks":
                     protocol = "ss";
-                    ipKey = "outbound.settings.servers.0.address";
+                    ipKey += ".settings.servers.0.address";
                     break;
                 case "socks":
-                    ipKey = "outbound.settings.servers.0.address";
+                    ipKey += ".settings.servers.0.address";
                     break;
             }
 
@@ -390,14 +486,29 @@ namespace V2RayGCon.Lib
 
         public static JObject CreateJObject(string path)
         {
-            var result = JObject.Parse(@"{}");
+            return CreateJObject(path, null);
+        }
+
+        public static JObject CreateJObject(string path, JToken child)
+        {
+            JToken result;
+            if (child == null)
+            {
+                result = JToken.Parse(@"{}");
+            }
+            else
+            {
+                result = child;
+            }
+
 
             if (string.IsNullOrEmpty(path))
             {
-                return result;
+                return JObject.Parse(@"{}");
             }
-            var curNode = result as JToken;
-            foreach (var p in path.Split('.'))
+
+            JToken tempNode;
+            foreach (var p in path.Split('.').Reverse())
             {
                 if (string.IsNullOrEmpty(p))
                 {
@@ -406,14 +517,22 @@ namespace V2RayGCon.Lib
 
                 if (int.TryParse(p, out int num))
                 {
-                    throw new KeyNotFoundException("All parents must be JObject");
+                    if (num != 0)
+                    {
+                        throw new KeyNotFoundException("All parents must be JObject");
+                    }
+                    tempNode = JArray.Parse(@"[{}]");
+                    tempNode[0] = result;
                 }
-
-                curNode[p] = JObject.Parse(@"{}");
-                curNode = curNode[p];
+                else
+                {
+                    tempNode = JObject.Parse(@"{}");
+                    tempNode[p] = result;
+                }
+                result = tempNode;
             }
 
-            return result;
+            return result as JObject;
         }
 
         public static bool SetValue<T>(JObject json, string path, T value)
@@ -588,6 +707,12 @@ namespace V2RayGCon.Lib
             });
         }
 
+        /// <summary>
+        /// return null if path is null or path not exists.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static JToken GetKey(JToken json, string path)
         {
             if (string.IsNullOrEmpty(path))

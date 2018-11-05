@@ -39,7 +39,7 @@ namespace V2RayGCon.Test
 
         [DataTestMethod]
         [DataRow(".")]
-        [DataRow("a.0.")]
+        [DataRow("a.1")]
         [DataRow("b.")]
         public void CreateJObjectFailTest(string path)
         {
@@ -50,6 +50,20 @@ namespace V2RayGCon.Test
         }
 
         [DataTestMethod]
+        [DataRow("a.0.b", @"{}", @"{a:[{b:{}}]}")]
+        [DataRow("a.0.b", @"{c:1}", @"{a:[{b:{c:1}}]}")]
+        [DataRow("a", @"[{c:1}]", @"{'a':[{c:1}]}")]
+        [DataRow("", @"[{c:1}]", @"{}")]
+        public void CreateJObjectWithChildTest(string path, string child, string expect)
+        {
+            var c = JToken.Parse(child);
+            var result = Lib.Utils.CreateJObject(path, c);
+            var e = JObject.Parse(expect);
+            Assert.AreEqual<bool>(true, JObject.DeepEquals(result, e));
+        }
+
+        [DataTestMethod]
+        [DataRow("a.0.b", @"{a:[{b:{}}]}")]
         [DataRow("a", @"{'a':{}}")]
         [DataRow("a.b", @"{'a':{'b':{}}}")]
         [DataRow("a.b.c.d.e", @"{'a':{'b':{'c':{'d':{'e':{}}}}}}")]

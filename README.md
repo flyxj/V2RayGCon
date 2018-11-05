@@ -13,7 +13,7 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 
 ### 主要用途  
 * 编辑配置`config.json`  
-* 启动多个`v2ray-core`  
+* 启动多个[v2ray-core](https://github.com/v2ray/v2ray-core/releases)  
 * 导入/导出[vmess](https://github.com/2dust/v2rayN/wiki/%E5%88%86%E4%BA%AB%E9%93%BE%E6%8E%A5%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E(ver-2))/[v2ray](https://github.com/nobody3u/V2RayGCon/wiki/%E5%85%B3%E4%BA%8EV2RayGCon#v2ray%E9%93%BE%E6%8E%A5%E6%98%AF%E4%BB%80%E4%B9%88%E9%AC%BC)链接  
 * 生成/扫描vmess/v2ray二维码  
   

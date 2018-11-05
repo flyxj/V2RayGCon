@@ -77,6 +77,18 @@ namespace V2RayGCon.Views.WinForms
                     chkSetServAutotrack,
                     chkSetSysPortable));
 
+            ctrl.Plug(
+                new Controller.OptionComponent.TabPac(
+                    tboxPacServPort,
+                    chkPacServIsAutorun,
+                    rtboxPacServWhiteList,
+                    rtboxPacServBlackList,
+
+                    // custom pac file
+                    tboxPacFilePath,
+                    chkPacCustomFile,
+                    btnPacBrowseFile));
+
             return ctrl;
         }
 

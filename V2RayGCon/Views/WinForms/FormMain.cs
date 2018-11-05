@@ -181,13 +181,15 @@ namespace V2RayGCon.Views.WinForms
                 ToolStripMenuItem selectNoMarkAllPages,
                 ToolStripMenuItem selectNoSpeedTestAllPages,
                 ToolStripMenuItem selectRunningAllPages,
-                ToolStripMenuItem selectTimeoutAllPages,          
+                ToolStripMenuItem selectTimeoutAllPages,
+                ToolStripMenuItem selectUntrackAllPages,
                 */
                 selectAutorunAllPagesToolStripMenuItem,
                 selectNoMarkAllPagesToolStripMenuItem,
                 selectNoSpeedTestAllPagesToolStripMenuItem,
                 selectRunningAllPagesToolStripMenuItem,
                 selectTimeoutAllPagesToolStripMenuItem,
+                selectUntrackAllPagesToolStripMenuItem,
 
                 /*
                 ToolStripMenuItem selectAllAllServers,
@@ -203,13 +205,15 @@ namespace V2RayGCon.Views.WinForms
                 ToolStripMenuItem selectNoMarkAllServers,
                 ToolStripMenuItem selectNoSpeedTestAllServers,
                 ToolStripMenuItem selectRunningAllServers,
-                ToolStripMenuItem selectTimeoutAllServers
+                ToolStripMenuItem selectTimeoutAllServers,
+                ToolStripMenuItem selectUntrackAllServers,
                 */
                 selectAutorunAllServersToolStripMenuItem,
                 selectNoMarkAllServersToolStripMenuItem,
                 selectNoSpeedTestAllServersToolStripMenuItem,
                 selectRunningAllServersToolStripMenuItem,
-                selectTimeoutAllServersToolStripMenuItem));
+                selectTimeoutAllServersToolStripMenuItem,
+                selectUntrackAllServersToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 // for invoke ui refresh
@@ -217,8 +221,15 @@ namespace V2RayGCon.Views.WinForms
                 mainMneuStrip,
 
                 //// system proxy
+                //ToolStripMenuItem copyCurPacUrl,
                 //ToolStripMenuItem clearSysProxy,
+                //ToolStripMenuItem restartPACServer,
+                //ToolStripMenuItem stopPACServer,
+                copyPACURLToolStripMenuItem,
+                visitPACDebuggerURLToolStripMenuItem,
                 toolMenuItemClearSysProxy,
+                startPACServerToolStripMenuItem,
+                stopPACServerToolStripMenuItem,
 
                 //// misc
                 //ToolStripMenuItem refreshSummary,

@@ -15,6 +15,8 @@ namespace V2RayGCon.Controller
         [JsonIgnore]
         Service.Cache cache;
         [JsonIgnore]
+        Service.PacServer pacServer;
+        [JsonIgnore]
         Service.Servers servers;
         [JsonIgnore]
         Service.Setting setting;
@@ -65,9 +67,11 @@ namespace V2RayGCon.Controller
         public void Run(
              Service.Cache cache,
              Service.Setting setting,
+             Service.PacServer pacServer,
              Service.Servers servers)
         {
             this.cache = cache;
+            this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
@@ -144,20 +148,7 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public void SetGlobalProxy(string ip, int port)
-        {
-            var proxy = new Model.Data.ProxyRegKeyValue();
-            proxy.proxyEnable = true;
-            proxy.proxyServer = string.Format(
-                "{0}:{1}",
-                ip == "0.0.0.0" ? "127.0.0.1" : ip,
-                port.ToString());
-            Lib.Sys.ProxySetter.SetProxy(proxy);
-            setting.SaveSysProxySetting(proxy);
-            OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-        }
-
-        public bool BecomeSystemProxy()
+        public bool BecomeSystemProxy(bool isGlobal)
         {
             var inboundInfo = GetParsedInboundInfo();
             if (inboundInfo == null)
@@ -170,14 +161,14 @@ namespace V2RayGCon.Controller
             var ip = inboundInfo.Item2;
             var port = inboundInfo.Item3;
 
-            if (!IsSuitableForProxy(true, protocol))
+            if (!IsSuitableForProxy(isGlobal, protocol))
             {
                 return false;
             }
 
-            SetGlobalProxy(ip, port);
-
+            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
             SendLog(I18N.SetAsSysProxy);
+
             return true;
         }
 
@@ -231,6 +222,7 @@ namespace V2RayGCon.Controller
             SendLog(url);
 
             var speedTester = new Service.Core(setting);
+            speedTester.title = GetTitle();
             speedTester.OnLog += OnLogHandler;
             speedTester.RestartCore(config);
 
@@ -389,35 +381,25 @@ namespace V2RayGCon.Controller
 
         public void GetterInboundInfoFor(Action<string> next)
         {
-            var inType = overwriteInboundType;
-            switch (inType)
-            {
-                case (int)Model.Data.Enum.ProxyTypes.HTTP:
-                case (int)Model.Data.Enum.ProxyTypes.SOCKS:
-                    next(string.Format(
-                    "[{0}] {1}://{2}:{3}",
-                    this.name,
-                    GetInProtocolNameByNumber(inType),
-                    this.inboundIP,
-                    this.inboundPort));
-                    return;
-            }
-
             var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
-                var cfg = GetDecodedConfig(true, false, true);
-                var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
-                var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
-                var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
-
-                if (string.IsNullOrEmpty(listen))
+                var inInfo = GetParsedInboundInfo();
+                if (inInfo == null)
                 {
-                    next(string.Format("[{0}] {1}", serverName, protocol));
+                    next(string.Format("[{0}]", serverName));
                     return;
                 }
-
-                next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
+                if (string.IsNullOrEmpty(inInfo.Item2))
+                {
+                    next(string.Format("[{0}] {1}", serverName, inInfo.Item1));
+                    return;
+                }
+                next(string.Format("[{0}] {1}://{2}:{3}",
+                    serverName,
+                    inInfo.Item1,
+                    inInfo.Item2,
+                    inInfo.Item3));
             });
         }
 
@@ -455,6 +437,7 @@ namespace V2RayGCon.Controller
             }
 
             this.index = index;
+            this.server.title = GetTitle();
             InvokeEventOnPropertyChange();
         }
 
@@ -533,18 +516,30 @@ namespace V2RayGCon.Controller
             var ip = inboundIP;
             var port = inboundPort;
 
-            if (protocol == "config")
+            if (protocol != "config")
             {
-                var parsedConfig = GetDecodedConfig(true, false, true);
-                if (parsedConfig == null)
-                {
-                    return null;
-                }
-                protocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
-                ip = Lib.Utils.GetValue<string>(parsedConfig, "inbound.listen");
-                port = Lib.Utils.GetValue<int>(parsedConfig, "inbound.port");
+                return new Tuple<string, string, int>(protocol, ip, port);
             }
 
+            var parsedConfig = GetDecodedConfig(true, false, true);
+            if (parsedConfig == null)
+            {
+                return null;
+            }
+
+            string prefix = "inbound";
+            foreach (var p in new string[] { "inbound", "inbounds.0" })
+            {
+                prefix = p;
+                protocol = Lib.Utils.GetValue<string>(parsedConfig, prefix, "protocol");
+                if (!string.IsNullOrEmpty(protocol))
+                {
+                    break;
+                }
+            }
+
+            ip = Lib.Utils.GetValue<string>(parsedConfig, prefix, "listen");
+            port = Lib.Utils.GetValue<int>(parsedConfig, prefix, "port");
             return new Tuple<string, string, int>(protocol, ip, port);
         }
 
@@ -592,6 +587,7 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
+            server.title = GetTitle();
             server.RestartCoreThen(
                 cfg.ToString(),
                 () =>
@@ -739,7 +735,20 @@ namespace V2RayGCon.Controller
 
                 // Bug. Stream setting will mess things up.
                 // Lib.Utils.MergeJson(ref config, o);
-                config["inbound"] = o;
+                var hasInbound = Lib.Utils.GetKey(config, "inbound") != null;
+                var hasInbounds = Lib.Utils.GetKey(config, "inbounds.0") != null;
+
+                if (hasInbounds && !hasInbound)
+                {
+                    config["inbounds"][0] = o;
+                }
+                else
+                {
+                    config["inbound"] = o;
+                }
+
+                var debug = config.ToString(Formatting.Indented);
+
                 return true;
             }
             catch
