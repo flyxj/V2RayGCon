@@ -13,6 +13,7 @@
         public string ImportUrls { get; set; }
         public string DecodeCache { get; set; }
         public string SubscribeUrls { get; set; }
+        public string PluginInfoItems { get; set; }
         public string Culture { get; set; }
         public string ServerList { get; set; }
         public string PacServerSettings { get; set; }
@@ -33,6 +34,7 @@
             ImportUrls = string.Empty;
             DecodeCache = string.Empty;
             SubscribeUrls = string.Empty;
+            PluginInfoItems = string.Empty;
             Culture = string.Empty;
             ServerList = string.Empty;
             PacServerSettings = string.Empty;

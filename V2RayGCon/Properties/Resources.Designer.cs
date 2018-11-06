@@ -198,6 +198,15 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找类似 plugins 的本地化字符串。
+        /// </summary>
+        internal static string PluginsFolderName {
+            get {
+                return ResourceManager.GetString("PluginsFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 userSettings.json 的本地化字符串。
         /// </summary>
         internal static string PortableUserSettingsFilename {

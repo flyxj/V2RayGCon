@@ -388,6 +388,33 @@ namespace V2RayGCon.Service
             LazySaveUserSettings();
         }
 
+        public List<Model.Data.PluginInfoItem> GetPluginInfoItems()
+        {
+            try
+            {
+                var items = JsonConvert
+                    .DeserializeObject<List<Model.Data.PluginInfoItem>>(
+                        userSettings.PluginInfoItems);
+
+                if (items != null)
+                {
+                    return items;
+                }
+            }
+            catch { };
+            return new List<Model.Data.PluginInfoItem>();
+        }
+
+        public void SavePluginInfoItems(
+            List<Model.Data.PluginInfoItem> itemList)
+        {
+            string json = JsonConvert.SerializeObject(
+                itemList ?? new List<Model.Data.PluginInfoItem>());
+
+            userSettings.PluginInfoItems = json;
+            LazySaveUserSettings();
+        }
+
         public List<Model.Data.SubscriptionItem> GetSubscriptionItems()
         {
             try
@@ -413,7 +440,9 @@ namespace V2RayGCon.Service
 
         public void SaveServerList(List<Controller.CoreServerCtrl> serverList)
         {
-            string json = JsonConvert.SerializeObject(serverList);
+            string json = JsonConvert.SerializeObject(
+                serverList ?? new List<Controller.CoreServerCtrl>());
+
             userSettings.ServerList = json;
             LazySaveUserSettings();
         }
@@ -475,6 +504,7 @@ namespace V2RayGCon.Service
             p.ImportUrls = s.ImportUrls;
             p.DecodeCache = s.DecodeCache;
             p.SubscribeUrls = s.SubscribeUrls;
+            p.PluginInfoItems = s.PluginInfoItems;
             p.Culture = s.Culture;
             p.ServerList = s.ServerList;
             p.PacServerSettings = s.PacServerSettings;
@@ -526,6 +556,7 @@ namespace V2RayGCon.Service
                     ImportUrls = p.ImportUrls,
                     DecodeCache = p.DecodeCache,
                     SubscribeUrls = p.SubscribeUrls,
+                    PluginInfoItems = p.PluginInfoItems,
                     Culture = p.Culture,
                     ServerList = p.ServerList,
                     PacServerSettings = p.PacServerSettings,

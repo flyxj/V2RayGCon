@@ -13,6 +13,7 @@ namespace V2RayGCon.Service
         Servers servers;
         Notifier notifier;
         PacServer pacServer;
+
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
 
         bool isCleanupDone = false;
@@ -22,6 +23,7 @@ namespace V2RayGCon.Service
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
+            var pluginsServ = PluginsServer.Instance;
 
             setting = Setting.Instance;
             pacServer = PacServer.Instance;
@@ -35,6 +37,8 @@ namespace V2RayGCon.Service
             pacServer.Run(setting);
             servers.Run(setting, pacServer, cache);
             notifier.Run(setting, servers, pacServer);
+
+            pluginsServ.Run(setting);
 
             Application.ApplicationExit +=
                 (s, a) => OnApplicationExitHandler(false);

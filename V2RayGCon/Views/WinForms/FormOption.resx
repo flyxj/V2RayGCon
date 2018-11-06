@@ -1089,6 +1089,87 @@
   <data name="&gt;&gt;tabPagePACServ.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="btnPluginsRefresh.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 9</value>
+  </data>
+  <data name="btnPluginsRefresh.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="btnPluginsRefresh.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 34</value>
+  </data>
+  <data name="btnPluginsRefresh.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="btnPluginsRefresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="&gt;&gt;btnPluginsRefresh.Name" xml:space="preserve">
+    <value>btnPluginsRefresh</value>
+  </data>
+  <data name="&gt;&gt;btnPluginsRefresh.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnPluginsRefresh.Parent" xml:space="preserve">
+    <value>tabPagePlugins</value>
+  </data>
+  <data name="&gt;&gt;btnPluginsRefresh.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="flyPluginsItemsContainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="flyPluginsItemsContainer.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flyPluginsItemsContainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
+  </data>
+  <data name="flyPluginsItemsContainer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="flyPluginsItemsContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>587, 555</value>
+  </data>
+  <data name="flyPluginsItemsContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;flyPluginsItemsContainer.Name" xml:space="preserve">
+    <value>flyPluginsItemsContainer</value>
+  </data>
+  <data name="&gt;&gt;flyPluginsItemsContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flyPluginsItemsContainer.Parent" xml:space="preserve">
+    <value>tabPagePlugins</value>
+  </data>
+  <data name="&gt;&gt;flyPluginsItemsContainer.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabPagePlugins.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 28</value>
+  </data>
+  <data name="tabPagePlugins.Size" type="System.Drawing.Size, System.Drawing">
+    <value>723, 573</value>
+  </data>
+  <data name="tabPagePlugins.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="tabPagePlugins.Text" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="&gt;&gt;tabPagePlugins.Name" xml:space="preserve">
+    <value>tabPagePlugins</value>
+  </data>
+  <data name="&gt;&gt;tabPagePlugins.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPagePlugins.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabPagePlugins.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 18</value>
   </data>

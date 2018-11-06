@@ -142,10 +142,13 @@
     <Compile Include="Controller\ConfigerComponent\ConfigerComponentController.cs" />
     <Compile Include="Model\Data\PacCustomHeader.cs" />
     <Compile Include="Model\Data\PacUrlParams.cs" />
+    <Compile Include="Model\Data\PluginInfoItem.cs" />
     <Compile Include="Model\Data\ProxyRegKeyValue.cs" />
     <Compile Include="Model\Data\PacServerSettings.cs" />
     <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Model\Data\UserSettings.cs" />
+    <Compile Include="Model\Plugin\ApiServer.cs" />
+    <Compile Include="Model\Plugin\PluginContracts.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Model\Data\ImportItem.cs" />
     <Compile Include="Service\Launcher.cs" />
     <Compile Include="Service\PacServer.cs" />
+    <Compile Include="Service\PluginsServer.cs" />
     <Compile Include="Views\UserControls\ImportUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -165,6 +169,12 @@
     <Compile Include="Model\Data\LockValuePair.cs" />
     <Compile Include="Controller\CoreServerCtrl.cs" />
     <Compile Include="Model\Data\SubscriptionItem.cs" />
+    <Compile Include="Views\UserControls\PluginInfoUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\UserControls\PluginInfoUI.Designer.cs">
+      <DependentUpon>PluginInfoUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\ServerUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -284,6 +294,12 @@
     <Compile Include="Views\WinForms\FormSimAddVmessClient.Designer.cs">
       <DependentUpon>FormSimAddVmessClient.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\UserControls\PluginInfoUI.resx">
+      <DependentUpon>PluginInfoUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserControls\PluginInfoUI.zh-CN.resx">
+      <DependentUpon>PluginInfoUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\UserControls\ServerUI.resx">
       <DependentUpon>ServerUI.cs</DependentUpon>
     </EmbeddedResource>

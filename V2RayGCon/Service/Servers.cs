@@ -23,7 +23,6 @@ namespace V2RayGCon.Service
             OnRequireFlyPanelUpdate,
             OnRequireFlyPanelReload;
 
-
         List<Controller.CoreServerCtrl> serverList = null;
         List<string> markList = null;
 

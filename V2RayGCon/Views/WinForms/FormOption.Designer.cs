@@ -64,11 +64,14 @@
             this.chkPacServIsAutorun = new System.Windows.Forms.CheckBox();
             this.tboxPacServPort = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.tabPagePlugins = new System.Windows.Forms.TabPage();
             this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnOptionSave = new System.Windows.Forms.Button();
             this.btnBakRestore = new System.Windows.Forms.Button();
             this.btnOptionExit = new System.Windows.Forms.Button();
+            this.flyPluginsItemsContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnPluginsRefresh = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
@@ -82,6 +85,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.tabPagePlugins.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -91,6 +95,7 @@
             this.tabControl1.Controls.Add(this.tabPageSubscribe);
             this.tabControl1.Controls.Add(this.tabPageSetting);
             this.tabControl1.Controls.Add(this.tabPagePACServ);
+            this.tabControl1.Controls.Add(this.tabPagePlugins);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -335,6 +340,14 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
+            // tabPagePlugins
+            // 
+            this.tabPagePlugins.Controls.Add(this.btnPluginsRefresh);
+            this.tabPagePlugins.Controls.Add(this.flyPluginsItemsContainer);
+            resources.ApplyResources(this.tabPagePlugins, "tabPagePlugins");
+            this.tabPagePlugins.Name = "tabPagePlugins";
+            this.tabPagePlugins.UseVisualStyleBackColor = true;
+            // 
             // btnBakBackup
             // 
             resources.ApplyResources(this.btnBakBackup, "btnBakBackup");
@@ -366,6 +379,18 @@
             this.btnOptionExit.UseVisualStyleBackColor = true;
             this.btnOptionExit.Click += new System.EventHandler(this.btnOptionExit_Click);
             // 
+            // flyPluginsItemsContainer
+            // 
+            resources.ApplyResources(this.flyPluginsItemsContainer, "flyPluginsItemsContainer");
+            this.flyPluginsItemsContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flyPluginsItemsContainer.Name = "flyPluginsItemsContainer";
+            // 
+            // btnPluginsRefresh
+            // 
+            resources.ApplyResources(this.btnPluginsRefresh, "btnPluginsRefresh");
+            this.btnPluginsRefresh.Name = "btnPluginsRefresh";
+            this.btnPluginsRefresh.UseVisualStyleBackColor = true;
+            // 
             // FormOption
             // 
             resources.ApplyResources(this, "$this");
@@ -394,6 +419,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.tabPagePlugins.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -439,5 +465,8 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.CheckBox chkSetSysPortable;
         private System.Windows.Forms.CheckBox chkSetUseV4;
+        private System.Windows.Forms.TabPage tabPagePlugins;
+        private System.Windows.Forms.Button btnPluginsRefresh;
+        private System.Windows.Forms.FlowLayoutPanel flyPluginsItemsContainer;
     }
 }

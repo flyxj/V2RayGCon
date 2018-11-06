@@ -12,6 +12,7 @@ namespace V2RayGCon.Service
         Servers servers;
         PacServer pacServer;
 
+
         Notifier() { }
 
         public void Run(Setting setting, Servers servers, PacServer pacServer)
@@ -43,6 +44,27 @@ namespace V2RayGCon.Service
             ni.ContextMenuStrip.Items.Insert(0, menu);
         }
 #endif
+
+        ToolStripMenuItem pluginMenu = null;
+        public void UpdatePluginMenu(ToolStripMenuItem pluginMenu)
+        {
+            if (pluginMenu == null)
+            {
+                throw new ArgumentException("Plugin menu must not null!");
+            }
+
+            if (this.pluginMenu == null)
+            {
+                ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
+            }
+            else
+            {
+                ni.ContextMenuStrip.Items.Remove(pluginMenu);
+            }
+
+            this.pluginMenu = pluginMenu;
+            ni.ContextMenuStrip.Items.Insert(0, pluginMenu);
+        }
 
         public void Cleanup()
         {
