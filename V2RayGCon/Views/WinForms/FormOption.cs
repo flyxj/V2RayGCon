@@ -75,7 +75,8 @@ namespace V2RayGCon.Views.WinForms
                     cboxSettingLanguage,
                     cboxSettingPageSize,
                     chkSetServAutotrack,
-                    chkSetSysPortable));
+                    chkSetSysPortable,
+                    chkSetUseV4));
 
             ctrl.Plug(
                 new Controller.OptionComponent.TabPac(

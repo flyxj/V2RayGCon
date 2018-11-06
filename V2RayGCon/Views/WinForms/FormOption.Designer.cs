@@ -40,6 +40,7 @@
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSetting = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.chkSetUseV4 = new System.Windows.Forms.CheckBox();
             this.chkSetSysPortable = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.chkSetServAutotrack = new System.Windows.Forms.CheckBox();
@@ -156,10 +157,18 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.chkSetUseV4);
             this.groupBox6.Controls.Add(this.chkSetSysPortable);
             resources.ApplyResources(this.groupBox6, "groupBox6");
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.TabStop = false;
+            // 
+            // chkSetUseV4
+            // 
+            resources.ApplyResources(this.chkSetUseV4, "chkSetUseV4");
+            this.chkSetUseV4.Name = "chkSetUseV4";
+            this.toolTip1.SetToolTip(this.chkSetUseV4, resources.GetString("chkSetUseV4.ToolTip"));
+            this.chkSetUseV4.UseVisualStyleBackColor = true;
             // 
             // chkSetSysPortable
             // 
@@ -429,5 +438,6 @@
         private System.Windows.Forms.CheckBox chkPacCustomFile;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.CheckBox chkSetSysPortable;
+        private System.Windows.Forms.CheckBox chkSetUseV4;
     }
 }

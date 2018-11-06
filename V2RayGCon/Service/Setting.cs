@@ -43,6 +43,19 @@ namespace V2RayGCon.Service
             }
         }
 
+        public bool isUseV4
+        {
+            get
+            {
+                return userSettings.isUseV4Format;
+            }
+            set
+            {
+                userSettings.isUseV4Format = value;
+                LazySaveUserSettings();
+            }
+        }
+
         public bool isPortable
         {
             get
@@ -164,11 +177,11 @@ namespace V2RayGCon.Service
         {
             lazyGCTimer?.Release();
             lazySaveUserSettingsTimer?.Release();
-            SaveUserSettingsWorker();
+            SaveUserSettingsNow();
         }
 
         readonly object saveUserSettingsLocker = new object();
-        public void SaveUserSettingsWorker()
+        public void SaveUserSettingsNow()
         {
             lock (saveUserSettingsLocker)
             {
@@ -454,6 +467,7 @@ namespace V2RayGCon.Service
             p.ServerPanelPageSize = s.ServerPanelPageSize;
 
             // bool
+            p.UseV4Format = s.isUseV4Format;
             p.CfgShowToolPanel = s.CfgShowToolPanel;
             p.Portable = s.isPortable;
 
@@ -504,6 +518,7 @@ namespace V2RayGCon.Service
                     ServerPanelPageSize = p.ServerPanelPageSize,
 
                     // bool
+                    isUseV4Format = p.UseV4Format,
                     CfgShowToolPanel = p.CfgShowToolPanel,
                     isPortable = p.Portable,
 
@@ -553,7 +568,7 @@ namespace V2RayGCon.Service
             if (lazySaveUserSettingsTimer == null)
             {
                 lazySaveUserSettingsTimer = new Lib.Sys.CancelableTimeout(
-                    SaveUserSettingsWorker,
+                    SaveUserSettingsNow,
                     1000 * Lib.Utils.Str2Int(
                         StrConst.LazySaveUserSettingsDelay));
             }

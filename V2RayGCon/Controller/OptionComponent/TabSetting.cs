@@ -7,13 +7,16 @@ namespace V2RayGCon.Controller.OptionComponent
         Service.Setting setting;
 
         ComboBox cboxLanguage = null, cboxPageSize = null;
-        CheckBox chkServAutoTrack = null, chkPortableMode = null;
+        CheckBox chkServAutoTrack = null,
+            chkPortableMode = null,
+            chkSetUseV4 = null;
 
         public TabSetting(
             ComboBox cboxLanguage,
             ComboBox cboxPageSize,
             CheckBox chkServAutoTrack,
-            CheckBox chkPortableMode)
+            CheckBox chkPortableMode,
+            CheckBox chkSetUseV4)
         {
             this.setting = Service.Setting.Instance;
 
@@ -22,20 +25,24 @@ namespace V2RayGCon.Controller.OptionComponent
             this.cboxPageSize = cboxPageSize;
             this.chkServAutoTrack = chkServAutoTrack;
             this.chkPortableMode = chkPortableMode;
+            this.chkSetUseV4 = chkSetUseV4;
 
             InitElement(
                 cboxLanguage,
                 cboxPageSize,
                 chkServAutoTrack,
-                chkPortableMode);
+                chkPortableMode,
+                chkSetUseV4);
         }
 
         private void InitElement(
             ComboBox cboxLanguage,
             ComboBox cboxPageSize,
             CheckBox chkServAutoTrack,
-            CheckBox chkPortableMode)
+            CheckBox chkPortableMode,
+            CheckBox chkSetUseV4)
         {
+            chkSetUseV4.Checked = setting.isUseV4;
             chkPortableMode.Checked = setting.isPortable;
             cboxLanguage.SelectedIndex = (int)setting.culture;
             cboxPageSize.Text = setting.serverPanelPageSize.ToString();
@@ -69,22 +76,21 @@ namespace V2RayGCon.Controller.OptionComponent
 
             var trackerSetting = setting.GetServerTrackerSetting();
             trackerSetting.isTrackerOn = chkServAutoTrack.Checked;
+
             setting.SaveServerTrackerSetting(trackerSetting);
             setting.isServerTrackerOn = trackerSetting.isTrackerOn;
             setting.isPortable = chkPortableMode.Checked;
+            setting.isUseV4 = chkSetUseV4.Checked;
 
-            setting.SaveUserSettingsWorker();
+            setting.SaveUserSettingsNow();
             return true;
         }
 
         public override bool IsOptionsChanged()
         {
-            if (setting.isPortable != chkPortableMode.Checked)
-            {
-                return true;
-            }
-
-            if (Lib.Utils.Str2Int(cboxPageSize.Text) != setting.serverPanelPageSize)
+            if (setting.isUseV4 != chkSetUseV4.Checked
+                || setting.isPortable != chkPortableMode.Checked
+                || Lib.Utils.Str2Int(cboxPageSize.Text) != setting.serverPanelPageSize)
             {
                 return true;
             }

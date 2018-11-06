@@ -6,6 +6,7 @@
         public int MaxLogLine { get; set; }
         public int ServerPanelPageSize { get; set; }
 
+        public bool isUseV4Format { get; set; }
         public bool CfgShowToolPanel { get; set; }
         public bool isPortable { get; set; }
 
@@ -24,6 +25,8 @@
         {
             MaxLogLine = 1000;
             ServerPanelPageSize = 99;
+
+            isUseV4Format = false;
             CfgShowToolPanel = true;
             isPortable = false;
 
