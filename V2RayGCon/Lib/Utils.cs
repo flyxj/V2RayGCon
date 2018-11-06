@@ -643,11 +643,11 @@ namespace V2RayGCon.Lib
 
         public static void CombineConfig(ref JObject body, JObject mixin)
         {
-            // in(out)Dtr
-
             JObject backup = JObject.Parse(@"{}");
 
             foreach (var key in new string[] {
+                    "inbounds",
+                    "outbounds",
                     "inboundDetour",
                     "outboundDetour",
                     "routing.settings.rules"})
@@ -894,8 +894,6 @@ namespace V2RayGCon.Lib
             return null;
         }
 
-
-
         public static Model.Data.Vmess ConfigString2Vmess(string config)
         {
             JObject json;
@@ -914,13 +912,16 @@ namespace V2RayGCon.Lib
             vmess.v = "2";
             vmess.ps = GetStr("v2raygcon", "alias");
 
-            var prefix = "outbound.settings.vnext.0";
+            var isUseV4 = (GetStr("outbounds.0", "protocol")?.ToLower()) == "vmess";
+            var root = isUseV4 ? "outbounds.0" : "outbound";
+
+            var prefix = root + "." + "settings.vnext.0";
             vmess.add = GetStr(prefix, "address");
             vmess.port = GetStr(prefix, "port");
             vmess.id = GetStr(prefix, "users.0.id");
             vmess.aid = GetStr(prefix, "users.0.alterId");
 
-            prefix = "outbound.streamSettings";
+            prefix = root + "." + "streamSettings";
             vmess.net = GetStr(prefix, "network");
             vmess.type = GetStr(prefix, "kcpSettings.header.type");
             vmess.tls = GetStr(prefix, "security");
@@ -935,13 +936,14 @@ namespace V2RayGCon.Lib
                     try
                     {
                         vmess.path = GetStr(prefix, "httpSettings.path");
-                        var hosts = json["outbound"]["streamSettings"]["httpSettings"]["host"];
+                        var hosts = isUseV4 ?
+                            json["outbounds"][0]["streamSettings"]["httpSettings"]["host"] :
+                            json["outbound"]["streamSettings"]["httpSettings"]["host"];
                         vmess.host = JArray2Str(hosts as JArray);
                     }
                     catch { }
                     break;
             }
-
             return vmess;
         }
 

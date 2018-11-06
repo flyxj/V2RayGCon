@@ -317,6 +317,43 @@ namespace V2RayGCon.Service
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
+        JToken GenStreamSetting(Model.Data.Vmess vmess)
+        {
+            // insert stream type
+            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
+            string streamType = vmess.net.ToLower();
+
+            if (!streamTypes.Contains(streamType))
+            {
+                return JToken.Parse(@"{}");
+            }
+
+            var streamToken = cache.tpl.LoadTemplate(streamType);
+            try
+            {
+                switch (streamType)
+                {
+                    case "kcp":
+                        streamToken["kcpSettings"]["header"]["type"] = vmess.type;
+                        break;
+                    case "ws":
+                        streamToken["wsSettings"]["path"] = string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
+                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
+                        {
+                            streamToken["wsSettings"]["headers"]["Host"] = vmess.host;
+                        }
+                        break;
+                    case "h2":
+                        streamToken["httpSettings"]["path"] = vmess.path;
+                        streamToken["httpSettings"]["host"] = Lib.Utils.Str2JArray(vmess.host);
+                        break;
+                }
+            }
+            catch { }
+
+            return streamToken;
+        }
+
         JObject Vmess2Config(Model.Data.Vmess vmess)
         {
             if (vmess == null)
@@ -325,57 +362,28 @@ namespace V2RayGCon.Service
             }
 
             // prepare template
-            var config = cache.tpl.LoadTemplate("tplImportVmess");
+            var config = cache.tpl.LoadTemplate("tplImportVmess") as JObject;
             config["v2raygcon"]["alias"] = vmess.ps;
 
-            var cPos = config["outbound"]["settings"]["vnext"][0];
-            cPos["address"] = vmess.add;
-            cPos["port"] = Lib.Utils.Str2Int(vmess.port);
-            cPos["users"][0]["id"] = vmess.id;
-            cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
+            var outVmess = cache.tpl.LoadTemplate("outbVmess");
+            outVmess["streamSettings"] = GenStreamSetting(vmess);
+            var node = outVmess["settings"]["vnext"][0];
+            node["address"] = vmess.add;
+            node["port"] = Lib.Utils.Str2Int(vmess.port);
+            node["users"][0]["id"] = vmess.id;
+            node["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
 
-            // insert stream type
-            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
-            string streamType = vmess.net.ToLower();
+            var isV4 = setting.isUseV4;
+            var inbound = Lib.Utils.CreateJObject(
+                (isV4 ? "inbounds.0" : "inbound"),
+                cache.tpl.LoadTemplate("inbSimSock"));
 
-            if (!streamTypes.Contains(streamType))
-            {
-                return config.DeepClone() as JObject;
-            }
+            var outbound = Lib.Utils.CreateJObject(
+                (isV4 ? "outbounds.0" : "outbound"),
+                outVmess);
 
-            config["outbound"]["streamSettings"] =
-                cache.tpl.LoadTemplate(streamType);
-
-            try
-            {
-                switch (streamType)
-                {
-                    case "kcp":
-                        config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
-                        break;
-                    case "ws":
-                        config["outbound"]["streamSettings"]["wsSettings"]["path"] =
-                            string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
-                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
-                        {
-                            config["outbound"]["streamSettings"]["wsSettings"]["headers"]["Host"] = vmess.host;
-                        }
-                        break;
-                    case "h2":
-                        config["outbound"]["streamSettings"]["httpSettings"]["path"] = vmess.path;
-                        config["outbound"]["streamSettings"]["httpSettings"]["host"] = Lib.Utils.Str2JArray(vmess.host);
-                        break;
-                }
-
-            }
-            catch { }
-
-            try
-            {
-                // must place at the end. cos this key is add by streamSettings
-                config["outbound"]["streamSettings"]["security"] = vmess.tls;
-            }
-            catch { }
+            Lib.Utils.MergeJson(ref config, inbound);
+            Lib.Utils.MergeJson(ref config, outbound);
             return config.DeepClone() as JObject;
         }
 
