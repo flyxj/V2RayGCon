@@ -202,5 +202,17 @@ namespace V2RayGCon.Properties {
                 this["PluginInfoItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserSettings {
+            get {
+                return ((string)(this["UserSettings"]));
+            }
+            set {
+                this["UserSettings"] = value;
+            }
+        }
     }
 }

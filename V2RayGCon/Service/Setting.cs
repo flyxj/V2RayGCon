@@ -488,31 +488,16 @@ namespace V2RayGCon.Service
 
         void SaveUserSettingsToProperties()
         {
-            var p = Properties.Settings.Default;
-            var s = userSettings;
-
-            // int
-            p.MaxLogLine = s.MaxLogLine;
-            p.ServerPanelPageSize = s.ServerPanelPageSize;
-
-            // bool
-            p.UseV4Format = s.isUseV4Format;
-            p.CfgShowToolPanel = s.CfgShowToolPanel;
-            p.Portable = s.isPortable;
-
-            // string
-            p.ImportUrls = s.ImportUrls;
-            p.DecodeCache = s.DecodeCache;
-            p.SubscribeUrls = s.SubscribeUrls;
-            p.PluginInfoItems = s.PluginInfoItems;
-            p.Culture = s.Culture;
-            p.ServerList = s.ServerList;
-            p.PacServerSettings = s.PacServerSettings;
-            p.SysProxySetting = s.SysProxySetting;
-            p.ServerTracker = s.ServerTracker;
-            p.WinFormPosList = s.WinFormPosList;
-
-            p.Save();
+            try
+            {
+                Properties.Settings.Default.UserSettings =
+                    JsonConvert.SerializeObject(userSettings);
+                Properties.Settings.Default.Save();
+            }
+            catch
+            {
+                DebugSendLog("Save user settings to Properties fail!");
+            }
         }
 
         void SaveUserSettingsToFile()
@@ -535,7 +520,31 @@ namespace V2RayGCon.Service
 
         Model.Data.UserSettings LoadUserSettingsFromPorperties()
         {
-            DebugSendLog("Try read setting from properties");
+            try
+            {
+                var us = JsonConvert
+                    .DeserializeObject<Model.Data.UserSettings>(
+                        Properties.Settings.Default.UserSettings);
+
+                if (us != null)
+                {
+                    DebugSendLog("Read user settings from Properties.Usersettings");
+                    return us;
+                }
+            }
+            catch { }
+
+            return FallBackLoadUserSettingsFromPorperties();
+        }
+
+        /// <summary>
+        /// This function has been marked as obsolete in 2018.11.07
+        /// Scheduled to be deleted in 2018.12.07
+        /// </summary>
+        /// <returns></returns>
+        Model.Data.UserSettings FallBackLoadUserSettingsFromPorperties()
+        {
+            DebugSendLog("Try read user setting from fall back.");
 
             try
             {
