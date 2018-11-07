@@ -117,6 +117,7 @@
     <Compile Include="Controller\ConfigerComponent\Quick.cs" />
     <Compile Include="Controller\OptionComponent\OptionComponentController.cs" />
     <Compile Include="Controller\OptionComponent\Import.cs" />
+    <Compile Include="Controller\OptionComponent\TabPlugin.cs" />
     <Compile Include="Controller\OptionComponent\TabPac.cs" />
     <Compile Include="Controller\OptionComponent\TabSetting.cs" />
     <Compile Include="Controller\OptionComponent\Subscription.cs" />

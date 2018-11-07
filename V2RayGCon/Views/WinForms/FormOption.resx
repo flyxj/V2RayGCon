@@ -1104,6 +1104,9 @@
   <data name="btnPluginsRefresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="btnPluginsRefresh.ToolTip" xml:space="preserve">
+    <value>Search for plugins in directory plugins.</value>
+  </data>
   <data name="&gt;&gt;btnPluginsRefresh.Name" xml:space="preserve">
     <value>btnPluginsRefresh</value>
   </data>

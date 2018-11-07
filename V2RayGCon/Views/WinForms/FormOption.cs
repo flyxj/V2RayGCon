@@ -71,6 +71,11 @@ namespace V2RayGCon.Views.WinForms
                     btnUpdateViaSubscription));
 
             ctrl.Plug(
+                new Controller.OptionComponent.TabPlugin(
+                    flyPluginsItemsContainer,
+                    btnPluginsRefresh));
+
+            ctrl.Plug(
                 new Controller.OptionComponent.TabSetting(
                     cboxSettingLanguage,
                     cboxSettingPageSize,

@@ -65,13 +65,13 @@
             this.tboxPacServPort = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPagePlugins = new System.Windows.Forms.TabPage();
+            this.btnPluginsRefresh = new System.Windows.Forms.Button();
+            this.flyPluginsItemsContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnOptionSave = new System.Windows.Forms.Button();
             this.btnBakRestore = new System.Windows.Forms.Button();
             this.btnOptionExit = new System.Windows.Forms.Button();
-            this.flyPluginsItemsContainer = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnPluginsRefresh = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
@@ -348,6 +348,19 @@
             this.tabPagePlugins.Name = "tabPagePlugins";
             this.tabPagePlugins.UseVisualStyleBackColor = true;
             // 
+            // btnPluginsRefresh
+            // 
+            resources.ApplyResources(this.btnPluginsRefresh, "btnPluginsRefresh");
+            this.btnPluginsRefresh.Name = "btnPluginsRefresh";
+            this.toolTip1.SetToolTip(this.btnPluginsRefresh, resources.GetString("btnPluginsRefresh.ToolTip"));
+            this.btnPluginsRefresh.UseVisualStyleBackColor = true;
+            // 
+            // flyPluginsItemsContainer
+            // 
+            resources.ApplyResources(this.flyPluginsItemsContainer, "flyPluginsItemsContainer");
+            this.flyPluginsItemsContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flyPluginsItemsContainer.Name = "flyPluginsItemsContainer";
+            // 
             // btnBakBackup
             // 
             resources.ApplyResources(this.btnBakBackup, "btnBakBackup");
@@ -378,18 +391,6 @@
             this.btnOptionExit.Name = "btnOptionExit";
             this.btnOptionExit.UseVisualStyleBackColor = true;
             this.btnOptionExit.Click += new System.EventHandler(this.btnOptionExit_Click);
-            // 
-            // flyPluginsItemsContainer
-            // 
-            resources.ApplyResources(this.flyPluginsItemsContainer, "flyPluginsItemsContainer");
-            this.flyPluginsItemsContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flyPluginsItemsContainer.Name = "flyPluginsItemsContainer";
-            // 
-            // btnPluginsRefresh
-            // 
-            resources.ApplyResources(this.btnPluginsRefresh, "btnPluginsRefresh");
-            this.btnPluginsRefresh.Name = "btnPluginsRefresh";
-            this.btnPluginsRefresh.UseVisualStyleBackColor = true;
             // 
             // FormOption
             // 
