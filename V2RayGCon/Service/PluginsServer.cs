@@ -1,124 +1,156 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting;
-using System.Security;
-using System.Security.Permissions;
-using System.Security.Policy;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
-    public class PluginsServer : Model.BaseClass.SingletonService<PluginsServer>
+    class PluginsServer : Model.BaseClass.SingletonService<PluginsServer>
     {
         Service.Setting setting;
+        Notifier notifier;
 
-        Dictionary<string, Model.Plugin.PluginContracts.IPlugin> plugins =
-            new Dictionary<string, Model.Plugin.PluginContracts.IPlugin>();
+        Dictionary<string, Model.Plugin.IPlugin> plugins =
+            new Dictionary<string, Model.Plugin.IPlugin>();
 
         PluginsServer() { }
 
-        public void Run(Setting setting)
+        public void Run(
+            Setting setting,
+            Notifier notifier)
         {
             this.setting = setting;
+            this.notifier = notifier;
+
+            ReloadPlugins();
+            UpdateNotifierMenu();
+            var enabledList = GetCurEnabledPluginFileNames();
+            StartPlugins(enabledList);
         }
 
         #region properties
         #endregion
 
         #region public methods
-        public void ReloadPluginInfo()
+        public void Cleanup()
         {
-            this.plugins = new Dictionary<string, Model.Plugin.PluginContracts.IPlugin>();
-            var pluginInfos = new List<Model.Data.PluginInfoItem>();
+            ClearPlugins();
+        }
 
-            var dllFileNames = GetDllFileNames();
-            if (dllFileNames == null)
+        public void UpdateNotifierMenu()
+        {
+            var enabledList = GetCurEnabledPluginFileNames();
+
+            var children = new List<ToolStripMenuItem>();
+            foreach (var fileName in enabledList)
             {
-                setting.SavePluginInfoItems(pluginInfos);
-                return;
+                if (plugins.ContainsKey(fileName))
+                {
+                    var plugin = plugins[fileName];
+                    children.Add(
+                        new ToolStripMenuItem(
+                            fileName,
+                            null,
+                            (s, a) => plugin.Show()));
+                }
             }
 
-            Model.Plugin.PluginContracts.IPlugin plugin;
-            foreach (var fileName in dllFileNames)
+            notifier.UpdatePluginMenu(children.Count > 0 ?
+                new ToolStripMenuItem(
+                    I18N.Plugins,
+                    Properties.Resources.Module_16x,
+                    children.ToArray()) :
+                null);
+        }
+
+        public void RefreshPlugins()
+        {
+            ReloadPlugins();
+            SavePlugInfos();
+            if (plugins.Count <= 0)
             {
-                Type pluginType = Model.Plugin.Sandboxer.LoadPluginTypeFromFile(fileName);
-
-                if (pluginType == null || !Lib.Utils.IsTrustedPlugin(fileName))
-                {
-                    continue;
-                }
-
-                plugin = Model.Plugin.Sandboxer.CreatePluginInstance(
-                    pluginType);
-
-
-                if (plugin == null)
-                {
-                    Lib.Sys.Log.Error($"Load {fileName} fail!");
-                    continue;
-                }
-
-                var key = Path.GetFileName(fileName);
-                this.plugins[key] = plugin;
+                Task.Factory.StartNew(
+                    () => MessageBox.Show(I18N.FindNoPlugin));
             }
-
-            UpdatePluginInfos();
         }
         #endregion
 
         #region private methods
-
-        /// <summary>
-        /// Return null if fail to load dll
-        /// </summary>
-        /// <param name="pluginFileName">for individual namespaces</param>
-        /// <returns></returns>
-        Model.Plugin.PluginContracts.IPlugin CreatePluginInstanceInSandbox(
-            string pluginFileName,
-            Type pluginType)
+        void ReloadPlugins()
         {
-            // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
+            ClearPlugins();
+            var dllFileNames = SearchDllFiles();
+            if (dllFileNames == null)
+            {
+                return;
+            }
 
-            //Setting the AppDomainSetup. It is very important to set the ApplicationBase to a folder   
-            //other than the one in which the sandboxer resides.  
-            AppDomainSetup adSetup = new AppDomainSetup();
-            adSetup.ApplicationBase = Path.GetFullPath(Properties.Resources.PluginsFolderName);
+            foreach (var relativeFilePath in dllFileNames)
+            {
+                if (!Lib.Utils.IsTrustedPlugin(relativeFilePath))
+                {
+                    continue;
+                }
 
-            //Setting the permissions for the AppDomain. We give the permission to execute and to   
-            //read/discover the location where the untrusted code is loaded.  
-            PermissionSet permSet = new PermissionSet(PermissionState.None);
-            permSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+                var plugin = Model.Plugin.Sandboxer.LoadTrustedPlugin(relativeFilePath);
+                if (plugin == null)
+                {
+                    continue;
+                }
 
-            //We want the sandboxer assembly's strong name, so that we can add it to the full trust list.  
-            StrongName fullTrustAssembly = typeof(Model.Plugin.Sandboxer).Assembly.Evidence.GetHostEvidence<StrongName>();
-
-            //Now we have everything we need to create the AppDomain, so let's create it.  
-            AppDomain newDomain = AppDomain.CreateDomain("Sandbox" + pluginFileName, null, adSetup, permSet, fullTrustAssembly);
-
-            //Use CreateInstanceFrom to load an instance of the Sandboxer class into the  
-            //new AppDomain.   
-            ObjectHandle handle = Activator.CreateInstanceFrom(
-                newDomain,
-                typeof(Model.Plugin.Sandboxer).Assembly.ManifestModule.FullyQualifiedName,
-                typeof(Model.Plugin.Sandboxer).FullName);
-
-
-            //Unwrap the new domain instance into a reference in this domain and use it to execute the   
-            //untrusted code.  
-            var box = handle.Unwrap() as Model.Plugin.Sandboxer;
-            return box.CreatePartiallyTrustedPluginInstance(pluginType) ? box : null;
+                var key = Path.GetFileName(relativeFilePath);
+                this.plugins[key] = plugin;
+            }
         }
 
-        bool GetIsUse(string filename, List<Model.Data.PluginInfoItem> pluginInfos)
+        void StartPlugins(List<string> fileNames)
         {
-            var item = pluginInfos.FirstOrDefault(p => p.filename == filename);
-            return item == null ? false : item.isUse;
+            foreach (var fileName in fileNames)
+            {
+                if (plugins.ContainsKey(fileName))
+                {
+                    plugins[fileName].Run();
+                }
+            }
         }
 
-        void UpdatePluginInfos()
+        void CleanupPlugins(List<string> fileNames)
         {
-            var oldPluginsInfo = setting.GetPluginInfoItems();
+            foreach (var fileName in fileNames)
+            {
+                if (plugins.ContainsKey(fileName))
+                {
+                    plugins[fileName].Cleanup();
+                }
+            }
+        }
+
+        void ClearPlugins()
+        {
+            CleanupPlugins(plugins.Keys.ToList());
+            plugins = new Dictionary<string, Model.Plugin.IPlugin>();
+        }
+
+        List<string> GetCurEnabledPluginFileNames()
+        {
+            var list = setting.GetPluginInfoItems();
+            return list
+                .Where(p => p.isUse)
+                .Select(p => p.filename)
+                .ToList();
+        }
+
+        void SavePlugInfos()
+        {
+            if (plugins.Count <= 0)
+            {
+                setting.SavePluginInfoItems(null);
+                return;
+            }
+
+            var enabledList = GetCurEnabledPluginFileNames();
             var newPluginsInfo = new List<Model.Data.PluginInfoItem>();
             foreach (var item in this.plugins)
             {
@@ -130,16 +162,14 @@ namespace V2RayGCon.Service
                     name = plugin.Name,
                     version = plugin.Version,
                     description = plugin.Description,
-                    isUse = GetIsUse(filename, oldPluginsInfo),
+                    isUse = enabledList.Contains(filename),
                 };
                 newPluginsInfo.Add(pluginInfo);
             }
             setting.SavePluginInfoItems(newPluginsInfo);
         }
 
-
-
-        string[] GetDllFileNames()
+        string[] SearchDllFiles()
         {
             var path = Properties.Resources.PluginsFolderName;
             if (Directory.Exists(path))

@@ -638,4 +638,10 @@ Please delete {0} in app folder.</value>
   <data name="PacProxy" xml:space="preserve">
     <value>PAC proxy</value>
   </data>
+  <data name="Plugins" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="FindNoPlugin" xml:space="preserve">
+    <value>Find no plugin.</value>
+  </data>
 </root>

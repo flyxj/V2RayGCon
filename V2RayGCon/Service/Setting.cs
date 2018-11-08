@@ -405,6 +405,10 @@ namespace V2RayGCon.Service
             return new List<Model.Data.PluginInfoItem>();
         }
 
+        /// <summary>
+        /// Feel free to pass null.
+        /// </summary>
+        /// <param name="itemList"></param>
         public void SavePluginInfoItems(
             List<Model.Data.PluginInfoItem> itemList)
         {

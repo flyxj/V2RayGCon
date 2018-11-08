@@ -155,7 +155,7 @@
     <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Model\Data\UserSettings.cs" />
     <Compile Include="Model\Plugin\ApiServer.cs" />
-    <Compile Include="Model\Plugin\PluginContracts.cs" />
+    <Compile Include="Model\Plugin\IPlugin.cs" />
     <Compile Include="Model\Plugin\Sandboxer.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
@@ -447,6 +447,7 @@
     <None Include="Resource\PAC\white.txt" />
     <None Include="Resource\PAC\black.txt" />
     <None Include="Resource\PAC\black_cidr.txt" />
+    <None Include="Resource\Icon\TaskTray\Module_16x.png" />
     <Content Include="Resource\PAC\PacDebuggerTpl.txt" />
     <Content Include="Resource\PAC\PacJsTpl.txt" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />

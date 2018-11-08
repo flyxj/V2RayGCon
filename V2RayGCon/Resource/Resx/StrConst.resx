@@ -264,7 +264,7 @@
     <comment>seconds</comment>
   </data>
   <data name="LogFileName" xml:space="preserve">
-    <value>log.txt</value>
+    <value>vgclog.txt</value>
   </data>
   <data name="V2RayCoreFolder" xml:space="preserve">
     <value>core</value>

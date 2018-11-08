@@ -37,6 +37,8 @@ namespace V2RayGCon.Controller.OptionComponent
             }
             setting.SavePluginInfoItems(CollectPluginInfoItems());
             MarkdownCurOption();
+
+            pluginServ.UpdateNotifierMenu();
             return true;
         }
 
@@ -93,7 +95,7 @@ namespace V2RayGCon.Controller.OptionComponent
         {
             this.btnUpdate.Click += (s, a) =>
             {
-                pluginServ.ReloadPluginInfo();
+                pluginServ.RefreshPlugins();
                 InitPanel();
             };
         }

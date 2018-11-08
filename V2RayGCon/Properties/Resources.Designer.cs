@@ -198,6 +198,16 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Module_16x {
+            get {
+                object obj = ResourceManager.GetObject("Module_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 plugins 的本地化字符串。
         /// </summary>
         internal static string PluginsFolderName {

@@ -13,6 +13,7 @@ namespace V2RayGCon.Service
         Servers servers;
         Notifier notifier;
         PacServer pacServer;
+        PluginsServer pluginsServ;
 
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
 
@@ -23,12 +24,12 @@ namespace V2RayGCon.Service
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
-            var pluginsServ = PluginsServer.Instance;
 
             setting = Setting.Instance;
             pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
+            pluginsServ = PluginsServer.Instance;
 
             SetCulture(setting.culture);
 
@@ -38,7 +39,7 @@ namespace V2RayGCon.Service
             servers.Run(setting, pacServer, cache);
             notifier.Run(setting, servers, pacServer);
 
-            pluginsServ.Run(setting);
+            pluginsServ.Run(setting, notifier);
 
             Application.ApplicationExit +=
                 (s, a) => OnApplicationExitHandler(false);
@@ -67,6 +68,7 @@ namespace V2RayGCon.Service
 
                 setting.isShutdown = isShutdown;
 
+                pluginsServ.Cleanup();
                 notifier.Cleanup();
                 servers.Cleanup();
                 pacServer.Cleanup();
@@ -110,13 +112,13 @@ namespace V2RayGCon.Service
 #if DEBUG
         void This_Function_Is_Used_For_Debugging()
         {
-            notifier.InjectDebugMenuItem(new ToolStripMenuItem(
-                "Debug",
-                null,
-                (s, a) =>
-                {
-                    servers.DbgFastRestartTest(100);
-                }));
+            //notifier.InjectDebugMenuItem(new ToolStripMenuItem(
+            //    "Debug",
+            //    null,
+            //    (s, a) =>
+            //    {
+            //        servers.DbgFastRestartTest(100);
+            //    }));
 
             // new Views.WinForms.FormConfiger(@"{}");
             // new Views.WinForms.FormConfigTester();

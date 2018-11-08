@@ -45,25 +45,30 @@ namespace V2RayGCon.Service
         }
 #endif
 
-        ToolStripMenuItem pluginMenu = null;
+        ToolStripMenuItem oldPluginMenu = null;
+        /// <summary>
+        /// null means delete menu
+        /// </summary>
+        /// <param name="pluginMenu"></param>
         public void UpdatePluginMenu(ToolStripMenuItem pluginMenu)
         {
+            RemoveOldPluginMenu();
             if (pluginMenu == null)
             {
-                throw new ArgumentException("Plugin menu must not null!");
+                return;
             }
 
-            if (this.pluginMenu == null)
-            {
-                ni.ContextMenuStrip.Items.Insert(0, new ToolStripSeparator());
-            }
-            else
-            {
-                ni.ContextMenuStrip.Items.Remove(pluginMenu);
-            }
+            oldPluginMenu = pluginMenu;
+            ni.ContextMenuStrip.Items.Insert(2, oldPluginMenu);
+        }
 
-            this.pluginMenu = pluginMenu;
-            ni.ContextMenuStrip.Items.Insert(0, pluginMenu);
+        private void RemoveOldPluginMenu()
+        {
+            if (this.oldPluginMenu != null)
+            {
+                ni.ContextMenuStrip.Items.Remove(this.oldPluginMenu);
+            }
+            this.oldPluginMenu = null;
         }
 
         public void Cleanup()

@@ -151,6 +151,20 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
+        ///  &quot;reverseDefault&quot;: {
+        ///    &quot;bridges&quot;: [
+        ///      {
+        ///        &quot;tag&quot;: &quot;bridge&quot;,
+        ///        &quot;domain&quot;: &quot;test.v2ray.com&quot;
+        ///      }
+        ///    ],
+        ///    &quot;portals&quot;: [
+        ///      {
+        ///        &quot;tag&quot;: &quot;portal&quot;,
+        ///        &quot;domain&quot;: &quot;test.v2ray.com&quot;
+        ///      }
+        ///    ]
+        ///  },
         ///  &quot;inTpl&quot;: {
         ///    &quot;port&quot;: 1080,
         ///    &quot;listen&quot;: &quot;127.0.0.1&quot;,
@@ -165,20 +179,7 @@ namespace V2RayGCon.Resource.Resx {
         ///        &quot;tls&quot;
         ///      ]
         ///    }
-        ///  },
-        ///  &quot;inSS&quot;: {
-        ///    &quot;email&quot;: &quot;love@v2ray.com&quot;,
-        ///    &quot;method&quot;: &quot;aes-128-cfb&quot;,
-        ///    &quot;password&quot;: &quot;密码&quot;,
-        ///    &quot;udp&quot;: false,
-        ///    &quot;level&quot;: 0,
-        ///    &quot;ota&quot;: true,
-        ///    &quot;network&quot;: &quot;tcp&quot;
-        ///  },
-        ///  &quot;inHTTP&quot;: {
-        ///    &quot;timeout&quot;: 0,
-        ///    &quot;accounts&quot;: [
-        ///  [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_example {
             get {
@@ -257,34 +258,32 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
-        ///  &quot;emptyInOut&quot;: {
-        ///    &quot;inbound&quot;: {},
-        ///    &quot;outbound&quot;: {}
+        ///  &quot;inbSimSock&quot;: {
+        ///    &quot;tag&quot;: &quot;agentin&quot;,
+        ///    &quot;port&quot;: 1080,
+        ///    &quot;listen&quot;: &quot;127.0.0.1&quot;,
+        ///    &quot;protocol&quot;: &quot;socks&quot;,
+        ///    &quot;settings&quot;: {}
         ///  },
-        ///  &quot;dtrMTProto&quot;: {
-        ///    &quot;inboundDetour&quot;: [
-        ///      {
-        ///        &quot;protocol&quot;: &quot;mtproto&quot;,
-        ///        &quot;port&quot;: &quot;443&quot;,
-        ///        &quot;tag&quot;: &quot;tg-in&quot;,
-        ///        &quot;settings&quot;: {
+        ///  &quot;outbVmess&quot;: {
+        ///    &quot;protocol&quot;: &quot;vmess&quot;,
+        ///    &quot;settings&quot;: {
+        ///      &quot;vnext&quot;: [
+        ///        {
+        ///          &quot;address&quot;: &quot;&quot;,
+        ///          &quot;port&quot;: 1234,
         ///          &quot;users&quot;: [
-        ///            {}
+        ///            {
+        ///              &quot;id&quot;: &quot;&quot;,
+        ///              &quot;alterId&quot;: 32,
+        ///              &quot;security&quot;: &quot;auto&quot;
+        ///            }
         ///          ]
         ///        }
-        ///      }
-        ///    ],
-        ///    &quot;outboundDetour&quot;: [
-        ///      {
-        ///        &quot;protocol&quot;: &quot;mtproto&quot;,
-        ///        &quot;tag&quot;: &quot;tg-out&quot;,
-        ///        &quot;settings&quot;: {}
-        ///      }
-        ///    ],
-        ///    &quot;routing&quot;: {
-        ///      &quot;strategy&quot;: &quot;rules&quot;,
-        ///      &quot;settings&quot;: {
-        ///        &quot; [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///      ]
+        ///    },
+        ///    &quot;tag&quot;: &quot;agentout&quot;,
+        ///    &quot;streamSettings [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
@@ -419,7 +418,7 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 log.txt 的本地化字符串。
+        ///   查找类似 vgclog.txt 的本地化字符串。
         /// </summary>
         internal static string LogFileName {
             get {
@@ -445,7 +444,7 @@ namespace V2RayGCon.Resource.Resx {
         ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
         ///    &lt;title&gt;Page Title&lt;/title&gt;
         ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-        ///    &lt;script src=&quot;__PacServerUrl__&amp;mime=js&quot;&gt;&lt;/script&gt;
+        ///    &lt;script &gt;__PACFileContent__&lt;/script&gt;
         ///    &lt;style&gt;
         ///        .main-wrapper {
         ///            margin: 8px auto;
@@ -457,7 +456,7 @@ namespace V2RayGCon.Resource.Resx {
         ///            display: inline-block;
         ///        }
         ///        
-        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///        .tit [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string PacDebuggerTpl {
             get {

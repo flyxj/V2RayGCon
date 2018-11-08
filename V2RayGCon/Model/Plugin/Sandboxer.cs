@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting;
 using System.Security;
 using System.Security.Permissions;
+using System.Security.Policy;
 
 // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
 
@@ -9,60 +12,104 @@ namespace V2RayGCon.Model.Plugin
 {
     //The Sandboxer class needs to derive from MarshalByRefObject so that we can create it in another   
     // AppDomain and refer to it from the default AppDomain.  
-    class Sandboxer : MarshalByRefObject, PluginContracts.IPlugin
+    class Sandboxer : MarshalByRefObject, IPlugin
     {
-        PluginContracts.IPlugin auxPlugin = null;
+        IPlugin auxPlugin = null;
 
         public Sandboxer() { }
 
-        #region properties
+        #region IPlugin interface method
         public string Name => auxPlugin.Name;
         public string Version => auxPlugin.Version;
         public string Description => auxPlugin.Description;
+        public void Run() => auxPlugin.Run();
+        public void Show() => auxPlugin.Show();
+        public void Cleanup() => auxPlugin.Cleanup();
+
         #endregion
 
         #region public method
-        public string[] GetFuncsName() => auxPlugin.GetFuncsName();
 
-        public void Do(string funcName) => auxPlugin.Do(funcName);
 
-        public bool CreatePartiallyTrustedPluginInstance(Type pluginType)
+        #endregion
+
+
+        #region public static method
+
+        /// <summary>
+        /// Return null if fail to load dll
+        /// </summary>
+        /// <param name="pluginFileName">for individual namespaces</param>
+        /// <returns></returns>
+        public static Model.Plugin.IPlugin LoadPartiallyTrustedPlugin(
+            string pluginFileName)
         {
+            // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
 
-            auxPlugin = CreatePluginInstance(pluginType);
-            return auxPlugin != null;
+            //Setting the AppDomainSetup. It is very important to set the ApplicationBase to a folder   
+            //other than the one in which the sandboxer resides.  
+            AppDomainSetup adSetup = new AppDomainSetup();
+            adSetup.ApplicationBase = Path.GetFullPath(Properties.Resources.PluginsFolderName);
+
+            //Setting the permissions for the AppDomain. We give the permission to execute and to   
+            //read/discover the location where the untrusted code is loaded.  
+            PermissionSet permSet = new PermissionSet(PermissionState.None);
+            permSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+
+            //We want the sandboxer assembly's strong name, so that we can add it to the full trust list.  
+            StrongName fullTrustAssembly = typeof(Model.Plugin.Sandboxer).Assembly.Evidence.GetHostEvidence<StrongName>();
+
+            //Now we have everything we need to create the AppDomain, so let's create it.  
+            AppDomain newDomain = AppDomain.CreateDomain("Sandbox" + pluginFileName, null, adSetup, permSet, fullTrustAssembly);
+
+            //Use CreateInstanceFrom to load an instance of the Sandboxer class into the  
+            //new AppDomain.   
+            ObjectHandle handle = Activator.CreateInstanceFrom(
+                newDomain,
+                typeof(Sandboxer).Assembly.ManifestModule.FullyQualifiedName,
+                typeof(Sandboxer).FullName);
+
+            //Unwrap the new domain instance into a reference in this domain and use it to execute the   
+            //untrusted code.  
+            var box = handle.Unwrap() as Sandboxer;
+
+            // only host can read file
+            var pluginType = LoadPluginTypeFromAssembly(
+                    LoadAssemblyFromFile(pluginFileName));
+
+            box.auxPlugin = box.CreatePartiallyTrustedPluginInstance(pluginType);
+            return box.auxPlugin == null ? null : box;
         }
 
-        public void ExecuteUntrustedCode(string assemblyName, string typeName, string entryPoint, Object[] parameters)
+        /// <summary>
+        /// return null if fail to load
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static IPlugin LoadTrustedPlugin(string fileName)
         {
-            //Load the MethodInfo for a method in the new Assembly. This might be a method you know, or   
-            //you can use Assembly.EntryPoint to get to the main function in an executable.  
-            MethodInfo target = Assembly.Load(assemblyName).GetType(typeName).GetMethod(entryPoint);
-            try
-            {
-                //Now invoke the method.  
-                bool retVal = (bool)target.Invoke(null, parameters);
-            }
-            catch (Exception ex)
-            {
-                // When we print informations from a SecurityException extra information can be printed if we are   
-                //calling it with a full-trust stack.  
-                (new PermissionSet(PermissionState.Unrestricted)).Assert();
-                Console.WriteLine("SecurityException caught:\n{0}", ex.ToString());
-                CodeAccessPermission.RevertAssert();
-                Console.ReadLine();
-            }
+            // running inside host
+            return CreatePluginInstance(
+                LoadPluginTypeFromAssembly(
+                    LoadAssemblyFromFile(fileName)));
         }
         #endregion
 
-        #region static method
+        #region private method
+        IPlugin CreatePartiallyTrustedPluginInstance(Type pluginType)
+        {
+            // running inside sandboxer
+            return CreatePluginInstance(pluginType);
+        }
+        #endregion
+
+        #region static private method
         /// <summary>
         /// return null if fail or param is null
         /// </summary>
         /// <param name="pluginType"></param>
         /// <returns></returns>
-        public static Model.Plugin.PluginContracts.IPlugin CreatePluginInstance(
-            Type pluginType)
+        static Model.Plugin.IPlugin CreatePluginInstance(Type pluginType)
         {
             if (pluginType == null)
             {
@@ -71,7 +118,7 @@ namespace V2RayGCon.Model.Plugin
 
             try
             {
-                return (Model.Plugin.PluginContracts.IPlugin)
+                return (Model.Plugin.IPlugin)
                     Activator.CreateInstance(pluginType);
             }
             catch
@@ -81,23 +128,6 @@ namespace V2RayGCon.Model.Plugin
 
             return null;
         }
-
-        /// <summary>
-        /// return null if fail to load
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public static Type LoadPluginTypeFromFile(string fileName)
-        {
-            return LoadPluginTypeFromAssembly(
-                         LoadAssemblyFromFile(fileName));
-        }
-        #endregion
-
-        #region private method
-        #endregion
-
-        #region static private method
 
         /// <summary>
         /// return null if fail or param is null
@@ -111,20 +141,20 @@ namespace V2RayGCon.Model.Plugin
                 return null;
             }
 
-            var pluginType = typeof(Model.Plugin.PluginContracts.IPlugin);
-            Type[] types = null;
+            /* debug */
             try
             {
-                types = assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException exceptions)
+                var types = assembly.GetTypes();
+            }catch(ReflectionTypeLoadException es)
             {
-                foreach (var e in exceptions.LoaderExceptions)
+                foreach(var e in es.LoaderExceptions)
                 {
                     var info = e;
                 }
             }
+            /* */
 
+            var pluginType = typeof(IPlugin);
             foreach (Type type in assembly.GetTypes())
             {
                 if (!type.IsInterface
@@ -156,6 +186,8 @@ namespace V2RayGCon.Model.Plugin
             catch { }
             return null;
         }
+
+
         #endregion
     }
 }

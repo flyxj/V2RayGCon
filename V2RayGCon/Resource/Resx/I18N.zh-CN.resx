@@ -623,4 +623,10 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="PacProxy" xml:space="preserve">
     <value>PAC代理</value>
   </data>
+  <data name="Plugins" xml:space="preserve">
+    <value>插件</value>
+  </data>
+  <data name="FindNoPlugin" xml:space="preserve">
+    <value>没找到任何插件。</value>
+  </data>
 </root>

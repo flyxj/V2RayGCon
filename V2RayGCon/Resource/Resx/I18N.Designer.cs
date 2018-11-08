@@ -713,6 +713,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Find no plugin. 的本地化字符串。
+        /// </summary>
+        internal static string FindNoPlugin {
+            get {
+                return ResourceManager.GetString("FindNoPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Generate QRCode 的本地化字符串。
         /// </summary>
         internal static string GenQRCode {
@@ -1089,6 +1098,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string PleaseCheckConfig {
             get {
                 return ResourceManager.GetString("PleaseCheckConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Plugins 的本地化字符串。
+        /// </summary>
+        internal static string Plugins {
+            get {
+                return ResourceManager.GetString("Plugins", resourceCulture);
             }
         }
         
