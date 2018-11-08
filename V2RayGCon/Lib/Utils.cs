@@ -1149,6 +1149,33 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region files
+        public static bool IsTrustedPlugin(string fileName)
+        {
+#if DEBUG
+            var list = Properties.Resources.TrustedPluginFileName.Split(
+                new char[] { ',', '\r', '\n', ' ' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            return list.Contains(Path.GetFileName(fileName));
+#else
+            var list = Properties.Resources.TrustedPluginSha256.Split(
+                new char[] { ',', '\r', '\n', ' ' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            return list.Contains(CalcSha256FromFile(fileName));
+#endif
+        }
+
+        public static string CalcSha256FromFile(string fileName)
+        {
+            try
+            {
+                return Lib.Utils.SHA256(File.ReadAllText(fileName));
+            }
+            catch { }
+            return string.Empty;
+        }
+
         public static string GetSysAppDataFolder()
         {
             var appData = System.Environment.GetFolderPath(
@@ -1182,7 +1209,7 @@ namespace V2RayGCon.Lib
         {
             var crypt = new System.Security.Cryptography.SHA256Managed();
             var hash = new System.Text.StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString));
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(randomString ?? string.Empty));
             foreach (byte theByte in crypto)
             {
                 hash.Append(theByte.ToString("x2"));

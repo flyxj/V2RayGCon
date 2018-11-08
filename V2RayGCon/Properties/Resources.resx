@@ -193,4 +193,12 @@
   <data name="PluginsFolderName" xml:space="preserve">
     <value>plugins</value>
   </data>
+  <data name="TrustedPluginFileName" xml:space="preserve">
+    <value>VGCPlugins.dll,VGCPlugins2.dll,</value>
+    <comment>For debugging only! a.dll,b.dll</comment>
+  </data>
+  <data name="TrustedPluginSha256" xml:space="preserve">
+    <value>123456,2345</value>
+    <comment>For release 1234,abcd</comment>
+  </data>
 </root>

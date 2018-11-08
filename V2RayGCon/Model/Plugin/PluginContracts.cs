@@ -12,11 +12,5 @@
             string[] GetFuncsName();
             void Do(string funcName);
         }
-
-        public interface IApi
-        {
-            void MessageBox(string content);
-            void Log(string content);
-        }
     }
 }

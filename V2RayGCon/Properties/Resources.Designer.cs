@@ -274,6 +274,24 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找类似 VGCPlugins.dll,VGCPlugins2.dll, 的本地化字符串。
+        /// </summary>
+        internal static string TrustedPluginFileName {
+            get {
+                return ResourceManager.GetString("TrustedPluginFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 123456,2345 的本地化字符串。
+        /// </summary>
+        internal static string TrustedPluginSha256 {
+            get {
+                return ResourceManager.GetString("TrustedPluginSha256", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 1.1.1.12 的本地化字符串。
         /// </summary>
         internal static string Version {

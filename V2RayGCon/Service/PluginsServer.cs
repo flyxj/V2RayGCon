@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.Remoting;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
 
 namespace V2RayGCon.Service
 {
     public class PluginsServer : Model.BaseClass.SingletonService<PluginsServer>
     {
         Service.Setting setting;
-        Model.Plugin.ApiServer auxApi = null;
+
         Dictionary<string, Model.Plugin.PluginContracts.IPlugin> plugins =
             new Dictionary<string, Model.Plugin.PluginContracts.IPlugin>();
 
-        PluginsServer()
-        {
-            auxApi = new Model.Plugin.ApiServer();
-        }
+        PluginsServer() { }
 
         public void Run(Setting setting)
         {
@@ -39,11 +39,19 @@ namespace V2RayGCon.Service
                 return;
             }
 
+            Model.Plugin.PluginContracts.IPlugin plugin;
             foreach (var fileName in dllFileNames)
             {
-                var plugin = CreatePluginInstance(
-                    LoadPluginTypeFromAssembly(
-                         LoadAssemblyFromFile(fileName)));
+                Type pluginType = Model.Plugin.Sandboxer.LoadPluginTypeFromFile(fileName);
+
+                if (pluginType == null || !Lib.Utils.IsTrustedPlugin(fileName))
+                {
+                    continue;
+                }
+
+                plugin = Model.Plugin.Sandboxer.CreatePluginInstance(
+                    pluginType);
+
 
                 if (plugin == null)
                 {
@@ -60,6 +68,48 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private methods
+
+        /// <summary>
+        /// Return null if fail to load dll
+        /// </summary>
+        /// <param name="pluginFileName">for individual namespaces</param>
+        /// <returns></returns>
+        Model.Plugin.PluginContracts.IPlugin CreatePluginInstanceInSandbox(
+            string pluginFileName,
+            Type pluginType)
+        {
+            // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
+
+            //Setting the AppDomainSetup. It is very important to set the ApplicationBase to a folder   
+            //other than the one in which the sandboxer resides.  
+            AppDomainSetup adSetup = new AppDomainSetup();
+            adSetup.ApplicationBase = Path.GetFullPath(Properties.Resources.PluginsFolderName);
+
+            //Setting the permissions for the AppDomain. We give the permission to execute and to   
+            //read/discover the location where the untrusted code is loaded.  
+            PermissionSet permSet = new PermissionSet(PermissionState.None);
+            permSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+
+            //We want the sandboxer assembly's strong name, so that we can add it to the full trust list.  
+            StrongName fullTrustAssembly = typeof(Model.Plugin.Sandboxer).Assembly.Evidence.GetHostEvidence<StrongName>();
+
+            //Now we have everything we need to create the AppDomain, so let's create it.  
+            AppDomain newDomain = AppDomain.CreateDomain("Sandbox" + pluginFileName, null, adSetup, permSet, fullTrustAssembly);
+
+            //Use CreateInstanceFrom to load an instance of the Sandboxer class into the  
+            //new AppDomain.   
+            ObjectHandle handle = Activator.CreateInstanceFrom(
+                newDomain,
+                typeof(Model.Plugin.Sandboxer).Assembly.ManifestModule.FullyQualifiedName,
+                typeof(Model.Plugin.Sandboxer).FullName);
+
+
+            //Unwrap the new domain instance into a reference in this domain and use it to execute the   
+            //untrusted code.  
+            var box = handle.Unwrap() as Model.Plugin.Sandboxer;
+            return box.CreatePartiallyTrustedPluginInstance(pluginType) ? box : null;
+        }
+
         bool GetIsUse(string filename, List<Model.Data.PluginInfoItem> pluginInfos)
         {
             var item = pluginInfos.FirstOrDefault(p => p.filename == filename);
@@ -87,75 +137,7 @@ namespace V2RayGCon.Service
             setting.SavePluginInfoItems(newPluginsInfo);
         }
 
-        /// <summary>
-        /// return null if fail or param is null
-        /// </summary>
-        /// <param name="pluginType"></param>
-        /// <returns></returns>
-        Model.Plugin.PluginContracts.IPlugin CreatePluginInstance(Type pluginType)
-        {
-            if (pluginType == null)
-            {
-                return null;
-            }
 
-            try
-            {
-                return (Model.Plugin.PluginContracts.IPlugin)
-                    Activator.CreateInstance(pluginType, auxApi);
-            }
-            catch
-            {
-                Lib.Sys.Log.Error("Load plugin fail.");
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// return null if fail or param is null
-        /// </summary>
-        /// <param name="assembly"></param>
-        /// <returns></returns>
-        Type LoadPluginTypeFromAssembly(Assembly assembly)
-        {
-            if (assembly == null)
-            {
-                return null;
-            }
-
-            var pluginType = typeof(Model.Plugin.PluginContracts.IPlugin);
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (!type.IsInterface
-                    && !type.IsAbstract
-                    && type.GetInterface(pluginType.Name) != null)
-                {
-                    return type;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// return null if fail, return null if param is null
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        Assembly LoadAssemblyFromFile(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return null;
-            }
-            try
-            {
-                AssemblyName an = AssemblyName.GetAssemblyName(fileName);
-                return Assembly.Load(an);
-            }
-            catch { }
-            return null;
-        }
 
         string[] GetDllFileNames()
         {

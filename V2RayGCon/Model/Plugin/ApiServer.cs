@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace V2RayGCon.Model.Plugin
 {
-    public class ApiServer : PluginContracts.IApi
+    public class ApiServer
     {
         public void Log(string content)
         {

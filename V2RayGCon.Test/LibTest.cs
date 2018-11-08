@@ -13,6 +13,28 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow("", false)]
+        [DataRow(null, false)]
+#if DEBUG
+        [DataRow("VGCPlugins.dll", true)]
+#endif
+        public void IsTrustedPluginTest(string source, bool expect)
+        {
+            var result = Lib.Utils.IsTrustedPlugin(source);
+            Assert.AreEqual(expect, result);
+        }
+
+        [DataTestMethod]
+        [DataRow("", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")]
+        [DataRow(null, "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")]
+        [DataRow("1234", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4")]
+        public void Sha256Test(string source, string expect)
+        {
+            var sha = Lib.Utils.SHA256(source);
+            Assert.AreEqual(expect, sha);
+        }
+
+        [DataTestMethod]
         [DataRow("0.0.0.0/32", "0.0.0.0,0.0.0.0")]
         [DataRow("0.0.0.0/-1", "0.0.0.0,255.255.255.255")]
         [DataRow("0.0.0.0/0", "0.0.0.0,255.255.255.255")]

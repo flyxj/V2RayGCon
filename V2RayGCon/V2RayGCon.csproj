@@ -71,6 +71,12 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>V2RayGCon.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
@@ -150,6 +156,7 @@
     <Compile Include="Model\Data\UserSettings.cs" />
     <Compile Include="Model\Plugin\ApiServer.cs" />
     <Compile Include="Model\Plugin\PluginContracts.cs" />
+    <Compile Include="Model\Plugin\Sandboxer.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
@@ -426,6 +433,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="V2RayGCon.snk" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Icon\icon_dark.ico" />
