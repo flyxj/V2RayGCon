@@ -220,17 +220,6 @@ namespace V2RayGCon.Views.WinForms
                 //MenuStrip menuContainer,
                 mainMneuStrip,
 
-                //// system proxy
-                //ToolStripMenuItem copyCurPacUrl,
-                //ToolStripMenuItem clearSysProxy,
-                //ToolStripMenuItem restartPACServer,
-                //ToolStripMenuItem stopPACServer,
-                copyPACURLToolStripMenuItem,
-                visitPACDebuggerURLToolStripMenuItem,
-                toolMenuItemClearSysProxy,
-                startPACServerToolStripMenuItem,
-                stopPACServerToolStripMenuItem,
-
                 //// misc
                 //ToolStripMenuItem refreshSummary,
                 //ToolStripMenuItem deleteAllServers,

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
@@ -24,22 +23,35 @@ namespace V2RayGCon.Service
             this.setting = setting;
             this.notifier = notifier;
 
-            ReloadPlugins();
-            UpdateNotifierMenu();
-            var enabledList = GetCurEnabledPluginFileNames();
-            StartPlugins(enabledList);
+            Restart();
         }
 
         #region properties
         #endregion
 
         #region public methods
+        public void Restart()
+        {
+            ReloadPlugins();
+            StartEnabledPlugins();
+            UpdateNotifierMenu();
+        }
+
         public void Cleanup()
         {
             ClearPlugins();
         }
 
-        public void UpdateNotifierMenu()
+        public List<Model.Data.PluginInfoItem> GetterPluginDirInfo()
+        {
+            var pluginList = SearchForPlugins();
+            return GetPluginInfoFrom(pluginList);
+        }
+
+        #endregion
+
+        #region private methods
+        void UpdateNotifierMenu()
         {
             var enabledList = GetCurEnabledPluginFileNames();
 
@@ -65,26 +77,20 @@ namespace V2RayGCon.Service
                 null);
         }
 
-        public void RefreshPlugins()
+        void StartEnabledPlugins()
         {
-            ReloadPlugins();
-            SavePlugInfos();
-            if (plugins.Count <= 0)
-            {
-                Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N.FindNoPlugin));
-            }
+            var enabledList = GetCurEnabledPluginFileNames();
+            StartPlugins(enabledList);
         }
-        #endregion
 
-        #region private methods
-        void ReloadPlugins()
+        public Dictionary<string, Model.Plugin.IPlugin> SearchForPlugins()
         {
-            ClearPlugins();
+            var pluginList = new Dictionary<string, Model.Plugin.IPlugin>();
+
             var dllFileNames = SearchDllFiles();
             if (dllFileNames == null)
             {
-                return;
+                return pluginList;
             }
 
             foreach (var relativeFilePath in dllFileNames)
@@ -101,8 +107,16 @@ namespace V2RayGCon.Service
                 }
 
                 var key = Path.GetFileName(relativeFilePath);
-                this.plugins[key] = plugin;
+                pluginList[key] = plugin;
             }
+
+            return pluginList;
+        }
+
+        void ReloadPlugins()
+        {
+            ClearPlugins();
+            this.plugins = SearchForPlugins();
         }
 
         void StartPlugins(List<string> fileNames)
@@ -142,17 +156,17 @@ namespace V2RayGCon.Service
                 .ToList();
         }
 
-        void SavePlugInfos()
+        List<Model.Data.PluginInfoItem> GetPluginInfoFrom(
+            Dictionary<string, Model.Plugin.IPlugin> pluginList)
         {
-            if (plugins.Count <= 0)
+            if (pluginList.Count <= 0)
             {
-                setting.SavePluginInfoItems(null);
-                return;
+                return new List<Model.Data.PluginInfoItem>();
             }
 
             var enabledList = GetCurEnabledPluginFileNames();
-            var newPluginsInfo = new List<Model.Data.PluginInfoItem>();
-            foreach (var item in this.plugins)
+            var infos = new List<Model.Data.PluginInfoItem>();
+            foreach (var item in pluginList)
             {
                 var plugin = item.Value;
                 var filename = item.Key;
@@ -164,9 +178,9 @@ namespace V2RayGCon.Service
                     description = plugin.Description,
                     isUse = enabledList.Contains(filename),
                 };
-                newPluginsInfo.Add(pluginInfo);
+                infos.Add(pluginInfo);
             }
-            setting.SavePluginInfoItems(newPluginsInfo);
+            return infos;
         }
 
         string[] SearchDllFiles()

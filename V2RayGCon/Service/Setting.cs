@@ -301,57 +301,6 @@ namespace V2RayGCon.Service
             return r ?? empty;
         }
 
-        public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
-        {
-            userSettings.SysProxySetting =
-                JsonConvert.SerializeObject(proxy);
-            LazySaveUserSettings();
-        }
-
-        public Model.Data.ProxyRegKeyValue GetSysProxySetting()
-        {
-            var empty = new Model.Data.ProxyRegKeyValue();
-            Model.Data.ProxyRegKeyValue proxy = null;
-            try
-            {
-                proxy = JsonConvert
-                    .DeserializeObject<Model.Data.ProxyRegKeyValue>(
-                        userSettings.SysProxySetting);
-            }
-            catch
-            {
-                return empty;
-            }
-            return proxy ?? empty;
-        }
-
-        public void SavePacServerSettings(
-            Model.Data.PacServerSettings pacSetting)
-        {
-            userSettings.PacServerSettings =
-                JsonConvert.SerializeObject(pacSetting);
-            LazySaveUserSettings();
-        }
-
-        public Model.Data.PacServerSettings GetPacServerSettings()
-        {
-            Model.Data.PacServerSettings result = null;
-
-            var empty = new Model.Data.PacServerSettings();
-            try
-            {
-                result = JsonConvert
-                    .DeserializeObject<Model.Data.PacServerSettings>(
-                        userSettings.PacServerSettings);
-            }
-            catch
-            {
-                return empty;
-            }
-
-            return result ?? empty;
-        }
-
         public List<Controller.CoreServerCtrl> LoadServerList()
         {
             var empty = new List<Controller.CoreServerCtrl>();

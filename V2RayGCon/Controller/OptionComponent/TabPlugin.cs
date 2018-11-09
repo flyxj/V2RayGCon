@@ -13,6 +13,7 @@ namespace V2RayGCon.Controller.OptionComponent
         Service.PluginsServer pluginServ;
 
         string oldOptions;
+        List<Model.Data.PluginInfoItem> curPluginInfos;
 
         public TabPlugin(
             FlowLayoutPanel flyPanel,
@@ -23,6 +24,9 @@ namespace V2RayGCon.Controller.OptionComponent
 
             this.flyPanel = flyPanel;
             this.btnUpdate = btnUpdate;
+
+            curPluginInfos = setting.GetPluginInfoItems();
+            MarkdownCurOption();
 
             InitPanel();
             BindEvent();
@@ -35,10 +39,11 @@ namespace V2RayGCon.Controller.OptionComponent
             {
                 return false;
             }
-            setting.SavePluginInfoItems(CollectPluginInfoItems());
-            MarkdownCurOption();
 
-            pluginServ.UpdateNotifierMenu();
+            curPluginInfos = CollectPluginInfoItems();
+            MarkdownCurOption();
+            setting.SavePluginInfoItems(curPluginInfos);
+            pluginServ.Restart();
             return true;
         }
 
@@ -66,8 +71,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
         void MarkdownCurOption()
         {
-            this.oldOptions = JsonConvert.SerializeObject(
-                setting.GetPluginInfoItems());
+            this.oldOptions = Lib.Utils.SerializeObject(curPluginInfos);
         }
 
         void RemoveAllControls()
@@ -82,9 +86,8 @@ namespace V2RayGCon.Controller.OptionComponent
 
         void InitPanel()
         {
-            MarkdownCurOption();
             RemoveAllControls();
-            foreach (var item in setting.GetPluginInfoItems())
+            foreach (var item in curPluginInfos)
             {
                 this.flyPanel.Controls.Add(
                     new Views.UserControls.PluginInfoUI(item));
@@ -95,7 +98,7 @@ namespace V2RayGCon.Controller.OptionComponent
         {
             this.btnUpdate.Click += (s, a) =>
             {
-                pluginServ.RefreshPlugins();
+                curPluginInfos = pluginServ.GetterPluginDirInfo();
                 InitPanel();
             };
         }

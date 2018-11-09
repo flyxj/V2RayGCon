@@ -12,21 +12,15 @@ namespace V2RayGCon.Service
         Setting setting;
         Servers servers;
         Notifier notifier;
-        PacServer pacServer;
         PluginsServer pluginsServ;
-
-        Model.Data.ProxyRegKeyValue orgSysProxySetting;
-
         bool isCleanupDone = false;
 
         Launcher()
         {
-            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
 
             setting = Setting.Instance;
-            pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
             pluginsServ = PluginsServer.Instance;
@@ -35,9 +29,8 @@ namespace V2RayGCon.Service
 
             // dependency injection
             cache.Run(setting);
-            pacServer.Run(setting);
-            servers.Run(setting, pacServer, cache);
-            notifier.Run(setting, servers, pacServer);
+            servers.Run(setting, cache);
+            notifier.Run(setting, servers);
 
             pluginsServ.Run(setting, notifier);
 
@@ -71,10 +64,7 @@ namespace V2RayGCon.Service
                 pluginsServ.Cleanup();
                 notifier.Cleanup();
                 servers.Cleanup();
-                pacServer.Cleanup();
                 setting.Cleanup();
-                Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
-
                 isCleanupDone = true;
             }
         }
@@ -133,7 +123,7 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
-        public void run()
+        public void Run()
         {
             Lib.Utils.SupportProtocolTLS12();
 

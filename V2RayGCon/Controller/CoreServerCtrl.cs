@@ -15,8 +15,6 @@ namespace V2RayGCon.Controller
         [JsonIgnore]
         Service.Cache cache;
         [JsonIgnore]
-        Service.PacServer pacServer;
-        [JsonIgnore]
         Service.Servers servers;
         [JsonIgnore]
         Service.Setting setting;
@@ -67,11 +65,9 @@ namespace V2RayGCon.Controller
         public void Run(
              Service.Cache cache,
              Service.Setting setting,
-             Service.PacServer pacServer,
              Service.Servers servers)
         {
             this.cache = cache;
-            this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
@@ -148,8 +144,16 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public bool BecomeSystemProxy(bool isGlobal)
+        public bool IsSuitableToBeUsedAsSysProxy(
+            bool isGlobal,
+            out bool isSocks,
+            out string ip,
+            out int port)
         {
+            isSocks = false;
+            ip = string.Empty;
+            port = 0;
+
             var inboundInfo = GetParsedInboundInfo();
             if (inboundInfo == null)
             {
@@ -158,17 +162,15 @@ namespace V2RayGCon.Controller
             }
 
             var protocol = inboundInfo.Item1;
-            var ip = inboundInfo.Item2;
-            var port = inboundInfo.Item3;
+            ip = inboundInfo.Item2;
+            port = inboundInfo.Item3;
 
-            if (!IsSuitableForProxy(isGlobal, protocol))
+            if (!IsProtocolMatchProxyRequirment(isGlobal, protocol))
             {
                 return false;
             }
 
-            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
-            SendLog(I18N.SetAsSysProxy);
-
+            isSocks = protocol == "socks";
             return true;
         }
 
@@ -549,17 +551,15 @@ namespace V2RayGCon.Controller
             return table[Lib.Utils.Clamp(typeNumber, 0, table.Length)];
         }
 
-        bool IsSuitableForProxy(bool isGlobalProxy, string protocol)
+        bool IsProtocolMatchProxyRequirment(bool isGlobalProxy, string protocol)
         {
             if (isGlobalProxy && protocol != "http")
             {
-                SendLog(I18N.GlobalProxyRequireHttpServer);
                 return false;
             }
 
             if (protocol != "socks" && protocol != "http")
             {
-                SendLog(I18N.PacProxyRequireSocksOrHttpServer);
                 return false;
             }
 
