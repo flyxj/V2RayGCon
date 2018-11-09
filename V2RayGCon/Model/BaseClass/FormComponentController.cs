@@ -1,6 +1,6 @@
 ﻿namespace V2RayGCon.Model.BaseClass
 {
-    class FormComponentController : IFormComponentController
+    public class FormComponentController : IFormComponentController
     {
         protected FormController container;
 

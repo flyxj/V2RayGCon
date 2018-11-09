@@ -164,6 +164,62 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        /// <summary>
+        /// return null if fail
+        /// </summary>
+        /// <param name="pluginName"></param>
+        /// <returns></returns>
+        public string GetPluginsSetting(string pluginName)
+        {
+            var pluginsSetting = DeserializePluginsSetting();
+
+            if (pluginsSetting != null
+                && pluginsSetting.ContainsKey(pluginName))
+            {
+                return pluginsSetting[pluginName];
+            }
+            return null;
+        }
+
+        public void SavePluginsSetting(string pluginName, string value)
+        {
+            if (string.IsNullOrEmpty(pluginName))
+            {
+                return;
+            }
+
+            var pluginsSetting = DeserializePluginsSetting();
+            pluginsSetting[pluginName] = value;
+
+            try
+            {
+                userSettings.PluginsSetting =
+                    JsonConvert.SerializeObject(pluginsSetting);
+            }
+            catch { }
+            LazySaveUserSettings();
+        }
+
+        private Dictionary<string, string> DeserializePluginsSetting()
+        {
+            var empty = new Dictionary<string, string>();
+            Dictionary<string, string> pluginsSetting = null;
+
+            try
+            {
+                pluginsSetting = JsonConvert
+                    .DeserializeObject<Dictionary<string, string>>(
+                        userSettings.PluginsSetting);
+            }
+            catch { }
+            if (pluginsSetting == null)
+            {
+                pluginsSetting = empty;
+            }
+
+            return pluginsSetting;
+        }
+
         public void InvokeEventIgnoreErrorOnRequireNotifyTextUpdate()
         {
             try

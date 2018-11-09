@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,19 @@ namespace V2RayGCon.Test
     [TestClass]
     public class LibTest
     {
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("11,22,abc")]
+        public void CloneTest(string orgStr)
+        {
+            var org = orgStr?.Split(',').ToList();
+            var clone = Lib.Utils.Clone<List<string>>(org);
+            var sClone = Lib.Utils.SerializeObject(clone);
+            var sOrg = Lib.Utils.SerializeObject(org);
+            Assert.AreEqual(sOrg,sClone);
+        }
+
+
         [DataTestMethod]
         [DataRow("", false)]
         [DataRow(null, false)]
