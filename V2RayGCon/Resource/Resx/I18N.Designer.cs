@@ -1453,15 +1453,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Visit PAC debugger webpage? 的本地化字符串。
-        /// </summary>
-        internal static string VisitPacDebugger {
-            get {
-                return ResourceManager.GetString("VisitPacDebugger", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Vist v2ray-core release page? 的本地化字符串。
         /// </summary>
         internal static string VisitV2rayCoreReleasePage {
