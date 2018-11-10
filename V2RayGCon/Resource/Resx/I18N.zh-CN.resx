@@ -580,9 +580,6 @@ https://github.com/v2ray/v2ray-core</value>
   <data name="GetInboundInfoFail" xml:space="preserve">
     <value>获取Inbound信息失败!</value>
   </data>
-  <data name="NoServerCapableOfSysProxy" xml:space="preserve">
-    <value>没有可用作系统代理的服务器。</value>
-  </data>
   <data name="SetAnyServerAsPacServerFirst" xml:space="preserve">
     <value>请先将任意服务器设为PAC代理。</value>
   </data>

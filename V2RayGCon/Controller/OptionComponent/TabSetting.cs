@@ -5,6 +5,7 @@ namespace V2RayGCon.Controller.OptionComponent
     class TabSetting : OptionComponentController
     {
         Service.Setting setting;
+        Service.Servers servers;
 
         ComboBox cboxLanguage = null, cboxPageSize = null;
         CheckBox chkServAutoTrack = null,
@@ -19,6 +20,7 @@ namespace V2RayGCon.Controller.OptionComponent
             CheckBox chkSetUseV4)
         {
             this.setting = Service.Setting.Instance;
+            this.servers = Service.Servers.Instance;
 
             // Do not put these lines of code into InitElement.
             this.cboxLanguage = cboxLanguage;
@@ -65,7 +67,6 @@ namespace V2RayGCon.Controller.OptionComponent
                 Service.Servers.Instance.InvokeEventOnRequireFlyPanelUpdate();
             }
 
-
             var index = cboxLanguage.SelectedIndex;
             if (IsIndexValide(index) && ((int)setting.culture != index))
             {
@@ -74,11 +75,16 @@ namespace V2RayGCon.Controller.OptionComponent
                     + "Please restart this application.");
             }
 
+            var keepTracking = chkServAutoTrack.Checked;
             var trackerSetting = setting.GetServerTrackerSetting();
-            trackerSetting.isTrackerOn = chkServAutoTrack.Checked;
+            if (trackerSetting.isTrackerOn != keepTracking)
+            {
+                trackerSetting.isTrackerOn = keepTracking;
+                setting.SaveServerTrackerSetting(trackerSetting);
+                setting.isServerTrackerOn = keepTracking;
+                servers.UpdateTrackerSettingNow();
+            }
 
-            setting.SaveServerTrackerSetting(trackerSetting);
-            setting.isServerTrackerOn = trackerSetting.isTrackerOn;
             setting.isPortable = chkPortableMode.Checked;
             setting.isUseV4 = chkSetUseV4.Checked;
 

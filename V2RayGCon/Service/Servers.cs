@@ -16,6 +16,9 @@ namespace V2RayGCon.Service
         Setting setting = null;
         Cache cache = null;
 
+        public event EventHandler<Model.Data.BoolEvent>
+            OnServerStateChange;
+
         public event EventHandler
             OnRequireMenuUpdate,
             OnRequireStatusBarUpdate,
@@ -74,6 +77,65 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+
+        void DisposeLazyTimers()
+        {
+            lazyServerTrackerTimer?.Release();
+            lazySaveServerListTimer?.Release();
+            lazyUpdateNotifyTextTimer?.Release();
+        }
+
+        private List<Controller.CoreServerCtrl> GenBootServerList()
+        {
+            var trackerSetting = setting.GetServerTrackerSetting();
+            if (!trackerSetting.isTrackerOn)
+            {
+                return serverList.Where(s => s.isAutoRun).ToList();
+            }
+
+            setting.isServerTrackerOn = true;
+            var trackList = trackerSetting.serverList;
+
+            var bootList = serverList
+                .Where(s => s.isAutoRun || trackList.Contains(s.config))
+                .ToList();
+
+            if (string.IsNullOrEmpty(trackerSetting.curServer))
+            {
+                return bootList;
+            }
+
+            bootList.RemoveAll(s => s.config == trackerSetting.curServer);
+            var lastServer = serverList.FirstOrDefault(
+                    s => s.config == trackerSetting.curServer);
+            if (lastServer != null && !lastServer.isUntrack)
+            {
+                bootList.Insert(0, lastServer);
+            }
+            return bootList;
+        }
+
+        void BindEventsTo(Controller.CoreServerCtrl server)
+        {
+            server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
+            server.OnLog += OnSendLogHandler;
+            server.OnPropertyChanged += ServerItemPropertyChangedHandler;
+            server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
+            server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
+            server.OnRequireNotifierUpdate += LazyUpdateNotifyTextHandler;
+        }
+
+        void ReleaseEventsFrom(Controller.CoreServerCtrl server)
+        {
+            server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
+            server.OnLog -= OnSendLogHandler;
+            server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
+            server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
+            server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
+            server.OnRequireNotifierUpdate -= LazyUpdateNotifyTextHandler;
+        }
+
+
         List<string> GetHtmlContentFromCache(List<string> urls)
         {
             return urls.Count <= 0 ?
@@ -116,21 +178,13 @@ namespace V2RayGCon.Service
             return trackerSetting;
         }
 
-        void OnRequireKeepTrackHandler(object sender, Model.Data.BoolEvent isServerStart)
+        void InvokeOnServerStateChange(object sender, Model.Data.BoolEvent isServerStart)
         {
-            if (!setting.isServerTrackerOn)
+            try
             {
-                return;
+                OnServerStateChange?.Invoke(sender, isServerStart);
             }
-
-            var server = sender as Controller.CoreServerCtrl;
-            if (server.isUntrack)
-            {
-                return;
-            }
-
-            SetLazyServerTrackerUpdater(() =>
-                LazyServerTrackUpdateWorker(server, isServerStart.Data));
+            catch { }
         }
 
         void LazyServerTrackUpdateWorker(
@@ -140,15 +194,6 @@ namespace V2RayGCon.Service
             var curTrackerSetting = GenCurTrackerSetting(servCtrl.config, isStart);
             setting.SaveServerTrackerSetting(curTrackerSetting);
             return;
-        }
-
-        Lib.Sys.CancelableTimeout lazyServerTrackerTimer = null;
-        void SetLazyServerTrackerUpdater(Action onTimeout)
-        {
-            lazyServerTrackerTimer?.Release();
-            lazyServerTrackerTimer = null;
-            lazyServerTrackerTimer = new Lib.Sys.CancelableTimeout(onTimeout, 2000);
-            lazyServerTrackerTimer.Start();
         }
 
         int GetServerIndexByConfig(string config)
@@ -517,9 +562,85 @@ namespace V2RayGCon.Service
             vnext["outbound"]["settings"]["vnext"][0]["users"][0]["id"] = id;
             return vnext;
         }
+
+        private void ShowImportLinksResult(Tuple<bool, List<string[]>> results)
+        {
+            var isAddNewServer = results.Item1;
+            var allResults = results.Item2;
+
+            if (isAddNewServer)
+            {
+                UpdateAllServersSummary();
+                LazySaveServerList();
+            }
+
+            setting.LazyGC();
+
+            if (allResults.Count > 0)
+            {
+                new Views.WinForms.FormImportLinksResult(allResults);
+                Application.Run();
+            }
+            else
+            {
+                MessageBox.Show(I18N.NoLinkFound);
+            }
+        }
+
+        private static Tuple<bool, List<string[]>> GetterImportLinksResult(Task<Tuple<bool, List<string[]>>>[] tasks)
+        {
+            var allResults = new List<string[]>();
+            var isAddNewServer = false;
+            foreach (var task in tasks)
+            {
+                isAddNewServer = isAddNewServer || task.Result.Item1;
+                allResults.AddRange(task.Result.Item2);
+                task.Dispose();
+            }
+
+            return new Tuple<bool, List<string[]>>(isAddNewServer, allResults);
+        }
+
+        Lib.Sys.CancelableTimeout lazyServerTrackerTimer = null;
+        public void SetLazyServerTrackerUpdater(Action onTimeout)
+        {
+            lazyServerTrackerTimer?.Release();
+            lazyServerTrackerTimer = null;
+            lazyServerTrackerTimer = new Lib.Sys.CancelableTimeout(onTimeout, 2000);
+            lazyServerTrackerTimer.Start();
+        }
+
+        void OnRequireKeepTrackHandler(object sender, Model.Data.BoolEvent isServerStart)
+        {
+            // for plugins
+            InvokeOnServerStateChange(sender, isServerStart);
+
+            if (!setting.isServerTrackerOn)
+            {
+                return;
+            }
+
+            var server = sender as Controller.CoreServerCtrl;
+            if (server.isUntrack)
+            {
+                return;
+            }
+
+            SetLazyServerTrackerUpdater(() =>
+                LazyServerTrackUpdateWorker(server, isServerStart.Data));
+        }
         #endregion
 
         #region public method
+        public void UpdateTrackerSettingNow()
+        {
+            var fakeCtrl = new Controller.CoreServerCtrl
+            {
+                config = "",
+            };
+            LazyServerTrackUpdateWorker(fakeCtrl, false);
+        }
+
         /*
          * exceptions  
          * test<FormatException> base64 decode fail
@@ -546,7 +667,6 @@ namespace V2RayGCon.Service
 
             return result;
         }
-
 
         public void Cleanup()
         {
@@ -665,44 +785,6 @@ namespace V2RayGCon.Service
             });
         }
 
-        private void ShowImportLinksResult(Tuple<bool, List<string[]>> results)
-        {
-            var isAddNewServer = results.Item1;
-            var allResults = results.Item2;
-
-            if (isAddNewServer)
-            {
-                UpdateAllServersSummary();
-                LazySaveServerList();
-            }
-
-            setting.LazyGC();
-
-            if (allResults.Count > 0)
-            {
-                new Views.WinForms.FormImportLinksResult(allResults);
-                Application.Run();
-            }
-            else
-            {
-                MessageBox.Show(I18N.NoLinkFound);
-            }
-        }
-
-        private static Tuple<bool, List<string[]>> GetterImportLinksResult(Task<Tuple<bool, List<string[]>>>[] tasks)
-        {
-            var allResults = new List<string[]>();
-            var isAddNewServer = false;
-            foreach (var task in tasks)
-            {
-                isAddNewServer = isAddNewServer || task.Result.Item1;
-                allResults.AddRange(task.Result.Item2);
-                task.Dispose();
-            }
-
-            return new Tuple<bool, List<string[]>>(isAddNewServer, allResults);
-        }
-
         public void ImportLinks(string links)
         {
             var tasks = new Task<Tuple<bool, List<string[]>>>[] {
@@ -727,13 +809,6 @@ namespace V2RayGCon.Service
                 var results = GetterImportLinksResult(tasks);
                 ShowImportLinksResult(results);
             });
-        }
-
-        public void DisposeLazyTimers()
-        {
-            lazyServerTrackerTimer?.Release();
-            lazySaveServerListTimer?.Release();
-            lazyUpdateNotifyTextTimer?.Release();
         }
 
         public bool IsSelecteAnyServer()
@@ -836,36 +911,6 @@ namespace V2RayGCon.Service
             };
 
             Lib.Utils.ChainActionHelperAsync(bootList.Count, worker);
-        }
-
-        private List<Controller.CoreServerCtrl> GenBootServerList()
-        {
-            var trackerSetting = setting.GetServerTrackerSetting();
-            if (!trackerSetting.isTrackerOn)
-            {
-                return serverList.Where(s => s.isAutoRun).ToList();
-            }
-
-            setting.isServerTrackerOn = true;
-            var trackList = trackerSetting.serverList;
-
-            var bootList = serverList
-                .Where(s => s.isAutoRun || trackList.Contains(s.config))
-                .ToList();
-
-            if (string.IsNullOrEmpty(trackerSetting.curServer))
-            {
-                return bootList;
-            }
-
-            bootList.RemoveAll(s => s.config == trackerSetting.curServer);
-            var lastServer = serverList.FirstOrDefault(
-                    s => s.config == trackerSetting.curServer);
-            if (lastServer != null && !lastServer.isUntrack)
-            {
-                bootList.Insert(0, lastServer);
-            }
-            return bootList;
         }
 
         public void RestartAllSelectedServersThen(Action done = null)
@@ -1029,26 +1074,6 @@ namespace V2RayGCon.Service
         public bool IsServerItemExist(string config)
         {
             return serverList.Any(s => s.config == config);
-        }
-
-        public void BindEventsTo(Controller.CoreServerCtrl server)
-        {
-            server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
-            server.OnLog += OnSendLogHandler;
-            server.OnPropertyChanged += ServerItemPropertyChangedHandler;
-            server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
-            server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
-            server.OnRequireNotifierUpdate += LazyUpdateNotifyTextHandler;
-        }
-
-        public void ReleaseEventsFrom(Controller.CoreServerCtrl server)
-        {
-            server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
-            server.OnLog -= OnSendLogHandler;
-            server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
-            server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
-            server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
-            server.OnRequireNotifierUpdate -= LazyUpdateNotifyTextHandler;
         }
 
         public bool AddServer(string config, string mark, bool quiet = false)

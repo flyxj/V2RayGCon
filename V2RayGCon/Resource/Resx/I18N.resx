@@ -593,9 +593,6 @@ Please take a look at log.</value>
   <data name="GetInboundInfoFail" xml:space="preserve">
     <value>Get inbound information fail!</value>
   </data>
-  <data name="NoServerCapableOfSysProxy" xml:space="preserve">
-    <value>No server capable of system proxy.</value>
-  </data>
   <data name="SetAnyServerAsPacServerFirst" xml:space="preserve">
     <value>Please set any server as PAC proxy first.</value>
   </data>

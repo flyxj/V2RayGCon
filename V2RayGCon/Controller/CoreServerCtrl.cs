@@ -147,11 +147,9 @@ namespace V2RayGCon.Controller
         public bool IsSuitableToBeUsedAsSysProxy(
             bool isGlobal,
             out bool isSocks,
-            out string ip,
             out int port)
         {
             isSocks = false;
-            ip = string.Empty;
             port = 0;
 
             var inboundInfo = GetParsedInboundInfo();
@@ -162,7 +160,6 @@ namespace V2RayGCon.Controller
             }
 
             var protocol = inboundInfo.Item1;
-            ip = inboundInfo.Item2;
             port = inboundInfo.Item3;
 
             if (!IsProtocolMatchProxyRequirment(isGlobal, protocol))
