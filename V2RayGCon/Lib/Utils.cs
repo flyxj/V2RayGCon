@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -973,15 +974,24 @@ namespace V2RayGCon.Lib
                 new char[] { ',', '\r', '\n', ' ' },
                 StringSplitOptions.RemoveEmptyEntries);
 
-            return list.Contains(CalcSha256FromFile(fileName));
+            return list.Contains(GetChecksum(fileName));
 #endif
         }
 
-        public static string CalcSha256FromFile(string fileName)
+        private static string GetChecksum(string file)
         {
+            // http://peterkellner.net/2010/11/24/efficiently-generating-sha256-checksum-for-files-using-csharp/
             try
             {
-                return Lib.Utils.SHA256(File.ReadAllText(fileName));
+                using (FileStream stream = File.OpenRead(file))
+                {
+                    var sha = new SHA256Managed();
+                    byte[] checksum = sha.ComputeHash(stream);
+                    return BitConverter
+                        .ToString(checksum)
+                        .Replace("-", String.Empty)
+                        .ToLower();
+                }
             }
             catch { }
             return string.Empty;

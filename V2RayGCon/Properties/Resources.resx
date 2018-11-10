@@ -198,7 +198,7 @@
     <comment>For debugging only! a.dll,b.dll</comment>
   </data>
   <data name="TrustedPluginSha256" xml:space="preserve">
-    <value>123456,2345</value>
+    <value>6cb30a61a2395102df872fdeee207d46d5b1e8393d040cee42bc7c3742a674cc</value>
     <comment>For release 1234,abcd</comment>
   </data>
   <data name="Module_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">

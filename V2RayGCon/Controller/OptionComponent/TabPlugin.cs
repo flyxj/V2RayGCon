@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
@@ -99,6 +101,10 @@ namespace V2RayGCon.Controller.OptionComponent
             this.btnUpdate.Click += (s, a) =>
             {
                 curPluginInfos = pluginServ.GetterPluginDirInfo();
+                if (curPluginInfos.Count <= 0)
+                {
+                    Task.Factory.StartNew(() => MessageBox.Show(I18N.FindNoPlugin));
+                }
                 InitPanel();
             };
         }
