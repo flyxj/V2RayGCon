@@ -963,24 +963,43 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region files
-        public static bool IsTrustedPlugin(string fileName)
+        static bool IsTrustedPluginFileName(string path)
         {
+            try
+            {
+                var fileName = Path.GetFileName(path);
+                return JsonConvert
+                 .DeserializeObject<Dictionary<string, string>>(StrConst.PluginsDebugList)
+                 .Keys
+                 .ToList()
+                 .Contains(fileName);
+            }
+            catch { }
+            return false;
+        }
+
+        static bool IsTrustedPluginSha256Sum(string sha256Sum)
+            => JsonConvert
+                 .DeserializeObject<Dictionary<string, string>>(StrConst.PluginsReleaseList)
+                 .Keys
+                 .ToList()
+                 .Contains(sha256Sum);
+
+        public static bool IsTrustedPlugin(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
 #if DEBUG
-            var list = Properties.Resources.TrustedPluginFileName.Split(
-                new char[] { ',', '\r', '\n', ' ' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            return list.Contains(Path.GetFileName(fileName));
+            return IsTrustedPluginFileName(path);
 #else
-            var list = Properties.Resources.TrustedPluginSha256.Split(
-                new char[] { ',', '\r', '\n', ' ' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            return list.Contains(GetChecksum(fileName));
+            return IsTrustedPluginSha256Sum(GetChecksum(path));
 #endif
         }
 
-        private static string GetChecksum(string file)
+        static string GetChecksum(string file)
         {
             // http://peterkellner.net/2010/11/24/efficiently-generating-sha256-checksum-for-files-using-csharp/
             try
@@ -1378,6 +1397,8 @@ namespace V2RayGCon.Lib
                 StrConst.config_min,
                 StrConst.config_tpl,
                 StrConst.config_pkg,
+                StrConst.PluginsDebugList,
+                StrConst.PluginsReleaseList,
             };
         }
         #endregion

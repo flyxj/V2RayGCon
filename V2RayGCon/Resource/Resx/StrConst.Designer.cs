@@ -464,6 +464,28 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 {
+        ///  &quot;ProxySetter.dll&quot;: &quot;auto set system proxy&quot;
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string PluginsDebugList {
+            get {
+                return ResourceManager.GetString("PluginsDebugList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {
+        ///  &quot;880efe3b61cb4b5d0cf53c181465872cf8c0bd7c8d941a00d3310655a0f1f483&quot;: &quot;ProxySetter v0.0.1 release 2018.11.11&quot;
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string PluginsReleaseList {
+            get {
+                return ResourceManager.GetString("PluginsReleaseList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 https://github.com/v2ray/v2ray-core/releases 的本地化字符串。
         /// </summary>
         internal static string ReleasePageUrl {

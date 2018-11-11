@@ -284,24 +284,6 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
-        ///   查找类似 ProxySetter.dll 的本地化字符串。
-        /// </summary>
-        internal static string TrustedPluginFileName {
-            get {
-                return ResourceManager.GetString("TrustedPluginFileName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 6cb30a61a2395102df872fdeee207d46d5b1e8393d040cee42bc7c3742a674cc 的本地化字符串。
-        /// </summary>
-        internal static string TrustedPluginSha256 {
-            get {
-                return ResourceManager.GetString("TrustedPluginSha256", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 1.1.1.12 的本地化字符串。
         /// </summary>
         internal static string Version {
