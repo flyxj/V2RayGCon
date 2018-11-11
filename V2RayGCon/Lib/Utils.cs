@@ -19,7 +19,7 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Lib
 {
-    public class Utils
+    public static class Utils
     {
 
         #region Json
@@ -720,9 +720,11 @@ namespace V2RayGCon.Lib
 
             var GetStr = GetStringByPrefixAndKeyHelper(json);
 
-            Model.Data.Vmess vmess = new Model.Data.Vmess();
-            vmess.v = "2";
-            vmess.ps = GetStr("v2raygcon", "alias");
+            Model.Data.Vmess vmess = new Model.Data.Vmess
+            {
+                v = "2",
+                ps = GetStr("v2raygcon", "alias")
+            };
 
             var isUseV4 = (GetStr("outbounds.0", "protocol")?.ToLower()) == "vmess";
             var root = isUseV4 ? "outbounds.0" : "outbound";
@@ -879,7 +881,7 @@ namespace V2RayGCon.Lib
             return elasped;
         }
 
-        static IPEndPoint _defaultLoopbackEndpoint = new IPEndPoint(IPAddress.Loopback, port: 0);
+        static readonly IPEndPoint _defaultLoopbackEndpoint = new IPEndPoint(IPAddress.Loopback, port: 0);
         public static int GetFreeTcpPort()
         {
             // https://stackoverflow.com/questions/138043/find-the-next-tcp-port-in-net

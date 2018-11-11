@@ -28,8 +28,9 @@ namespace V2RayGCon.Test
         [DataTestMethod]
         [DataRow("", false)]
         [DataRow(null, false)]
+        [DataRow("VeryAwesomePlugin.dll", false)]
 #if DEBUG
-        [DataRow("VGCPlugins.dll", true)]
+        [DataRow("ProxySetter.dll", true)]
 #endif
         public void IsTrustedPluginTest(string source, bool expect)
         {

@@ -42,10 +42,13 @@
   <ItemGroup>
     <Compile Include="IApi.cs" />
     <Compile Include="IPlugin.cs" />
+    <Compile Include="Models\DataEvent.cs" />
+    <Compile Include="Models\ICoreCtrl.cs" />
+    <Compile Include="Models\IServersService.cs" />
+    <Compile Include="Models\ISettingService.cs" />
+    <Compile Include="Models\IUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

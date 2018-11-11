@@ -146,6 +146,9 @@
     <Compile Include="Model\Data\PluginInfoItem.cs" />
     <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Model\Data\UserSettings.cs" />
+    <Compile Include="Model\Plugin\Apis\ApiServersService.cs" />
+    <Compile Include="Model\Plugin\Apis\ApiSettingService.cs" />
+    <Compile Include="Model\Plugin\Apis\ApiUtils.cs" />
     <Compile Include="Model\Plugin\Sandboxer.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />

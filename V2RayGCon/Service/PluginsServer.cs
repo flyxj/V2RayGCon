@@ -19,12 +19,13 @@ namespace V2RayGCon.Service
 
         public void Run(
             Setting setting,
+            Servers servers,
             Notifier notifier)
         {
             this.setting = setting;
             this.notifier = notifier;
 
-            apis.Run();
+            apis.Run(setting, servers);
             Restart();
         }
 
@@ -42,6 +43,7 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             ClearPlugins();
+            apis.Cleanup();
         }
 
         public List<Model.Data.PluginInfoItem> GetterPluginDirInfo()

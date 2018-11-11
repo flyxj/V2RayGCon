@@ -10,7 +10,7 @@ using V2RayGCon.Resource.Resx;
 namespace V2RayGCon.Controller
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public class CoreServerCtrl
+    public class CoreServerCtrl : VgcPlugin.Models.ICoreCtrl
     {
         [JsonIgnore]
         Service.Cache cache;
@@ -18,6 +18,12 @@ namespace V2RayGCon.Controller
         Service.Servers servers;
         [JsonIgnore]
         Service.Setting setting;
+
+        #region ICoreCtrl interface
+        public string GetConfig() => this.config;
+        public bool IsCoreRunning() => this.isServerOn;
+        public bool IsUntrack() => this.isUntrack;
+        #endregion
 
         public event EventHandler<Model.Data.StrEvent> OnLog;
         public event EventHandler

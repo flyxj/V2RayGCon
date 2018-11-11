@@ -32,7 +32,7 @@ namespace V2RayGCon.Service
             servers.Run(setting, cache);
             notifier.Run(setting, servers);
 
-            pluginsServ.Run(setting, notifier);
+            pluginsServ.Run(setting, servers, notifier);
 
             Application.ApplicationExit +=
                 (s, a) => OnApplicationExitHandler(false);
