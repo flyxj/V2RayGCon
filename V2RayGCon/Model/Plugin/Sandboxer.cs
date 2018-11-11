@@ -5,6 +5,7 @@ using System.Runtime.Remoting;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
+using VgcPlugin;
 
 // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
 
@@ -22,7 +23,7 @@ namespace V2RayGCon.Model.Plugin
         public string Name => auxPlugin.Name;
         public string Version => auxPlugin.Version;
         public string Description => auxPlugin.Description;
-        public void Run() => auxPlugin.Run();
+        public void Run(IApi api) => auxPlugin.Run(api);
         public void Show() => auxPlugin.Show();
         public void Cleanup() => auxPlugin.Cleanup();
 
@@ -41,7 +42,7 @@ namespace V2RayGCon.Model.Plugin
         /// </summary>
         /// <param name="pluginFileName">for individual namespaces</param>
         /// <returns></returns>
-        public static Model.Plugin.IPlugin LoadPartiallyTrustedPlugin(
+        public static IPlugin LoadPartiallyTrustedPlugin(
             string pluginFileName)
         {
             // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
@@ -109,7 +110,7 @@ namespace V2RayGCon.Model.Plugin
         /// </summary>
         /// <param name="pluginType"></param>
         /// <returns></returns>
-        static Model.Plugin.IPlugin CreatePluginInstance(Type pluginType)
+        static IPlugin CreatePluginInstance(Type pluginType)
         {
             if (pluginType == null)
             {
@@ -118,7 +119,7 @@ namespace V2RayGCon.Model.Plugin
 
             try
             {
-                return (Model.Plugin.IPlugin)
+                return (IPlugin)
                     Activator.CreateInstance(pluginType);
             }
             catch
@@ -145,9 +146,10 @@ namespace V2RayGCon.Model.Plugin
             try
             {
                 var types = assembly.GetTypes();
-            }catch(ReflectionTypeLoadException es)
+            }
+            catch (ReflectionTypeLoadException es)
             {
-                foreach(var e in es.LoaderExceptions)
+                foreach (var e in es.LoaderExceptions)
                 {
                     var info = e;
                 }

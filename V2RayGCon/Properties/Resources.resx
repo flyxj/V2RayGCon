@@ -194,7 +194,7 @@
     <value>plugins</value>
   </data>
   <data name="TrustedPluginFileName" xml:space="preserve">
-    <value>VGCPlugins.dll,VGCPlugins2.dll,</value>
+    <value>ProxySetter.dll</value>
     <comment>For debugging only! a.dll,b.dll</comment>
   </data>
   <data name="TrustedPluginSha256" xml:space="preserve">

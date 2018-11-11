@@ -284,7 +284,7 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
-        ///   查找类似 VGCPlugins.dll,VGCPlugins2.dll, 的本地化字符串。
+        ///   查找类似 ProxySetter.dll 的本地化字符串。
         /// </summary>
         internal static string TrustedPluginFileName {
             get {
