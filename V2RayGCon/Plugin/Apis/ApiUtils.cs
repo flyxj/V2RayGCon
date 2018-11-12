@@ -1,6 +1,6 @@
 ﻿namespace V2RayGCon.Plugin.Apis
 {
-    class ApiUtils : VgcPlugin.Models.IUtils
+    class ApiUtils : VgcApis.Models.IUtils
     {
         // static method is evil!
 

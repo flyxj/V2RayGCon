@@ -14,10 +14,10 @@ namespace V2RayGCon.Service
 {
     public class Setting :
         Model.BaseClass.SingletonService<Setting>,
-        VgcPlugin.Models.ISettingService
+        VgcApis.Models.ISettingService
 
     {
-        public event EventHandler<VgcPlugin.Models.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
         public event EventHandler OnRequireNotifyTextUpdate;
         Model.Data.UserSettings userSettings;
 
@@ -368,7 +368,7 @@ namespace V2RayGCon.Service
             logCache = log;
             try
             {
-                OnLog?.Invoke(this, new VgcPlugin.Models.StrEvent(log));
+                OnLog?.Invoke(this, new VgcApis.Models.StrEvent(log));
             }
             catch { }
         }

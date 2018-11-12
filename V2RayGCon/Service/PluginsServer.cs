@@ -12,8 +12,8 @@ namespace V2RayGCon.Service
         Notifier notifier;
         Plugin.ApiServ apis = new Plugin.ApiServ();
 
-        Dictionary<string, VgcPlugin.IPlugin> plugins =
-            new Dictionary<string, VgcPlugin.IPlugin>();
+        Dictionary<string, VgcApis.IPlugin> plugins =
+            new Dictionary<string, VgcApis.IPlugin>();
 
         PluginsServer() { }
 
@@ -86,9 +86,9 @@ namespace V2RayGCon.Service
             StartPlugins(enabledList);
         }
 
-        public Dictionary<string, VgcPlugin.IPlugin> SearchForPlugins()
+        public Dictionary<string, VgcApis.IPlugin> SearchForPlugins()
         {
-            var pluginList = new Dictionary<string, VgcPlugin.IPlugin>();
+            var pluginList = new Dictionary<string, VgcApis.IPlugin>();
 
             var dllFileNames = SearchDllFiles();
             if (dllFileNames == null)
@@ -147,7 +147,7 @@ namespace V2RayGCon.Service
         void ClearPlugins()
         {
             CleanupPlugins(plugins.Keys.ToList());
-            plugins = new Dictionary<string, VgcPlugin.IPlugin>();
+            plugins = new Dictionary<string, VgcApis.IPlugin>();
         }
 
         List<string> GetCurEnabledPluginFileNames()
@@ -160,7 +160,7 @@ namespace V2RayGCon.Service
         }
 
         List<Model.Data.PluginInfoItem> GetPluginInfoFrom(
-            Dictionary<string, VgcPlugin.IPlugin> pluginList)
+            Dictionary<string, VgcApis.IPlugin> pluginList)
         {
             if (pluginList.Count <= 0)
             {

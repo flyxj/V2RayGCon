@@ -10,7 +10,7 @@ using V2RayGCon.Resource.Resx;
 namespace V2RayGCon.Controller
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public class CoreServerCtrl : VgcPlugin.Models.ICoreCtrl
+    public class CoreServerCtrl : VgcApis.Models.ICoreCtrl
     {
         [JsonIgnore]
         Service.Cache cache;
@@ -19,7 +19,7 @@ namespace V2RayGCon.Controller
         [JsonIgnore]
         Service.Setting setting;
 
-        public event EventHandler<VgcPlugin.Models.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
         public event EventHandler
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
@@ -29,7 +29,7 @@ namespace V2RayGCon.Controller
         /// <summary>
         /// false: stop true: start
         /// </summary>
-        public event EventHandler<VgcPlugin.Models.BoolEvent> OnRequireKeepTrack;
+        public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite, isUntrack;
@@ -374,7 +374,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new VgcPlugin.Models.BoolEvent(false));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(false));
                     next?.Invoke();
                 }));
         }
@@ -596,7 +596,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new VgcPlugin.Models.BoolEvent(true));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(true));
                     next?.Invoke();
                 },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
@@ -763,17 +763,17 @@ namespace V2RayGCon.Controller
 
         void SendLog(string message)
         {
-            OnLogHandler(this, new VgcPlugin.Models.StrEvent(message));
+            OnLogHandler(this, new VgcApis.Models.StrEvent(message));
         }
 
-        void OnLogHandler(object sender, VgcPlugin.Models.StrEvent arg)
+        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
         {
             var msg = string.Format("[{0}] {1}", this.name, arg.Data);
 
             LogCache = msg;
             try
             {
-                OnLog?.Invoke(this, new VgcPlugin.Models.StrEvent(msg));
+                OnLog?.Invoke(this, new VgcApis.Models.StrEvent(msg));
             }
             catch { }
         }

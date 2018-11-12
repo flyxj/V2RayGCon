@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VgcPlugin.Models
+namespace VgcApis.Models
 {
     public class BoolEvent : EventArgs
     {

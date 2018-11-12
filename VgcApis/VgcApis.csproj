@@ -7,8 +7,8 @@
     <ProjectGuid>{B3CF9873-AFBC-4703-8A3B-06D39FD761B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VgcPlugin</RootNamespace>
-    <AssemblyName>VgcPlugin</AssemblyName>
+    <RootNamespace>VgcApis</RootNamespace>
+    <AssemblyName>VgcApis</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

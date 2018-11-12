@@ -5,7 +5,7 @@ using System.Runtime.Remoting;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
-using VgcPlugin;
+using VgcApis;
 
 // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
 

@@ -468,9 +468,9 @@
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VgcPlugin\VgcPlugin.csproj">
+    <ProjectReference Include="..\VgcApis\VgcApis.csproj">
       <Project>{b3cf9873-afbc-4703-8a3b-06d39fd761b9}</Project>
-      <Name>VgcPlugin</Name>
+      <Name>VgcApis</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

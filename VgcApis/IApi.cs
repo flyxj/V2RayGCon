@@ -1,4 +1,4 @@
-﻿namespace VgcPlugin
+﻿namespace VgcApis
 {
     public interface IApi
     {

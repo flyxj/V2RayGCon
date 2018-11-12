@@ -11,7 +11,7 @@ namespace V2RayGCon.Service
     class Downloader
     {
         public event EventHandler OnDownloadCompleted, OnDownloadCancelled, OnDownloadFail;
-        public event EventHandler<VgcPlugin.Models.IntEvent> OnProgress;
+        public event EventHandler<VgcApis.Models.IntEvent> OnProgress;
 
         string _packageName;
         string _version;
@@ -89,7 +89,7 @@ namespace V2RayGCon.Service
             try
             {
                 OnProgress?.Invoke(this,
-                    new VgcPlugin.Models.IntEvent(Math.Max(1, percentage)));
+                    new VgcApis.Models.IntEvent(Math.Max(1, percentage)));
             }
             catch { }
         }
