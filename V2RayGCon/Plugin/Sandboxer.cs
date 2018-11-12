@@ -9,7 +9,7 @@ using VgcPlugin;
 
 // https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox
 
-namespace V2RayGCon.Model.Plugin
+namespace V2RayGCon.Plugin
 {
     //The Sandboxer class needs to derive from MarshalByRefObject so that we can create it in another   
     // AppDomain and refer to it from the default AppDomain.  
@@ -58,7 +58,7 @@ namespace V2RayGCon.Model.Plugin
             permSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
 
             //We want the sandboxer assembly's strong name, so that we can add it to the full trust list.  
-            StrongName fullTrustAssembly = typeof(Model.Plugin.Sandboxer).Assembly.Evidence.GetHostEvidence<StrongName>();
+            StrongName fullTrustAssembly = typeof(Plugin.Sandboxer).Assembly.Evidence.GetHostEvidence<StrongName>();
 
             //Now we have everything we need to create the AppDomain, so let's create it.  
             AppDomain newDomain = AppDomain.CreateDomain("Sandbox" + pluginFileName, null, adSetup, permSet, fullTrustAssembly);

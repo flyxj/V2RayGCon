@@ -1,7 +1,9 @@
-﻿namespace V2RayGCon.Model.Plugin.Apis
+﻿namespace V2RayGCon.Plugin.Apis
 {
     class ApiUtils : VgcPlugin.Models.IUtils
     {
+        // static method is evil!
+
         public string ShowSelectFileDialog(string extension) =>
             Lib.UI.ShowSelectFileDialog(extension);
 

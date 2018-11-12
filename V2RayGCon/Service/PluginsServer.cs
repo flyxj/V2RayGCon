@@ -10,7 +10,7 @@ namespace V2RayGCon.Service
     {
         Setting setting;
         Notifier notifier;
-        Model.Plugin.ApiServ apis = new Model.Plugin.ApiServ();
+        Plugin.ApiServ apis = new Plugin.ApiServ();
 
         Dictionary<string, VgcPlugin.IPlugin> plugins =
             new Dictionary<string, VgcPlugin.IPlugin>();
@@ -43,7 +43,6 @@ namespace V2RayGCon.Service
         public void Cleanup()
         {
             ClearPlugins();
-            apis.Cleanup();
         }
 
         public List<Model.Data.PluginInfoItem> GetterPluginDirInfo()
@@ -104,7 +103,7 @@ namespace V2RayGCon.Service
                     continue;
                 }
 
-                var plugin = Model.Plugin.Sandboxer.LoadTrustedPlugin(relativeFilePath);
+                var plugin = Plugin.Sandboxer.LoadTrustedPlugin(relativeFilePath);
                 if (plugin == null)
                 {
                     continue;
