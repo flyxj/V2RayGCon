@@ -657,7 +657,7 @@ namespace V2RayGCon.Service
         void DebugSendLog(string content)
         {
 #if DEBUG
-            SendLog(content);
+            SendLog($"(Debug) {content}");
 #endif
         }
         #endregion
