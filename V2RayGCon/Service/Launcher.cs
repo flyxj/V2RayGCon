@@ -12,30 +12,27 @@ namespace V2RayGCon.Service
         Setting setting;
         Servers servers;
         Notifier notifier;
-        PacServer pacServer;
-        Model.Data.ProxyRegKeyValue orgSysProxySetting;
-
+        PluginsServer pluginsServ;
         bool isCleanupDone = false;
 
         Launcher()
         {
-            orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             // warn-up
             var cache = Cache.Instance;
-            var cmder = Cmder.Instance;
 
             setting = Setting.Instance;
-            pacServer = PacServer.Instance;
             servers = Servers.Instance;
             notifier = Notifier.Instance;
+            pluginsServ = PluginsServer.Instance;
 
             SetCulture(setting.culture);
 
             // dependency injection
-            pacServer.Run(setting);
-            servers.Run(setting, pacServer, cache);
-            cmder.Run(setting, servers, pacServer);
+            cache.Run(setting);
+            servers.Run(setting, cache);
             notifier.Run(setting, servers);
+
+            pluginsServ.Run(setting, servers, notifier);
 
             Application.ApplicationExit +=
                 (s, a) => OnApplicationExitHandler(false);
@@ -64,12 +61,10 @@ namespace V2RayGCon.Service
 
                 setting.isShutdown = isShutdown;
 
+                pluginsServ.Cleanup();
                 notifier.Cleanup();
                 servers.Cleanup();
-                pacServer.Cleanup();
                 setting.Cleanup();
-                Lib.Sys.ProxySetter.SetProxy(orgSysProxySetting);
-
                 isCleanupDone = true;
             }
         }
@@ -107,13 +102,13 @@ namespace V2RayGCon.Service
 #if DEBUG
         void This_Function_Is_Used_For_Debugging()
         {
-            notifier.InjectDebugMenuItem(new ToolStripMenuItem(
-                "Debug",
-                null,
-                (s, a) =>
-                {
-                    servers.DbgFastRestartTest(100);
-                }));
+            //notifier.InjectDebugMenuItem(new ToolStripMenuItem(
+            //    "Debug",
+            //    null,
+            //    (s, a) =>
+            //    {
+            //        servers.DbgFastRestartTest(100);
+            //    }));
 
             // new Views.WinForms.FormConfiger(@"{}");
             // new Views.WinForms.FormConfigTester();
@@ -128,7 +123,7 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
-        public void run()
+        public void Run()
         {
             Lib.Utils.SupportProtocolTLS12();
 
@@ -174,7 +169,7 @@ namespace V2RayGCon.Service
 
         string GetBugLogFileName()
         {
-            var appData = Lib.Utils.GetAppDataFolder();
+            var appData = Lib.Utils.GetSysAppDataFolder();
             return Path.Combine(appData, StrConst.BugFileName);
         }
 

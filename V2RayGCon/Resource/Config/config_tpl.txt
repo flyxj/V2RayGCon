@@ -1,4 +1,40 @@
 ﻿{
+  "inbSimSock": {
+    "tag": "agentin",
+    "port": 1080,
+    "listen": "127.0.0.1",
+    "protocol": "socks",
+    "settings": {}
+  },
+  "outbVmess": {
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [
+        {
+          "address": "",
+          "port": 1234,
+          "users": [
+            {
+              "id": "",
+              "alterId": 32,
+              "security": "auto"
+            }
+          ]
+        }
+      ]
+    },
+    "tag": "agentout",
+    "streamSettings": {}
+  },
+  "tplImportVmess": {
+    "log": {
+      "loglevel": "warning"
+    },
+    "v2raygcon": {
+      "alias": "",
+      "description": ""
+    }
+  },
   "emptyInOut": {
     "inbound": {},
     "outbound": {}
@@ -110,55 +146,19 @@
     }
   },
   "ssClient": {
-    "servers": [
-      {
-        "email": "love@v2ray.com",
-        "address": "127.0.0.1",
-        "port": 1234,
-        "method": "aes-256-gcm",
-        "password": "pass",
-        "ota": false,
-        "level": 0
-      }
-    ]
-  },
-  "tplImportVmess": {
-    "log": {
-      "loglevel": "warning"
-    },
-    "inbound": {
-      "port": 1080,
-      "listen": "127.0.0.1",
-      "protocol": "socks",
-      "settings": {
-        "auth": "noauth",
-        "udp": false,
-        "ip": "127.0.0.1"
-      }
-    },
-    "outbound": {
-      "protocol": "vmess",
-      "settings": {
-        "vnext": [
-          {
-            "address": "",
-            "port": 1234,
-            "users": [
-              {
-                "id": "",
-                "alterId": 32,
-                "security": "auto"
-              }
-            ]
-          }
-        ]
-      },
-      "tag": "agentout",
-      "streamSettings": {}
-    },
-    "v2raygcon": {
-      "alias": "",
-      "description": ""
+    "protocol": "shadowsocks",
+    "settings": {
+      "servers": [
+        {
+          "email": "love@v2ray.com",
+          "address": "127.0.0.1",
+          "port": 1234,
+          "method": "aes-256-gcm",
+          "password": "pass",
+          "ota": false,
+          "level": 0
+        }
+      ]
     }
   },
   "tplImportSS": {

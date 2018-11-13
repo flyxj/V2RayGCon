@@ -19,16 +19,19 @@ namespace V2RayGCon.Views.WinForms
         #endregion
 
         Service.Downloader downloader;
+        Service.Setting setting;
 
         FormDownloadCore()
         {
+            setting = Service.Setting.Instance;
+
             InitializeComponent();
             InitUI();
 
             this.FormClosed += (s, e) =>
             {
                 downloader?.Cleanup();
-                Service.Setting.Instance.LazyGC();
+                setting.LazyGC();
             };
 
 #if DEBUG
@@ -51,7 +54,7 @@ namespace V2RayGCon.Views.WinForms
 
             Task.Factory.StartNew(() =>
             {
-                var core = new Service.Core();
+                var core = new Service.Core(setting);
                 var version = core.GetCoreVersion();
                 var msg = string.IsNullOrEmpty(version) ?
                     I18N.GetCoreVerFail :
@@ -91,7 +94,7 @@ namespace V2RayGCon.Views.WinForms
 
         void DownloadV2RayCore()
         {
-            downloader = new Service.Downloader();
+            downloader = new Service.Downloader(setting);
             downloader.SetArchitecture(cboxArch.SelectedIndex == 1);
             downloader.SetVersion(cboxVer.Text);
 

@@ -21,6 +21,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem selectNoSpeedTestAllPages,
             ToolStripMenuItem selectRunningAllPages,
             ToolStripMenuItem selectTimeoutAllPages,
+            ToolStripMenuItem selectUntrackAllPages,
 
             ToolStripMenuItem selectAllAllServers,
             ToolStripMenuItem invertSelectionAllServers,
@@ -30,14 +31,15 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem selectNoMarkAllServers,
             ToolStripMenuItem selectNoSpeedTestAllServers,
             ToolStripMenuItem selectRunningAllServers,
-            ToolStripMenuItem selectTimeoutAllServers)
+            ToolStripMenuItem selectTimeoutAllServers,
+            ToolStripMenuItem selectUntrackAllServers)
 
 
         {
             servers = Service.Servers.Instance;
 
-            InitAllPagesSelectors(selectNoneAllPages, invertSelectionAllPages, selectAllAllPages, selectAutorunAllPages, selectRunningAllPages, selectTimeoutAllPages, selectNoSpeedTestAllPages, selectNoMarkAllPages);
-            InitAllServersSelector(selectNoneAllServers, invertSelectionAllServers, selectAllAllServers, selectAutorunAllServers, selectRunningAllServers, selectTimeoutAllServers, selectNoSpeedTestAllServers, selectNoMarkAllServers);
+            InitAllPagesSelectors(selectNoneAllPages, invertSelectionAllPages, selectAllAllPages, selectAutorunAllPages, selectRunningAllPages, selectTimeoutAllPages, selectNoSpeedTestAllPages, selectNoMarkAllPages, selectUntrackAllPages);
+            InitAllServersSelector(selectNoneAllServers, invertSelectionAllServers, selectAllAllServers, selectAutorunAllServers, selectRunningAllServers, selectTimeoutAllServers, selectNoSpeedTestAllServers, selectNoMarkAllServers, selectUntrackAllServers);
             InitCurPageSelectors(selectAllCurPage, selectNoneCurPage, invertSelectionCurPage);
         }
 
@@ -54,7 +56,16 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        private void InitAllPagesSelectors(ToolStripMenuItem selectNoneAllPages, ToolStripMenuItem invertSelectionAllPages, ToolStripMenuItem selectAllAllPages, ToolStripMenuItem selectAutorunAllPages, ToolStripMenuItem selectRunningAllPages, ToolStripMenuItem selectTimeoutAllPages, ToolStripMenuItem selectNoSpeedTestAllPages, ToolStripMenuItem selectNoMarkAllPages)
+        private void InitAllPagesSelectors(
+            ToolStripMenuItem selectNoneAllPages,
+            ToolStripMenuItem invertSelectionAllPages,
+            ToolStripMenuItem selectAllAllPages,
+            ToolStripMenuItem selectAutorunAllPages,
+            ToolStripMenuItem selectRunningAllPages,
+            ToolStripMenuItem selectTimeoutAllPages,
+            ToolStripMenuItem selectNoSpeedTestAllPages,
+            ToolStripMenuItem selectNoMarkAllPages,
+            ToolStripMenuItem selectUntrackAllPages)
         {
             selectAllAllPages.Click +=
                             (s, a) => SelectAllPagesWhere(el => true);
@@ -79,9 +90,22 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             selectNoMarkAllPages.Click +=
                 (s, a) => SelectAllPagesWhere(el => string.IsNullOrEmpty(el.mark));
+
+            selectUntrackAllPages.Click +=
+                (s, a) => SelectAllPagesWhere(el => el.isUntrack);
+
         }
 
-        private void InitAllServersSelector(ToolStripMenuItem selectNoneAllServers, ToolStripMenuItem invertSelectionAllServers, ToolStripMenuItem selectAllAllServers, ToolStripMenuItem selectAutorunAllServers, ToolStripMenuItem selectRunningAllServers, ToolStripMenuItem selectTimeoutAllServers, ToolStripMenuItem selectNoSpeedTestAllServers, ToolStripMenuItem selectNoMarkAllServers)
+        private void InitAllServersSelector(
+            ToolStripMenuItem selectNoneAllServers,
+            ToolStripMenuItem invertSelectionAllServers,
+            ToolStripMenuItem selectAllAllServers,
+            ToolStripMenuItem selectAutorunAllServers,
+            ToolStripMenuItem selectRunningAllServers,
+            ToolStripMenuItem selectTimeoutAllServers,
+            ToolStripMenuItem selectNoSpeedTestAllServers,
+            ToolStripMenuItem selectNoMarkAllServers,
+            ToolStripMenuItem selectUntrackAllServers)
         {
             selectAllAllServers.Click +=
                 (s, a) => SelectAllServersWhere(el => true);
@@ -101,12 +125,14 @@ namespace V2RayGCon.Controller.FormMainComponent
             selectTimeoutAllServers.Click +=
                 (s, a) => SelectAllServersWhere(el => el.speedTestResult == long.MaxValue);
 
-
             selectRunningAllServers.Click +=
                 (s, a) => SelectAllServersWhere(el => el.isServerOn);
 
             selectAutorunAllServers.Click +=
                 (s, a) => SelectAllServersWhere(el => el.isAutoRun);
+
+            selectUntrackAllServers.Click +=
+                (s, a) => SelectAllServersWhere(el => el.isUntrack);
         }
 
         private void InitCurPageSelectors(ToolStripMenuItem selectAllCurPage, ToolStripMenuItem selectNoneCurPage, ToolStripMenuItem invertSelectionCurPage)

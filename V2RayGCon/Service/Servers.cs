@@ -11,21 +11,21 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
-    public class Servers : Model.BaseClass.SingletonService<Servers>
+    public class Servers :
+        Model.BaseClass.SingletonService<Servers>,
+        VgcApis.Models.IServersService
     {
         Setting setting = null;
-        PacServer pacServer = null;
         Cache cache = null;
 
-        public event EventHandler<Model.Data.StrEvent>
-            OnRequireNotifierUpdate;
+        public event EventHandler<VgcApis.Models.BoolEvent>
+            OnServerStateChange;
 
         public event EventHandler
             OnRequireMenuUpdate,
             OnRequireStatusBarUpdate,
             OnRequireFlyPanelUpdate,
             OnRequireFlyPanelReload;
-
 
         List<Controller.CoreServerCtrl> serverList = null;
         List<string> markList = null;
@@ -43,20 +43,27 @@ namespace V2RayGCon.Service
 
         public void Run(
            Setting setting,
-           PacServer pacServer,
            Cache cache)
         {
             this.cache = cache;
             this.setting = setting;
-            this.pacServer = pacServer;
             this.serverList = setting.LoadServerList();
 
             foreach (var server in serverList)
             {
-                server.Run(cache, setting, pacServer, this);
+                server.Run(cache, setting, this);
                 BindEventsTo(server);
             }
         }
+
+        #region interface for plugins
+        public ReadOnlyCollection<VgcApis.Models.ICoreCtrl> GetTrackableServerList()
+           => serverList
+               .Where(s => s.isServerOn && !s.isUntrack)
+               .Select(s => s as VgcApis.Models.ICoreCtrl)
+               .ToList()
+               .AsReadOnly();
+        #endregion
 
         #region property
         bool _isTesting;
@@ -81,6 +88,65 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+
+        void DisposeLazyTimers()
+        {
+            lazyServerTrackerTimer?.Release();
+            lazySaveServerListTimer?.Release();
+            lazyUpdateNotifyTextTimer?.Release();
+        }
+
+        private List<Controller.CoreServerCtrl> GenBootServerList()
+        {
+            var trackerSetting = setting.GetServerTrackerSetting();
+            if (!trackerSetting.isTrackerOn)
+            {
+                return serverList.Where(s => s.isAutoRun).ToList();
+            }
+
+            setting.isServerTrackerOn = true;
+            var trackList = trackerSetting.serverList;
+
+            var bootList = serverList
+                .Where(s => s.isAutoRun || trackList.Contains(s.config))
+                .ToList();
+
+            if (string.IsNullOrEmpty(trackerSetting.curServer))
+            {
+                return bootList;
+            }
+
+            bootList.RemoveAll(s => s.config == trackerSetting.curServer);
+            var lastServer = serverList.FirstOrDefault(
+                    s => s.config == trackerSetting.curServer);
+            if (lastServer != null && !lastServer.isUntrack)
+            {
+                bootList.Insert(0, lastServer);
+            }
+            return bootList;
+        }
+
+        void BindEventsTo(Controller.CoreServerCtrl server)
+        {
+            server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
+            server.OnLog += OnSendLogHandler;
+            server.OnPropertyChanged += ServerItemPropertyChangedHandler;
+            server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
+            server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
+            server.OnRequireNotifierUpdate += LazyUpdateNotifyTextHandler;
+        }
+
+        void ReleaseEventsFrom(Controller.CoreServerCtrl server)
+        {
+            server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
+            server.OnLog -= OnSendLogHandler;
+            server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
+            server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
+            server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
+            server.OnRequireNotifierUpdate -= LazyUpdateNotifyTextHandler;
+        }
+
+
         List<string> GetHtmlContentFromCache(List<string> urls)
         {
             return urls.Count <= 0 ?
@@ -112,28 +178,26 @@ namespace V2RayGCon.Service
 
             if (isStart)
             {
-                tracked.Insert(0, curServer);
+                trackerSetting.curServer = curServer;
+            }
+            else
+            {
+                trackerSetting.curServer = null;
             }
 
             trackerSetting.serverList = tracked;
             return trackerSetting;
         }
 
-        void OnRequireKeepTrackHandler(object sender, Model.Data.BoolEvent isServerStart)
+        void InvokeOnServerStateChange(
+            object sender,
+            VgcApis.Models.BoolEvent isServerStart)
         {
-            if (!setting.isServerTrackerOn)
+            try
             {
-                return;
+                OnServerStateChange?.Invoke(sender, isServerStart);
             }
-
-            var server = sender as Controller.CoreServerCtrl;
-            if (server.isUntrack)
-            {
-                return;
-            }
-
-            SetLazyServerTrackerUpdater(() =>
-                LazyServerTrackUpdateWorker(server, isServerStart.Data));
+            catch { }
         }
 
         void LazyServerTrackUpdateWorker(
@@ -141,60 +205,8 @@ namespace V2RayGCon.Service
             bool isStart)
         {
             var curTrackerSetting = GenCurTrackerSetting(servCtrl.config, isStart);
-            var isGlobal = false;
-            curTrackerSetting.curServer = null;
-            var proxySetting = setting.GetSysProxySetting();
-
-            switch (PacServer.DetectSystemProxyMode(proxySetting))
-            {
-                case Model.Data.Enum.SystemProxyMode.None:
-                    setting.SaveServerTrackerSetting(curTrackerSetting);
-                    return;
-                case Model.Data.Enum.SystemProxyMode.Global:
-                    isGlobal = true;
-                    break;
-                case Model.Data.Enum.SystemProxyMode.PAC:
-                    isGlobal = false;
-                    break;
-            }
-
-            foreach (var c in curTrackerSetting.serverList)
-            {
-                // 按trackerList的顺序来试
-                var serv = serverList.FirstOrDefault(s => s.config == c);
-                if (serv == null)
-                {
-                    continue;
-                }
-
-                if (serv.BecomeSystemProxy(isGlobal))
-                {
-                    curTrackerSetting.curServer = serv.config;
-                    break;
-                }
-            }
-
-            // 没有可用服务器时不要清空代理设置
-            // 否则全部重启时会丢失代理设置
-            if (curTrackerSetting.curServer == null)
-            {
-                OnSendLogHandler(this, new Model.Data.StrEvent(I18N.NoServerCapableOfSysProxy));
-                if (serverList.Count(s => s.isServerOn && !s.isUntrack) > 0)
-                {
-                    Task.Factory.StartNew(() => MessageBox.Show(I18N.SetSysProxyFail));
-                }
-            }
-
             setting.SaveServerTrackerSetting(curTrackerSetting);
-        }
-
-        Lib.Sys.CancelableTimeout lazyServerTrackerTimer = null;
-        void SetLazyServerTrackerUpdater(Action onTimeout)
-        {
-            lazyServerTrackerTimer?.Release();
-            lazyServerTrackerTimer = null;
-            lazyServerTrackerTimer = new Lib.Sys.CancelableTimeout(onTimeout, 2000);
-            lazyServerTrackerTimer.Start();
+            return;
         }
 
         int GetServerIndexByConfig(string config)
@@ -320,6 +332,43 @@ namespace V2RayGCon.Service
             return new Tuple<bool, List<string[]>>(isAddNewServer, result);
         }
 
+        JToken GenStreamSetting(Model.Data.Vmess vmess)
+        {
+            // insert stream type
+            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
+            string streamType = vmess.net.ToLower();
+
+            if (!streamTypes.Contains(streamType))
+            {
+                return JToken.Parse(@"{}");
+            }
+
+            var streamToken = cache.tpl.LoadTemplate(streamType);
+            try
+            {
+                switch (streamType)
+                {
+                    case "kcp":
+                        streamToken["kcpSettings"]["header"]["type"] = vmess.type;
+                        break;
+                    case "ws":
+                        streamToken["wsSettings"]["path"] = string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
+                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
+                        {
+                            streamToken["wsSettings"]["headers"]["Host"] = vmess.host;
+                        }
+                        break;
+                    case "h2":
+                        streamToken["httpSettings"]["path"] = vmess.path;
+                        streamToken["httpSettings"]["host"] = Lib.Utils.Str2JArray(vmess.host);
+                        break;
+                }
+            }
+            catch { }
+
+            return streamToken;
+        }
+
         JObject Vmess2Config(Model.Data.Vmess vmess)
         {
             if (vmess == null)
@@ -328,57 +377,28 @@ namespace V2RayGCon.Service
             }
 
             // prepare template
-            var config = cache.tpl.LoadTemplate("tplImportVmess");
+            var config = cache.tpl.LoadTemplate("tplImportVmess") as JObject;
             config["v2raygcon"]["alias"] = vmess.ps;
 
-            var cPos = config["outbound"]["settings"]["vnext"][0];
-            cPos["address"] = vmess.add;
-            cPos["port"] = Lib.Utils.Str2Int(vmess.port);
-            cPos["users"][0]["id"] = vmess.id;
-            cPos["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
+            var outVmess = cache.tpl.LoadTemplate("outbVmess");
+            outVmess["streamSettings"] = GenStreamSetting(vmess);
+            var node = outVmess["settings"]["vnext"][0];
+            node["address"] = vmess.add;
+            node["port"] = Lib.Utils.Str2Int(vmess.port);
+            node["users"][0]["id"] = vmess.id;
+            node["users"][0]["alterId"] = Lib.Utils.Str2Int(vmess.aid);
 
-            // insert stream type
-            string[] streamTypes = { "ws", "tcp", "kcp", "h2" };
-            string streamType = vmess.net.ToLower();
+            var isV4 = setting.isUseV4;
+            var inbound = Lib.Utils.CreateJObject(
+                (isV4 ? "inbounds.0" : "inbound"),
+                cache.tpl.LoadTemplate("inbSimSock"));
 
-            if (!streamTypes.Contains(streamType))
-            {
-                return config.DeepClone() as JObject;
-            }
+            var outbound = Lib.Utils.CreateJObject(
+                (isV4 ? "outbounds.0" : "outbound"),
+                outVmess);
 
-            config["outbound"]["streamSettings"] =
-                cache.tpl.LoadTemplate(streamType);
-
-            try
-            {
-                switch (streamType)
-                {
-                    case "kcp":
-                        config["outbound"]["streamSettings"]["kcpSettings"]["header"]["type"] = vmess.type;
-                        break;
-                    case "ws":
-                        config["outbound"]["streamSettings"]["wsSettings"]["path"] =
-                            string.IsNullOrEmpty(vmess.v) ? vmess.host : vmess.path;
-                        if (vmess.v == "2" && !string.IsNullOrEmpty(vmess.host))
-                        {
-                            config["outbound"]["streamSettings"]["wsSettings"]["headers"]["Host"] = vmess.host;
-                        }
-                        break;
-                    case "h2":
-                        config["outbound"]["streamSettings"]["httpSettings"]["path"] = vmess.path;
-                        config["outbound"]["streamSettings"]["httpSettings"]["host"] = Lib.Utils.Str2JArray(vmess.host);
-                        break;
-                }
-
-            }
-            catch { }
-
-            try
-            {
-                // must place at the end. cos this key is add by streamSettings
-                config["outbound"]["streamSettings"]["security"] = vmess.tls;
-            }
-            catch { }
+            Lib.Utils.MergeJson(ref config, inbound);
+            Lib.Utils.MergeJson(ref config, outbound);
             return config.DeepClone() as JObject;
         }
 
@@ -442,15 +462,6 @@ namespace V2RayGCon.Service
             lazyUpdateNotifyTextTimer.Start();
         }
 
-        void InvokeEventOnRequireNotifierUpdate(string text)
-        {
-            try
-            {
-                OnRequireNotifierUpdate?.Invoke(this, new Model.Data.StrEvent(text));
-            }
-            catch { }
-        }
-
         void UpdateNotifierText()
         {
             var list = serverList
@@ -460,12 +471,13 @@ namespace V2RayGCon.Service
 
             var count = list.Count;
 
-            if (count <= 0 || count > 3)
+            if (count <= 0 || count > 2)
             {
-                InvokeEventOnRequireNotifierUpdate(
-                    count <= 0 ?
+                setting.runningServerSummary = count <= 0 ?
                     I18N.Description :
-                    count.ToString() + I18N.ServersAreRunning);
+                    count.ToString() + I18N.ServersAreRunning;
+
+                setting.InvokeEventIgnoreErrorOnRequireNotifyTextUpdate();
                 return;
             }
 
@@ -473,8 +485,8 @@ namespace V2RayGCon.Service
 
             Action done = () =>
             {
-                InvokeEventOnRequireNotifierUpdate(
-                    string.Join(Environment.NewLine, texts));
+                setting.runningServerSummary = string.Join(Environment.NewLine, texts);
+                setting.InvokeEventIgnoreErrorOnRequireNotifyTextUpdate();
             };
 
             Action<int, Action> worker = (index, next) =>
@@ -507,7 +519,7 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        void OnSendLogHandler(object sender, Model.Data.StrEvent arg)
+        void OnSendLogHandler(object sender, VgcApis.Models.StrEvent arg)
         {
             setting.SendLog(arg.Data);
         }
@@ -563,9 +575,85 @@ namespace V2RayGCon.Service
             vnext["outbound"]["settings"]["vnext"][0]["users"][0]["id"] = id;
             return vnext;
         }
+
+        private void ShowImportLinksResult(Tuple<bool, List<string[]>> results)
+        {
+            var isAddNewServer = results.Item1;
+            var allResults = results.Item2;
+
+            if (isAddNewServer)
+            {
+                UpdateAllServersSummary();
+                LazySaveServerList();
+            }
+
+            setting.LazyGC();
+
+            if (allResults.Count > 0)
+            {
+                new Views.WinForms.FormImportLinksResult(allResults);
+                Application.Run();
+            }
+            else
+            {
+                MessageBox.Show(I18N.NoLinkFound);
+            }
+        }
+
+        private static Tuple<bool, List<string[]>> GetterImportLinksResult(Task<Tuple<bool, List<string[]>>>[] tasks)
+        {
+            var allResults = new List<string[]>();
+            var isAddNewServer = false;
+            foreach (var task in tasks)
+            {
+                isAddNewServer = isAddNewServer || task.Result.Item1;
+                allResults.AddRange(task.Result.Item2);
+                task.Dispose();
+            }
+
+            return new Tuple<bool, List<string[]>>(isAddNewServer, allResults);
+        }
+
+        Lib.Sys.CancelableTimeout lazyServerTrackerTimer = null;
+        public void SetLazyServerTrackerUpdater(Action onTimeout)
+        {
+            lazyServerTrackerTimer?.Release();
+            lazyServerTrackerTimer = null;
+            lazyServerTrackerTimer = new Lib.Sys.CancelableTimeout(onTimeout, 2000);
+            lazyServerTrackerTimer.Start();
+        }
+
+        void OnRequireKeepTrackHandler(object sender, VgcApis.Models.BoolEvent isServerStart)
+        {
+            // for plugins
+            InvokeOnServerStateChange(sender, isServerStart);
+
+            if (!setting.isServerTrackerOn)
+            {
+                return;
+            }
+
+            var server = sender as Controller.CoreServerCtrl;
+            if (server.isUntrack)
+            {
+                return;
+            }
+
+            SetLazyServerTrackerUpdater(() =>
+                LazyServerTrackUpdateWorker(server, isServerStart.Data));
+        }
         #endregion
 
         #region public method
+        public void UpdateTrackerSettingNow()
+        {
+            var fakeCtrl = new Controller.CoreServerCtrl
+            {
+                config = "",
+            };
+            LazyServerTrackUpdateWorker(fakeCtrl, false);
+        }
+
         /*
          * exceptions  
          * test<FormatException> base64 decode fail
@@ -592,7 +680,6 @@ namespace V2RayGCon.Service
 
             return result;
         }
-
 
         public void Cleanup()
         {
@@ -711,44 +798,6 @@ namespace V2RayGCon.Service
             });
         }
 
-        private void ShowImportLinksResult(Tuple<bool, List<string[]>> results)
-        {
-            var isAddNewServer = results.Item1;
-            var allResults = results.Item2;
-
-            if (isAddNewServer)
-            {
-                UpdateAllServersSummary();
-                LazySaveServerList();
-            }
-
-            setting.LazyGC();
-
-            if (allResults.Count > 0)
-            {
-                new Views.WinForms.FormImportLinksResult(allResults);
-                Application.Run();
-            }
-            else
-            {
-                MessageBox.Show(I18N.NoLinkFound);
-            }
-        }
-
-        private static Tuple<bool, List<string[]>> GetterImportLinksResult(Task<Tuple<bool, List<string[]>>>[] tasks)
-        {
-            var allResults = new List<string[]>();
-            var isAddNewServer = false;
-            foreach (var task in tasks)
-            {
-                isAddNewServer = isAddNewServer || task.Result.Item1;
-                allResults.AddRange(task.Result.Item2);
-                task.Dispose();
-            }
-
-            return new Tuple<bool, List<string[]>>(isAddNewServer, allResults);
-        }
-
         public void ImportLinks(string links)
         {
             var tasks = new Task<Tuple<bool, List<string[]>>>[] {
@@ -775,13 +824,6 @@ namespace V2RayGCon.Service
             });
         }
 
-        public void DisposeLazyTimers()
-        {
-            lazyServerTrackerTimer?.Release();
-            lazySaveServerListTimer?.Release();
-            lazyUpdateNotifyTextTimer?.Release();
-        }
-
         public bool IsSelecteAnyServer()
         {
             return serverList.Any(s => s.isSelected);
@@ -803,7 +845,7 @@ namespace V2RayGCon.Service
                 var config = cache.tpl.LoadPackage("main");
                 config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
                 Lib.Utils.UnionJson(ref config, packages);
-                OnSendLogHandler(this, new Model.Data.StrEvent(I18N.PackageDone));
+                OnSendLogHandler(this, new VgcApis.Models.StrEvent(I18N.PackageDone));
                 AddServer(config.ToString(Formatting.None), "Package");
                 UpdateMarkList();
                 Lib.UI.ShowMessageBoxDoneAsync();
@@ -819,11 +861,11 @@ namespace V2RayGCon.Service
                     var vnext = GenVnextConfigPart(index, port, id);
                     Lib.Utils.UnionJson(ref packages, vnext);
                     serverNameList.Add(server.name);
-                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N.PackageSuccess + ": " + server.name));
+                    OnSendLogHandler(this, new VgcApis.Models.StrEvent(I18N.PackageSuccess + ": " + server.name));
                 }
                 catch
                 {
-                    OnSendLogHandler(this, new Model.Data.StrEvent(I18N.PackageFail + ": " + server.name));
+                    OnSendLogHandler(this, new VgcApis.Models.StrEvent(I18N.PackageFail + ": " + server.name));
                 }
                 next();
             };
@@ -882,36 +924,6 @@ namespace V2RayGCon.Service
             };
 
             Lib.Utils.ChainActionHelperAsync(bootList.Count, worker);
-        }
-
-        private List<Controller.CoreServerCtrl> GenBootServerList()
-        {
-            var trackerSetting = setting.GetServerTrackerSetting();
-            if (!trackerSetting.isTrackerOn)
-            {
-                return serverList.Where(s => s.isAutoRun).ToList();
-            }
-
-            setting.isServerTrackerOn = true;
-            var trackList = trackerSetting.serverList;
-
-            var result = serverList
-                .Where(s => s.isAutoRun || trackList.Contains(s.config))
-                .ToList();
-
-            if (string.IsNullOrEmpty(trackerSetting.curServer))
-            {
-                return result;
-            }
-
-            result.RemoveAll(s => s.config == trackerSetting.curServer);
-            var lastServer = serverList.FirstOrDefault(
-                    s => s.config == trackerSetting.curServer);
-            if (lastServer != null && !lastServer.isUntrack)
-            {
-                result.Insert(0, lastServer);
-            }
-            return result;
         }
 
         public void RestartAllSelectedServersThen(Action done = null)
@@ -986,6 +998,7 @@ namespace V2RayGCon.Service
 
             Action finish = () =>
             {
+                LazyUpdateNotifyTextHandler(this, EventArgs.Empty);
                 LazySaveServerList();
                 UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate();
@@ -1063,6 +1076,7 @@ namespace V2RayGCon.Service
             Task.Factory.StartNew(
                 () => RemoveServerItemFromListThen(index, () =>
                 {
+                    LazyUpdateNotifyTextHandler(this, EventArgs.Empty);
                     LazySaveServerList();
                     UpdateMarkList();
                     InvokeEventOnRequireMenuUpdate(serverList, EventArgs.Empty);
@@ -1073,26 +1087,6 @@ namespace V2RayGCon.Service
         public bool IsServerItemExist(string config)
         {
             return serverList.Any(s => s.config == config);
-        }
-
-        public void BindEventsTo(Controller.CoreServerCtrl server)
-        {
-            server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
-            server.OnLog += OnSendLogHandler;
-            server.OnPropertyChanged += ServerItemPropertyChangedHandler;
-            server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
-            server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
-            server.OnRequireNotifierUpdate += LazyUpdateNotifyTextHandler;
-        }
-
-        public void ReleaseEventsFrom(Controller.CoreServerCtrl server)
-        {
-            server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
-            server.OnLog -= OnSendLogHandler;
-            server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
-            server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
-            server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
-            server.OnRequireNotifierUpdate -= LazyUpdateNotifyTextHandler;
         }
 
         public bool AddServer(string config, string mark, bool quiet = false)
@@ -1114,7 +1108,7 @@ namespace V2RayGCon.Service
                 serverList.Add(newServer);
             }
 
-            newServer.Run(cache, setting, pacServer, this);
+            newServer.Run(cache, setting, this);
             BindEventsTo(newServer);
 
             if (!quiet)

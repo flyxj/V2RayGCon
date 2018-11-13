@@ -8,36 +8,37 @@ namespace V2RayGCon.Controller
 {
     class FormOptionCtrl : Model.BaseClass.FormController
     {
+        Service.Setting setting;
+
+        public FormOptionCtrl()
+        {
+            this.setting = Service.Setting.Instance;
+        }
+
         public bool IsOptionsSaved()
         {
             foreach (var component in GetAllComponents())
             {
-                if ((component.Value
-                    as OptionComponent.OptionComponentController)
-                    .IsOptionsChanged())
+                var optCtrl = component.Value as OptionComponent.OptionComponentController;
+                if (optCtrl.IsOptionsChanged())
                 {
                     return false;
                 }
             }
-
             return true;
         }
 
         public bool SaveAllOptions()
         {
             var changed = false;
-
             foreach (var kvPair in GetAllComponents())
             {
-                var component = kvPair.Value
-                    as OptionComponent.OptionComponentController;
-
+                var component = kvPair.Value as OptionComponent.OptionComponentController;
                 if (component.SaveOptions())
                 {
                     changed = true;
                 }
             }
-
             return changed;
         }
 
@@ -59,9 +60,8 @@ namespace V2RayGCon.Controller
             }
 
             var data = new Dictionary<string, string> {
-                    { "import", Properties.Settings.Default.ImportUrls },
-                    { "subscription",Properties.Settings.Default.SubscribeUrls },
-                    { "pacserv",Properties.Settings.Default.PacServerSettings },
+                    { "import", JsonConvert.SerializeObject(setting.GetGlobalImportItems())},
+                    { "subscription",JsonConvert.SerializeObject(setting.GetSubscriptionItems()) },
                     { "servers" ,serverString},
                 };
 
@@ -117,12 +117,6 @@ namespace V2RayGCon.Controller
             {
                 GetComponent<Controller.OptionComponent.Subscription>()
                     .Reload(options["subscription"]);
-            }
-
-            if (options.ContainsKey("pacserv"))
-            {
-                GetComponent<Controller.OptionComponent.PacServer>()
-                    .Reload(options["pacserv"]);
             }
 
             if (options.ContainsKey("servers")

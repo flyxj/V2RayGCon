@@ -33,6 +33,7 @@
             this.cboxConfigSection = new System.Windows.Forms.ComboBox();
             this.tabCtrlToolPanel = new System.Windows.Forms.TabControl();
             this.tabPageProtocol = new System.Windows.Forms.TabPage();
+            this.chkIsV4 = new System.Windows.Forms.CheckBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.btnInsertSSSettings = new System.Windows.Forms.Button();
@@ -164,6 +165,7 @@
             // 
             // tabPageProtocol
             // 
+            this.tabPageProtocol.Controls.Add(this.chkIsV4);
             this.tabPageProtocol.Controls.Add(this.radioButton1);
             this.tabPageProtocol.Controls.Add(this.groupBox10);
             this.tabPageProtocol.Controls.Add(this.rbtnIsServerMode);
@@ -172,6 +174,13 @@
             resources.ApplyResources(this.tabPageProtocol, "tabPageProtocol");
             this.tabPageProtocol.Name = "tabPageProtocol";
             this.tabPageProtocol.UseVisualStyleBackColor = true;
+            // 
+            // chkIsV4
+            // 
+            resources.ApplyResources(this.chkIsV4, "chkIsV4");
+            this.chkIsV4.Name = "chkIsV4";
+            this.toolTip1.SetToolTip(this.chkIsV4, resources.GetString("chkIsV4.ToolTip"));
+            this.chkIsV4.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
@@ -905,5 +914,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox tboxSSPassword;
         private System.Windows.Forms.TextBox tboxSSAddr;
+        private System.Windows.Forms.CheckBox chkIsV4;
     }
 }

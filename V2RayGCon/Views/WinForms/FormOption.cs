@@ -71,23 +71,17 @@ namespace V2RayGCon.Views.WinForms
                     btnUpdateViaSubscription));
 
             ctrl.Plug(
+                new Controller.OptionComponent.TabPlugin(
+                    flyPluginsItemsContainer,
+                    btnPluginsRefresh));
+
+            ctrl.Plug(
                 new Controller.OptionComponent.TabSetting(
                     cboxSettingLanguage,
                     cboxSettingPageSize,
                     chkSetServAutotrack,
-                    chkSetSysPortable));
-
-            ctrl.Plug(
-                new Controller.OptionComponent.PacServer(
-                    tboxPacServPort,
-                    chkPacServIsAutorun,
-                    rtboxPacServWhiteList,
-                    rtboxPacServBlackList,
-
-                    // custom pac file
-                    tboxPacFilePath,
-                    chkPacCustomFile,
-                    btnPacBrowseFile));
+                    chkSetSysPortable,
+                    chkSetUseV4));
 
             return ctrl;
         }

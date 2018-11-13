@@ -14,16 +14,18 @@ namespace V2RayGCon.Controller.ConfigerComponet
             TextBox alterID,
             TextBox ipAddr,
             RadioButton inbound,
+            CheckBox v4,
             Button genID,
             Button insert)
         {
             serverMode = false;
+            v4Mode = false;
             DataBinding(id, level, alterID, ipAddr);
-            AttachEvent(inbound, genID, insert);
+            AttachEvent(inbound, v4, genID, insert);
         }
 
         #region properties
-        public bool serverMode;
+        public bool serverMode, v4Mode;
 
         private string _ID;
         public string ID
@@ -58,8 +60,18 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #endregion
 
         #region private method
-        void AttachEvent(RadioButton inbound, Button genID, Button insert)
+        void AttachEvent(
+            RadioButton inbound,
+            CheckBox v4,
+            Button genID,
+            Button insert)
         {
+            v4.CheckedChanged += (s, a) =>
+            {
+                this.v4Mode = v4.Checked;
+                this.Update(container.config);
+            };
+
             inbound.CheckedChanged += (s, a) =>
             {
                 this.serverMode = inbound.Checked;
@@ -121,17 +133,15 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         void Inject(ref JObject config)
         {
-            var key = serverMode ? "inbound" : "outbound";
-            var vmess = Lib.Utils.CreateJObject(key);
-            vmess[key] = GetSettings();
-
+            var root = Lib.Utils.GetConfigRoot(serverMode, v4Mode);
+            var vmess = Lib.Utils.CreateJObject(root, GetSettings());
             try
             {
-                Lib.Utils.RemoveKeyFromJObject(config, key + ".settings");
+                Lib.Utils.RemoveKeyFromJObject(config, root + ".settings");
             }
             catch (KeyNotFoundException) { }
 
-            Lib.Utils.CombineConfig(ref config, vmess);
+            Lib.Utils.MergeJson(ref config, vmess);
         }
 
         void EmptyAllControl()
@@ -147,28 +157,29 @@ namespace V2RayGCon.Controller.ConfigerComponet
         #region public method
         public override void Update(JObject config)
         {
-            var protocal = Lib.Utils.GetValue<string>(
-                config,
-                this.serverMode ? "inbound" : "outbound",
-                "protocol");
+            var root = Lib.Utils.GetConfigRoot(serverMode, v4Mode);
 
-            if (protocal.ToLower() != "vmess")
+            var protocol = Lib.Utils.GetValue<string>(config, root, "protocol");
+
+            if (protocol.ToLower() != "vmess")
             {
                 EmptyAllControl();
                 return;
             }
 
-            var prefix = serverMode ?
-                "inbound.settings.clients.0" :
-                "outbound.settings.vnext.0.users.0";
+            var prefix = root + ".settings."
+                + (serverMode ? "clients.0" : "vnext.0.users.0");
 
             ID = Lib.Utils.GetValue<string>(config, prefix, "id");
             level = Lib.Utils.GetValue<int>(config, prefix, "level").ToString();
             altID = Lib.Utils.GetValue<int>(config, prefix, "alterId").ToString();
 
             address = serverMode ?
-                Lib.Utils.GetAddr(config, "inbound", "listen", "port") :
-                Lib.Utils.GetAddr(config, "outbound.settings.vnext.0", "address", "port");
+                Lib.Utils.GetAddr(config, root, "listen", "port") :
+                Lib.Utils.GetAddr(
+                    config,
+                    root + ".settings.vnext.0",
+                    "address", "port");
         }
         #endregion
     }

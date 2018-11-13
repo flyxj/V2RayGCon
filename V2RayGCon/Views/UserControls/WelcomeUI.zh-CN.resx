@@ -119,22 +119,25 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 14</value>
+    <value>100, 8</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 28</value>
+    <value>179, 19</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>欢迎使用V2RayGCon</value>
   </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 70</value>
+  </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 18</value>
+    <value>137, 12</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>然后解压到本软件目录内</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>377, 18</value>
+    <value>251, 12</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>可通过以下几种方式添加服务器/客户端配置：</value>
@@ -144,7 +147,7 @@
     <value>6, 12</value>
   </data>
   <data name="lbDownloadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>248, 26</value>
+    <value>165, 19</value>
   </data>
   <data name="lbDownloadV2rayCore.Text" xml:space="preserve">
     <value>首次使用请先下载v2ray-core</value>
@@ -153,7 +156,7 @@
     <value>16, 6</value>
   </data>
   <data name="lbV2rayCoreGitHub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 26</value>
+    <value>202, 19</value>
   </data>
   <data name="lbV2rayCoreGitHub.Text" xml:space="preserve">
     <value>或者手动到v2ray-core的github下载</value>
@@ -162,7 +165,7 @@
     <value>11, 6</value>
   </data>
   <data name="lbCopyFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>294, 26</value>
+    <value>196, 19</value>
   </data>
   <data name="lbCopyFromClipboard.Text" xml:space="preserve">
     <value>1. 复制分享链接然后从剪切板导入</value>
@@ -171,7 +174,7 @@
     <value>5, 12</value>
   </data>
   <data name="lbSimAddVmessWin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>359, 26</value>
+    <value>239, 19</value>
   </data>
   <data name="lbSimAddVmessWin.Text" xml:space="preserve">
     <value>3. 通过简易添加vmess客户端窗口填写信息</value>
@@ -180,7 +183,7 @@
     <value>3, 9</value>
   </data>
   <data name="lbScanQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 26</value>
+    <value>134, 19</value>
   </data>
   <data name="lbScanQRCode.Text" xml:space="preserve">
     <value>2. 扫描屏幕上的二维码</value>
@@ -189,7 +192,7 @@
     <value>5, 5</value>
   </data>
   <data name="lbConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 26</value>
+    <value>110, 19</value>
   </data>
   <data name="lbConfigEditor.Text" xml:space="preserve">
     <value>4. 或者配置编辑器</value>
@@ -198,7 +201,7 @@
     <value>15, 4</value>
   </data>
   <data name="lbWiki.Size" type="System.Drawing.Size, System.Drawing">
-    <value>322, 26</value>
+    <value>215, 19</value>
   </data>
   <data name="lbWiki.Text" xml:space="preserve">
     <value>这个项目的wiki里面有简要的使用说明</value>
@@ -207,9 +210,27 @@
     <value>8, 5</value>
   </data>
   <data name="lbIssue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 26</value>
+    <value>134, 19</value>
   </data>
   <data name="lbIssue.Text" xml:space="preserve">
     <value>如有问题可以发个issue</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 88</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 12</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>如果你下载的是V2RayGCon-portable.zip</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 106</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>257, 12</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>可以跳过上述步骤（是不是说得有点晚，嘻嘻）</value>
   </data>
 </root>

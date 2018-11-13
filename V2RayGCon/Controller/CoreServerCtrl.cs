@@ -10,18 +10,16 @@ using V2RayGCon.Resource.Resx;
 namespace V2RayGCon.Controller
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public class CoreServerCtrl
+    public class CoreServerCtrl : VgcApis.Models.ICoreCtrl
     {
         [JsonIgnore]
         Service.Cache cache;
         [JsonIgnore]
-        Service.PacServer pacServer;
+        Service.Servers servers;
         [JsonIgnore]
-        public Service.Servers servers;
-        [JsonIgnore]
-        public Service.Setting setting;
+        Service.Setting setting;
 
-        public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
         public event EventHandler
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
@@ -31,7 +29,7 @@ namespace V2RayGCon.Controller
         /// <summary>
         /// false: stop true: start
         /// </summary>
-        public event EventHandler<Model.Data.BoolEvent> OnRequireKeepTrack;
+        public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite, isUntrack;
@@ -59,7 +57,7 @@ namespace V2RayGCon.Controller
             config = string.Empty;
             speedTestResult = -1;
 
-            overwriteInboundType = 0;
+            overwriteInboundType = 1;
             inboundIP = "127.0.0.1";
             inboundPort = 1080;
         }
@@ -67,15 +65,13 @@ namespace V2RayGCon.Controller
         public void Run(
              Service.Cache cache,
              Service.Setting setting,
-             Service.PacServer pacServer,
-            Service.Servers servers)
+             Service.Servers servers)
         {
             this.cache = cache;
-            this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
-            server = new Service.Core();
+            server = new Service.Core(setting);
             server.OnLog += OnLogHandler;
             server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
@@ -123,6 +119,12 @@ namespace V2RayGCon.Controller
         }
         #endregion
 
+        #region ICoreCtrl interface
+        public string GetConfig() => this.config;
+        public bool IsCoreRunning() => this.isServerOn;
+        public bool IsUntrack() => this.isUntrack;
+        #endregion
+
         #region public method
         public void SetIPandPortOnDemand(string ip, int port)
         {
@@ -148,8 +150,14 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public bool BecomeSystemProxy(bool isGlobal)
+        public bool IsSuitableToBeUsedAsSysProxy(
+            bool isGlobal,
+            out bool isSocks,
+            out int port)
         {
+            isSocks = false;
+            port = 0;
+
             var inboundInfo = GetParsedInboundInfo();
             if (inboundInfo == null)
             {
@@ -158,17 +166,14 @@ namespace V2RayGCon.Controller
             }
 
             var protocol = inboundInfo.Item1;
-            var ip = inboundInfo.Item2;
-            var port = inboundInfo.Item3;
+            port = inboundInfo.Item3;
 
-            if (!IsSuitableForProxy(isGlobal, protocol))
+            if (!IsProtocolMatchProxyRequirment(isGlobal, protocol))
             {
                 return false;
             }
 
-            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
-            SendLog(I18N.SetAsSysProxy);
-
+            isSocks = protocol == "socks";
             return true;
         }
 
@@ -221,7 +226,8 @@ namespace V2RayGCon.Controller
             log(text);
             SendLog(url);
 
-            var speedTester = new Service.Core();
+            var speedTester = new Service.Core(setting);
+            speedTester.title = GetTitle();
             speedTester.OnLog += OnLogHandler;
             speedTester.RestartCore(config);
 
@@ -368,7 +374,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(false));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(false));
                     next?.Invoke();
                 }));
         }
@@ -380,35 +386,25 @@ namespace V2RayGCon.Controller
 
         public void GetterInboundInfoFor(Action<string> next)
         {
-            var inType = overwriteInboundType;
-            switch (inType)
-            {
-                case (int)Model.Data.Enum.ProxyTypes.HTTP:
-                case (int)Model.Data.Enum.ProxyTypes.SOCKS:
-                    next(string.Format(
-                    "[{0}] {1}://{2}:{3}",
-                    this.name,
-                    GetInProtocolNameByNumber(inType),
-                    this.inboundIP,
-                    this.inboundPort));
-                    return;
-            }
-
             var serverName = this.name;
             Task.Factory.StartNew(() =>
             {
-                var cfg = GetDecodedConfig(true, false, true);
-                var protocol = Lib.Utils.GetValue<string>(cfg, "inbound.protocol");
-                var listen = Lib.Utils.GetValue<string>(cfg, "inbound.listen");
-                var port = Lib.Utils.GetValue<string>(cfg, "inbound.port");
-
-                if (string.IsNullOrEmpty(listen))
+                var inInfo = GetParsedInboundInfo();
+                if (inInfo == null)
                 {
-                    next(string.Format("[{0}] {1}", serverName, protocol));
+                    next(string.Format("[{0}]", serverName));
                     return;
                 }
-
-                next(string.Format("[{0}] {1}://{2}:{3}", serverName, protocol, listen, port));
+                if (string.IsNullOrEmpty(inInfo.Item2))
+                {
+                    next(string.Format("[{0}] {1}", serverName, inInfo.Item1));
+                    return;
+                }
+                next(string.Format("[{0}] {1}://{2}:{3}",
+                    serverName,
+                    inInfo.Item1,
+                    inInfo.Item2,
+                    inInfo.Item3));
             });
         }
 
@@ -446,6 +442,7 @@ namespace V2RayGCon.Controller
             }
 
             this.index = index;
+            this.server.title = GetTitle();
             InvokeEventOnPropertyChange();
         }
 
@@ -524,39 +521,48 @@ namespace V2RayGCon.Controller
             var ip = inboundIP;
             var port = inboundPort;
 
-            if (protocol == "config")
+            if (protocol != "config")
             {
-                var parsedConfig = GetDecodedConfig(true, false, true);
-                if (parsedConfig == null)
-                {
-                    return null;
-                }
-                protocol = Lib.Utils.GetValue<string>(parsedConfig, "inbound.protocol");
-                ip = Lib.Utils.GetValue<string>(parsedConfig, "inbound.listen");
-                port = Lib.Utils.GetValue<int>(parsedConfig, "inbound.port");
+                return new Tuple<string, string, int>(protocol, ip, port);
             }
 
+            var parsedConfig = GetDecodedConfig(true, false, true);
+            if (parsedConfig == null)
+            {
+                return null;
+            }
+
+            string prefix = "inbound";
+            foreach (var p in new string[] { "inbound", "inbounds.0" })
+            {
+                prefix = p;
+                protocol = Lib.Utils.GetValue<string>(parsedConfig, prefix, "protocol");
+                if (!string.IsNullOrEmpty(protocol))
+                {
+                    break;
+                }
+            }
+
+            ip = Lib.Utils.GetValue<string>(parsedConfig, prefix, "listen");
+            port = Lib.Utils.GetValue<int>(parsedConfig, prefix, "port");
             return new Tuple<string, string, int>(protocol, ip, port);
         }
 
         static string GetInProtocolNameByNumber(int typeNumber)
         {
             var table = Model.Data.Table.inboundOverwriteTypesName;
-            return table[Lib.Utils.Clamp(
-                typeNumber, 0, table.Length)];
+            return table[Lib.Utils.Clamp(typeNumber, 0, table.Length)];
         }
 
-        bool IsSuitableForProxy(bool isGlobalProxy, string protocol)
+        bool IsProtocolMatchProxyRequirment(bool isGlobalProxy, string protocol)
         {
             if (isGlobalProxy && protocol != "http")
             {
-                SendLog(I18N.GlobalProxyRequireHttpServer);
                 return false;
             }
 
             if (protocol != "socks" && protocol != "http")
             {
-                SendLog(I18N.PacProxyRequireSocksOrHttpServer);
                 return false;
             }
 
@@ -584,12 +590,13 @@ namespace V2RayGCon.Controller
 
             InjectSkipCNSite(ref cfg);
 
+            server.title = GetTitle();
             server.RestartCoreThen(
                 cfg.ToString(),
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(true));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(true));
                     next?.Invoke();
                 },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
@@ -718,18 +725,32 @@ namespace V2RayGCon.Controller
             var part = protocol + "In";
             try
             {
-                var o = Lib.Utils.CreateJObject("inbound");
-                o["inbound"]["protocol"] = protocol;
-                o["inbound"]["listen"] = ip;
-                o["inbound"]["port"] = port;
-                o["inbound"]["settings"] = cache.tpl.LoadTemplate(part);
+                var o = JObject.Parse(@"{}");
+                o["protocol"] = protocol;
+                o["listen"] = ip;
+                o["port"] = port;
+                o["settings"] = cache.tpl.LoadTemplate(part);
 
                 if (inboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
                 {
-                    o["inbound"]["settings"]["ip"] = ip;
+                    o["settings"]["ip"] = ip;
                 }
 
-                Lib.Utils.MergeJson(ref config, o);
+                // Bug. Stream setting will mess things up.
+                // Lib.Utils.MergeJson(ref config, o);
+                var hasInbound = Lib.Utils.GetKey(config, "inbound") != null;
+                var hasInbounds = Lib.Utils.GetKey(config, "inbounds.0") != null;
+
+                if (hasInbounds && !hasInbound)
+                {
+                    config["inbounds"][0] = o;
+                }
+                else
+                {
+                    config["inbound"] = o;
+                }
+
+                var debug = config.ToString(Formatting.Indented);
 
                 return true;
             }
@@ -742,17 +763,17 @@ namespace V2RayGCon.Controller
 
         void SendLog(string message)
         {
-            OnLogHandler(this, new Model.Data.StrEvent(message));
+            OnLogHandler(this, new VgcApis.Models.StrEvent(message));
         }
 
-        void OnLogHandler(object sender, Model.Data.StrEvent arg)
+        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
         {
             var msg = string.Format("[{0}] {1}", this.name, arg.Data);
 
             LogCache = msg;
             try
             {
-                OnLog?.Invoke(this, new Model.Data.StrEvent(msg));
+                OnLog?.Invoke(this, new VgcApis.Models.StrEvent(msg));
             }
             catch { }
         }

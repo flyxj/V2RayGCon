@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Views.WinForms
 {
@@ -21,6 +22,7 @@ namespace V2RayGCon.Views.WinForms
         Controller.FormMainCtrl formMainCtrl;
         Service.Setting setting;
         Service.Servers servers;
+        System.Windows.Forms.Timer updateTitleTimer = null;
 
         FormMain()
         {
@@ -38,11 +40,22 @@ namespace V2RayGCon.Views.WinForms
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            UpdateFormTitle(this, EventArgs.Empty);
             setting.RestoreFormRect(this);
 
             // https://alexpkent.wordpress.com/2011/05/11/25/
             // 添加新控件的时候会有bug,不显示新控件
             // ToolStripManager.LoadSettings(this); 
+
+            this.FormClosing += (s, a) =>
+            {
+                if (updateTitleTimer != null)
+                {
+                    updateTitleTimer.Stop();
+                    updateTitleTimer.Tick -= UpdateFormTitle;
+                    updateTitleTimer.Dispose();
+                }
+            };
 
             this.FormClosed += (s, a) =>
             {
@@ -52,16 +65,38 @@ namespace V2RayGCon.Views.WinForms
                 setting.LazyGC();
             };
 
-            this.Text = string.Format(
+            formMainCtrl = InitFormMainCtrl();
+            BindToolStripButtonToMenuItem();
+
+            updateTitleTimer = new Timer
+            {
+                Interval = 2000,
+            };
+            updateTitleTimer.Tick += UpdateFormTitle;
+            updateTitleTimer.Start();
+        }
+
+        #region private method
+        private void UpdateFormTitle(object sender, EventArgs args)
+        {
+            var title = string.Format(
                 "{0} v{1}",
                 Properties.Resources.AppName,
                 Properties.Resources.Version);
 
-            formMainCtrl = InitFormMainCtrl();
-            BindToolStripButtonToMenuItem();
-        }
+            if (setting.isPortable)
+            {
+                title += " - " + I18N.Portable;
+            }
 
-        #region private method
+            this.Invoke((MethodInvoker)delegate
+            {
+                if (this.Text != title)
+                {
+                    this.Text = title;
+                }
+            });
+        }
 
         void BindToolStripButtonToMenuItem()
         {
@@ -146,13 +181,15 @@ namespace V2RayGCon.Views.WinForms
                 ToolStripMenuItem selectNoMarkAllPages,
                 ToolStripMenuItem selectNoSpeedTestAllPages,
                 ToolStripMenuItem selectRunningAllPages,
-                ToolStripMenuItem selectTimeoutAllPages,          
+                ToolStripMenuItem selectTimeoutAllPages,
+                ToolStripMenuItem selectUntrackAllPages,
                 */
                 selectAutorunAllPagesToolStripMenuItem,
                 selectNoMarkAllPagesToolStripMenuItem,
                 selectNoSpeedTestAllPagesToolStripMenuItem,
                 selectRunningAllPagesToolStripMenuItem,
                 selectTimeoutAllPagesToolStripMenuItem,
+                selectUntrackAllPagesToolStripMenuItem,
 
                 /*
                 ToolStripMenuItem selectAllAllServers,
@@ -168,31 +205,20 @@ namespace V2RayGCon.Views.WinForms
                 ToolStripMenuItem selectNoMarkAllServers,
                 ToolStripMenuItem selectNoSpeedTestAllServers,
                 ToolStripMenuItem selectRunningAllServers,
-                ToolStripMenuItem selectTimeoutAllServers
+                ToolStripMenuItem selectTimeoutAllServers,
+                ToolStripMenuItem selectUntrackAllServers,
                 */
                 selectAutorunAllServersToolStripMenuItem,
                 selectNoMarkAllServersToolStripMenuItem,
                 selectNoSpeedTestAllServersToolStripMenuItem,
                 selectRunningAllServersToolStripMenuItem,
-                selectTimeoutAllServersToolStripMenuItem));
+                selectTimeoutAllServersToolStripMenuItem,
+                selectUntrackAllServersToolStripMenuItem));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsServer(
                 // for invoke ui refresh
                 //MenuStrip menuContainer,
                 mainMneuStrip,
-
-                //// system proxy
-                //ToolStripMenuItem curSysProxySummary,
-                //ToolStripMenuItem copyCurPacUrl,
-                //ToolStripMenuItem clearSysProxy,
-                //ToolStripMenuItem restartPACServer,
-                //ToolStripMenuItem stopPACServer,
-                toolMenuItemCurrentSysProxy,
-                copyPACURLToolStripMenuItem,
-                visitPACDebuggerURLToolStripMenuItem,
-                toolMenuItemClearSysProxy,
-                startPACServerToolStripMenuItem,
-                stopPACServerToolStripMenuItem,
 
                 //// misc
                 //ToolStripMenuItem refreshSummary,

@@ -17,21 +17,40 @@ namespace V2RayGCon.Service
         internal const int CTRL_C_EVENT = 0;
         #endregion
 
-        public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
         public event EventHandler OnCoreStatusChanged;
         event EventHandler OnCoreReady;
 
         Process v2rayCore;
         static object coreLock = new object();
+        Service.Setting setting;
+        string config;
 
-        public Core()
+        public Core(Service.Setting setting)
         {
             isRunning = false;
             isCheckCoreReady = false;
             v2rayCore = null;
+            config = string.Empty;
+            this.setting = setting;
         }
 
         #region property
+        string _title;
+        public string title
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_title) ?
+                    string.Empty :
+                    Lib.Utils.CutStr(_title, 46);
+            }
+            set
+            {
+                _title = value;
+            }
+        }
+
         public bool isRunning
         {
             get;
@@ -96,12 +115,8 @@ namespace V2RayGCon.Service
 
         public string GetExecutablePath()
         {
-            var folders = new string[]{
-                Lib.Utils.GetAppDataFolder(), //piror
-                Lib.Utils.GetAppDir(),  // fallback
-            };
-
-            for (var i = 0; i < folders.Length; i++)
+            List<string> folders = GenV2RayCoreSearchPaths(setting.isPortable);
+            for (var i = 0; i < folders.Count; i++)
             {
                 var file = Path.Combine(folders[i], StrConst.Executable);
                 if (File.Exists(file))
@@ -109,8 +124,23 @@ namespace V2RayGCon.Service
                     return file;
                 }
             }
-
             return string.Empty;
+        }
+
+        private static List<string> GenV2RayCoreSearchPaths(bool isPortable)
+        {
+            var folders = new List<string>{
+                Lib.Utils.GetSysAppDataFolder(), // %appdata%
+                Lib.Utils.GetAppDir(),
+                StrConst.V2RayCoreFolder,
+            };
+
+            if (isPortable)
+            {
+                folders.Reverse();
+            }
+
+            return folders;
         }
 
         // blocking
@@ -296,7 +326,12 @@ namespace V2RayGCon.Service
             }
         }
 
-        void OnCoreExisted(object sender, EventArgs args)
+        void ShowExitErrorMessage()
+        {
+            MessageBox.Show(title + I18N.V2rayCoreExitAbnormally);
+        }
+
+        void OnCoreExited(object sender, EventArgs args)
         {
             SendLog(I18N.CoreExit);
             ReleaseEvents(v2rayCore);
@@ -305,8 +340,7 @@ namespace V2RayGCon.Service
             if (err != 0)
             {
                 v2rayCore.Close();
-                Task.Factory.StartNew(
-                    () => MessageBox.Show(I18N.V2rayCoreExitAbnormally));
+                Task.Factory.StartNew(ShowExitErrorMessage);
             }
 
             // SendLog("Exit code: " + err);
@@ -316,14 +350,14 @@ namespace V2RayGCon.Service
 
         void BindEvents(Process proc)
         {
-            proc.Exited += OnCoreExisted;
+            proc.Exited += OnCoreExited;
             proc.ErrorDataReceived += SendLogHandler;
             proc.OutputDataReceived += SendLogHandler;
         }
 
         void ReleaseEvents(Process proc)
         {
-            proc.Exited -= OnCoreExisted;
+            proc.Exited -= OnCoreExited;
             proc.ErrorDataReceived -= SendLogHandler;
             proc.OutputDataReceived -= SendLogHandler;
         }
@@ -331,6 +365,7 @@ namespace V2RayGCon.Service
         void StartCore(string config,
             Dictionary<string, string> envs = null)
         {
+            this.config = config;
             v2rayCore = CreateProcess();
             InjectEnv(v2rayCore, envs);
             BindEvents(v2rayCore);
@@ -354,8 +389,8 @@ namespace V2RayGCon.Service
             v2rayCore.BeginErrorReadLine();
             v2rayCore.BeginOutputReadLine();
 
-            // Assume core ready after 2.5 seconds, in case log set to none.
-            ready.WaitOne(2500);
+            // Assume core ready after 3.5 seconds, in case log set to none.
+            ready.WaitOne(3500);
             OnCoreReady -= onCoreReady;
             isCheckCoreReady = false;
         }
@@ -383,7 +418,7 @@ namespace V2RayGCon.Service
 
         void SendLog(string log)
         {
-            var arg = new Model.Data.StrEvent(log);
+            var arg = new VgcApis.Models.StrEvent(log);
             try
             {
                 OnLog?.Invoke(this, arg);

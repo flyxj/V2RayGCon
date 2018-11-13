@@ -211,7 +211,7 @@
     <value>True</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>52, 52</value>
+    <value>52, 51</value>
   </data>
   <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -238,7 +238,7 @@
     <value>5</value>
   </data>
   <data name="tboxUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 46</value>
+    <value>114, 45</value>
   </data>
   <data name="tboxUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -265,7 +265,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>419, 82</value>
+    <value>418, 80</value>
   </data>
   <data name="btnDelete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -295,7 +295,7 @@
     <value>True</value>
   </data>
   <data name="chkMergeWhenStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>248, 87</value>
+    <value>248, 85</value>
   </data>
   <data name="chkMergeWhenStart.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -331,7 +331,7 @@
     <value>True</value>
   </data>
   <data name="chkMergeWhenSpeedTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 87</value>
+    <value>114, 85</value>
   </data>
   <data name="chkMergeWhenSpeedTest.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 22</value>
@@ -367,7 +367,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 121</value>
+    <value>528, 120</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Drag and drop to adjust order.</value>
@@ -379,7 +379,7 @@
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ImportListItem</value>
+    <value>ImportUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

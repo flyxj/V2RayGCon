@@ -11,23 +11,12 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Cache cache;
         Service.Servers servers;
-        Service.PacServer pacServer;
-        Service.Setting setting;
-
-        ToolStripMenuItem restartPACServer, stopPACServer, curSysProxySummary;
-        MenuStrip menuContainer;
+        readonly Service.Setting setting;
+        readonly MenuStrip menuContainer;
 
         public MenuItemsServer(
             // for invoke ui refresh
             MenuStrip menuContainer,
-
-            // system proxy
-            ToolStripMenuItem curSysProxySummary,
-            ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem visitCurPacDebuggerUrl,
-            ToolStripMenuItem clearSysProxy,
-            ToolStripMenuItem restartPACServer,
-            ToolStripMenuItem stopPACServer,
 
             // misc
             ToolStripMenuItem refreshSummary,
@@ -57,7 +46,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
             setting = Service.Setting.Instance;
-            pacServer = Service.PacServer.Instance;
 
             this.menuContainer = menuContainer; // for invoke ui update
 
@@ -66,7 +54,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(curSysProxySummary, copyCurPacUrl, visitCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
+
         }
 
         #region public method
@@ -77,32 +65,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
-            pacServer.OnPACServerStatusChanged -= OnPACServerStatusChangedHandler;
         }
         #endregion
 
         #region private method
-        string GenCurSysProxySettingString()
-        {
-            var strCurProxy = I18N.CurSysProxy;
-            var proxy = Lib.Sys.ProxySetter.GetProxySetting();
-
-            if (!string.IsNullOrEmpty(proxy.autoConfigUrl))
-            {
-                return string.Format("{0} {1}", strCurProxy, proxy.autoConfigUrl);
-            }
-
-            if (proxy.proxyEnable)
-            {
-                return string.Format(
-                    "{0} http://{1}",
-                    strCurProxy,
-                    proxy.proxyServer);
-            }
-
-            return string.Format("{0}:{1}", strCurProxy, I18N.NotSet);
-        }
-
         EventHandler GenSelectedServerHandler(Action lambda)
         {
             return (s, a) =>
@@ -259,7 +225,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 SortServerListBySpeedTestResult);
         }
 
-        private void SortServerListBySummary()
+        void SortServerListBySummary()
         {
             var list = servers.GetServerList().Where(s => s.isSelected).ToList();
             if (list.Count < 2)
@@ -271,7 +237,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        void SortServerItemList(
+        static void SortServerItemList(
              ref List<Controller.CoreServerCtrl> list,
              Comparison<Controller.CoreServerCtrl> comparer)
         {
@@ -334,81 +300,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList(); // force linq to execute
 
             RemoveAllControlsAndRefreshFlyPanel();
-        }
-
-        void OnPACServerStatusChangedHandler(object sender, EventArgs args)
-        {
-            var isRunning = pacServer.isWebServRunning;
-            var curSetting = GenCurSysProxySettingString();
-
-            this.menuContainer?.Invoke((MethodInvoker)delegate
-            {
-                this.curSysProxySummary.Text =
-                Lib.Utils.CutStr(curSetting, 32);
-                this.restartPACServer.Checked = isRunning;
-                this.stopPACServer.Checked = !isRunning;
-
-            });
-        }
-
-        private void InitCtrlSysProxy(
-            ToolStripMenuItem curSysProxySummary,
-            ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem visitCurPacDebuggerUrl,
-            ToolStripMenuItem clearSysProxy,
-            ToolStripMenuItem restartPACServer,
-            ToolStripMenuItem stopPACServer)
-        {
-            this.restartPACServer = restartPACServer;
-            this.stopPACServer = stopPACServer;
-            this.curSysProxySummary = curSysProxySummary;
-
-            // refresh check status
-            OnPACServerStatusChangedHandler(this, EventArgs.Empty);
-
-            pacServer.OnPACServerStatusChanged += OnPACServerStatusChangedHandler;
-
-            restartPACServer.Click += (s, a) =>
-            {
-                pacServer.RestartPacServer();
-            };
-
-            stopPACServer.Click += (s, a) =>
-            {
-                pacServer.StopPacServer();
-            };
-
-            // misc
-            clearSysProxy.Click += (s, a) =>
-            {
-                if (Lib.UI.Confirm(I18N.ConfirmClearSysProxy))
-                {
-                    pacServer.ClearSysProxy();
-                }
-            };
-
-            visitCurPacDebuggerUrl.Click += (s, a) =>
-            {
-                var p = setting.GetSysProxySetting();
-                var url = p.autoConfigUrl;
-                if (string.IsNullOrEmpty(url))
-                {
-                    MessageBox.Show(I18N.SetAnyServerAsPacServerFirst);
-                    return;
-                }
-                Lib.UI.VisitUrl(I18N.VisitPacDebugger, url + "&debug=true");
-            };
-
-            copyCurPacUrl.Click += (s, a) =>
-            {
-                var p = Lib.Sys.ProxySetter.GetProxySetting();
-                var u = p.autoConfigUrl;
-
-                MessageBox.Show(
-                    Lib.Utils.CopyToClipboard(u) ?
-                    I18N.LinksCopied :
-                    I18N.CopyFail);
-            };
         }
 
         string EncodeAllServersIntoVmessLinks()

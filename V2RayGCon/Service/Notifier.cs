@@ -19,7 +19,7 @@ namespace V2RayGCon.Service
             this.servers = servers;
 
             CreateNotifyIcon();
-            servers.OnRequireNotifierUpdate += UpdateNotifierTextHandler;
+            setting.OnRequireNotifyTextUpdate += OnRequireNotifyTextUpdateHandler;
 
             ni.MouseClick += (s, a) =>
             {
@@ -28,6 +28,8 @@ namespace V2RayGCon.Service
                     Views.WinForms.FormMain.GetForm();
                 }
             };
+
+            OnRequireNotifyTextUpdateHandler(this, EventArgs.Empty);
         }
 
         #region public method
@@ -39,23 +41,58 @@ namespace V2RayGCon.Service
         }
 #endif
 
+        ToolStripMenuItem oldPluginMenu = null;
+        /// <summary>
+        /// null means delete menu
+        /// </summary>
+        /// <param name="pluginMenu"></param>
+        public void UpdatePluginMenu(ToolStripMenuItem pluginMenu)
+        {
+            RemoveOldPluginMenu();
+            if (pluginMenu == null)
+            {
+                return;
+            }
+
+            oldPluginMenu = pluginMenu;
+            ni.ContextMenuStrip.Items.Insert(2, oldPluginMenu);
+        }
+
+        private void RemoveOldPluginMenu()
+        {
+            if (this.oldPluginMenu != null)
+            {
+                ni.ContextMenuStrip.Items.Remove(this.oldPluginMenu);
+            }
+            this.oldPluginMenu = null;
+        }
+
         public void Cleanup()
         {
             ni.Visible = false;
-            servers.OnRequireNotifierUpdate -= UpdateNotifierTextHandler;
+            setting.OnRequireNotifyTextUpdate -= OnRequireNotifyTextUpdateHandler;
         }
         #endregion
 
         #region private method
-        void UpdateNotifierTextHandler(object sender, Model.Data.StrEvent args)
+        void OnRequireNotifyTextUpdateHandler(object sender, EventArgs args)
         {
-            // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
-            var text = Lib.Utils.CutStr(args.Data, 127);
+            var servInfo = setting.runningServerSummary;
+            UpdateNotifyText(servInfo);
+        }
+
+        private void UpdateNotifyText(string rawText)
+        {
+            var text = string.IsNullOrEmpty(rawText) ?
+                I18N.Description :
+                Lib.Utils.CutStr(rawText, 127);
+
             if (ni.Text == text)
             {
                 return;
             }
 
+            // https://stackoverflow.com/questions/579665/how-can-i-show-a-systray-tooltip-longer-than-63-chars
             Type t = typeof(NotifyIcon);
             BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
             t.GetField("text", hidden).SetValue(ni, text);

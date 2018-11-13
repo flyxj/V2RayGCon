@@ -12,21 +12,52 @@ using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Service
 {
-    public class Setting : Model.BaseClass.SingletonService<Setting>
+    public class Setting :
+        Model.BaseClass.SingletonService<Setting>,
+        VgcApis.Models.ISettingService
+
     {
-        public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
+        public event EventHandler OnRequireNotifyTextUpdate;
         Model.Data.UserSettings userSettings;
 
         // Singleton need this private ctor.
         Setting()
         {
-
             userSettings = LoadUserSettings();
+            runningServerSummary = string.Empty;
             isShutdown = false;
         }
-
         #region Properties
+        public string runningServerSummary { get; set; }
+
         public bool isShutdown { get; set; }
+
+        public string decodeCache
+        {
+            get
+            {
+                return userSettings.DecodeCache;
+            }
+            set
+            {
+                userSettings.DecodeCache = value;
+                LazySaveUserSettings();
+            }
+        }
+
+        public bool isUseV4
+        {
+            get
+            {
+                return userSettings.isUseV4Format;
+            }
+            set
+            {
+                userSettings.isUseV4Format = value;
+                LazySaveUserSettings();
+            }
+        }
 
         public bool isPortable
         {
@@ -136,15 +167,80 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+        /// <summary>
+        /// return null if fail
+        /// </summary>
+        /// <param name="pluginName"></param>
+        /// <returns></returns>
+        public string GetPluginsSetting(string pluginName)
+        {
+            var pluginsSetting = DeserializePluginsSetting();
+
+            if (pluginsSetting != null
+                && pluginsSetting.ContainsKey(pluginName))
+            {
+                return pluginsSetting[pluginName];
+            }
+            return null;
+        }
+
+        public void SavePluginsSetting(string pluginName, string value)
+        {
+            if (string.IsNullOrEmpty(pluginName))
+            {
+                return;
+            }
+
+            var pluginsSetting = DeserializePluginsSetting();
+            pluginsSetting[pluginName] = value;
+
+            try
+            {
+                userSettings.PluginsSetting =
+                    JsonConvert.SerializeObject(pluginsSetting);
+            }
+            catch { }
+            LazySaveUserSettings();
+        }
+
+        private Dictionary<string, string> DeserializePluginsSetting()
+        {
+            var empty = new Dictionary<string, string>();
+            Dictionary<string, string> pluginsSetting = null;
+
+            try
+            {
+                pluginsSetting = JsonConvert
+                    .DeserializeObject<Dictionary<string, string>>(
+                        userSettings.PluginsSetting);
+            }
+            catch { }
+            if (pluginsSetting == null)
+            {
+                pluginsSetting = empty;
+            }
+
+            return pluginsSetting;
+        }
+
+        public void InvokeEventIgnoreErrorOnRequireNotifyTextUpdate()
+        {
+            try
+            {
+                OnRequireNotifyTextUpdate?.Invoke(this, EventArgs.Empty);
+            }
+            catch { }
+        }
+
         public void Cleanup()
         {
             lazyGCTimer?.Release();
             lazySaveUserSettingsTimer?.Release();
-            SaveUserSettingsWorker();
+            SaveUserSettingsNow();
         }
 
         readonly object saveUserSettingsLocker = new object();
-        public void SaveUserSettingsWorker()
+        public void SaveUserSettingsNow()
         {
             lock (saveUserSettingsLocker)
             {
@@ -206,57 +302,6 @@ namespace V2RayGCon.Service
                 return empty;
             }
             return r ?? empty;
-        }
-
-        public void SaveSysProxySetting(Model.Data.ProxyRegKeyValue proxy)
-        {
-            userSettings.SysProxySetting =
-                JsonConvert.SerializeObject(proxy);
-            LazySaveUserSettings();
-        }
-
-        public Model.Data.ProxyRegKeyValue GetSysProxySetting()
-        {
-            var empty = new Model.Data.ProxyRegKeyValue();
-            Model.Data.ProxyRegKeyValue proxy = null;
-            try
-            {
-                proxy = JsonConvert
-                    .DeserializeObject<Model.Data.ProxyRegKeyValue>(
-                        userSettings.SysProxySetting);
-            }
-            catch
-            {
-                return empty;
-            }
-            return proxy ?? empty;
-        }
-
-        public void SavePacServerSettings(
-            Model.Data.PacServerSettings pacSetting)
-        {
-            userSettings.PacServerSettings =
-                JsonConvert.SerializeObject(pacSetting);
-            LazySaveUserSettings();
-        }
-
-        public Model.Data.PacServerSettings GetPacServerSettings()
-        {
-            Model.Data.PacServerSettings result = null;
-
-            var empty = new Model.Data.PacServerSettings();
-            try
-            {
-                result = JsonConvert
-                    .DeserializeObject<Model.Data.PacServerSettings>(
-                        userSettings.PacServerSettings);
-            }
-            catch
-            {
-                return empty;
-            }
-
-            return result ?? empty;
         }
 
         public List<Controller.CoreServerCtrl> LoadServerList()
@@ -323,7 +368,7 @@ namespace V2RayGCon.Service
             logCache = log;
             try
             {
-                OnLog?.Invoke(this, new Model.Data.StrEvent(log));
+                OnLog?.Invoke(this, new VgcApis.Models.StrEvent(log));
             }
             catch { }
         }
@@ -348,6 +393,37 @@ namespace V2RayGCon.Service
         public void SaveGlobalImportItems(string options)
         {
             userSettings.ImportUrls = options;
+            LazySaveUserSettings();
+        }
+
+        public List<Model.Data.PluginInfoItem> GetPluginInfoItems()
+        {
+            try
+            {
+                var items = JsonConvert
+                    .DeserializeObject<List<Model.Data.PluginInfoItem>>(
+                        userSettings.PluginInfoItems);
+
+                if (items != null)
+                {
+                    return items;
+                }
+            }
+            catch { };
+            return new List<Model.Data.PluginInfoItem>();
+        }
+
+        /// <summary>
+        /// Feel free to pass null.
+        /// </summary>
+        /// <param name="itemList"></param>
+        public void SavePluginInfoItems(
+            List<Model.Data.PluginInfoItem> itemList)
+        {
+            string json = JsonConvert.SerializeObject(
+                itemList ?? new List<Model.Data.PluginInfoItem>());
+
+            userSettings.PluginInfoItems = json;
             LazySaveUserSettings();
         }
 
@@ -376,7 +452,9 @@ namespace V2RayGCon.Service
 
         public void SaveServerList(List<Controller.CoreServerCtrl> serverList)
         {
-            string json = JsonConvert.SerializeObject(serverList);
+            string json = JsonConvert.SerializeObject(
+                serverList ?? new List<Controller.CoreServerCtrl>());
+
             userSettings.ServerList = json;
             LazySaveUserSettings();
         }
@@ -422,29 +500,16 @@ namespace V2RayGCon.Service
 
         void SaveUserSettingsToProperties()
         {
-            var p = Properties.Settings.Default;
-            var s = userSettings;
-
-            // int
-            p.MaxLogLine = s.MaxLogLine;
-            p.ServerPanelPageSize = s.ServerPanelPageSize;
-
-            // bool
-            p.CfgShowToolPanel = s.CfgShowToolPanel;
-            p.Portable = s.isPortable;
-
-            // string
-            p.ImportUrls = s.ImportUrls;
-            p.DecodeCache = s.DecodeCache;
-            p.SubscribeUrls = s.SubscribeUrls;
-            p.Culture = s.Culture;
-            p.ServerList = s.ServerList;
-            p.PacServerSettings = s.PacServerSettings;
-            p.SysProxySetting = s.SysProxySetting;
-            p.ServerTracker = s.ServerTracker;
-            p.WinFormPosList = s.WinFormPosList;
-
-            p.Save();
+            try
+            {
+                Properties.Settings.Default.UserSettings =
+                    JsonConvert.SerializeObject(userSettings);
+                Properties.Settings.Default.Save();
+            }
+            catch
+            {
+                DebugSendLog("Save user settings to Properties fail!");
+            }
         }
 
         void SaveUserSettingsToFile()
@@ -467,7 +532,31 @@ namespace V2RayGCon.Service
 
         Model.Data.UserSettings LoadUserSettingsFromPorperties()
         {
-            DebugSendLog("Try read setting from properties");
+            try
+            {
+                var us = JsonConvert
+                    .DeserializeObject<Model.Data.UserSettings>(
+                        Properties.Settings.Default.UserSettings);
+
+                if (us != null)
+                {
+                    DebugSendLog("Read user settings from Properties.Usersettings");
+                    return us;
+                }
+            }
+            catch { }
+
+            return FallBackLoadUserSettingsFromPorperties();
+        }
+
+        /// <summary>
+        /// This function has been marked as obsolete in 2018.11.07
+        /// Scheduled to be deleted in 2018.12.07
+        /// </summary>
+        /// <returns></returns>
+        Model.Data.UserSettings FallBackLoadUserSettingsFromPorperties()
+        {
+            DebugSendLog("Try read user setting from fall back.");
 
             try
             {
@@ -480,6 +569,7 @@ namespace V2RayGCon.Service
                     ServerPanelPageSize = p.ServerPanelPageSize,
 
                     // bool
+                    isUseV4Format = p.UseV4Format,
                     CfgShowToolPanel = p.CfgShowToolPanel,
                     isPortable = p.Portable,
 
@@ -487,6 +577,7 @@ namespace V2RayGCon.Service
                     ImportUrls = p.ImportUrls,
                     DecodeCache = p.DecodeCache,
                     SubscribeUrls = p.SubscribeUrls,
+                    PluginInfoItems = p.PluginInfoItems,
                     Culture = p.Culture,
                     ServerList = p.ServerList,
                     PacServerSettings = p.PacServerSettings,
@@ -529,7 +620,7 @@ namespace V2RayGCon.Service
             if (lazySaveUserSettingsTimer == null)
             {
                 lazySaveUserSettingsTimer = new Lib.Sys.CancelableTimeout(
-                    SaveUserSettingsWorker,
+                    SaveUserSettingsNow,
                     1000 * Lib.Utils.Str2Int(
                         StrConst.LazySaveUserSettingsDelay));
             }
@@ -566,7 +657,7 @@ namespace V2RayGCon.Service
         void DebugSendLog(string content)
         {
 #if DEBUG
-            SendLog(content);
+            SendLog($"(Debug) {content}");
 #endif
         }
         #endregion

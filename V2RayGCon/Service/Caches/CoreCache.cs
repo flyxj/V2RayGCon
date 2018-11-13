@@ -9,14 +9,21 @@ namespace V2RayGCon.Service.Caches
     {
         object writeLock;
         Dictionary<string, string> data;
+        Service.Setting setting;
 
         public CoreCache()
         {
-            data = LoadDecodeCache();
+
             writeLock = new object();
         }
 
         #region public method
+        public void Run(Service.Setting setting)
+        {
+            this.setting = setting;
+            data = LoadDecodeCache();
+        }
+
         public void Clear()
         {
             lock (writeLock)
@@ -84,7 +91,7 @@ namespace V2RayGCon.Service.Caches
         Dictionary<string, string> LoadDecodeCache()
         {
             var result = new Dictionary<string, string>();
-            var decodeRawStr = Properties.Settings.Default.DecodeCache;
+            var decodeRawStr = setting.decodeCache;
             try
             {
                 var temp = JsonConvert.DeserializeObject<Dictionary<string, string>>(decodeRawStr);
@@ -108,8 +115,7 @@ namespace V2RayGCon.Service.Caches
         void SaveDecodeCache()
         {
             string json = JsonConvert.SerializeObject(data);
-            Properties.Settings.Default.DecodeCache = json;
-            Properties.Settings.Default.Save();
+            setting.decodeCache = json;
         }
         #endregion
     }

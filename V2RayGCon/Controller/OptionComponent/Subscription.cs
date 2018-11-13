@@ -56,9 +56,7 @@ namespace V2RayGCon.Controller.OptionComponent
 
         public void Reload(string rawSetting)
         {
-            Properties.Settings.Default.SubscribeUrls = rawSetting;
-            Properties.Settings.Default.Save();
-
+            setting.SaveSubscriptionItems(rawSetting);
             Lib.UI.ClearFlowLayoutPanel(this.flyPanel);
             InitPanel();
         }

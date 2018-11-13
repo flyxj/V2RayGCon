@@ -122,14 +122,14 @@
     <value>宋体, 12pt, style=Bold</value>
   </data>
   <data name="lbIndex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 10</value>
+    <value>8, 10</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lbIndex.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lbIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 24</value>
+    <value>36, 24</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lbIndex.TabIndex" type="System.Int32, mscorlib">
@@ -137,6 +137,9 @@
   </data>
   <data name="lbIndex.Text" xml:space="preserve">
     <value>78</value>
+  </data>
+  <data name="lbIndex.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
   </data>
   <data name="&gt;&gt;lbIndex.Name" xml:space="preserve">
     <value>lbIndex</value>
@@ -151,13 +154,13 @@
     <value>7</value>
   </data>
   <data name="tboxAlias.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 8</value>
+    <value>114, 8</value>
   </data>
   <data name="tboxAlias.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="tboxAlias.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 28</value>
+    <value>403, 28</value>
   </data>
   <data name="tboxAlias.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -178,7 +181,7 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>57, 14</value>
+    <value>52, 13</value>
   </data>
   <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -208,7 +211,7 @@
     <value>True</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>57, 52</value>
+    <value>52, 50</value>
   </data>
   <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -235,13 +238,13 @@
     <value>5</value>
   </data>
   <data name="tboxUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 46</value>
+    <value>114, 45</value>
   </data>
   <data name="tboxUrl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="tboxUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 28</value>
+    <value>403, 28</value>
   </data>
   <data name="tboxUrl.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -262,13 +265,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>402, 84</value>
+    <value>419, 80</value>
   </data>
   <data name="btnDelete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="btnDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 32</value>
+    <value>98, 32</value>
   </data>
   <data name="btnDelete.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -292,7 +295,7 @@
     <value>True</value>
   </data>
   <data name="chkIsUse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 87</value>
+    <value>114, 85</value>
   </data>
   <data name="chkIsUse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -328,7 +331,7 @@
     <value>True</value>
   </data>
   <data name="chkIsSetMark.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 87</value>
+    <value>196, 85</value>
   </data>
   <data name="chkIsSetMark.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -367,7 +370,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>502, 122</value>
+    <value>528, 120</value>
   </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value>Drag and drop to adjust order.</value>

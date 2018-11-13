@@ -11,19 +11,24 @@ namespace V2RayGCon.Controller.ConfigerComponet
             ComboBox type,
             ComboBox param,
             RadioButton inbound,
+            CheckBox v4mode,
             Button insert,
             CheckBox tls,
             CheckBox sockopt)
         {
             cache = Service.Cache.Instance;
             isServer = false;
+            isV4Mode = false;
             DataBinding(type, param, tls, sockopt);
             Connect(type, param);
-            AttachEvent(inbound, insert);
+            AttachEvent(inbound, v4mode, insert);
             InitComboBox(type);
         }
 
         #region properties
+        bool isServer { get; set; }
+        bool isV4Mode { get; set; }
+
         private int _streamType;
         public int streamType
         {
@@ -37,8 +42,6 @@ namespace V2RayGCon.Controller.ConfigerComponet
             get { return _streamParamText; }
             set { SetField(ref _streamParamText, value); }
         }
-
-        bool isServer { get; set; }
 
         bool _isUseTls;
         public bool isUseTls
@@ -61,9 +64,9 @@ namespace V2RayGCon.Controller.ConfigerComponet
         {
             var GetStr = Lib.Utils.GetStringByPrefixAndKeyHelper(config);
 
-            string prefix = isServer ?
-                "inbound.streamSettings" :
-                "outbound.streamSettings";
+            var root = Lib.Utils.GetConfigRoot(isServer, isV4Mode);
+
+            string prefix = root + ".streamSettings";
 
             var index = GetIndexByNetwork(GetStr(prefix, "network"));
             streamType = index;
@@ -121,8 +124,15 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         void AttachEvent(
             RadioButton inbound,
+            CheckBox v4mode,
             Button insert)
         {
+            v4mode.CheckedChanged += (s, a) =>
+            {
+                this.isV4Mode = v4mode.Checked;
+                this.Update(container.config);
+            };
+
             inbound.CheckedChanged += (s, a) =>
             {
                 this.isServer = inbound.Checked;
@@ -178,18 +188,17 @@ namespace V2RayGCon.Controller.ConfigerComponet
 
         void Inject(ref JObject config)
         {
-            var settings = GetSettings();
-            var key = isServer ? "inbound" : "outbound";
-            JObject stream = Lib.Utils.CreateJObject(key);
-            stream[key]["streamSettings"] = settings;
+            var root = Lib.Utils.GetConfigRoot(isServer, isV4Mode);
+            var path = root + ".streamSettings";
+            var stream = Lib.Utils.CreateJObject(path, GetSettings());
 
             try
             {
-                Lib.Utils.RemoveKeyFromJObject(config, key + ".streamSettings");
+                Lib.Utils.RemoveKeyFromJObject(config, path);
             }
             catch (KeyNotFoundException) { }
 
-            Lib.Utils.CombineConfig(ref config, stream);
+            Lib.Utils.MergeJson(ref config, stream);
         }
 
         JToken GetSettings()

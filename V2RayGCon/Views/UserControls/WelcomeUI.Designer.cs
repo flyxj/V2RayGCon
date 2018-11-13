@@ -40,6 +40,8 @@
             this.lbConfigEditor = new System.Windows.Forms.LinkLabel();
             this.lbWiki = new System.Windows.Forms.LinkLabel();
             this.lbIssue = new System.Windows.Forms.LinkLabel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -121,10 +123,22 @@
             this.lbIssue.UseCompatibleTextRendering = true;
             this.lbIssue.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbIssue_LinkClicked);
             // 
-            // WelcomeFlyPanelComponent
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // WelcomeUI
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.lbIssue);
             this.Controls.Add(this.lbWiki);
             this.Controls.Add(this.lbConfigEditor);
@@ -136,7 +150,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "WelcomeFlyPanelComponent";
+            this.Name = "WelcomeUI";
             this.Load += new System.EventHandler(this.WelcomeFlyPanelComponent_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -156,5 +170,7 @@
         private System.Windows.Forms.LinkLabel lbConfigEditor;
         private System.Windows.Forms.LinkLabel lbWiki;
         private System.Windows.Forms.LinkLabel lbIssue;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
