@@ -11,22 +11,12 @@ namespace V2RayGCon.Controller.FormMainComponent
     {
         Service.Cache cache;
         Service.Servers servers;
-        Service.PacServer pacServer;
-        Service.Setting setting;
-
-        ToolStripMenuItem restartPACServer, stopPACServer;
-        MenuStrip menuContainer;
+        readonly Service.Setting setting;
+        readonly MenuStrip menuContainer;
 
         public MenuItemsServer(
             // for invoke ui refresh
             MenuStrip menuContainer,
-
-            // system proxy
-            ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem visitCurPacDebuggerUrl,
-            ToolStripMenuItem clearSysProxy,
-            ToolStripMenuItem restartPACServer,
-            ToolStripMenuItem stopPACServer,
 
             // misc
             ToolStripMenuItem refreshSummary,
@@ -56,7 +46,6 @@ namespace V2RayGCon.Controller.FormMainComponent
             cache = Service.Cache.Instance;
             servers = Service.Servers.Instance;
             setting = Service.Setting.Instance;
-            pacServer = Service.PacServer.Instance;
 
             this.menuContainer = menuContainer; // for invoke ui update
 
@@ -65,9 +54,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             InitCtrlCopyToClipboard(copyAsV2rayLinks, copyAsVmessLinks, copyAsSubscriptions);
             InitCtrlMisc(refreshSummary, deleteSelected, deleteAllServers);
             InitCtrlBatchOperation(stopSelected, restartSelected, speedTestOnSelected, modifySelected, packSelected);
-            InitCtrlSysProxy(copyCurPacUrl, visitCurPacDebuggerUrl, clearSysProxy, restartPACServer, stopPACServer);
 
-            OnPACServerStatusChangedHandler(this, EventArgs.Empty);
         }
 
         #region public method
@@ -78,22 +65,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         public override void Cleanup()
         {
-            pacServer.OnPACServerStateChanged -= OnPACServerStatusChangedHandler;
         }
         #endregion
 
         #region private method
-        void OnPACServerStatusChangedHandler(object sender, EventArgs args)
-        {
-            var isRunning = pacServer.IsPacServerRunning();
-
-            this.menuContainer?.Invoke((MethodInvoker)delegate
-            {
-                this.restartPACServer.Checked = isRunning;
-                this.stopPACServer.Checked = !isRunning;
-            });
-        }
-
         EventHandler GenSelectedServerHandler(Action lambda)
         {
             return (s, a) =>
@@ -250,7 +225,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 SortServerListBySpeedTestResult);
         }
 
-        private void SortServerListBySummary()
+        void SortServerListBySummary()
         {
             var list = servers.GetServerList().Where(s => s.isSelected).ToList();
             if (list.Count < 2)
@@ -262,7 +237,7 @@ namespace V2RayGCon.Controller.FormMainComponent
             RemoveAllControlsAndRefreshFlyPanel();
         }
 
-        void SortServerItemList(
+        static void SortServerItemList(
              ref List<Controller.CoreServerCtrl> list,
              Comparison<Controller.CoreServerCtrl> comparer)
         {
@@ -325,61 +300,6 @@ namespace V2RayGCon.Controller.FormMainComponent
                 .ToList(); // force linq to execute
 
             RemoveAllControlsAndRefreshFlyPanel();
-        }
-
-        private void InitCtrlSysProxy(
-            ToolStripMenuItem copyCurPacUrl,
-            ToolStripMenuItem visitCurPacDebuggerUrl,
-            ToolStripMenuItem clearSysProxy,
-            ToolStripMenuItem restartPACServer,
-            ToolStripMenuItem stopPACServer)
-        {
-            this.restartPACServer = restartPACServer;
-            this.stopPACServer = stopPACServer;
-
-            pacServer.OnPACServerStateChanged += OnPACServerStatusChangedHandler;
-
-            restartPACServer.Click += (s, a) =>
-            {
-                pacServer.RestartPacServer();
-            };
-
-            stopPACServer.Click += (s, a) =>
-            {
-                pacServer.StopPacServer();
-            };
-
-            // misc
-            clearSysProxy.Click += (s, a) =>
-            {
-                if (Lib.UI.Confirm(I18N.ConfirmClearSysProxy))
-                {
-                    pacServer.ClearSysProxy();
-                }
-            };
-
-            visitCurPacDebuggerUrl.Click += (s, a) =>
-            {
-                var p = setting.GetSysProxySetting();
-                var url = p.autoConfigUrl;
-                if (string.IsNullOrEmpty(url))
-                {
-                    MessageBox.Show(I18N.SetAnyServerAsPacServerFirst);
-                    return;
-                }
-                Lib.UI.VisitUrl(I18N.VisitPacDebugger, url + "&debug=true");
-            };
-
-            copyCurPacUrl.Click += (s, a) =>
-            {
-                var p = Lib.Sys.ProxySetter.GetProxySetting();
-                var u = p.autoConfigUrl;
-
-                MessageBox.Show(
-                    Lib.Utils.CopyToClipboard(u) ?
-                    I18N.LinksCopied :
-                    I18N.CopyFail);
-            };
         }
 
         string EncodeAllServersIntoVmessLinks()

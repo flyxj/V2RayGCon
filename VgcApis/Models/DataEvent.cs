@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace V2RayGCon.Model.Data
+namespace VgcApis.Models
 {
     public class BoolEvent : EventArgs
     {

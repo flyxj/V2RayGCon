@@ -10,18 +10,16 @@ using V2RayGCon.Resource.Resx;
 namespace V2RayGCon.Controller
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public class CoreServerCtrl
+    public class CoreServerCtrl : VgcApis.Models.ICoreCtrl
     {
         [JsonIgnore]
         Service.Cache cache;
-        [JsonIgnore]
-        Service.PacServer pacServer;
         [JsonIgnore]
         Service.Servers servers;
         [JsonIgnore]
         Service.Setting setting;
 
-        public event EventHandler<Model.Data.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
         public event EventHandler
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
@@ -31,7 +29,7 @@ namespace V2RayGCon.Controller
         /// <summary>
         /// false: stop true: start
         /// </summary>
-        public event EventHandler<Model.Data.BoolEvent> OnRequireKeepTrack;
+        public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
 
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite, isUntrack;
@@ -67,11 +65,9 @@ namespace V2RayGCon.Controller
         public void Run(
              Service.Cache cache,
              Service.Setting setting,
-             Service.PacServer pacServer,
              Service.Servers servers)
         {
             this.cache = cache;
-            this.pacServer = pacServer;
             this.servers = servers;
             this.setting = setting;
 
@@ -123,6 +119,12 @@ namespace V2RayGCon.Controller
         }
         #endregion
 
+        #region ICoreCtrl interface
+        public string GetConfig() => this.config;
+        public bool IsCoreRunning() => this.isServerOn;
+        public bool IsUntrack() => this.isUntrack;
+        #endregion
+
         #region public method
         public void SetIPandPortOnDemand(string ip, int port)
         {
@@ -148,8 +150,14 @@ namespace V2RayGCon.Controller
             }
         }
 
-        public bool BecomeSystemProxy(bool isGlobal)
+        public bool IsSuitableToBeUsedAsSysProxy(
+            bool isGlobal,
+            out bool isSocks,
+            out int port)
         {
+            isSocks = false;
+            port = 0;
+
             var inboundInfo = GetParsedInboundInfo();
             if (inboundInfo == null)
             {
@@ -158,17 +166,14 @@ namespace V2RayGCon.Controller
             }
 
             var protocol = inboundInfo.Item1;
-            var ip = inboundInfo.Item2;
-            var port = inboundInfo.Item3;
+            port = inboundInfo.Item3;
 
-            if (!IsSuitableForProxy(isGlobal, protocol))
+            if (!IsProtocolMatchProxyRequirment(isGlobal, protocol))
             {
                 return false;
             }
 
-            pacServer.LazySysProxyUpdater(protocol == "socks", ip, port);
-            SendLog(I18N.SetAsSysProxy);
-
+            isSocks = protocol == "socks";
             return true;
         }
 
@@ -369,7 +374,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(false));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(false));
                     next?.Invoke();
                 }));
         }
@@ -549,17 +554,15 @@ namespace V2RayGCon.Controller
             return table[Lib.Utils.Clamp(typeNumber, 0, table.Length)];
         }
 
-        bool IsSuitableForProxy(bool isGlobalProxy, string protocol)
+        bool IsProtocolMatchProxyRequirment(bool isGlobalProxy, string protocol)
         {
             if (isGlobalProxy && protocol != "http")
             {
-                SendLog(I18N.GlobalProxyRequireHttpServer);
                 return false;
             }
 
             if (protocol != "socks" && protocol != "http")
             {
-                SendLog(I18N.PacProxyRequireSocksOrHttpServer);
                 return false;
             }
 
@@ -593,7 +596,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new Model.Data.BoolEvent(true));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(true));
                     next?.Invoke();
                 },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
@@ -760,17 +763,17 @@ namespace V2RayGCon.Controller
 
         void SendLog(string message)
         {
-            OnLogHandler(this, new Model.Data.StrEvent(message));
+            OnLogHandler(this, new VgcApis.Models.StrEvent(message));
         }
 
-        void OnLogHandler(object sender, Model.Data.StrEvent arg)
+        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
         {
             var msg = string.Format("[{0}] {1}", this.name, arg.Data);
 
             LogCache = msg;
             try
             {
-                OnLog?.Invoke(this, new Model.Data.StrEvent(msg));
+                OnLog?.Invoke(this, new VgcApis.Models.StrEvent(msg));
             }
             catch { }
         }

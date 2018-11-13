@@ -232,26 +232,8 @@
     <value>tag</value>
     <comment>package in(out)bound tag prefix</comment>
   </data>
-  <data name="black" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\black.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
-  </data>
-  <data name="black_cidr" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\black_cidr.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
-  </data>
-  <data name="white" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\white.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
-  </data>
-  <data name="white_cidr" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\white_cidr.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
-  </data>
   <data name="config_example" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Config\config_example.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PacDebuggerTpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\PacDebuggerTpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="PacJsTpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\PAC\PacJsTpl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="ExtJs" xml:space="preserve">
     <value>JS Files|*.js|All File|*.*</value>
@@ -264,10 +246,16 @@
     <comment>seconds</comment>
   </data>
   <data name="LogFileName" xml:space="preserve">
-    <value>log.txt</value>
+    <value>vgclog.txt</value>
   </data>
   <data name="V2RayCoreFolder" xml:space="preserve">
     <value>core</value>
     <comment>V2RayGCon\core\v2ray.exe</comment>
+  </data>
+  <data name="PluginsDebugList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\PluginsList\PluginsDebugList.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="PluginsReleaseList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\PluginsList\PluginsReleaseList.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

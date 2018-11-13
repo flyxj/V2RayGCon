@@ -190,5 +190,29 @@ namespace V2RayGCon.Properties {
                 this["UseV4Format"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PluginInfoItems {
+            get {
+                return ((string)(this["PluginInfoItems"]));
+            }
+            set {
+                this["PluginInfoItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserSettings {
+            get {
+                return ((string)(this["UserSettings"]));
+            }
+            set {
+                this["UserSettings"] = value;
+            }
+        }
     }
 }
