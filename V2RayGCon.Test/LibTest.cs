@@ -311,7 +311,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void GetRemoteCoreVersions()
         {
-            List<string> versions = Lib.Utils.GetCoreVersions();
+            List<string> versions = Lib.Utils.GetCoreVersions(-1);
             // Assert.AreNotEqual(versions, null);
             Assert.AreEqual(true, versions.Count > 0);
         }
