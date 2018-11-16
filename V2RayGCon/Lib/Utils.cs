@@ -1168,14 +1168,23 @@ namespace V2RayGCon.Lib
             ip = "127.0.0.1";
             port = 1080;
 
-            string[] parts = address.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 2)
+            int index = address.LastIndexOf(':');
+            if (index < 0)
             {
                 return false;
             }
 
-            ip = parts[0];
-            port = Clamp(Str2Int(parts[1]), 0, 65536);
+            var ipStr = address.Substring(0, index);
+            var portStr = address.Substring(index + 1);
+            var portInt = Clamp(Str2Int(portStr), 0, 65536);
+
+            if(string.IsNullOrEmpty(ipStr) || portInt == 0)
+            {
+                return false;
+            }
+
+            ip = ipStr;
+            port = portInt;
             return true;
         }
 

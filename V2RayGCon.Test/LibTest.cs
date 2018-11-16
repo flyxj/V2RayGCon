@@ -13,6 +13,21 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow("a::b:123", true, "a::b", 123)]
+        [DataRow("ab123", false, "127.0.0.1", 1080)]
+        [DataRow("ab123:", false, "127.0.0.1", 1080)]
+        [DataRow(":123", false, "127.0.0.1", 1080)]
+        [DataRow(":", false, "127.0.0.1", 1080)]
+        public void TryParseIPAddrTest(string address, bool expResult, string expIp, int expPort)
+        {
+            var result = Lib.Utils.TryParseIPAddr(address, out string ip, out int port);
+            Assert.AreEqual(expResult, result);
+            Assert.AreEqual(expIp, ip);
+            Assert.AreEqual(expPort, port);
+
+        }
+
+        [DataTestMethod]
         [DataRow(null)]
         [DataRow("11,22,abc")]
         public void CloneTest(string orgStr)
