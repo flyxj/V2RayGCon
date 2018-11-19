@@ -469,7 +469,7 @@
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VgcApis\VgcApis.csproj">
+    <ProjectReference Include="..\..\VGCPlugins\VgcApis\VgcApis.csproj">
       <Project>{b3cf9873-afbc-4703-8a3b-06d39fd761b9}</Project>
       <Name>VgcApis</Name>
     </ProjectReference>

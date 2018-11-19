@@ -32,12 +32,12 @@ namespace V2RayGCon.Controller
         /// </summary>
         public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
 
+        // private variables will not be serialized
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite, isUntrack;
-        public string name, summary, inboundIP, mark;
+        public string name, summary, inboundIP, mark, uid;
         public int overwriteInboundType, inboundPort, foldingLevel;
         public double index;
-        string uid;
 
         public CoreServerCtrl()
         {
@@ -127,9 +127,11 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region ICoreCtrl interface
+        public string GetName() => this.name;
         public string GetConfig() => this.config;
         public bool IsCoreRunning() => this.isServerOn;
         public bool IsUntrack() => this.isUntrack;
+        public bool IsSelected() => this.isSelected;
         #endregion
 
         #region public method
@@ -137,11 +139,15 @@ namespace V2RayGCon.Controller
         {
             if (string.IsNullOrEmpty(uid))
             {
-                var list = servers.GetServerList();
+                var uidList = servers
+                    .GetServerList()
+                    .Select(s => s.uid)
+                    .ToList();
                 do
                 {
                     uid = Lib.Utils.RandomHex(16);
-                } while (list.FirstOrDefault(s => s.uid == uid) != null);
+                } while (uidList.Contains(uid));
+                InvokeEventOnPropertyChange();
             }
             return uid;
         }
