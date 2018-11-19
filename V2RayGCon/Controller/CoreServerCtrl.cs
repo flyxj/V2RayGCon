@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -36,6 +37,7 @@ namespace V2RayGCon.Controller
         public string name, summary, inboundIP, mark;
         public int overwriteInboundType, inboundPort, foldingLevel;
         public double index;
+        string uid;
 
         public CoreServerCtrl()
         {
@@ -55,6 +57,7 @@ namespace V2RayGCon.Controller
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
+            uid = string.Empty;
             speedTestResult = -1;
 
             overwriteInboundType = 1;
@@ -75,6 +78,10 @@ namespace V2RayGCon.Controller
             server.OnLog += OnLogHandler;
             server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
+
+        #region properties
+
+        #endregion
 
         #region non-serialize properties
         [JsonIgnore]
@@ -126,6 +133,19 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region public method
+        public string GetUid()
+        {
+            if (string.IsNullOrEmpty(uid))
+            {
+                var list = servers.GetServerList();
+                do
+                {
+                    uid = Lib.Utils.RandomHex(16);
+                } while (list.FirstOrDefault(s => s.uid == uid) != null);
+            }
+            return uid;
+        }
+
         public void SetIPandPortOnDemand(string ip, int port)
         {
             var changed = false;
