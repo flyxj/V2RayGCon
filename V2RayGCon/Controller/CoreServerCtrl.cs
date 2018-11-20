@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -31,9 +32,10 @@ namespace V2RayGCon.Controller
         /// </summary>
         public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
 
+        // private variables will not be serialized
         public string config; // plain text of config.json
         public bool isAutoRun, isInjectImport, isSelected, isInjectSkipCNSite, isUntrack;
-        public string name, summary, inboundIP, mark;
+        public string name, summary, inboundIP, mark, uid;
         public int overwriteInboundType, inboundPort, foldingLevel;
         public double index;
 
@@ -55,6 +57,7 @@ namespace V2RayGCon.Controller
             name = string.Empty;
             summary = string.Empty;
             config = string.Empty;
+            uid = string.Empty;
             speedTestResult = -1;
 
             overwriteInboundType = 1;
@@ -75,6 +78,10 @@ namespace V2RayGCon.Controller
             server.OnLog += OnLogHandler;
             server.OnCoreStatusChanged += OnCoreStateChangedHandler;
         }
+
+        #region properties
+
+        #endregion
 
         #region non-serialize properties
         [JsonIgnore]
@@ -120,12 +127,31 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region ICoreCtrl interface
+        public string GetName() => this.name;
         public string GetConfig() => this.config;
         public bool IsCoreRunning() => this.isServerOn;
         public bool IsUntrack() => this.isUntrack;
+        public bool IsSelected() => this.isSelected;
         #endregion
 
         #region public method
+        public string GetUid()
+        {
+            if (string.IsNullOrEmpty(uid))
+            {
+                var uidList = servers
+                    .GetServerList()
+                    .Select(s => s.uid)
+                    .ToList();
+                do
+                {
+                    uid = Lib.Utils.RandomHex(16);
+                } while (uidList.Contains(uid));
+                InvokeEventOnPropertyChange();
+            }
+            return uid;
+        }
+
         public void SetIPandPortOnDemand(string ip, int port)
         {
             var changed = false;
@@ -588,7 +614,7 @@ namespace V2RayGCon.Controller
                 return;
             }
 
-            InjectSkipCNSite(ref cfg);
+            InjectSkipCnSiteSettingsIntoConfig(ref cfg);
 
             server.title = GetTitle();
             server.RestartCoreThen(
@@ -602,35 +628,17 @@ namespace V2RayGCon.Controller
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
         }
 
-        void InjectSkipCNSite(ref JObject config)
+        void InjectSkipCnSiteSettingsIntoConfig(ref JObject config)
         {
             if (!this.isInjectSkipCNSite)
             {
                 return;
             }
 
-            // copy from Controller.ConfigerComponent.Quick.cs
-            var c = JObject.Parse(@"{}");
-
-            var dict = new Dictionary<string, string> {
-                { "dns","dnsCFnGoogle" },
-                { "routing","routeCNIP" },
-                { "outboundDetour","outDtrFreedom" },
-            };
-
-            foreach (var item in dict)
-            {
-                var tpl = Lib.Utils.CreateJObject(item.Key);
-                var value = cache.tpl.LoadExample(item.Value);
-                tpl[item.Key] = value;
-
-                if (!Lib.Utils.Contains(config, tpl))
-                {
-                    c[item.Key] = value;
-                }
-            }
-
-            Lib.Utils.CombineConfig(ref config, c);
+            // 优先考虑兼容旧配置。
+            servers.InjectSkipCnSiteSettingsIntoConfig(
+                ref config,
+                false);
         }
 
         void SetPropertyOnDemand<T>(
@@ -725,32 +733,11 @@ namespace V2RayGCon.Controller
             var part = protocol + "In";
             try
             {
-                var o = JObject.Parse(@"{}");
-                o["protocol"] = protocol;
-                o["listen"] = ip;
-                o["port"] = port;
-                o["settings"] = cache.tpl.LoadTemplate(part);
-
-                if (inboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
-                {
-                    o["settings"]["ip"] = ip;
-                }
-
-                // Bug. Stream setting will mess things up.
-                // Lib.Utils.MergeJson(ref config, o);
-                var hasInbound = Lib.Utils.GetKey(config, "inbound") != null;
-                var hasInbounds = Lib.Utils.GetKey(config, "inbounds.0") != null;
-
-                if (hasInbounds && !hasInbound)
-                {
-                    config["inbounds"][0] = o;
-                }
-                else
-                {
-                    config["inbound"] = o;
-                }
-
+                JObject o = CreateInboundSetting(inboundType, ip, port, protocol, part);
+                ReplaceInboundSetting(ref config, o);
+#if DEBUG
                 var debug = config.ToString(Formatting.Indented);
+#endif
 
                 return true;
             }
@@ -759,6 +746,45 @@ namespace V2RayGCon.Controller
                 SendLog(I18N.CoreCantSetLocalAddr);
             }
             return false;
+        }
+
+        private void ReplaceInboundSetting(ref JObject config, JObject o)
+        {
+            // Bug. Stream setting will mess things up.
+            // Lib.Utils.MergeJson(ref config, o);
+            var hasInbound = Lib.Utils.GetKey(config, "inbound") != null;
+            var hasInbounds = Lib.Utils.GetKey(config, "inbounds.0") != null;
+            var isUseV4 = !hasInbound && (hasInbounds || setting.isUseV4);
+
+            if (isUseV4)
+            {
+                if (!hasInbounds)
+                {
+                    config["inbounds"] = JArray.Parse(@"[{}]");
+                }
+                config["inbounds"][0] = o;
+            }
+            else
+            {
+                config["inbound"] = o;
+            }
+        }
+
+        private JObject CreateInboundSetting(int inboundType, string ip, int port, string protocol, string part)
+        {
+            var o = JObject.Parse(@"{}");
+            o["tag"] = "agentin";
+            o["protocol"] = protocol;
+            o["listen"] = ip;
+            o["port"] = port;
+            o["settings"] = cache.tpl.LoadTemplate(part);
+
+            if (inboundType == (int)Model.Data.Enum.ProxyTypes.SOCKS)
+            {
+                o["settings"]["ip"] = ip;
+            }
+
+            return o;
         }
 
         void SendLog(string message)

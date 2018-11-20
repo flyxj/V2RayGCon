@@ -58,11 +58,17 @@ namespace V2RayGCon.Service
 
         #region interface for plugins
         public ReadOnlyCollection<VgcApis.Models.ICoreCtrl> GetTrackableServerList()
-           => serverList
-               .Where(s => s.isServerOn && !s.isUntrack)
-               .Select(s => s as VgcApis.Models.ICoreCtrl)
-               .ToList()
-               .AsReadOnly();
+            => serverList
+                .Where(s => s.isServerOn && !s.isUntrack)
+                .Select(s => s as VgcApis.Models.ICoreCtrl)
+                .ToList()
+                .AsReadOnly();
+
+        public ReadOnlyCollection<VgcApis.Models.ICoreCtrl> GetAllServersList()
+            => serverList
+                .Select(s => s as VgcApis.Models.ICoreCtrl)
+                .ToList()
+                .AsReadOnly();
         #endregion
 
         #region property
@@ -645,6 +651,69 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        /// <summary>
+        /// ref means config will change after the function is executed.
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public void InjectSkipCnSiteSettingsIntoConfig(
+            ref JObject config,
+            bool useV4)
+        {
+            var c = JObject.Parse(@"{}");
+
+            var dict = new Dictionary<string, string> {
+                { "dns","dnsCFnGoogle" },
+                { "routing",GetRoutingTplName(config, useV4) },
+            };
+
+            foreach (var item in dict)
+            {
+                var tpl = Lib.Utils.CreateJObject(item.Key);
+                var value = cache.tpl.LoadExample(item.Value);
+                tpl[item.Key] = value;
+
+                if (!Lib.Utils.Contains(config, tpl))
+                {
+                    c[item.Key] = value;
+                }
+            }
+
+            // put dns/routing settings in front of user settings
+            Lib.Utils.CombineConfig(ref config, c);
+
+            // put outbounds after user settings
+            var hasOutbounds = Lib.Utils.GetKey(config, "outbounds") != null;
+            var hasOutDtr = Lib.Utils.GetKey(config, "outboundDetour") != null;
+
+            var outboundTag = "outboundDetour";
+            if (!hasOutDtr && (hasOutbounds || useV4))
+            {
+                outboundTag = "outbounds";
+            }
+
+            var o = Lib.Utils.CreateJObject(
+                outboundTag,
+                cache.tpl.LoadExample("outDtrFreedom"));
+
+            if (!Lib.Utils.Contains(config, o))
+            {
+                Lib.Utils.CombineConfig(ref o, config);
+                config = o;
+            }
+        }
+
+        private static string GetRoutingTplName(JObject config, bool useV4)
+        {
+            var routingRules = Lib.Utils.GetKey(config, "routing.rules");
+            var routingSettingsRules = Lib.Utils.GetKey(config, "routing.settings.rules");
+            var hasRoutingV4 = routingRules == null ? false : (routingRules is JArray);
+            var hasRoutingV3 = routingSettingsRules == null ? false : (routingSettingsRules is JArray);
+
+            var isUseRoutingV4 = !hasRoutingV3 && (useV4 || hasRoutingV4);
+            return isUseRoutingV4 ? "routeCnipV4" : "routeCNIP";
+        }
+
         public void UpdateTrackerSettingNow()
         {
             var fakeCtrl = new Controller.CoreServerCtrl
@@ -829,10 +898,62 @@ namespace V2RayGCon.Service
             return serverList.Any(s => s.isSelected);
         }
 
-        public void PackSelectedServers()
+        public void PackServersIntoV4Package(
+            List<VgcApis.Models.ICoreCtrl> servList)
         {
-            var list = GetSelectedServerList(true);
+            if (serverList == null || serverList.Count <= 0)
+            {
+                Task.Factory.StartNew(() => MessageBox.Show(I18N.ListIsEmpty));
+                return;
+            }
 
+            var packages = cache.tpl.LoadPackage("pkgV4Tpl");
+            var serverNameList = new List<string>();
+            var count = 0;
+
+            Action done = () =>
+            {
+                packages["v2raygcon"]["description"] = string.Join(" ", serverNameList);
+                setting.SendLog(I18N.PackageDone);
+                AddServer(packages.ToString(Formatting.None), "PackageV4");
+                UpdateMarkList();
+                Lib.UI.ShowMessageBoxDoneAsync();
+            };
+
+            Action<int, Action> worker = (index, next) =>
+            {
+                var server = servList[index];
+                var outbounds = Lib.Utils.ExtractOutboundsFromConfig(server.GetConfig());
+                var num = count;
+                foreach (JObject item in outbounds)
+                {
+                    item["tag"] = string.Format("agentout{0}t{1}", index, count.ToString());
+                    count++;
+                    (packages["outbounds"] as JArray).Add(item);
+                }
+                if (count == num)
+                {
+                    setting.SendLog(I18N.PackageFail + ": " + server.GetName());
+                }
+                else
+                {
+                    serverNameList.Add(
+                        string.Format(
+                            "{0}.[{1}]",
+                            index,
+                            server.GetName()));
+
+                    setting.SendLog(I18N.PackageSuccess + ": " + server.GetName());
+                }
+                next();
+            };
+
+            Lib.Utils.ChainActionHelperAsync(servList.Count, worker, done);
+        }
+
+        public void PackServersIntoV3Package(
+            List<VgcApis.Models.ICoreCtrl> servList)
+        {
             var packages = JObject.Parse(@"{}");
             var serverNameList = new List<string>();
 
@@ -845,32 +966,39 @@ namespace V2RayGCon.Service
                 var config = cache.tpl.LoadPackage("main");
                 config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
                 Lib.Utils.UnionJson(ref config, packages);
-                OnSendLogHandler(this, new VgcApis.Models.StrEvent(I18N.PackageDone));
-                AddServer(config.ToString(Formatting.None), "Package");
+                setting.SendLog(I18N.PackageDone);
+                AddServer(config.ToString(Formatting.None), "PackageV3");
                 UpdateMarkList();
                 Lib.UI.ShowMessageBoxDoneAsync();
             };
 
             Action<int, Action> worker = (index, next) =>
             {
-                var server = list[index];
+                var server = servList[index];
                 try
                 {
-                    var package = ExtractOutboundInfoFromConfig(server.config, id, port, index, tagPrefix);
+                    var package = ExtractOutboundInfoFromConfig(
+                        server.GetConfig(), id, port, index, tagPrefix);
                     Lib.Utils.UnionJson(ref packages, package);
                     var vnext = GenVnextConfigPart(index, port, id);
                     Lib.Utils.UnionJson(ref packages, vnext);
-                    serverNameList.Add(server.name);
-                    OnSendLogHandler(this, new VgcApis.Models.StrEvent(I18N.PackageSuccess + ": " + server.name));
+
+                    serverNameList.Add(
+                        string.Format(
+                            "{0}.[{1}]",
+                            index,
+                            server.GetName()));
+
+                    setting.SendLog(I18N.PackageSuccess + ": " + server.GetName());
                 }
                 catch
                 {
-                    OnSendLogHandler(this, new VgcApis.Models.StrEvent(I18N.PackageFail + ": " + server.name));
+                    setting.SendLog(I18N.PackageFail + ": " + server.GetName());
                 }
                 next();
             };
 
-            Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
+            Lib.Utils.ChainActionHelperAsync(servList.Count, worker, done);
         }
 
         public bool RunSpeedTestOnSelectedServers()

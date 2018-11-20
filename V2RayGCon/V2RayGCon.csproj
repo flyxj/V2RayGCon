@@ -76,7 +76,18 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>V2RayGCon.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisableProxySetter|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DisableProxySetter\</OutputPath>
+    <DefineConstants>TRACE;DISABLE_PROXY_SETTER</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -148,7 +159,6 @@
     <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Model\Data\UserSettings.cs" />
     <Compile Include="Plugin\Apis\ApiUtils.cs" />
-    <Compile Include="Plugin\Sandboxer.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
@@ -426,7 +436,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="V2RayGCon.snk" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resource\Icon\icon_dark.ico" />
@@ -436,8 +445,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_dark.ico" />
-    <Content Include="Resource\PluginsList\PluginsDebugList.txt" />
-    <Content Include="Resource\PluginsList\PluginsReleaseList.txt" />
     <None Include="Resource\Icon\TaskTray\Module_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepBackArrow_16x.png" />
@@ -469,10 +476,41 @@
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pacman\Pacman.csproj">
+      <Project>{78aaefc7-621e-45c8-8524-3aba221336f6}</Project>
+      <Name>Pacman</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProxySetter\ProxySetter.csproj">
+      <Project>{8ddda069-8b11-4b48-93c1-c608bff0c361}</Project>
+      <Name>ProxySetter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VgcApis\VgcApis.csproj">
       <Project>{b3cf9873-afbc-4703-8a3b-06d39fd761b9}</Project>
       <Name>VgcApis</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set "libsDir=libs\"
+set "fileList=Pacman ProxySetter DotNetZip Newtonsoft ScintillaNET VgcApis zxing"
+
+call:CreateFolderOnDemand "%25libsDir%25"
+call:MoveFilesByList "%25fileList%25"
+
+goto:eof
+
+:CreateFolderOnDemand
+  if not exist "%25~1" ( 
+   echo "Create dir %25~1"
+   mkdir "%25~1"
+  ) 
+goto:eof
+
+:MoveFilesByList
+  for %25%25i in (%25~1) do ( 
+    echo "move files %25%25i"
+	move /Y "%25%25i*" "%25libsDir%25"
+  ) 
+goto:eof</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -23,6 +23,47 @@ namespace V2RayGCon.Lib
     {
 
         #region Json
+        public static JArray ExtractOutboundsFromConfig(string config)
+        {
+            var result = new JArray();
+            JObject json = null;
+            try
+            {
+                json = JObject.Parse(config);
+                if (json == null)
+                {
+                    return result;
+                }
+            }
+            catch { }
+            try
+            {
+                var outbound = GetKey(json, "outbound");
+                if (outbound != null && outbound is JObject)
+                {
+                    result.Add(outbound);
+                }
+            }
+            catch { }
+
+            foreach (var key in new string[] { "outboundDetour", "outbounds" })
+            {
+                try
+                {
+                    var outboundDtr = GetKey(json, key);
+                    if (outboundDtr != null && outboundDtr is JArray)
+                    {
+                        foreach (JObject item in outboundDtr)
+                        {
+                            result.Add(item);
+                        }
+                    }
+                }
+                catch { }
+            }
+            return result;
+        }
+
         /// <summary>
         /// return null if fail
         /// </summary>
@@ -462,6 +503,8 @@ namespace V2RayGCon.Lib
                     "outbounds",
                     "inboundDetour",
                     "outboundDetour",
+                    "routing.rules",
+                    "routing.balancers",
                     "routing.settings.rules"})
             {
                 if (TryExtractJObjectPart(body, key, out JObject nodeBody))
@@ -891,7 +934,30 @@ namespace V2RayGCon.Lib
                 socket.Bind(_defaultLoopbackEndpoint);
                 return ((IPEndPoint)socket.LocalEndPoint).Port;
             }
+        }
 
+        public static string FetchThroughProxy(string url, int proxyPort)
+        {
+            var html = string.Empty;
+
+            using (WebClient wc = new Lib.Nets.TimedWebClient
+            {
+                Encoding = System.Text.Encoding.UTF8,
+                Timeout = 30 * 1000,
+            })
+            {
+                wc.Proxy = new WebProxy("127.0.0.1", proxyPort);
+                /* 如果用抛出异常的写法
+                 * task中调用此函数时
+                 * 会弹出用户未处理异常警告
+                 */
+                try
+                {
+                    html = wc.DownloadString(url);
+                }
+                catch { }
+            }
+            return html;
         }
 
         public static string Fetch(string url, int timeout = -1)
@@ -936,11 +1002,14 @@ namespace V2RayGCon.Lib
             return string.Empty;
         }
 
-        public static List<string> GetCoreVersions()
+        public static List<string> GetCoreVersions(int proxyPort)
         {
             List<string> versions = new List<string> { };
+            var url = StrConst.ReleasePageUrl;
 
-            string html = Fetch(StrConst.ReleasePageUrl);
+            string html = proxyPort > 0 ?
+                FetchThroughProxy(url, proxyPort) :
+                Fetch(url);
 
             if (string.IsNullOrEmpty(html))
             {
@@ -963,42 +1032,6 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region files
-        static bool IsTrustedPluginFileName(string path)
-        {
-            try
-            {
-                var fileName = Path.GetFileName(path);
-                return JsonConvert
-                 .DeserializeObject<Dictionary<string, string>>(StrConst.PluginsDebugList)
-                 .Keys
-                 .ToList()
-                 .Contains(fileName);
-            }
-            catch { }
-            return false;
-        }
-
-        static bool IsTrustedPluginSha256Sum(string sha256Sum)
-            => JsonConvert
-                 .DeserializeObject<Dictionary<string, string>>(StrConst.PluginsReleaseList)
-                 .Keys
-                 .ToList()
-                 .Contains(sha256Sum);
-
-        public static bool IsTrustedPlugin(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                return false;
-            }
-
-#if DEBUG
-            return IsTrustedPluginFileName(path);
-#else
-            return IsTrustedPluginSha256Sum(GetChecksum(path));
-#endif
-        }
-
         static string GetChecksum(string file)
         {
             // http://peterkellner.net/2010/11/24/efficiently-generating-sha256-checksum-for-files-using-csharp/
@@ -1142,14 +1175,23 @@ namespace V2RayGCon.Lib
             ip = "127.0.0.1";
             port = 1080;
 
-            string[] parts = address.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 2)
+            int index = address.LastIndexOf(':');
+            if (index < 0)
             {
                 return false;
             }
 
-            ip = parts[0];
-            port = Clamp(Str2Int(parts[1]), 0, 65536);
+            var ipStr = address.Substring(0, index);
+            var portStr = address.Substring(index + 1);
+            var portInt = Clamp(Str2Int(portStr), 0, 65536);
+
+            if (string.IsNullOrEmpty(ipStr) || portInt == 0)
+            {
+                return false;
+            }
+
+            ip = ipStr;
+            port = portInt;
             return true;
         }
 
@@ -1397,8 +1439,6 @@ namespace V2RayGCon.Lib
                 StrConst.config_min,
                 StrConst.config_tpl,
                 StrConst.config_pkg,
-                StrConst.PluginsDebugList,
-                StrConst.PluginsReleaseList,
             };
         }
         #endregion

@@ -875,6 +875,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 List is empty! 的本地化字符串。
+        /// </summary>
+        internal static string ListIsEmpty {
+            get {
+                return ResourceManager.GetString("ListIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Load json file fail! 的本地化字符串。
         /// </summary>
         internal static string LoadJsonFail {
@@ -971,6 +980,16 @@ namespace V2RayGCon.Resource.Resx {
         internal static string NoQRCode {
             get {
                 return ResourceManager.GetString("NoQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No qualify proxy server available!
+        ///Switch to direct download. 的本地化字符串。
+        /// </summary>
+        internal static string NoQualifyProxyServer {
+            get {
+                return ResourceManager.GetString("NoQualifyProxyServer", resourceCulture);
             }
         }
         

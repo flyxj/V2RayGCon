@@ -13,6 +13,21 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow("a::b:123", true, "a::b", 123)]
+        [DataRow("ab123", false, "127.0.0.1", 1080)]
+        [DataRow("ab123:", false, "127.0.0.1", 1080)]
+        [DataRow(":123", false, "127.0.0.1", 1080)]
+        [DataRow(":", false, "127.0.0.1", 1080)]
+        public void TryParseIPAddrTest(string address, bool expResult, string expIp, int expPort)
+        {
+            var result = Lib.Utils.TryParseIPAddr(address, out string ip, out int port);
+            Assert.AreEqual(expResult, result);
+            Assert.AreEqual(expIp, ip);
+            Assert.AreEqual(expPort, port);
+
+        }
+
+        [DataTestMethod]
         [DataRow(null)]
         [DataRow("11,22,abc")]
         public void CloneTest(string orgStr)
@@ -22,20 +37,6 @@ namespace V2RayGCon.Test
             var sClone = Lib.Utils.SerializeObject(clone);
             var sOrg = Lib.Utils.SerializeObject(org);
             Assert.AreEqual(sOrg, sClone);
-        }
-
-
-        [DataTestMethod]
-        [DataRow("", false)]
-        [DataRow(null, false)]
-        [DataRow("VeryAwesomePlugin.dll", false)]
-#if DEBUG
-        [DataRow("ProxySetter.dll", true)]
-#endif
-        public void IsTrustedPluginTest(string source, bool expect)
-        {
-            var result = Lib.Utils.IsTrustedPlugin(source);
-            Assert.AreEqual(expect, result);
         }
 
         [DataTestMethod]
@@ -311,7 +312,7 @@ namespace V2RayGCon.Test
         [TestMethod]
         public void GetRemoteCoreVersions()
         {
-            List<string> versions = Lib.Utils.GetCoreVersions();
+            List<string> versions = Lib.Utils.GetCoreVersions(-1);
             // Assert.AreNotEqual(versions, null);
             Assert.AreEqual(true, versions.Count > 0);
         }

@@ -69,7 +69,7 @@ namespace V2RayGCon.Controller.FormMainComponent
         #endregion
 
         #region private method
-        EventHandler GenSelectedServerHandler(Action lambda)
+        EventHandler ApplyActionOnSelectedServers(Action lambda)
         {
             return (s, a) =>
             {
@@ -84,13 +84,29 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         private void InitCtrlBatchOperation(ToolStripMenuItem stopSelected, ToolStripMenuItem restartSelected, ToolStripMenuItem speedTestOnSelected, ToolStripMenuItem modifySelected, ToolStripMenuItem packSelected)
         {
-            modifySelected.Click += GenSelectedServerHandler(
+            modifySelected.Click += ApplyActionOnSelectedServers(
                 () => Views.WinForms.FormBatchModifyServerSetting.GetForm());
 
-            packSelected.Click += GenSelectedServerHandler(
-                () => servers.PackSelectedServers());
+            packSelected.Click += ApplyActionOnSelectedServers(() =>
+            {
+                var list = servers
+                    .GetServerList()
+                    .Where(s => s.isSelected)
+                    .Select(s => s as VgcApis.Models.ICoreCtrl)
+                    .ToList();
 
-            speedTestOnSelected.Click += GenSelectedServerHandler(() =>
+                if (setting.isUseV4)
+                {
+                    servers.PackServersIntoV4Package(list);
+                }
+                else
+                {
+                    list.Reverse();
+                    servers.PackServersIntoV3Package(list);
+                }
+            });
+
+            speedTestOnSelected.Click += ApplyActionOnSelectedServers(() =>
             {
                 if (!Lib.UI.Confirm(I18N.TestWillTakeALongTime))
                 {
@@ -103,7 +119,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 }
             });
 
-            stopSelected.Click += GenSelectedServerHandler(() =>
+            stopSelected.Click += ApplyActionOnSelectedServers(() =>
             {
                 if (Lib.UI.Confirm(I18N.ConfirmStopAllSelectedServers))
                 {
@@ -111,7 +127,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 }
             });
 
-            restartSelected.Click += GenSelectedServerHandler(() =>
+            restartSelected.Click += ApplyActionOnSelectedServers(() =>
             {
                 if (Lib.UI.Confirm(I18N.ConfirmRestartAllSelectedServers))
                 {
@@ -141,7 +157,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 Service.Cache.Instance.core.Clear();
             };
 
-            deleteSelected.Click += GenSelectedServerHandler(() =>
+            deleteSelected.Click += ApplyActionOnSelectedServers(() =>
             {
                 if (!Lib.UI.Confirm(I18N.ConfirmDeleteSelectedServers))
                 {
@@ -153,7 +169,7 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         private void InitCtrlCopyToClipboard(ToolStripMenuItem copyAsV2rayLinks, ToolStripMenuItem copyAsVmessLinks, ToolStripMenuItem copyAsSubscriptions)
         {
-            copyAsSubscriptions.Click += GenSelectedServerHandler(() =>
+            copyAsSubscriptions.Click += ApplyActionOnSelectedServers(() =>
             {
                 MessageBox.Show(
                 Lib.Utils.CopyToClipboard(
@@ -163,7 +179,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                 I18N.CopyFail);
             });
 
-            copyAsV2rayLinks.Click += GenSelectedServerHandler(() =>
+            copyAsV2rayLinks.Click += ApplyActionOnSelectedServers(() =>
             {
                 var list = servers.GetServerList()
                     .Where(s => s.isSelected)
@@ -179,7 +195,7 @@ namespace V2RayGCon.Controller.FormMainComponent
                     I18N.CopyFail);
             });
 
-            copyAsVmessLinks.Click += GenSelectedServerHandler(() =>
+            copyAsVmessLinks.Click += ApplyActionOnSelectedServers(() =>
             {
                 MessageBox.Show(
                    Lib.Utils.CopyToClipboard(
@@ -195,22 +211,22 @@ namespace V2RayGCon.Controller.FormMainComponent
             ToolStripMenuItem collapsePanel,
             ToolStripMenuItem expansePanel)
         {
-            expansePanel.Click += GenSelectedServerHandler(() =>
+            expansePanel.Click += ApplyActionOnSelectedServers(() =>
             {
                 SetServerItemPanelCollapseLevel(0);
             });
 
-            collapsePanel.Click += GenSelectedServerHandler(() =>
+            collapsePanel.Click += ApplyActionOnSelectedServers(() =>
             {
                 SetServerItemPanelCollapseLevel(1);
             });
 
-            moveToTop.Click += GenSelectedServerHandler(() =>
+            moveToTop.Click += ApplyActionOnSelectedServers(() =>
             {
                 SetServerItemsIndex(0);
             });
 
-            moveToBottom.Click += GenSelectedServerHandler(() =>
+            moveToBottom.Click += ApplyActionOnSelectedServers(() =>
             {
                 SetServerItemsIndex(double.MaxValue);
             });
@@ -218,10 +234,10 @@ namespace V2RayGCon.Controller.FormMainComponent
 
         private void InitCtrlSorting(ToolStripMenuItem sortBySpeed, ToolStripMenuItem sortBySummary)
         {
-            sortBySummary.Click += GenSelectedServerHandler(
+            sortBySummary.Click += ApplyActionOnSelectedServers(
                 SortServerListBySummary);
 
-            sortBySpeed.Click += GenSelectedServerHandler(
+            sortBySpeed.Click += ApplyActionOnSelectedServers(
                 SortServerListBySpeedTestResult);
         }
 
