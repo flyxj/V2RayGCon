@@ -1,4 +1,0 @@
-﻿{
-  "ProxySetter.dll": "Auto set system proxy",
-  "Pacman.dll":"Packager"
-}
