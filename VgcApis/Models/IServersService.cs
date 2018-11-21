@@ -8,6 +8,7 @@ namespace VgcApis.Models
     {
         event EventHandler<BoolEvent> OnServerStateChange;
         void PackServersIntoV4Package(
+            string packageName,
             List<VgcApis.Models.ICoreCtrl> servList);
 
         ReadOnlyCollection<Models.ICoreCtrl> GetTrackableServerList();

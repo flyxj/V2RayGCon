@@ -158,7 +158,6 @@
     <Compile Include="Model\Data\PluginInfoItem.cs" />
     <Compile Include="Model\Data\ServerTracker.cs" />
     <Compile Include="Model\Data\UserSettings.cs" />
-    <Compile Include="Plugin\Apis\ApiUtils.cs" />
     <Compile Include="Service\Core.cs" />
     <Compile Include="Model\BaseClass\ICacheComponent.cs" />
     <Compile Include="Model\BaseClass\FormComponentController.cs" />
@@ -438,12 +437,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource\Icon\icon_dark.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resource\Icon\icon_light.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="icon_dark.ico" />
     <None Include="Resource\Icon\TaskTray\Module_16x.png" />
     <None Include="Resource\Icon\ServerUI\StepOverArrow_16x.png" />
@@ -476,11 +469,11 @@
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pacman\Pacman.csproj">
+    <ProjectReference Include="..\Plugins\Pacman\Pacman.csproj">
       <Project>{78aaefc7-621e-45c8-8524-3aba221336f6}</Project>
       <Name>Pacman</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ProxySetter\ProxySetter.csproj">
+    <ProjectReference Include="..\Plugins\ProxySetter\ProxySetter.csproj">
       <Project>{8ddda069-8b11-4b48-93c1-c608bff0c361}</Project>
       <Name>ProxySetter</Name>
     </ProjectReference>

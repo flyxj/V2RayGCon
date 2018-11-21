@@ -898,7 +898,14 @@ namespace V2RayGCon.Service
             return serverList.Any(s => s.isSelected);
         }
 
+
+        /// <summary>
+        /// packageName is Null or empty ? "PackageV4" : packageName
+        /// </summary>
+        /// <param name="packageName"></param>
+        /// <param name="servList"></param>
         public void PackServersIntoV4Package(
+            string packageName,
             List<VgcApis.Models.ICoreCtrl> servList)
         {
             if (serverList == null || serverList.Count <= 0)
@@ -913,6 +920,7 @@ namespace V2RayGCon.Service
 
             Action done = () =>
             {
+                packages["v2raygcon"]["alias"] = string.IsNullOrEmpty(packageName) ? "PackageV4" : packageName;
                 packages["v2raygcon"]["description"] = string.Join(" ", serverNameList);
                 setting.SendLog(I18N.PackageDone);
                 AddServer(packages.ToString(Formatting.None), "PackageV4");
