@@ -1,4 +1,5 @@
 ﻿using Pacman.Resources.Langs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -26,9 +27,17 @@ namespace Pacman.Services
         #endregion
 
         #region public methods
-        public void ImportPackage(string packageName, List<VgcApis.Models.ICoreCtrl> servList)
+        public void Pack(
+            List<VgcApis.Models.ICoreCtrl> servList,
+            string orgServerUid,
+            string packageName,
+            Action<string> finish)
         {
-            vgcServers.PackServersIntoV4Package(packageName, servList);
+            vgcServers.PackServersIntoV4Package(
+                servList,
+                orgServerUid,
+                packageName,
+                finish);
         }
 
         public ReadOnlyCollection<VgcApis.Models.ICoreCtrl>
@@ -62,12 +71,11 @@ namespace Pacman.Services
             }
         }
 
-        public void SavePackage(Models.Data.Package package)
+        public bool SavePackage(Models.Data.Package package)
         {
             if (package == null)
             {
-                Libs.UI.MsgBoxAsync(I18N.NullParam);
-                return;
+                return false;
             }
 
             var p = userSettings.packages.FirstOrDefault(s => s.name == package.name);
@@ -77,11 +85,15 @@ namespace Pacman.Services
             }
             else
             {
+                if (!string.IsNullOrEmpty(package.uid))
+                {
+                    p.uid = package.uid;
+                }
                 p.beans = package.beans;
             }
 
             SaveUserSettings();
-            Libs.UI.MsgBoxAsync(I18N.Done);
+            return true;
         }
 
         public void SaveUserSettings()

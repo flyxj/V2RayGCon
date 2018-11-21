@@ -160,7 +160,7 @@ namespace Pacman.Controllers
             btnDelete.Click += (s, a) => DeletePackage();
             lstBoxPackages.SelectedIndexChanged += (s, a) => PackageListSelectedIndexChanged();
             btnPull.Click += (s, a) => PullSelectedServerFromMainWindow();
-            btnImport.Click += (s, a) => ImportPackage();
+            btnImport.Click += (s, a) => Pack();
         }
         #endregion
 
@@ -218,7 +218,7 @@ namespace Pacman.Controllers
             }
         }
 
-        void ImportPackage()
+        void Pack()
         {
             var uidList = GetFlyContentBeanList()
                 .Where(b => b.isSelected)
@@ -230,7 +230,22 @@ namespace Pacman.Controllers
                 .Where(s => uidList.Contains(s.GetUid()))
                 .ToList();
 
-            settings.ImportPackage(tboxName.Text, list);
+            var package = settings
+                .GetPackageList()
+                .FirstOrDefault(p => p.name == tboxName.Text);
+
+            Action<string> finish = null;
+            string oldUid = null;
+            if (package != null)
+            {
+                oldUid = package.uid;
+                finish = (newUid) =>
+                {
+                    package.uid = newUid;
+                    settings.SavePackage(package);
+                };
+            }
+            settings.Pack(list, oldUid, tboxName.Text, finish);
         }
 
         List<Models.Data.Bean> GetFlyContentBeanList()
@@ -335,7 +350,11 @@ namespace Pacman.Controllers
                 beans = GetFlyContentBeanList()
             };
 
-            settings.SavePackage(package);
+            Libs.UI.MsgBoxAsync(
+                settings.SavePackage(package) ?
+                I18N.Done :
+                I18N.NullParam);
+
             RefreshPackageListBox();
         }
 
