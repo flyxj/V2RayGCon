@@ -794,22 +794,21 @@ namespace V2RayGCon.Controller
             return o;
         }
 
+        public long logTimeStamp { get; private set; } = DateTime.Now.Ticks;
         void SendLog(string message)
         {
-            OnLogHandler(this, new VgcApis.Models.StrEvent(message));
-        }
-
-        public long logTimeStamp { get; private set; } = DateTime.Now.Ticks;
-        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
-        {
-            var msg = string.Format("[{0}] {1}", this.name, arg.Data);
-            logCache = msg;
+            logCache = message;
             try
             {
-                setting.SendLog(msg);
+                setting.SendLog($"[{this.name}] {message}");
             }
             catch { }
             logTimeStamp = DateTime.Now.Ticks;
+        }
+
+        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
+        {
+            SendLog(arg.Data);
         }
 
         void InvokeEventOnRequireStatusBarUpdate()
