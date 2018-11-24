@@ -43,8 +43,9 @@
             this.panel1.Controls.Add(this.lvStatsTable);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 450);
+            this.panel1.Size = new System.Drawing.Size(533, 300);
             this.panel1.TabIndex = 0;
             // 
             // lvStatsTable
@@ -58,8 +59,9 @@
             this.lvStatsTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvStatsTable.GridLines = true;
             this.lvStatsTable.Location = new System.Drawing.Point(0, 0);
+            this.lvStatsTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lvStatsTable.Name = "lvStatsTable";
-            this.lvStatsTable.Size = new System.Drawing.Size(800, 450);
+            this.lvStatsTable.Size = new System.Drawing.Size(533, 300);
             this.lvStatsTable.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.lvStatsTable.TabIndex = 0;
             this.lvStatsTable.UseCompatibleStateImageBehavior = false;
@@ -68,34 +70,39 @@
             // lvName
             // 
             this.lvName.Text = "Name";
-            this.lvName.Width = 106;
+            this.lvName.Width = 129;
             // 
             // lvCurDown
             // 
             this.lvCurDown.Text = "Down (KiB/s)";
-            this.lvCurDown.Width = 150;
+            this.lvCurDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lvCurDown.Width = 99;
             // 
             // lvCurUp
             // 
             this.lvCurUp.Text = "Up (KiB/s)";
-            this.lvCurUp.Width = 141;
+            this.lvCurUp.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lvCurUp.Width = 91;
             // 
             // lvTotalDown
             // 
             this.lvTotalDown.Text = "Down (MiB)";
-            this.lvTotalDown.Width = 142;
+            this.lvTotalDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lvTotalDown.Width = 94;
             // 
             // lvTotalUp
             // 
             this.lvTotalUp.Text = "Up (MiB)";
-            this.lvTotalUp.Width = 158;
+            this.lvTotalUp.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.lvTotalUp.Width = 92;
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(533, 300);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormMain";
             this.Text = "FormMain";
             this.Shown += new System.EventHandler(this.FormMain_Shown);
