@@ -20,7 +20,7 @@ namespace Statistics.Views.WinForms
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            this.Text = Properties.Resources.Name + " - " + Properties.Resources.Version;
+            this.Text = Properties.Resources.Name + " - v" + Properties.Resources.Version;
             updateStatsTableTimer.Tick += UpdateStatsTable;
             updateStatsTableTimer.Start();
         }

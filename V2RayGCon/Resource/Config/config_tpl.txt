@@ -243,6 +243,72 @@
   "tls": {
     "allowInsecure": false
   },
+  "quic": {
+    "network": "quic",
+    "security": "",
+    "quicSettings": {
+      "security": "none",
+      "key": "",
+      "header": {
+        "type": "none"
+      }
+    }
+  },
+  "quic_srtp": {
+    "network": "quic",
+    "security": "",
+    "quicSettings": {
+      "security": "none",
+      "key": "",
+      "header": {
+        "type": "srtp"
+      }
+    }
+  },
+  "quic_utp": {
+    "network": "quic",
+    "security": "",
+    "quicSettings": {
+      "security": "none",
+      "key": "",
+      "header": {
+        "type": "utp"
+      }
+    }
+  },
+  "quic_wechat-video": {
+    "network": "quic",
+    "security": "",
+    "quicSettings": {
+      "security": "none",
+      "key": "",
+      "header": {
+        "type": "wechat-video"
+      }
+    }
+  },
+  "quic_dtls": {
+    "network": "quic",
+    "security": "",
+    "quicSettings": {
+      "security": "none",
+      "key": "",
+      "header": {
+        "type": "dtls"
+      }
+    }
+  },
+  "quic_wireguard": {
+    "network": "quic",
+    "security": "",
+    "quicSettings": {
+      "security": "none",
+      "key": "",
+      "header": {
+        "type": "wireguard"
+      }
+    }
+  },
   "kcp": {
     "network": "kcp",
     "security": "",
