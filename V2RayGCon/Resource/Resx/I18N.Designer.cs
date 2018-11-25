@@ -287,16 +287,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 New V2RayGCon v{0} is available.
-        ///Checkout download page? 的本地化字符串。
-        /// </summary>
-        internal static string ConfirmDownloadNewVGC {
-            get {
-                return ResourceManager.GetString("ConfirmDownloadNewVGC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Exit program? 的本地化字符串。
         /// </summary>
         internal static string ConfirmExitApp {
@@ -384,6 +374,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ConfirmStopAllServer {
             get {
                 return ResourceManager.GetString("ConfirmStopAllServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Newer V2RayGCon v{0} is available, upgrade now? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmUpgradeVgc {
+            get {
+                return ResourceManager.GetString("ConfirmUpgradeVgc", resourceCulture);
             }
         }
         
@@ -668,6 +667,15 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Error 的本地化字符串。
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please download v2ray-core first!（checkout systray icon&apos;s popup menu.） 的本地化字符串。
         /// </summary>
         internal static string ExeNotFound {
@@ -691,6 +699,24 @@ namespace V2RayGCon.Resource.Resx {
         internal static string ExitOtherVGCFirst {
             get {
                 return ResourceManager.GetString("ExitOtherVGCFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fetch update information fail! 的本地化字符串。
+        /// </summary>
+        internal static string FetchUpdateInfoFail {
+            get {
+                return ResourceManager.GetString("FetchUpdateInfoFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File check sum fail! 的本地化字符串。
+        /// </summary>
+        internal static string FileCheckSumFail {
+            get {
+                return ResourceManager.GetString("FileCheckSumFail", resourceCulture);
             }
         }
         
@@ -1017,6 +1043,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string NotSupportLinkType {
             get {
                 return ResourceManager.GetString("NotSupportLinkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 There is no update available please try again later. 的本地化字符串。
+        /// </summary>
+        internal static string NoUpdateTryLater {
+            get {
+                return ResourceManager.GetString("NoUpdateTryLater", resourceCulture);
             }
         }
         

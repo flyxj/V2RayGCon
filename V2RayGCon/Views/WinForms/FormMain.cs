@@ -80,15 +80,10 @@ namespace V2RayGCon.Views.WinForms
         private void GenFormTitle()
         {
             var version = Lib.Utils.GetAssemblyVersion();
-            if (version.EndsWith(".0"))
-            {
-                var len = version.Length;
-                version = version.Substring(0, len - 2);
-            }
             formTitle = string.Format(
                 "{0} v{1}",
                 Properties.Resources.AppName,
-                version);
+                Lib.Utils.TrimVersionString(version));
         }
 
         private void UpdateFormTitle(object sender, EventArgs args)

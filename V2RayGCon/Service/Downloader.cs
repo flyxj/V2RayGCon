@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace V2RayGCon.Service
 
         string _packageName;
         string _version;
+        string _sha256sum = null;
 
         public int proxyPort { get; set; } = -1;
         WebClient client;
@@ -57,6 +59,13 @@ namespace V2RayGCon.Service
             var filename = GetLocalFilename();
             if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(filename))
             {
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(_sha256sum)
+                && Lib.Utils.GetSha256SumFromFile(filename) != _sha256sum)
+            {
+                setting.SendLog(I18N.FileCheckSumFail);
                 return false;
             }
 
@@ -177,10 +186,38 @@ namespace V2RayGCon.Service
             return string.IsNullOrEmpty(path) ? null : Path.Combine(path, _packageName);
         }
 
+        void GetSha256Sum(string url)
+        {
+            _sha256sum = null;
+
+            var dgst = string.Empty;
+            if (proxyPort > 0)
+            {
+                dgst = Lib.Utils.FetchThroughProxy(url, proxyPort);
+            }
+            else
+            {
+                dgst = Lib.Utils.Fetch(url);
+            }
+
+            if (string.IsNullOrEmpty(dgst))
+            {
+                return;
+            }
+
+            _sha256sum = dgst
+                .ToLower()
+                .Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .FirstOrDefault(s => s.StartsWith("sha256"))
+                ?.Substring(8)
+                ?.Trim();
+        }
+
         void Download()
         {
             string tpl = StrConst.DownloadLinkTpl;
             string url = string.Format(tpl, _version, _packageName);
+            Task.Factory.StartNew(() => GetSha256Sum(url + ".dgst"));
             var filename = GetLocalFilename();
             if (string.IsNullOrEmpty(filename))
             {

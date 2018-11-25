@@ -972,7 +972,7 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region files
-        static string GetChecksum(string file)
+        public static string GetSha256SumFromFile(string file)
         {
             // http://peterkellner.net/2010/11/24/efficiently-generating-sha256-checksum-for-files-using-csharp/
             try
@@ -1015,6 +1015,17 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static string TrimVersionString(string version)
+        {
+            if (!version.EndsWith(".0"))
+            {
+                return version;
+            }
+
+            var len = version.Length;
+            return version.Substring(0, len - 2);
+        }
+
         public static string GetAssemblyVersion()
         {
             Version version = Assembly.GetEntryAssembly().GetName().Version;

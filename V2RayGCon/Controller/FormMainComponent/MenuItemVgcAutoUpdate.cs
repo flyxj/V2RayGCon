@@ -25,22 +25,60 @@ namespace V2RayGCon.Controller.FormMainComponent
         #region public method
         #endregion
 
-        #region component thing
+        #region component things
         public override bool RefreshUI() => false;
         public override void Cleanup()
         {
             AutoUpdater.ParseUpdateInfoEvent -=
                 AutoUpdaterOnParseUpdateInfoEvent;
-            AutoUpdater.ApplicationExitEvent -=
-                AutoUpdater_ApplicationExitEvent;
+            AutoUpdater.CheckForUpdateEvent -=
+                AutoUpdaterOnCheckForUpdateEvent;
         }
         #endregion
 
         #region private method
-        void AutoUpdater_ApplicationExitEvent()
+        private void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
         {
-            setting.isShutdown = true;
-            Application.Exit();
+            if (args == null)
+            {
+                MessageBox.Show(
+                    I18N.FetchUpdateInfoFail,
+                    I18N.Error,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+
+            if (!args.IsUpdateAvailable)
+            {
+                MessageBox.Show(I18N.NoUpdateTryLater);
+                return;
+            }
+
+            var version = Lib.Utils.TrimVersionString(args.CurrentVersion.ToString());
+            var msg = string.Format(I18N.ConfirmUpgradeVgc, version);
+            if (!Lib.UI.Confirm(msg))
+            {
+                return;
+            }
+
+            try
+            {
+                if (AutoUpdater.DownloadUpdate())
+                {
+                    setting.isShutdown = true;
+                    Application.Exit();
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    exception.Message,
+                    exception.GetType().ToString(),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         void InitAutoUpdater()
@@ -48,8 +86,8 @@ namespace V2RayGCon.Controller.FormMainComponent
             AutoUpdater.ReportErrors = true;
             AutoUpdater.ParseUpdateInfoEvent +=
                 AutoUpdaterOnParseUpdateInfoEvent;
-            AutoUpdater.ApplicationExitEvent +=
-                AutoUpdater_ApplicationExitEvent;
+            AutoUpdater.CheckForUpdateEvent +=
+                AutoUpdaterOnCheckForUpdateEvent;
         }
 
         void AutoSetUpdaterProxy()
