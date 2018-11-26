@@ -1,7 +1,7 @@
 {
-  "version": "1.1.3.11",
-  "urlVgcFull": "https://github.com/nobody3u/V2RayGCon/releases/download/20181125.5/V2RayGCon-full.zip",
-  "urlVgcLite": "https://github.com/nobody3u/V2RayGCon/releases/download/20181125.5/V2RayGCon-lite.zip",
-  "md5VgcFull": "423ee43853119f6f1299015736d50520",
-  "md5VgcLite": "750a1e6ba76fd0a54be6f79c9f966268"
+  "version": "1.1.4.0",
+  "urlVgcFull": "https://github.com/nobody3u/V2RayGCon/releases/download/1.1.4/V2RayGCon-full.zip",
+  "urlVgcLite": "https://github.com/nobody3u/V2RayGCon/releases/download/1.1.4/V2RayGCon-lite.zip",
+  "md5VgcFull": "f184348786a84bdeb31859b07bb9e345",
+  "md5VgcLite": "a71e43511c3de2cd71246729def2b994"
 }
