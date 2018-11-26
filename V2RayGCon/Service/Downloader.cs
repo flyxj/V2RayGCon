@@ -17,6 +17,7 @@ namespace V2RayGCon.Service
         string _packageName;
         string _version;
         string _sha256sum = null;
+        readonly object waitForDigest = new object();
 
         public int proxyPort { get; set; } = -1;
         WebClient client;
@@ -62,11 +63,14 @@ namespace V2RayGCon.Service
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(_sha256sum)
-                && Lib.Utils.GetSha256SumFromFile(filename) != _sha256sum)
+            lock (waitForDigest)
             {
-                setting.SendLog(I18N.FileCheckSumFail);
-                return false;
+                if (!string.IsNullOrEmpty(_sha256sum)
+                    && Lib.Utils.GetSha256SumFromFile(filename) != _sha256sum)
+                {
+                    setting.SendLog(I18N.FileCheckSumFail);
+                    return false;
+                }
             }
 
             try
@@ -75,7 +79,7 @@ namespace V2RayGCon.Service
             }
             catch
             {
-                // some code analizers may complain about empty catch block.
+                setting.SendLog(I18N.DecompressFileFail);
                 return false;
             }
             return true;
@@ -190,16 +194,7 @@ namespace V2RayGCon.Service
         {
             _sha256sum = null;
 
-            var dgst = string.Empty;
-            if (proxyPort > 0)
-            {
-                dgst = Lib.Utils.FetchThroughProxy(url, proxyPort);
-            }
-            else
-            {
-                dgst = Lib.Utils.Fetch(url);
-            }
-
+            var dgst = Lib.Utils.FetchThroughProxy(url, proxyPort, -1);
             if (string.IsNullOrEmpty(dgst))
             {
                 return;
@@ -209,7 +204,8 @@ namespace V2RayGCon.Service
                 .ToLower()
                 .Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
                 .FirstOrDefault(s => s.StartsWith("sha256"))
-                ?.Substring(8)
+                ?.Substring(6)
+                ?.Replace("=", "")
                 ?.Trim();
         }
 
@@ -217,7 +213,18 @@ namespace V2RayGCon.Service
         {
             string tpl = StrConst.DownloadLinkTpl;
             string url = string.Format(tpl, _version, _packageName);
-            Task.Factory.StartNew(() => GetSha256Sum(url + ".dgst"));
+
+            lock (waitForDigest)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    lock (waitForDigest)
+                    {
+                        GetSha256Sum(url + ".dgst");
+                    }
+                });
+            }
+
             var filename = GetLocalFilename();
             if (string.IsNullOrEmpty(filename))
             {

@@ -81,8 +81,8 @@ namespace V2RayGCon.Views.WinForms
                     chkSetSysPortable,
                     chkSetUseV4,
                     chkSetServStatistics,
-                    rbtnSetUpdateToVgcFull,
-                    chkSetUpdateUseProxy));
+                    rbtnSetUpgradeToVgcFull,
+                    chkSetUpgradeUseProxy));
 
             return ctrl;
         }

@@ -233,6 +233,24 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找类似 最近发布记录 的本地化字符串。
+        /// </summary>
+        internal static string ReleaseNoteKeyWord {
+            get {
+                return ResourceManager.GetString("ReleaseNoteKeyWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/wiki/Release 的本地化字符串。
+        /// </summary>
+        internal static string ReleaseNoteUrl {
+            get {
+                return ResourceManager.GetString("ReleaseNoteUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap Settings_16x {

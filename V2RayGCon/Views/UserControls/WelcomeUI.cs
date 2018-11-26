@@ -34,7 +34,7 @@ namespace V2RayGCon.Views.UserControls
 
         private void lbV2rayCoreGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Lib.UI.VisitUrl(I18N.VisitV2rayCoreReleasePage, StrConst.ReleasePageUrl);
+            Lib.UI.VisitUrl(I18N.VisitV2rayCoreReleasePage, StrConst.V2rayCoreReleasePageUrl);
         }
 
         private void lbWiki_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

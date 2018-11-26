@@ -301,7 +301,8 @@ https://github.com/v2ray/v2ray-core</value>
     <value>下载终止</value>
   </data>
   <data name="ConfirmUpgradeVgc" xml:space="preserve">
-    <value>有新版 V2RayGCon v{0} 可用，是否升级?</value>
+    <value>有新版 V2RayGCon v{0} 可用，是否升级?
+点"帮助"按钮查看发布说明。</value>
   </data>
   <data name="GetVGCVerFail" xml:space="preserve">
     <value>获取最新V2RayGCon版本号失败！</value>
@@ -627,5 +628,8 @@ https://github.com/v2ray/v2ray-core</value>
   </data>
   <data name="FileCheckSumFail" xml:space="preserve">
     <value>文件校验失败！</value>
+  </data>
+  <data name="DecompressFileFail" xml:space="preserve">
+    <value>解压文件失败!</value>
   </data>
 </root>

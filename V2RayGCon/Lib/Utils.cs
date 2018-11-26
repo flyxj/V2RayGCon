@@ -876,21 +876,28 @@ namespace V2RayGCon.Lib
             }
         }
 
-        public static string FetchThroughProxy(string url, int proxyPort)
+        /// <summary>
+        /// Download through http://127.0.0.1:proxyPort. Return string.Empty if sth. goes wrong.
+        /// </summary>
+        /// <param name="url">string</param>
+        /// <param name="proxyPort">1-65535, other value means download directly</param>
+        /// <param name="timeout">millisecond, if &lt;1 then use default value 30000</param>
+        /// <returns>If sth. goes wrong return string.Empty</returns>
+        public static string FetchThroughProxy(string url, int proxyPort, int timeout)
         {
             var html = string.Empty;
 
             using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
-                Timeout = 30 * 1000,
+                Timeout = timeout,
             })
             {
-                wc.Proxy = new WebProxy("127.0.0.1", proxyPort);
-                /* 如果用抛出异常的写法
-                 * task中调用此函数时
-                 * 会弹出用户未处理异常警告
-                 */
+                if (proxyPort > 0 && proxyPort < 65536)
+                {
+                    wc.Proxy = new WebProxy("127.0.0.1", proxyPort);
+                }
+
                 try
                 {
                     html = wc.DownloadString(url);
@@ -902,25 +909,7 @@ namespace V2RayGCon.Lib
 
         public static string Fetch(string url, int timeout = -1)
         {
-            var html = string.Empty;
-
-            using (WebClient wc = new Lib.Nets.TimedWebClient
-            {
-                Encoding = System.Text.Encoding.UTF8,
-                Timeout = timeout,
-            })
-            {
-                /* 如果用抛出异常的写法
-                 * task中调用此函数时
-                 * 会弹出用户未处理异常警告
-                 */
-                try
-                {
-                    html = wc.DownloadString(url);
-                }
-                catch { }
-            }
-            return html;
+            return FetchThroughProxy(url, -1, timeout);
         }
 
         public static string GetLatestVGCVersion()
@@ -945,12 +934,9 @@ namespace V2RayGCon.Lib
         public static List<string> GetCoreVersions(int proxyPort)
         {
             List<string> versions = new List<string> { };
-            var url = StrConst.ReleasePageUrl;
+            var url = StrConst.V2rayCoreReleasePageUrl;
 
-            string html = proxyPort > 0 ?
-                FetchThroughProxy(url, proxyPort) :
-                Fetch(url);
-
+            string html = FetchThroughProxy(url, proxyPort, -1);
             if (string.IsNullOrEmpty(html))
             {
                 return versions;

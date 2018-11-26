@@ -378,7 +378,8 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Newer V2RayGCon v{0} is available, upgrade now? 的本地化字符串。
+        ///   查找类似 Newer V2RayGCon v{0} is available, upgrade now?
+        ///Click help button to see release note. 的本地化字符串。
         /// </summary>
         internal static string ConfirmUpgradeVgc {
             get {
@@ -482,6 +483,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string DecodeVLinkFail {
             get {
                 return ResourceManager.GetString("DecodeVLinkFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Decompress fail! 的本地化字符串。
+        /// </summary>
+        internal static string DecompressFileFail {
+            get {
+                return ResourceManager.GetString("DecompressFileFail", resourceCulture);
             }
         }
         

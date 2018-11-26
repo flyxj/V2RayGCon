@@ -58,7 +58,18 @@ namespace V2RayGCon.Controller.FormMainComponent
 
             var version = Lib.Utils.TrimVersionString(args.CurrentVersion.ToString());
             var msg = string.Format(I18N.ConfirmUpgradeVgc, version);
-            if (!Lib.UI.Confirm(msg))
+
+            var dlgResult = MessageBox.Show(
+                msg,
+                I18N.Confirm,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button2,
+                0,
+                Properties.Resources.ReleaseNoteUrl,
+                Properties.Resources.ReleaseNoteKeyWord);
+
+            if (dlgResult != DialogResult.Yes)
             {
                 return;
             }

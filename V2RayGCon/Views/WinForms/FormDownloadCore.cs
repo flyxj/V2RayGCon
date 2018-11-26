@@ -44,6 +44,7 @@ namespace V2RayGCon.Views.WinForms
         private void FormDownloadCore_Shown(object sender, System.EventArgs e)
         {
             RefreshCurrentCoreVersion();
+            chkUseProxy.Checked = setting.isUpdateUseProxy;
         }
 
         #region private method

@@ -180,7 +180,7 @@ namespace V2RayGCon.Resource.Resx {
         
         /// <summary>
         ///   查找类似 {
-        ///  &quot;statsApiV4&quot;: {
+        ///  &quot;statsApiV4Inb&quot;: {
         ///    &quot;inbounds&quot;: [
         ///      {
         ///        &quot;listen&quot;: &quot;127.0.0.1&quot;,
@@ -191,7 +191,9 @@ namespace V2RayGCon.Resource.Resx {
         ///        },
         ///        &quot;tag&quot;: &quot;StatsApiInb&quot;
         ///      }
-        ///    ],
+        ///    ]
+        ///  },
+        ///  &quot;statsApiV4Tpl&quot;: {
         ///    &quot;policy&quot;: {
         ///      &quot;levels&quot;: {
         ///        &quot;0&quot;: {
@@ -201,9 +203,7 @@ namespace V2RayGCon.Resource.Resx {
         ///      },
         ///      &quot;system&quot;: {
         ///        &quot;statsInboundUplink&quot;: true,
-        ///        &quot;statsInboundDownlink&quot;: true
-        ///      }
-        ///     [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///        &quot;statsInbound [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string config_tpl {
             get {
@@ -473,15 +473,6 @@ namespace V2RayGCon.Resource.Resx {
         }
         
         /// <summary>
-        ///   查找类似 https://github.com/v2ray/v2ray-core/releases 的本地化字符串。
-        /// </summary>
-        internal static string ReleasePageUrl {
-            get {
-                return ResourceManager.GetString("ReleasePageUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 20 的本地化字符串。
         /// </summary>
         internal static string SpeedTestTimeout {
@@ -532,6 +523,15 @@ namespace V2RayGCon.Resource.Resx {
         internal static string V2RayCoreFolder {
             get {
                 return ResourceManager.GetString("V2RayCoreFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/v2ray/v2ray-core/releases 的本地化字符串。
+        /// </summary>
+        internal static string V2rayCoreReleasePageUrl {
+            get {
+                return ResourceManager.GetString("V2rayCoreReleasePageUrl", resourceCulture);
             }
         }
         
