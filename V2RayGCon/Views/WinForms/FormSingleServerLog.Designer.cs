@@ -30,27 +30,37 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSingleServerLog));
             this.rtBoxLogger = new System.Windows.Forms.RichTextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtBoxLogger
             // 
-            resources.ApplyResources(this.rtBoxLogger, "rtBoxLogger");
             this.rtBoxLogger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.rtBoxLogger, "rtBoxLogger");
             this.rtBoxLogger.Name = "rtBoxLogger";
             this.rtBoxLogger.ReadOnly = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rtBoxLogger);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
             // 
             // FormSingleServerLog
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.rtBoxLogger);
+            this.Controls.Add(this.panel1);
             this.Name = "FormSingleServerLog";
             this.Load += new System.EventHandler(this.FormSingleServerLog_Load);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.RichTextBox rtBoxLogger;
+        private System.Windows.Forms.Panel panel1;
     }
 }

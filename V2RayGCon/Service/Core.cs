@@ -110,16 +110,16 @@ namespace V2RayGCon.Service
             try
             {
                 p.Start();
-                while (!p.StandardOutput.EndOfStream)
+                if (!p.WaitForExit(1000))
                 {
-                    var output = p.StandardOutput.ReadLine();
-                    Match match = pattern.Match(output);
-                    if (match.Success)
-                    {
-                        value = match.Groups["value"].Value;
-                    }
+                    p.Kill();
                 }
-                p.WaitForExit();
+                var output = p.StandardOutput.ReadToEnd();
+                Match match = pattern.Match(output);
+                if (match.Success)
+                {
+                    value = match.Groups["value"].Value;
+                }
             }
             catch { }
 

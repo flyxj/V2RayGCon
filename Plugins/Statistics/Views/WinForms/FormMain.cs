@@ -154,6 +154,7 @@ namespace Statistics.Views.WinForms
         System.Windows.Forms.Timer updateStatsTableTimer = new Timer
         {
             Interval = 2000,
+            // Interval = 10000,
         };
 
         void ReleaseUpdateTimer()

@@ -119,25 +119,28 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>100, 8</value>
+    <value>150, 12</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 19</value>
+    <value>250, 28</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>欢迎使用V2RayGCon</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 70</value>
+    <value>16, 105</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 12</value>
+    <value>206, 18</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>然后解压到本软件目录内</value>
   </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 201</value>
+  </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>251, 12</value>
+    <value>377, 18</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>可通过以下几种方式添加服务器/客户端配置：</value>
@@ -146,8 +149,11 @@
   <data name="lbDownloadV2rayCore.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>6, 12</value>
   </data>
+  <data name="lbDownloadV2rayCore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 51</value>
+  </data>
   <data name="lbDownloadV2rayCore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 19</value>
+    <value>248, 26</value>
   </data>
   <data name="lbDownloadV2rayCore.Text" xml:space="preserve">
     <value>首次使用请先下载v2ray-core</value>
@@ -155,8 +161,11 @@
   <data name="lbV2rayCoreGitHub.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>16, 6</value>
   </data>
+  <data name="lbV2rayCoreGitHub.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 76</value>
+  </data>
   <data name="lbV2rayCoreGitHub.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 19</value>
+    <value>303, 26</value>
   </data>
   <data name="lbV2rayCoreGitHub.Text" xml:space="preserve">
     <value>或者手动到v2ray-core的github下载</value>
@@ -164,8 +173,11 @@
   <data name="lbCopyFromClipboard.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>11, 6</value>
   </data>
+  <data name="lbCopyFromClipboard.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 231</value>
+  </data>
   <data name="lbCopyFromClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 19</value>
+    <value>294, 26</value>
   </data>
   <data name="lbCopyFromClipboard.Text" xml:space="preserve">
     <value>1. 复制分享链接然后从剪切板导入</value>
@@ -173,8 +185,11 @@
   <data name="lbSimAddVmessWin.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>5, 12</value>
   </data>
+  <data name="lbSimAddVmessWin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 284</value>
+  </data>
   <data name="lbSimAddVmessWin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>239, 19</value>
+    <value>359, 26</value>
   </data>
   <data name="lbSimAddVmessWin.Text" xml:space="preserve">
     <value>3. 通过简易添加vmess客户端窗口填写信息</value>
@@ -182,8 +197,11 @@
   <data name="lbScanQRCode.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>3, 9</value>
   </data>
+  <data name="lbScanQRCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 256</value>
+  </data>
   <data name="lbScanQRCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 19</value>
+    <value>201, 26</value>
   </data>
   <data name="lbScanQRCode.Text" xml:space="preserve">
     <value>2. 扫描屏幕上的二维码</value>
@@ -191,8 +209,11 @@
   <data name="lbConfigEditor.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>5, 5</value>
   </data>
+  <data name="lbConfigEditor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 309</value>
+  </data>
   <data name="lbConfigEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 19</value>
+    <value>164, 26</value>
   </data>
   <data name="lbConfigEditor.Text" xml:space="preserve">
     <value>4. 或者配置编辑器</value>
@@ -200,8 +221,11 @@
   <data name="lbWiki.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>15, 4</value>
   </data>
+  <data name="lbWiki.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 358</value>
+  </data>
   <data name="lbWiki.Size" type="System.Drawing.Size, System.Drawing">
-    <value>215, 19</value>
+    <value>322, 26</value>
   </data>
   <data name="lbWiki.Text" xml:space="preserve">
     <value>这个项目的wiki里面有简要的使用说明</value>
@@ -209,28 +233,37 @@
   <data name="lbIssue.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>8, 5</value>
   </data>
+  <data name="lbIssue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 386</value>
+  </data>
   <data name="lbIssue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 19</value>
+    <value>201, 26</value>
   </data>
   <data name="lbIssue.Text" xml:space="preserve">
     <value>如有问题可以发个issue</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 88</value>
+    <value>16, 132</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 12</value>
+    <value>287, 18</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>如果你下载的是V2RayGCon-portable.zip</value>
+    <value>如果你下载的是V2RayGCon-box.zip</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 106</value>
+    <value>16, 159</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 12</value>
+    <value>386, 18</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>可以跳过上述步骤（是不是说得有点晚，嘻嘻）</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>9, 18</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>567, 422</value>
   </data>
 </root>
