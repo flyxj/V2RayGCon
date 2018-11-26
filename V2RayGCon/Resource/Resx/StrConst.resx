@@ -130,7 +130,7 @@
   <data name="DefCoreVersion" xml:space="preserve">
     <value>v3.26</value>
   </data>
-  <data name="Executable" xml:space="preserve">
+  <data name="ExecutableV2ray" xml:space="preserve">
     <value>v2ray.exe</value>
   </data>
   <data name="config_tpl" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -167,7 +167,7 @@
   <data name="PatternDownloadLink" xml:space="preserve">
     <value>/v2ray/v2ray-core/releases/download/(v[\.0-9]+)/v2ray-windows-64.zip</value>
   </data>
-  <data name="ReleasePageUrl" xml:space="preserve">
+  <data name="V2rayCoreReleasePageUrl" xml:space="preserve">
     <value>https://github.com/v2ray/v2ray-core/releases</value>
   </data>
   <data name="VerList" xml:space="preserve">
@@ -251,5 +251,11 @@
   <data name="V2RayCoreFolder" xml:space="preserve">
     <value>core</value>
     <comment>V2RayGCon\core\v2ray.exe</comment>
+  </data>
+  <data name="ExecutableV2ctl" xml:space="preserve">
+    <value>v2ctl.exe</value>
+  </data>
+  <data name="StatsQueryParamTpl" xml:space="preserve">
+    <value>api --server="127.0.0.1:{0}" StatsService.GetStats "name: """"inbound&gt;&gt;&gt;agentin&gt;&gt;&gt;traffic&gt;&gt;&gt;{1}"""" reset: false"</value>
   </data>
 </root>

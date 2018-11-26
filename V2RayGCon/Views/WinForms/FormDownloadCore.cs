@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
@@ -37,9 +36,7 @@ namespace V2RayGCon.Views.WinForms
                 setting.LazyGC();
             };
 
-#if DEBUG
-            this.Icon = Properties.Resources.icon_light;
-#endif
+            VgcApis.Libs.UI.AutoSetFormIcon(this);
 
             this.Show();
         }
@@ -47,26 +44,10 @@ namespace V2RayGCon.Views.WinForms
         private void FormDownloadCore_Shown(object sender, System.EventArgs e)
         {
             RefreshCurrentCoreVersion();
+            chkUseProxy.Checked = setting.isUpdateUseProxy;
         }
 
         #region private method
-        int GetAvailableProxyPort()
-        {
-            var servList = servers.GetServerList()
-                .Where(s => s.isServerOn);
-
-            foreach (var serv in servList)
-            {
-                if (serv.IsSuitableToBeUsedAsSysProxy(
-                    true, out bool isSocks, out int port))
-                {
-                    return port;
-                }
-            }
-            return -1;
-        }
-
-
         void RefreshCurrentCoreVersion()
         {
             var el = labelCoreVersion;
@@ -183,7 +164,7 @@ namespace V2RayGCon.Views.WinForms
                 int proxyPort = -1;
                 if (chkUseProxy.Checked)
                 {
-                    proxyPort = GetAvailableProxyPort();
+                    proxyPort = servers.GetAvailableHttpProxyPort();
                 }
                 var versions = Lib.Utils.GetCoreVersions(proxyPort);
                 try
@@ -220,7 +201,7 @@ namespace V2RayGCon.Views.WinForms
             int proxyPort = -1;
             if (chkUseProxy.Checked)
             {
-                proxyPort = GetAvailableProxyPort();
+                proxyPort = servers.GetAvailableHttpProxyPort();
                 if (proxyPort <= 0)
                 {
                     Task.Factory.StartNew(

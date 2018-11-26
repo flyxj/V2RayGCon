@@ -23,9 +23,7 @@ namespace V2RayGCon.Views.WinForms
         {
             InitializeComponent();
 
-#if DEBUG
-            this.Icon = Properties.Resources.icon_light;
-#endif
+            VgcApis.Libs.UI.AutoSetFormIcon(this);
             this.Show();
         }
 
@@ -81,7 +79,10 @@ namespace V2RayGCon.Views.WinForms
                     cboxSettingPageSize,
                     chkSetServAutotrack,
                     chkSetSysPortable,
-                    chkSetUseV4));
+                    chkSetUseV4,
+                    chkSetServStatistics,
+                    rbtnSetUpgradeToVgcFull,
+                    chkSetUpgradeUseProxy));
 
             return ctrl;
         }

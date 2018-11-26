@@ -15,9 +15,7 @@ namespace V2RayGCon.Service
     public class Setting :
         Model.BaseClass.SingletonService<Setting>,
         VgcApis.Models.ISettingService
-
     {
-        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
         public event EventHandler OnRequireNotifyTextUpdate;
         Model.Data.UserSettings userSettings;
 
@@ -46,15 +44,42 @@ namespace V2RayGCon.Service
             }
         }
 
+        public bool isEnableStatistics
+        {
+            get => userSettings.isEnableStat;
+            set
+            {
+                userSettings.isEnableStat = value;
+                LazySaveUserSettings();
+            }
+        }
+
         public bool isUseV4
         {
-            get
-            {
-                return userSettings.isUseV4Format;
-            }
+            get => userSettings.isUseV4Format;
             set
             {
                 userSettings.isUseV4Format = value;
+                LazySaveUserSettings();
+            }
+        }
+
+        public bool isUpdateUseProxy
+        {
+            get => userSettings.isUpdateUseProxy;
+            set
+            {
+                userSettings.isUpdateUseProxy = value;
+                LazySaveUserSettings();
+            }
+        }
+
+        public bool isUpdateToVgcFull
+        {
+            get => userSettings.isUpdateToVgcFull;
+            set
+            {
+                userSettings.isUpdateToVgcFull = value;
                 LazySaveUserSettings();
             }
         }
@@ -95,21 +120,23 @@ namespace V2RayGCon.Service
         {
             get
             {
-                return string.Join(Environment.NewLine, _logCache)
-                    + System.Environment.NewLine;
+                return string.Join(Environment.NewLine, _logCache);
             }
             private set
             {
-                // keep 200 lines of log
-                if (_logCache.Count > 300)
-                {
-                    var blackHole = "";
-                    for (var i = 0; i < 100; i++)
-                    {
-                        _logCache.TryDequeue(out blackHole);
-                    }
-                }
                 _logCache.Enqueue(value);
+
+                if (_logCache.Count < maxLogLines)
+                {
+                    return;
+                }
+
+                string blackHole;
+                var cut = maxLogLines / 2;
+                for (var i = 0; i < cut; i++)
+                {
+                    _logCache.TryDequeue(out blackHole);
+                }
             }
         }
 
@@ -154,15 +181,7 @@ namespace V2RayGCon.Service
             }
         }
 
-        public int maxLogLines
-        {
-            get
-            {
-                int n = userSettings.MaxLogLine;
-                return Lib.Utils.Clamp(n, 10, 1000);
-            }
-            private set { }
-        }
+        public const int maxLogLines = 1000;
 
         #endregion
 
@@ -363,14 +382,11 @@ namespace V2RayGCon.Service
             form.Top = Lib.Utils.Clamp(rect.Top, 0, screen.Bottom - form.Height);
         }
 
+        public long logTimeStamp { get; private set; } = DateTime.Now.Ticks;
         public void SendLog(string log)
         {
             logCache = log;
-            try
-            {
-                OnLog?.Invoke(this, new VgcApis.Models.StrEvent(log));
-            }
-            catch { }
+            logTimeStamp = DateTime.Now.Ticks;
         }
 
         public List<Model.Data.ImportItem> GetGlobalImportItems()
@@ -547,6 +563,9 @@ namespace V2RayGCon.Service
             catch { }
 
             return FallBackLoadUserSettingsFromPorperties();
+
+            // After fall back func is deleted.
+            // return new Model.Data.UserSettings();
         }
 
         /// <summary>
@@ -565,7 +584,6 @@ namespace V2RayGCon.Service
                 var result = new Model.Data.UserSettings
                 {
                     // int
-                    MaxLogLine = p.MaxLogLine,
                     ServerPanelPageSize = p.ServerPanelPageSize,
 
                     // bool

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -62,67 +63,6 @@ namespace V2RayGCon.Lib
                 catch { }
             }
             return result;
-        }
-
-        /// <summary>
-        /// return null if fail
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a"></param>
-        /// <returns></returns>
-        public static T Clone<T>(T a) where T : class
-        {
-            if (a == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(
-                    JsonConvert.SerializeObject(a));
-            }
-            catch { }
-            return null;
-        }
-
-        /// <summary>
-        /// return null if fail
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public static T DeserializeObject<T>(string content) where T : class
-        {
-            if (string.IsNullOrEmpty(content))
-            {
-                return null;
-            }
-
-            try
-            {
-                var result = JsonConvert.DeserializeObject<T>(content);
-                if (result != null)
-                {
-                    return result;
-                }
-            }
-            catch { }
-            return null;
-        }
-
-        /// <summary>
-        /// return null if fail
-        /// </summary>
-        /// <param name="serializeObject"></param>
-        /// <returns></returns>
-        public static string SerializeObject(object serializeObject)
-        {
-            if (serializeObject == null)
-            {
-                return null;
-            }
-            return JsonConvert.SerializeObject(serializeObject);
         }
 
         public static string GetConfigRoot(bool isInbound, bool isV4)
@@ -936,21 +876,28 @@ namespace V2RayGCon.Lib
             }
         }
 
-        public static string FetchThroughProxy(string url, int proxyPort)
+        /// <summary>
+        /// Download through http://127.0.0.1:proxyPort. Return string.Empty if sth. goes wrong.
+        /// </summary>
+        /// <param name="url">string</param>
+        /// <param name="proxyPort">1-65535, other value means download directly</param>
+        /// <param name="timeout">millisecond, if &lt;1 then use default value 30000</param>
+        /// <returns>If sth. goes wrong return string.Empty</returns>
+        public static string FetchThroughProxy(string url, int proxyPort, int timeout)
         {
             var html = string.Empty;
 
             using (WebClient wc = new Lib.Nets.TimedWebClient
             {
                 Encoding = System.Text.Encoding.UTF8,
-                Timeout = 30 * 1000,
+                Timeout = timeout,
             })
             {
-                wc.Proxy = new WebProxy("127.0.0.1", proxyPort);
-                /* 如果用抛出异常的写法
-                 * task中调用此函数时
-                 * 会弹出用户未处理异常警告
-                 */
+                if (proxyPort > 0 && proxyPort < 65536)
+                {
+                    wc.Proxy = new WebProxy("127.0.0.1", proxyPort);
+                }
+
                 try
                 {
                     html = wc.DownloadString(url);
@@ -962,25 +909,7 @@ namespace V2RayGCon.Lib
 
         public static string Fetch(string url, int timeout = -1)
         {
-            var html = string.Empty;
-
-            using (WebClient wc = new Lib.Nets.TimedWebClient
-            {
-                Encoding = System.Text.Encoding.UTF8,
-                Timeout = timeout,
-            })
-            {
-                /* 如果用抛出异常的写法
-                 * task中调用此函数时
-                 * 会弹出用户未处理异常警告
-                 */
-                try
-                {
-                    html = wc.DownloadString(url);
-                }
-                catch { }
-            }
-            return html;
+            return FetchThroughProxy(url, -1, timeout);
         }
 
         public static string GetLatestVGCVersion()
@@ -1005,12 +934,9 @@ namespace V2RayGCon.Lib
         public static List<string> GetCoreVersions(int proxyPort)
         {
             List<string> versions = new List<string> { };
-            var url = StrConst.ReleasePageUrl;
+            var url = StrConst.V2rayCoreReleasePageUrl;
 
-            string html = proxyPort > 0 ?
-                FetchThroughProxy(url, proxyPort) :
-                Fetch(url);
-
+            string html = FetchThroughProxy(url, proxyPort, -1);
             if (string.IsNullOrEmpty(html))
             {
                 return versions;
@@ -1032,7 +958,7 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region files
-        static string GetChecksum(string file)
+        public static string GetSha256SumFromFile(string file)
         {
             // http://peterkellner.net/2010/11/24/efficiently-generating-sha256-checksum-for-files-using-csharp/
             try
@@ -1075,6 +1001,23 @@ namespace V2RayGCon.Lib
         #endregion
 
         #region Miscellaneous
+        public static string TrimVersionString(string version)
+        {
+            if (!version.EndsWith(".0"))
+            {
+                return version;
+            }
+
+            var len = version.Length;
+            return version.Substring(0, len - 2);
+        }
+
+        public static string GetAssemblyVersion()
+        {
+            Version version = Assembly.GetEntryAssembly().GetName().Version;
+            return version.ToString();
+        }
+
         public static bool AreEqual(double a, double b)
         {
             return Math.Abs(a - b) < 0.000001;

@@ -21,10 +21,10 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
   
 （详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)）  
   
-下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGCon.zip到任意目录  
+下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGCon-lite.zip到任意目录  
 然后通过本软件的下载窗口下载v2ray-core  
 也可以手动下载再解压到本软件目录内    
-或者直接下载V2RayGCon-portable.zip省去上面的步骤  
+或者直接下载V2RayGCon-box.zip省去上面的步骤  
   
 按需选用下列方式添加配置：  
  1. 托盘菜单->`扫描二维码`  

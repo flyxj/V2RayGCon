@@ -33,8 +33,7 @@ namespace V2RayGCon.Service
         Lib.Sys.CancelableTimeout
             lazySaveServerListTimer = null,
             lazyUpdateNotifyTextTimer = null;
-
-        object serverListWriteLock = new object();
+        readonly object serverListWriteLock = new object();
 
         Servers()
         {
@@ -73,7 +72,7 @@ namespace V2RayGCon.Service
 
         #region property
         bool _isTesting;
-        object _isTestingLock = new object();
+        readonly object _isTestingLock = new object();
         bool isTesting
         {
             get
@@ -94,6 +93,61 @@ namespace V2RayGCon.Service
         #endregion
 
         #region private method
+        private string ImportPackageV4Config(string orgUid, JObject package)
+        {
+            var newConfig = package.ToString(Formatting.None);
+            var servUid = "";
+
+            var orgServ = serverList.FirstOrDefault(s => s.GetUid() == orgUid);
+            if (orgServ != null)
+            {
+                ReplaceServerConfig(orgServ.config, newConfig);
+                servUid = orgUid;
+            }
+            else
+            {
+                AddServer(newConfig, "PackageV4");
+                var newServ = serverList.FirstOrDefault(s => s.config == newConfig);
+                if (newServ != null)
+                {
+                    servUid = newServ.GetUid();
+                }
+            }
+
+            return servUid;
+        }
+
+        private JObject GenPackageV4Config(List<VgcApis.Models.ICoreCtrl> servList, string packageName)
+        {
+            var package = cache.tpl.LoadPackage("pkgV4Tpl");
+            package["v2raygcon"]["alias"] = string.IsNullOrEmpty(packageName) ? "PackageV4" : packageName;
+            var outbounds = package["outbounds"] as JArray;
+            var description = "";
+
+            for (var i = 0; i < servList.Count; i++)
+            {
+                var s = servList[i];
+                var parts = Lib.Utils.ExtractOutboundsFromConfig(s.GetConfig());
+                var c = 0;
+                foreach (JObject p in parts)
+                {
+                    p["tag"] = $"agentout{i}s{c++}";
+                    outbounds.Add(p);
+                }
+                var name = s.GetName();
+                if (c == 0)
+                {
+                    setting.SendLog(I18N.PackageFail + ": " + name);
+                }
+                else
+                {
+                    description += $" {i}.[{name}]";
+                    setting.SendLog(I18N.PackageSuccess + ": " + name);
+                }
+            }
+            package["v2raygcon"]["description"] = description;
+            return package;
+        }
 
         void DisposeLazyTimers()
         {
@@ -135,7 +189,6 @@ namespace V2RayGCon.Service
         void BindEventsTo(Controller.CoreServerCtrl server)
         {
             server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
-            server.OnLog += OnSendLogHandler;
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
             server.OnRequireStatusBarUpdate += InvokeEventOnRequireStatusBarUpdate;
@@ -145,7 +198,6 @@ namespace V2RayGCon.Service
         void ReleaseEventsFrom(Controller.CoreServerCtrl server)
         {
             server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
-            server.OnLog -= OnSendLogHandler;
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
             server.OnRequireStatusBarUpdate -= InvokeEventOnRequireStatusBarUpdate;
@@ -489,20 +541,20 @@ namespace V2RayGCon.Service
 
             var texts = new List<string>();
 
-            Action done = () =>
+            void done()
             {
                 setting.runningServerSummary = string.Join(Environment.NewLine, texts);
                 setting.InvokeEventIgnoreErrorOnRequireNotifyTextUpdate();
-            };
+            }
 
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 list[index].GetterInboundInfoFor((s) =>
                 {
                     texts.Add(s);
                     next?.Invoke();
                 });
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(count, worker, done);
         }
@@ -523,11 +575,6 @@ namespace V2RayGCon.Service
                 OnRequireMenuUpdate?.Invoke(this, EventArgs.Empty);
             }
             catch { }
-        }
-
-        void OnSendLogHandler(object sender, VgcApis.Models.StrEvent arg)
-        {
-            setting.SendLog(arg.Data);
         }
 
         void ServerItemPropertyChangedHandler(object sender, EventArgs arg)
@@ -651,6 +698,26 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public method
+        /// <summary>
+        /// return -1 when fail
+        /// </summary>
+        /// <returns></returns>
+        public int GetAvailableHttpProxyPort()
+        {
+            var list = GetServerList().Where(s => s.isServerOn);
+
+            foreach (var serv in list)
+            {
+                if (serv.IsSuitableToBeUsedAsSysProxy(
+                    true, out bool isSocks, out int port))
+                {
+                    return port;
+                }
+            }
+            return -1;
+        }
+
+
         /// <summary>
         /// ref means config will change after the function is executed.
         /// </summary>
@@ -898,57 +965,31 @@ namespace V2RayGCon.Service
             return serverList.Any(s => s.isSelected);
         }
 
-        public void PackServersIntoV4Package(
-            List<VgcApis.Models.ICoreCtrl> servList)
+
+        /// <summary>
+        /// packageName is Null or empty ? "PackageV4" : packageName
+        /// </summary>
+        /// <param name="packageName"></param>
+        /// <param name="servList"></param>
+        public string PackServersIntoV4Package(
+            List<VgcApis.Models.ICoreCtrl> servList,
+            string orgUid,
+            string packageName)
         {
-            if (serverList == null || serverList.Count <= 0)
+            if (servList == null || servList.Count <= 0)
             {
-                Task.Factory.StartNew(() => MessageBox.Show(I18N.ListIsEmpty));
-                return;
+                VgcApis.Libs.UI.MsgBoxAsync(null, I18N.ListIsEmpty);
+                return "";
             }
 
-            var packages = cache.tpl.LoadPackage("pkgV4Tpl");
-            var serverNameList = new List<string>();
-            var count = 0;
+            JObject package = GenPackageV4Config(servList, packageName);
+            string newUid = ImportPackageV4Config(orgUid, package);
 
-            Action done = () =>
-            {
-                packages["v2raygcon"]["description"] = string.Join(" ", serverNameList);
-                setting.SendLog(I18N.PackageDone);
-                AddServer(packages.ToString(Formatting.None), "PackageV4");
-                UpdateMarkList();
-                Lib.UI.ShowMessageBoxDoneAsync();
-            };
+            UpdateMarkList();
+            setting.SendLog(I18N.PackageDone);
+            Lib.UI.ShowMessageBoxDoneAsync();
 
-            Action<int, Action> worker = (index, next) =>
-            {
-                var server = servList[index];
-                var outbounds = Lib.Utils.ExtractOutboundsFromConfig(server.GetConfig());
-                var num = count;
-                foreach (JObject item in outbounds)
-                {
-                    item["tag"] = string.Format("agentout{0}t{1}", index, count.ToString());
-                    count++;
-                    (packages["outbounds"] as JArray).Add(item);
-                }
-                if (count == num)
-                {
-                    setting.SendLog(I18N.PackageFail + ": " + server.GetName());
-                }
-                else
-                {
-                    serverNameList.Add(
-                        string.Format(
-                            "{0}.[{1}]",
-                            index,
-                            server.GetName()));
-
-                    setting.SendLog(I18N.PackageSuccess + ": " + server.GetName());
-                }
-                next();
-            };
-
-            Lib.Utils.ChainActionHelperAsync(servList.Count, worker, done);
+            return newUid;
         }
 
         public void PackServersIntoV3Package(
@@ -961,7 +1002,7 @@ namespace V2RayGCon.Service
             var port = Lib.Utils.Str2Int(StrConst.PacmanInitPort);
             var tagPrefix = StrConst.PacmanTagPrefix;
 
-            Action done = () =>
+            void done()
             {
                 var config = cache.tpl.LoadPackage("main");
                 config["v2raygcon"]["description"] = string.Join(" ", serverNameList);
@@ -970,9 +1011,9 @@ namespace V2RayGCon.Service
                 AddServer(config.ToString(Formatting.None), "PackageV3");
                 UpdateMarkList();
                 Lib.UI.ShowMessageBoxDoneAsync();
-            };
+            }
 
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 var server = servList[index];
                 try
@@ -996,7 +1037,7 @@ namespace V2RayGCon.Service
                     setting.SendLog(I18N.PackageFail + ": " + server.GetName());
                 }
                 next();
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(servList.Count, worker, done);
         }
@@ -1034,10 +1075,10 @@ namespace V2RayGCon.Service
         public void RestartServersByListThen(List<Controller.CoreServerCtrl> servers, Action done = null)
         {
             var list = servers;
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 list[index].RestartCoreThen(next);
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(list.Count, worker, done);
         }
@@ -1046,17 +1087,17 @@ namespace V2RayGCon.Service
         {
             List<Controller.CoreServerCtrl> bootList = GenBootServerList();
 
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 bootList[index].RestartCoreThen(next);
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(bootList.Count, worker);
         }
 
         public void RestartAllSelectedServersThen(Action done = null)
         {
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 if (serverList[index].isSelected)
                 {
@@ -1066,14 +1107,14 @@ namespace V2RayGCon.Service
                 {
                     next();
                 }
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, done);
         }
 
         public void StopAllSelectedThen(Action lambda = null)
         {
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 if (serverList[index].isSelected)
                 {
@@ -1083,14 +1124,14 @@ namespace V2RayGCon.Service
                 {
                     next();
                 }
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, lambda);
         }
 
         public void StopAllServersThen(Action lambda = null)
         {
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 if (serverList[index].server.isRunning)
                 {
@@ -1100,7 +1141,7 @@ namespace V2RayGCon.Service
                 {
                     next();
                 }
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, lambda);
         }
@@ -1113,7 +1154,7 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 if (!serverList[index].isSelected)
                 {
@@ -1122,9 +1163,9 @@ namespace V2RayGCon.Service
                 }
 
                 RemoveServerItemFromListThen(index, next);
-            };
+            }
 
-            Action finish = () =>
+            void finish()
             {
                 LazyUpdateNotifyTextHandler(this, EventArgs.Empty);
                 LazySaveServerList();
@@ -1132,7 +1173,7 @@ namespace V2RayGCon.Service
                 InvokeEventOnRequireFlyPanelUpdate();
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, finish);
         }
@@ -1145,14 +1186,14 @@ namespace V2RayGCon.Service
                 return;
             }
 
-            Action finish = () =>
+            void finish()
             {
                 LazySaveServerList();
                 UpdateMarkList();
                 InvokeEventOnRequireFlyPanelUpdate();
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
                 done?.Invoke();
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(
                 serverList.Count,
@@ -1162,7 +1203,7 @@ namespace V2RayGCon.Service
 
         public void UpdateAllServersSummary()
         {
-            Action<int, Action> worker = (index, next) =>
+            void worker(int index, Action next)
             {
                 try
                 {
@@ -1173,15 +1214,15 @@ namespace V2RayGCon.Service
                     // skip if something goes wrong
                     next();
                 }
-            };
+            }
 
-            Action done = () =>
+            void done()
             {
                 setting.LazyGC();
                 LazySaveServerList();
                 InvokeEventOnRequireFlyPanelUpdate();
                 InvokeEventOnRequireMenuUpdate(this, EventArgs.Empty);
-            };
+            }
 
             Lib.Utils.ChainActionHelperAsync(serverList.Count, worker, done);
         }

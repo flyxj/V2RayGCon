@@ -90,6 +90,15 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/wiki/Release 的本地化字符串。
+        /// </summary>
+        internal static string ChangeLogUrl {
+            get {
+                return ResourceManager.GetString("ChangeLogUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap CloseSolution_16x {
@@ -169,31 +178,20 @@ namespace V2RayGCon.Properties {
         }
         
         /// <summary>
-        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Icon icon_dark {
-            get {
-                object obj = ResourceManager.GetObject("icon_dark", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
-        /// </summary>
-        internal static System.Drawing.Icon icon_light {
-            get {
-                object obj = ResourceManager.GetObject("icon_light", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 https://github.com/nobody3u/V2RayGCon/issues 的本地化字符串。
         /// </summary>
         internal static string IssueLink {
             get {
                 return ResourceManager.GetString("IssueLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://raw.githubusercontent.com/nobody3u/V2RayGCon/version/latest.json 的本地化字符串。
+        /// </summary>
+        internal static string LatestVersionInfoUrl {
+            get {
+                return ResourceManager.GetString("LatestVersionInfoUrl", resourceCulture);
             }
         }
         
@@ -231,6 +229,24 @@ namespace V2RayGCon.Properties {
         internal static string ProjectLink {
             get {
                 return ResourceManager.GetString("ProjectLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 最近发布记录 的本地化字符串。
+        /// </summary>
+        internal static string ReleaseNoteKeyWord {
+            get {
+                return ResourceManager.GetString("ReleaseNoteKeyWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 https://github.com/nobody3u/V2RayGCon/wiki/Release 的本地化字符串。
+        /// </summary>
+        internal static string ReleaseNoteUrl {
+            get {
+                return ResourceManager.GetString("ReleaseNoteUrl", resourceCulture);
             }
         }
         
@@ -280,15 +296,6 @@ namespace V2RayGCon.Properties {
         internal static string Text {
             get {
                 return ResourceManager.GetString("Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 1.1.3 的本地化字符串。
-        /// </summary>
-        internal static string Version {
-            get {
-                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
         

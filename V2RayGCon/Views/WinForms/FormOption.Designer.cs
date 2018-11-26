@@ -39,10 +39,15 @@
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSetting = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkSetUpgradeUseProxy = new System.Windows.Forms.CheckBox();
+            this.rbtnIdontCare = new System.Windows.Forms.RadioButton();
+            this.rbtnSetUpgradeToVgcFull = new System.Windows.Forms.RadioButton();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.chkSetUseV4 = new System.Windows.Forms.CheckBox();
             this.chkSetSysPortable = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.chkSetServStatistics = new System.Windows.Forms.CheckBox();
             this.chkSetServAutotrack = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cboxSettingPageSize = new System.Windows.Forms.ComboBox();
@@ -62,6 +67,7 @@
             this.tabPageImport.SuspendLayout();
             this.tabPageSubscribe.SuspendLayout();
             this.tabPageSetting.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -138,12 +144,46 @@
             // tabPageSetting
             // 
             resources.ApplyResources(this.tabPageSetting, "tabPageSetting");
+            this.tabPageSetting.Controls.Add(this.groupBox2);
             this.tabPageSetting.Controls.Add(this.groupBox6);
             this.tabPageSetting.Controls.Add(this.groupBox5);
             this.tabPageSetting.Controls.Add(this.groupBox1);
             this.tabPageSetting.Name = "tabPageSetting";
             this.toolTip1.SetToolTip(this.tabPageSetting, resources.GetString("tabPageSetting.ToolTip"));
             this.tabPageSetting.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.chkSetUpgradeUseProxy);
+            this.groupBox2.Controls.Add(this.rbtnIdontCare);
+            this.groupBox2.Controls.Add(this.rbtnSetUpgradeToVgcFull);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
+            // 
+            // chkSetUpgradeUseProxy
+            // 
+            resources.ApplyResources(this.chkSetUpgradeUseProxy, "chkSetUpgradeUseProxy");
+            this.chkSetUpgradeUseProxy.Name = "chkSetUpgradeUseProxy";
+            this.toolTip1.SetToolTip(this.chkSetUpgradeUseProxy, resources.GetString("chkSetUpgradeUseProxy.ToolTip"));
+            this.chkSetUpgradeUseProxy.UseVisualStyleBackColor = true;
+            // 
+            // rbtnIdontCare
+            // 
+            resources.ApplyResources(this.rbtnIdontCare, "rbtnIdontCare");
+            this.rbtnIdontCare.Checked = true;
+            this.rbtnIdontCare.Name = "rbtnIdontCare";
+            this.rbtnIdontCare.TabStop = true;
+            this.toolTip1.SetToolTip(this.rbtnIdontCare, resources.GetString("rbtnIdontCare.ToolTip"));
+            this.rbtnIdontCare.UseVisualStyleBackColor = true;
+            // 
+            // rbtnSetUpgradeToVgcFull
+            // 
+            resources.ApplyResources(this.rbtnSetUpgradeToVgcFull, "rbtnSetUpgradeToVgcFull");
+            this.rbtnSetUpgradeToVgcFull.Name = "rbtnSetUpgradeToVgcFull";
+            this.toolTip1.SetToolTip(this.rbtnSetUpgradeToVgcFull, resources.GetString("rbtnSetUpgradeToVgcFull.ToolTip"));
+            this.rbtnSetUpgradeToVgcFull.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
@@ -171,10 +211,18 @@
             // groupBox5
             // 
             resources.ApplyResources(this.groupBox5, "groupBox5");
+            this.groupBox5.Controls.Add(this.chkSetServStatistics);
             this.groupBox5.Controls.Add(this.chkSetServAutotrack);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
             this.toolTip1.SetToolTip(this.groupBox5, resources.GetString("groupBox5.ToolTip"));
+            // 
+            // chkSetServStatistics
+            // 
+            resources.ApplyResources(this.chkSetServStatistics, "chkSetServStatistics");
+            this.chkSetServStatistics.Name = "chkSetServStatistics";
+            this.toolTip1.SetToolTip(this.chkSetServStatistics, resources.GetString("chkSetServStatistics.ToolTip"));
+            this.chkSetServStatistics.UseVisualStyleBackColor = true;
             // 
             // chkSetServAutotrack
             // 
@@ -309,6 +357,8 @@
             this.tabPageImport.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
             this.tabPageSetting.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -350,5 +400,10 @@
         private System.Windows.Forms.TabPage tabPagePlugins;
         private System.Windows.Forms.Button btnPluginsRefresh;
         private System.Windows.Forms.FlowLayoutPanel flyPluginsItemsContainer;
+        private System.Windows.Forms.CheckBox chkSetServStatistics;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbtnIdontCare;
+        private System.Windows.Forms.RadioButton rbtnSetUpgradeToVgcFull;
+        private System.Windows.Forms.CheckBox chkSetUpgradeUseProxy;
     }
 }

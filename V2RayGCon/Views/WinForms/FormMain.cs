@@ -23,6 +23,7 @@ namespace V2RayGCon.Views.WinForms
         Service.Setting setting;
         Service.Servers servers;
         System.Windows.Forms.Timer updateTitleTimer = null;
+        string formTitle = "";
 
         FormMain()
         {
@@ -30,11 +31,10 @@ namespace V2RayGCon.Views.WinForms
             servers = Service.Servers.Instance;
 
             InitializeComponent();
-
-#if DEBUG
-            this.Icon = Properties.Resources.icon_light;
-#endif
+            VgcApis.Libs.UI.AutoSetFormIcon(this);
             Lib.UI.AutoScaleToolSripControls(this, 16);
+            GenFormTitle();
+
             this.Show();
         }
 
@@ -77,13 +77,18 @@ namespace V2RayGCon.Views.WinForms
         }
 
         #region private method
-        private void UpdateFormTitle(object sender, EventArgs args)
+        private void GenFormTitle()
         {
-            var title = string.Format(
+            var version = Lib.Utils.GetAssemblyVersion();
+            formTitle = string.Format(
                 "{0} v{1}",
                 Properties.Resources.AppName,
-                Properties.Resources.Version);
+                Lib.Utils.TrimVersionString(version));
+        }
 
+        private void UpdateFormTitle(object sender, EventArgs args)
+        {
+            var title = formTitle;
             if (setting.isPortable)
             {
                 title += " - " + I18N.Portable;
@@ -154,7 +159,6 @@ namespace V2RayGCon.Views.WinForms
                 toolMenuItemImportLinkFromClipboard,
                 toolMenuItemExportAllServerToFile,
                 toolMenuItemImportFromFile,
-                toolMenuItemCheckUpdate,
                 toolMenuItemAbout,
                 toolMenuItemHelp,
                 toolMenuItemConfigEditor,
@@ -163,6 +167,10 @@ namespace V2RayGCon.Views.WinForms
                 toolMenuItemOptions,
                 toolStripMenuItemDownLoadV2rayCore,
                 toolStripMenuItemRemoveV2rayCore));
+
+            ctrl.Plug(new Controller.FormMainComponent.MenuItemVgcAutoUpdate(
+                toolMenuItemCheckUpdate
+                ));
 
             ctrl.Plug(new Controller.FormMainComponent.MenuItemsSelect(
                 /*

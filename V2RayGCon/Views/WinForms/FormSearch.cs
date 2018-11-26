@@ -11,7 +11,6 @@ namespace V2RayGCon.Views.WinForms
         List<int> result;
         int curResult, keywordLength;
 
-
         public FormSearch(Scintilla editor)
         {
             InitializeComponent();
@@ -22,10 +21,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.FormClosed += (s, a) => ClearIndicator();
 
-#if DEBUG
-            this.Icon = Properties.Resources.icon_light;
-#endif
-
+            VgcApis.Libs.UI.AutoSetFormIcon(this);
             this.Show();
         }
 
