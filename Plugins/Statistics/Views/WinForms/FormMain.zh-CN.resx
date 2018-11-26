@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lvName.Text" xml:space="preserve">
-    <value>别名</value>
+    <value>摘要</value>
   </data>
   <data name="lvCurDown.Text" xml:space="preserve">
     <value>下行 (KiB/s)</value>

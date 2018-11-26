@@ -1003,13 +1003,17 @@ namespace V2RayGCon.Lib
         #region Miscellaneous
         public static string TrimVersionString(string version)
         {
-            if (!version.EndsWith(".0"))
+            for (int i = 0; i < 2; i++)
             {
-                return version;
+                if (!version.EndsWith(".0"))
+                {
+                    return version;
+                }
+                var len = version.Length;
+                version=version.Substring(0, len - 2);
             }
 
-            var len = version.Length;
-            return version.Substring(0, len - 2);
+            return version;
         }
 
         public static string GetAssemblyVersion()

@@ -23,6 +23,7 @@ namespace Statistics.Views.WinForms
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            ResizeColumnWidthByHeaderLength();
             this.Text = Properties.Resources.Name + " v" + Properties.Resources.Version;
             updateStatsTableTimer.Tick += UpdateStatsTable;
             updateStatsTableTimer.Start();
@@ -32,6 +33,15 @@ namespace Statistics.Views.WinForms
         #endregion
 
         #region private methods
+        void ResizeColumnWidthByHeaderLength()
+        {
+            var count = lvStatsTable.Columns.Count;
+            for (int i = 1; i < count; i++)
+            {
+                lvStatsTable.Columns[i].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            }
+        }
+
         VgcApis.Models.StatsSample GetPreSample(string name)
         {
             if (preSamples.ContainsKey(name))
@@ -62,6 +72,7 @@ namespace Statistics.Views.WinForms
             var contents = vgcServers
                 .GetAllServersList()
                 .Where(s => s.IsCoreRunning())
+                .OrderBy(s => s.GetIndex())
                 .Select(s => GetterCoreInfo(s))
                 .ToList();
 
@@ -95,33 +106,31 @@ namespace Statistics.Views.WinForms
             string name,
             VgcApis.Models.StatsSample data)
         {
-            var empty = new string[] { "0", "0", "0", "0", "0" };
+            var result = new string[] { name, "0", "0", "0", "0" };
             if (data == null)
             {
-                return empty;
-            }
-
-            var preData = GetPreSample(name);
-
-            if (preData == null)
-            {
-                preSamples[name] = data;
-                return empty;
+                return result;
             }
 
             const int MiB = 1024 * 1024;
             var td = Math.Max(0, data.statsDownlink / MiB);
             var tu = Math.Max(0, data.statsUplink / MiB);
+            result[3] = td.ToString();
+            result[4] = tu.ToString();
+
+            var preData = GetPreSample(name);
+            if (preData == null)
+            {
+                preSamples[name] = data;
+                return result;
+            }
 
             var speed = CalcSpeed(preData, data);
-            preSamples[name] = data;
+            result[1] = speed[0];
+            result[2] = speed[1];
 
-            return new string[] {
-                "", // reserved for name
-                speed[0],
-                speed[1],
-                td.ToString(),
-                tu.ToString() };
+            preSamples[name] = data;
+            return result;
         }
 
         string[] CalcSpeed(
@@ -145,9 +154,8 @@ namespace Statistics.Views.WinForms
         string[] GetterCoreInfo(VgcApis.Models.ICoreCtrl coreCtrl)
         {
             var curData = coreCtrl.Peek();
-            var name = coreCtrl.GetName();
+            var name = coreCtrl.GetTitle();
             var result = GetTotalFromSampleDatas(name, curData);
-            result[0] = coreCtrl.GetName();
             return result;
         }
 

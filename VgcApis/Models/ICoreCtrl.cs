@@ -9,6 +9,8 @@
         string GetConfig();
         string GetName();
 
+        double GetIndex();
+
         bool IsCoreRunning();
         bool IsSelected();
         bool IsUntrack();

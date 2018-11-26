@@ -11,6 +11,18 @@ namespace V2RayGCon.Test
     public class LibTest
     {
         [DataTestMethod]
+        [DataRow("0.0.0.0.", "0.0.0.0.")]
+        [DataRow("0.0.1.11", "0.0.1.11")]
+        [DataRow("0.0.1.0", "0.0.1")]
+        [DataRow("0.0.0.1", "0.0.0.1")]
+        [DataRow("0.0.0.0","0.0")]
+        public void TrimVersionStringTest(string version, string expect)
+        {
+            var result = Lib.Utils.TrimVersionString(version);
+            Assert.AreEqual(expect, result);
+        }
+
+        [DataTestMethod]
         [DataRow("a::b:123", true, "a::b", 123)]
         [DataRow("ab123", false, "127.0.0.1", 1080)]
         [DataRow("ab123:", false, "127.0.0.1", 1080)]

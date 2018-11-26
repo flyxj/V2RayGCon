@@ -36,27 +36,28 @@
             this.lvCurUp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvTotalDown = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvTotalUp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.lvStatsTable);
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // lvStatsTable
             // 
-            resources.ApplyResources(this.lvStatsTable, "lvStatsTable");
             this.lvStatsTable.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lvName,
             this.lvCurDown,
             this.lvCurUp,
             this.lvTotalDown,
-            this.lvTotalUp});
+            this.lvTotalUp,
+            this.columnHeader1});
+            resources.ApplyResources(this.lvStatsTable, "lvStatsTable");
             this.lvStatsTable.GridLines = true;
             this.lvStatsTable.Name = "lvStatsTable";
-            this.lvStatsTable.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.lvStatsTable.UseCompatibleStateImageBehavior = false;
             this.lvStatsTable.View = System.Windows.Forms.View.Details;
             // 
@@ -80,6 +81,10 @@
             // 
             resources.ApplyResources(this.lvTotalUp, "lvTotalUp");
             // 
+            // columnHeader1
+            // 
+            resources.ApplyResources(this.columnHeader1, "columnHeader1");
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
@@ -101,5 +106,6 @@
         private System.Windows.Forms.ColumnHeader lvTotalDown;
         private System.Windows.Forms.ColumnHeader lvCurUp;
         private System.Windows.Forms.ColumnHeader lvTotalUp;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }

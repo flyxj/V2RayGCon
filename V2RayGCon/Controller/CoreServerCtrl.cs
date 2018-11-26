@@ -135,6 +135,7 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region ICoreCtrl interface
+        public double GetIndex() => this.index;
         public string GetName() => this.name;
         public string GetStatus() => this.status;
         public string GetConfig() => this.config;
