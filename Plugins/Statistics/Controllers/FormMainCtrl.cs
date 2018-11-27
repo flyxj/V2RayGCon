@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Statistics.Resources.Langs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,11 @@ namespace Statistics.Controllers
 
         // const int updateInterval = 5000; // debug
         const int updateInterval = 2000;
+        Timer updateDataViewTimer = new Timer
+        {
+            Interval = updateInterval,
+        };
+
         bool requireReset = false;
         bool[] sortFlags = new bool[] { false, false, false, false, false };
 
@@ -50,23 +56,50 @@ namespace Statistics.Controllers
             ResizeDataViewByTitle();
             updateDataViewTimer.Tick += UpdateDataViewHandler;
             updateDataViewTimer.Start();
-            miReset.Click += (s, a) => requireReset = true;
-            miResizeByContent.Click += (s, a) => ResizeDataViewByContent();
-            miResizeByTitle.Click += (s, a) => ResizeDataViewByTitle();
-            dataView.ColumnClick += ColumnClickHandler;
+            BindControlEvent();
+            ShowStatsDataOnDataView();
         }
         #endregion
 
-        #region copy from form main 
+        #region private methods
+        private void BindControlEvent()
+        {
+            miReset.Click += (s, a) =>
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    if (VgcApis.Libs.UI.Confirm(I18N.ConfirmResetStatsData))
+                    {
+                        requireReset = true;
+                    }
+                });
+            };
+
+            miResizeByContent.Click += (s, a) => ResizeDataViewByContent();
+
+            miResizeByTitle.Click += (s, a) => ResizeDataViewByTitle();
+
+            dataView.ColumnClick += ColumnClickHandler;
+        }
+
         void ColumnClickHandler(object sender, ColumnClickEventArgs args)
         {
-            var column = args.Column;
-            if (column < 1 || column > 4)
+            var index = args.Column;
+            if (index < 0 || index > 4)
             {
                 return;
             }
 
-            // evil to-do
+            if (index == 0)
+            {
+                dataViewOrderKeyIndex = 0;
+            }
+            else
+            {
+                sortFlags[index] = !sortFlags[index];
+                dataViewOrderKeyIndex = index * (sortFlags[index] ? 1 : -1);
+            }
+            ShowStatsDataOnDataView();
         }
 
         void UpdateDataViewHandler(object sender, EventArgs args)
@@ -89,11 +122,6 @@ namespace Statistics.Controllers
             }
             return result;
         }
-
-        Timer updateDataViewTimer = new Timer
-        {
-            Interval = updateInterval,
-        };
 
         void ReleaseUpdateTimer()
         {
@@ -121,22 +149,32 @@ namespace Statistics.Controllers
                 requireReset = false;
             }
 
-            var datas = vgcServers
-                .GetAllServersList()
-                .Where(s => s.IsCoreRunning())
-                .OrderBy(s => s.GetIndex())
-                .Select(s => GetterCoreInfo(s))
-                .ToList();
-
-            MergeStatsResultsIntoStatsDatas(datas);
+            UpdateHistoryStatsDatas();
             settings.SaveAllStatsData();
-
             ShowStatsDataOnDataView();
-            isUpdating = false;
+
+            lock (updateDataViewLocker)
+            {
+                isUpdating = false;
+            }
         }
 
-        int dataViewKeyIndex = 0;
+        int dataViewOrderKeyIndex = 0;
         void ShowStatsDataOnDataView()
+        {
+            var sortedContent = GetSortedHistoryDatas();
+            var lvContent = sortedContent
+                .Select(e => new ListViewItem(e))
+                .ToArray();
+
+            BatchUpdateDataView(() =>
+            {
+                dataView.Items.Clear();
+                dataView.Items.AddRange(lvContent);
+            });
+        }
+
+        IEnumerable<string[]> GetSortedHistoryDatas()
         {
             const int MiB = 1024 * 1024;
             var contents = settings.GetAllStatsData()
@@ -152,55 +190,60 @@ namespace Statistics.Controllers
                     };
                 });
 
-            IEnumerable<string[]> sortedContent = null;
-            var index = dataViewKeyIndex;
+            var index = dataViewOrderKeyIndex;
             switch (Math.Sign(index))
             {
                 case 1:
-                    sortedContent = contents.OrderBy(e => e[index]);
-                    break;
+                    return contents.OrderBy(
+                        e => VgcApis.Libs.Utils.Str2Int(e[index]));
                 case -1:
-                    sortedContent = contents.OrderByDescending(e => e[-index]);
-                    break;
+                    return contents.OrderByDescending(
+                        e => VgcApis.Libs.Utils.Str2Int(e[-index]));
                 default:
-                    sortedContent = contents;
-                    break;
+                    return contents;
             }
-
-            var lvContent = sortedContent
-                .Select(e => new ListViewItem(e))
-                .ToArray();
-
-            BatchUpdateDataView(() =>
-            {
-                dataView.Items.Clear();
-                dataView.Items.AddRange(lvContent);
-            });
         }
 
-        void MergeStatsResultsIntoStatsDatas(
-            List<Models.StatsResult> statsResults)
+        void ResetCurSpeed(Dictionary<string, Models.StatsResult> datas)
         {
-            var datas = settings.GetAllStatsData();
-
-            foreach (var s in statsResults)
+            foreach (var data in datas)
             {
-                var uid = s.uid;
-                if (!datas.ContainsKey(uid))
+                data.Value.curDownSpeed = 0;
+                data.Value.curUpSpeed = 0;
+            }
+        }
+
+        void UpdateHistoryStatsDatas()
+        {
+            var newDatas = vgcServers
+                .GetAllServersList()
+                .Where(s => s.IsCoreRunning())
+                .OrderBy(s => s.GetIndex())
+                .Select(s => GetterCoreInfo(s))
+                .ToList();
+
+            var historyDatas = settings.GetAllStatsData();
+            ResetCurSpeed(historyDatas);
+
+            foreach (var d in newDatas)
+            {
+                var uid = d.uid;
+                if (!historyDatas.ContainsKey(uid))
                 {
-                    datas[uid] = s;
+                    historyDatas[uid] = d;
                     return;
                 }
-                UpdateStatsData(datas, s, uid);
+                MergeNewDataIntoHistoryDatas(historyDatas, d, uid);
             }
         }
 
-        private static void UpdateStatsData(
+        private static void MergeNewDataIntoHistoryDatas(
             Dictionary<string, Models.StatsResult> datas,
             Models.StatsResult statsResult,
             string uid)
         {
             var p = datas[uid];
+
             var elapse = 1.0 * (statsResult.stamp - p.stamp) / TimeSpan.TicksPerSecond;
             if (elapse <= 1)
             {
@@ -209,16 +252,13 @@ namespace Statistics.Controllers
 
             var downSpeed = (statsResult.totalDown / elapse) / 1024.0;
             var upSpeed = (statsResult.totalUp / elapse) / 1024.0;
-            p.curDownSpeed = downSpeed <= 0 ? 0 : (int)downSpeed;
-            p.curUpSpeed = upSpeed <= 0 ? 0 : (int)upSpeed;
+            p.curDownSpeed = Math.Max(0, (int)downSpeed);
+            p.curUpSpeed = Math.Max(0, (int)upSpeed);
             p.stamp = statsResult.stamp;
             p.totalDown = p.totalDown + statsResult.totalDown;
             p.totalUp = p.totalUp + statsResult.totalUp;
         }
 
-        #endregion
-
-        #region private methods
         void BatchUpdateDataView(Action action)
         {
             dataView.Invoke((MethodInvoker)delegate

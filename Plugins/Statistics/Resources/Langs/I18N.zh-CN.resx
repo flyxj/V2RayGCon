@@ -120,6 +120,9 @@
   <data name="ConfirmCloseForm" xml:space="preserve">
     <value>关闭窗口？</value>
   </data>
+  <data name="ConfirmResetStatsData" xml:space="preserve">
+    <value>将统计数据清零？</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>显示统计信息</value>
   </data>

@@ -120,6 +120,9 @@
   <data name="ConfirmCloseForm" xml:space="preserve">
     <value>Close form?</value>
   </data>
+  <data name="ConfirmResetStatsData" xml:space="preserve">
+    <value>Reset statistics data to zero?</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Show statistic informations.</value>
   </data>
