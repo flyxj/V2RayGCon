@@ -1010,7 +1010,7 @@ namespace V2RayGCon.Lib
                     return version;
                 }
                 var len = version.Length;
-                version=version.Substring(0, len - 2);
+                version = version.Substring(0, len - 2);
             }
 
             return version;
@@ -1343,6 +1343,50 @@ namespace V2RayGCon.Lib
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             @event.WaitOne();
+        }
+
+        /// <summary>
+        /// UseShellExecute = false,
+        /// RedirectStandardOutput = true,
+        /// CreateNoWindow = true,
+        /// </summary>
+        /// <param name="exeFileName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static Process CreateHeadlessProcess(string exeFileName, string args)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = exeFileName,
+                Arguments = args,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+            };
+
+            return new Process
+            {
+                StartInfo = startInfo,
+            };
+        }
+
+        public static string GetOutputFromExecutable(
+            string exeFileName,
+            string args,
+            int timeout)
+        {
+            var p = CreateHeadlessProcess(exeFileName, args);
+            try
+            {
+                p.Start();
+                if (!p.WaitForExit(timeout))
+                {
+                    p.Kill();
+                }
+                return p.StandardOutput.ReadToEnd() ?? string.Empty;
+            }
+            catch { }
+            return string.Empty;
         }
 
         public static void KillProcessAndChildrens(int pid)

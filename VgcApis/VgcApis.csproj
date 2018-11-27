@@ -65,6 +65,8 @@
   <ItemGroup>
     <Compile Include="IServices.cs" />
     <Compile Include="IPlugin.cs" />
+    <Compile Include="Libs\Sys\CancelableTimeout.cs" />
+    <Compile Include="Libs\Sys\LazyGuy.cs" />
     <Compile Include="Models\DataEvent.cs" />
     <Compile Include="Models\ICoreCtrl.cs" />
     <Compile Include="Models\IDropableControl.cs" />
@@ -102,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons\icon_light.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\BaseClasses\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

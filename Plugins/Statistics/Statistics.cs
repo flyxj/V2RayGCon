@@ -6,7 +6,9 @@ namespace Statistics
     {
         VgcApis.IServices api;
         VgcApis.Models.IServersService vgcServers;
+        VgcApis.Models.ISettingService vgcSetting;
         Views.WinForms.FormMain formMain = null;
+        Services.Settings settings;
 
         #region properties
         public string Name => Properties.Resources.Name;
@@ -18,7 +20,11 @@ namespace Statistics
         public void Run(VgcApis.IServices api)
         {
             this.api = api;
+            vgcSetting = api.GetVgcSettingService();
             vgcServers = api.GetVgcServersService();
+
+            settings = new Services.Settings();
+            settings.Run(vgcSetting);
         }
 
         public void Show()
@@ -29,7 +35,9 @@ namespace Statistics
                 return;
             }
 
-            formMain = new Views.WinForms.FormMain(vgcServers);
+            formMain = new Views.WinForms.FormMain(
+                settings,
+                vgcServers);
             formMain.FormClosed += (s, a) => formMain = null;
             formMain.Show();
         }
@@ -40,6 +48,8 @@ namespace Statistics
             {
                 formMain.Close();
             }
+
+            settings.Cleanup();
         }
         #endregion
 

@@ -256,6 +256,6 @@
     <value>v2ctl.exe</value>
   </data>
   <data name="StatsQueryParamTpl" xml:space="preserve">
-    <value>api --server="127.0.0.1:{0}" StatsService.GetStats "name: """"inbound&gt;&gt;&gt;agentin&gt;&gt;&gt;traffic&gt;&gt;&gt;{1}"""" reset: false"</value>
+    <value>api --server="127.0.0.1:{0}" StatsService.GetStats "name: """"inbound&gt;&gt;&gt;agentin&gt;&gt;&gt;traffic&gt;&gt;&gt;{1}"""" reset: true"</value>
   </data>
 </root>

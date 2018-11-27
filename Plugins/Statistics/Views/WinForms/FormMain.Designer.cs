@@ -37,17 +37,28 @@
             this.lvTotalDown = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvTotalUp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoResizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resizeByTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resizeByContentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.lvStatsTable);
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.lvStatsTable);
             this.panel1.Name = "panel1";
             // 
             // lvStatsTable
             // 
+            resources.ApplyResources(this.lvStatsTable, "lvStatsTable");
             this.lvStatsTable.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lvName,
             this.lvCurDown,
@@ -55,7 +66,6 @@
             this.lvTotalDown,
             this.lvTotalUp,
             this.columnHeader1});
-            resources.ApplyResources(this.lvStatsTable, "lvStatsTable");
             this.lvStatsTable.GridLines = true;
             this.lvStatsTable.Name = "lvStatsTable";
             this.lvStatsTable.UseCompatibleStateImageBehavior = false;
@@ -85,15 +95,79 @@
             // 
             resources.ApplyResources(this.columnHeader1, "columnHeader1");
             // 
+            // menuStrip1
+            // 
+            resources.ApplyResources(this.menuStrip1, "menuStrip1");
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.文件ToolStripMenuItem,
+            this.viewsToolStripMenuItem});
+            this.menuStrip1.Name = "menuStrip1";
+            // 
+            // 文件ToolStripMenuItem
+            // 
+            resources.ApplyResources(this.文件ToolStripMenuItem, "文件ToolStripMenuItem");
+            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.exitToolStripMenuItem});
+            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            // 
+            // resetToolStripMenuItem
+            // 
+            resources.ApplyResources(this.resetToolStripMenuItem, "resetToolStripMenuItem");
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            // 
+            // toolStripMenuItem1
+            // 
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            // 
+            // exitToolStripMenuItem
+            // 
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // viewsToolStripMenuItem
+            // 
+            resources.ApplyResources(this.viewsToolStripMenuItem, "viewsToolStripMenuItem");
+            this.viewsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoResizeToolStripMenuItem});
+            this.viewsToolStripMenuItem.Name = "viewsToolStripMenuItem";
+            // 
+            // autoResizeToolStripMenuItem
+            // 
+            resources.ApplyResources(this.autoResizeToolStripMenuItem, "autoResizeToolStripMenuItem");
+            this.autoResizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resizeByTitleToolStripMenuItem,
+            this.resizeByContentToolStripMenuItem});
+            this.autoResizeToolStripMenuItem.Name = "autoResizeToolStripMenuItem";
+            // 
+            // resizeByTitleToolStripMenuItem
+            // 
+            resources.ApplyResources(this.resizeByTitleToolStripMenuItem, "resizeByTitleToolStripMenuItem");
+            this.resizeByTitleToolStripMenuItem.Name = "resizeByTitleToolStripMenuItem";
+            // 
+            // resizeByContentToolStripMenuItem
+            // 
+            resources.ApplyResources(this.resizeByContentToolStripMenuItem, "resizeByContentToolStripMenuItem");
+            this.resizeByContentToolStripMenuItem.Name = "resizeByContentToolStripMenuItem";
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.panel1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -107,5 +181,14 @@
         private System.Windows.Forms.ColumnHeader lvCurUp;
         private System.Windows.Forms.ColumnHeader lvTotalUp;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autoResizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resizeByTitleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resizeByContentToolStripMenuItem;
     }
 }

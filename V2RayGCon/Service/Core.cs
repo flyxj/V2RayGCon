@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -90,83 +89,31 @@ namespace V2RayGCon.Service
                 port.ToString(),
                 isUplink ? "uplink" : "downlink");
 
-            var p = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = v2ctl,
-                    Arguments = queryParam,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                }
-            };
+            var output = Lib.Utils.GetOutputFromExecutable(
+                v2ctl, queryParam, 1000);
 
-            // since 3.46.* v is deleted
-            // value:
-            Regex pattern = new Regex(@"(?<value>(\d+))");
-            string value = "0";
-
-            try
-            {
-                p.Start();
-                if (!p.WaitForExit(1000))
-                {
-                    p.Kill();
-                }
-                var output = p.StandardOutput.ReadToEnd();
-                Match match = pattern.Match(output);
-                if (match.Success)
-                {
-                    value = match.Groups["value"].Value;
-                }
-            }
-            catch { }
+            // Regex pattern = new Regex(@"(?<value>(\d+))");
+            var value = VgcApis.Libs.Utils.ExtractStringWithPattern(
+                "value", @"(\d+)", output);
 
             return Lib.Utils.Str2Int(value);
         }
 
         public string GetCoreVersion()
         {
-            var ver = string.Empty;
             if (!IsExecutableExist())
             {
-                return ver;
+                return string.Empty;
             }
 
-            var p = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = GetExecutablePath(),
-                    Arguments = "-version",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                }
-            };
+            var output = Lib.Utils.GetOutputFromExecutable(
+                GetExecutablePath(), "-version", 2000);
 
             // since 3.46.* v is deleted
-            Regex pattern = new Regex(@"(?<version>(\d+\.)+\d+)");
+            // Regex pattern = new Regex(@"(?<version>(\d+\.)+\d+)");
             // Regex pattern = new Regex(@"v(?<version>[\d\.]+)");
-
-            try
-            {
-                p.Start();
-                while (!p.StandardOutput.EndOfStream)
-                {
-                    var output = p.StandardOutput.ReadLine();
-                    Match match = pattern.Match(output);
-                    if (match.Success)
-                    {
-                        ver = match.Groups["version"].Value;
-                    }
-                }
-                p.WaitForExit();
-            }
-            catch { }
-
-            return ver;
+            return VgcApis.Libs.Utils.ExtractStringWithPattern(
+                "version", @"(\d+\.)+\d+", output);
         }
 
         public bool IsExecutableExist()
@@ -354,7 +301,7 @@ namespace V2RayGCon.Service
             catch { }
         }
 
-        Process CreateProcess()
+        Process CreateV2RayCoreProcess()
         {
             var p = new Process
             {
@@ -427,7 +374,7 @@ namespace V2RayGCon.Service
             Dictionary<string, string> envs = null)
         {
             this.config = config;
-            v2rayCore = CreateProcess();
+            v2rayCore = CreateV2RayCoreProcess();
             InjectEnv(v2rayCore, envs);
             BindEvents(v2rayCore);
 

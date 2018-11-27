@@ -1,175 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Statistics.Resources.Langs;
+using System;
 using System.Windows.Forms;
 
 namespace Statistics.Views.WinForms
 {
     public partial class FormMain : Form
     {
+        Services.Settings settings;
         VgcApis.Models.IServersService vgcServers;
-        Dictionary<string, VgcApis.Models.StatsSample> preSamples
-            = new Dictionary<string, VgcApis.Models.StatsSample>();
+        Controllers.FormMainCtrl formMainCtrl;
 
-        public FormMain(VgcApis.Models.IServersService vgcServers)
+        public FormMain(
+            Services.Settings settings,
+            VgcApis.Models.IServersService vgcServers)
         {
+            this.settings = settings;
             this.vgcServers = vgcServers;
             InitializeComponent();
-            this.FormClosing += (s, a) => ReleaseUpdateTimer();
+
+            this.FormClosing += (s, a) => formMainCtrl?.Cleanup();
             VgcApis.Libs.UI.AutoSetFormIcon(this);
+            formMainCtrl = InitFormMainCtrl();
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            ResizeColumnWidthByHeaderLength();
             this.Text = Properties.Resources.Name + " v" + Properties.Resources.Version;
-            updateStatsTableTimer.Tick += UpdateStatsTable;
-            updateStatsTableTimer.Start();
+            formMainCtrl.Run();
         }
-        #region public methods
-
-        #endregion
 
         #region private methods
-        void ResizeColumnWidthByHeaderLength()
+        Controllers.FormMainCtrl InitFormMainCtrl()
         {
-            var count = lvStatsTable.Columns.Count;
-            for (int i = 1; i < count; i++)
+            var ctrl = new Controllers.FormMainCtrl(
+                settings,
+                vgcServers,
+
+                lvStatsTable,
+
+                resetToolStripMenuItem,
+                resizeByTitleToolStripMenuItem,
+                resizeByContentToolStripMenuItem);
+            return ctrl;
+        }
+        #endregion
+
+        #region UI event
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (VgcApis.Libs.UI.Confirm(I18N.ConfirmCloseForm))
             {
-                lvStatsTable.Columns[i].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                this.Close();
             }
-        }
-
-        VgcApis.Models.StatsSample GetPreSample(string name)
-        {
-            if (preSamples.ContainsKey(name))
-            {
-                return preSamples[name];
-            }
-            return null;
-        }
-
-        void UpdateStatsTable(object sender, EventArgs args)
-        {
-            Task.Factory.StartNew(UpdateStatsTableWorker);
-        }
-
-        readonly object updateStatsTableLocker = new object();
-        bool isUpdating = false;
-        void UpdateStatsTableWorker()
-        {
-            lock (updateStatsTableLocker)
-            {
-                if (isUpdating)
-                {
-                    return;
-                }
-                isUpdating = true;
-            }
-
-            var contents = vgcServers
-                .GetAllServersList()
-                .Where(s => s.IsCoreRunning())
-                .OrderBy(s => s.GetIndex())
-                .Select(s => GetterCoreInfo(s))
-                .ToList();
-
-            RefreshListViewControl(contents);
-
-            isUpdating = false;
-        }
-
-        private void RefreshListViewControl(List<string[]> contents)
-        {
-            lvStatsTable.Invoke((MethodInvoker)delegate
-            {
-                lvStatsTable.BeginUpdate();
-                try
-                {
-                    lvStatsTable.Items.Clear();
-                    foreach (var content in contents)
-                    {
-                        lvStatsTable.Items.Add(
-                            new ListViewItem(content));
-                    }
-                }
-                finally
-                {
-                    lvStatsTable.EndUpdate();
-                }
-            });
-        }
-
-        string[] GetTotalFromSampleDatas(
-            string name,
-            VgcApis.Models.StatsSample data)
-        {
-            var result = new string[] { name, "0", "0", "0", "0" };
-            if (data == null)
-            {
-                return result;
-            }
-
-            const int MiB = 1024 * 1024;
-            var td = Math.Max(0, data.statsDownlink / MiB);
-            var tu = Math.Max(0, data.statsUplink / MiB);
-            result[3] = td.ToString();
-            result[4] = tu.ToString();
-
-            var preData = GetPreSample(name);
-            if (preData == null)
-            {
-                preSamples[name] = data;
-                return result;
-            }
-
-            var speed = CalcSpeed(preData, data);
-            result[1] = speed[0];
-            result[2] = speed[1];
-
-            preSamples[name] = data;
-            return result;
-        }
-
-        string[] CalcSpeed(
-            VgcApis.Models.StatsSample start,
-            VgcApis.Models.StatsSample end)
-        {
-            var time = 1.0 * (end.stamp - start.stamp) / TimeSpan.TicksPerSecond;
-            if (time < 0.001)
-            {
-                return new string[] { "0", "0" };
-            }
-
-            var d = 1.0 * (end.statsDownlink - start.statsDownlink) / time / 1024;
-            var u = 1.0 * (end.statsUplink - start.statsUplink) / time / 1024;
-            return new string[] {
-                (Math.Max(0,(int)d)).ToString(),
-                (Math.Max(0,(int)u)).ToString(),
-            };
-        }
-
-        string[] GetterCoreInfo(VgcApis.Models.ICoreCtrl coreCtrl)
-        {
-            var curData = coreCtrl.Peek();
-            var name = coreCtrl.GetTitle();
-            var result = GetTotalFromSampleDatas(name, curData);
-            return result;
-        }
-
-        System.Windows.Forms.Timer updateStatsTableTimer = new Timer
-        {
-            Interval = 2000,
-            // Interval = 10000,
-        };
-
-        void ReleaseUpdateTimer()
-        {
-            updateStatsTableTimer.Stop();
-            updateStatsTableTimer.Tick -= UpdateStatsTable;
-            updateStatsTableTimer.Dispose();
         }
         #endregion
     }

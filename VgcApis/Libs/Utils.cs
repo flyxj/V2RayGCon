@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace VgcApis.Libs
@@ -70,6 +71,28 @@ namespace VgcApis.Libs
         }
         #endregion
 
+        #region string processor
+        /// <summary>
+        /// regex = @"(?&lt;groupName>pattern)"
+        /// <para>return string.Empty if sth. goes wrong</para>
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="pattern"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static string ExtractStringWithPattern(string groupName, string pattern, string content)
+        {
+            var ptnStr = string.Format(@"(?<{0}>{1})", groupName, pattern);
+            Regex rgx = new Regex(ptnStr);
+            Match match = rgx.Match(content ?? string.Empty);
+            if (match.Success)
+            {
+                return match.Groups[groupName].Value;
+            }
+            return string.Empty;
+        }
+
+        #endregion
 
         #region Misc
         public static bool CopyToClipboard(string content)

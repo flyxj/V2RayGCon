@@ -1,3 +1,5 @@
+### [关于杀毒软件报病毒问题说明](https://github.com/nobody3u/V2RayGCon/wiki/%E5%85%B3%E4%BA%8E%E6%9D%80%E6%AF%92%E8%BD%AF%E4%BB%B6%E6%8A%A5%E7%97%85%E6%AF%92%E9%97%AE%E9%A2%98%E8%AF%B4%E6%98%8E)  
+  
 [![Build Status][1]][2] [![Release][7]][8] [![Total Downloads][3]][4] [![License][5]][6]
 
 [1]: https://dev.azure.com/wgu6ymoma/V2RayGCon/_apis/build/status/nobody3u.V2RayGCon "Build Status Badge"

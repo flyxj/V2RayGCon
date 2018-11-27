@@ -145,7 +145,8 @@ namespace V2RayGCon.Controller
 
         public VgcApis.Models.StatsSample Peek()
         {
-            if (!setting.isEnableStatistics)
+            if (!setting.isEnableStatistics
+                || this.statsPort <= 0)
             {
                 return null;
             }
@@ -662,7 +663,13 @@ namespace V2RayGCon.Controller
             {
                 return;
             }
+
             statsPort = Lib.Utils.GetFreeTcpPort();
+            if (statsPort <= 0)
+            {
+                return;
+            }
+
             var result = cache.tpl.LoadTemplate("statsApiV4Inb") as JObject;
             result["inbounds"][0]["port"] = statsPort;
             Lib.Utils.CombineConfig(ref result, config);
@@ -867,6 +874,10 @@ namespace V2RayGCon.Controller
         void OnCoreStateChangedHandler(object sender, EventArgs args)
         {
             isServerOn = server.isRunning;
+            if (!isServerOn)
+            {
+                statsPort = 0;
+            }
             InvokeEventOnPropertyChange();
         }
 
