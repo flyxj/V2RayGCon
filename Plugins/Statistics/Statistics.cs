@@ -24,7 +24,7 @@ namespace Statistics
             vgcServers = api.GetVgcServersService();
 
             settings = new Services.Settings();
-            settings.Run(vgcSetting);
+            settings.Run(vgcSetting, vgcServers);
         }
 
         public void Show()

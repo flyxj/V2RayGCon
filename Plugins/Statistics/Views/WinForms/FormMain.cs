@@ -34,7 +34,6 @@ namespace Statistics.Views.WinForms
         {
             var ctrl = new Controllers.FormMainCtrl(
                 settings,
-                vgcServers,
 
                 lvStatsTable,
 

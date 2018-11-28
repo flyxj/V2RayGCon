@@ -10,24 +10,16 @@ namespace Statistics.Controllers
     public class FormMainCtrl
     {
         Services.Settings settings;
-        VgcApis.Models.IServersService vgcServers;
 
         ListView dataView;
         ToolStripMenuItem miReset, miResizeByTitle, miResizeByContent;
 
-        // const int updateInterval = 5000; // debug
-        const int updateInterval = 2000;
-        Timer updateDataViewTimer = new Timer
-        {
-            Interval = updateInterval,
-        };
+        Timer updateDataViewTimer = null;
 
-        bool requireReset = false;
         bool[] sortFlags = new bool[] { false, false, false, false, false };
 
         public FormMainCtrl(
             Services.Settings settings,
-            VgcApis.Models.IServersService vgcServers,
 
             ListView dataView,
 
@@ -36,7 +28,6 @@ namespace Statistics.Controllers
             ToolStripMenuItem miResizeByContent)
         {
             this.settings = settings;
-            this.vgcServers = vgcServers;
 
             this.dataView = dataView;
 
@@ -54,14 +45,23 @@ namespace Statistics.Controllers
         public void Run()
         {
             ResizeDataViewByTitle();
-            updateDataViewTimer.Tick += UpdateDataViewHandler;
-            updateDataViewTimer.Start();
             BindControlEvent();
             ShowStatsDataOnDataView();
+            StartUpdateTimer();
         }
         #endregion
 
         #region private methods
+        void StartUpdateTimer()
+        {
+            updateDataViewTimer = new Timer
+            {
+                Interval = settings.statsDataUpdateInterval,
+            };
+            updateDataViewTimer.Tick += UpdateDataViewHandler;
+            updateDataViewTimer.Start();
+        }
+
         private void BindControlEvent()
         {
             miReset.Click += (s, a) =>
@@ -70,7 +70,7 @@ namespace Statistics.Controllers
                 {
                     if (VgcApis.Libs.UI.Confirm(I18N.ConfirmResetStatsData))
                     {
-                        requireReset = true;
+                        settings.isRequireClearStatsData = true;
                     }
                 });
             };
@@ -107,31 +107,20 @@ namespace Statistics.Controllers
             Task.Factory.StartNew(UpdateDataViewWorker);
         }
 
-        Models.StatsResult GetterCoreInfo(VgcApis.Models.ICoreCtrl coreCtrl)
-        {
-            var result = new Models.StatsResult();
-            result.title = coreCtrl.GetTitle();
-            result.uid = coreCtrl.GetUid();
-
-            var curData = coreCtrl.Peek();
-            if (curData != null)
-            {
-                result.stamp = curData.stamp;
-                result.totalUp = curData.statsUplink;
-                result.totalDown = curData.statsDownlink;
-            }
-            return result;
-        }
-
         void ReleaseUpdateTimer()
         {
+            if (updateDataViewTimer == null)
+            {
+                return;
+            }
+
             updateDataViewTimer.Stop();
             updateDataViewTimer.Tick -= UpdateDataViewHandler;
             updateDataViewTimer.Dispose();
         }
 
-        readonly object updateDataViewLocker = new object();
         bool isUpdating = false;
+        readonly object updateDataViewLocker = new object();
         void UpdateDataViewWorker()
         {
             lock (updateDataViewLocker)
@@ -143,14 +132,7 @@ namespace Statistics.Controllers
                 isUpdating = true;
             }
 
-            if (requireReset)
-            {
-                settings.ClearStatsData();
-                requireReset = false;
-            }
-
-            UpdateHistoryStatsDatas();
-            settings.SaveAllStatsData();
+            settings.RequireHistoryStatsDatasUpdate();
             ShowStatsDataOnDataView();
 
             lock (updateDataViewLocker)
@@ -202,61 +184,6 @@ namespace Statistics.Controllers
                 default:
                     return contents;
             }
-        }
-
-        void ResetCurSpeed(Dictionary<string, Models.StatsResult> datas)
-        {
-            foreach (var data in datas)
-            {
-                data.Value.curDownSpeed = 0;
-                data.Value.curUpSpeed = 0;
-            }
-        }
-
-        void UpdateHistoryStatsDatas()
-        {
-            var newDatas = vgcServers
-                .GetAllServersList()
-                .Where(s => s.IsCoreRunning())
-                .OrderBy(s => s.GetIndex())
-                .Select(s => GetterCoreInfo(s))
-                .ToList();
-
-            var historyDatas = settings.GetAllStatsData();
-            ResetCurSpeed(historyDatas);
-
-            foreach (var d in newDatas)
-            {
-                var uid = d.uid;
-                if (!historyDatas.ContainsKey(uid))
-                {
-                    historyDatas[uid] = d;
-                    return;
-                }
-                MergeNewDataIntoHistoryDatas(historyDatas, d, uid);
-            }
-        }
-
-        private static void MergeNewDataIntoHistoryDatas(
-            Dictionary<string, Models.StatsResult> datas,
-            Models.StatsResult statsResult,
-            string uid)
-        {
-            var p = datas[uid];
-
-            var elapse = 1.0 * (statsResult.stamp - p.stamp) / TimeSpan.TicksPerSecond;
-            if (elapse <= 1)
-            {
-                elapse = updateInterval / 1000.0;
-            }
-
-            var downSpeed = (statsResult.totalDown / elapse) / 1024.0;
-            var upSpeed = (statsResult.totalUp / elapse) / 1024.0;
-            p.curDownSpeed = Math.Max(0, (int)downSpeed);
-            p.curUpSpeed = Math.Max(0, (int)upSpeed);
-            p.stamp = statsResult.stamp;
-            p.totalDown = p.totalDown + statsResult.totalDown;
-            p.totalUp = p.totalUp + statsResult.totalUp;
         }
 
         void BatchUpdateDataView(Action action)

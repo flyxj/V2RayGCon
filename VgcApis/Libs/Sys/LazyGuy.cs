@@ -67,7 +67,7 @@ namespace VgcApis.Libs.Sys
             catch { }
         }
 
-        public void DoneWithYou()
+        public void Quit()
         {
             lazyTimer.Cancel();
             lazyTimer.Release();

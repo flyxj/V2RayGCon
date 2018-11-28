@@ -24,7 +24,8 @@ namespace V2RayGCon.Controller
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
             OnRequireMenuUpdate,
-            OnRequireNotifierUpdate;
+            OnRequireNotifierUpdate,
+            OnCoreClosing;
 
         /// <summary>
         /// false: stop true: start
@@ -113,7 +114,6 @@ namespace V2RayGCon.Controller
             get
             {
                 return string.Join(Environment.NewLine, _logCache);
-
             }
             private set
             {
@@ -388,6 +388,7 @@ namespace V2RayGCon.Controller
 
         public void CleanupThen(Action next)
         {
+            OnCoreClosing?.Invoke(this, EventArgs.Empty);
             this.server.StopCoreThen(() =>
             {
                 this.server.OnLog -= OnLogHandler;
@@ -421,6 +422,7 @@ namespace V2RayGCon.Controller
 
         public void StopCoreThen(Action next = null)
         {
+            OnCoreClosing?.Invoke(this, EventArgs.Empty);
             Task.Factory.StartNew(() => server.StopCoreThen(
                 () =>
                 {

@@ -21,6 +21,9 @@ namespace V2RayGCon.Service
         public event EventHandler<VgcApis.Models.BoolEvent>
             OnServerStateChange;
 
+        public event EventHandler<VgcApis.Models.StrEvent>
+            OnCoreClosing; // single core closing.
+
         public event EventHandler
             OnRequireMenuUpdate,
             OnRequireStatusBarUpdate,
@@ -188,6 +191,7 @@ namespace V2RayGCon.Service
 
         void BindEventsTo(Controller.CoreServerCtrl server)
         {
+            server.OnCoreClosing += InvokeEventOnCoreClosing;
             server.OnRequireKeepTrack += OnRequireKeepTrackHandler;
             server.OnPropertyChanged += ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate += InvokeEventOnRequireMenuUpdate;
@@ -197,6 +201,7 @@ namespace V2RayGCon.Service
 
         void ReleaseEventsFrom(Controller.CoreServerCtrl server)
         {
+            server.OnCoreClosing -= InvokeEventOnCoreClosing;
             server.OnRequireKeepTrack -= OnRequireKeepTrackHandler;
             server.OnPropertyChanged -= ServerItemPropertyChangedHandler;
             server.OnRequireMenuUpdate -= InvokeEventOnRequireMenuUpdate;
@@ -557,6 +562,17 @@ namespace V2RayGCon.Service
             }
 
             Lib.Utils.ChainActionHelperAsync(count, worker, done);
+        }
+
+        void InvokeEventOnCoreClosing(object sender, EventArgs args)
+        {
+            try
+            {
+                var coreCtrl = sender as Controller.CoreServerCtrl;
+                var uid = coreCtrl.GetUid();
+                OnCoreClosing?.Invoke(null, new VgcApis.Models.StrEvent(uid));
+            }
+            catch { }
         }
 
         void InvokeEventOnRequireStatusBarUpdate(object sender, EventArgs args)
@@ -1118,7 +1134,7 @@ namespace V2RayGCon.Service
             {
                 if (serverList[index].isSelected)
                 {
-                    serverList[index].server.StopCoreThen(next);
+                    serverList[index].StopCoreThen(next);
                 }
                 else
                 {
@@ -1133,9 +1149,9 @@ namespace V2RayGCon.Service
         {
             void worker(int index, Action next)
             {
-                if (serverList[index].server.isRunning)
+                if (serverList[index].IsCoreRunning())
                 {
-                    serverList[index].server.StopCoreThen(next);
+                    serverList[index].StopCoreThen(next);
                 }
                 else
                 {

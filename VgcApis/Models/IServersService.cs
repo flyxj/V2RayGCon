@@ -7,12 +7,14 @@ namespace VgcApis.Models
     public interface IServersService
     {
         event EventHandler<BoolEvent> OnServerStateChange;
+        event EventHandler<StrEvent> OnCoreClosing;
+
         string PackServersIntoV4Package(
-            List<VgcApis.Models.ICoreCtrl> servList,
+            List<ICoreCtrl> servList,
             string orgServerUid,
             string packageName);
 
-        ReadOnlyCollection<Models.ICoreCtrl> GetTrackableServerList();
-        ReadOnlyCollection<Models.ICoreCtrl> GetAllServersList();
+        ReadOnlyCollection<ICoreCtrl> GetTrackableServerList();
+        ReadOnlyCollection<ICoreCtrl> GetAllServersList();
     }
 }
