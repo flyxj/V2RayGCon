@@ -89,16 +89,8 @@ namespace Statistics.Controllers
             {
                 return;
             }
-
-            if (index == 0)
-            {
-                dataViewOrderKeyIndex = 0;
-            }
-            else
-            {
-                sortFlags[index] = !sortFlags[index];
-                dataViewOrderKeyIndex = index * (sortFlags[index] ? 1 : -1);
-            }
+            sortFlags[index] = !sortFlags[index];
+            dataViewOrderKeyIndex = index;
             ShowStatsDataOnDataView();
         }
 
@@ -144,8 +136,7 @@ namespace Statistics.Controllers
         int dataViewOrderKeyIndex = 0;
         void ShowStatsDataOnDataView()
         {
-            var sortedContent = GetSortedHistoryDatas();
-            var lvContent = sortedContent
+            var lvContent = GetSortedHistoryDatas()
                 .Select(e => new ListViewItem(e))
                 .ToArray();
 
@@ -173,17 +164,14 @@ namespace Statistics.Controllers
                 });
 
             var index = dataViewOrderKeyIndex;
-            switch (Math.Sign(index))
+            if (index == 0)
             {
-                case 1:
-                    return contents.OrderBy(
-                        e => VgcApis.Libs.Utils.Str2Int(e[index]));
-                case -1:
-                    return contents.OrderByDescending(
-                        e => VgcApis.Libs.Utils.Str2Int(e[-index]));
-                default:
-                    return contents;
+                return contents;
             }
+
+            return sortFlags[index] ?
+                contents.OrderBy(e => VgcApis.Libs.Utils.Str2Int(e[index])) :
+                contents.OrderByDescending(e => VgcApis.Libs.Utils.Str2Int(e[index]));
         }
 
         void BatchUpdateDataView(Action action)

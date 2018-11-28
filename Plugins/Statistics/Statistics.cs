@@ -49,7 +49,7 @@ namespace Statistics
                 formMain.Close();
             }
 
-            settings.Cleanup();
+            settings?.Cleanup();
         }
         #endregion
 

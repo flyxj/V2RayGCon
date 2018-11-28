@@ -31,11 +31,16 @@ namespace Statistics.Services
             UpdateHistoryStatsDatasWorker();
         }
 
-        void ClearStatsData()
+        void ClearStatsDataOnDemand()
         {
+            if (!isRequireClearStatsData)
+            {
+                return;
+            }
+
             userSettins.statsData =
                 new Dictionary<string, Models.StatsResult>();
-            bookKeeper.DoItLater();
+            isRequireClearStatsData = false;
         }
 
         public Dictionary<string, Models.StatsResult> GetAllStatsData()
@@ -150,12 +155,7 @@ namespace Statistics.Services
                     .Select(s => GetterCoreInfo(s))
                     .ToList();
 
-                if (isRequireClearStatsData)
-                {
-                    userSettins.statsData =
-                        new Dictionary<string, Models.StatsResult>();
-                    isRequireClearStatsData = false;
-                }
+                ClearStatsDataOnDemand();
 
                 var historyDatas = userSettins.statsData;
                 ResetCurSpeed(historyDatas);
@@ -166,7 +166,7 @@ namespace Statistics.Services
                     if (!historyDatas.ContainsKey(uid))
                     {
                         historyDatas[uid] = d;
-                        return;
+                        continue;
                     }
                     MergeNewDataIntoHistoryDatas(historyDatas, d, uid);
                 }
