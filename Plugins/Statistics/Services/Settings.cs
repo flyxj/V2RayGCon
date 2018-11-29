@@ -22,13 +22,15 @@ namespace Statistics.Services
         #endregion
 
         #region public method
-        public void RequireHistoryStatsDatasUpdate()
+        public bool IsShutdown() => vgcSetting.IsShutdown();
+
+        public void RequireHistoryStatsDataUpdate()
         {
             if (isUpdating)
             {
                 return;
             }
-            UpdateHistoryStatsDatasWorker();
+            UpdateHistoryStatsDataWorker();
         }
 
         void ClearStatsDataOnDemand()
@@ -66,7 +68,14 @@ namespace Statistics.Services
         {
             vgcServers.OnCoreClosing -= OnCoreClosingHandler;
             ReleaseBgStatsDataUpdateTimer();
-            UpdateHistoryStatsDatasWorker();
+
+            // Calling v2ctl.exe at shutdown can cause problems.
+            // So losing 5 minutes of statistics data is an acceptable loss.
+            if (!IsShutdown())
+            {
+                UpdateHistoryStatsDataWorker();
+            }
+
             bookKeeper.DoItNow();
             bookKeeper.Quit();
         }
@@ -118,7 +127,7 @@ namespace Statistics.Services
             {
                 return;
             }
-            RequireHistoryStatsDatasUpdate();
+            RequireHistoryStatsDataUpdate();
         }
 
         void StartBgStatsDataUpdateTimer()
@@ -142,10 +151,10 @@ namespace Statistics.Services
         }
 
         bool isUpdating = false;
-        readonly object updateHistoryStatsDatasLocker = new object();
-        void UpdateHistoryStatsDatasWorker()
+        readonly object updateHistoryStatsDataLocker = new object();
+        void UpdateHistoryStatsDataWorker()
         {
-            lock (updateHistoryStatsDatasLocker)
+            lock (updateHistoryStatsDataLocker)
             {
                 isUpdating = true;
                 var newDatas = vgcServers
@@ -168,7 +177,7 @@ namespace Statistics.Services
                         historyDatas[uid] = d;
                         continue;
                     }
-                    MergeNewDataIntoHistoryDatas(historyDatas, d, uid);
+                    MergeNewDataIntoHistoryData(historyDatas, d, uid);
                 }
 
                 bookKeeper.DoItLater();
@@ -176,7 +185,7 @@ namespace Statistics.Services
             }
         }
 
-        void MergeNewDataIntoHistoryDatas(
+        void MergeNewDataIntoHistoryData(
             Dictionary<string, Models.StatsResult> datas,
             Models.StatsResult statsResult,
             string uid)

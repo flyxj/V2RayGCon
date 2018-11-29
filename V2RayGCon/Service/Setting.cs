@@ -186,6 +186,10 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+
+        // ISettingService thing
+        public bool IsShutdown() => isShutdown;
+
         /// <summary>
         /// return null if fail
         /// </summary>

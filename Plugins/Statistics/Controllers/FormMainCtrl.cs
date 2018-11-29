@@ -124,7 +124,7 @@ namespace Statistics.Controllers
                 isUpdating = true;
             }
 
-            settings.RequireHistoryStatsDatasUpdate();
+            settings.RequireHistoryStatsDataUpdate();
             ShowStatsDataOnDataView();
 
             lock (updateDataViewLocker)
@@ -136,7 +136,7 @@ namespace Statistics.Controllers
         int dataViewOrderKeyIndex = 0;
         void ShowStatsDataOnDataView()
         {
-            var lvContent = GetSortedHistoryDatas()
+            var lvContent = GetSortedHistoryData()
                 .Select(e => new ListViewItem(e))
                 .ToArray();
 
@@ -147,7 +147,7 @@ namespace Statistics.Controllers
             });
         }
 
-        IEnumerable<string[]> GetSortedHistoryDatas()
+        IEnumerable<string[]> GetSortedHistoryData()
         {
             const int MiB = 1024 * 1024;
             var contents = settings.GetAllStatsData()
