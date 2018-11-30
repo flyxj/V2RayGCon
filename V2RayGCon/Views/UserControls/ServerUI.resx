@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lbStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>215, 30</value>
+    <value>215, 32</value>
   </data>
   <data name="lbStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
@@ -190,7 +190,7 @@
     <value>11</value>
   </data>
   <data name="tboxInboundAddr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>113, 31</value>
+    <value>113, 32</value>
   </data>
   <data name="tboxInboundAddr.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 21</value>
@@ -398,7 +398,7 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 35</value>
+    <value>8, 36</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
@@ -478,7 +478,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbIsAutorun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>377, 30</value>
+    <value>377, 32</value>
   </data>
   <data name="lbIsAutorun.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -586,63 +586,6 @@
   <metadata name="ctxMenuStripMore.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>119, 18</value>
   </metadata>
-  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="toolStripMenuItem3.Text" xml:space="preserve">
-    <value>Action</value>
-  </data>
-  <data name="toolStripMenuItem6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="toolStripMenuItem6.Text" xml:space="preserve">
-    <value>Move</value>
-  </data>
-  <data name="toolStripMenuItem4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="toolStripMenuItem4.Text" xml:space="preserve">
-    <value>Setting</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
-  </data>
-  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>Copy</value>
-  </data>
-  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 6</value>
-  </data>
-  <data name="logOfThisServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Log of this server</value>
-  </data>
-  <data name="runSpeedTestToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
-  </data>
-  <data name="runSpeedTestToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Run speed test</value>
-  </data>
-  <data name="runSpeedTestToolStripMenuItem1.ToolTipText" xml:space="preserve">
-    <value>The time it took to download webpage https://www.google.com.</value>
-  </data>
   <data name="ctxMenuStripMore.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 192</value>
   </data>
@@ -652,8 +595,14 @@
   <data name="&gt;&gt;ctxMenuStripMore.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="toolStripMenuItem3.Text" xml:space="preserve">
+    <value>Action</value>
+  </data>
   <data name="startToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>145, 22</value>
   </data>
   <data name="startToolStripMenuItem.Text" xml:space="preserve">
     <value>Start</value>
@@ -662,7 +611,7 @@
     <value>Stop all running servers and start this server.</value>
   </data>
   <data name="multiboxingToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>145, 22</value>
   </data>
   <data name="multiboxingToolStripMenuItem1.Text" xml:space="preserve">
     <value>Multiboxing</value>
@@ -671,7 +620,7 @@
     <value>Start this server along with other started server. Inbound port should not duplicate.</value>
   </data>
   <data name="stopToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>145, 22</value>
   </data>
   <data name="stopToolStripMenuItem1.Text" xml:space="preserve">
     <value>Stop</value>
@@ -679,8 +628,14 @@
   <data name="stopToolStripMenuItem1.ToolTipText" xml:space="preserve">
     <value>Stop this server.</value>
   </data>
+  <data name="toolStripMenuItem6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="toolStripMenuItem6.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
   <data name="moveToTopToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>119, 22</value>
   </data>
   <data name="moveToTopToolStripMenuItem.Text" xml:space="preserve">
     <value>Top</value>
@@ -689,13 +644,19 @@
     <value>Move this server to top.</value>
   </data>
   <data name="moveToBottomToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>119, 22</value>
   </data>
   <data name="moveToBottomToolStripMenuItem.Text" xml:space="preserve">
     <value>Bottom</value>
   </data>
   <data name="moveToBottomToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Move this server to bottom.</value>
+  </data>
+  <data name="toolStripMenuItem4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="toolStripMenuItem4.Text" xml:space="preserve">
+    <value>Setting</value>
   </data>
   <data name="autorunToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 22</value>
@@ -733,6 +694,15 @@
   <data name="untrackToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Do not track this server.</value>
   </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 6</value>
+  </data>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="vmessToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>138, 22</value>
   </data>
@@ -750,6 +720,36 @@
   </data>
   <data name="v2rayToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Contain all config information.</value>
+  </data>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 6</value>
+  </data>
+  <data name="logOfThisServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="logOfThisServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Log of this server</value>
+  </data>
+  <data name="runSpeedTestToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
+  </data>
+  <data name="runSpeedTestToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Run speed test</value>
+  </data>
+  <data name="runSpeedTestToolStripMenuItem1.ToolTipText" xml:space="preserve">
+    <value>The time it took to download webpage https://www.google.com.</value>
   </data>
   <data name="rtboxServerTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>59, 9</value>
