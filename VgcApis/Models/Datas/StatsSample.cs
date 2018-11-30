@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VgcApis.Models
+namespace VgcApis.Models.Datas
 {
     public class StatsSample
     {

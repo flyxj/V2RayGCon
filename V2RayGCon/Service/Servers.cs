@@ -13,15 +13,15 @@ namespace V2RayGCon.Service
 {
     public class Servers :
         Model.BaseClass.SingletonService<Servers>,
-        VgcApis.Models.IServersService
+        VgcApis.Models.IServices.IServersService
     {
         Setting setting = null;
         Cache cache = null;
 
-        public event EventHandler<VgcApis.Models.BoolEvent>
+        public event EventHandler<VgcApis.Models.Datas.BoolEvent>
             OnServerStateChange;
 
-        public event EventHandler<VgcApis.Models.StrEvent>
+        public event EventHandler<VgcApis.Models.Datas.StrEvent>
             OnCoreClosing; // single core closing.
 
         public event EventHandler
@@ -59,16 +59,16 @@ namespace V2RayGCon.Service
         }
 
         #region interface for plugins
-        public ReadOnlyCollection<VgcApis.Models.ICoreCtrl> GetTrackableServerList()
+        public ReadOnlyCollection<VgcApis.Models.IControllers.ICoreCtrl> GetTrackableServerList()
             => serverList
                 .Where(s => s.isServerOn && !s.isUntrack)
-                .Select(s => s as VgcApis.Models.ICoreCtrl)
+                .Select(s => s as VgcApis.Models.IControllers.ICoreCtrl)
                 .ToList()
                 .AsReadOnly();
 
-        public ReadOnlyCollection<VgcApis.Models.ICoreCtrl> GetAllServersList()
+        public ReadOnlyCollection<VgcApis.Models.IControllers.ICoreCtrl> GetAllServersList()
             => serverList
-                .Select(s => s as VgcApis.Models.ICoreCtrl)
+                .Select(s => s as VgcApis.Models.IControllers.ICoreCtrl)
                 .ToList()
                 .AsReadOnly();
         #endregion
@@ -120,7 +120,7 @@ namespace V2RayGCon.Service
             return servUid;
         }
 
-        private JObject GenPackageV4Config(List<VgcApis.Models.ICoreCtrl> servList, string packageName)
+        private JObject GenPackageV4Config(List<VgcApis.Models.IControllers.ICoreCtrl> servList, string packageName)
         {
             var package = cache.tpl.LoadPackage("pkgV4Tpl");
             package["v2raygcon"]["alias"] = string.IsNullOrEmpty(packageName) ? "PackageV4" : packageName;
@@ -254,7 +254,7 @@ namespace V2RayGCon.Service
 
         void InvokeOnServerStateChange(
             object sender,
-            VgcApis.Models.BoolEvent isServerStart)
+            VgcApis.Models.Datas.BoolEvent isServerStart)
         {
             try
             {
@@ -570,7 +570,7 @@ namespace V2RayGCon.Service
             {
                 var coreCtrl = sender as Controller.CoreServerCtrl;
                 var uid = coreCtrl.GetUid();
-                OnCoreClosing?.Invoke(null, new VgcApis.Models.StrEvent(uid));
+                OnCoreClosing?.Invoke(null, new VgcApis.Models.Datas.StrEvent(uid));
             }
             catch { }
         }
@@ -692,7 +692,7 @@ namespace V2RayGCon.Service
             lazyServerTrackerTimer.Start();
         }
 
-        void OnRequireKeepTrackHandler(object sender, VgcApis.Models.BoolEvent isServerStart)
+        void OnRequireKeepTrackHandler(object sender, VgcApis.Models.Datas.BoolEvent isServerStart)
         {
             // for plugins
             InvokeOnServerStateChange(sender, isServerStart);
@@ -988,7 +988,7 @@ namespace V2RayGCon.Service
         /// <param name="packageName"></param>
         /// <param name="servList"></param>
         public string PackServersIntoV4Package(
-            List<VgcApis.Models.ICoreCtrl> servList,
+            List<VgcApis.Models.IControllers.ICoreCtrl> servList,
             string orgUid,
             string packageName)
         {
@@ -1009,7 +1009,7 @@ namespace V2RayGCon.Service
         }
 
         public void PackServersIntoV3Package(
-            List<VgcApis.Models.ICoreCtrl> servList)
+            List<VgcApis.Models.IControllers.ICoreCtrl> servList)
         {
             var packages = JObject.Parse(@"{}");
             var serverNameList = new List<string>();

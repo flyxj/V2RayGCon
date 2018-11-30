@@ -19,7 +19,7 @@ namespace ProxySetter
         #endregion
 
         #region public methods
-        public void Run(VgcApis.IServices api)
+        public void Run(VgcApis.IService api)
         {
             luncher = new Services.PsLuncher();
             luncher.Run(api);

@@ -1,8 +1,8 @@
-﻿using VgcApis.Models;
+﻿using VgcApis.Models.IServices;
 
 namespace V2RayGCon.Plugin
 {
-    class ApiServ : VgcApis.IServices
+    class ApiServ : VgcApis.IService
     {
         IServersService serversService;
         ISettingService settingService;

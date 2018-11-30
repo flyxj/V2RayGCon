@@ -10,7 +10,7 @@ namespace V2RayGCon.Views.UserControls
     public partial class ServerUI :
         UserControl,
         Model.BaseClass.IFormMainFlyPanelComponent,
-        VgcApis.Models.IDropableControl
+        VgcApis.Models.IControllers.IDropableControl
     {
         Service.Setting setting;
         Service.Servers servers;

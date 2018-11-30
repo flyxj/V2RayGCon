@@ -16,7 +16,7 @@ namespace V2RayGCon.Service
         internal const int CTRL_C_EVENT = 0;
         #endregion
 
-        public event EventHandler<VgcApis.Models.StrEvent> OnLog;
+        public event EventHandler<VgcApis.Models.Datas.StrEvent> OnLog;
         public event EventHandler OnCoreStatusChanged;
         event EventHandler OnCoreReady;
 
@@ -431,7 +431,7 @@ namespace V2RayGCon.Service
 
         void SendLog(string log)
         {
-            var arg = new VgcApis.Models.StrEvent(log);
+            var arg = new VgcApis.Models.Datas.StrEvent(log);
             try
             {
                 OnLog?.Invoke(this, arg);

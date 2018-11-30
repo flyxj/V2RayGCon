@@ -7,12 +7,12 @@ namespace Statistics.Views.WinForms
     public partial class FormMain : Form
     {
         Services.Settings settings;
-        VgcApis.Models.IServersService vgcServers;
+        VgcApis.Models.IServices.IServersService vgcServers;
         Controllers.FormMainCtrl formMainCtrl;
 
         public FormMain(
             Services.Settings settings,
-            VgcApis.Models.IServersService vgcServers)
+            VgcApis.Models.IServices.IServersService vgcServers)
         {
             this.settings = settings;
             this.vgcServers = vgcServers;

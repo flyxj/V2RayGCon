@@ -11,7 +11,7 @@ using V2RayGCon.Resource.Resx;
 namespace V2RayGCon.Controller
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public class CoreServerCtrl : VgcApis.Models.ICoreCtrl
+    public class CoreServerCtrl : VgcApis.Models.IControllers.ICoreCtrl
     {
         [JsonIgnore]
         Service.Cache cache;
@@ -30,7 +30,7 @@ namespace V2RayGCon.Controller
         /// <summary>
         /// false: stop true: start
         /// </summary>
-        public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
+        public event EventHandler<VgcApis.Models.Datas.BoolEvent> OnRequireKeepTrack;
 
         // private variables will not be serialized
         public string config; // plain text of config.json
@@ -143,7 +143,7 @@ namespace V2RayGCon.Controller
         public bool IsUntrack() => this.isUntrack;
         public bool IsSelected() => this.isSelected;
 
-        public VgcApis.Models.StatsSample Peek()
+        public VgcApis.Models.Datas.StatsSample Peek()
         {
             if (!setting.isEnableStatistics
                 || this.statsPort <= 0)
@@ -153,7 +153,7 @@ namespace V2RayGCon.Controller
 
             var up = this.server.QueryStatsApi(this.statsPort, true);
             var down = this.server.QueryStatsApi(this.statsPort, false);
-            return new VgcApis.Models.StatsSample(up, down);
+            return new VgcApis.Models.Datas.StatsSample(up, down);
         }
         #endregion
 
@@ -427,7 +427,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(false));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.Datas.BoolEvent(false));
                     next?.Invoke();
                 }));
         }
@@ -653,7 +653,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(true));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.Datas.BoolEvent(true));
                     next?.Invoke();
                 },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
@@ -852,7 +852,7 @@ namespace V2RayGCon.Controller
             logTimeStamp = DateTime.Now.Ticks;
         }
 
-        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
+        void OnLogHandler(object sender, VgcApis.Models.Datas.StrEvent arg)
         {
             SendLog(arg.Data);
         }

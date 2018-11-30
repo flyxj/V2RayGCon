@@ -8,8 +8,8 @@ namespace Statistics.Services
 {
     public class Settings
     {
-        VgcApis.Models.ISettingService vgcSetting;
-        VgcApis.Models.IServersService vgcServers;
+        VgcApis.Models.IServices.ISettingService vgcSetting;
+        VgcApis.Models.IServices.IServersService vgcServers;
 
         Models.UserSettings userSettins;
         VgcApis.Libs.Sys.LazyGuy bookKeeper;
@@ -51,8 +51,8 @@ namespace Statistics.Services
         }
 
         public void Run(
-            VgcApis.Models.ISettingService vgcSetting,
-            VgcApis.Models.IServersService vgcServers)
+            VgcApis.Models.IServices.ISettingService vgcSetting,
+            VgcApis.Models.IServices.IServersService vgcServers)
         {
             this.vgcSetting = vgcSetting;
             this.vgcServers = vgcServers;
@@ -84,7 +84,7 @@ namespace Statistics.Services
         #region private method
         void OnCoreClosingHandler(
             object sender,
-            VgcApis.Models.StrEvent args)
+            VgcApis.Models.Datas.StrEvent args)
         {
             var uid = args.Data;
             var coreCtrl = vgcServers
@@ -103,7 +103,7 @@ namespace Statistics.Services
         void AddToHistoryStatsData(
             string uid,
             string title,
-            VgcApis.Models.StatsSample sample)
+            VgcApis.Models.Datas.StatsSample sample)
         {
             var datas = userSettins.statsData;
             if (datas.ContainsKey(uid))
@@ -216,7 +216,7 @@ namespace Statistics.Services
             }
         }
 
-        Models.StatsResult GetterCoreInfo(VgcApis.Models.ICoreCtrl coreCtrl)
+        Models.StatsResult GetterCoreInfo(VgcApis.Models.IControllers.ICoreCtrl coreCtrl)
         {
             var result = new Models.StatsResult();
             result.title = coreCtrl.GetTitle();

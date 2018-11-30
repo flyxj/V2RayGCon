@@ -10,7 +10,7 @@ namespace ProxySetter.Services
         PsSettings setting;
         PacServer pacServer;
 
-        VgcApis.Models.IServersService servers;
+        VgcApis.Models.IServices.IServersService servers;
 
         public event EventHandler OnSysProxyChanged;
         bool isTracking { get; set; }
@@ -24,7 +24,7 @@ namespace ProxySetter.Services
         public void Run(
             PsSettings setting,
             PacServer pacServer,
-            VgcApis.Models.IServersService servers)
+            VgcApis.Models.IServices.IServersService servers)
         {
             this.setting = setting;
             this.pacServer = pacServer;
@@ -103,7 +103,7 @@ namespace ProxySetter.Services
 
         void SearchForAvailableProxyServer(
             bool isGlobal,
-            List<VgcApis.Models.ICoreCtrl> serverList)
+            List<VgcApis.Models.IControllers.ICoreCtrl> serverList)
         {
             foreach (var serv in serverList)
             {
@@ -195,9 +195,9 @@ namespace ProxySetter.Services
 
         string curServerConfig;
         bool isServerStart;
-        void TrackingHandler(object sender, VgcApis.Models.BoolEvent isServerStart)
+        void TrackingHandler(object sender, VgcApis.Models.Datas.BoolEvent isServerStart)
         {
-            var server = sender as VgcApis.Models.ICoreCtrl;
+            var server = sender as VgcApis.Models.IControllers.ICoreCtrl;
             curServerConfig = server.GetConfig();
             this.isServerStart = isServerStart.Data;
             WakeupLazyProxyUpdater();

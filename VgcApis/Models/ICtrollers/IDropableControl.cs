@@ -1,4 +1,4 @@
-﻿namespace VgcApis.Models
+﻿namespace VgcApis.Models.IControllers
 {
     public interface IDropableControl
     {

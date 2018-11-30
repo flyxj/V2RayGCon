@@ -1,8 +1,8 @@
-﻿namespace VgcApis.Models
+﻿namespace VgcApis.Models.IControllers
 {
     public interface ICoreCtrl
     {
-        StatsSample Peek();
+        Models.Datas.StatsSample Peek();
         string GetStatus();
         string GetTitle();
         string GetUid();

@@ -1,4 +1,4 @@
-﻿namespace VgcApis.Models
+﻿namespace VgcApis.Models.IServices
 {
     public interface ISettingService
     {
