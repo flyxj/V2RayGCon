@@ -528,6 +528,11 @@ namespace V2RayGCon.Views.UserControls
             serverItem.ToggleBoolPropertyOnDemand(ref serverItem.isInjectSkipCNSite, true);
         }
 
+        private void runSpeedTestToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(() => serverItem.RunSpeedTest());
+        }
+
         private void moveToTopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             serverItem.ChangeIndex(0);
@@ -538,11 +543,6 @@ namespace V2RayGCon.Views.UserControls
         {
             serverItem.ChangeIndex(double.MaxValue);
             servers.InvokeEventOnRequireFlyPanelReload();
-        }
-
-        private void runSpeedTestToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Task.Factory.StartNew(() => serverItem.RunSpeedTest());
         }
 
         #endregion

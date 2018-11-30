@@ -131,6 +131,7 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripStatusLabelPrePage = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelNextPage = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripContainer2.ContentPanel.SuspendLayout();
             this.toolStripContainer2.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer2.SuspendLayout();
@@ -536,6 +537,7 @@ namespace V2RayGCon.Views.WinForms
             this.toolStripMenuItemModifySelected.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemMoveToTop,
             this.toolStripMenuItemMoveToBottom,
+            this.toolStripSeparator11,
             this.toolStripMenuItemSortBySpeedTest,
             this.toolStripMenuItemSortBySummary,
             this.toolStripSeparator3,
@@ -765,6 +767,11 @@ namespace V2RayGCon.Views.WinForms
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            resources.ApplyResources(this.toolStripSeparator11, "toolStripSeparator11");
+            // 
             // FormMain
             // 
             resources.ApplyResources(this, "$this");
@@ -893,5 +900,6 @@ namespace V2RayGCon.Views.WinForms
         private ToolStripMenuItem refreshSummaryToolStripMenuItem;
         private ToolStripMenuItem selectUntrackAllPagesToolStripMenuItem;
         private ToolStripMenuItem selectUntrackAllServersToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator11;
     }
 }
