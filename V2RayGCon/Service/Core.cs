@@ -89,14 +89,19 @@ namespace V2RayGCon.Service
                 port.ToString(),
                 isUplink ? "uplink" : "downlink");
 
-            var output = Lib.Utils.GetOutputFromExecutable(
-                v2ctl, queryParam, 1000);
+            try
+            {
+                var output = Lib.Utils.GetOutputFromExecutable(
+                    v2ctl, queryParam, 1000);
 
-            // Regex pattern = new Regex(@"(?<value>(\d+))");
-            var value = VgcApis.Libs.Utils.ExtractStringWithPattern(
-                "value", @"(\d+)", output);
+                // Regex pattern = new Regex(@"(?<value>(\d+))");
+                var value = VgcApis.Libs.Utils.ExtractStringWithPattern(
+                    "value", @"(\d+)", output);
 
-            return Lib.Utils.Str2Int(value);
+                return Lib.Utils.Str2Int(value);
+            }
+            catch { }
+            return 0;
         }
 
         public string GetCoreVersion()
