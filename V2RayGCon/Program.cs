@@ -4,6 +4,9 @@ using System.Threading;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
 
+/*
+// upgraded to dot net 4.5 
+
 #region Support CallerMemberName on .net 4.0
 namespace System.Runtime.CompilerServices
 {
@@ -23,6 +26,7 @@ namespace System.Runtime.CompilerServices
     }
 }
 #endregion
+*/
 
 namespace V2RayGCon
 {
