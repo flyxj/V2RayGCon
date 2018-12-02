@@ -11,7 +11,7 @@ using V2RayGCon.Resource.Resx;
 namespace V2RayGCon.Controller
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public class CoreServerCtrl : VgcApis.Models.ICoreCtrl
+    public class CoreServerCtrl : VgcApis.Models.IControllers.ICoreCtrl
     {
         [JsonIgnore]
         Service.Cache cache;
@@ -24,12 +24,13 @@ namespace V2RayGCon.Controller
             OnPropertyChanged,
             OnRequireStatusBarUpdate,
             OnRequireMenuUpdate,
-            OnRequireNotifierUpdate;
+            OnRequireNotifierUpdate,
+            OnCoreClosing;
 
         /// <summary>
         /// false: stop true: start
         /// </summary>
-        public event EventHandler<VgcApis.Models.BoolEvent> OnRequireKeepTrack;
+        public event EventHandler<VgcApis.Models.Datas.BoolEvent> OnRequireKeepTrack;
 
         // private variables will not be serialized
         public string config; // plain text of config.json
@@ -113,7 +114,6 @@ namespace V2RayGCon.Controller
             get
             {
                 return string.Join(Environment.NewLine, _logCache);
-
             }
             private set
             {
@@ -135,6 +135,7 @@ namespace V2RayGCon.Controller
         #endregion
 
         #region ICoreCtrl interface
+        public double GetIndex() => this.index;
         public string GetName() => this.name;
         public string GetStatus() => this.status;
         public string GetConfig() => this.config;
@@ -142,16 +143,17 @@ namespace V2RayGCon.Controller
         public bool IsUntrack() => this.isUntrack;
         public bool IsSelected() => this.isSelected;
 
-        public VgcApis.Models.StatsSample Peek()
+        public VgcApis.Models.Datas.StatsSample Peek()
         {
-            if (!setting.isEnableStatistics)
+            if (!setting.isEnableStatistics
+                || this.statsPort <= 0)
             {
                 return null;
             }
 
             var up = this.server.QueryStatsApi(this.statsPort, true);
             var down = this.server.QueryStatsApi(this.statsPort, false);
-            return new VgcApis.Models.StatsSample(up, down);
+            return new VgcApis.Models.Datas.StatsSample(up, down);
         }
         #endregion
 
@@ -386,6 +388,7 @@ namespace V2RayGCon.Controller
 
         public void CleanupThen(Action next)
         {
+            OnCoreClosing?.Invoke(this, EventArgs.Empty);
             this.server.StopCoreThen(() =>
             {
                 this.server.OnLog -= OnLogHandler;
@@ -419,11 +422,12 @@ namespace V2RayGCon.Controller
 
         public void StopCoreThen(Action next = null)
         {
+            OnCoreClosing?.Invoke(this, EventArgs.Empty);
             Task.Factory.StartNew(() => server.StopCoreThen(
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(false));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.Datas.BoolEvent(false));
                     next?.Invoke();
                 }));
         }
@@ -649,7 +653,7 @@ namespace V2RayGCon.Controller
                 () =>
                 {
                     OnRequireNotifierUpdate?.Invoke(this, EventArgs.Empty);
-                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.BoolEvent(true));
+                    OnRequireKeepTrack?.Invoke(this, new VgcApis.Models.Datas.BoolEvent(true));
                     next?.Invoke();
                 },
                 Lib.Utils.GetEnvVarsFromConfig(cfg));
@@ -661,7 +665,13 @@ namespace V2RayGCon.Controller
             {
                 return;
             }
+
             statsPort = Lib.Utils.GetFreeTcpPort();
+            if (statsPort <= 0)
+            {
+                return;
+            }
+
             var result = cache.tpl.LoadTemplate("statsApiV4Inb") as JObject;
             result["inbounds"][0]["port"] = statsPort;
             Lib.Utils.CombineConfig(ref result, config);
@@ -842,7 +852,7 @@ namespace V2RayGCon.Controller
             logTimeStamp = DateTime.Now.Ticks;
         }
 
-        void OnLogHandler(object sender, VgcApis.Models.StrEvent arg)
+        void OnLogHandler(object sender, VgcApis.Models.Datas.StrEvent arg)
         {
             SendLog(arg.Data);
         }
@@ -866,6 +876,10 @@ namespace V2RayGCon.Controller
         void OnCoreStateChangedHandler(object sender, EventArgs args)
         {
             isServerOn = server.isRunning;
+            if (!isServerOn)
+            {
+                statsPort = 0;
+            }
             InvokeEventOnPropertyChange();
         }
 

@@ -7,13 +7,13 @@
         ServerTracker serverTracker;
 
 
-        VgcApis.IServices vgcApi;
+        VgcApis.IService vgcApi;
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
         Views.WinForms.FormMain formMain;
 
         public PsLuncher() { }
 
-        public void Run(VgcApis.IServices api)
+        public void Run(VgcApis.IService api)
         {
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
             this.vgcApi = api;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using static VgcApis.Libs.Utils;
 
 namespace VgcApisTests
@@ -8,6 +9,39 @@ namespace VgcApisTests
     [TestClass]
     public class UtilsTests
     {
+        [TestMethod]
+        public void LazyGuyTest()
+        {
+            var str = "";
+
+            void task()
+            {
+                str += ".";
+            }
+            var adam = new VgcApis.Libs.Sys.LazyGuy(task, 100);
+            adam.DoItNow();
+            Assert.AreEqual(".", str);
+
+            str = "";
+            adam.DoItLater();
+            adam.ForgetIt();
+            Assert.AreEqual("", str);
+
+#if DEBUG
+            str = "";
+            adam.DoItLater();
+            adam.DoItLater();
+            adam.DoItLater();
+            Thread.Sleep(1000);
+            Assert.AreEqual(".", str);
+
+            str = "";
+            adam.DoItLater();
+            Thread.Sleep(300);
+            Assert.AreEqual(".", str);
+#endif
+        }
+
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("11,22,abc")]

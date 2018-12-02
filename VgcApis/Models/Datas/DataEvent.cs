@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VgcApis.Models
+namespace VgcApis.Models.Datas
 {
     public class BoolEvent : EventArgs
     {
@@ -9,7 +9,6 @@ namespace VgcApis.Models
         {
             Data = data;
         }
-
     }
 
     public class StrEvent : EventArgs
@@ -19,7 +18,6 @@ namespace VgcApis.Models
         {
             Data = data;
         }
-
     }
 
     public class IntEvent : EventArgs
@@ -29,6 +27,5 @@ namespace VgcApis.Models
         {
             Data = data;
         }
-
     }
 }

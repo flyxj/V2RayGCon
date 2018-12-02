@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lvName.Text" xml:space="preserve">
-    <value>别名</value>
+    <value>摘要</value>
   </data>
   <data name="lvCurDown.Text" xml:space="preserve">
     <value>下行 (KiB/s)</value>
@@ -131,5 +131,26 @@
   </data>
   <data name="lvTotalUp.Text" xml:space="preserve">
     <value>上行 (MiB)</value>
+  </data>
+  <data name="resetToolStripMenuItem.Text" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="文件ToolStripMenuItem.Text" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="resizeByTitleToolStripMenuItem.Text" xml:space="preserve">
+    <value>按标题</value>
+  </data>
+  <data name="resizeByContentToolStripMenuItem.Text" xml:space="preserve">
+    <value>按内容</value>
+  </data>
+  <data name="autoResizeToolStripMenuItem.Text" xml:space="preserve">
+    <value>自动调整</value>
+  </data>
+  <data name="viewsToolStripMenuItem.Text" xml:space="preserve">
+    <value>视图</value>
   </data>
 </root>

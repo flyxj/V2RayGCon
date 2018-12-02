@@ -20,8 +20,9 @@ namespace ProxySetter.Lib.Nets
             string[] customLists,
             string customPacFileContent)
         {
-            // ie require this header
-            var mime = "application/x-ns-proxy-autoconfig; charset=UTF-8";
+            // Don't addpend charset, IE will not work.
+            // var mime = "application/x-ns-proxy-autoconfig; charset=UTF-8";
+            var mime = "application/x-ns-proxy-autoconfig";
 
             StringBuilder content;
             if (isUseCustomPac)

@@ -121,7 +121,7 @@
     <value>ProxySetter</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>0.0.3</value>
-    <comment>添加disable auto mode功能</comment>
+    <value>0.0.4</value>
+    <comment>Fixed bug. IE不认utf-8头</comment>
   </data>
 </root>

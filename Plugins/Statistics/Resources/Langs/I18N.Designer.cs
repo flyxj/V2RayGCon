@@ -61,6 +61,24 @@ namespace Statistics.Resources.Langs {
         }
         
         /// <summary>
+        ///   查找类似 Close form? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmCloseForm {
+            get {
+                return ResourceManager.GetString("ConfirmCloseForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset statistics data to zero? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmResetStatsData {
+            get {
+                return ResourceManager.GetString("ConfirmResetStatsData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Show statistic informations. 的本地化字符串。
         /// </summary>
         internal static string Description {

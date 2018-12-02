@@ -14,7 +14,7 @@ namespace V2RayGCon.Service
 {
     public class Setting :
         Model.BaseClass.SingletonService<Setting>,
-        VgcApis.Models.ISettingService
+        VgcApis.Models.IServices.ISettingService
     {
         public event EventHandler OnRequireNotifyTextUpdate;
         Model.Data.UserSettings userSettings;
@@ -186,6 +186,10 @@ namespace V2RayGCon.Service
         #endregion
 
         #region public methods
+
+        // ISettingService thing
+        public bool IsShutdown() => isShutdown;
+
         /// <summary>
         /// return null if fail
         /// </summary>

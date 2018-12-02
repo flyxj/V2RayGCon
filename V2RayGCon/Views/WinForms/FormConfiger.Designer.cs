@@ -117,12 +117,13 @@
             this.hideLeftPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlTools = new System.Windows.Forms.Panel();
             this.pnlEditor = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panelScintilla = new System.Windows.Forms.Panel();
             this.btnFormat = new System.Windows.Forms.Button();
             this.cboxExamples = new System.Windows.Forms.ComboBox();
+            this.panelScintilla = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabCtrlToolPanel.SuspendLayout();
             this.tabPageProtocol.SuspendLayout();
             this.groupBox10.SuspendLayout();
@@ -138,7 +139,8 @@
             this.mainMenu.SuspendLayout();
             this.pnlTools.SuspendLayout();
             this.pnlEditor.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboxConfigSection
@@ -736,35 +738,31 @@
             // pnlEditor
             // 
             resources.ApplyResources(this.pnlEditor, "pnlEditor");
-            this.pnlEditor.Controls.Add(this.label7);
+            this.pnlEditor.Controls.Add(this.tableLayoutPanel1);
             this.pnlEditor.Controls.Add(this.label5);
-            this.pnlEditor.Controls.Add(this.panel1);
-            this.pnlEditor.Controls.Add(this.cboxConfigSection);
-            this.pnlEditor.Controls.Add(this.btnFormat);
-            this.pnlEditor.Controls.Add(this.btnClearModify);
-            this.pnlEditor.Controls.Add(this.cboxExamples);
             this.pnlEditor.Name = "pnlEditor";
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panelScintilla, 0, 1);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.cboxConfigSection);
+            this.panel2.Controls.Add(this.btnClearModify);
+            this.panel2.Controls.Add(this.btnFormat);
+            this.panel2.Controls.Add(this.cboxExamples);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
             // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.panelScintilla);
-            this.panel1.Name = "panel1";
-            // 
-            // panelScintilla
-            // 
-            resources.ApplyResources(this.panelScintilla, "panelScintilla");
-            this.panelScintilla.Name = "panelScintilla";
             // 
             // btnFormat
             // 
@@ -778,6 +776,16 @@
             resources.ApplyResources(this.cboxExamples, "cboxExamples");
             this.cboxExamples.FormattingEnabled = true;
             this.cboxExamples.Name = "cboxExamples";
+            // 
+            // panelScintilla
+            // 
+            resources.ApplyResources(this.panelScintilla, "panelScintilla");
+            this.panelScintilla.Name = "panelScintilla";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
             // 
             // FormConfiger
             // 
@@ -815,7 +823,8 @@
             this.pnlTools.ResumeLayout(false);
             this.pnlEditor.ResumeLayout(false);
             this.pnlEditor.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -850,7 +859,6 @@
         private System.Windows.Forms.Panel pnlTools;
         private System.Windows.Forms.Panel pnlEditor;
         private System.Windows.Forms.Panel panelScintilla;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem hideLeftPanelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewServerToolStripMenuItem;
@@ -915,5 +923,7 @@
         private System.Windows.Forms.TextBox tboxSSPassword;
         private System.Windows.Forms.TextBox tboxSSAddr;
         private System.Windows.Forms.CheckBox chkIsV4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }

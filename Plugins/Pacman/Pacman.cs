@@ -4,10 +4,10 @@ namespace Pacman
 {
     public class Pacman : VgcApis.IPlugin
     {
-        VgcApis.IServices api;
+        VgcApis.IService api;
         Services.Settings settings;
-        VgcApis.Models.IServersService vgcServers;
-        VgcApis.Models.ISettingService vgcSettings;
+        VgcApis.Models.IServices.IServersService vgcServers;
+        VgcApis.Models.IServices.ISettingService vgcSettings;
 
         Views.WinForms.FormMain formMain = null;
 
@@ -20,7 +20,7 @@ namespace Pacman
         #endregion
 
         #region public methods
-        public void Run(VgcApis.IServices api)
+        public void Run(VgcApis.IService api)
         {
             this.api = api;
             this.settings = new Services.Settings();

@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VgcApis</RootNamespace>
     <AssemblyName>VgcApis</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisableProxySetter|AnyCPU'">
     <OutputPath>bin\DisableProxySetter\</OutputPath>
@@ -38,6 +41,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisablePacAutoMode|AnyCPU'">
     <OutputPath>bin\DisablePacAutoMode\</OutputPath>
@@ -47,10 +51,11 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,14 +68,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IServices.cs" />
+    <Compile Include="IService.cs" />
     <Compile Include="IPlugin.cs" />
-    <Compile Include="Models\DataEvent.cs" />
-    <Compile Include="Models\ICoreCtrl.cs" />
-    <Compile Include="Models\IDropableControl.cs" />
-    <Compile Include="Models\IServersService.cs" />
-    <Compile Include="Models\ISettingService.cs" />
-    <Compile Include="Models\StatsSample.cs" />
+    <Compile Include="Libs\Sys\CancelableTimeout.cs" />
+    <Compile Include="Libs\Sys\LazyGuy.cs" />
+    <Compile Include="Models\Datas\DataEvent.cs" />
+    <Compile Include="Models\ICtrollers\ICoreCtrl.cs" />
+    <Compile Include="Models\ICtrollers\IDropableControl.cs" />
+    <Compile Include="Models\IServices\IServersService.cs" />
+    <Compile Include="Models\IServices\ISettingService.cs" />
+    <Compile Include="Models\Datas\StatsSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -102,6 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons\icon_light.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\BaseClasses\" />
+    <Folder Include="Models\Grpcs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

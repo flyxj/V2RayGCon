@@ -49,7 +49,7 @@
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.multiboxingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.stopToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToBottomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
@@ -196,6 +196,7 @@
             this.ctxMenuStripMore.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ctxMenuStripMore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem3,
+            this.toolStripMenuItem6,
             this.toolStripMenuItem4,
             this.toolStripMenuItem1,
             this.copyToolStripMenuItem,
@@ -212,10 +213,7 @@
             this.toolStripMenuItem3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.startToolStripMenuItem,
             this.multiboxingToolStripMenuItem1,
-            this.stopToolStripMenuItem1,
-            this.toolStripMenuItem5,
-            this.moveToTopToolStripMenuItem,
-            this.moveToBottomToolStripMenuItem});
+            this.stopToolStripMenuItem1});
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             resources.ApplyResources(this.toolStripMenuItem3, "toolStripMenuItem3");
             // 
@@ -237,10 +235,13 @@
             resources.ApplyResources(this.stopToolStripMenuItem1, "stopToolStripMenuItem1");
             this.stopToolStripMenuItem1.Click += new System.EventHandler(this.stopToolStripMenuItem1_Click);
             // 
-            // toolStripMenuItem5
+            // toolStripMenuItem6
             // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            resources.ApplyResources(this.toolStripMenuItem5, "toolStripMenuItem5");
+            this.toolStripMenuItem6.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.moveToTopToolStripMenuItem,
+            this.moveToBottomToolStripMenuItem});
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            resources.ApplyResources(this.toolStripMenuItem6, "toolStripMenuItem6");
             // 
             // moveToTopToolStripMenuItem
             // 
@@ -412,14 +413,14 @@
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem multiboxingToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem moveToTopToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToBottomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem autorunToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem globalImportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipCNWebsiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem untrackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runSpeedTestToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem moveToTopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToBottomToolStripMenuItem;
     }
 }

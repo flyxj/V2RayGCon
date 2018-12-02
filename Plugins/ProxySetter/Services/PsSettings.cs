@@ -2,14 +2,14 @@
 {
     class PsSettings
     {
-        VgcApis.Models.ISettingService setting;
+        VgcApis.Models.IServices.ISettingService setting;
         readonly string pluginName = Properties.Resources.Name;
         public Model.Data.UserSettings userSettings;
 
         public PsSettings() { }
 
         public void Run(
-            VgcApis.Models.ISettingService setting)
+            VgcApis.Models.IServices.ISettingService setting)
         {
             this.setting = setting;
             userSettings = LoadUserSettings();
