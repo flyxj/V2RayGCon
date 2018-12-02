@@ -1,5 +1,4 @@
-﻿using Statistics.Resources.Langs;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Statistics.Views.WinForms
@@ -47,10 +46,7 @@ namespace Statistics.Views.WinForms
         #region UI event
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (VgcApis.Libs.UI.Confirm(I18N.ConfirmCloseForm))
-            {
-                this.Close();
-            }
+            this.Close();
         }
         #endregion
     }
