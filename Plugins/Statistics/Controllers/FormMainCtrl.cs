@@ -17,6 +17,7 @@ namespace Statistics.Controllers
         Timer updateDataViewTimer = null;
 
         bool[] sortFlags = new bool[] { false, false, false, false, false };
+        string[] dataViewHeaders = null;
 
         public FormMainCtrl(
             Services.Settings settings,
@@ -34,6 +35,8 @@ namespace Statistics.Controllers
             this.miReset = miReset;
             this.miResizeByContent = miResizeByContent;
             this.miResizeByTitle = miResizeByTitle;
+
+            dataViewHeaders = GetDataViewHeaders();
         }
 
         #region public methods
@@ -52,6 +55,16 @@ namespace Statistics.Controllers
         #endregion
 
         #region private methods
+        string[] GetDataViewHeaders()
+        {
+            var headers = new List<string>();
+            for (int i = 0; i < dataView.Columns.Count; i++)
+            {
+                headers.Add(dataView.Columns[i].Text);
+            }
+            return headers.ToArray();
+        }
+
         void StartUpdateTimer()
         {
             updateDataViewTimer = new Timer
@@ -91,7 +104,31 @@ namespace Statistics.Controllers
             }
             sortFlags[index] = !sortFlags[index];
             dataViewOrderKeyIndex = index;
+            UpdateColumnHeaders();
+            ResizeDataViewByTitle();
             ShowStatsDataOnDataView();
+        }
+
+        void UpdateColumnHeaders()
+        {
+            for (var i = 1; i < 5; i++)
+            {
+                var title = dataViewHeaders[i];
+                if (i == dataViewOrderKeyIndex)
+                {
+                    title += " " + (sortFlags[i] ? "▲" : "▼");
+                }
+                UpdateColumnHeaderTextOnDemand(i, title);
+            }
+        }
+
+        void UpdateColumnHeaderTextOnDemand(int index, string text)
+        {
+            if (dataView.Columns[index].Text == text)
+            {
+                return;
+            }
+            dataView.Columns[index].Text = text;
         }
 
         void UpdateDataViewHandler(object sender, EventArgs args)

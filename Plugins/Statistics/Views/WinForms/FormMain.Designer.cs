@@ -52,13 +52,12 @@
             // 
             // panel1
             // 
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.lvStatsTable);
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // lvStatsTable
             // 
-            resources.ApplyResources(this.lvStatsTable, "lvStatsTable");
             this.lvStatsTable.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lvName,
             this.lvCurDown,
@@ -66,6 +65,7 @@
             this.lvTotalDown,
             this.lvTotalUp,
             this.columnHeader1});
+            resources.ApplyResources(this.lvStatsTable, "lvStatsTable");
             this.lvStatsTable.GridLines = true;
             this.lvStatsTable.Name = "lvStatsTable";
             this.lvStatsTable.UseCompatibleStateImageBehavior = false;
@@ -97,62 +97,62 @@
             // 
             // menuStrip1
             // 
-            resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.文件ToolStripMenuItem,
             this.viewsToolStripMenuItem});
+            resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
             // 
             // 文件ToolStripMenuItem
             // 
-            resources.ApplyResources(this.文件ToolStripMenuItem, "文件ToolStripMenuItem");
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.resetToolStripMenuItem,
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
+            resources.ApplyResources(this.文件ToolStripMenuItem, "文件ToolStripMenuItem");
             // 
             // resetToolStripMenuItem
             // 
-            resources.ApplyResources(this.resetToolStripMenuItem, "resetToolStripMenuItem");
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            resources.ApplyResources(this.resetToolStripMenuItem, "resetToolStripMenuItem");
             // 
             // toolStripMenuItem1
             // 
-            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
             // 
             // exitToolStripMenuItem
             // 
-            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // viewsToolStripMenuItem
             // 
-            resources.ApplyResources(this.viewsToolStripMenuItem, "viewsToolStripMenuItem");
             this.viewsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.autoResizeToolStripMenuItem});
             this.viewsToolStripMenuItem.Name = "viewsToolStripMenuItem";
+            resources.ApplyResources(this.viewsToolStripMenuItem, "viewsToolStripMenuItem");
             // 
             // autoResizeToolStripMenuItem
             // 
-            resources.ApplyResources(this.autoResizeToolStripMenuItem, "autoResizeToolStripMenuItem");
             this.autoResizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.resizeByTitleToolStripMenuItem,
             this.resizeByContentToolStripMenuItem});
             this.autoResizeToolStripMenuItem.Name = "autoResizeToolStripMenuItem";
+            resources.ApplyResources(this.autoResizeToolStripMenuItem, "autoResizeToolStripMenuItem");
             // 
             // resizeByTitleToolStripMenuItem
             // 
-            resources.ApplyResources(this.resizeByTitleToolStripMenuItem, "resizeByTitleToolStripMenuItem");
             this.resizeByTitleToolStripMenuItem.Name = "resizeByTitleToolStripMenuItem";
+            resources.ApplyResources(this.resizeByTitleToolStripMenuItem, "resizeByTitleToolStripMenuItem");
             // 
             // resizeByContentToolStripMenuItem
             // 
-            resources.ApplyResources(this.resizeByContentToolStripMenuItem, "resizeByContentToolStripMenuItem");
             this.resizeByContentToolStripMenuItem.Name = "resizeByContentToolStripMenuItem";
+            resources.ApplyResources(this.resizeByContentToolStripMenuItem, "resizeByContentToolStripMenuItem");
             // 
             // FormMain
             // 
