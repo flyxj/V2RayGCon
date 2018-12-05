@@ -89,10 +89,11 @@
             this.label15 = new System.Windows.Forms.Label();
             this.tabPageExpanseImport = new System.Windows.Forms.TabPage();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.cboxGlobalImport = new System.Windows.Forms.CheckBox();
-            this.btnImportClearCache = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btnExpandImport = new System.Windows.Forms.Button();
+            this.cboxGlobalImport = new System.Windows.Forms.CheckBox();
             this.btnCopyExpansedConfig = new System.Windows.Forms.Button();
+            this.btnImportClearCache = new System.Windows.Forms.Button();
             this.panelExpandConfig = new System.Windows.Forms.Panel();
             this.btnClearModify = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -136,6 +137,7 @@
             this.groupBox6.SuspendLayout();
             this.tabPageExpanseImport.SuspendLayout();
             this.groupBox9.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.pnlTools.SuspendLayout();
             this.pnlEditor.SuspendLayout();
@@ -554,13 +556,25 @@
             // groupBox9
             // 
             resources.ApplyResources(this.groupBox9, "groupBox9");
-            this.groupBox9.Controls.Add(this.cboxGlobalImport);
-            this.groupBox9.Controls.Add(this.btnImportClearCache);
-            this.groupBox9.Controls.Add(this.btnExpandImport);
-            this.groupBox9.Controls.Add(this.btnCopyExpansedConfig);
+            this.groupBox9.Controls.Add(this.panel1);
             this.groupBox9.Controls.Add(this.panelExpandConfig);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.TabStop = false;
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.btnExpandImport);
+            this.panel1.Controls.Add(this.cboxGlobalImport);
+            this.panel1.Controls.Add(this.btnCopyExpansedConfig);
+            this.panel1.Controls.Add(this.btnImportClearCache);
+            this.panel1.Name = "panel1";
+            // 
+            // btnExpandImport
+            // 
+            resources.ApplyResources(this.btnExpandImport, "btnExpandImport");
+            this.btnExpandImport.Name = "btnExpandImport";
+            this.btnExpandImport.UseVisualStyleBackColor = true;
             // 
             // cboxGlobalImport
             // 
@@ -571,23 +585,17 @@
             this.toolTip1.SetToolTip(this.cboxGlobalImport, resources.GetString("cboxGlobalImport.ToolTip"));
             this.cboxGlobalImport.UseVisualStyleBackColor = true;
             // 
-            // btnImportClearCache
-            // 
-            resources.ApplyResources(this.btnImportClearCache, "btnImportClearCache");
-            this.btnImportClearCache.Name = "btnImportClearCache";
-            this.btnImportClearCache.UseVisualStyleBackColor = true;
-            // 
-            // btnExpandImport
-            // 
-            resources.ApplyResources(this.btnExpandImport, "btnExpandImport");
-            this.btnExpandImport.Name = "btnExpandImport";
-            this.btnExpandImport.UseVisualStyleBackColor = true;
-            // 
             // btnCopyExpansedConfig
             // 
             resources.ApplyResources(this.btnCopyExpansedConfig, "btnCopyExpansedConfig");
             this.btnCopyExpansedConfig.Name = "btnCopyExpansedConfig";
             this.btnCopyExpansedConfig.UseVisualStyleBackColor = true;
+            // 
+            // btnImportClearCache
+            // 
+            resources.ApplyResources(this.btnImportClearCache, "btnImportClearCache");
+            this.btnImportClearCache.Name = "btnImportClearCache";
+            this.btnImportClearCache.UseVisualStyleBackColor = true;
             // 
             // panelExpandConfig
             // 
@@ -817,7 +825,8 @@
             this.groupBox6.PerformLayout();
             this.tabPageExpanseImport.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.pnlTools.ResumeLayout(false);
@@ -925,5 +934,6 @@
         private System.Windows.Forms.CheckBox chkIsV4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel1;
     }
 }
