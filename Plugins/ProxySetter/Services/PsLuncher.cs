@@ -6,7 +6,6 @@
         PacServer pacServer;
         ServerTracker serverTracker;
 
-
         VgcApis.IService vgcApi;
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
         Views.WinForms.FormMain formMain;

@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcFull|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,17 +39,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisableProxySetter|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcLite|AnyCPU' ">
     <OutputPath>bin\DisableProxySetter\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisablePacAutoMode|AnyCPU'">
-    <OutputPath>bin\DisablePacAutoMode\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

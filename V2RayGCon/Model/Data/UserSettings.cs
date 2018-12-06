@@ -31,8 +31,7 @@
         public UserSettings()
         {
             ServerPanelPageSize = 99;
-
-#if DISABLE_PROXY_SETTER
+#if V2RAYGCON_LITE
             isUpdateToVgcFull = false;
 #else
             isUpdateToVgcFull = true;

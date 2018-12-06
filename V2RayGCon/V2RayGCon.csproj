@@ -40,11 +40,11 @@
     <CodeAnalysisRuleSet>V2RayGCon.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcFull|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\VgcFull\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -80,21 +80,10 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisableProxySetter|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcLite|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DisableProxySetter\</OutputPath>
-    <DefineConstants>TRACE;DISABLE_PROXY_SETTER</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>V2RayGCon.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisablePacAutoMode|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DisablePacAutoMode\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\VgcLite\</OutputPath>
+    <DefineConstants>TRACE;V2RAYGCON_LITE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
