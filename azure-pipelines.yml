@@ -9,7 +9,11 @@ pool:
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
-  buildConfiguration: 'VgcFull'
+  buildCfgVgcFull: 'VgcFull'
+  v2rayCoreVer: '4.7.0'
+  v2rayCorePkgName: 'v2ray-windows-32.zip'
+  v2rayCorePkgFolder: '$(Build.SourcesDirectory)/V2RayGCon/Resource/Pkg'
+  v2rayCoreUrl: 'https://github.com/v2ray/v2ray-core/releases/download/v$(v2rayCoreVer)/$(v2rayCorePkgName)'
 
 steps:
 - task: NuGetToolInstaller@0
@@ -23,12 +27,12 @@ steps:
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    configuration: '$(buildCfgVgcFull)'
 
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    configuration: '$(buildCfgVgcFull)'
 
 # V2RayGCon-lite.zip
 - task: VSBuild@1
@@ -53,7 +57,7 @@ steps:
     includeRootFolder: false
     archiveType: 'zip' # Options: zip, 7z, tar, wim
     #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
-    archiveFile: '$(Build.ArtifactStagingDirectory)/V2RayGCon-lite.zip' 
+    archiveFile: '$(Build.ArtifactStagingDirectory)/V2RayGCon-lite.zip'
     replaceExistingArchive: true 
 
 # V2RayGCon-full.zip
@@ -61,19 +65,26 @@ steps:
 # Archive files using compression formats such as .7z, .rar, .tar.gz, and .zip.
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/V2RayGCon/bin/VgcFull/'
+    rootFolderOrFile: '$(Build.SourcesDirectory)/V2RayGCon/bin/$(buildCfgVgcFull)/'
     includeRootFolder: false
     archiveType: 'zip' # Options: zip, 7z, tar, wim
     #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
     archiveFile: '$(Build.ArtifactStagingDirectory)/V2RayGCon-full.zip' 
     replaceExistingArchive: true 
 
+# Download File
+- task: PythonScript@0
+  inputs:
+    workingDirectory: '$(v2rayCorePkgFolder)' # Optional
+    scriptSource: 'inline'
+    script: from urllib.request import urlretrieve; urlretrieve('$(v2rayCoreUrl)', '$(v2rayCoreFileName)')
+
 # Extract Files
 # Extract a variety of archive and compression files such as .7z, .rar, .tar.gz, and .zip.
 - task: ExtractFiles@1
   inputs:
-    archiveFilePatterns: '$(Build.SourcesDirectory)/V2RayGCon/Resource/Pkg/v2ray-windows-32.zip'
-    destinationFolder: '$(Build.SourcesDirectory)/V2RayGCon/bin/VgcFull/core'
+    archiveFilePatterns: '$(v2rayCorePkgFolder)/$(v2rayCoreFileName)'
+    destinationFolder: '$(Build.SourcesDirectory)/V2RayGCon/bin/$(buildCfgVgcFull)/core'
     cleanDestinationFolder: true
 
 # Extract Files
@@ -81,14 +92,14 @@ steps:
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: '$(Build.SourcesDirectory)/V2RayGCon/Resource/Pkg/vgctpl.zip'
-    destinationFolder: '$(Build.SourcesDirectory)/V2RayGCon/bin/VgcFull/VGCTpl'
+    destinationFolder: '$(Build.SourcesDirectory)/V2RayGCon/bin/$(buildCfgVgcFull)/VGCTpl'
     cleanDestinationFolder: true
 
 # Archive Files
 # Archive files using compression formats such as .7z, .rar, .tar.gz, and .zip.
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/V2RayGCon/bin/VgcFull/'
+    rootFolderOrFile: '$(Build.SourcesDirectory)/V2RayGCon/bin/$(buildCfgVgcFull)/'
     includeRootFolder: false
     archiveType: 'zip' # Options: zip, 7z, tar, wim
     #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
