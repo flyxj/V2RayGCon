@@ -99,6 +99,7 @@ namespace ProxySetter.Services
             StopCustomPacFileWatcher();
             if (bs.isUseCustomPac)
             {
+                LazyCustomPacFileCacheUpdate();
                 StartFileWatcher(bs.customPacFileName);
             }
         }
