@@ -98,6 +98,7 @@ namespace Statistics.Services
             var title = coreCtrl.GetTitle();
             Task.Factory.StartNew(
                 () => AddToHistoryStatsData(uid, title, sample));
+
         }
 
         void AddToHistoryStatsData(
@@ -105,6 +106,11 @@ namespace Statistics.Services
             string title,
             VgcApis.Models.Datas.StatsSample sample)
         {
+            if (sample == null)
+            {
+                return;
+            }
+
             var datas = userSettins.statsData;
             if (datas.ContainsKey(uid))
             {
