@@ -52,6 +52,7 @@
     <Compile Include="IPlugin.cs" />
     <Compile Include="Libs\Sys\CancelableTimeout.cs" />
     <Compile Include="Libs\Sys\LazyGuy.cs" />
+    <Compile Include="Libs\Sys\FileLog.cs" />
     <Compile Include="Models\Datas\DataEvent.cs" />
     <Compile Include="Models\ICtrollers\ICoreCtrl.cs" />
     <Compile Include="Models\ICtrollers\IDropableControl.cs" />

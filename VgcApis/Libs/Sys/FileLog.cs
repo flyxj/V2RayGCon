@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using V2RayGCon.Resource.Resx;
 
-namespace V2RayGCon.Lib.Sys
+namespace VgcApis.Libs.Sys
 {
     // https://docs.microsoft.com/en-us/dotnet/standard/io/how-to-open-and-append-to-a-log-file
-    class Log
+    public class FileLog
     {
         static readonly object writeLogLocker = new object();
 
@@ -27,7 +26,7 @@ namespace V2RayGCon.Lib.Sys
 
         public static void Dump()
         {
-            using (StreamReader r = File.OpenText(StrConst.LogFileName))
+            using (StreamReader r = File.OpenText(Properties.Resources.LogFileName))
             {
                 string line;
                 while ((line = r.ReadLine()) != null)
@@ -41,10 +40,14 @@ namespace V2RayGCon.Lib.Sys
         #region private method
         static void AppendLog(string prefix, string message)
         {
-#if DEBUG
+            if (string.IsNullOrEmpty(Properties.Resources.LogFileName))
+            {
+                return;
+            }
+
             lock (writeLogLocker)
             {
-                using (StreamWriter w = File.AppendText(StrConst.LogFileName))
+                using (StreamWriter w = File.AppendText(Properties.Resources.LogFileName))
                 {
                     w.WriteLine("[{0}] {1} {2}",
                         prefix,
@@ -52,7 +55,6 @@ namespace V2RayGCon.Lib.Sys
                         message);
                 }
             }
-#endif
         }
         #endregion
     }

@@ -59,7 +59,6 @@
 
         public void SaveBasicSetting(Model.Data.BasicSettings basicSetting)
         {
-            basicSetting.isAutoUpdateSysProxy = false;
             userSettings.tabBasicSetting = VgcApis.Libs.Utils.SerializeObject(basicSetting);
             SaveUserSettings();
         }
@@ -79,7 +78,6 @@
                     userSettings.tabBasicSetting);
                 if (result != null)
                 {
-                    result.isAutoUpdateSysProxy = false;
                     return result;
                 }
 

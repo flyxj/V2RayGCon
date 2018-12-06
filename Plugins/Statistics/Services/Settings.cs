@@ -73,11 +73,13 @@ namespace Statistics.Services
             // So losing 5 minutes of statistics data is an acceptable loss.
             if (!IsShutdown())
             {
+                VgcApis.Libs.Sys.FileLog.Info("Statistics: save data");
                 UpdateHistoryStatsDataWorker();
             }
 
             bookKeeper.DoItNow();
             bookKeeper.Quit();
+            VgcApis.Libs.Sys.FileLog.Info("Statistics: done!");
         }
         #endregion
 
