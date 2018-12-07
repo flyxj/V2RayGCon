@@ -28,7 +28,7 @@ markComment: false
 #   Your comment here.
 
 # Comment to post when closing a stale Issue or Pull Request.
-closeComment: >
+closeComment: |-
    Nobody 使用了:seven:天无理由关issue特权:zzz:
    Nobody use :seven: days unconditional close issue privilege.
 
