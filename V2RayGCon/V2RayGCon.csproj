@@ -40,11 +40,11 @@
     <CodeAnalysisRuleSet>V2RayGCon.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcFull|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'full|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\VgcFull\</OutputPath>
+    <OutputPath>bin\full\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -80,9 +80,9 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcLite|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'lite|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\VgcLite\</OutputPath>
+    <OutputPath>bin\lite\</OutputPath>
     <DefineConstants>TRACE;V2RAYGCON_LITE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>full</DebugType>
@@ -496,11 +496,24 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set "libsDir=libs\"
-set "fileList=Google.Protobuf Statistics Pacman ProxySetter DotNetZip Newtonsoft ScintillaNET VgcApis zxing AutoUpdater.NET"
+set "remove4VgcLiteFileList=ProxySetter"
+set "move2LibDirFileList=Google.Protobuf Statistics Pacman ProxySetter DotNetZip Newtonsoft ScintillaNET VgcApis zxing AutoUpdater.NET"
 
 call:CreateFolderOnDemand "%25libsDir%25"
-call:MoveFilesByList "%25fileList%25"
 
+if "$(ConfigurationName)" == "lite" ( 
+  call:RemoveFiles "%25remove4VgcLiteFileList%25"
+) 
+
+call:MoveFilesByList "%25move2LibDirFileList%25"
+
+goto:eof
+
+:RemoveFiles
+  for %25%25i in (%25~1) do ( 
+	echo "Remove files %25%25i"	
+	del "%25%25i*"
+  ) 
 goto:eof
 
 :CreateFolderOnDemand

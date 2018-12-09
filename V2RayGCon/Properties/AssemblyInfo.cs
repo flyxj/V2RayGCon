@@ -31,11 +31,5 @@ using System.Runtime.InteropServices;
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 // 方法是按如下所示使用“*”: :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.5.5")]
+[assembly: AssemblyVersion("1.1.6.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-/* 
- * 1.1.5.5 closing down statistic
- * 1.1.5.4 fix 选定自定义PAC后，立刻刷新缓存
- * 1.1.5.3 fix 导入vmess时没有处理tls选项问题
- */

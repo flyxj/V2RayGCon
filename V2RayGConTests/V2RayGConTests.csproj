@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcFull|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'full|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VgcLite|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'lite|AnyCPU' ">
     <OutputPath>bin\DisableProxySetter\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
