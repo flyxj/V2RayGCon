@@ -429,6 +429,14 @@ namespace V2RayGCon.Service
             }
             catch { }
 
+            try
+            {
+                streamToken["security"] =
+                    vmess.tls?.ToLower() == "tls" ?
+                    "tls" : "none";
+            }
+            catch { }
+
             return streamToken;
         }
 

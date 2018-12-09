@@ -99,6 +99,7 @@ namespace ProxySetter.Services
             StopCustomPacFileWatcher();
             if (bs.isUseCustomPac)
             {
+                LazyCustomPacFileCacheUpdate();
                 StartFileWatcher(bs.customPacFileName);
             }
         }
@@ -154,7 +155,9 @@ namespace ProxySetter.Services
                 }
                 catch { }
             }
-            // Debug.WriteLine("content: " + customPacCache);
+
+            Lib.Sys.ProxySetter.SetPacProxy(GetPacUrl());
+            setting.SendLog(I18N.SystemProxySettingUpdated);
         }
 
         public void Cleanup()

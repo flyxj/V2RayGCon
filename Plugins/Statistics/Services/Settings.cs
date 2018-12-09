@@ -73,11 +73,13 @@ namespace Statistics.Services
             // So losing 5 minutes of statistics data is an acceptable loss.
             if (!IsShutdown())
             {
+                VgcApis.Libs.Sys.FileLog.Info("Statistics: save data");
                 UpdateHistoryStatsDataWorker();
             }
 
             bookKeeper.DoItNow();
             bookKeeper.Quit();
+            VgcApis.Libs.Sys.FileLog.Info("Statistics: done!");
         }
         #endregion
 
@@ -98,6 +100,7 @@ namespace Statistics.Services
             var title = coreCtrl.GetTitle();
             Task.Factory.StartNew(
                 () => AddToHistoryStatsData(uid, title, sample));
+
         }
 
         void AddToHistoryStatsData(
@@ -105,6 +108,11 @@ namespace Statistics.Services
             string title,
             VgcApis.Models.Datas.StatsSample sample)
         {
+            if (sample == null)
+            {
+                return;
+            }
+
             var datas = userSettins.statsData;
             if (datas.ContainsKey(uid))
             {

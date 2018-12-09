@@ -36,10 +36,6 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
   
 首次使用请打开日志窗口，查看输出信息排查错误  
 
-### PAC说明
-本软件使用的是txthinking的PAC,特此感谢  
-Github地址：[https://github.com/txthinking/pac](https://github.com/txthinking/pac)  
-
 ### 设计目标
  1. 保留用户对v2ray-core的操控能力  
  2. 简化配置过程  
@@ -66,4 +62,17 @@ Github地址：[https://github.com/txthinking/pac](https://github.com/txthinking
   
 二维码生成器  
 ![qrcode.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/qrcode.png)  
+
+### 本项目使用到以下项目(按字母排序)
+[2dust/v2rayN](https://github.com/2dust/v2rayN) vmess分享链接及订阅格式  
+[haf/DotNetZip.Semverd](https://github.com/haf/DotNetZip.Semverd) .net 4.0解压zip文件  
+[jacobslusser/ScintillaNET](https://github.com/jacobslusser/ScintillaNET) 编辑器  
+[JamesNK/Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) 处理json  
+[micjahn/ZXing.Net](https://github.com/micjahn/ZXing.Net/) 处理二维码  
+[PoseidonM4A4/v2rayP](https://github.com/PoseidonM4A4/v2rayP) Launcher等多处代码参(抄)考(习)来源  
+[ravibpatel/AutoUpdater.NET](https://github.com/ravibpatel/AutoUpdater.NET) 自动更新功能  
+[shadowsocksr-backup/shadowsocksr-csharp](https://github.com/shadowsocksr-backup/shadowsocksr-csharp) 屏幕扫码实现代码  
+[txthinking/pac](https://github.com/txthinking/pac) ProxySetter插件中的默认PAC  
+[v2ray/v2ray-core](https://github.com/v2ray/v2ray-core) v2ray-core服务端  
+
 

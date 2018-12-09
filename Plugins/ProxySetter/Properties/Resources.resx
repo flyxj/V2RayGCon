@@ -121,7 +121,7 @@
     <value>ProxySetter</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>0.0.4</value>
+    <value>0.0.5</value>
     <comment>Fixed bug. IE不认utf-8头</comment>
   </data>
 </root>

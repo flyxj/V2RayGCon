@@ -6,7 +6,6 @@
         PacServer pacServer;
         ServerTracker serverTracker;
 
-
         VgcApis.IService vgcApi;
         Model.Data.ProxyRegKeyValue orgSysProxySetting;
         Views.WinForms.FormMain formMain;
@@ -16,6 +15,8 @@
         public void Run(VgcApis.IService api)
         {
             orgSysProxySetting = Lib.Sys.ProxySetter.GetProxySetting();
+            VgcApis.Libs.Sys.FileLog.Info("ProxySetter: save sys proxy settings");
+
             this.vgcApi = api;
 
             var vgcSetting = api.GetVgcSettingService();
@@ -56,6 +57,7 @@
             pacServer.Cleanup();
             setting.Cleanup();
             Lib.Sys.ProxySetter.UpdateProxySettingOnDemand(orgSysProxySetting);
+            VgcApis.Libs.Sys.FileLog.Info("ProxySetter: restore sys proxy settings");
         }
         #region properties
         #endregion

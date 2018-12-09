@@ -40,11 +40,11 @@
     <CodeAnalysisRuleSet>V2RayGCon.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'full|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\full\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -80,21 +80,10 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisableProxySetter|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'lite|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DisableProxySetter\</OutputPath>
-    <DefineConstants>TRACE;DISABLE_PROXY_SETTER</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>V2RayGCon.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DisablePacAutoMode|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DisablePacAutoMode\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\lite\</OutputPath>
+    <DefineConstants>TRACE;V2RAYGCON_LITE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -159,7 +148,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Lib\Sys\ChildProcessTracker.cs" />
     <Compile Include="Lib\Sys\DllLoader.cs" />
-    <Compile Include="Lib\Sys\Log.cs" />
     <Compile Include="Lib\QRCode\HybridBinarizer.cs" />
     <Compile Include="Lib\QRCode\QRCode.cs" />
     <Compile Include="Lib\Nets\TimedWebClient.cs">
@@ -508,11 +496,24 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set "libsDir=libs\"
-set "fileList=Google.Protobuf Statistics Pacman ProxySetter DotNetZip Newtonsoft ScintillaNET VgcApis zxing AutoUpdater.NET"
+set "remove4VgcLiteFileList=ProxySetter"
+set "move2LibDirFileList=Google.Protobuf Statistics Pacman ProxySetter DotNetZip Newtonsoft ScintillaNET VgcApis zxing AutoUpdater.NET"
 
 call:CreateFolderOnDemand "%25libsDir%25"
-call:MoveFilesByList "%25fileList%25"
 
+if "$(ConfigurationName)" == "lite" ( 
+  call:RemoveFiles "%25remove4VgcLiteFileList%25"
+) 
+
+call:MoveFilesByList "%25move2LibDirFileList%25"
+
+goto:eof
+
+:RemoveFiles
+  for %25%25i in (%25~1) do ( 
+	echo "Remove files %25%25i"	
+	del "%25%25i*"
+  ) 
 goto:eof
 
 :CreateFolderOnDemand

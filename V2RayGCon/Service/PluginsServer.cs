@@ -94,7 +94,7 @@ namespace V2RayGCon.Service
             var plugins = new VgcApis.IPlugin[] {
                 new Pacman.Pacman(),
 
-#if !DISABLE_PROXY_SETTER
+#if !V2RAYGCON_LITE
                 // Many thanks to windows defender
                 new ProxySetter.ProxySetter(),
 #endif

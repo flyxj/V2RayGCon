@@ -59,9 +59,6 @@
 
         public void SaveBasicSetting(Model.Data.BasicSettings basicSetting)
         {
-#if DISABLE_PAC_AUTO_MODE
-            basicSetting.isAutoUpdateSysProxy = false;
-#endif
             userSettings.tabBasicSetting = VgcApis.Libs.Utils.SerializeObject(basicSetting);
             SaveUserSettings();
         }
@@ -81,9 +78,6 @@
                     userSettings.tabBasicSetting);
                 if (result != null)
                 {
-#if DISABLE_PAC_AUTO_MODE
-                    result.isAutoUpdateSysProxy = false;
-#endif
                     return result;
                 }
 
@@ -106,9 +100,9 @@
         {
 
         }
-#endregion
+        #endregion
 
-#region private methods
+        #region private methods
         Model.Data.UserSettings LoadUserSettings()
         {
             var empty = new Model.Data.UserSettings();
@@ -129,7 +123,7 @@
 
             return empty;
         }
-#endregion
+        #endregion
 
     }
 

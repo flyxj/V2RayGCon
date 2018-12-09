@@ -132,14 +132,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="cboxBasicPacProtocol.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 189</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cboxBasicPacProtocol.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>85, 126</value>
   </data>
   <data name="cboxBasicPacProtocol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 26</value>
+    <value>134, 20</value>
   </data>
   <data name="cboxBasicPacProtocol.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -160,13 +156,10 @@
     <value>True</value>
   </data>
   <data name="chkBasicUseCustomPac.Location" type="System.Drawing.Point, System.Drawing">
-    <value>340, 231</value>
-  </data>
-  <data name="chkBasicUseCustomPac.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>227, 154</value>
   </data>
   <data name="chkBasicUseCustomPac.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>84, 16</value>
   </data>
   <data name="chkBasicUseCustomPac.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -199,13 +192,10 @@
     <value>Black list</value>
   </data>
   <data name="cboxBasicPacMode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 150</value>
-  </data>
-  <data name="cboxBasicPacMode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>85, 100</value>
   </data>
   <data name="cboxBasicPacMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 26</value>
+    <value>134, 20</value>
   </data>
   <data name="cboxBasicPacMode.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -232,13 +222,10 @@
     <value>Global</value>
   </data>
   <data name="cboxBasicSysProxyMode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 30</value>
-  </data>
-  <data name="cboxBasicSysProxyMode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>85, 20</value>
   </data>
   <data name="cboxBasicSysProxyMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 26</value>
+    <value>134, 20</value>
   </data>
   <data name="cboxBasicSysProxyMode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -259,13 +246,10 @@
     <value>True</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 34</value>
-  </data>
-  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>8, 23</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 18</value>
+    <value>65, 12</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -292,13 +276,10 @@
     <value>True</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 74</value>
-  </data>
-  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>8, 49</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 18</value>
+    <value>65, 12</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -322,13 +303,10 @@
     <value>5</value>
   </data>
   <data name="btnBasicBrowseCustomPac.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 225</value>
-  </data>
-  <data name="btnBasicBrowseCustomPac.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>8, 150</value>
   </data>
   <data name="btnBasicBrowseCustomPac.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 34</value>
+    <value>65, 23</value>
   </data>
   <data name="btnBasicBrowseCustomPac.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -352,13 +330,10 @@
     <value>True</value>
   </data>
   <data name="chkBasicAutoUpdateSysProxy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>340, 33</value>
-  </data>
-  <data name="chkBasicAutoUpdateSysProxy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>227, 22</value>
   </data>
   <data name="chkBasicAutoUpdateSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 22</value>
+    <value>48, 16</value>
   </data>
   <data name="chkBasicAutoUpdateSysProxy.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -385,13 +360,10 @@
     <value>True</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 194</value>
-  </data>
-  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>8, 129</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 18</value>
+    <value>77, 12</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -415,13 +387,10 @@
     <value>True</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 154</value>
-  </data>
-  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>8, 103</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 18</value>
+    <value>53, 12</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -445,13 +414,10 @@
     <value>True</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 116</value>
-  </data>
-  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>8, 77</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 18</value>
+    <value>53, 12</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -478,13 +444,10 @@
     <value>True</value>
   </data>
   <data name="chkBasicPacAlwaysOn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>340, 112</value>
-  </data>
-  <data name="chkBasicPacAlwaysOn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>227, 75</value>
   </data>
   <data name="chkBasicPacAlwaysOn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 22</value>
+    <value>60, 16</value>
   </data>
   <data name="chkBasicPacAlwaysOn.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -508,13 +471,10 @@
     <value>11</value>
   </data>
   <data name="tboxBasicCustomPacPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 228</value>
-  </data>
-  <data name="tboxBasicCustomPacPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>85, 152</value>
   </data>
   <data name="tboxBasicCustomPacPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 28</value>
+    <value>134, 21</value>
   </data>
   <data name="tboxBasicCustomPacPath.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -532,13 +492,10 @@
     <value>12</value>
   </data>
   <data name="tboxBaiscPacPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 110</value>
-  </data>
-  <data name="tboxBaiscPacPort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>85, 73</value>
   </data>
   <data name="tboxBaiscPacPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 28</value>
+    <value>134, 21</value>
   </data>
   <data name="tboxBaiscPacPort.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -556,13 +513,10 @@
     <value>13</value>
   </data>
   <data name="tboxBasicGlobalPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 69</value>
-  </data>
-  <data name="tboxBasicGlobalPort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>85, 46</value>
   </data>
   <data name="tboxBasicGlobalPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 28</value>
+    <value>134, 21</value>
   </data>
   <data name="tboxBasicGlobalPort.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -579,20 +533,15 @@
   <data name="&gt;&gt;tboxBasicGlobalPort.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="groupBox1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="groupBox1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 464</value>
+    <value>319, 314</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -628,13 +577,10 @@
     <value>Zoom</value>
   </data>
   <data name="btnBasicClearSysProxy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>405, 69</value>
-  </data>
-  <data name="btnBasicClearSysProxy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>270, 46</value>
   </data>
   <data name="btnBasicClearSysProxy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>20, 20</value>
   </data>
   <data name="btnBasicClearSysProxy.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -658,13 +604,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="lbBasicProxyLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 74</value>
-  </data>
-  <data name="lbBasicProxyLink.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>16, 49</value>
   </data>
   <data name="lbBasicProxyLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 21</value>
+    <value>226, 14</value>
   </data>
   <data name="lbBasicProxyLink.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -697,13 +640,10 @@
     <value>True</value>
   </data>
   <data name="lbBasicCurPacServerStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 36</value>
-  </data>
-  <data name="lbBasicCurPacServerStatus.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>16, 24</value>
   </data>
   <data name="lbBasicCurPacServerStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 18</value>
+    <value>137, 12</value>
   </data>
   <data name="lbBasicCurPacServerStatus.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -739,13 +679,10 @@
     <value>Zoom</value>
   </data>
   <data name="btnBaiscCopyProxyLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>441, 69</value>
-  </data>
-  <data name="btnBaiscCopyProxyLink.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>292, 46</value>
   </data>
   <data name="btnBaiscCopyProxyLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>20, 20</value>
   </data>
   <data name="btnBaiscCopyProxyLink.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -781,13 +718,10 @@
     <value>Zoom</value>
   </data>
   <data name="btnBasicDebugPacServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>438, 30</value>
-  </data>
-  <data name="btnBasicDebugPacServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>292, 20</value>
   </data>
   <data name="btnBasicDebugPacServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>20, 20</value>
   </data>
   <data name="btnBasicDebugPacServer.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -823,13 +757,10 @@
     <value>Zoom</value>
   </data>
   <data name="btnBasicStartPacServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>372, 30</value>
-  </data>
-  <data name="btnBasicStartPacServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>248, 20</value>
   </data>
   <data name="btnBasicStartPacServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>20, 20</value>
   </data>
   <data name="btnBasicStartPacServer.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -863,13 +794,10 @@
     <value>Zoom</value>
   </data>
   <data name="btnBasicStopPacServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>405, 30</value>
-  </data>
-  <data name="btnBasicStopPacServer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>270, 20</value>
   </data>
   <data name="btnBasicStopPacServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 30</value>
+    <value>20, 20</value>
   </data>
   <data name="btnBasicStopPacServer.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -893,16 +821,10 @@
     <value>Fill</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>492, 4</value>
-  </data>
-  <data name="groupBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="groupBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>328, 3</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 464</value>
+    <value>320, 314</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -926,16 +848,13 @@
     <value>Fill</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3</value>
   </data>
   <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>976, 472</value>
+    <value>651, 320</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -956,16 +875,13 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="groupBox1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tabBasic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 28</value>
-  </data>
-  <data name="tabBasic.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>4, 22</value>
   </data>
   <data name="tabBasic.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3, 3, 3</value>
   </data>
   <data name="tabBasic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>984, 480</value>
+    <value>657, 326</value>
   </data>
   <data name="tabBasic.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -992,13 +908,10 @@
     <value>Fill</value>
   </data>
   <data name="rtboxPacWhiteList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="rtboxPacWhiteList.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 17</value>
   </data>
   <data name="rtboxPacWhiteList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>472, 435</value>
+    <value>311, 283</value>
   </data>
   <data name="rtboxPacWhiteList.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1022,16 +935,10 @@
     <value>Fill</value>
   </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="groupBox3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="groupBox3.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 464</value>
+    <value>317, 303</value>
   </data>
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1055,13 +962,10 @@
     <value>Fill</value>
   </data>
   <data name="rtboxPacBlackList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="rtboxPacBlackList.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 17</value>
   </data>
   <data name="rtboxPacBlackList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>472, 435</value>
+    <value>312, 283</value>
   </data>
   <data name="rtboxPacBlackList.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1085,16 +989,10 @@
     <value>Fill</value>
   </data>
   <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>492, 4</value>
-  </data>
-  <data name="groupBox4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="groupBox4.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>326, 3</value>
   </data>
   <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 464</value>
+    <value>318, 303</value>
   </data>
   <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1118,16 +1016,13 @@
     <value>Fill</value>
   </data>
   <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="tableLayoutPanel3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3</value>
   </data>
   <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>976, 472</value>
+    <value>647, 309</value>
   </data>
   <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1148,16 +1043,13 @@
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="groupBox3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="groupBox4" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="tabPac.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 28</value>
-  </data>
-  <data name="tabPac.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>4, 22</value>
   </data>
   <data name="tabPac.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3, 3, 3</value>
   </data>
   <data name="tabPac.Size" type="System.Drawing.Size, System.Drawing">
-    <value>984, 480</value>
+    <value>653, 315</value>
   </data>
   <data name="tabPac.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1181,13 +1073,10 @@
     <value>Fill</value>
   </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="tabControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>992, 512</value>
+    <value>665, 352</value>
   </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1208,13 +1097,10 @@
     <value>Top</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>500, 9</value>
-  </data>
-  <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>335, 6</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 34</value>
+    <value>75, 23</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1238,13 +1124,10 @@
     <value>Top</value>
   </data>
   <data name="btnSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 9</value>
-  </data>
-  <data name="btnSave.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>254, 6</value>
   </data>
   <data name="btnSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 34</value>
+    <value>75, 23</value>
   </data>
   <data name="btnSave.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1268,13 +1151,10 @@
     <value>Fill</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 524</value>
-  </data>
-  <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 361</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>992, 52</value>
+    <value>665, 34</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1297,14 +1177,11 @@
   <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 580</value>
+    <value>671, 398</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1322,22 +1199,19 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tabControl1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,60" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tabControl1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,40" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>9, 18</value>
+    <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 580</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>671, 398</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1022, 636</value>
+    <value>687, 437</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

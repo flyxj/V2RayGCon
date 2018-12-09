@@ -44,6 +44,8 @@ namespace Statistics.Views.WinForms
         #endregion
 
         #region UI event
+
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
