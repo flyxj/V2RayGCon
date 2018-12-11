@@ -38,7 +38,6 @@
             this.tboxUID = new System.Windows.Forms.TextBox();
             this.tboxHost = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chkboxTLS = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -55,12 +54,14 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.linkConfigEditor = new System.Windows.Forms.LinkLabel();
+            this.btnGenUserID = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnGenUserID);
             this.groupBox1.Controls.Add(this.tboxAID);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.tboxPort);
@@ -68,7 +69,6 @@
             this.groupBox1.Controls.Add(this.tboxUID);
             this.groupBox1.Controls.Add(this.tboxHost);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
@@ -109,11 +109,6 @@
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
             // 
             // groupBox2
             // 
@@ -216,6 +211,13 @@
             this.linkConfigEditor.UseCompatibleTextRendering = true;
             this.linkConfigEditor.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkConfigEditor_LinkClicked);
             // 
+            // btnGenUserID
+            // 
+            resources.ApplyResources(this.btnGenUserID, "btnGenUserID");
+            this.btnGenUserID.Name = "btnGenUserID";
+            this.btnGenUserID.UseVisualStyleBackColor = true;
+            this.btnGenUserID.Click += new System.EventHandler(this.btnGenUserID_Click);
+            // 
             // FormSimAddVmessClient
             // 
             resources.ApplyResources(this, "$this");
@@ -243,7 +245,6 @@
         #endregion
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tboxUID;
         private System.Windows.Forms.TextBox tboxHost;
@@ -266,5 +267,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.LinkLabel linkConfigEditor;
+        private System.Windows.Forms.Button btnGenUserID;
     }
 }

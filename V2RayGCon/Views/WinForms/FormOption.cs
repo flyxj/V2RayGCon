@@ -66,7 +66,8 @@ namespace V2RayGCon.Views.WinForms
                 new Controller.OptionComponent.Subscription(
                     flySubsUrlContainer,
                     btnAddSubsUrl,
-                    btnUpdateViaSubscription));
+                    btnUpdateViaSubscription,
+                    chkSubsIsUseProxy));
 
             ctrl.Plug(
                 new Controller.OptionComponent.TabPlugin(

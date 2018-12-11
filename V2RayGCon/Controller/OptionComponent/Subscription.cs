@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace V2RayGCon.Controller.OptionComponent
     {
         FlowLayoutPanel flyPanel;
         Button btnAdd, btnUpdate;
+        CheckBox chkSubsIsUseProxy;
 
         Service.Setting setting;
         Service.Servers servers;
@@ -22,7 +24,8 @@ namespace V2RayGCon.Controller.OptionComponent
         public Subscription(
             FlowLayoutPanel flyPanel,
             Button btnAdd,
-            Button btnUpdate)
+            Button btnUpdate,
+            CheckBox chkSubsIsUseProxy)
         {
             this.setting = Service.Setting.Instance;
             this.servers = Service.Servers.Instance;
@@ -30,7 +33,9 @@ namespace V2RayGCon.Controller.OptionComponent
             this.flyPanel = flyPanel;
             this.btnAdd = btnAdd;
             this.btnUpdate = btnUpdate;
+            this.chkSubsIsUseProxy = chkSubsIsUseProxy;
 
+            chkSubsIsUseProxy.Checked = setting.isUpdateUseProxy;
             InitPanel();
             BindEvent();
         }
@@ -182,52 +187,84 @@ namespace V2RayGCon.Controller.OptionComponent
             }
         }
 
-        private void ImportFromSubscriptionUrls(Dictionary<string, string> subscriptions)
+        private void ImportFromSubscriptionUrls(
+            Dictionary<string, string> subscriptions)
         {
             Task.Factory.StartNew(() =>
             {
                 // dict( [url]=>mark ) to list(url,mark) mark maybe null
-                var list = subscriptions.Select(s => s).ToList();
-
-                var timeout = Lib.Utils.Str2Int(StrConst.ParseImportTimeOut);
-                var contents = Lib.Utils.ExecuteInParallel<
-                    KeyValuePair<string, string>,
-                    string[]>(list, (item) =>
-                 {
-                     // item[url]=mark
-                     var subsString = Lib.Utils.Fetch(item.Key, timeout * 1000);
-                     if (string.IsNullOrEmpty(subsString))
-                     {
-                         setting.SendLog(I18N.DownloadFail + "\n" + item.Key);
-                         return new string[] { string.Empty, item.Value };
-                     }
-
-                     var links = new List<string>();
-                     var matches = Regex.Matches(subsString, StrConst.PatternBase64NonStandard);
-                     foreach (Match match in matches)
-                     {
-                         try
-                         {
-                             links.Add(Lib.Utils.Base64Decode(match.Value));
-                         }
-                         catch { }
-                     }
-
-                     return new string[] { string.Join("\n", links), item.Value };
-                 });
-
-                servers.ImportLinks(contents);
-
-                try
-                {
-                    this.btnUpdate.Invoke((MethodInvoker)delegate
-                    {
-                        this.btnUpdate.Enabled = true;
-                    });
-                }
-                catch { }
+                var subsUrl = subscriptions.Select(s => s).ToList();
+                List<string[]> links = BatchGetLinksFromSubsUrl(subsUrl);
+                servers.ImportLinks(links);
+                EnableBtnUpdate();
 
             });
+        }
+
+        int GetAvailableHttpProxyPort()
+        {
+            if (!chkSubsIsUseProxy.Checked)
+            {
+                return -1;
+            }
+
+            var port = servers.GetAvailableHttpProxyPort();
+            if (port > 0)
+            {
+                return port;
+            }
+
+            Task.Factory.StartNew(
+                () => MessageBox.Show(
+                    I18N.NoQualifyProxyServer));
+
+            return -1;
+        }
+
+        private List<string[]> BatchGetLinksFromSubsUrl(
+            List<KeyValuePair<string, string>> subscriptionInfos)
+        {
+            var timeout = Lib.Utils.Str2Int(StrConst.ParseImportTimeOut) * 1000;
+            var proxyPort = GetAvailableHttpProxyPort();
+
+            Func<KeyValuePair<string, string>, string[]> worker = (item) =>
+            {
+                // item[url]=mark
+                var subsString = Lib.Utils.FetchThroughProxy(item.Key, proxyPort, timeout);
+
+                if (string.IsNullOrEmpty(subsString))
+                {
+                    setting.SendLog(I18N.DownloadFail + "\n" + item.Key);
+                    return new string[] { string.Empty, item.Value };
+                }
+
+                var links = new List<string>();
+                var matches = Regex.Matches(subsString, StrConst.PatternBase64NonStandard);
+                foreach (Match match in matches)
+                {
+                    try
+                    {
+                        links.Add(Lib.Utils.Base64Decode(match.Value));
+                    }
+                    catch { }
+                }
+
+                return new string[] { string.Join("\n", links), item.Value };
+            };
+
+            return Lib.Utils.ExecuteInParallel(subscriptionInfos, worker);
+        }
+
+        private void EnableBtnUpdate()
+        {
+            try
+            {
+                this.btnUpdate.Invoke((MethodInvoker)delegate
+                {
+                    this.btnUpdate.Enabled = true;
+                });
+            }
+            catch { }
         }
         #endregion
     }

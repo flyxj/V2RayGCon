@@ -35,6 +35,7 @@
             this.btnImportAdd = new System.Windows.Forms.Button();
             this.flyImportPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageSubscribe = new System.Windows.Forms.TabPage();
+            this.chkSubsIsUseProxy = new System.Windows.Forms.CheckBox();
             this.btnUpdateViaSubscription = new System.Windows.Forms.Button();
             this.btnAddSubsUrl = new System.Windows.Forms.Button();
             this.flySubsUrlContainer = new System.Windows.Forms.FlowLayoutPanel();
@@ -112,12 +113,20 @@
             // tabPageSubscribe
             // 
             resources.ApplyResources(this.tabPageSubscribe, "tabPageSubscribe");
+            this.tabPageSubscribe.Controls.Add(this.chkSubsIsUseProxy);
             this.tabPageSubscribe.Controls.Add(this.btnUpdateViaSubscription);
             this.tabPageSubscribe.Controls.Add(this.btnAddSubsUrl);
             this.tabPageSubscribe.Controls.Add(this.flySubsUrlContainer);
             this.tabPageSubscribe.Name = "tabPageSubscribe";
             this.toolTip1.SetToolTip(this.tabPageSubscribe, resources.GetString("tabPageSubscribe.ToolTip"));
             this.tabPageSubscribe.UseVisualStyleBackColor = true;
+            // 
+            // chkSubsIsUseProxy
+            // 
+            resources.ApplyResources(this.chkSubsIsUseProxy, "chkSubsIsUseProxy");
+            this.chkSubsIsUseProxy.Name = "chkSubsIsUseProxy";
+            this.toolTip1.SetToolTip(this.chkSubsIsUseProxy, resources.GetString("chkSubsIsUseProxy.ToolTip"));
+            this.chkSubsIsUseProxy.UseVisualStyleBackColor = true;
             // 
             // btnUpdateViaSubscription
             // 
@@ -356,6 +365,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageImport.ResumeLayout(false);
             this.tabPageSubscribe.ResumeLayout(false);
+            this.tabPageSubscribe.PerformLayout();
             this.tabPageSetting.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -405,5 +415,6 @@
         private System.Windows.Forms.RadioButton rbtnIdontCare;
         private System.Windows.Forms.RadioButton rbtnSetUpgradeToVgcFull;
         private System.Windows.Forms.CheckBox chkSetUpgradeUseProxy;
+        private System.Windows.Forms.CheckBox chkSubsIsUseProxy;
     }
 }

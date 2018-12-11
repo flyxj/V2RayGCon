@@ -27,7 +27,8 @@ namespace V2RayGCon.Controller.OptionComponent
             this.flyPanel = flyPanel;
             this.btnUpdate = btnUpdate;
 
-            curPluginInfos = setting.GetPluginInfoItems();
+            curPluginInfos = pluginServ.GetterPluginDirInfo();
+            setting.SavePluginInfoItems(curPluginInfos);
             MarkdownCurOption();
 
             InitPanel();

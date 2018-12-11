@@ -42,6 +42,10 @@
             this.lbIssue = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.pnlDownloadV2RayCore = new System.Windows.Forms.Panel();
+            this.pnlBasicUsage = new System.Windows.Forms.Panel();
+            this.pnlDownloadV2RayCore.SuspendLayout();
+            this.pnlBasicUsage.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -133,27 +137,42 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
+            // pnlDownloadV2RayCore
+            // 
+            this.pnlDownloadV2RayCore.Controls.Add(this.label5);
+            this.pnlDownloadV2RayCore.Controls.Add(this.label4);
+            this.pnlDownloadV2RayCore.Controls.Add(this.label2);
+            this.pnlDownloadV2RayCore.Controls.Add(this.lbV2rayCoreGitHub);
+            this.pnlDownloadV2RayCore.Controls.Add(this.lbDownloadV2rayCore);
+            resources.ApplyResources(this.pnlDownloadV2RayCore, "pnlDownloadV2RayCore");
+            this.pnlDownloadV2RayCore.Name = "pnlDownloadV2RayCore";
+            // 
+            // pnlBasicUsage
+            // 
+            this.pnlBasicUsage.Controls.Add(this.lbIssue);
+            this.pnlBasicUsage.Controls.Add(this.lbConfigEditor);
+            this.pnlBasicUsage.Controls.Add(this.lbSimAddVmessWin);
+            this.pnlBasicUsage.Controls.Add(this.lbScanQRCode);
+            this.pnlBasicUsage.Controls.Add(this.label3);
+            this.pnlBasicUsage.Controls.Add(this.lbCopyFromClipboard);
+            this.pnlBasicUsage.Controls.Add(this.lbWiki);
+            resources.ApplyResources(this.pnlBasicUsage, "pnlBasicUsage");
+            this.pnlBasicUsage.Name = "pnlBasicUsage";
+            // 
             // WelcomeUI
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.lbIssue);
-            this.Controls.Add(this.lbWiki);
-            this.Controls.Add(this.lbConfigEditor);
-            this.Controls.Add(this.lbScanQRCode);
-            this.Controls.Add(this.lbSimAddVmessWin);
-            this.Controls.Add(this.lbCopyFromClipboard);
-            this.Controls.Add(this.lbV2rayCoreGitHub);
-            this.Controls.Add(this.lbDownloadV2rayCore);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pnlBasicUsage);
+            this.Controls.Add(this.pnlDownloadV2RayCore);
             this.Controls.Add(this.label1);
             this.Name = "WelcomeUI";
             this.Load += new System.EventHandler(this.WelcomeFlyPanelComponent_Load);
+            this.pnlDownloadV2RayCore.ResumeLayout(false);
+            this.pnlDownloadV2RayCore.PerformLayout();
+            this.pnlBasicUsage.ResumeLayout(false);
+            this.pnlBasicUsage.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -172,5 +191,7 @@
         private System.Windows.Forms.LinkLabel lbIssue;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel pnlDownloadV2RayCore;
+        private System.Windows.Forms.Panel pnlBasicUsage;
     }
 }

@@ -98,5 +98,10 @@ namespace V2RayGCon.Views.WinForms
         {
             new FormConfiger();
         }
+
+        private void btnGenUserID_Click(object sender, EventArgs e)
+        {
+            tboxUID.Text= Guid.NewGuid().ToString();
+        }
     }
 }
