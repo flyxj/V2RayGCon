@@ -10,7 +10,7 @@ namespace V2RayGCon.Model.Data
 
         public ServerTracker()
         {
-            isTrackerOn = false;
+            isTrackerOn = true;
             serverList = new List<string>();
             curServer = string.Empty;
         }
