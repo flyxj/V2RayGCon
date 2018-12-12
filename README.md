@@ -9,6 +9,7 @@
 [7]: https://img.shields.io/github/release/nobody3u/V2RayGCon.svg "Release Badge"
 [8]: https://github.com/nobody3u/V2RayGCon/releases/latest "Releases"
 
+[English wiki](https://github.com/nobody3u/V2RayGCon/wiki/English-wiki)  
 V2RayGCon是windows平台下的v2ray-core图形配置程序  
 
 ### 主要用途  
@@ -31,25 +32,13 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 ### 截图  
 系统托盘图标  
 ![systray.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/systray.png)  
-
-下载v2ray-core窗口  
-![downloader.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/downloader.png)  
   
 主界面  
 ![mainform.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/mainform.png)  
-
-简易添加vmess服务器窗口  
-![addvmessclient.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/addvmessclient.png)  
   
 配置编辑器  
-完整模式  
 ![configeditor.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/configeditor.png)  
-精简模式  
-![configeditor_min.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/configeditor_min.png)  
   
-二维码生成器  
-![qrcode.png](https://raw.githubusercontent.com/nobody3u/V2RayGCon/master/screenshot/qrcode.png)  
-
 ### 本项目使用到以下项目(按字母排序)
 [2dust/v2rayN](https://github.com/2dust/v2rayN) vmess分享链接及订阅格式  
 [haf/DotNetZip.Semverd](https://github.com/haf/DotNetZip.Semverd) .net 4.0解压zip文件  
