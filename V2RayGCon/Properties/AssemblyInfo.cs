@@ -35,6 +35,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 /*
- * v1.1.6.2 修改各默认设置
+ * v1.1.6.2 修改各默认设置，调整UI
  * v1.1.6.1 进入选项-插件后自动刷新可用插件列表
  */
