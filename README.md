@@ -20,6 +20,7 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 ### 使用说明  
 * [新手指引](https://github.com/nobody3u/V2RayGCon/wiki/%E6%96%B0%E6%89%8B%E6%8C%87%E5%BC%95)  
 * [各部分详细说明](https://github.com/nobody3u/V2RayGCon/wiki)  
+
 首次使用请打开日志窗口，查看输出信息排查错误  
 
 ### 设计目标
