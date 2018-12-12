@@ -17,23 +17,9 @@ V2RayGCon是windows平台下的v2ray-core图形配置程序
 * 导入/导出[vmess](https://github.com/2dust/v2rayN/wiki/%E5%88%86%E4%BA%AB%E9%93%BE%E6%8E%A5%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E(ver-2))/[v2ray](https://github.com/nobody3u/V2RayGCon/wiki/%E5%85%B3%E4%BA%8EV2RayGCon#v2ray%E9%93%BE%E6%8E%A5%E6%98%AF%E4%BB%80%E4%B9%88%E9%AC%BC)链接  
 * 生成/扫描vmess/v2ray二维码  
   
-### 简要使用说明  
-  
-（详细用法请看 [wiki](https://github.com/nobody3u/V2RayGCon/wiki)）  
-  
-下载解压[Release](https://github.com/nobody3u/V2RayGCon/releases)中的V2RayGCon-lite.zip到任意目录  
-然后通过本软件的下载窗口下载v2ray-core  
-也可以手动下载再解压到本软件目录内    
-或者直接下载V2RayGCon-box.zip省去上面的步骤  
-  
-按需选用下列方式添加配置：  
- 1. 托盘菜单->`扫描二维码`  
- 2. 托盘菜单->`剪切板导入`  
- 3. 托盘菜单->`主窗口`->`文件`->`添加vmess客户端`  
- 4. 托盘菜单->`主窗口`->`窗口`->`配置编辑器`  
-    
-添加配置后，可在主窗口中启用相应配置  
-  
+### 使用说明  
+* [新手指引](https://github.com/nobody3u/V2RayGCon/wiki/%E6%96%B0%E6%89%8B%E6%8C%87%E5%BC%95)  
+* [各部分详细说明](https://github.com/nobody3u/V2RayGCon/wiki)  
 首次使用请打开日志窗口，查看输出信息排查错误  
 
 ### 设计目标
