@@ -71,8 +71,7 @@ namespace V2RayGCon.Views.WinForms
 
             ctrl.Plug(
                 new Controller.OptionComponent.TabPlugin(
-                    flyPluginsItemsContainer,
-                    btnPluginsRefresh));
+                    flyPluginsItemsContainer));
 
             ctrl.Plug(
                 new Controller.OptionComponent.TabSetting(

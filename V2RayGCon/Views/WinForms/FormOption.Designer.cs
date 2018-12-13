@@ -57,7 +57,6 @@
             this.cboxSettingLanguage = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPagePlugins = new System.Windows.Forms.TabPage();
-            this.btnPluginsRefresh = new System.Windows.Forms.Button();
             this.flyPluginsItemsContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.btnBakBackup = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -283,18 +282,10 @@
             // 
             // tabPagePlugins
             // 
-            this.tabPagePlugins.Controls.Add(this.btnPluginsRefresh);
             this.tabPagePlugins.Controls.Add(this.flyPluginsItemsContainer);
             resources.ApplyResources(this.tabPagePlugins, "tabPagePlugins");
             this.tabPagePlugins.Name = "tabPagePlugins";
             this.tabPagePlugins.UseVisualStyleBackColor = true;
-            // 
-            // btnPluginsRefresh
-            // 
-            resources.ApplyResources(this.btnPluginsRefresh, "btnPluginsRefresh");
-            this.btnPluginsRefresh.Name = "btnPluginsRefresh";
-            this.toolTip1.SetToolTip(this.btnPluginsRefresh, resources.GetString("btnPluginsRefresh.ToolTip"));
-            this.btnPluginsRefresh.UseVisualStyleBackColor = true;
             // 
             // flyPluginsItemsContainer
             // 
@@ -390,7 +381,6 @@
         private System.Windows.Forms.CheckBox chkSetSysPortable;
         private System.Windows.Forms.CheckBox chkSetUseV4;
         private System.Windows.Forms.TabPage tabPagePlugins;
-        private System.Windows.Forms.Button btnPluginsRefresh;
         private System.Windows.Forms.FlowLayoutPanel flyPluginsItemsContainer;
         private System.Windows.Forms.CheckBox chkSetServStatistics;
         private System.Windows.Forms.GroupBox groupBox2;

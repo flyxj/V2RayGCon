@@ -2,7 +2,7 @@
 
 namespace ProxySetter
 {
-    public class ProxySetter : VgcApis.IPlugin
+    public class ProxySetter : VgcApis.Models.BaseClasses.Plugin
     {
         Services.PsLuncher luncher;
         public ProxySetter() { }
@@ -13,24 +13,24 @@ namespace ProxySetter
         #endregion
 
         #region properties
-        public string Name => Properties.Resources.Name;
-        public string Version => Properties.Resources.Version;
-        public string Description => I18N.Description;
+        public override string Name => Properties.Resources.Name;
+        public override string Version => Properties.Resources.Version;
+        public override string Description => I18N.Description;
         #endregion
 
-        #region public methods
-        public void Run(VgcApis.IService api)
+        #region protected overrides
+        protected override void Start(VgcApis.IService api)
         {
             luncher = new Services.PsLuncher();
             luncher.Run(api);
         }
 
-        public void Show()
+        protected override void Popup()
         {
             luncher?.Show();
         }
 
-        public void Cleanup()
+        protected override void Stop()
         {
             luncher?.Cleanup();
         }

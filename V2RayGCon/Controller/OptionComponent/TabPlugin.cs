@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using V2RayGCon.Resource.Resx;
 
 namespace V2RayGCon.Controller.OptionComponent
 {
     class TabPlugin : OptionComponentController
     {
         FlowLayoutPanel flyPanel;
-        Button btnUpdate;
 
         Service.Setting setting;
         Service.PluginsServer pluginServ;
@@ -17,22 +14,18 @@ namespace V2RayGCon.Controller.OptionComponent
         string oldOptions;
         List<Model.Data.PluginInfoItem> curPluginInfos;
 
-        public TabPlugin(
-            FlowLayoutPanel flyPanel,
-            Button btnUpdate)
+        public TabPlugin(FlowLayoutPanel flyPanel)
         {
             setting = Service.Setting.Instance;
             pluginServ = Service.PluginsServer.Instance;
 
             this.flyPanel = flyPanel;
-            this.btnUpdate = btnUpdate;
 
-            curPluginInfos = pluginServ.GetterPluginDirInfo();
+            curPluginInfos = pluginServ.GetterAllPluginsInfo();
             setting.SavePluginInfoItems(curPluginInfos);
             MarkdownCurOption();
 
             InitPanel();
-            BindEvent();
         }
 
         #region public method
@@ -46,7 +39,7 @@ namespace V2RayGCon.Controller.OptionComponent
             curPluginInfos = CollectPluginInfoItems();
             MarkdownCurOption();
             setting.SavePluginInfoItems(curPluginInfos);
-            pluginServ.Restart();
+            pluginServ.RestartPlugins();
             return true;
         }
 
@@ -95,19 +88,6 @@ namespace V2RayGCon.Controller.OptionComponent
                 this.flyPanel.Controls.Add(
                     new Views.UserControls.PluginInfoUI(item));
             }
-        }
-
-        void BindEvent()
-        {
-            this.btnUpdate.Click += (s, a) =>
-            {
-                curPluginInfos = pluginServ.GetterPluginDirInfo();
-                if (curPluginInfos.Count <= 0)
-                {
-                    Task.Factory.StartNew(() => MessageBox.Show(I18N.FindNoPlugin));
-                }
-                InitPanel();
-            };
         }
         #endregion
     }

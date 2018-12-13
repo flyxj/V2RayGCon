@@ -135,7 +135,7 @@ namespace V2RayGCon.Service
             {
                 var status = UnzipPackage();
                 NotifyDownloadResults(status);
-                pluginServ.Restart();
+                pluginServ.RestartPlugins();
                 if (activeServers.Count > 0)
                 {
                     servers.RestartServersByListThen(activeServers);

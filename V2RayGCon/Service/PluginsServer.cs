@@ -26,18 +26,30 @@ namespace V2RayGCon.Service
             this.notifier = notifier;
 
             apis.Run(setting, servers);
-            Restart();
+            plugins = SearchForPlugins();
+            RestartPlugins();
         }
 
         #region properties
         #endregion
 
         #region public methods
-        public void Restart()
+        public void RestartPlugins()
         {
-            ReloadPlugins();
-            StartEnabledPlugins();
-            UpdateNotifierMenu();
+            var enabledList = GetCurEnabledPluginFileNames();
+            foreach (var p in plugins)
+            {
+                if (enabledList.Contains(p.Key))
+                {
+                    p.Value.Run(apis);
+                }
+                else
+                {
+                    p.Value.Cleanup();
+                }
+            }
+
+            UpdateNotifierMenu(enabledList);
         }
 
         public void Cleanup()
@@ -45,19 +57,16 @@ namespace V2RayGCon.Service
             ClearPlugins();
         }
 
-        public List<Model.Data.PluginInfoItem> GetterPluginDirInfo()
+        public List<Model.Data.PluginInfoItem> GetterAllPluginsInfo()
         {
-            var pluginList = SearchForPlugins();
-            return GetPluginInfoFrom(pluginList);
+            return GetPluginInfoFrom(plugins);
         }
 
         #endregion
 
         #region private methods
-        void UpdateNotifierMenu()
+        void UpdateNotifierMenu(List<string> enabledList)
         {
-            var enabledList = GetCurEnabledPluginFileNames();
-
             var children = new List<ToolStripMenuItem>();
             foreach (var fileName in enabledList)
             {
@@ -80,12 +89,6 @@ namespace V2RayGCon.Service
                 null);
         }
 
-        void StartEnabledPlugins()
-        {
-            var enabledList = GetCurEnabledPluginFileNames();
-            StartPlugins(enabledList);
-        }
-
         public Dictionary<string, VgcApis.IPlugin> SearchForPlugins()
         {
             // Original design of plugins would load dll files from file system.
@@ -93,7 +96,6 @@ namespace V2RayGCon.Service
             var pluginList = new Dictionary<string, VgcApis.IPlugin>();
             var plugins = new VgcApis.IPlugin[] {
                 new Pacman.Pacman(),
-
 #if !V2RAYGCON_LITE
                 // Many thanks to windows defender
                 new ProxySetter.ProxySetter(),
@@ -106,23 +108,6 @@ namespace V2RayGCon.Service
                 pluginList.Add(plugin.Name, plugin);
             }
             return pluginList;
-        }
-
-        void ReloadPlugins()
-        {
-            ClearPlugins();
-            this.plugins = SearchForPlugins();
-        }
-
-        void StartPlugins(List<string> fileNames)
-        {
-            foreach (var fileName in fileNames)
-            {
-                if (plugins.ContainsKey(fileName))
-                {
-                    plugins[fileName].Run(apis);
-                }
-            }
         }
 
         void CleanupPlugins(List<string> fileNames)
