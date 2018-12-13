@@ -95,11 +95,14 @@ namespace V2RayGCon.Service
             // That is why loading logic looks so complex.
             var pluginList = new Dictionary<string, VgcApis.IPlugin>();
             var plugins = new VgcApis.IPlugin[] {
+                new Lunar.Lunar(),
                 new Pacman.Pacman(),
+
 #if !V2RAYGCON_LITE
                 // Many thanks to windows defender
                 new ProxySetter.ProxySetter(),
 #endif
+
                 new Statistics.Statistics(),
             };
 
