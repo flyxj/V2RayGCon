@@ -518,7 +518,12 @@ if "$(ConfigurationName)" == "lite" (
 ) 
 
 call:MoveFilesByList "%25move2LibDirFileList%25"
+call:CopyLuaNativeDlls
 
+goto:eof
+
+:CopyLuaNativeDlls
+  xcopy /s /y "$(SolutionDir)packages\NLua.1.3.2.1\lib\native\*.*" "%25libsDir%25"
 goto:eof
 
 :RemoveFiles

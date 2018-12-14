@@ -6,6 +6,12 @@ namespace VgcApis.Libs
 {
     public static class UI
     {
+        public static void ScrollToBottom(RichTextBox control)
+        {
+            control.SelectionStart = control.Text.Length;
+            control.ScrollToCaret();
+        }
+
         public static string ShowSelectFileDialog(string extension)
         {
             OpenFileDialog readFileDialog = new OpenFileDialog

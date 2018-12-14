@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmRemoveScript" xml:space="preserve">
+    <value>Are you sure want to remove this script?</value>
+  </data>
   <data name="Description" xml:space="preserve">
-    <value>Lua Scripts manager.</value>
+    <value>!Experimental! Lua Scripts manager.</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done.</value>
+  </data>
+  <data name="Fail" xml:space="preserve">
+    <value>Fail!</value>
+  </data>
+  <data name="ScriptNameNotSet" xml:space="preserve">
+    <value>Script name not set!</value>
+  </data>
+  <data name="ScriptNotFound" xml:space="preserve">
+    <value>Script not found!</value>
   </data>
 </root>

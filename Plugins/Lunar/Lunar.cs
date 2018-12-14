@@ -10,6 +10,8 @@ namespace Lunar
         VgcApis.Models.IServices.ISettingService vgcSettings;
 
         Views.WinForms.FormMain formMain = null;
+        Services.Settings settings;
+        Services.LuaServer luaServer;
 
         #region properties
         public override string Name => Properties.Resources.Name;
@@ -26,7 +28,11 @@ namespace Lunar
                 return;
             }
 
-            formMain = new Views.WinForms.FormMain();
+            formMain = new Views.WinForms.FormMain(
+                vgcServers,
+                settings,
+                luaServer);
+
             formMain.FormClosed += (s, a) => formMain = null;
             formMain.Show();
         }
@@ -36,6 +42,16 @@ namespace Lunar
             this.api = api;
             vgcServers = api.GetVgcServersService();
             vgcSettings = api.GetVgcSettingService();
+
+            settings = new Services.Settings();
+            luaServer = new Services.LuaServer();
+
+            settings.Run(vgcSettings);
+            luaServer.Run(settings, vgcServers);
+
+            // debug
+            this.Popup();
+            formMain.Activate();
         }
 
         protected override void Stop()
@@ -44,6 +60,8 @@ namespace Lunar
             {
                 formMain.Close();
             }
+
+            settings?.Cleanup();
         }
         #endregion
     }

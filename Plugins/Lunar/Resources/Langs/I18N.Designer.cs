@@ -61,11 +61,56 @@ namespace Lunar.Resources.Langs {
         }
         
         /// <summary>
-        ///   查找类似 Lua Scripts manager. 的本地化字符串。
+        ///   查找类似 Are you sure want to remove this script? 的本地化字符串。
+        /// </summary>
+        internal static string ConfirmRemoveScript {
+            get {
+                return ResourceManager.GetString("ConfirmRemoveScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 !Experimental! Lua Scripts manager. 的本地化字符串。
         /// </summary>
         internal static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Done. 的本地化字符串。
+        /// </summary>
+        internal static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fail! 的本地化字符串。
+        /// </summary>
+        internal static string Fail {
+            get {
+                return ResourceManager.GetString("Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Script name not set! 的本地化字符串。
+        /// </summary>
+        internal static string ScriptNameNotSet {
+            get {
+                return ResourceManager.GetString("ScriptNameNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Script not found! 的本地化字符串。
+        /// </summary>
+        internal static string ScriptNotFound {
+            get {
+                return ResourceManager.GetString("ScriptNotFound", resourceCulture);
             }
         }
     }

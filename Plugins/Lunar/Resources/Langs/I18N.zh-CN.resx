@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmRemoveScript" xml:space="preserve">
+    <value>真的要删除这个脚本吗？</value>
+  </data>
   <data name="Description" xml:space="preserve">
-    <value>Lua脚本管理器。</value>
+    <value>！试验中！Lua脚本管理器。</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="Fail" xml:space="preserve">
+    <value>失败</value>
+  </data>
+  <data name="ScriptNameNotSet" xml:space="preserve">
+    <value>脚本名没设置！</value>
+  </data>
+  <data name="ScriptNotFound" xml:space="preserve">
+    <value>找不到这个脚本！</value>
   </data>
 </root>

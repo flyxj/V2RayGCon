@@ -52,7 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\EditorCtrl.cs" />
+    <Compile Include="Controllers\LuaCoreCtrl.cs" />
+    <Compile Include="Controllers\ScriptCtrl.cs" />
+    <Compile Include="Libs\UI.cs" />
     <Compile Include="Lunar.cs" />
+    <Compile Include="Models\Apis\LuaApis.cs" />
+    <Compile Include="Models\Data\LuaCoreSetting.cs" />
+    <Compile Include="Models\Data\UserSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -64,6 +71,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>I18N.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\LuaServer.cs" />
+    <Compile Include="Services\Settings.cs" />
     <Compile Include="Views\WinForms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,11 +87,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Libs\" />
-    <Folder Include="Models\" />
     <Folder Include="Resources\Icons\" />
-    <Folder Include="Services\" />
     <Folder Include="Views\UserControls\" />
   </ItemGroup>
   <ItemGroup>

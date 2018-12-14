@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -8,6 +9,63 @@ namespace VgcApis.Libs
 {
     public static class Utils
     {
+        public static void TrimDownConcurrentQueue<T>(
+            ConcurrentQueue<T> queue,
+            int maxLines,
+            int minLines)
+        {
+            var count = queue.Count();
+            if (maxLines < 1 || count < maxLines)
+            {
+                return;
+            }
+
+            var loop = Clamp(count - minLines, 0, count);
+            var blackHole = default(T);
+            for (int i = 0; i < loop; i++)
+            {
+                queue.TryDequeue(out blackHole);
+            }
+        }
+
+        public static void SavePluginSetting<T>(
+            string pluginName,
+            T userSettings,
+            Models.IServices.ISettingService vgcSetting)
+            where T : class
+        {
+            try
+            {
+                var content = Utils.SerializeObject(userSettings);
+                vgcSetting.SavePluginsSetting(pluginName, content);
+            }
+            catch { }
+        }
+
+        public static T LoadPluginSetting<T>(
+            string pluginName,
+            Models.IServices.ISettingService vgcSetting)
+            where T : class, new()
+        {
+            var empty = new T();
+            var userSettingString =
+                vgcSetting.GetPluginsSetting(pluginName);
+
+            if (string.IsNullOrEmpty(userSettingString))
+            {
+                return empty;
+            }
+
+            try
+            {
+                var result = VgcApis.Libs.Utils
+                    .DeserializeObject<T>(userSettingString);
+                return result ?? empty;
+            }
+            catch { }
+            return empty;
+        }
+
         #region Json
         /// <summary>
         /// return null if fail

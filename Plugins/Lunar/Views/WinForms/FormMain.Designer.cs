@@ -100,7 +100,7 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.tabControl1);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(800, 421);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(800, 396);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
@@ -110,13 +110,13 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabGeneral);
             this.tabControl1.Controls.Add(this.tabEditor);
+            this.tabControl1.Controls.Add(this.tabGeneral);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(800, 421);
+            this.tabControl1.Size = new System.Drawing.Size(800, 396);
             this.tabControl1.TabIndex = 0;
             // 
             // tabGeneral
@@ -128,7 +128,7 @@
             this.tabGeneral.Location = new System.Drawing.Point(4, 28);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGeneral.Size = new System.Drawing.Size(792, 389);
+            this.tabGeneral.Size = new System.Drawing.Size(792, 364);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
@@ -171,7 +171,7 @@
             this.flyScriptUIContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flyScriptUIContainer.Location = new System.Drawing.Point(8, 6);
             this.flyScriptUIContainer.Name = "flyScriptUIContainer";
-            this.flyScriptUIContainer.Size = new System.Drawing.Size(661, 377);
+            this.flyScriptUIContainer.Size = new System.Drawing.Size(661, 352);
             this.flyScriptUIContainer.TabIndex = 0;
             // 
             // tabEditor
@@ -368,6 +368,7 @@
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormMain";
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
