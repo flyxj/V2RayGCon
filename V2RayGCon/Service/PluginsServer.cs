@@ -95,7 +95,11 @@ namespace V2RayGCon.Service
             // That is why loading logic looks so complex.
             var pluginList = new Dictionary<string, VgcApis.IPlugin>();
             var plugins = new VgcApis.IPlugin[] {
-                new Lunar.Lunar(),
+
+#if !V2RAYGCON_LITE
+                new Luna.Luna(),
+#endif 
+
                 new Pacman.Pacman(),
 
 #if !V2RAYGCON_LITE

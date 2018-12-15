@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lunar\Lunar.csproj">
+    <ProjectReference Include="..\Luna\Luna.csproj">
       <Project>{2d29f9e2-f358-4b07-8f50-1cbe4291eed8}</Project>
-      <Name>Lunar</Name>
+      <Name>Luna</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

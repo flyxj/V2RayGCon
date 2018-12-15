@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Lunar.Libs
+namespace Luna.Libs
 {
     public static class UI
     {

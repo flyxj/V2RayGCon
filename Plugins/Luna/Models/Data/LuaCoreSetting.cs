@@ -1,4 +1,4 @@
-﻿namespace Lunar.Models.Data
+﻿namespace Luna.Models.Data
 {
     public class LuaCoreSetting
     {

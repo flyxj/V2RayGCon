@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Lunar.Resources.Langs {
+namespace Luna.Resources.Langs {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Lunar.Resources.Langs {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Lunar.Resources.Langs.I18N", typeof(I18N).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Luna.Resources.Langs.I18N", typeof(I18N).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

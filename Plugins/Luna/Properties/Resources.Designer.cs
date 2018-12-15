@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Lunar.Properties {
+namespace Luna.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Lunar.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Lunar.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Luna.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Lunar.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Lunar 的本地化字符串。
+        ///   查找类似 Luna 的本地化字符串。
         /// </summary>
         internal static string Name {
             get {

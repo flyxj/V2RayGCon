@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Lunar.Services
+namespace Luna.Services
 {
     public class Settings
     {

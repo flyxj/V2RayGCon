@@ -1,4 +1,4 @@
-﻿namespace Lunar.Views.WinForms
+﻿namespace Luna.Views.WinForms
 {
     partial class FormMain
     {

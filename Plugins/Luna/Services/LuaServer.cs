@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Lunar.Services
+namespace Luna.Services
 {
     public class LuaServer
     {

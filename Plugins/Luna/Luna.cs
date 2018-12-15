@@ -1,9 +1,9 @@
-﻿using Lunar.Resources.Langs;
+﻿using Luna.Resources.Langs;
 
-namespace Lunar
+namespace Luna
 {
     // Using lunar not lua to void naming conflicts.
-    public class Lunar : VgcApis.Models.BaseClasses.Plugin
+    public class Luna : VgcApis.Models.BaseClasses.Plugin
     {
         VgcApis.IService api;
         VgcApis.Models.IServices.IServersService vgcServers;

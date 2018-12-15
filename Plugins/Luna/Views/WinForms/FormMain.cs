@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Lunar.Views.WinForms
+namespace Luna.Views.WinForms
 {
     public partial class FormMain : Form
     {

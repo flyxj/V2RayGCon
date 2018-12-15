@@ -482,9 +482,9 @@
     <Folder Include="Resource\Icon\FormMainToolStrip\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugins\Lunar\Lunar.csproj">
+    <ProjectReference Include="..\Plugins\Luna\Luna.csproj">
       <Project>{2d29f9e2-f358-4b07-8f50-1cbe4291eed8}</Project>
-      <Name>Lunar</Name>
+      <Name>Luna</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\Pacman\Pacman.csproj">
       <Project>{78aaefc7-621e-45c8-8524-3aba221336f6}</Project>
@@ -506,8 +506,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set "libsDir=libs\"
-set "remove4VgcLiteFileList=ProxySetter"
-set "pluginFileList=Lunar Statistics Pacman ProxySetter"
+set "remove4VgcLiteFileList=Luna NLua KeraLua ProxySetter"
+set "pluginFileList=Luna Statistics Pacman ProxySetter"
 set "nugetLibFileList=NLua KeraLua DotNetZip Newtonsoft ScintillaNET VgcApis zxing AutoUpdater.NET"
 set "move2LibDirFileList=%25nugetLibFileList%25 %25pluginFileList%25"
 
@@ -515,11 +515,11 @@ call:CreateFolderOnDemand "%25libsDir%25"
 
 if "$(ConfigurationName)" == "lite" ( 
   call:RemoveFiles "%25remove4VgcLiteFileList%25"
+) else ( 
+  call:CopyLuaNativeDlls
 ) 
 
 call:MoveFilesByList "%25move2LibDirFileList%25"
-call:CopyLuaNativeDlls
-
 goto:eof
 
 :CopyLuaNativeDlls
@@ -530,6 +530,7 @@ goto:eof
   for %25%25i in (%25~1) do ( 
 	echo "Remove files %25%25i"	
 	del "%25%25i*"
+	del "zh-CN\%25%25i.resources.dll"
   ) 
 goto:eof
 

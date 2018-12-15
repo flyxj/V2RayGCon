@@ -1,11 +1,11 @@
-﻿using Lunar.Resources.Langs;
+﻿using Luna.Resources.Langs;
 using ScintillaNET;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Lunar.Controllers
+namespace Luna.Controllers
 {
     class EditorCtrl
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lunar.Models.Apis
+namespace Luna.Models.Apis
 {
     public class LuaApis : VgcApis.ILuaApis
     {

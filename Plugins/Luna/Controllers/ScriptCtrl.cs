@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lunar.Controllers
+namespace Luna.Controllers
 {
     class ScriptCtrl
     {

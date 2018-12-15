@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Lunar.Models.Data
+namespace Luna.Models.Data
 {
     class UserSettings
     {
