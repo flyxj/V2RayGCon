@@ -133,20 +133,20 @@ namespace Luna.Resources.Langs {
         }
         
         /// <summary>
-        ///   查找类似 Start 的本地化字符串。
+        ///   查找类似 send stop signal to  的本地化字符串。
         /// </summary>
-        internal static string Start {
+        internal static string SendStopSignalTo {
             get {
-                return ResourceManager.GetString("Start", resourceCulture);
+                return ResourceManager.GetString("SendStopSignalTo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Stop 的本地化字符串。
+        ///   查找类似 start 的本地化字符串。
         /// </summary>
-        internal static string Stop {
+        internal static string Start {
             get {
-                return ResourceManager.GetString("Stop", resourceCulture);
+                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
         
@@ -160,7 +160,7 @@ namespace Luna.Resources.Langs {
         }
         
         /// <summary>
-        ///   查找类似 Terminate 的本地化字符串。
+        ///   查找类似 terminate 的本地化字符串。
         /// </summary>
         internal static string Terminate {
             get {

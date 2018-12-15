@@ -34,7 +34,7 @@ namespace Luna.Services
                 SaveUserSettingsNow, 30000);
         }
 
-        public List<Models.Data.LuaCoreSetting> GetLuaCoreStates()
+        public List<Models.Data.LuaCoreSetting> GetLuaCoreSettings()
         {
             if (userSettings.luaServers == null)
             {

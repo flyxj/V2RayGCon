@@ -235,51 +235,32 @@ namespace Luna.Controllers
 
             cboxScriptName.DropDown += (s, a) => ReloadScriptName();
 
-            cboxScriptName.SelectedIndexChanged += CboxScriptNameSelectedIndexChangedHandler;
+            cboxScriptName.SelectedValueChanged += CboxScriptNameChangedHandler;
+
         }
 
-        void CboxScriptNameSelectedIndexChangedHandler(object sender, EventArgs args)
+        void CboxScriptNameChangedHandler(object sender, EventArgs args)
         {
-            var c = cboxScriptName;
-            var scriptName = c.Text;
+            var name = cboxScriptName.Text;
 
-            if (scriptName == preScriptName)
+            if (name == preScriptName)
             {
                 return;
             }
 
             if (IsChanged() && !VgcApis.Libs.UI.Confirm(I18N.DiscardUnsavedChanges))
             {
-                c.SelectedIndex = GetCboxIndexByName(preScriptName);
+                cboxScriptName.Text = preScriptName;
                 return;
             }
 
-            luaEditor.Text = LoadScriptByName(scriptName);
-            preScriptContent = luaEditor.Text;
-            preScriptName = scriptName;
-        }
-
-        int GetCboxIndexByName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return -1;
-            }
-
-            var items = cboxScriptName.Items;
-            for (int i = 0; i < items.Count; i++)
-            {
-                if (items[i].ToString() == name)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
+            preScriptName = name;
+            preScriptContent = LoadScriptByName(name);
+            luaEditor.Text = preScriptContent;
         }
 
         string LoadScriptByName(string name) =>
-            settings.GetLuaCoreStates()
+            settings.GetLuaCoreSettings()
                 .Where(s => s.name == name)
                 .FirstOrDefault()
                 ?.script
@@ -295,7 +276,13 @@ namespace Luna.Controllers
         void ReloadScriptName()
         {
             cboxScriptName.Items.Clear();
-            foreach (var coreState in settings.GetLuaCoreStates())
+
+            var cores = settings
+                .GetLuaCoreSettings()
+                .OrderBy(c => c.name)
+                .ToList();
+
+            foreach (var coreState in cores)
             {
                 cboxScriptName.Items.Add(coreState.name);
             }

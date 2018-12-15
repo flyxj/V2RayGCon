@@ -40,7 +40,7 @@ namespace Luna.Services
             coreCtrl.Kill();
             luaCoreCtrls.Remove(coreCtrl);
 
-            settings.GetLuaCoreStates().RemoveAll(s => s.name == name);
+            settings.GetLuaCoreSettings().RemoveAll(s => s.name == name);
             Save();
             InvokeOnLuaCoreCtrlListChangeIgnoreError();
             return true;
@@ -68,7 +68,7 @@ namespace Luna.Services
                 script = script,
             };
 
-            settings.GetLuaCoreStates().Add(coreState);
+            settings.GetLuaCoreSettings().Add(coreState);
 
             coreCtrl = new Controllers.LuaCoreCtrl();
             luaCoreCtrls.Add(coreCtrl);
@@ -134,7 +134,7 @@ namespace Luna.Services
             VgcApis.Models.Interfaces.ILuaApis luaApis)
         {
             var cores = new List<Controllers.LuaCoreCtrl>();
-            foreach (var luaCoreState in settings.GetLuaCoreStates())
+            foreach (var luaCoreState in settings.GetLuaCoreSettings())
             {
                 var luaCtrl = new Controllers.LuaCoreCtrl();
                 luaCtrl.Run(settings, luaCoreState, luaApis);

@@ -54,7 +54,7 @@ namespace Luna.Controllers
                 _isRunning = value;
                 if (_isRunning == false)
                 {
-                    SendLog($"{coreSetting.name}.lua {I18N.Stopped}");
+                    SendLog($"{coreSetting.name} {I18N.Stopped}");
                     luaCoreTask = null;
                     luaCoreThread = null;
                 }
@@ -94,7 +94,7 @@ namespace Luna.Controllers
                 }
             }
 
-            SendLog($"{I18N.Stop} {coreSetting.name}.lua");
+            SendLog($"{I18N.SendStopSignalTo} {coreSetting.name}");
             luaSignal.SetStopSignal(true);
         }
 
@@ -105,7 +105,7 @@ namespace Luna.Controllers
                 return;
             }
 
-            SendLog($"{I18N.Terminate} {coreSetting.name}.lua");
+            SendLog($"{I18N.Terminate} {coreSetting.name}");
 
             luaSignal.SetStopSignal(true);
             if (luaCoreTask.Wait(2000))
@@ -132,7 +132,7 @@ namespace Luna.Controllers
                 isRunning = true;
             }
 
-            SendLog($"{I18N.Start} {coreSetting.name}.lua");
+            SendLog($"{I18N.Start} {coreSetting.name}");
             luaCoreTask = Task.Factory.StartNew(
                 RunLuaScript,
                 TaskCreationOptions.LongRunning);
@@ -173,7 +173,7 @@ namespace Luna.Controllers
             }
             catch (Exception e)
             {
-                SendLog($"[{coreSetting.name}.lua] {e.ToString()}");
+                SendLog($"[{coreSetting.name}] {e.ToString()}");
             }
             isRunning = false;
         }

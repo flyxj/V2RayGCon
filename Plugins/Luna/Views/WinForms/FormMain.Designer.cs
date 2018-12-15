@@ -40,7 +40,7 @@
             this.btnKillAllScript = new System.Windows.Forms.Button();
             this.flyScriptUIContainer = new System.Windows.Forms.FlowLayoutPanel();
             this.tabEditor = new System.Windows.Forms.TabPage();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainerTabEditor = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -63,10 +63,10 @@
             this.tabGeneral.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabEditor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTabEditor)).BeginInit();
+            this.splitContainerTabEditor.Panel1.SuspendLayout();
+            this.splitContainerTabEditor.Panel2.SuspendLayout();
+            this.splitContainerTabEditor.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -145,23 +145,23 @@
             // 
             // tabEditor
             // 
-            this.tabEditor.Controls.Add(this.splitContainer1);
+            this.tabEditor.Controls.Add(this.splitContainerTabEditor);
             resources.ApplyResources(this.tabEditor, "tabEditor");
             this.tabEditor.Name = "tabEditor";
             this.tabEditor.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1
+            // splitContainerTabEditor
             // 
-            resources.ApplyResources(this.splitContainer1, "splitContainer1");
-            this.splitContainer1.Name = "splitContainer1";
+            resources.ApplyResources(this.splitContainerTabEditor, "splitContainerTabEditor");
+            this.splitContainerTabEditor.Name = "splitContainerTabEditor";
             // 
-            // splitContainer1.Panel1
+            // splitContainerTabEditor.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
+            this.splitContainerTabEditor.Panel1.Controls.Add(this.groupBox2);
             // 
-            // splitContainer1.Panel2
+            // splitContainerTabEditor.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
+            this.splitContainerTabEditor.Panel2.Controls.Add(this.groupBox1);
             // 
             // groupBox2
             // 
@@ -275,10 +275,10 @@
             this.tabGeneral.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tabEditor.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitContainerTabEditor.Panel1.ResumeLayout(false);
+            this.splitContainerTabEditor.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTabEditor)).EndInit();
+            this.splitContainerTabEditor.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -298,7 +298,7 @@
         private System.Windows.Forms.Button btnStopAllScript;
         private System.Windows.Forms.FlowLayoutPanel flyScriptUIContainer;
         private System.Windows.Forms.TabPage tabEditor;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainerTabEditor;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;

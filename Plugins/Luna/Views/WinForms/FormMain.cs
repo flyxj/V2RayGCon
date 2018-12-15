@@ -27,6 +27,7 @@ namespace Luna.Views.WinForms
 
         private void FormMain_Load(object sender, System.EventArgs e)
         {
+            FixSplitPanelWidth();
             lbStatusBarMsg.Text = "";
 
             // TabGeneral should initialize before TabEditor.
@@ -57,6 +58,11 @@ namespace Luna.Views.WinForms
                 editorCtrl.Cleanup();
                 genCtrl.Cleanup();
             };
+        }
+
+        void FixSplitPanelWidth()
+        {
+            splitContainerTabEditor.SplitterDistance = this.Width * 6 / 10;
         }
 
         private void FormClosingHandler(object sender, FormClosingEventArgs e)

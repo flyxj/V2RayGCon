@@ -318,13 +318,13 @@
   <data name="&gt;&gt;tabGeneral.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="splitContainerTabEditor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="splitContainerTabEditor.Location" type="System.Drawing.Point, System.Drawing">
     <value>2, 2</value>
   </data>
-  <data name="splitContainer1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="splitContainerTabEditor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
@@ -340,7 +340,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="cboxScriptName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 20</value>
+    <value>181, 20</value>
   </data>
   <data name="cboxScriptName.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -420,7 +420,7 @@
     <value>Zoom</value>
   </data>
   <data name="btnKillScript.Location" type="System.Drawing.Point, System.Drawing">
-    <value>273, 2</value>
+    <value>271, 2</value>
   </data>
   <data name="btnKillScript.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -460,7 +460,7 @@
     <value>Zoom</value>
   </data>
   <data name="btnStopScript.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 2</value>
+    <value>250, 2</value>
   </data>
   <data name="btnStopScript.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -502,7 +502,7 @@
     <value>Zoom</value>
   </data>
   <data name="btnRunScript.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 2</value>
+    <value>229, 2</value>
   </data>
   <data name="btnRunScript.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -545,7 +545,7 @@
     <value>Zoom</value>
   </data>
   <data name="btnRemoveScript.Location" type="System.Drawing.Point, System.Drawing">
-    <value>216, 2</value>
+    <value>208, 2</value>
   </data>
   <data name="btnRemoveScript.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -586,7 +586,7 @@
     <value>Zoom</value>
   </data>
   <data name="btnSaveScript.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 2</value>
+    <value>187, 2</value>
   </data>
   <data name="btnSaveScript.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -727,24 +727,24 @@
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel1</value>
+    <value>splitContainerTabEditor.Panel1</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
-    <value>splitContainer1.Panel1</value>
+  <data name="&gt;&gt;splitContainerTabEditor.Panel1.Name" xml:space="preserve">
+    <value>splitContainerTabEditor.Panel1</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;splitContainerTabEditor.Panel1.Parent" xml:space="preserve">
+    <value>splitContainerTabEditor</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="splitContainer1.Panel1MinSize" type="System.Int32, mscorlib">
+  <data name="splitContainerTabEditor.Panel1MinSize" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
   <data name="rtBoxOutput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -808,48 +808,48 @@
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+    <value>splitContainerTabEditor.Panel2</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+  <data name="&gt;&gt;splitContainerTabEditor.Panel2.Name" xml:space="preserve">
+    <value>splitContainerTabEditor.Panel2</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;splitContainerTabEditor.Panel2.Parent" xml:space="preserve">
+    <value>splitContainerTabEditor</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="splitContainer1.Panel2MinSize" type="System.Int32, mscorlib">
+  <data name="splitContainerTabEditor.Panel2MinSize" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
-  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="splitContainerTabEditor.Size" type="System.Drawing.Size, System.Drawing">
     <value>521, 223</value>
   </data>
-  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+  <data name="splitContainerTabEditor.SplitterDistance" type="System.Int32, mscorlib">
     <value>317</value>
   </data>
-  <data name="splitContainer1.SplitterWidth" type="System.Int32, mscorlib">
+  <data name="splitContainerTabEditor.SplitterWidth" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
+  <data name="splitContainerTabEditor.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;splitContainerTabEditor.Name" xml:space="preserve">
+    <value>splitContainerTabEditor</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.Parent" xml:space="preserve">
     <value>tabEditor</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerTabEditor.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tabEditor.Location" type="System.Drawing.Point, System.Drawing">

@@ -141,16 +141,16 @@
   <data name="ScriptNotFound" xml:space="preserve">
     <value>Script not found!</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
+  <data name="SendStopSignalTo" xml:space="preserve">
+    <value>send stop signal to </value>
   </data>
-  <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+  <data name="Start" xml:space="preserve">
+    <value>start</value>
   </data>
   <data name="Stopped" xml:space="preserve">
     <value>stopped</value>
   </data>
   <data name="Terminate" xml:space="preserve">
-    <value>Terminate</value>
+    <value>terminate</value>
   </data>
 </root>
