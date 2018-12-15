@@ -79,11 +79,29 @@ namespace Luna.Resources.Langs {
         }
         
         /// <summary>
+        ///   查找类似 Discard unsaved changes? 的本地化字符串。
+        /// </summary>
+        internal static string DiscardUnsavedChanges {
+            get {
+                return ResourceManager.GetString("DiscardUnsavedChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Done. 的本地化字符串。
         /// </summary>
         internal static string Done {
             get {
                 return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empty 的本地化字符串。
+        /// </summary>
+        internal static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
             }
         }
         
@@ -111,6 +129,42 @@ namespace Luna.Resources.Langs {
         internal static string ScriptNotFound {
             get {
                 return ResourceManager.GetString("ScriptNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Start 的本地化字符串。
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stop 的本地化字符串。
+        /// </summary>
+        internal static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 stopped 的本地化字符串。
+        /// </summary>
+        internal static string Stopped {
+            get {
+                return ResourceManager.GetString("Stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Terminate 的本地化字符串。
+        /// </summary>
+        internal static string Terminate {
+            get {
+                return ResourceManager.GetString("Terminate", resourceCulture);
             }
         }
     }

@@ -50,8 +50,8 @@ namespace Luna
             luaServer.Run(settings, vgcServers);
 
             // debug
-            this.Popup();
-            formMain.Activate();
+            // this.Popup();
+            // formMain.Activate();
         }
 
         protected override void Stop()
@@ -61,6 +61,7 @@ namespace Luna
                 formMain.Close();
             }
 
+            luaServer?.Cleanup();
             settings?.Cleanup();
         }
         #endregion

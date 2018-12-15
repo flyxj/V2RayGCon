@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Luna.Services
 {
     public class LuaServer
     {
+        public EventHandler OnLuaCoreCtrlListChange;
+
         Settings settings;
         List<Controllers.LuaCoreCtrl> luaCoreCtrls;
         Models.Apis.LuaApis luaApis;
@@ -15,6 +18,12 @@ namespace Luna.Services
         }
 
         #region public methods
+        public List<Controllers.LuaCoreCtrl> GetAllLuaCoreCtrls()
+        {
+            var list = luaCoreCtrls ?? new List<Controllers.LuaCoreCtrl>();
+            return list.OrderBy(c => c.name).ToList();
+        }
+
         public bool RemoveScriptByName(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -33,6 +42,7 @@ namespace Luna.Services
 
             settings.GetLuaCoreStates().RemoveAll(s => s.name == name);
             Save();
+            InvokeOnLuaCoreCtrlListChangeIgnoreError();
             return true;
         }
 
@@ -64,6 +74,7 @@ namespace Luna.Services
             luaCoreCtrls.Add(coreCtrl);
             coreCtrl.Run(settings, coreState, luaApis);
             Save();
+            InvokeOnLuaCoreCtrlListChangeIgnoreError();
             return true;
         }
 
@@ -94,6 +105,15 @@ namespace Luna.Services
         #endregion
 
         #region private methods
+        void InvokeOnLuaCoreCtrlListChangeIgnoreError()
+        {
+            try
+            {
+                OnLuaCoreCtrlListChange?.Invoke(null, null);
+            }
+            catch { }
+        }
+
         void Save() => settings.SaveSettings();
 
         void WakeUpAutoRunScripts()
@@ -111,7 +131,7 @@ namespace Luna.Services
 
         List<Controllers.LuaCoreCtrl> InitLuaCores(
             Settings settings,
-            VgcApis.ILuaApis luaApis)
+            VgcApis.Models.Interfaces.ILuaApis luaApis)
         {
             var cores = new List<Controllers.LuaCoreCtrl>();
             foreach (var luaCoreState in settings.GetLuaCoreStates())

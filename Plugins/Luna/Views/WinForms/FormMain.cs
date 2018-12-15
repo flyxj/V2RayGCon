@@ -1,10 +1,13 @@
-﻿using System.Windows.Forms;
+﻿using Luna.Resources.Langs;
+using System.Windows.Forms;
 
 namespace Luna.Views.WinForms
 {
     public partial class FormMain : Form
     {
-        Controllers.EditorCtrl editorCtrl;
+        Controllers.TabEditorCtrl editorCtrl;
+        Controllers.TabGeneralCtrl genCtrl;
+
         Services.LuaServer luaServer;
         Services.Settings settings;
         VgcApis.Models.IServices.IServersService vgcServers;
@@ -24,7 +27,17 @@ namespace Luna.Views.WinForms
 
         private void FormMain_Load(object sender, System.EventArgs e)
         {
-            editorCtrl = new Controllers.EditorCtrl(
+            lbStatusBarMsg.Text = "";
+
+            // TabGeneral should initialize before TabEditor.
+            genCtrl = new Controllers.TabGeneralCtrl(
+                flyScriptUIContainer,
+                btnStopAllScript,
+                btnKillAllScript);
+
+            genCtrl.Run(luaServer);
+
+            editorCtrl = new Controllers.TabEditorCtrl(
                 cboxScriptName,
                 btnSaveScript,
                 btnRemoveScript,
@@ -37,7 +50,27 @@ namespace Luna.Views.WinForms
 
             editorCtrl.Run(vgcServers, settings, luaServer);
 
-            this.FormClosed += (s, a) => editorCtrl.Cleanup();
+            this.FormClosing += FormClosingHandler;
+            this.FormClosed += (s, a) =>
+            {
+                // reverse order 
+                editorCtrl.Cleanup();
+                genCtrl.Cleanup();
+            };
         }
+
+        private void FormClosingHandler(object sender, FormClosingEventArgs e)
+        {
+            if (settings.IsShutdown())
+            {
+                return;
+            }
+
+            if (editorCtrl.IsChanged())
+            {
+                e.Cancel = !VgcApis.Libs.UI.Confirm(I18N.DiscardUnsavedChanges);
+            }
+        }
+
     }
 }

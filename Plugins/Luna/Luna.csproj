@@ -52,9 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\EditorCtrl.cs" />
+    <Compile Include="Controllers\TabEditorCtrl.cs" />
     <Compile Include="Controllers\LuaCoreCtrl.cs" />
-    <Compile Include="Controllers\ScriptCtrl.cs" />
+    <Compile Include="Controllers\TabGeneralCtrl.cs" />
     <Compile Include="Libs\UI.cs" />
     <Compile Include="Luna.cs" />
     <Compile Include="Models\Apis\LuaApis.cs" />
@@ -73,6 +73,12 @@
     </Compile>
     <Compile Include="Services\LuaServer.cs" />
     <Compile Include="Services\Settings.cs" />
+    <Compile Include="Views\UserControls\LuaUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\UserControls\LuaUI.Designer.cs">
+      <DependentUpon>LuaUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\WinForms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Icons\" />
-    <Folder Include="Views\UserControls\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -100,7 +105,16 @@
       <LastGenOutput>I18N.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Langs\I18N.zh-CN.resx" />
+    <EmbeddedResource Include="Views\UserControls\LuaUI.resx">
+      <DependentUpon>LuaUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserControls\LuaUI.zh-CN.resx">
+      <DependentUpon>LuaUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\WinForms\FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\WinForms\FormMain.zh-CN.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

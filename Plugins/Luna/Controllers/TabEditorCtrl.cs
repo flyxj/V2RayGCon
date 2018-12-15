@@ -7,12 +7,13 @@ using System.Windows.Forms;
 
 namespace Luna.Controllers
 {
-    class EditorCtrl
+    class TabEditorCtrl
     {
         Services.Settings settings;
         Services.LuaServer luaServer;
         Controllers.LuaCoreCtrl luaCoreCtrl;
 
+        #region controls
         Scintilla luaEditor;
         ComboBox cboxScriptName;
         Button btnSaveScript,
@@ -24,11 +25,12 @@ namespace Luna.Controllers
 
         RichTextBox rtboxOutput;
         Panel pnlEditorContainer;
+        #endregion
 
-        string preCboxScriptName = string.Empty;
+        string preScriptName = string.Empty;
         string preScriptContent = string.Empty;
 
-        public EditorCtrl(
+        public TabEditorCtrl(
             ComboBox cboxScriptName,
             Button btnSaveScript,
             Button btnDeleteScript,
@@ -68,6 +70,16 @@ namespace Luna.Controllers
         #endregion
 
         #region public methods
+        public bool IsChanged()
+        {
+            var script = luaEditor.Text;
+            if (script == preScriptContent)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public void Run(
             VgcApis.Models.IServices.IServersService vgcServers,
             Services.Settings settings,
@@ -80,6 +92,12 @@ namespace Luna.Controllers
 
             InitControls();
             BindEvents();
+
+            ReloadScriptName();
+            if (cboxScriptName.Items.Count > 0)
+            {
+                cboxScriptName.SelectedIndex = 0;
+            }
 
             updateOutputTimer.Tick += UpdateOutput;
             updateOutputTimer.Start();
@@ -105,6 +123,22 @@ namespace Luna.Controllers
             updateOutputTimer.Stop();
             updateOutputTimer.Tick -= UpdateOutput;
             updateOutputTimer.Dispose();
+
+            luaCoreCtrl?.Kill();
+        }
+
+        public bool SaveScript()
+        {
+            var scriptName = cboxScriptName.Text;
+            var content = luaEditor.Text;
+            var success = luaServer.AddOrReplaceScript(scriptName, content);
+
+            if (success)
+            {
+                preScriptContent = content;
+            }
+
+            return success;
         }
         #endregion
 
@@ -153,7 +187,14 @@ namespace Luna.Controllers
 
             btnRunScript.Click += (s, a) =>
             {
+                var name = cboxScriptName.Text;
+
                 luaCoreCtrl.Kill();
+
+                luaCoreCtrl.SetScriptName(
+                    string.IsNullOrEmpty(name)
+                    ? $"({I18N.Empty})" : name);
+
                 luaCoreCtrl.ReplaceScript(luaEditor.Text);
                 luaCoreCtrl.Start();
             };
@@ -161,6 +202,7 @@ namespace Luna.Controllers
             btnClearOutput.Click += (s, a) =>
             {
                 _logCache = new ConcurrentQueue<string>();
+                logCacheUpdateTimeStamp = DateTime.Now.Ticks;
             };
 
             btnDeleteScript.Click += (s, a) =>
@@ -187,22 +229,53 @@ namespace Luna.Controllers
                     return;
                 }
 
-                var success = luaServer.AddOrReplaceScript(scriptName, luaEditor.Text);
+                var success = SaveScript();
                 VgcApis.Libs.UI.MsgBoxAsync("", success ? I18N.Done : I18N.Fail);
             };
 
             cboxScriptName.DropDown += (s, a) => ReloadScriptName();
 
-            cboxScriptName.SelectedIndexChanged += (s, a) =>
+            cboxScriptName.SelectedIndexChanged += CboxScriptNameSelectedIndexChangedHandler;
+        }
+
+        void CboxScriptNameSelectedIndexChangedHandler(object sender, EventArgs args)
+        {
+            var c = cboxScriptName;
+            var scriptName = c.Text;
+
+            if (scriptName == preScriptName)
             {
-                var c = cboxScriptName;
-                var scriptName = c.Text;
-                if (scriptName != preCboxScriptName)
+                return;
+            }
+
+            if (IsChanged() && !VgcApis.Libs.UI.Confirm(I18N.DiscardUnsavedChanges))
+            {
+                c.SelectedIndex = GetCboxIndexByName(preScriptName);
+                return;
+            }
+
+            luaEditor.Text = LoadScriptByName(scriptName);
+            preScriptContent = luaEditor.Text;
+            preScriptName = scriptName;
+        }
+
+        int GetCboxIndexByName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return -1;
+            }
+
+            var items = cboxScriptName.Items;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].ToString() == name)
                 {
-                    luaEditor.Text = LoadScriptByName(scriptName);
-                    preCboxScriptName = scriptName;
+                    return i;
                 }
-            };
+            }
+
+            return -1;
         }
 
         string LoadScriptByName(string name) =>

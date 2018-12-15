@@ -1,15 +1,19 @@
-﻿using NLua;
+﻿using Luna.Resources.Langs;
+using NLua;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Luna.Controllers
 {
-    class LuaCoreCtrl
+    public class LuaCoreCtrl
     {
+        public EventHandler OnStateChange;
+
         Services.Settings settings;
         Models.Data.LuaCoreSetting coreSetting;
-        VgcApis.ILuaApis luaApis;
+        VgcApis.Models.Interfaces.ILuaApis luaApis;
+        VgcApis.Models.BaseClasses.LuaSignal luaSignal;
 
         Thread luaCoreThread;
         Task luaCoreTask;
@@ -26,8 +30,13 @@ namespace Luna.Controllers
             get => coreSetting.isAutorun;
             set
             {
+                if (coreSetting.isAutorun == value)
+                {
+                    return;
+                }
+
                 coreSetting.isAutorun = value;
-                settings.SaveSettings();
+                Save();
             }
         }
 
@@ -37,33 +46,38 @@ namespace Luna.Controllers
             get => _isRunning;
             set
             {
-                _isRunning = value;
-                SendLog($"lua core is running: {_isRunning}");
-                if (value == false)
+                if (_isRunning == value)
                 {
+                    return;
+                }
 
+                _isRunning = value;
+                if (_isRunning == false)
+                {
+                    SendLog($"{coreSetting.name}.lua {I18N.Stopped}");
                     luaCoreTask = null;
                     luaCoreThread = null;
                 }
+                InvokeOnStateChangeIgnoreError();
             }
         }
 
-        bool _signalStop = false;
-        bool signalStop
+        void InvokeOnStateChangeIgnoreError()
         {
-            get => _signalStop;
-            set
+            try
             {
-                _signalStop = value;
-                if (value)
-                {
-                    SendLog($"lua stop signal: {_signalStop}");
-                }
+                OnStateChange?.Invoke(null, null);
             }
+            catch { }
         }
         #endregion
 
         #region public methods
+        public void SetScriptName(string name)
+        {
+            coreSetting.name = name;
+        }
+
         public void ReplaceScript(string script)
         {
             coreSetting.script = script;
@@ -80,7 +94,8 @@ namespace Luna.Controllers
                 }
             }
 
-            signalStop = true;
+            SendLog($"{I18N.Stop} {coreSetting.name}.lua");
+            luaSignal.SetStopSignal(true);
         }
 
         public void Kill()
@@ -90,7 +105,9 @@ namespace Luna.Controllers
                 return;
             }
 
-            signalStop = true;
+            SendLog($"{I18N.Terminate} {coreSetting.name}.lua");
+
+            luaSignal.SetStopSignal(true);
             if (luaCoreTask.Wait(2000))
             {
                 return;
@@ -115,6 +132,7 @@ namespace Luna.Controllers
                 isRunning = true;
             }
 
+            SendLog($"{I18N.Start} {coreSetting.name}.lua");
             luaCoreTask = Task.Factory.StartNew(
                 RunLuaScript,
                 TaskCreationOptions.LongRunning);
@@ -128,22 +146,23 @@ namespace Luna.Controllers
         public void Run(
             Services.Settings settings,
             Models.Data.LuaCoreSetting luaCoreState,
-            VgcApis.ILuaApis luaApis)
+            VgcApis.Models.Interfaces.ILuaApis luaApis)
         {
             this.settings = settings;
             this.coreSetting = luaCoreState;
             this.luaApis = luaApis;
+            this.luaSignal = new VgcApis.Models.BaseClasses.LuaSignal();
         }
 
         #endregion
 
         #region private methods
         void SendLog(string content)
-            => luaApis.Log(content);
+            => luaApis.Print(content);
 
         void RunLuaScript()
         {
-            signalStop = false;
+            luaSignal.ResetAllSignals();
             luaCoreThread = Thread.CurrentThread;
 
             try
@@ -154,7 +173,7 @@ namespace Luna.Controllers
             }
             catch (Exception e)
             {
-                SendLog(e.ToString());
+                SendLog($"[{coreSetting.name}.lua] {e.ToString()}");
             }
             isRunning = false;
         }
@@ -162,8 +181,8 @@ namespace Luna.Controllers
         Lua CreateLuaCore()
         {
             var state = new Lua();
-            state["api"] = luaApis;
-            state["stop"] = signalStop;
+            state["Api"] = luaApis;
+            state["Signal"] = luaSignal;
             // disable import
             state.DoString(@"import = function () end");
             return state;

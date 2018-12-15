@@ -117,40 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmRemoveScript" xml:space="preserve">
-    <value>Are you sure want to remove this script?</value>
+  <data name="btnStopAllScript.Text" xml:space="preserve">
+    <value>全部停止</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>!Experimental! Lua Scripts manager.</value>
+  <data name="btnStopAllScript.ToolTip" xml:space="preserve">
+    <value>给所有脚本发送停止信号</value>
   </data>
-  <data name="DiscardUnsavedChanges" xml:space="preserve">
-    <value>Discard unsaved changes?</value>
+  <data name="btnKillAllScript.Text" xml:space="preserve">
+    <value>全部终止</value>
   </data>
-  <data name="Done" xml:space="preserve">
-    <value>Done.</value>
+  <data name="btnKillAllScript.ToolTip" xml:space="preserve">
+    <value>强制停止所有脚本</value>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>Empty</value>
+  <data name="tabGeneral.Text" xml:space="preserve">
+    <value>概况</value>
   </data>
-  <data name="Fail" xml:space="preserve">
-    <value>Fail!</value>
+  <data name="cboxScriptName.ToolTip" xml:space="preserve">
+    <value>加载脚本或设置脚本名</value>
   </data>
-  <data name="ScriptNameNotSet" xml:space="preserve">
-    <value>Script name not set!</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnClearOutput.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAUVJREFUOE+VkbFOg3AQxkmcjGsfoU/CKxACKwNlcHNyIoUQ0rcohLRoIwmDGwT6
+        IgzqqLUYhPW8I0e11CJ+yYX87+77XbgT/qumaS4wvLIsAb+PnB4nNq/yPAdRFIEgXPpbfTN98e1xeVhn
+        zCvKc8u3MHmJoWP4GAHGDcZ6rHla13WRZRm4rgu2bUMcx5Cm6bAZExOMBS7l03EcUBQFfN+HMLwDXddb
+        c5IkZF6TGd/sRHXGMAxBkqS22TRNeN/todx/wNvrDmYzA6IoIsAtmY8AVVWBYRitcZtv4fnpBTRNg/nc
+        OkA295sWioCHEwBRi6IAWZZhufRaQx8SBAFYlkWAkG3HGoLQZFVVux1cs+VU5yD0a7RYug72XHH77+pD
+        aCe0WFoy1qbcNqyfEJpO18Hcgsvj1EHoOjx9wqXxIgideHi6IHwBbnWcjlb4gZwAAAAASUVORK5CYII=
+</value>
   </data>
-  <data name="ScriptNotFound" xml:space="preserve">
-    <value>Script not found!</value>
+  <data name="btnClearOutput.ToolTip" xml:space="preserve">
+    <value>清空输出信息</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
+  <data name="btnKillScript.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAALZJREFUOE9jQAbfvn0zgDJxApxqgBIVQPwfiDOhQhgAJAdVUwEVggCQwKubV/9v
+        i3T///b+HayGgMRAcltCHP4/v3gWYQiQYQDEYM0L1Xj/r3XWxTAEphkkB1IDMgSkB6QXqwJkQ/DJgTXD
+        AC6FRGmGAWyGEK0ZBtANIUkzCFBkALpmEI3MxmsINs0gPjYxDENwaQaJ45ODaaZKQiI/KcMASACIsWqG
+        AZAcVA2qZhgASpCYnRkYAKjTuVoFkX4yAAAAAElFTkSuQmCC
+</value>
   </data>
-  <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+  <data name="btnKillScript.ToolTip" xml:space="preserve">
+    <value>强制停止脚本</value>
   </data>
-  <data name="Stopped" xml:space="preserve">
-    <value>stopped</value>
+  <data name="btnStopScript.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAClJREFUOE9jGGbg27dv/4nBUOWYACS5UI0XLx41YGQYQAyGKh8egIEBAMuiAHSi
+        jpx4AAAAAElFTkSuQmCC
+</value>
   </data>
-  <data name="Terminate" xml:space="preserve">
-    <value>Terminate</value>
+  <data name="btnStopScript.ToolTip" xml:space="preserve">
+    <value>发送停止信号</value>
+  </data>
+  <data name="btnRunScript.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAJRJREFUOE+tkssNgCAQRE30bls0QBE2YTdeaAQtggNNcF3HZE12Evw7yYTMsm8u
+        0IjIJ1eHT8xBVUrp4RFudUQihgKk8JJzFpxTrYQYG7DcwXMIQZxzEmOslliGA4TlIaUk3vvDEmIoqK5K
+        iKFgdFZCDAWjTwVn8HZPDIUb8CZibMDSL8/4/iPt0pLnX/mNq8P7lmYFTOJvU/foAJoAAAAASUVORK5C
+        YII=
+</value>
+  </data>
+  <data name="btnRunScript.ToolTip" xml:space="preserve">
+    <value>运行</value>
+  </data>
+  <data name="btnRemoveScript.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAORJREFUOE+1kr0NwjAQhb0AEiNQUVNSu2YIpLABC9CkZwWq1GQDNmCKAFUcEbk9
+        /E4+6wKRlYIUT/f88z7blxjv/cY9mw6CD9p3rweF6jAmIpOTQfC62xIEjzD87XiYBEmAy3rBQfERMKZ7
+        0DIBwoCfIEEdLsuSrLUDVVUlkJUA+M0aAN82Dbm24xCqeAjgkOPnGR3GyeJR+3efwhqgIbiBQ1CappuY
+        A0BhP3EPEIyCp7quf8LfSgA0Igb5c2ESi2MhrQFA628AgeTqvDfQG3VQz893g6IoeENO8UcaBZyxME3+
+        9AGedRb4wHKqBwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btnRemoveScript.ToolTip" xml:space="preserve">
+    <value>删除脚本</value>
+  </data>
+  <data name="btnSaveScript.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAHhJREFUOE9j+PbtWzgQvwHi/yRikJ5wkAFvtAvW/GcInkMSBukB6QUZgFUBMRis
+        F9mAD+8/EoWHswGk4kFqADY/I2NktbQ1AJ2PLg7CMAPuFM8/hqEBnY8uDsIwA2SQDUFXiKwZWRyEwQaA
+        AMwQkABIEYgmDn/7DwBpTOrUXkrGYgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btnSaveScript.ToolTip" xml:space="preserve">
+    <value>添加新脚本或修改原有脚本</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>编辑器</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>输出</value>
+  </data>
+  <data name="tabEditor.Text" xml:space="preserve">
+    <value>编辑</value>
   </data>
 </root>
