@@ -302,12 +302,6 @@
     <Compile Include="Views\WinForms\FormQRCode.Designer.cs">
       <DependentUpon>FormQRCode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\WinForms\FormSearch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\WinForms\FormSearch.Designer.cs">
-      <DependentUpon>FormSearch.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\WinForms\FormSimAddVmessClient.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -419,12 +413,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\WinForms\FormQRCode.zh-CN.resx">
       <DependentUpon>FormQRCode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\WinForms\FormSearch.resx">
-      <DependentUpon>FormSearch.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\WinForms\FormSearch.zh-CN.resx">
-      <DependentUpon>FormSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\WinForms\FormDownloadCore.zh-CN.resx">
       <DependentUpon>FormDownloadCore.cs</DependentUpon>

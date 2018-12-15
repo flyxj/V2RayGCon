@@ -91,6 +91,8 @@ namespace Luna.Libs
             // Enable automatic folding
             scintilla.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
 
+            // Disable cmd
+            scintilla.ClearCmdKey(Keys.Control | Keys.F);
             return scintilla;
         }
 

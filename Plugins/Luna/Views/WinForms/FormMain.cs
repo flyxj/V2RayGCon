@@ -40,6 +40,7 @@ namespace Luna.Views.WinForms
 
             editorCtrl = new Controllers.TabEditorCtrl(
                 cboxScriptName,
+                btnNewScript,
                 btnSaveScript,
                 btnRemoveScript,
                 btnRunScript,
@@ -58,7 +59,16 @@ namespace Luna.Views.WinForms
                 editorCtrl.Cleanup();
                 genCtrl.Cleanup();
             };
+
+            this.KeyDown += (s, a) => editorCtrl?.KeyBoardShortcutHandler(a);
         }
+
+        //protected override bool ProcessCmdKey(ref Message msg, Keys keyCode)
+        //{
+            
+        //    editorCtrl?.KeyBoardShortcutHandler(keyCode);
+        //    return base.ProcessCmdKey(ref msg, keyCode);
+        //}
 
         void FixSplitPanelWidth()
         {

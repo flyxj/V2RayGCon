@@ -12,11 +12,13 @@ namespace Luna.Controllers
         Services.Settings settings;
         Services.LuaServer luaServer;
         Controllers.LuaCoreCtrl luaCoreCtrl;
+        VgcApis.WinForms.FormSearch formSearch = null;
 
         #region controls
         Scintilla luaEditor;
         ComboBox cboxScriptName;
-        Button btnSaveScript,
+        Button btnNewScript,
+            btnSaveScript,
             btnDeleteScript,
             btnRunScript,
             btnStopScript,
@@ -32,6 +34,7 @@ namespace Luna.Controllers
 
         public TabEditorCtrl(
             ComboBox cboxScriptName,
+            Button btnNewScript,
             Button btnSaveScript,
             Button btnDeleteScript,
             Button btnRunScript,
@@ -43,6 +46,7 @@ namespace Luna.Controllers
         {
             BindControls(
                 cboxScriptName,
+                btnNewScript,
                 btnSaveScript,
                 btnDeleteScript,
                 btnRunScript,
@@ -70,6 +74,35 @@ namespace Luna.Controllers
         #endregion
 
         #region public methods
+        public void KeyBoardShortcutHandler(KeyEventArgs keyEvent)
+        {
+            var keyCode = keyEvent.KeyCode;
+            if (keyEvent.Control)
+            {
+                if (keyCode == Keys.F)
+                {
+                    ShowFormSearch();
+                }
+                return;
+            }
+
+            switch (keyCode)
+            {
+                case (Keys.F5):
+                    btnRunScript.PerformClick();
+                    break;
+                case (Keys.F6):
+                    btnStopScript.PerformClick();
+                    break;
+                case (Keys.F7):
+                    btnKillScript.PerformClick();
+                    break;
+                case (Keys.F8):
+                    btnClearOutput.PerformClick();
+                    break;
+            }
+        }
+
         public bool IsChanged()
         {
             var script = luaEditor.Text;
@@ -120,6 +153,8 @@ namespace Luna.Controllers
 
         public void Cleanup()
         {
+            formSearch?.Close();
+
             updateOutputTimer.Stop();
             updateOutputTimer.Tick -= UpdateOutput;
             updateOutputTimer.Dispose();
@@ -143,6 +178,18 @@ namespace Luna.Controllers
         #endregion
 
         #region private methods
+        void ShowFormSearch()
+        {
+            if (formSearch != null)
+            {
+                formSearch.Activate();
+                return;
+            }
+
+            formSearch = new VgcApis.WinForms.FormSearch(luaEditor);
+            formSearch.FormClosed += (s, a) => formSearch = null;
+        }
+
         void Log(string content)
         {
             logCache = content;
@@ -181,6 +228,18 @@ namespace Luna.Controllers
 
         private void BindEvents()
         {
+            btnNewScript.Click += (s, a) =>
+            {
+                if (IsChanged() && !VgcApis.Libs.UI.Confirm(I18N.DiscardUnsavedChanges))
+                {
+                    return;
+                }
+                preScriptName = "";
+                preScriptContent = "";
+                luaEditor.Text = "";
+                cboxScriptName.Text = "";
+            };
+
             btnKillScript.Click += (s, a) => luaCoreCtrl.Kill();
 
             btnStopScript.Click += (s, a) => luaCoreCtrl.Stop();
@@ -288,9 +347,20 @@ namespace Luna.Controllers
             }
         }
 
-        private void BindControls(ComboBox cboxScriptName, Button btnSaveScript, Button btnDeleteScript, Button btnRunScript, Button btnStopScript, Button btnKillScript, Button btnClearOutput, RichTextBox rtboxOutput, Panel pnlEditorContainer)
+        private void BindControls(
+            ComboBox cboxScriptName,
+            Button btnNewScript,
+            Button btnSaveScript,
+            Button btnDeleteScript,
+            Button btnRunScript,
+            Button btnStopScript,
+            Button btnKillScript,
+            Button btnClearOutput,
+            RichTextBox rtboxOutput,
+            Panel pnlEditorContainer)
         {
             this.cboxScriptName = cboxScriptName;
+            this.btnNewScript = btnNewScript;
             this.btnSaveScript = btnSaveScript;
             this.btnDeleteScript = btnDeleteScript;
             this.btnRunScript = btnRunScript;

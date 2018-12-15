@@ -32,12 +32,14 @@ namespace Luna.Models.Apis
                 .Select(s => s.GetUid())
                 .ToArray();
 
+        public bool IsServerRunning(string uid) =>
+            GetServerByUid(uid)?.IsCoreRunning() ?? false;
+
         public string GetServerUidByName(string name) =>
             GetServerByName(name)?.GetUid() ?? "";
 
         public string GetServerNameByUid(string uid) =>
             GetServerByUid(uid)?.GetName() ?? "";
-
 
         public string GetServerTitleByUid(string uid) =>
             GetServerByUid(uid)?.GetTitle() ?? "";

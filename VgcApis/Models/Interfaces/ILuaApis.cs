@@ -26,6 +26,8 @@
         string GetServerNameByUid(string uid);
         string GetServerTitleByUid(string uid);
 
+        bool IsServerRunning(string uid);
+
         void SelectServerByUid(string uid);
         void UnSelectServerByUid(string uid);
         void StartServerByUid(string uid);
