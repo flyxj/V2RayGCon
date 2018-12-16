@@ -31,14 +31,5 @@ using System.Runtime.InteropServices;
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 // 方法是按如下所示使用“*”: :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.6.6")]
+[assembly: AssemblyVersion("1.1.7.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-/*
- * v1.1.6.6 重构、修bug、添功能
- * v1.1.6.5 Fixed bug in luna plugin.
- * v1.1.6.4 添加luna插件
- * v1.1.6.3 修改插件加载算法
- * v1.1.6.2 修改各默认设置，调整UI
- * v1.1.6.1 进入选项-插件后自动刷新可用插件列表
- */

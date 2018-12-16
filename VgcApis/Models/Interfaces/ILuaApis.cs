@@ -1,4 +1,6 @@
-﻿namespace VgcApis.Models.Interfaces
+﻿using System.Collections.Generic;
+
+namespace VgcApis.Models.Interfaces
 {
     public interface ILuaApis
     {
@@ -14,23 +16,6 @@
         /// <param name="millisecond"></param>
         void Sleep(int millisecond);
 
-
-        /// <summary>
-        /// Api:UpdateServerListCache()
-        /// </summary>
-        /// <returns></returns>
-        void UpdateServerListCache();
-
-        string[] GetAllServerUid();
-        string GetServerUidByName(string name);
-        string GetServerNameByUid(string uid);
-        string GetServerTitleByUid(string uid);
-
-        bool IsServerRunning(string uid);
-
-        void SelectServerByUid(string uid);
-        void UnSelectServerByUid(string uid);
-        void StartServerByUid(string uid);
-        void StopServerByUid(string uid);
+        List<IControllers.ICoreCtrl> GetAllServers();
     }
 }
