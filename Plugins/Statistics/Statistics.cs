@@ -2,7 +2,7 @@
 
 namespace Statistics
 {
-    public class Statistics : VgcApis.IPlugin
+    public class Statistics : VgcApis.Models.BaseClasses.Plugin
     {
         VgcApis.IService api;
         VgcApis.Models.IServices.IServersService vgcServers;
@@ -11,13 +11,13 @@ namespace Statistics
         Services.Settings settings;
 
         #region properties
-        public string Name => Properties.Resources.Name;
-        public string Version => Properties.Resources.Version;
-        public string Description => I18N.Description;
+        public override string Name => Properties.Resources.Name;
+        public override string Version => Properties.Resources.Version;
+        public override string Description => I18N.Description;
         #endregion
 
-        #region public methods
-        public void Run(VgcApis.IService api)
+        #region protected override methods
+        protected override void Start(VgcApis.IService api)
         {
             this.api = api;
             vgcSetting = api.GetVgcSettingService();
@@ -27,7 +27,7 @@ namespace Statistics
             settings.Run(vgcSetting, vgcServers);
         }
 
-        public void Show()
+        protected override void Popup()
         {
             if (formMain != null)
             {
@@ -42,7 +42,7 @@ namespace Statistics
             formMain.Show();
         }
 
-        public void Cleanup()
+        protected override void Stop()
         {
             if (formMain != null)
             {

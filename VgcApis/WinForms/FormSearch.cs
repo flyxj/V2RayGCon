@@ -1,9 +1,10 @@
 ﻿using ScintillaNET;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace V2RayGCon.Views.WinForms
+namespace VgcApis.WinForms
 {
     public partial class FormSearch : Form
     {
@@ -22,7 +23,30 @@ namespace V2RayGCon.Views.WinForms
             this.FormClosed += (s, a) => ClearIndicator();
 
             VgcApis.Libs.UI.AutoSetFormIcon(this);
+
+            this.KeyDown += KeyBoardShortcutHandler;
             this.Show();
+        }
+
+        void KeyBoardShortcutHandler(object sender, KeyEventArgs e)
+        {
+            var keyCode = e.KeyCode;
+
+            switch (keyCode)
+            {
+                case Keys.F2:
+                    ShowResult(false);
+                    break;
+                case Keys.F3:
+                    ShowResult(true);
+                    break;
+                case Keys.F4:
+                    SearchAll();
+                    break;
+                case Keys.Escape:
+                    this.Close();
+                    break;
+            }
         }
 
         string GetKeyword()
@@ -57,7 +81,7 @@ namespace V2RayGCon.Views.WinForms
         private void SearchAll()
         {
             var key = GetKeyword();
-            if (string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key) || key.Length < 2)
             {
                 return;
             }
@@ -77,25 +101,6 @@ namespace V2RayGCon.Views.WinForms
             curResult = -1;
             ShowResult(true);
         }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyCode)
-        {
-            switch (keyCode)
-            {
-                case Keys.F2:
-                    ShowResult(false);
-                    break;
-                case Keys.F3:
-                    ShowResult(true);
-                    break;
-                case Keys.Escape:
-                    this.Close();
-                    break;
-            }
-
-            return base.ProcessCmdKey(ref msg, keyCode);
-        }
-
 
         void ShowResult(bool forward)
         {
@@ -125,11 +130,7 @@ namespace V2RayGCon.Views.WinForms
 
         private void tboxKeyword_TextChanged(object sender, System.EventArgs e)
         {
-            var key = GetKeyword();
-            if (key.Length > 1)
-            {
-                SearchAll();
-            }
+            SearchAll();
         }
 
         private void btnPrevious_Click(object sender, System.EventArgs e)

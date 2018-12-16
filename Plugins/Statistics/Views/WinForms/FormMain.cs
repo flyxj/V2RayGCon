@@ -17,6 +17,8 @@ namespace Statistics.Views.WinForms
             this.vgcServers = vgcServers;
             InitializeComponent();
 
+            VgcApis.Libs.UI.DoubleBuffered(lvStatsTable, true);
+
             this.FormClosing += (s, a) => formMainCtrl?.Cleanup();
             VgcApis.Libs.UI.AutoSetFormIcon(this);
             formMainCtrl = InitFormMainCtrl();

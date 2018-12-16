@@ -9,12 +9,17 @@ namespace V2RayGCon.Views.UserControls
     {
 
         Service.Servers servers;
+        Service.Setting setting;
+
+        int marginBottom;
 
         public WelcomeUI()
         {
             servers = Service.Servers.Instance;
+            setting = Service.Setting.Instance;
 
             InitializeComponent();
+            marginBottom = this.Height - pnlBasicUsage.Top;
         }
 
         #region public method
@@ -25,6 +30,15 @@ namespace V2RayGCon.Views.UserControls
 
         private void WelcomeFlyPanelComponent_Load(object sender, System.EventArgs e)
         {
+            var core = new Service.Core(setting);
+            if (!core.IsExecutableExist())
+            {
+                return;
+            }
+
+            pnlBasicUsage.Top = pnlDownloadV2RayCore.Top;
+            pnlDownloadV2RayCore.Visible = false;
+            this.Height = pnlBasicUsage.Top + marginBottom;
         }
 
         private void lbDownloadV2rayCore_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

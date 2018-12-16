@@ -566,50 +566,6 @@ namespace V2RayGCon.Service
             }
             catch { }
 
-            return FallBackLoadUserSettingsFromPorperties();
-
-            // After fall back func is deleted.
-            // return new Model.Data.UserSettings();
-        }
-
-        /// <summary>
-        /// This function has been marked as obsolete in 2018.11.07
-        /// Scheduled to be deleted in 2018.12.07
-        /// </summary>
-        /// <returns></returns>
-        Model.Data.UserSettings FallBackLoadUserSettingsFromPorperties()
-        {
-            DebugSendLog("Try read user setting from fall back.");
-
-            try
-            {
-                var p = Properties.Settings.Default;
-
-                var result = new Model.Data.UserSettings
-                {
-                    // int
-                    ServerPanelPageSize = p.ServerPanelPageSize,
-
-                    // bool
-                    isUseV4Format = p.UseV4Format,
-                    CfgShowToolPanel = p.CfgShowToolPanel,
-                    isPortable = p.Portable,
-
-                    // string
-                    ImportUrls = p.ImportUrls,
-                    DecodeCache = p.DecodeCache,
-                    SubscribeUrls = p.SubscribeUrls,
-                    PluginInfoItems = p.PluginInfoItems,
-                    Culture = p.Culture,
-                    ServerList = p.ServerList,
-                    PacServerSettings = p.PacServerSettings,
-                    SysProxySetting = p.SysProxySetting,
-                    ServerTracker = p.ServerTracker,
-                    WinFormPosList = p.WinFormPosList
-                };
-                return result;
-            }
-            catch { }
             return new Model.Data.UserSettings();
         }
 

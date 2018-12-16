@@ -31,7 +31,7 @@ namespace V2RayGCon.Views.WinForms
         Service.Setting setting;
         Service.Servers servers;
 
-        FormSearch formSearch;
+        VgcApis.WinForms.FormSearch formSearch;
         ToolsPanelController toolsPanelController;
         string originalConfigString;
         string formTitle;
@@ -83,6 +83,7 @@ namespace V2RayGCon.Views.WinForms
 
             this.FormClosed += (s, a) =>
             {
+                formSearch?.Close();
                 editor.Click -= OnMouseLeaveToolsPanel;
                 servers.OnRequireMenuUpdate -= MenuUpdateHandler;
                 setting.SaveFormRect(this);
@@ -491,7 +492,7 @@ namespace V2RayGCon.Views.WinForms
                 return;
             }
             var editor = configer.GetComponent<Controller.ConfigerComponet.Editor>();
-            formSearch = new FormSearch(editor.GetEditor());
+            formSearch = new VgcApis.WinForms.FormSearch(editor.GetEditor());
             formSearch.FormClosed += (s, a) => formSearch = null;
         }
         #endregion

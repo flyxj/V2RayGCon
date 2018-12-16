@@ -347,7 +347,7 @@ namespace V2RayGCon.Views.UserControls
 
         private void cboxInbound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            serverItem.SetOverwriteInboundType(cboxInbound.SelectedIndex);
+            serverItem.ChangeInboundMode(cboxInbound.SelectedIndex);
         }
 
         private void chkSelected_CheckedChanged(object sender, EventArgs e)
@@ -369,7 +369,7 @@ namespace V2RayGCon.Views.UserControls
                 {
                     tboxInboundAddr.ForeColor = Color.Black;
                 }
-                serverItem.SetIPandPortOnDemand(ip, port);
+                serverItem.ChangeInboundIpAndPort(ip, port);
             }
             else
             {

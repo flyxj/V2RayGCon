@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using VgcApis.Resources.Langs;
 
@@ -6,6 +7,19 @@ namespace VgcApis.Libs
 {
     public static class UI
     {
+        // https://stackoverflow.com/questions/87795/how-to-prevent-flickering-in-listview-when-updating-a-single-listviewitems-text
+        public static void DoubleBuffered(this Control control, bool enable)
+        {
+            var doubleBufferPropertyInfo = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            doubleBufferPropertyInfo.SetValue(control, enable, null);
+        }
+
+        public static void ScrollToBottom(RichTextBox control)
+        {
+            control.SelectionStart = control.Text.Length;
+            control.ScrollToCaret();
+        }
+
         public static string ShowSelectFileDialog(string extension)
         {
             OpenFileDialog readFileDialog = new OpenFileDialog

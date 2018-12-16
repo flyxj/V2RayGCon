@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using V2RayGCon.Resource.Resx;
@@ -106,9 +107,6 @@ namespace V2RayGCon.Controller
         ConcurrentQueue<string> _logCache = new ConcurrentQueue<string>();
 
         [JsonIgnore]
-        readonly int maxLogLines = Service.Setting.maxLogLines;
-
-        [JsonIgnore]
         public string logCache
         {
             get
@@ -119,63 +117,58 @@ namespace V2RayGCon.Controller
             {
                 _logCache.Enqueue(value);
 
-                if (_logCache.Count < maxLogLines)
-                {
-                    return;
-                }
-
-                string blackHole;
-                var cut = maxLogLines / 2;
-                for (var i = 0; i < cut; i++)
-                {
-                    _logCache.TryDequeue(out blackHole);
-                }
+                int maxLogLines = Service.Setting.maxLogLines;
+                VgcApis.Libs.Utils.TrimDownConcurrentQueue(
+                    _logCache, maxLogLines, maxLogLines / 3);
             }
         }
         #endregion
 
         #region ICoreCtrl interface
-        public double GetIndex() => this.index;
-        public string GetName() => this.name;
-        public string GetStatus() => this.status;
-        public string GetConfig() => this.config;
-        public bool IsCoreRunning() => this.isServerOn;
-        public bool IsUntrack() => this.isUntrack;
-        public bool IsSelected() => this.isSelected;
-
-        public VgcApis.Models.Datas.StatsSample Peek()
+        public string GetTitle()
         {
-            if (!setting.isEnableStatistics
-                || this.statsPort <= 0)
-            {
-                return null;
-            }
-
-            var up = this.server.QueryStatsApi(this.statsPort, true);
-            var down = this.server.QueryStatsApi(this.statsPort, false);
-            return new VgcApis.Models.Datas.StatsSample(up, down);
-        }
-        #endregion
-
-        #region public method
-        public string GetUid()
-        {
-            if (string.IsNullOrEmpty(uid))
-            {
-                var uidList = servers
-                    .GetServerList()
-                    .Select(s => s.uid)
-                    .ToList();
-                do
-                {
-                    uid = Lib.Utils.RandomHex(16);
-                } while (uidList.Contains(uid));
-                InvokeEventOnPropertyChange();
-            }
-            return uid;
+            var result = string.Format("{0}.[{1}] {2}",
+                (int)this.index,
+                this.name,
+                this.summary);
+            return Lib.Utils.CutStr(result, 60);
         }
 
-        public void SetIPandPortOnDemand(string ip, int port)
+        public void SetMark(string mark)
+        {
+            if (this.mark == mark)
+            {
+                return;
+            }
+
+            this.mark = mark;
+            if (!string.IsNullOrEmpty(mark)
+                && !(this.servers.GetMarkList().Contains(mark)))
+            {
+                this.servers.UpdateMarkList();
+            }
+            InvokeEventOnPropertyChange();
+        }
+
+        public void ChangeInboundMode(int type)
+        {
+            if (this.overwriteInboundType == type)
+            {
+                return;
+            }
+
+            this.overwriteInboundType = Lib.Utils.Clamp(
+                type, 0, Model.Data.Table.inboundOverwriteTypesName.Length);
+
+            InvokeEventOnPropertyChange();
+            if (isServerOn)
+            {
+                // time consuming things
+                RestartCoreThen();
+            }
+        }
+
+        public void ChangeInboundIpAndPort(string ip, int port)
         {
             var changed = false;
 
@@ -195,35 +188,27 @@ namespace V2RayGCon.Controller
             if (changed)
             {
                 InvokeEventOnPropertyChange();
-
             }
         }
 
-        public bool IsSuitableToBeUsedAsSysProxy(
-            bool isGlobal,
-            out bool isSocks,
-            out int port)
+        public void ChangeConfig(string config)
         {
-            isSocks = false;
-            port = 0;
-
-            var inboundInfo = GetParsedInboundInfo();
-            if (inboundInfo == null)
+            if (this.config == config)
             {
-                SendLog(I18N.GetInboundInfoFail);
-                return false;
+                return;
             }
 
-            var protocol = inboundInfo.Item1;
-            port = inboundInfo.Item3;
-
-            if (!IsProtocolMatchProxyRequirment(isGlobal, protocol))
+            this.config = config;
+            InvokeEventOnPropertyChange();
+            UpdateSummaryThen(() =>
             {
-                return false;
-            }
+                InvokeEventOnRequireMenuUpdate();
+            });
 
-            isSocks = protocol == "socks";
-            return true;
+            if (server.isRunning)
+            {
+                RestartCoreThen();
+            }
         }
 
         public void SetIsSelected(bool selected)
@@ -237,20 +222,21 @@ namespace V2RayGCon.Controller
             InvokeEventOnPropertyChange();
         }
 
-        public bool ShowLogForm()
+        public string GetUid()
         {
-            if (logForm != null)
+            if (string.IsNullOrEmpty(uid))
             {
-                return false;
+                var uidList = servers
+                    .GetServerList()
+                    .Select(s => s.uid)
+                    .ToList();
+                do
+                {
+                    uid = Lib.Utils.RandomHex(16);
+                } while (uidList.Contains(uid));
+                InvokeEventOnPropertyChange();
             }
-            logForm = new Views.WinForms.FormSingleServerLog(this);
-
-            logForm.FormClosed += (s, a) =>
-            {
-                logForm.Dispose();
-                logForm = null;
-            };
-            return true;
+            return uid;
         }
 
         public void RunSpeedTest()
@@ -292,6 +278,87 @@ namespace V2RayGCon.Controller
             log(text);
             speedTester.StopCore();
             speedTester.OnLog -= OnLogHandler;
+        }
+
+        public void RestartCore()
+        {
+            AutoResetEvent done = new AutoResetEvent(false);
+            RestartCoreThen(() => done.Set());
+            done.WaitOne();
+        }
+
+        public void StopCore()
+        {
+            AutoResetEvent done = new AutoResetEvent(false);
+            StopCoreThen(() => done.Set());
+            done.WaitOne();
+        }
+
+        public double GetIndex() => this.index;
+        public string GetName() => this.name;
+        public string GetStatus() => this.status;
+        public string GetConfig() => this.config;
+        public bool IsCoreRunning() => this.isServerOn;
+        public bool IsUntrack() => this.isUntrack;
+        public bool IsSelected() => this.isSelected;
+
+        public VgcApis.Models.Datas.StatsSample TakeStatisticsSample()
+        {
+            if (!setting.isEnableStatistics
+                || this.statsPort <= 0)
+            {
+                return null;
+            }
+
+            var up = this.server.QueryStatsApi(this.statsPort, true);
+            var down = this.server.QueryStatsApi(this.statsPort, false);
+            return new VgcApis.Models.Datas.StatsSample(up, down);
+        }
+        #endregion
+
+        #region public method
+
+        public bool IsSuitableToBeUsedAsSysProxy(
+            bool isGlobal,
+            out bool isSocks,
+            out int port)
+        {
+            isSocks = false;
+            port = 0;
+
+            var inboundInfo = GetParsedInboundInfo();
+            if (inboundInfo == null)
+            {
+                SendLog(I18N.GetInboundInfoFail);
+                return false;
+            }
+
+            var protocol = inboundInfo.Item1;
+            port = inboundInfo.Item3;
+
+            if (!IsProtocolMatchProxyRequirment(isGlobal, protocol))
+            {
+                return false;
+            }
+
+            isSocks = protocol == "socks";
+            return true;
+        }
+
+        public bool ShowLogForm()
+        {
+            if (logForm != null)
+            {
+                return false;
+            }
+            logForm = new Views.WinForms.FormSingleServerLog(this);
+
+            logForm.FormClosed += (s, a) =>
+            {
+                logForm.Dispose();
+                logForm = null;
+            };
+            return true;
         }
 
         public void SetPropertyOnDemand(ref string property, string value, bool isNeedCoreStopped = false)
@@ -344,24 +411,6 @@ namespace V2RayGCon.Controller
             UpdateSummaryThen(() => InvokeEventOnRequireMenuUpdate());
         }
 
-        public void SetOverwriteInboundType(int type)
-        {
-            if (this.overwriteInboundType == type)
-            {
-                return;
-            }
-
-            this.overwriteInboundType = Lib.Utils.Clamp(
-                type, 0, Model.Data.Table.inboundOverwriteTypesName.Length);
-
-            InvokeEventOnPropertyChange();
-            if (isServerOn)
-            {
-                // time consuming things
-                RestartCoreThen();
-            }
-        }
-
         public void UpdateSummaryThen(Action lambda = null)
         {
             Task.Factory.StartNew(() =>
@@ -398,26 +447,6 @@ namespace V2RayGCon.Controller
                     next?.Invoke();
                 });
             });
-        }
-
-        public void ChangeConfig(string config)
-        {
-            if (this.config == config)
-            {
-                return;
-            }
-
-            this.config = config;
-            InvokeEventOnPropertyChange();
-            UpdateSummaryThen(() =>
-            {
-                InvokeEventOnRequireMenuUpdate();
-            });
-
-            if (server.isRunning)
-            {
-                RestartCoreThen();
-            }
         }
 
         public void StopCoreThen(Action next = null)
@@ -461,22 +490,6 @@ namespace V2RayGCon.Controller
             });
         }
 
-        public void SetMark(string mark)
-        {
-            if (this.mark == mark)
-            {
-                return;
-            }
-
-            this.mark = mark;
-            if (!string.IsNullOrEmpty(mark)
-                && !(this.servers.GetMarkList().Contains(mark)))
-            {
-                this.servers.UpdateMarkList();
-            }
-            InvokeEventOnPropertyChange();
-        }
-
         public void InvokeEventOnPropertyChange()
         {
             // things happen while invoking
@@ -513,15 +526,6 @@ namespace V2RayGCon.Controller
                 // index 2
                 this.mark??"",
             });
-        }
-
-        public string GetTitle()
-        {
-            var result = string.Format("{0}.[{1}] {2}",
-                (int)this.index,
-                this.name,
-                this.summary);
-            return Lib.Utils.CutStr(result, 60);
         }
         #endregion
 

@@ -2,34 +2,25 @@
 
 namespace Pacman
 {
-    public class Pacman : VgcApis.IPlugin
+    public class Pacman : VgcApis.Models.BaseClasses.Plugin
     {
         VgcApis.IService api;
         Services.Settings settings;
+
         VgcApis.Models.IServices.IServersService vgcServers;
         VgcApis.Models.IServices.ISettingService vgcSettings;
-
         Views.WinForms.FormMain formMain = null;
 
         // form=null;
 
         #region properties
-        public string Name => Properties.Resources.Name;
-        public string Version => Properties.Resources.Version;
-        public string Description => I18N.Description;
+        public override string Name => Properties.Resources.Name;
+        public override string Version => Properties.Resources.Version;
+        public override string Description => I18N.Description;
         #endregion
 
-        #region public methods
-        public void Run(VgcApis.IService api)
-        {
-            this.api = api;
-            this.settings = new Services.Settings();
-            vgcServers = api.GetVgcServersService();
-            vgcSettings = api.GetVgcSettingService();
-            settings.Run(api);
-        }
-
-        public void Show()
+        #region protected overrides
+        protected override void Popup()
         {
             if (formMain != null)
             {
@@ -42,7 +33,16 @@ namespace Pacman
             formMain.Show();
         }
 
-        public void Cleanup()
+        protected override void Start(VgcApis.IService api)
+        {
+            this.api = api;
+            this.settings = new Services.Settings();
+            vgcServers = api.GetVgcServersService();
+            vgcSettings = api.GetVgcSettingService();
+            settings.Run(api);
+        }
+
+        protected override void Stop()
         {
             if (formMain != null)
             {

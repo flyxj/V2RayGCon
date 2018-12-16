@@ -1,4 +1,4 @@
-﻿namespace V2RayGCon.Views.WinForms
+﻿namespace VgcApis.WinForms
 {
     partial class FormSearch
     {

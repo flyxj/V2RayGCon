@@ -30,16 +30,18 @@
 
         public UserSettings()
         {
-            ServerPanelPageSize = 99;
+            ServerPanelPageSize = 7;
+
 #if V2RAYGCON_LITE
             isUpdateToVgcFull = false;
 #else
             isUpdateToVgcFull = true;
 #endif
+
             isUpdateUseProxy = false;
-            isUseV4Format = false;
+            isUseV4Format = true;
             CfgShowToolPanel = true;
-            isPortable = false;
+            isPortable = true;
 
             ImportUrls = string.Empty;
             DecodeCache = string.Empty;

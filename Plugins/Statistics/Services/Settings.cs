@@ -96,7 +96,7 @@ namespace Statistics.Services
             {
                 return;
             }
-            var sample = coreCtrl.Peek();
+            var sample = coreCtrl.TakeStatisticsSample();
             var title = coreCtrl.GetTitle();
             Task.Factory.StartNew(
                 () => AddToHistoryStatsData(uid, title, sample));
@@ -230,7 +230,7 @@ namespace Statistics.Services
             result.title = coreCtrl.GetTitle();
             result.uid = coreCtrl.GetUid();
 
-            var curData = coreCtrl.Peek();
+            var curData = coreCtrl.TakeStatisticsSample();
             if (curData != null)
             {
                 result.stamp = curData.stamp;
